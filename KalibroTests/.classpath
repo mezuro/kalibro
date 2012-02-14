@@ -14,7 +14,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Derby 10.5"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Log4j 1.2.16"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.1.2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/FEST Swing"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit 4.8.2"/>
