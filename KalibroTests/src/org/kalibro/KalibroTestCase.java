@@ -13,6 +13,7 @@ import org.kalibro.core.util.Directories;
 public abstract class KalibroTestCase {
 
 	public static final File TESTS_DIRECTORY = new File(Directories.kalibro(), "tests");
+	public static final File SAMPLES_DIRECTORY = new File(TESTS_DIRECTORY, "samples");
 	public static final File PROJECTS_DIRECTORY = new File(TESTS_DIRECTORY, "projects");
 	public static final File HELLO_WORLD_DIRECTORY = new File(PROJECTS_DIRECTORY, "HelloWorld-1.0");
 

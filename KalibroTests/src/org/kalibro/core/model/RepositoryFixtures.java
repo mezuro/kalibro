@@ -15,17 +15,18 @@ public class RepositoryFixtures {
 
 	private static Map<RepositoryType, String> initializeAddresses() {
 		addresses = new HashMap<RepositoryType, String>();
-		String testsPath = KalibroTestCase.TESTS_DIRECTORY.getAbsolutePath() + File.separator;
-		addresses.put(LOCAL_DIRECTORY, testsPath + "HelloWorldDirectory/");
-		addresses.put(LOCAL_TARBALL, testsPath + "HelloWorld.tar.gz");
-		addresses.put(LOCAL_ZIP, testsPath + "HelloWorld.zip");
-		addresses.put(BAZAAR, testsPath + "HelloWorldBazaar/");
-		addresses.put(CVS, testsPath + "HelloWorldCvs/");
-		addresses.put(GIT, testsPath + "HelloWorldGit/");
-		addresses.put(MERCURIAL, testsPath + "HelloWorldMercurial/");
+		File repositoriesDir = new File(KalibroTestCase.TESTS_DIRECTORY, "repositories");
+		String repositoriesPath = repositoriesDir.getAbsolutePath() + File.separator;
+		addresses.put(LOCAL_DIRECTORY, repositoriesPath + "HelloWorldDirectory/");
+		addresses.put(LOCAL_TARBALL, repositoriesPath + "HelloWorld.tar.gz");
+		addresses.put(LOCAL_ZIP, repositoriesPath + "HelloWorld.zip");
+		addresses.put(BAZAAR, repositoriesPath + "HelloWorldBazaar/");
+		addresses.put(CVS, repositoriesPath + "HelloWorldCvs/");
+		addresses.put(GIT, repositoriesPath + "HelloWorldGit/");
+		addresses.put(MERCURIAL, repositoriesPath + "HelloWorldMercurial/");
 		addresses.put(REMOTE_TARBALL, "httpe:/invalid.address/HelloWorld.tar.gz");
 		addresses.put(REMOTE_ZIP, "httpe://invalid.address/HelloWorld.zip");
-		addresses.put(SUBVERSION, "file://" + testsPath + "HelloWorldSubversion");
+		addresses.put(SUBVERSION, "file://" + repositoriesPath + "HelloWorldSubversion");
 		return addresses;
 	}
 

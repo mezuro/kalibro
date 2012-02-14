@@ -2,8 +2,6 @@ package org.analizo;
 
 import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
-import static org.kalibro.core.model.enums.RepositoryType.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -56,7 +54,7 @@ public class AnalizoTest extends KalibroTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldCollectMetrics() {
-		File codeDirectory = new File(helloWorldRepository(LOCAL_DIRECTORY).getAddress());
+		File codeDirectory = new File(SAMPLES_DIRECTORY, "analizo");
 		assertDeepEquals(collectMetrics(), analizo.collectMetrics(codeDirectory, nativeMetrics()));
 	}
 }
