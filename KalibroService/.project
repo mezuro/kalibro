@@ -43,7 +43,7 @@
 		<link>
 			<name>KalibroCoreSrc</name>
 			<type>2</type>
-			<locationURI>WORKSPACE_LOC/kalibro/KalibroCore/src</locationURI>
+			<locationURI>WORKSPACE_LOC/KalibroCore/src</locationURI>
 		</link>
 	</linkedResources>
 </projectDescription>
