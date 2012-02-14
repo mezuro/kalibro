@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<display-name>Kalibro Service</display-name>
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+	<listener>
+		<listener-class>com.sun.xml.ws.transport.http.servlet.WSServletContextListener</listener-class>
+	</listener>
+	<servlet>
+		<description>Kalibro Service</description>
+		<display-name>Kalibro Service</display-name>
+		<servlet-name>KalibroService</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>KalibroService</servlet-name>
+		<url-pattern>/KalibroEndpoint/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>Kalibro Service</description>
+		<display-name>Kalibro Service</display-name>
+		<servlet-name>BaseTool</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>BaseTool</servlet-name>
+		<url-pattern>/BaseToolEndpoint/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>Kalibro Service</description>
+		<display-name>Kalibro Service</display-name>
+		<servlet-name>Configuration</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Configuration</servlet-name>
+		<url-pattern>/ConfigurationEndpoint/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>Kalibro Service</description>
+		<display-name>Kalibro Service</display-name>
+		<servlet-name>Project</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Project</servlet-name>
+		<url-pattern>/ProjectEndpoint/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>Kalibro Service</description>
+		<display-name>Kalibro Service</display-name>
+		<servlet-name>ProjectResult</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ProjectResult</servlet-name>
+		<url-pattern>/ProjectResultEndpoint/</url-pattern>
+	</servlet-mapping>
+
+	<servlet>
+		<description>Kalibro Service</description>
+		<display-name>Kalibro Service</display-name>
+		<servlet-name>ModuleResult</servlet-name>
+		<servlet-class>com.sun.xml.ws.transport.http.servlet.WSServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>ModuleResult</servlet-name>
+		<url-pattern>/ModuleResultEndpoint/</url-pattern>
+	</servlet-mapping>
+</web-app>

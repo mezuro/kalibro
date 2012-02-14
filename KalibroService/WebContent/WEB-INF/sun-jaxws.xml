@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime
+						http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd">
+	<endpoint						  name="KalibroEndpoint"
+							  url-pattern="/KalibroEndpoint/"
+		implementation="org.kalibro.service.KalibroEndpointImpl"/>
+	<endpoint						  name="BaseToolEndpoint"
+							  url-pattern="/BaseToolEndpoint/"
+		implementation="org.kalibro.service.BaseToolEndpointImpl"/>
+	<endpoint						  name="ConfigurationEndpoint"
+							  url-pattern="/ConfigurationEndpoint/"
+		implementation="org.kalibro.service.ConfigurationEndpointImpl"/>
+	<endpoint						  name="ProjectEndpoint"
+							  url-pattern="/ProjectEndpoint/"
+		implementation="org.kalibro.service.ProjectEndpointImpl"/>
+	<endpoint						  name="ProjectResultEndpoint"
+							  url-pattern="/ProjectResultEndpoint/"
+		implementation="org.kalibro.service.ProjectResultEndpointImpl"/>
+	<endpoint						  name="ModuleResultEndpoint"
+							  url-pattern="/ModuleResultEndpoint/"
+		implementation="org.kalibro.service.ModuleResultEndpointImpl"/>
+</endpoints>

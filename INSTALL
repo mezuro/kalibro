@@ -1,0 +1,176 @@
+INSTALL - KalibroService
+========================
+
+DEPENDENCIES
+============
+  - Analizo - http://analizo.org/
+  - Java (OpenJDK) - http://openjdk.java.net/
+  - Apache Tomcat - http://tomcat.apache.org/
+  - MySQL - http://www.mysql.com/
+  
+Need to install if you want to use:
+===================================
+	SUPPORTED SOURCE CODE MANAGEMENT
+  	- Bazaar
+  	- CVS
+ 	 	- Git
+	  - Mercurial
+ 	 	- Subversion
+	 SUPPORTED COMPRESSED FILES
+  	- Tar 
+  	- Zip
+
+Linux Distributions step by step
+================================
+
+We have the following guides to install Kalibro on your linux distro:
+
+Steps:
+
+  1. Install Dependencies
+    1.1 Install Analizo
+    1.2 Install Java
+    1.3 Install Source Code Management (SCM) and uncompress tools
+    1.4 Install Mysql
+    1.5 Install Tomcat
+  2. Configure Mysql
+  3. Install KalibroService
+    3.1 Configure KalibroService
+  4. Restart tomcat
+  5. Test your installation
+
+This install guide is according to Ubuntu/Debian server.
+Some steps were automated to make easier this installation.
+
+1.Dependencies
+==============
+
+1.1 Install Analizo:
+--------------------
+
+Analizo provide debian packages, so your installation on Debian/Ubuntu is easy:
+
+1) Create a file /etc/apt/sources.list.d/analizo.list file with the following contents:
+
+deb http://analizo.org/download/ ./
+deb-src http://analizo.org/download/ ./
+
+2) Add the signing key you your list of trusted keys:
+  $ sudo wget -O - http://analizo.org/download/signing-key.asc | apt-key add -
+
+3) Update your package lists:
+  $ sudo apt-get update
+
+4) Install analizo:
+  $ sudo apt-get install analizo
+
+In order to get the last instructions, check the INSTALL or HACKING files at analizo package.
+
+1.2 Install Java
+----------------
+
+  $ sudo apt-get install openjdk-6-jre
+
+1.3 Install SCM and Uncompress tools
+------------------------------------
+
+  $ sudo apt-get install bazaar cvs git mercurial subversion tar unzip
+
+1.4 Install MySQL:
+-----------------
+
+  $ sudo apt-get install mysql-server mysql-client
+
+1.5 Install Apache-Tomcat
+-------------------------
+
+  $ sudo apt-get install tomcat6
+
+
+2. Configure MySQL
+==================
+
+Login as root user and insert your MySQL root password
+
+$ mysql -u root -p
+
+The next step is to create a database. You can give any name you want to the new database. For convenience, we will use
+kalibro.
+
+mysql> create database kalibro;
+
+Do not forget the semicolon ";" at the end of each command line.
+Once we have created the database, we only need to create a user and give him access permission.
+It is possible to do that with the commands below:
+
+mysql> create user 'kalibro'@'localhost' identified by 'kalibro';
+
+Notice that we have created a user with 'kalibro' as login and password, but you are free to create the login and
+password you wish.
+
+mysql> grant all on kalibro.* to 'kalibro'@'localhost';
+mysql> flush privileges;
+
+The commands above give to kalibro user all permissions on all tables in kalibro database and then flush MySQL
+privileges table to ensure that all changes will be applied.
+
+Finally, you can quit MySQL shell:
+mysql> exit;
+
+
+Changing root password
+----------------------
+If you need to change MySQL root password, see the following example to replace the root
+password:
+
+  $ sudo mysqladmin -u root -h localhost password 'new_pass-word'
+
+If you have a MySQL installed and do not know what is the password, see:
+http://www.cyberciti.biz/tips/recover-mysql-root-password.html
+
+
+3. Install Kalibro Service
+==========================
+
+Download the last KalibroService-XXX.tar.gz (Binaries package), at http://ccsl.ime.usp.br/redmine/projects/kalibro/files.
+
+  $ sudo mkdir /var/lib/tomcat6/webapps/KalibroService/
+
+  # Where you download the KalibroService-XXX.tar.gz:
+  $ sudo unzip KalibroService.war -d /var/lib/tomcat6/webapps/KalibroService/
+
+
+NOTE: If your tomcat installation already unpack .wars files, and make auto deploy, just copy
+KalibroService.war to /var/lib/tomcat6/webapps/
+
+
+3.1 Configure KalibroService
+----------------------------
+
+On Debian/Ubuntu, the default tomcat dir is: /usr/share/tomcat6
+For another distro, please see /etc/passwd file:
+
+  $ TOMCAT_HOME=$(cat /etc/passwd | grep tomcat | cut -d: -f6)
+  
+Create a directory named .kalibro on tomcat dir and put the file kalibro.settings (in KalibroService-XXX.tar.gz) into it
+
+  $ sudo mkdir $TOMCAT_HOME/.kalibro
+  $ sudo cp kalibro.settings $TOMCAT_HOME/.kalibro/kalibro.settings
+  $ sudo chown -R tomcat6.tomcat6 $TOMCAT_HOME/.kalibro
+  
+Edit kalibro.settings according to your configuration.
+
+4. Restart tomcat
+==================
+Stop: /etc/init.d/tomcat6 stop
+Start: /etc/init.d/tomcat6 start
+
+5. Test your installation
+=========================
+
+Open at any browser your url:
+
+http://localhost:8080/KalibroService
+
+(If tomcat is running at localhost and on 8080 port)
+

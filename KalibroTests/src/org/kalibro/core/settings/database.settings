@@ -1,0 +1,5 @@
+    database:
+        type: MYSQL # Possibilities: APACHE_DERBY MYSQL
+        jdbc_url: "jdbc:mysql://localhost:3306/kalibro"
+        username: "kalibro"
+        password: "kalibro"

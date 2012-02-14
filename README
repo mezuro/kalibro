@@ -1,0 +1,90 @@
+README - Kalibro
+================
+
+Kalibro aims to improve the use of source code metrics.
+It is designed for easy integration with a metric collector tool and show the results in a friendlier way.
+For that, it allows a metric specialist to create a configuration of thresholds associated with qualitative evaluation,
+including comments and recommendations.
+These configurations are used to enhance metric results interpretation.
+
+Kalibro is delivered with the proper configuration for running using Analizo - a free and multi-language toolkit - as
+the source code analysis tool.
+Analizo supports the extraction and calculation of a fair number of source code metrics, generation of dependency
+graphs, and software evolution analysis.
+It efficiently parses source code written in C, C++ and Java.
+
+INSTALL
+=======
+
+See the install guide at INSTALL file.
+
+SOURCE CODE
+===========
+
+Each directory corresponds to an Eclipse IDE project.
+There are dependencies between these projects.
+
+See the architeture overview at "Resources/Guides" directory
+
+The last source code can be found at:
+
+http://gitorious.org/kalibro/
+
+AUTHORS
+=======
+
+Please see the file AUTHORS.
+
+
+BUGS
+====
+
+If you found any bug, please report at:
+
+http://ccsl.ime.usp.br/redmine/projects/kalibro/issues
+
+LICENSE
+=======
+
+Copyright (c) The Authors developers.
+
+Kalibro is Free Software and can distributed under the GNU LPGL (GNU Lesser
+General Public License) version 3.0.
+
+The license terms can be found in the GNU Project's Web site at
+http://www.gnu.org/copyleft/lesser.html (a copy of GPL text upon which LGPL
+relies is also provided).
+
+The directory "Libraries" contains third-party libraries distributed along with
+Kalibro source code for convenience. Their respective licenses are indicated in
+the file LICENSE within the referred directory.
+
+Please see the file COPYING
+
+Kalibro is based in Crab 1.0 is a Free Software distributed under BSD License. 
+Crab 1.0 was developed by:
+
+- Paulo Roberto Miranda Meirelles (paulo at softwarelivre.org)
+- Raphael Cóbe (rmcobe at ime.usp.br)
+- Simone Hanazumi (hanazumi at ime.usp.br)
+- Paulo Nunes (prnunes at ime.usp.br)
+- Geiser Challco (geiser at ime.usp.br)
+- Straus Martins (straus at ime.usp.br)
+- Eduardo Morais (emorais at ime.usp.br)
+- Fabio Kon (kon at ime.usp.br)
+
+ACKNOWLEDGMENTS
+===============
+
+The authors have been supported by organizations:
+
+Brazilian National Research Council (CNPQ)
+http://www.cnpq.br/
+
+Qualipso project
+http://www.qualipso.org/
+
+USP FLOSS Competence Center
+http://ccsl.ime.usp.br/
+
+

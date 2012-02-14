@@ -1,0 +1,17 @@
+"Metric","Value","Range label","Grade","Sample size","Average","Maximum","Median","Minimum","Standard deviation","Sum"
+"Afferent Connections per Class (used to calculate COF - Coupling Factor)",0.0,"Excellent",10.0,0,,,,,,0.0
+"Average Cyclomatic Complexity per Method",1.0,"Excellent",10.0,0,,,,,,0.0
+"Average Method LOC",4.0,"Excellent",10.0,0,,,,,,0.0
+"Average Number of Parameters per Method",2.0,"",,0,,,,,,0.0
+"Coupling Between Objects",0.0,"Excellent",10.0,0,,,,,,0.0
+"Depth of Inheritance Tree",0.0,"",,0,,,,,,0.0
+"Lack of Cohesion of Methods",1.0,"Excellent",10.0,0,,,,,,0.0
+"Lines of Code",4.0,"Excellent",10.0,0,,,,,,0.0
+"Max Method LOC",4.0,"Excellent",10.0,0,,,,,,0.0
+"Number of Attributes",0.0,"Excellent",10.0,0,,,,,,0.0
+"Number of Children",0.0,"Excellent",10.0,0,,,,,,0.0
+"Number of Methods",1.0,"Excellent",10.0,0,,,,,,0.0
+"Number of Public Attributes",0.0,"",,0,,,,,,0.0
+"Number of Public Methods",1.0,"",,0,,,,,,0.0
+"Response For a Class",1.0,"",,0,,,,,,0.0
+"Structural Complexity (CBO X LCOM4)",0.0,"",,0,,,,,,0.0

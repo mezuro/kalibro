@@ -1,0 +1,52 @@
+package org.kalibro.service;
+
+import static org.kalibro.core.model.enums.RepositoryType.*;
+
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.Kalibro;
+import org.kalibro.KalibroTestCase;
+import org.kalibro.core.model.enums.RepositoryType;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Kalibro.class)
+public class KalibroEndpointImplTest extends KalibroTestCase {
+
+	private KalibroEndpointImpl endpoint;
+
+	@Before
+	public void setUp() {
+		PowerMockito.mockStatic(Kalibro.class);
+		endpoint = new KalibroEndpointImpl();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testSupportedRepositoryTypes() {
+		Set<RepositoryType> repositoryTypes = new HashSet<RepositoryType>();
+		repositoryTypes.addAll(Arrays.asList(LOCAL_ZIP, GIT, SUBVERSION));
+		PowerMockito.when(Kalibro.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
+		assertDeepEquals(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessProject() {
+		endpoint.processProject("42");
+		PowerMockito.verifyStatic();
+		Kalibro.processProject("42");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessPeriodically() {
+		endpoint.processPeriodically("xpto", 42);
+		PowerMockito.verifyStatic();
+		Kalibro.processPeriodically("xpto", 42);
+	}
+}
