@@ -1,6 +1,6 @@
-*/bin
-.metadata/
-checkstyle/
-Libraries/
-Resources/
-Servers/
+/*/bin
+/.metadata/
+/checkstyle/
+/Libraries/
+/Resources/
+/Servers/
