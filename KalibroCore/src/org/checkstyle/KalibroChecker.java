@@ -17,7 +17,7 @@ public class KalibroChecker {
 		checker = new Checker();
 		checker.setModuleClassLoader(Checker.class.getClassLoader());
 		checker.addListener(listener);
-		checker.configure(new CheckstyleConfiguration());
+		checker.configure(CheckstyleConfiguration.checkerConfiguration());
 	}
 
 	public void process(File codeDirectory) {

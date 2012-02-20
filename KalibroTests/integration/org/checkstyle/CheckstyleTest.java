@@ -5,15 +5,9 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.NativeMetric;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(FileProcessStreamLogger.class)
 public class CheckstyleTest extends KalibroTestCase {
 
 	private CheckstyleMetricCollector checkstyle;

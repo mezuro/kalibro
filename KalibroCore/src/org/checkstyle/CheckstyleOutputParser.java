@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.kalibro.core.model.Module;
@@ -28,15 +27,10 @@ public class CheckstyleOutputParser extends AuditAdapter {
 
 	@Override
 	public void addError(AuditEvent event) {
+		String messageKey = event.getLocalizedMessage().getKey();
 		String className = fileNameToClass(event.getFileName());
-		String message = event.getMessage();
-		for (CheckstyleMetric metric : CheckstyleMetric.values()) {
-			Matcher matcher = metric.getPattern().matcher(message);
-			if (matcher.matches()) {
-				Double value = new Double(matcher.group(1));
-				addToNativeModuleResult(className, metric.getNativeMetric(), value);
-			}
-		}
+		Double value = Double.parseDouble(event.getMessage());
+		addMetricResult(className, CheckstyleMetric.getNativeMetricFor(messageKey), value);
 	}
 
 	@Override
@@ -57,25 +51,19 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		return new HashSet<NativeModuleResult>(resultsMap.values());
 	}
 
-	private void addToNativeModuleResult(String className, NativeMetric nativeMetric, Double value) {
-		NativeModuleResult nativeModuleResult = getNativeModuleResult(className);
-		nativeModuleResult.addMetricResult(new NativeMetricResult(nativeMetric, value));
-	}
-
-	private NativeModuleResult getNativeModuleResult(String className) {
-		NativeModuleResult result;
-		if (resultsMap.containsKey(className))
-			result = resultsMap.get(className);
-		else {
-			result = new NativeModuleResult(new Module(Granularity.CLASS, className));
-			resultsMap.put(className, result);
-		}
-		return result;
-	}
-
 	private String fileNameToClass(String group) {
 		String[] parts = group.split("\\.|" + Pattern.quote(File.separator));
 		return parts[parts.length - 2];
 	}
 
+	private void addMetricResult(String className, NativeMetric nativeMetric, Double value) {
+		NativeMetricResult metricResult = new NativeMetricResult(nativeMetric, value);
+		getModuleResult(className).addMetricResult(metricResult);
+	}
+
+	private NativeModuleResult getModuleResult(String className) {
+		if (! resultsMap.containsKey(className))
+			resultsMap.put(className, new NativeModuleResult(new Module(Granularity.CLASS, className)));
+		return resultsMap.get(className);
+	}
 }

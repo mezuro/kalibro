@@ -1,54 +1,45 @@
 package org.checkstyle;
 
-import static org.kalibro.core.model.enums.Granularity.*;
-
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.util.Identifier;
 
-import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
-
 public enum CheckstyleMetric {
 
-	FILE_LENGTH(CLASS, "^File length is (\\d+) lines \\(max allowed is -1\\)\\.$", "FileLength", "max", "-1"),
-	NUMBER_OF_METHODS(CLASS, "^Total number of methods is (\\d+) \\(max allowed is -1\\)\\.$",
-		"MethodCount", "maxTotal", "-1") {
+	FILE_LENGTH("FileLength", "max", "maxLen.file"),
+	NUMBER_OF_METHODS("TreeWalker.MethodCount", "maxTotal", "too.many.methods");
 
-		@Override
-		public DefaultConfiguration addToConfiguration(DefaultConfiguration parent) {
-			DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
-			super.addToConfiguration(treeWalker);
-			parent.addChild(treeWalker);
-			return treeWalker;
-		}
-	};
+	private static Map<String, NativeMetric> supportedMetrics;
 
 	public static Set<NativeMetric> supportedMetrics() {
-		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			supportedMetrics.add(metric.getNativeMetric());
-		return supportedMetrics;
+		return new HashSet<NativeMetric>(supportedMetrics.values());
 	}
 
-	private DefaultConfiguration configuration;
-	private NativeMetric nativeMetric;
-	private Pattern pattern;
-
-	private CheckstyleMetric(Granularity scope, String regularExpression, String moduleName, String... properties) {
-		initializeConfiguration(moduleName, properties);
-		nativeMetric = new NativeMetric(toString(), scope, Language.JAVA);
-		pattern = Pattern.compile(regularExpression);
+	public static NativeMetric getNativeMetricFor(String messageKey) {
+		return supportedMetrics.get(messageKey);
 	}
 
-	private void initializeConfiguration(String moduleName, String... properties) {
-		configuration = new DefaultConfiguration(moduleName);
-		for (int i = 0; i < properties.length; i += 2)
-			configuration.addAttribute(properties[i], properties[i + 1]);
+	private static void addSupportedMetric(String messageKey, String metricName) {
+		if (supportedMetrics == null)
+			supportedMetrics = new HashMap<String, NativeMetric>();
+		supportedMetrics.put(messageKey, new NativeMetric(metricName, Granularity.CLASS, Language.JAVA));
+	}
+
+	private String modulePath[];
+	private String attributeName;
+	private String messageKey;
+
+	private CheckstyleMetric(String modulePath, String attributeName, String messageKey) {
+		this.modulePath = modulePath.split("\\.");
+		this.attributeName = attributeName;
+		this.messageKey = messageKey;
+		addSupportedMetric(messageKey, toString());
 	}
 
 	@Override
@@ -56,16 +47,19 @@ public enum CheckstyleMetric {
 		return Identifier.fromConstant(name()).asText();
 	}
 
-	public DefaultConfiguration addToConfiguration(DefaultConfiguration parent) {
-		parent.addChild(configuration);
-		return parent;
+	public void addToChecker(CheckstyleConfiguration checker) {
+		addTo(checker, 0);
 	}
 
-	public NativeMetric getNativeMetric() {
-		return nativeMetric;
+	private void addTo(CheckstyleConfiguration configuration, int firstIndex) {
+		if (firstIndex == modulePath.length)
+			addTo(configuration);
+		else
+			addTo(configuration.getChildByName(modulePath[firstIndex]), firstIndex + 1);
 	}
 
-	public Pattern getPattern() {
-		return pattern;
+	private void addTo(CheckstyleConfiguration configuration) {
+		configuration.addAttributeName(attributeName);
+		configuration.addMessageKey(messageKey);
 	}
 }
