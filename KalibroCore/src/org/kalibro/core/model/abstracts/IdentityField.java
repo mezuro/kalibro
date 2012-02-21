@@ -6,7 +6,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target({FIELD})
+@Target(FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface IdentityField {
 	// Marks the field to be used by equals()
