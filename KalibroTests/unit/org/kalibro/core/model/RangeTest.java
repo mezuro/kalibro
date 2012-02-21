@@ -55,7 +55,7 @@ public class RangeTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testContains() {
-		assertFalse(excellent.contains(- 0.1));
+		assertFalse(excellent.contains(-0.1));
 		assertTrue(excellent.contains(0.0));
 		assertTrue(excellent.contains(1.0));
 		assertFalse(excellent.contains(7.0));

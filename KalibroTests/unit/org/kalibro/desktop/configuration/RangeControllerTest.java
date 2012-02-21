@@ -83,7 +83,7 @@ public class RangeControllerTest extends KalibroTestCase {
 		PowerMockito.when(dialog.getRange()).thenReturn(range);
 		controller.addRange();
 		controller.actionPerformed(null);
-		assertSame(range, configuration.getRangeFor(- 1.0));
+		assertSame(range, configuration.getRangeFor(-1.0));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -16,7 +16,7 @@ public class StringInputStream extends InputStream {
 	@Override
 	public int read() throws IOException {
 		if (position >= string.length())
-			return - 1;
+			return -1;
 		return string.charAt(position++);
 	}
 }
