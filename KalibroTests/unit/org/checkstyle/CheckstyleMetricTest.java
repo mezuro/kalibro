@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
+import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
@@ -14,8 +16,6 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DefaultConfiguration.class)

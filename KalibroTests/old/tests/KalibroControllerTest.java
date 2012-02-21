@@ -2,20 +2,6 @@ package br.usp.ime.ccsl.kalibro.swing.controllers;
 
 import static org.junit.Assert.*;
 
-import java.awt.Toolkit;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JTextField;
-
-import org.fest.swing.core.KeyPressInfo;
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.FrameFixture;
-import org.fest.swing.fixture.JOptionPaneFixture;
-import org.fest.swing.util.Platform;
-import org.junit.Before;
-import org.junit.Test;
-
 import br.usp.ime.ccsl.kalibro.Kalibro;
 import br.usp.ime.ccsl.kalibro.ProjectPool;
 import br.usp.ime.ccsl.kalibro.ProjectStateChangeSupportTest;
@@ -29,6 +15,20 @@ import br.usp.ime.ccsl.kalibro.core.types.ProjectTest;
 import br.usp.ime.ccsl.kalibro.persistence.ConfigurationDao;
 import br.usp.ime.ccsl.kalibro.persistence.Persistence;
 import br.usp.ime.ccsl.kalibro.persistence.PersistenceDependentTest;
+
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JTextField;
+
+import org.fest.swing.core.KeyPressInfo;
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.fixture.DialogFixture;
+import org.fest.swing.fixture.FrameFixture;
+import org.fest.swing.fixture.JOptionPaneFixture;
+import org.fest.swing.util.Platform;
+import org.junit.Before;
+import org.junit.Test;
 
 public class KalibroControllerTest extends PersistenceDependentTest {
 

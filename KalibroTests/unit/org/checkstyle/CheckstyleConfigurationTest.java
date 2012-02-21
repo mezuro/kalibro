@@ -2,6 +2,9 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
+import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -10,9 +13,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 public class CheckstyleConfigurationTest extends KalibroTestCase {
 

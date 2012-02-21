@@ -1,13 +1,13 @@
 package org.checkstyle;
 
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.api.AuditListener;
+
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-
-import com.puppycrawl.tools.checkstyle.Checker;
-import com.puppycrawl.tools.checkstyle.api.AuditListener;
 
 public class KalibroChecker {
 

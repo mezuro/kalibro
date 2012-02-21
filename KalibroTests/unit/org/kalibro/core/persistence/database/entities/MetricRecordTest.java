@@ -10,7 +10,6 @@ import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.persistence.database.entities.MetricRecord;
 import org.kalibro.core.persistence.database.entities.MetricRecordTest.MyMetric;
 
 public class MetricRecordTest extends DtoTestCase<MyMetric, MetricRecord<MyMetric>> {

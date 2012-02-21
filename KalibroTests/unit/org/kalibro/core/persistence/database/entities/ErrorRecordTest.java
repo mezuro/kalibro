@@ -6,7 +6,6 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.persistence.database.entities.ErrorRecord;
 
 public class ErrorRecordTest extends DtoTestCase<Exception, ErrorRecord> {
 

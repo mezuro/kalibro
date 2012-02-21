@@ -2,6 +2,20 @@ package br.usp.ime.ccsl.kalibro.swing.controllers;
 
 import static org.junit.Assert.*;
 
+import br.usp.ime.ccsl.kalibro.Kalibro;
+import br.usp.ime.ccsl.kalibro.ProjectPool;
+import br.usp.ime.ccsl.kalibro.ProjectStateChangeSupportTest;
+import br.usp.ime.ccsl.kalibro.ProjectStateListener;
+import br.usp.ime.ccsl.kalibro.core.calculators.ConfiguredResultsCalculatorTest;
+import br.usp.ime.ccsl.kalibro.core.types.Configuration;
+import br.usp.ime.ccsl.kalibro.core.types.ConfiguredMetric;
+import br.usp.ime.ccsl.kalibro.core.types.Project;
+import br.usp.ime.ccsl.kalibro.core.types.ProjectTest;
+import br.usp.ime.ccsl.kalibro.persistence.ConfigurationDao;
+import br.usp.ime.ccsl.kalibro.persistence.Persistence;
+import br.usp.ime.ccsl.kalibro.persistence.PersistenceDependentTest;
+import br.usp.ime.ccsl.kalibro.persistence.ProjectDao;
+
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
@@ -21,20 +35,6 @@ import org.junit.Test;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.ProjectState;
-
-import br.usp.ime.ccsl.kalibro.Kalibro;
-import br.usp.ime.ccsl.kalibro.ProjectPool;
-import br.usp.ime.ccsl.kalibro.ProjectStateChangeSupportTest;
-import br.usp.ime.ccsl.kalibro.ProjectStateListener;
-import br.usp.ime.ccsl.kalibro.core.calculators.ConfiguredResultsCalculatorTest;
-import br.usp.ime.ccsl.kalibro.core.types.Configuration;
-import br.usp.ime.ccsl.kalibro.core.types.ConfiguredMetric;
-import br.usp.ime.ccsl.kalibro.core.types.Project;
-import br.usp.ime.ccsl.kalibro.core.types.ProjectTest;
-import br.usp.ime.ccsl.kalibro.persistence.ConfigurationDao;
-import br.usp.ime.ccsl.kalibro.persistence.Persistence;
-import br.usp.ime.ccsl.kalibro.persistence.PersistenceDependentTest;
-import br.usp.ime.ccsl.kalibro.persistence.ProjectDao;
 import org.kalibro.desktop.DialogTester;
 
 public class ProjectControllerTest extends PersistenceDependentTest implements ProjectStateListener {

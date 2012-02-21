@@ -10,9 +10,6 @@ import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Range;
-import org.kalibro.desktop.swingextension.list.Column;
-import org.kalibro.desktop.swingextension.list.ReflectionColumn;
-import org.kalibro.desktop.swingextension.list.ReflectionTableModel;
 
 public class ReflectionTableModelTest extends KalibroTestCase {
 

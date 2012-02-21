@@ -13,7 +13,6 @@ import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Range;
 import org.kalibro.core.model.RangeFixtures;
 import org.kalibro.core.model.RangeLabel;
-import org.kalibro.desktop.swingextension.list.ReflectionColumn;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
 import org.powermock.reflect.Whitebox;

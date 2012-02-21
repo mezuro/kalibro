@@ -2,8 +2,6 @@ package org.kalibro.core.model;
 
 import java.util.*;
 
-import org.kalibro.core.model.Range;
-
 public class RangeFixtures {
 
 	public static Range amlocRange(RangeLabel type) {

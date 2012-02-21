@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.persistence.database.entities.StackTraceElementRecord;
 
 public class StackTraceElementRecordTest extends DtoTestCase<StackTraceElement, StackTraceElementRecord> {
 

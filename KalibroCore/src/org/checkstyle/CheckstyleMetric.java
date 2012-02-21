@@ -2,6 +2,8 @@ package org.checkstyle;
 
 import static org.kalibro.core.model.enums.Granularity.*;
 
+import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.regex.Pattern;
@@ -10,8 +12,6 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.util.Identifier;
-
-import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
 
 public enum CheckstyleMetric {
 

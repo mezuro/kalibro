@@ -11,8 +11,6 @@ import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.database.entities.ModuleRecord;
-import org.kalibro.core.persistence.database.entities.ProjectResultRecord;
 import org.powermock.reflect.Whitebox;
 
 public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectResultRecord> {

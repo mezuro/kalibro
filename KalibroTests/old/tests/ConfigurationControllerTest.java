@@ -2,6 +2,16 @@ package br.usp.ime.ccsl.kalibro.swing.controllers;
 
 import static org.junit.Assert.*;
 
+import br.usp.ime.ccsl.kalibro.core.exceptions.ConflictingMetricException;
+import br.usp.ime.ccsl.kalibro.core.exceptions.ConflictingRangeException;
+import br.usp.ime.ccsl.kalibro.core.types.Configuration;
+import br.usp.ime.ccsl.kalibro.core.types.ConfigurationTest;
+import br.usp.ime.ccsl.kalibro.core.types.ConfiguredMetric;
+import br.usp.ime.ccsl.kalibro.core.types.Range;
+import br.usp.ime.ccsl.kalibro.persistence.ConfigurationDao;
+import br.usp.ime.ccsl.kalibro.persistence.Persistence;
+import br.usp.ime.ccsl.kalibro.persistence.PersistenceDependentTest;
+
 import java.awt.Toolkit;
 import java.awt.event.KeyEvent;
 
@@ -20,16 +30,6 @@ import org.fest.swing.fixture.JOptionPaneFixture;
 import org.fest.swing.util.Platform;
 import org.junit.Before;
 import org.junit.Test;
-
-import br.usp.ime.ccsl.kalibro.core.exceptions.ConflictingMetricException;
-import br.usp.ime.ccsl.kalibro.core.exceptions.ConflictingRangeException;
-import br.usp.ime.ccsl.kalibro.core.types.Configuration;
-import br.usp.ime.ccsl.kalibro.core.types.ConfigurationTest;
-import br.usp.ime.ccsl.kalibro.core.types.ConfiguredMetric;
-import br.usp.ime.ccsl.kalibro.core.types.Range;
-import br.usp.ime.ccsl.kalibro.persistence.ConfigurationDao;
-import br.usp.ime.ccsl.kalibro.persistence.Persistence;
-import br.usp.ime.ccsl.kalibro.persistence.PersistenceDependentTest;
 import org.kalibro.desktop.DialogTester;
 
 public class ConfigurationControllerTest extends PersistenceDependentTest {

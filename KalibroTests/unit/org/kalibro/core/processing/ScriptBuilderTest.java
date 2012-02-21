@@ -1,10 +1,10 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.CompoundMetricFixtures.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 

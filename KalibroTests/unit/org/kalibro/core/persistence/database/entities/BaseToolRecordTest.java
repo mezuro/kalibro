@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.BaseToolFixtures;
-import org.kalibro.core.persistence.database.entities.BaseToolRecord;
 
 public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 

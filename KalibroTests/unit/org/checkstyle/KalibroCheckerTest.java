@@ -2,6 +2,9 @@ package org.checkstyle;
 
 import static org.mockito.Matchers.*;
 
+import com.puppycrawl.tools.checkstyle.Checker;
+import com.puppycrawl.tools.checkstyle.api.AuditListener;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -16,9 +19,6 @@ import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.puppycrawl.tools.checkstyle.Checker;
-import com.puppycrawl.tools.checkstyle.api.AuditListener;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Checker.class, FileUtils.class, KalibroChecker.class})

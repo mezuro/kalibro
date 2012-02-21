@@ -7,7 +7,6 @@ import java.util.SortedSet;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.MetricConfigurationFixtures;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.persistence.database.entities.RangeRecord;
 
 public class RangeRecordTest extends DtoTestCase<Range, RangeRecord> {
 

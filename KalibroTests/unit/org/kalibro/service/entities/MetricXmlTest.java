@@ -1,7 +1,7 @@
 package org.kalibro.service.entities;
 
-import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.NativeMetricFixtures.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
