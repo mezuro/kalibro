@@ -11,23 +11,23 @@ import org.kalibro.service.entities.ProjectResultXml;
 public interface ProjectResultEndpoint {
 
 	@WebMethod
-	public boolean hasResultsFor(String projectName);
+	boolean hasResultsFor(String projectName);
 
 	@WebMethod
-	public boolean hasResultsBefore(Date date, String projectName);
+	boolean hasResultsBefore(Date date, String projectName);
 
 	@WebMethod
-	public boolean hasResultsAfter(Date date, String projectName);
+	boolean hasResultsAfter(Date date, String projectName);
 
 	@WebMethod
-	public ProjectResultXml getFirstResultOf(String projectName);
+	ProjectResultXml getFirstResultOf(String projectName);
 
 	@WebMethod
-	public ProjectResultXml getLastResultOf(String projectName);
+	ProjectResultXml getLastResultOf(String projectName);
 
 	@WebMethod
-	public ProjectResultXml getLastResultBefore(Date date, String projectName);
+	ProjectResultXml getLastResultBefore(Date date, String projectName);
 
 	@WebMethod
-	public ProjectResultXml getFirstResultAfter(Date date, String projectName);
+	ProjectResultXml getFirstResultAfter(Date date, String projectName);
 }

@@ -12,8 +12,8 @@ import org.kalibro.service.entities.ModuleResultXml;
 public interface ModuleResultEndpoint {
 
 	@WebMethod
-	public ModuleResultXml getModuleResult(String projectName, String moduleName, Date date);
+	ModuleResultXml getModuleResult(String projectName, String moduleName, Date date);
 
 	@WebMethod
-	public List<ModuleResultXml> getResultHistory(String projectName, String moduleName);
+	List<ModuleResultXml> getResultHistory(String projectName, String moduleName);
 }

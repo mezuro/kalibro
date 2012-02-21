@@ -78,6 +78,6 @@ public class EntityPrinter {
 
 	private interface FieldPrinter {
 
-		public abstract String print(AbstractEntity<?> fieldValue);
+		String print(AbstractEntity<?> fieldValue);
 	}
 }

@@ -4,5 +4,5 @@ import java.awt.Component;
 
 public interface TabbedPanelListener {
 
-	public void tabChanged(Component lastTab, Component newTab);
+	void tabChanged(Component lastTab, Component newTab);
 }

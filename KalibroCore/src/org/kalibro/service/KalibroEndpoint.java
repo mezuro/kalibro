@@ -11,11 +11,11 @@ import org.kalibro.core.model.enums.RepositoryType;
 public interface KalibroEndpoint {
 
 	@WebMethod
-	public Set<RepositoryType> getSupportedRepositoryTypes();
+	Set<RepositoryType> getSupportedRepositoryTypes();
 
 	@WebMethod
-	public void processProject(String projectName);
+	void processProject(String projectName);
 
 	@WebMethod
-	public void processPeriodically(String projectName, Integer periodInDays);
+	void processPeriodically(String projectName, Integer periodInDays);
 }

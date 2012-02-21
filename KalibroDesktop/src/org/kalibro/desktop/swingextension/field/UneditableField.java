@@ -24,7 +24,7 @@ public class UneditableField<T> extends JLabel implements Field<T> {
 	@Override
 	public void setValue(T value) {
 		this.value = value;
-		setText( (value == null) ? "" : value.toString());
+		setText((value == null) ? "" : value.toString());
 		adjustSize();
 	}
 

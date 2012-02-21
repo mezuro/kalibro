@@ -12,14 +12,14 @@ import org.kalibro.service.entities.ConfigurationXml;
 public interface ConfigurationEndpoint {
 
 	@WebMethod
-	public void saveConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration);
+	void saveConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration);
 
 	@WebMethod
-	public List<String> getConfigurationNames();
+	List<String> getConfigurationNames();
 
 	@WebMethod
-	public ConfigurationXml getConfiguration(String configurationName);
+	ConfigurationXml getConfiguration(String configurationName);
 
 	@WebMethod
-	public void removeConfiguration(String configurationName);
+	void removeConfiguration(String configurationName);
 }

@@ -55,7 +55,7 @@ public class Table<T> extends JScrollPane implements ListComponent<T> {
 
 	@Override
 	public boolean hasSelection() {
-		return table.getSelectedRow() != - 1;
+		return table.getSelectedRow() != -1;
 	}
 
 	@Override

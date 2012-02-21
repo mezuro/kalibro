@@ -36,7 +36,7 @@ public class List<T> extends JScrollPane implements ListComponent<T> {
 
 	@Override
 	public boolean hasSelection() {
-		return list.getSelectedIndex() != - 1;
+		return list.getSelectedIndex() != -1;
 	}
 
 	@Override
