@@ -2,13 +2,10 @@ package org.kalibro.spago;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import it.eng.spago4q.bo.ProjectDetail;
 import it.eng.spago4q.extractors.bo.GenericItemInterface;
 
 import java.io.IOException;
 import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -117,25 +114,5 @@ public class SpagoExtractorTest extends KalibroTestCase {
 		extractor = new SpagoExtractorStub("HelloWorld.xml");
 		GenericItemInterface item = extractor.extract().get(0);
 		assertEquals("2.0", item.getValue("Value"));
-	}
-}
-
-class SpagoExtractorStub extends SpagoExtractor {
-
-	private ProjectDetail projectDetail;
-
-	public SpagoExtractorStub(String xmlFileName) throws IOException {
-		String detail = IOUtils.toString(getClass().getResourceAsStream(xmlFileName));
-		projectDetail = new ProjectDetail(1, "HelloWorld-1.0R1", detail);
-	}
-
-	@Override
-	protected String readOperationParameterValue(String parameterName) {
-		return "file:///";
-	}
-
-	@Override
-	public ArrayList<ProjectDetail> getProjectList() {
-		return new ArrayList<ProjectDetail>(Arrays.asList(projectDetail));
 	}
 }

@@ -50,11 +50,11 @@ public class DatabaseDaoTest extends KalibroTestCase {
 		assertDeepEquals(range, dao.getByName("42"));
 		Mockito.verify(query).setParameter("name", "42");
 	}
-}
 
-class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> {
+	private class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> {
 
-	public RangeDatabaseDao(DatabaseManager databaseManager) {
-		super(databaseManager, RangeRecord.class);
+		public RangeDatabaseDao(DatabaseManager databaseManager) {
+			super(databaseManager, RangeRecord.class);
+		}
 	}
 }

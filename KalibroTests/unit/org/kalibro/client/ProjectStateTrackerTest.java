@@ -5,10 +5,6 @@ import static org.kalibro.core.model.enums.ProjectState.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,7 +34,7 @@ public class ProjectStateTrackerTest extends KalibroTestCase {
 
 	private void saveProject() {
 		project = helloWorld();
-		projectDao = new ProjectDaoMock();
+		projectDao = new ProjectDaoStub();
 		projectDao.save(project);
 	}
 
@@ -102,30 +98,5 @@ public class ProjectStateTrackerTest extends KalibroTestCase {
 		projectDao.save(listenProject);
 		tracker.perform();
 		verify(changeSupport, times(1)).fireProjectStateChanged(project.getName(), LOADING);
-	}
-}
-
-class ProjectDaoMock implements ProjectDao {
-
-	private Map<String, Project> projects = new HashMap<String, Project>();
-
-	@Override
-	public void save(Project project) {
-		projects.put(project.getName(), project);
-	}
-
-	@Override
-	public List<String> getProjectNames() {
-		return new ArrayList<String>(projects.keySet());
-	}
-
-	@Override
-	public Project getProject(String projectName) {
-		return projects.get(projectName);
-	}
-
-	@Override
-	public void removeProject(String projectName) {
-		projects.remove(projectName);
 	}
 }
