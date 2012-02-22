@@ -28,18 +28,8 @@ public class ProjectStateChangeFirerTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotifyListenerOnRun() {
-		firer.run();
+	public void shouldNotifyListener() {
+		firer.perform();
 		Mockito.verify(listener).projectStateChanged(projectName, newProjectState);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRunOnFire() throws Exception {
-		Thread thread = PowerMockito.mock(Thread.class);
-		PowerMockito.whenNew(Thread.class).withParameterTypes(Runnable.class)
-			.withArguments(firer).thenReturn(thread);
-
-		firer.fire();
-		Mockito.verify(thread).start();
 	}
 }

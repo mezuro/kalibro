@@ -8,16 +8,16 @@ import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleNode;
 import org.kalibro.core.model.ProjectResult;
 
-public class SourceTreeBuilder {
+class SourceTreeBuilder {
 
 	private ModuleNode sourceRoot;
 	private ProjectResult projectResult;
 
-	public SourceTreeBuilder(ProjectResult projectResult) {
+	protected SourceTreeBuilder(ProjectResult projectResult) {
 		this.projectResult = projectResult;
 	}
 
-	public void buildSourceTree(Collection<Module> modules) {
+	protected void buildSourceTree(Collection<Module> modules) {
 		String projectName = projectResult.getProject().getName();
 		sourceRoot = new ModuleNode(new Module(APPLICATION, projectName));
 		for (Module module : modules)

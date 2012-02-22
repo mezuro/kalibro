@@ -5,7 +5,7 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
 
-public class ValidationScriptBuilder extends AbstractScriptBuilder {
+class ValidationScriptBuilder extends AbstractScriptBuilder {
 
 	private CompoundMetric validatonMetric;
 
@@ -22,7 +22,7 @@ public class ValidationScriptBuilder extends AbstractScriptBuilder {
 
 	@Override
 	protected boolean shouldInclude(Metric metric) {
-		return ! metric.isCompound();
+		return !metric.isCompound();
 	}
 
 	@Override

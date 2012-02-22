@@ -13,7 +13,7 @@ import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.core.settings.KalibroSettings;
 
-public class AnalyzeProjectExecutor extends ProjectTaskExecutor {
+class AnalyzeProjectExecutor extends ProjectTaskExecutor {
 
 	protected AnalyzeProjectExecutor(ProjectResult projectResult) {
 		super(projectResult);

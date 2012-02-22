@@ -20,7 +20,7 @@ public class ProjectStateChangeSupport {
 	}
 
 	public void addProjectStateListener(String projectName, ProjectStateListener listener) {
-		if (! listenerMap.containsKey(projectName))
+		if (!listenerMap.containsKey(projectName))
 			listenerMap.put(projectName, new HashSet<ProjectStateListener>());
 		listenerMap.get(projectName).add(listener);
 	}
@@ -36,9 +36,9 @@ public class ProjectStateChangeSupport {
 	}
 
 	public void fireProjectStateChanged(String projectName, ProjectState newProjectState) {
-		if (! listenerMap.containsKey(projectName))
+		if (!listenerMap.containsKey(projectName))
 			return;
 		for (ProjectStateListener listener : listenerMap.get(projectName))
-			new ProjectStateChangeFirer(projectName, newProjectState, listener).fire();
+			new ProjectStateChangeFirer(projectName, newProjectState, listener).executeInBackground();
 	}
 }

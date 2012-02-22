@@ -11,7 +11,7 @@ import org.kalibro.core.concurrent.TypedTask;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
 
-public class AnalyzeProjectTask extends TypedTask<Collection<ModuleResult>> {
+class AnalyzeProjectTask extends TypedTask<Collection<ModuleResult>> {
 
 	private ProjectResult projectResult;
 	private Map<Module, ModuleResult> resultMap;
@@ -60,7 +60,7 @@ public class AnalyzeProjectTask extends TypedTask<Collection<ModuleResult>> {
 	private void putResult(NativeModuleResult nativeResult) {
 		Module module = nativeResult.getModule();
 		changeModuleNameIfRoot(module);
-		if (! resultMap.containsKey(module))
+		if (!resultMap.containsKey(module))
 			resultMap.put(module, new ModuleResult(module, projectResult.getDate()));
 		resultMap.get(module).addMetricResults(nativeResult.getMetricResults());
 	}

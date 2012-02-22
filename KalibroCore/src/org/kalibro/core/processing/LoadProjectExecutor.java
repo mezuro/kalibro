@@ -6,9 +6,9 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 
-public class LoadProjectExecutor extends ProjectTaskExecutor {
+class LoadProjectExecutor extends ProjectTaskExecutor {
 
-	public LoadProjectExecutor(Project project) {
+	protected LoadProjectExecutor(Project project) {
 		super(new ProjectResult(project));
 	}
 

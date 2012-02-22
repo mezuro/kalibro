@@ -17,16 +17,16 @@ class CompoundMetricWithErrorXml {
 		super();
 	}
 
-	public CompoundMetricWithErrorXml(CompoundMetric metric, Exception error) {
+	protected CompoundMetricWithErrorXml(CompoundMetric metric, Exception error) {
 		this.metric = new CompoundMetricXml(metric);
 		this.error = new ErrorXml(error);
 	}
 
-	public CompoundMetric getMetric() {
+	protected CompoundMetric getMetric() {
 		return metric.convert();
 	}
 
-	public Exception getError() {
+	protected Exception getError() {
 		return error.convert();
 	}
 }
