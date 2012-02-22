@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
-public class EntityReflector {
+class EntityReflector {
 
 	private AbstractEntity<?> entity;
 	private Map<String, Field> fields;
 
-	public EntityReflector(AbstractEntity<?> entity) {
+	protected EntityReflector(AbstractEntity<?> entity) {
 		this.entity = entity;
 		initializeFields();
 	}
@@ -24,7 +24,7 @@ public class EntityReflector {
 	}
 
 	private void putAllFields(Class<?> type) {
-		if (! type.equals(Object.class)) {
+		if (!type.equals(Object.class)) {
 			putDeclaredFields(type);
 			putAllFields(type.getSuperclass());
 		}
@@ -32,7 +32,7 @@ public class EntityReflector {
 
 	private void putDeclaredFields(Class<?> type) {
 		for (Field field : type.getDeclaredFields())
-			if (! isStatic(field))
+			if (!isStatic(field))
 				fields.put(field.getName(), field);
 	}
 
@@ -40,19 +40,19 @@ public class EntityReflector {
 		return Modifier.isStatic(field.getModifiers());
 	}
 
-	public AbstractEntity<?> getEntity() {
+	protected AbstractEntity<?> getEntity() {
 		return entity;
 	}
 
-	public Class<?> getEntityClass() {
+	protected Class<?> getEntityClass() {
 		return entity.getClass();
 	}
 
-	public List<String> getAllFields() {
+	protected List<String> getAllFields() {
 		return new ArrayList<String>(fields.keySet());
 	}
 
-	public List<String> getIdentityFields() {
+	protected List<String> getIdentityFields() {
 		List<String> identityFields = new ArrayList<String>();
 		for (Field field : fields.values())
 			if (field.isAnnotationPresent(IdentityField.class))
@@ -60,7 +60,7 @@ public class EntityReflector {
 		return identityFields.isEmpty() ? getAllFields() : identityFields;
 	}
 
-	public Object get(String fieldName) {
+	protected Object get(String fieldName) {
 		try {
 			Field field = fields.get(fieldName);
 			field.setAccessible(true);
@@ -79,7 +79,7 @@ public class EntityReflector {
 		}
 	}
 
-	public List<Method> getSortingMethods() {
+	protected List<Method> getSortingMethods() {
 		return findSortingMethods(getEntityClass());
 	}
 

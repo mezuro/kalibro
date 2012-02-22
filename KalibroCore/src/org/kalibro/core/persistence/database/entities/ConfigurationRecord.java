@@ -52,7 +52,7 @@ public class ConfigurationRecord implements DataTransferObject<Configuration> {
 			configuration.addMetricConfiguration(metricConfiguration.convert());
 	}
 
-	public String getName() {
+	protected String getName() {
 		return name;
 	}
 }

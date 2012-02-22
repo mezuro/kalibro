@@ -6,10 +6,9 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.kalibro.core.persistence.database.entities.ProjectResultRecord;
 
-public class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultRecord>
-	implements ProjectResultDao {
+class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultRecord> implements ProjectResultDao {
 
-	public ProjectResultDatabaseDao(DatabaseManager databaseManager) {
+	protected ProjectResultDatabaseDao(DatabaseManager databaseManager) {
 		super(databaseManager, ProjectResultRecord.class);
 	}
 

@@ -1,14 +1,14 @@
 package org.kalibro.core.model.abstracts;
 
-public class HashCodeCalculator {
+class HashCodeCalculator {
 
 	private EntityReflector reflector;
 
-	public HashCodeCalculator(AbstractEntity<?> entity) {
+	protected HashCodeCalculator(AbstractEntity<?> entity) {
 		reflector = new EntityReflector(entity);
 	}
 
-	public int calculate() {
+	protected int calculate() {
 		Integer codeSum = 1;
 		for (String field : reflector.getIdentityFields())
 			codeSum += reflector.get(field).hashCode();

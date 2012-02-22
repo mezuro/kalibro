@@ -11,7 +11,7 @@ import org.kalibro.core.util.Directories;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
-public class Seeds {
+class Seeds {
 
 	private static final File SEEDED_FILE = new File(Directories.kalibro(), ".seeded");
 
@@ -23,7 +23,7 @@ public class Seeds {
 	}
 
 	private static boolean isFirstTime() {
-		return ! SEEDED_FILE.exists();
+		return !SEEDED_FILE.exists();
 	}
 
 	private static void saveSeeds(DatabaseManager databaseManager) {
@@ -46,7 +46,7 @@ public class Seeds {
 	protected List<BaseToolRecord> baseToolSeeds;
 	protected List<ConfigurationRecord> configurationSeeds;
 
-	public Seeds() {
+	protected Seeds() {
 		super();
 	}
 }

@@ -64,7 +64,7 @@ public class BaseToolRecord implements DataTransferObject<BaseTool> {
 		baseTool.setSupportedMetrics(metrics);
 	}
 
-	public String getName() {
+	protected String getName() {
 		return name;
 	}
 }

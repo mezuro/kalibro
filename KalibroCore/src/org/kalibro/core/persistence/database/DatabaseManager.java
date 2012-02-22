@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 
-public class DatabaseManager {
+class DatabaseManager {
 
 	private EntityManager entityManager;
 

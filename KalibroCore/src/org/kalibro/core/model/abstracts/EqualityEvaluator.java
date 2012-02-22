@@ -2,15 +2,15 @@ package org.kalibro.core.model.abstracts;
 
 import java.util.List;
 
-public class EqualityEvaluator {
+class EqualityEvaluator {
 
 	protected EntityReflector reflector;
 
-	public EqualityEvaluator(AbstractEntity<?> entity) {
+	protected EqualityEvaluator(AbstractEntity<?> entity) {
 		reflector = new EntityReflector(entity);
 	}
 
-	public boolean isEquals(Object other) {
+	protected boolean isEquals(Object other) {
 		if (other == null)
 			return false;
 		if (other == reflector.getEntity())
@@ -31,7 +31,7 @@ public class EqualityEvaluator {
 		for (String field : equalityFields()) {
 			Object myValue = reflector.get(field);
 			Object otherValue = otherReflector.get(field);
-			if (! sameFieldValue(myValue, otherValue))
+			if (!sameFieldValue(myValue, otherValue))
 				return false;
 		}
 		return true;

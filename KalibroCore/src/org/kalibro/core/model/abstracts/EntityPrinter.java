@@ -4,15 +4,15 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class EntityPrinter {
+class EntityPrinter {
 
 	private EntityReflector reflector;
 
-	public EntityPrinter(AbstractEntity<?> entity) {
+	protected EntityPrinter(AbstractEntity<?> entity) {
 		reflector = new EntityReflector(entity);
 	}
 
-	public String simplePrint() {
+	protected String simplePrint() {
 		return print(reflector.getIdentityFields(), new SimpleFieldPrinter());
 	}
 
@@ -24,7 +24,7 @@ public class EntityPrinter {
 		}
 	}
 
-	public String deepPrint() {
+	protected String deepPrint() {
 		return print(reflector.getAllFields(), new DeepFieldPrinter());
 	}
 
@@ -48,7 +48,7 @@ public class EntityPrinter {
 		return field + " = " + printValue(reflector.get(field), fieldPrinter);
 	}
 
-	public String printValue(Object value, FieldPrinter fieldPrinter) {
+	protected String printValue(Object value, FieldPrinter fieldPrinter) {
 		if (value instanceof AbstractEntity<?>)
 			return fieldPrinter.print((AbstractEntity<?>) value);
 		if (value instanceof Collection<?>)
