@@ -12,7 +12,7 @@ class SpagoExtractorStub extends SpagoExtractor {
 
 	private ProjectDetail projectDetail;
 
-	public SpagoExtractorStub(String xmlFileName) throws IOException {
+	protected SpagoExtractorStub(String xmlFileName) throws IOException {
 		String detail = IOUtils.toString(getClass().getResourceAsStream(xmlFileName));
 		projectDetail = new ProjectDetail(1, "HelloWorld-1.0R1", detail);
 	}

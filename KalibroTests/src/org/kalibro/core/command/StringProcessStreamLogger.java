@@ -15,11 +15,11 @@ class StringProcessStreamLogger extends ProcessStreamLogger {
 		pipe(process.getErrorStream(), errorStream);
 	}
 
-	public String getStandardOuput() {
+	protected String getStandardOuput() {
 		return outputStream.getString();
 	}
 
-	public String getErrorOutput() {
+	protected String getErrorOutput() {
 		return errorStream.getString();
 	}
 }

@@ -7,9 +7,9 @@ import java.util.Map;
 import org.kalibro.core.persistence.database.DatabaseTestSettings;
 import org.kalibro.core.settings.SupportedDatabase;
 
-public class MysqlTestSettings extends DatabaseTestSettings {
+class MysqlTestSettings extends DatabaseTestSettings {
 
-	public MysqlTestSettings() {
+	protected MysqlTestSettings() {
 		super();
 		setDatabaseType(SupportedDatabase.MYSQL);
 	}

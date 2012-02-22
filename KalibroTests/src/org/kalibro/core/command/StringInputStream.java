@@ -3,12 +3,12 @@ package org.kalibro.core.command;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class StringInputStream extends InputStream {
+class StringInputStream extends InputStream {
 
 	private int position;
 	private String string;
 
-	public StringInputStream(String string) {
+	protected StringInputStream(String string) {
 		position = 0;
 		this.string = string;
 	}

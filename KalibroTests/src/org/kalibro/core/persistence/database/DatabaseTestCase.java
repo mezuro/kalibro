@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.util.Directories;
 
-public abstract class DatabaseTestCase extends KalibroTestCase {
+abstract class DatabaseTestCase extends KalibroTestCase {
 
 	protected DatabaseDaoFactory daoFactory;
 
