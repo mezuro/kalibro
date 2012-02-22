@@ -7,11 +7,11 @@ import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.service.BaseToolEndpoint;
 
-public class BaseToolPortDao implements BaseToolDao {
+class BaseToolPortDao implements BaseToolDao {
 
 	private BaseToolEndpoint port;
 
-	public BaseToolPortDao() {
+	protected BaseToolPortDao() {
 		port = EndpointPortFactory.getEndpointPort(BaseToolEndpoint.class);
 	}
 

@@ -6,7 +6,7 @@ import java.io.OutputStream;
 
 import org.kalibro.core.concurrent.Task;
 
-public class PipeTask extends Task {
+class PipeTask extends Task {
 
 	private InputStream inputStream;
 	private OutputStream outputStream;

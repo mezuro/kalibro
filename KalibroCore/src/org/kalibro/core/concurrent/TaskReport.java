@@ -5,7 +5,7 @@ public class TaskReport {
 	private long executionTime;
 	private Exception error;
 
-	public TaskReport(long executionTime, Exception error) {
+	protected TaskReport(long executionTime, Exception error) {
 		this.executionTime = executionTime;
 		this.error = error;
 	}

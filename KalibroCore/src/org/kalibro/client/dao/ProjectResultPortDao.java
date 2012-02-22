@@ -7,11 +7,11 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.kalibro.service.ProjectResultEndpoint;
 
-public class ProjectResultPortDao implements ProjectResultDao {
+class ProjectResultPortDao implements ProjectResultDao {
 
-	protected ProjectResultEndpoint port;
+	private ProjectResultEndpoint port;
 
-	public ProjectResultPortDao() {
+	protected ProjectResultPortDao() {
 		port = EndpointPortFactory.getEndpointPort(ProjectResultEndpoint.class);
 	}
 

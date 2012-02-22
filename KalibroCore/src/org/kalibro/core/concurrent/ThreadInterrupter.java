@@ -2,7 +2,7 @@ package org.kalibro.core.concurrent;
 
 import java.util.TimerTask;
 
-public class ThreadInterrupter extends TimerTask {
+class ThreadInterrupter extends TimerTask {
 
 	private Thread thread;
 

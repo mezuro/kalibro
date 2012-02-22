@@ -9,14 +9,14 @@ import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ProjectDao;
 
-public class ProjectStateTracker extends Task {
+class ProjectStateTracker extends Task {
 
 	private ProjectDao projectDao;
 	private ProjectStateChangeSupport changeSupport;
 
 	private Map<String, ProjectState> listenProjects;
 
-	public ProjectStateTracker(ProjectDao projectDao, ProjectStateChangeSupport changeSupport) {
+	protected ProjectStateTracker(ProjectDao projectDao, ProjectStateChangeSupport changeSupport) {
 		this.projectDao = projectDao;
 		this.changeSupport = changeSupport;
 		listenProjects = updatedListenProjects();
