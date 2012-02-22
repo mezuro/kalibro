@@ -36,7 +36,7 @@ public class MetricResultRecord implements DataTransferObject<MetricResult> {
 				moduleResults.add(newModuleResult);
 				moduleResult = newModuleResult;
 			}
-			assert (moduleResult != null);
+			assert moduleResult != null;
 			moduleResult.addMetricResult(metricResult.convert());
 		}
 		return moduleResults;
