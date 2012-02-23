@@ -38,7 +38,7 @@ public class ListAdapterTest extends KalibroTestCase {
 
 	private class MyListAdapter extends ListAdapter<String> {
 
-		private MyListAdapter() {
+		protected MyListAdapter() {
 			super();
 		}
 	}

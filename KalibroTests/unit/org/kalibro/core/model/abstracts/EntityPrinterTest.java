@@ -47,16 +47,16 @@ public class EntityPrinterTest extends KalibroTestCase {
 		assertEquals(expected, programmerPrinter.deepPrint());
 	}
 
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldPrintAllFieldsWhenThereIsNoIdentity() {
+		String expected = "$NoIdentityEntity(field1 = null, field2 = null)";
+		assertEquals(expected, new EntityPrinter(new NoIdentityEntity()).simplePrint());
+	}
+
 	private class PersonWrapper extends AbstractEntity<PersonWrapper> {
 
 		@IdentityField
 		@SuppressWarnings("unused" /* read via reflection */)
 		private Person person = carlos();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintAllFieldsWhenThereIsNoIdentity() {
-		String expected = "$NoIdentityEntity(field1 = null, field2 = null)";
-		assertEquals(expected, new EntityPrinter(new NoIdentityEntity()).simplePrint());
 	}
 }

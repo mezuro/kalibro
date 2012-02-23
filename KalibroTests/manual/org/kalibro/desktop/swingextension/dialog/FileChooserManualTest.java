@@ -4,7 +4,7 @@ import java.awt.Component;
 
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public class FileChooserManualTest {
+public final class FileChooserManualTest {
 
 	public static void main(String[] args) {
 		Component parent = new ComponentWrapperDialog("");
@@ -12,5 +12,9 @@ public class FileChooserManualTest {
 		System.out.println(fileChooser.chooseFileToSave("FileChooserManualTest.java"));
 		System.out.println(fileChooser.getChosenFile());
 		System.exit(0);
+	}
+
+	private FileChooserManualTest() {
+		// Utility class
 	}
 }

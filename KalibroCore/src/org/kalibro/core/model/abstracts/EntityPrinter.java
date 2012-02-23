@@ -16,24 +16,8 @@ class EntityPrinter {
 		return print(reflector.getIdentityFields(), new SimpleFieldPrinter());
 	}
 
-	private class SimpleFieldPrinter implements FieldPrinter {
-
-		@Override
-		public String print(AbstractEntity<?> fieldValue) {
-			return new EntityPrinter(fieldValue).simplePrint();
-		}
-	}
-
 	protected String deepPrint() {
 		return print(reflector.getAllFields(), new DeepFieldPrinter());
-	}
-
-	private class DeepFieldPrinter implements FieldPrinter {
-
-		@Override
-		public String print(AbstractEntity<?> fieldValue) {
-			return new EntityPrinter(fieldValue).deepPrint();
-		}
 	}
 
 	private String print(List<String> fields, FieldPrinter fieldPrinter) {
@@ -79,5 +63,21 @@ class EntityPrinter {
 	private interface FieldPrinter {
 
 		String print(AbstractEntity<?> fieldValue);
+	}
+
+	private class SimpleFieldPrinter implements FieldPrinter {
+
+		@Override
+		public String print(AbstractEntity<?> fieldValue) {
+			return new EntityPrinter(fieldValue).simplePrint();
+		}
+	}
+
+	private class DeepFieldPrinter implements FieldPrinter {
+
+		@Override
+		public String print(AbstractEntity<?> fieldValue) {
+			return new EntityPrinter(fieldValue).deepPrint();
+		}
 	}
 }

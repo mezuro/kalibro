@@ -2,7 +2,7 @@ package org.kalibro.core.model;
 
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
-public class ConfigurationFixtures {
+public final class ConfigurationFixtures {
 
 	public static Configuration kalibroConfiguration() {
 		Configuration configuration = new Configuration();
@@ -12,5 +12,9 @@ public class ConfigurationFixtures {
 		for (String code : metricsWithThresholds())
 			configuration.addMetricConfiguration(configuration(code));
 		return configuration;
+	}
+
+	private ConfigurationFixtures() {
+		// Utility class
 	}
 }

@@ -1,6 +1,6 @@
 package org.kalibro.core.model.abstracts;
 
-class PersonFixtures {
+final class PersonFixtures {
 
 	protected static Person carlos() {
 		Person carlos = new Person("CM", "Carlos Morais", "Male");
@@ -19,5 +19,9 @@ class PersonFixtures {
 
 	protected static Person paulo() {
 		return new Person("PM", "Paulo Meirelles", "Male");
+	}
+
+	private PersonFixtures() {
+		// Utility class
 	}
 }

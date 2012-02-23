@@ -2,7 +2,7 @@ package org.kalibro.core.model;
 
 import java.util.*;
 
-public class RangeFixtures {
+public final class RangeFixtures {
 
 	public static Range amlocRange(RangeLabel type) {
 		return type.createRange(7.0, 10.0, 13.0, 19.5);
@@ -22,5 +22,9 @@ public class RangeFixtures {
 		if (numberOfThresholds < 3)
 			rangeLabels.remove(RangeLabel.WARNING);
 		return rangeLabels;
+	}
+
+	private RangeFixtures() {
+		// Utility class
 	}
 }

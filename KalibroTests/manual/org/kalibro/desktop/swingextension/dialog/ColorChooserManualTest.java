@@ -5,12 +5,16 @@ import java.awt.Component;
 
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public class ColorChooserManualTest {
+public final class ColorChooserManualTest {
 
 	public static void main(String[] args) {
 		Component parent = new ComponentWrapperDialog("");
 		ColorChooser colorChooser = new ColorChooser(parent);
 		System.out.println(colorChooser.chooseColor(Color.BLACK));
 		System.exit(0);
+	}
+
+	private ColorChooserManualTest() {
+		// Utility class
 	}
 }

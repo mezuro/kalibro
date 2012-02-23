@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.analizo.AnalizoStub;
 
-public class NativeMetricFixtures {
+public final class NativeMetricFixtures {
 
 	public static NativeMetric nativeMetric(String code) {
 		return copyAndSetOrigin(AnalizoStub.nativeMetric(code));
@@ -22,5 +22,9 @@ public class NativeMetricFixtures {
 		NativeMetric metric = new NativeMetric(original.getName(), original.getScope(), original.getLanguages());
 		metric.setOrigin("Analizo");
 		return metric;
+	}
+
+	private NativeMetricFixtures() {
+		// Utility class
 	}
 }

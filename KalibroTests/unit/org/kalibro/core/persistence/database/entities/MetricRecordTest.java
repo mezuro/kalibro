@@ -34,7 +34,7 @@ public class MetricRecordTest extends DtoTestCase<MyMetric, MetricRecord<MyMetri
 
 	class MyMetricRecord extends MetricRecord<MyMetric> {
 
-		private MyMetricRecord() {
+		protected MyMetricRecord() {
 			super();
 		}
 
@@ -50,7 +50,7 @@ public class MetricRecordTest extends DtoTestCase<MyMetric, MetricRecord<MyMetri
 
 	class MyMetric extends Metric {
 
-		private MyMetric(String name, Granularity scope, String description) {
+		protected MyMetric(String name, Granularity scope, String description) {
 			super(name, scope);
 			setDescription(description);
 		}

@@ -11,8 +11,8 @@ import org.kalibro.KalibroTestCase;
 public class DirectoriesTest extends KalibroTestCase {
 
 	@BeforeClass
-	public static void emmaCoverage() {
-		new Directories();
+	public static void emmaCoverage() throws Exception {
+		Directories.class.getDeclaredConstructor().newInstance();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

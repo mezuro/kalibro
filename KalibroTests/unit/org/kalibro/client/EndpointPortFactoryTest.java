@@ -29,8 +29,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class EndpointPortFactoryTest extends KalibroTestCase {
 
 	@BeforeClass
-	public static void emmaCoverage() {
-		new EndpointPortFactory();
+	public static void emmaCoverage() throws Exception {
+		EndpointPortFactory.class.getDeclaredConstructor().newInstance();
 	}
 
 	private Service service;

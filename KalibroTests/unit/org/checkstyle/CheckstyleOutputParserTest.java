@@ -52,12 +52,12 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 			parser.addError(mockEvent("Total number of methods is 1 (max allowed is -1)."));
 			parser.auditFinished(null);
 		}
-	}
 
-	private AuditEvent mockEvent(String message) {
-		AuditEvent event = PowerMockito.mock(AuditEvent.class);
-		PowerMockito.when(event.getFileName()).thenReturn("HelloWorld.java");
-		PowerMockito.when(event.getMessage()).thenReturn(message);
-		return event;
+		private AuditEvent mockEvent(String message) {
+			AuditEvent event = PowerMockito.mock(AuditEvent.class);
+			PowerMockito.when(event.getFileName()).thenReturn("HelloWorld.java");
+			PowerMockito.when(event.getMessage()).thenReturn(message);
+			return event;
+		}
 	}
 }

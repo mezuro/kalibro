@@ -28,7 +28,7 @@ public class ColorChooser {
 
 		private Color chosenColor;
 
-		private ColorChooserListener(Color defaultColor) {
+		protected ColorChooserListener(Color defaultColor) {
 			chooser.setColor(defaultColor);
 			chosenColor = defaultColor;
 		}

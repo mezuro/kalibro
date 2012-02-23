@@ -2,7 +2,7 @@ package org.kalibro.core.model.abstracts;
 
 import static org.kalibro.core.model.abstracts.PersonFixtures.*;
 
-class ProgrammerFixtures {
+final class ProgrammerFixtures {
 
 	protected static Programmer programmerCarlos() {
 		Programmer carlos = new Programmer(carlos(), true);
@@ -12,5 +12,9 @@ class ProgrammerFixtures {
 
 	protected static Programmer programmerPaulo() {
 		return new Programmer(paulo(), true);
+	}
+
+	private ProgrammerFixtures() {
+		// Utility class
 	}
 }

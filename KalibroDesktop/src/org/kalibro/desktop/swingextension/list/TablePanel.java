@@ -60,6 +60,18 @@ public class TablePanel<T> extends EditPanel<Collection<T>> {
 		return table.getData();
 	}
 
+	private void enableButtons(boolean enable) {
+		editButton.setEnabled(enable);
+		removeButton.setEnabled(enable);
+	}
+
+	public void addTablePanelListener(TablePanelListener<T> listener) {
+		ListenerAdapter adapter = new ListenerAdapter(listener);
+		addButton.addActionListener(adapter);
+		editButton.addActionListener(adapter);
+		table.addListListener(adapter);
+	}
+
 	private class EnableButtonsListener extends ListAdapter<T> {
 
 		@Override
@@ -73,23 +85,11 @@ public class TablePanel<T> extends EditPanel<Collection<T>> {
 		}
 	}
 
-	private void enableButtons(boolean enable) {
-		editButton.setEnabled(enable);
-		removeButton.setEnabled(enable);
-	}
-
-	public void addTablePanelListener(TablePanelListener<T> listener) {
-		ListenerAdapter adapter = new ListenerAdapter(listener);
-		addButton.addActionListener(adapter);
-		editButton.addActionListener(adapter);
-		table.addListListener(adapter);
-	}
-
 	private class ListenerAdapter extends ListAdapter<T> implements ActionListener {
 
 		private TablePanelListener<T> tablePanelListener;
 
-		private ListenerAdapter(TablePanelListener<T> tablePanelListener) {
+		protected ListenerAdapter(TablePanelListener<T> tablePanelListener) {
 			this.tablePanelListener = tablePanelListener;
 		}
 

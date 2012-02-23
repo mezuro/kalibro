@@ -4,7 +4,7 @@ import static org.kalibro.core.model.ModuleNodeFixtures.*;
 
 import java.util.Date;
 
-public class ProjectResultFixtures {
+public final class ProjectResultFixtures {
 
 	public static ProjectResult helloWorldResult() {
 		return helloWorldResult(new Date());
@@ -15,5 +15,9 @@ public class ProjectResultFixtures {
 		result.setDate(date);
 		result.setSourceTree(helloWorldTree());
 		return result;
+	}
+
+	private ProjectResultFixtures() {
+		// Utility class
 	}
 }

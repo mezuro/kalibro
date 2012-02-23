@@ -34,21 +34,6 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 		addDialog.setVisible(true);
 	}
 
-	private class AddMetricListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			try {
-				metricConfiguration = new MetricConfiguration(addDialog.getMetric());
-				configuration.addMetricConfiguration(metricConfiguration);
-				showMetricConfiguration();
-				addDialog.dispose();
-			} catch (Exception exception) {
-				new ErrorDialog(addDialog).show(exception);
-			}
-		}
-	}
-
 	public void edit(MetricConfiguration theMetricConfiguration) {
 		metricConfiguration = theMetricConfiguration;
 		showMetricConfiguration();
@@ -97,5 +82,20 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 	private void putOldMetricConfigurationBack(boolean editing) {
 		if (editing)
 			configuration.addMetricConfiguration(metricConfiguration);
+	}
+
+	private class AddMetricListener implements ActionListener {
+
+		@Override
+		public void actionPerformed(ActionEvent event) {
+			try {
+				metricConfiguration = new MetricConfiguration(addDialog.getMetric());
+				configuration.addMetricConfiguration(metricConfiguration);
+				showMetricConfiguration();
+				addDialog.dispose();
+			} catch (Exception exception) {
+				new ErrorDialog(addDialog).show(exception);
+			}
+		}
 	}
 }

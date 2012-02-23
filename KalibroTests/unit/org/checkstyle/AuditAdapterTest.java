@@ -59,7 +59,7 @@ public class AuditAdapterTest extends KalibroTestCase {
 
 	private class MyAuditAdapter extends AuditAdapter {
 
-		private MyAuditAdapter() {
+		protected MyAuditAdapter() {
 			super();
 		}
 	}

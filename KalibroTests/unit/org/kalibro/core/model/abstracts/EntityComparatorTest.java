@@ -70,15 +70,6 @@ public class EntityComparatorTest extends KalibroTestCase {
 		assertNoOrder(new SortingFieldNotComparable(), new SortingFieldNotComparable());
 	}
 
-	@SortingMethods("getField")
-	private class SortingFieldNotComparable extends AbstractEntity<SortingFieldNotComparable> {
-
-		@SuppressWarnings("unused")
-		public EntityComparatorTest getField() {
-			return new EntityComparatorTest();
-		}
-	}
-
 	private <T extends Comparable<? super T>> void assertNoOrder(AbstractEntity<T> entity1, AbstractEntity<T> entity2) {
 		assertEquals(0, new EntityComparator<T>(entity1).compare((T) entity2));
 		assertEquals(0, new EntityComparator<T>(entity2).compare((T) entity1));
@@ -89,5 +80,14 @@ public class EntityComparatorTest extends KalibroTestCase {
 		EntityComparator<T> secondComparator = new EntityComparator<T>(second);
 		assertTrue(first + " was expected to come before " + second, firstComparator.compare((T) second) < 0);
 		assertTrue(second + " was expected to come after " + first, secondComparator.compare((T) first) > 0);
+	}
+
+	@SortingMethods("getField")
+	private class SortingFieldNotComparable extends AbstractEntity<SortingFieldNotComparable> {
+
+		@SuppressWarnings("unused")
+		public EntityComparatorTest getField() {
+			return new EntityComparatorTest();
+		}
 	}
 }

@@ -8,7 +8,7 @@ import javax.xml.ws.Service;
 
 import org.kalibro.Kalibro;
 
-public class EndpointPortFactory {
+public final class EndpointPortFactory {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 
@@ -27,5 +27,9 @@ public class EndpointPortFactory {
 		} catch (MalformedURLException exception) {
 			throw new IllegalArgumentException(exception);
 		}
+	}
+
+	private EndpointPortFactory() {
+		// Utility class
 	}
 }

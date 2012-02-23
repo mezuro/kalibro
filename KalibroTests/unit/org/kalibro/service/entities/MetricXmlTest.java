@@ -43,7 +43,7 @@ public class MetricXmlTest extends DtoTestCase<MyMetric, MetricXml<MyMetric>> {
 
 	class MyMetricXml extends MetricXml<MyMetric> {
 
-		private MyMetricXml() {
+		protected MyMetricXml() {
 			super();
 		}
 
@@ -59,7 +59,7 @@ public class MetricXmlTest extends DtoTestCase<MyMetric, MetricXml<MyMetric>> {
 
 	class MyMetric extends Metric {
 
-		private MyMetric(String name, Granularity scope, String description) {
+		protected MyMetric(String name, Granularity scope, String description) {
 			super(name, scope);
 			setDescription(description);
 		}

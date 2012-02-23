@@ -5,7 +5,7 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.kalibro.core.model.enums.Granularity;
 
-public class ModuleNodeFixtures {
+public final class ModuleNodeFixtures {
 
 	public static ModuleNode helloWorldTree() {
 		ModuleNode root = new ModuleNode(helloWorldApplication());
@@ -56,5 +56,9 @@ public class ModuleNodeFixtures {
 
 	public static ModuleNode newNode(Granularity moduleGranularity, String moduleName) {
 		return new ModuleNode(new Module(moduleGranularity, moduleName));
+	}
+
+	private ModuleNodeFixtures() {
+		// Utility class
 	}
 }

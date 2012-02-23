@@ -15,10 +15,11 @@ public class TextFieldManualTest {
 		"<tr>\n  <td>This</td>\n  <td>is</td>\n</tr>\n<tr>\n  <td>my</td>\n  <td>table.</td>\n</tr>";
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("TextField", buildPanel()).setVisible(true);
+		JPanel panel = new TextFieldManualTest().buildPanel();
+		new ComponentWrapperDialog("TextField", panel).setVisible(true);
 	}
 
-	private static JPanel buildPanel() {
+	public JPanel buildPanel() {
 		GridBagPanelBuilder builder = new GridBagPanelBuilder();
 		builder.add(label(), 4);
 		builder.newLine();
@@ -34,29 +35,29 @@ public class TextFieldManualTest {
 		return builder.getPanel();
 	}
 
-	private static Label label() {
+	private Label label() {
 		Label label = new Label("All text fields have " + LINES + " lines and " + COLUMNS + " columns");
 		label.setHorizontalAlignment(SwingConstants.CENTER);
 		return label;
 	}
 
-	private static TextField getNoTitlePlain() {
+	private TextField getNoTitlePlain() {
 		return newTextField("", LINES, COLUMNS, "", false);
 	}
 
-	private static TextField getNoTitleHtml() {
+	private TextField getNoTitleHtml() {
 		return newTextField("", LINES, COLUMNS, null, true);
 	}
 
-	private static TextField getTitledPlain() {
+	private TextField getTitledPlain() {
 		return newTextField("", LINES, COLUMNS, "Title", false);
 	}
 
-	private static TextField getTitledHtml() {
+	private TextField getTitledHtml() {
 		return newTextField("", LINES, COLUMNS, "Title", true);
 	}
 
-	private static TextField newTextField(String name, int lines, int columns, String title, boolean showHtml) {
+	private TextField newTextField(String name, int lines, int columns, String title, boolean showHtml) {
 		TextField textField = new TextField(name, lines, columns, title, showHtml);
 		textField.setValue(TEXT);
 		return textField;
