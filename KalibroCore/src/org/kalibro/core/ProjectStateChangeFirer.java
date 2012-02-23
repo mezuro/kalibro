@@ -1,8 +1,9 @@
 package org.kalibro.core;
 
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.ProjectState;
 
-class ProjectStateChangeFirer implements Runnable {
+class ProjectStateChangeFirer extends Task {
 
 	private String projectName;
 	private ProjectState newProjectState;
@@ -14,12 +15,8 @@ class ProjectStateChangeFirer implements Runnable {
 		this.listener = listener;
 	}
 
-	protected void fire() {
-		new Thread(this).start();
-	}
-
 	@Override
-	public void run() {
+	public void perform() {
 		listener.projectStateChanged(projectName, newProjectState);
 	}
 }

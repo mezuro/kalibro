@@ -69,10 +69,6 @@ public class EntityReflectorTest extends KalibroTestCase {
 		}, RuntimeException.class, "Method not found", NoSuchMethodException.class);
 	}
 
-	@SuppressWarnings("all")
-	@SortingMethods("invalid")
-	private class InvalidSorting extends AbstractEntity<InvalidSorting> {}
-
 	private void verifySortingMethods(AbstractEntity<?> entity, String... expected) {
 		reflector = new EntityReflector(entity);
 		List<Method> sortingMethods = reflector.getSortingMethods();

@@ -8,7 +8,6 @@ import java.util.Collection;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.CompoundMetricFixtures;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.persistence.database.entities.MetricConfigurationRecord;
 
 public class MetricConfigurationRecordTest extends DtoTestCase<MetricConfiguration, MetricConfigurationRecord> {
 

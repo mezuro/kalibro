@@ -6,7 +6,6 @@ import java.util.Collection;
 
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.persistence.database.entities.NativeMetricRecord;
 
 public class NativeMetricRecordTest extends DtoTestCase<NativeMetric, NativeMetricRecord> {
 

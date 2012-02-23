@@ -5,7 +5,7 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
 
-public abstract class AbstractScriptBuilder {
+abstract class AbstractScriptBuilder {
 
 	protected StringBuffer script;
 	protected Configuration configuration;

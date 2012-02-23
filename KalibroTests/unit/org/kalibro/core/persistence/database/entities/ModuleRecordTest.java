@@ -13,7 +13,6 @@ import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleFixtures;
 import org.kalibro.core.model.ModuleNode;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.persistence.database.entities.ModuleRecord;
 
 public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
 

@@ -15,7 +15,7 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.processing.ResultsAggregator;
 
-public class ModuleResultFixtures {
+public final class ModuleResultFixtures {
 
 	public static Collection<ModuleResult> helloWorldModuleResults() {
 		return helloWorldModuleResults(new Date());
@@ -88,5 +88,9 @@ public class ModuleResultFixtures {
 		ModuleResult moduleResult = new ModuleResult(module, new Date());
 		moduleResult.addMetricResult(metricResult);
 		resultMap.put(module, moduleResult);
+	}
+
+	private ModuleResultFixtures() {
+		// Utility class
 	}
 }

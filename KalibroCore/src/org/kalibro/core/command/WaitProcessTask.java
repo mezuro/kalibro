@@ -2,7 +2,7 @@ package org.kalibro.core.command;
 
 import org.kalibro.core.concurrent.Task;
 
-public class WaitProcessTask extends Task {
+class WaitProcessTask extends Task {
 
 	private Process process;
 

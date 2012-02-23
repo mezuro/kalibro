@@ -15,7 +15,7 @@ import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.ProjectResultEndpoint;
 import org.kalibro.service.entities.RawProjectXml;
 
-public class KalibroClientForSpago {
+class KalibroClientForSpago {
 
 	private String serviceAddress;
 
@@ -24,7 +24,7 @@ public class KalibroClientForSpago {
 	private ModuleResultEndpoint moduleResultPort;
 	private ProjectResultEndpoint projectResultPort;
 
-	public KalibroClientForSpago(String serviceAddress) throws MalformedURLException {
+	protected KalibroClientForSpago(String serviceAddress) throws MalformedURLException {
 		this.serviceAddress = serviceAddress;
 		kalibroPort = getEndpointPort(KalibroEndpoint.class);
 		projectPort = getEndpointPort(ProjectEndpoint.class);
@@ -41,16 +41,16 @@ public class KalibroClientForSpago {
 		return Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
 	}
 
-	public boolean hasResultsFor(String projectName) {
+	protected boolean hasResultsFor(String projectName) {
 		return projectResultPort.hasResultsFor(projectName);
 	}
 
-	public void saveAndProcess(Project project) {
+	protected void saveAndProcess(Project project) {
 		projectPort.saveProject(new RawProjectXml(project));
 		kalibroPort.processProject(project.getName());
 	}
 
-	public ModuleResult getLastApplicationResult(String projectName) {
+	protected ModuleResult getLastApplicationResult(String projectName) {
 		Date lastResultDate = projectResultPort.getLastResultOf(projectName).convert().getDate();
 		return moduleResultPort.getModuleResult(projectName, projectName, lastResultDate).convert();
 	}

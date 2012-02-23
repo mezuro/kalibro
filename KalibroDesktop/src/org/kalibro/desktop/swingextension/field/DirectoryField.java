@@ -71,7 +71,8 @@ public class DirectoryField extends EditPanel<File> implements ActionListener, F
 
 	private boolean reallyLostFocus(FocusEvent event) {
 		Component focusOwner = event.getOppositeComponent();
-		return ! (event.isTemporary() || focusOwner == browseButton || focusOwner == pathField);
+		boolean focusStillHere = focusOwner == browseButton || focusOwner == pathField;
+		return !(event.isTemporary() || focusStillHere);
 	}
 
 	@Override

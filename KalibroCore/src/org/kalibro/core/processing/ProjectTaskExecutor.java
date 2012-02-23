@@ -8,7 +8,7 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 
-public abstract class ProjectTaskExecutor implements TaskListener {
+abstract class ProjectTaskExecutor implements TaskListener {
 
 	protected ProjectResult projectResult;
 
@@ -16,7 +16,7 @@ public abstract class ProjectTaskExecutor implements TaskListener {
 		this.projectResult = projectResult;
 	}
 
-	public void execute() {
+	protected void execute() {
 		updateProjectState(getTaskState());
 		Task task = getTask();
 		task.setListener(this);

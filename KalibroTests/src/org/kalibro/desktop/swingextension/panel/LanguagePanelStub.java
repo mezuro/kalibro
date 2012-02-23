@@ -2,9 +2,9 @@ package org.kalibro.desktop.swingextension.panel;
 
 import org.kalibro.core.model.enums.Language;
 
-public class LanguagePanelStub extends EditPanel<Language> {
+class LanguagePanelStub extends EditPanel<Language> {
 
-	public LanguagePanelStub() {
+	protected LanguagePanelStub() {
 		super("language");
 	}
 

@@ -83,7 +83,7 @@ public class ModuleRecord implements DataTransferObject<ModuleNode> {
 			moduleNode.addChild(child.convert());
 	}
 
-	public ModuleResult convertIntoModuleResult() {
+	protected ModuleResult convertIntoModuleResult() {
 		return new ModuleResult(convertIntoModule(), projectResult.getDate());
 	}
 
@@ -91,11 +91,11 @@ public class ModuleRecord implements DataTransferObject<ModuleNode> {
 		return new Module(Granularity.valueOf(granularity), name);
 	}
 
-	public boolean isRoot() {
+	protected boolean isRoot() {
 		return parent == null;
 	}
 
-	public Collection<ModuleRecord> getChildren() {
+	protected Collection<ModuleRecord> getChildren() {
 		return children;
 	}
 }

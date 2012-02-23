@@ -67,7 +67,11 @@ public class ModuleResultCsvExporter {
 	}
 
 	private void finishLine() {
-		csvContents.deleteCharAt(csvContents.length() - 1); // last comma
+		deleteLastComma();
 		csvContents.append("\n");
+	}
+
+	private void deleteLastComma() {
+		csvContents.deleteCharAt(csvContents.length() - 1);
 	}
 }

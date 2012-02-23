@@ -1,5 +1,7 @@
 package org.checkstyle;
 
+import com.puppycrawl.tools.checkstyle.api.AuditEvent;
+
 import java.io.File;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,8 +14,6 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
-
-import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 
 public class CheckstyleOutputParser extends AuditAdapter {
 

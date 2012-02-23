@@ -11,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.persistence.database.Query;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 

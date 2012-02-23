@@ -10,11 +10,11 @@ import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.entities.ModuleResultXml;
 
-public class ModuleResultPortDao implements ModuleResultDao {
+class ModuleResultPortDao implements ModuleResultDao {
 
-	protected ModuleResultEndpoint port;
+	private ModuleResultEndpoint port;
 
-	public ModuleResultPortDao() {
+	protected ModuleResultPortDao() {
 		port = EndpointPortFactory.getEndpointPort(ModuleResultEndpoint.class);
 	}
 

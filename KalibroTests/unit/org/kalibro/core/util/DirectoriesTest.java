@@ -3,6 +3,7 @@ package org.kalibro.core.util;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.lang.reflect.Constructor;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -11,8 +12,10 @@ import org.kalibro.KalibroTestCase;
 public class DirectoriesTest extends KalibroTestCase {
 
 	@BeforeClass
-	public static void emmaCoverage() {
-		new Directories();
+	public static void emmaCoverage() throws Exception {
+		Constructor<Directories> constructor = Directories.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

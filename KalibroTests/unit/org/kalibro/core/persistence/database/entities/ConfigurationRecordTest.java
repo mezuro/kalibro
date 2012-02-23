@@ -9,7 +9,6 @@ import java.util.Collection;
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
 
 public class ConfigurationRecordTest extends DtoTestCase<Configuration, ConfigurationRecord> {
 

@@ -12,14 +12,14 @@ import org.kalibro.service.entities.RawProjectXml;
 public interface ProjectEndpoint {
 
 	@WebMethod
-	public void saveProject(RawProjectXml project);
+	void saveProject(RawProjectXml project);
 
 	@WebMethod
-	public List<String> getProjectNames();
+	List<String> getProjectNames();
 
 	@WebMethod
-	public ProjectXml getProject(String projectName);
+	ProjectXml getProject(String projectName);
 
 	@WebMethod
-	public void removeProject(String projectName);
+	void removeProject(String projectName);
 }

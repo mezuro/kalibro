@@ -8,11 +8,11 @@ import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.RawProjectXml;
 
-public class ProjectPortDao implements ProjectDao {
+class ProjectPortDao implements ProjectDao {
 
-	protected ProjectEndpoint port;
+	private ProjectEndpoint port;
 
-	public ProjectPortDao() {
+	protected ProjectPortDao() {
 		port = EndpointPortFactory.getEndpointPort(ProjectEndpoint.class);
 	}
 

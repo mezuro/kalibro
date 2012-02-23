@@ -1,7 +1,6 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.util.Arrays;
 
@@ -12,6 +11,7 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectFixtures;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
 import org.mockito.ArgumentCaptor;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
@@ -51,38 +51,29 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRemoveProjectByName() {
+	public void shouldRemoveProjectByNameAndDependentEntities() {
 		PowerMockito.doReturn(project).when(dao).getByName("42");
+		Query<?> query = PowerMockito.mock(Query.class);
+		mockQuery("MetricResult", "module.projectResult.project.name", query);
+		mockQuery("Module", "projectResult.project.name", query);
+		mockQuery("ProjectResult", "project.name", query);
 		dao.removeProject("42");
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
-		Mockito.verify(databaseManager).delete(captor.capture(), any(Runnable.class));
+		InOrder order = Mockito.inOrder(databaseManager, query, databaseManager);
+		order.verify(databaseManager).beginTransaction();
+		for (int i = 0; i < 3; i++) {
+			order.verify(query).setParameter("projectName", "42");
+			order.verify(query).executeUpdate();
+		}
+		order.verify(databaseManager).remove(captor.capture());
+		order.verify(databaseManager).commitTransaction();
+
 		assertDeepEquals(project, captor.getValue().convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRemoveDependentEntitiesOnRemove() {
-		PowerMockito.doReturn(project).when(dao).getByName("42");
-		dao.removeProject("42");
-
-		Query<ProjectRecord> query = PowerMockito.mock(Query.class);
-		PowerMockito.doReturn(query).when(dao).createRecordQuery(anyString());
-		captureBeforeRemove().run();
-		verifyDelete("MetricResult", "module.projectResult.project.name");
-		verifyDelete("Module", "projectResult.project.name");
-		verifyDelete("ProjectResult", "project.name");
-		Mockito.verify(query, Mockito.times(3)).setParameter("projectName", "42");
-		Mockito.verify(query, Mockito.times(3)).executeUpdate();
-	}
-
-	private Runnable captureBeforeRemove() {
-		ArgumentCaptor<Runnable> captor = ArgumentCaptor.forClass(Runnable.class);
-		Mockito.verify(databaseManager).delete(any(ProjectRecord.class), captor.capture());
-		return captor.getValue();
-	}
-
-	private void verifyDelete(String table, String projectNameField) {
+	private void mockQuery(String table, String projectNameField, Query<?> query) {
 		String queryText = "DELETE FROM " + table + " t WHERE t." + projectNameField + " = :projectName";
-		Mockito.verify(dao).createRecordQuery(queryText);
+		PowerMockito.doReturn(query).when(dao).createRecordQuery(queryText);
 	}
 }

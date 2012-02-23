@@ -2,8 +2,6 @@ package org.kalibro.core.model;
 
 import java.awt.Color;
 
-import org.kalibro.core.model.Range;
-
 public enum RangeLabel {
 
 	EXCELLENT {

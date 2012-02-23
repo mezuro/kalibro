@@ -5,7 +5,7 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
-public class Query<T> {
+class Query<T> {
 
 	private TypedQuery<T> nativeQuery;
 
@@ -13,7 +13,7 @@ public class Query<T> {
 		this.nativeQuery = nativeQuery;
 	}
 
-	public void setParameter(String parameter, Object value) {
+	protected void setParameter(String parameter, Object value) {
 		nativeQuery.setParameter(parameter, value);
 	}
 
@@ -35,7 +35,7 @@ public class Query<T> {
 		return nativeQuery.getResultList();
 	}
 
-	public void executeUpdate() {
+	protected void executeUpdate() {
 		nativeQuery.executeUpdate();
 	}
 }

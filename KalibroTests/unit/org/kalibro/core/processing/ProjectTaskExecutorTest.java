@@ -55,8 +55,7 @@ public class ProjectTaskExecutorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkTaskDone() {
-		TaskReport report = new TaskReport(42, null);
-		projectTaskExecutor.taskFinished(report);
+		projectTaskExecutor.taskFinished(mockReport(42, null));
 		assertEquals(42L, time.longValue());
 	}
 
@@ -67,12 +66,19 @@ public class ProjectTaskExecutorTest extends KalibroTestCase {
 			@Override
 			public void run() {
 				Exception error = new Exception();
-				TaskReport report = new TaskReport(42, error);
-				projectTaskExecutor.taskFinished(report);
+				projectTaskExecutor.taskFinished(mockReport(42, error));
 				assertEquals(42L, time.longValue());
 				assertSame(error, project.getError());
 			}
 		});
+	}
+
+	private TaskReport mockReport(long executionTime, Exception error) {
+		TaskReport report = PowerMockito.mock(TaskReport.class);
+		PowerMockito.when(report.getExecutionTime()).thenReturn(executionTime);
+		PowerMockito.when(report.isTaskDone()).thenReturn(error == null);
+		PowerMockito.when(report.getError()).thenReturn(error);
+		return report;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -2,6 +2,12 @@ package br.usp.ime.ccsl.kalibro.swing.components.project;
 
 import static org.junit.Assert.*;
 
+import br.usp.ime.ccsl.kalibro.core.SettingsDependentTest;
+import br.usp.ime.ccsl.kalibro.core.Utils;
+import br.usp.ime.ccsl.kalibro.core.calculators.ConfiguredResultsCalculator;
+import br.usp.ime.ccsl.kalibro.core.calculators.ConfiguredResultsCalculatorTest;
+import br.usp.ime.ccsl.kalibro.core.types.*;
+
 import java.awt.Toolkit;
 
 import javax.swing.JTextPane;
@@ -12,12 +18,6 @@ import org.fest.swing.fixture.DialogFixture;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import br.usp.ime.ccsl.kalibro.core.SettingsDependentTest;
-import br.usp.ime.ccsl.kalibro.core.Utils;
-import br.usp.ime.ccsl.kalibro.core.calculators.ConfiguredResultsCalculator;
-import br.usp.ime.ccsl.kalibro.core.calculators.ConfiguredResultsCalculatorTest;
-import br.usp.ime.ccsl.kalibro.core.types.*;
 import org.kalibro.desktop.DialogTester;
 import org.kalibro.desktop.old.listeners.ResultPanelListener;
 

@@ -4,7 +4,7 @@ import org.kalibro.core.model.CompoundMetricFixtures;
 import org.kalibro.core.model.NativeMetricFixtures;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public class MetricPanelManualTest {
+public final class MetricPanelManualTest {
 
 	public static void main(String[] args) {
 		MetricPanel panel = new MetricPanel();
@@ -12,5 +12,9 @@ public class MetricPanelManualTest {
 		new ComponentWrapperDialog("MetricPanel", panel).setVisible(true);
 		panel.show(CompoundMetricFixtures.sc());
 		new ComponentWrapperDialog("MetricPanel", panel).setVisible(true);
+	}
+
+	private MetricPanelManualTest() {
+		// Utility class
 	}
 }

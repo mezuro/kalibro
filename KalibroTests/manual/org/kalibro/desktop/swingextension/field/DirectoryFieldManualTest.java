@@ -9,19 +9,20 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public class DirectoryFieldManualTest {
 
 	public static void main(String[] args) {
-		ComponentWrapperDialog dialog = new ComponentWrapperDialog("DirectoryField", createPanel());
+		JPanel panel = new DirectoryFieldManualTest().createPanel();
+		ComponentWrapperDialog dialog = new ComponentWrapperDialog("DirectoryField", panel);
 		dialog.setVisible(true);
 		System.exit(0);
 	}
 
-	private static JPanel createPanel() {
+	public JPanel createPanel() {
 		JPanel panel = new JPanel(new GridLayout(2, 1));
 		panel.add(createField());
 		panel.add(createField());
 		return panel;
 	}
 
-	private static DirectoryField createField() {
+	private DirectoryField createField() {
 		return new DirectoryField("");
 	}
 }

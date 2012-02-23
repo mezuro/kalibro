@@ -1,10 +1,10 @@
 package org.kalibro.core.concurrent;
 
-public class SetResultTask<T> extends TypedTask<T> {
+class SetResultTask<T> extends TypedTask<T> {
 
 	private T resultToBeSet;
 
-	public SetResultTask(T result) {
+	protected SetResultTask(T result) {
 		resultToBeSet = result;
 	}
 

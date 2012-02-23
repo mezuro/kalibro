@@ -7,10 +7,9 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
 
-public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord>
-	implements ConfigurationDao {
+class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements ConfigurationDao {
 
-	public ConfigurationDatabaseDao(DatabaseManager databaseManager) {
+	protected ConfigurationDatabaseDao(DatabaseManager databaseManager) {
 		super(databaseManager, ConfigurationRecord.class);
 	}
 

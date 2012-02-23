@@ -19,4 +19,8 @@ public final class Directories {
 	private static File home() {
 		return new File(System.getProperty("user.home"));
 	}
+
+	private Directories() {
+		// Utility class
+	}
 }

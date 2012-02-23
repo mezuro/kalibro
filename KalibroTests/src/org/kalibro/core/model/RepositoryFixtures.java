@@ -9,7 +9,7 @@ import java.util.Map;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.enums.RepositoryType;
 
-public class RepositoryFixtures {
+public final class RepositoryFixtures {
 
 	private static Map<RepositoryType, String> addresses = initializeAddresses();
 
@@ -32,5 +32,9 @@ public class RepositoryFixtures {
 
 	public static Repository helloWorldRepository(RepositoryType type) {
 		return new Repository(type, addresses.get(type));
+	}
+
+	private RepositoryFixtures() {
+		// Utility class
 	}
 }

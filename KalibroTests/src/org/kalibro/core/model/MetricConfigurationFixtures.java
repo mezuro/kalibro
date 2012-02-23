@@ -6,7 +6,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 
-public class MetricConfigurationFixtures {
+public final class MetricConfigurationFixtures {
 
 	private static Map<String, Double[]> metricThresholds = initializeThresholds();
 
@@ -42,5 +42,9 @@ public class MetricConfigurationFixtures {
 
 	public static Set<String> metricsWithThresholds() {
 		return metricThresholds.keySet();
+	}
+
+	private MetricConfigurationFixtures() {
+		// Utility class
 	}
 }

@@ -8,11 +8,11 @@ import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;
 
-public class ConfigurationPortDao implements ConfigurationDao {
+class ConfigurationPortDao implements ConfigurationDao {
 
 	private ConfigurationEndpoint port;
 
-	public ConfigurationPortDao() {
+	protected ConfigurationPortDao() {
 		port = EndpointPortFactory.getEndpointPort(ConfigurationEndpoint.class);
 	}
 

@@ -1,10 +1,10 @@
 package org.kalibro.core.concurrent;
 
-public class SleepTask extends Task {
+class SleepTask extends Task {
 
 	private long sleepingTime;
 
-	public SleepTask(long sleepingTime) {
+	protected SleepTask(long sleepingTime) {
 		this.sleepingTime = sleepingTime;
 	}
 

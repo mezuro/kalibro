@@ -1,12 +1,12 @@
 package org.checkstyle;
 
+import com.google.common.collect.ImmutableMap;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.google.common.collect.ImmutableMap;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 public class CheckstyleConfiguration implements Configuration {
 
@@ -58,7 +58,7 @@ public class CheckstyleConfiguration implements Configuration {
 	}
 
 	protected CheckstyleConfiguration getChildByName(String childName) {
-		if (! children.containsKey(childName))
+		if (!children.containsKey(childName))
 			children.put(childName, new CheckstyleConfiguration(childName));
 		return children.get(childName);
 	}

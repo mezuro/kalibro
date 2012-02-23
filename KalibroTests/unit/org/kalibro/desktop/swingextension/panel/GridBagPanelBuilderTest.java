@@ -88,7 +88,7 @@ public class GridBagPanelBuilderTest extends KalibroTestCase {
 	}
 
 	private void addRandomComponent() {
-		JComponent components[] = new JComponent[]{new Label(""), new StringField("", 5), new DoubleField("")};
+		JComponent[] components = new JComponent[]{new Label(""), new StringField("", 5), new DoubleField("")};
 		JComponent component = components[random.nextInt(components.length)];
 		builder.add(component);
 	}

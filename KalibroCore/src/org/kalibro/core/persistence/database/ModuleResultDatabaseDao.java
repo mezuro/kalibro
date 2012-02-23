@@ -9,12 +9,12 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.core.persistence.database.entities.MetricResultRecord;
 
-public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements ModuleResultDao {
+class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements ModuleResultDao {
 
 	private static final String QUERY = "SELECT result FROM MetricResult result " +
 		"WHERE result.module.projectResult.project.name = :projectName AND result.module.name = :moduleName";
 
-	public ModuleResultDatabaseDao(DatabaseManager databaseManager) {
+	protected ModuleResultDatabaseDao(DatabaseManager databaseManager) {
 		super(databaseManager, MetricResultRecord.class);
 	}
 

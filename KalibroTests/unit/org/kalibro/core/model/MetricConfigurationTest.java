@@ -75,7 +75,7 @@ public class MetricConfigurationTest extends KalibroTestCase {
 		assertTrue(configuration.hasRangeFor(13.0));
 		assertTrue(configuration.hasRangeFor(19.5));
 		assertTrue(configuration.hasRangeFor(Double.MAX_VALUE));
-		assertFalse(configuration.hasRangeFor(- 1.0));
+		assertFalse(configuration.hasRangeFor(-1.0));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -94,16 +94,16 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				configuration.getRangeFor(- 1.0);
+				configuration.getRangeFor(-1.0);
 			}
 		}, IllegalArgumentException.class, "No range found for value -1.0");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testAddRange() {
-		Range newRange = new Range(- 1.0, 0.0);
+		Range newRange = new Range(-1.0, 0.0);
 		configuration.addRange(newRange);
-		assertSame(newRange, configuration.getRangeFor(- 1.0));
+		assertSame(newRange, configuration.getRangeFor(-1.0));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -130,7 +130,7 @@ public class MetricConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldReturnIfRemovedRangeExisted() {
 		assertTrue(configuration.removeRange(amlocRange(BAD)));
-		assertFalse(configuration.removeRange(new Range(- 1.0, 0.0)));
+		assertFalse(configuration.removeRange(new Range(-1.0, 0.0)));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

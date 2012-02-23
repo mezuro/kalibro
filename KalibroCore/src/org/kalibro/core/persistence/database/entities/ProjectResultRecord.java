@@ -73,7 +73,7 @@ public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 		throw new IllegalStateException("No source tree root found for project result");
 	}
 
-	public Date getDate() {
+	protected Date getDate() {
 		return new Date(date);
 	}
 }

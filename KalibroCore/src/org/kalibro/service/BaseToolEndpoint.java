@@ -11,8 +11,8 @@ import org.kalibro.service.entities.BaseToolXml;
 public interface BaseToolEndpoint {
 
 	@WebMethod
-	public List<String> getBaseToolNames();
+	List<String> getBaseToolNames();
 
 	@WebMethod
-	public BaseToolXml getBaseTool(String baseToolName);
+	BaseToolXml getBaseTool(String baseToolName);
 }

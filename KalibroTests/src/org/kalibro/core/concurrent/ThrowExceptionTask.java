@@ -1,6 +1,6 @@
 package org.kalibro.core.concurrent;
 
-public class ThrowExceptionTask extends Task {
+class ThrowExceptionTask extends Task {
 
 	@Override
 	public void perform() throws Exception {

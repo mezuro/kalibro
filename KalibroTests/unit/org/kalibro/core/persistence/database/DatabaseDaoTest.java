@@ -11,9 +11,6 @@ import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.core.model.RangeFixtures;
 import org.kalibro.core.model.RangeLabel;
-import org.kalibro.core.persistence.database.DatabaseDao;
-import org.kalibro.core.persistence.database.DatabaseManager;
-import org.kalibro.core.persistence.database.Query;
 import org.kalibro.core.persistence.database.entities.RangeRecord;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -53,11 +50,11 @@ public class DatabaseDaoTest extends KalibroTestCase {
 		assertDeepEquals(range, dao.getByName("42"));
 		Mockito.verify(query).setParameter("name", "42");
 	}
-}
 
-class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> {
+	private class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> {
 
-	public RangeDatabaseDao(DatabaseManager databaseManager) {
-		super(databaseManager, RangeRecord.class);
+		public RangeDatabaseDao(DatabaseManager databaseManager) {
+			super(databaseManager, RangeRecord.class);
+		}
 	}
 }

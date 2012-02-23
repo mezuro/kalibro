@@ -2,6 +2,7 @@ package org.kalibro.client;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -29,8 +30,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class EndpointPortFactoryTest extends KalibroTestCase {
 
 	@BeforeClass
-	public static void emmaCoverage() {
-		new EndpointPortFactory();
+	public static void emmaCoverage() throws Exception {
+		Constructor<EndpointPortFactory> constructor = EndpointPortFactory.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
 	}
 
 	private Service service;

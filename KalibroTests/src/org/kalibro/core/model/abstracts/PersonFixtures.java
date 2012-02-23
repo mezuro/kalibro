@@ -1,23 +1,27 @@
 package org.kalibro.core.model.abstracts;
 
-public class PersonFixtures {
+final class PersonFixtures {
 
-	public static Person carlos() {
+	protected static Person carlos() {
 		Person carlos = new Person("CM", "Carlos Morais", "Male");
 		carlos.addRelative("mother", cristina());
 		carlos.addRelative("sister", isis());
 		return carlos;
 	}
 
-	public static Person cristina() {
+	protected static Person cristina() {
 		return new Person("CN", "Cristina Nascimento", "Female");
 	}
 
-	public static Person isis() {
+	protected static Person isis() {
 		return new Person("IN", "Isis Nascimento", "Female");
 	}
 
-	public static Person paulo() {
+	protected static Person paulo() {
 		return new Person("PM", "Paulo Meirelles", "Male");
+	}
+
+	private PersonFixtures() {
+		// Utility class
 	}
 }

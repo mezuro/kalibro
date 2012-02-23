@@ -86,6 +86,6 @@ public class ProjectStateChangeSupportTest extends KalibroTestCase {
 	public void shouldNotifyProjectListener() {
 		changeSupport.addProjectStateListener(projectName, listener);
 		changeSupport.fireProjectStateChanged(projectName, newProjectState);
-		verify(firer).fire();
+		verify(firer).executeInBackground();
 	}
 }

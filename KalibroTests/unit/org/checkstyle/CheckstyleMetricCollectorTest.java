@@ -16,11 +16,11 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({CheckstyleMetricCollector.class})
+@PrepareForTest(CheckstyleMetricCollector.class)
 public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
 	private CheckstyleMetricCollector collector;
-	
+
 	private KalibroChecker checker;
 	private CheckstyleOutputParser parser;
 
@@ -40,7 +40,7 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 		checker = PowerMockito.mock(KalibroChecker.class);
 		PowerMockito.whenNew(KalibroChecker.class).withArguments(parser).thenReturn(checker);
 	}
-	
+
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkSupportedMetrics() {
 		assertDeepEquals(CheckstyleMetric.supportedMetrics(), collector.getSupportedMetrics());
@@ -51,7 +51,7 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 		File codeDirectory = PowerMockito.mock(File.class);
 		Set<NativeModuleResult> results = CheckstyleStub.results();
 		PowerMockito.when(parser.getResults()).thenReturn(results);
-		
+
 		assertSame(results, collector.collectMetrics(codeDirectory, CheckstyleMetric.supportedMetrics()));
 		Mockito.verify(checker).process(codeDirectory);
 		Mockito.verify(parser).getResults();

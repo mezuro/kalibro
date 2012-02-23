@@ -10,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.BaseToolFixtures;
-import org.kalibro.core.persistence.database.BaseToolDatabaseDao;
-import org.kalibro.core.persistence.database.DatabaseManager;
 import org.kalibro.core.persistence.database.entities.BaseToolRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;

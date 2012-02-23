@@ -32,7 +32,7 @@ public class ResultsAggregator {
 		ModuleResult childResult = resultMap.get(child.getModule());
 		for (MetricResult metricResult : childResult.getMetricResults()) {
 			Metric metric = metricResult.getMetric();
-			if (! metric.isCompound())
+			if (!metric.isCompound())
 				addDescendentResultsFrom(childResult, (NativeMetric) metric);
 		}
 	}
@@ -40,21 +40,21 @@ public class ResultsAggregator {
 	private void addDescendentResultsFrom(ModuleResult childResult, NativeMetric metric) {
 		MetricResult myMetricResult = prepareResultFor(metric);
 		MetricResult childMetricResult = childResult.getResultFor(metric);
-		if (! childMetricResult.getValue().isNaN())
+		if (!childMetricResult.getValue().isNaN())
 			myMetricResult.addDescendentResult(childMetricResult.getValue());
 		myMetricResult.addDescendentResults(childMetricResult.getDescendentResults());
 	}
 
 	private MetricResult prepareResultFor(NativeMetric metric) {
 		ModuleResult moduleResult = prepareModuleResult();
-		if (! moduleResult.hasResultFor(metric))
+		if (!moduleResult.hasResultFor(metric))
 			moduleResult.addMetricResult(new MetricResult(metric, Double.NaN));
 		return moduleResult.getResultFor(metric);
 	}
 
 	private ModuleResult prepareModuleResult() {
 		Module module = node.getModule();
-		if (! resultMap.containsKey(module))
+		if (!resultMap.containsKey(module))
 			resultMap.put(module, new ModuleResult(module, date));
 		return resultMap.get(module);
 	}

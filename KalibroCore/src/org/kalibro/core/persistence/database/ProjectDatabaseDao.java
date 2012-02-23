@@ -6,9 +6,9 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
 
-public class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
+class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
 
-	public ProjectDatabaseDao(DatabaseManager databaseManager) {
+	protected ProjectDatabaseDao(DatabaseManager databaseManager) {
 		super(databaseManager, ProjectRecord.class);
 	}
 
@@ -30,29 +30,18 @@ public class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> impl
 	@Override
 	public void removeProject(String projectName) {
 		ProjectRecord record = new ProjectRecord(getByName(projectName));
-		databaseManager.delete(record, new BeforeRemove(projectName));
+		databaseManager.beginTransaction();
+		delete("MetricResult", "module.projectResult.project.name", projectName);
+		delete("Module", "projectResult.project.name", projectName);
+		delete("ProjectResult", "project.name", projectName);
+		databaseManager.remove(record);
+		databaseManager.commitTransaction();
 	}
 
-	private class BeforeRemove implements Runnable {
-
-		private String projectName;
-
-		private BeforeRemove(String projectName) {
-			this.projectName = projectName;
-		}
-
-		@Override
-		public void run() {
-			delete("MetricResult", "module.projectResult.project.name");
-			delete("Module", "projectResult.project.name");
-			delete("ProjectResult", "project.name");
-		}
-
-		private void delete(String table, String projectNameField) {
-			String queryText = "DELETE FROM " + table + " t WHERE t." + projectNameField + " = :projectName";
-			Query<ProjectRecord> query = createRecordQuery(queryText);
-			query.setParameter("projectName", projectName);
-			query.executeUpdate();
-		}
+	private void delete(String table, String projectNameField, String projectName) {
+		String queryText = "DELETE FROM " + table + " t WHERE t." + projectNameField + " = :projectName";
+		Query<ProjectRecord> query = createRecordQuery(queryText);
+		query.setParameter("projectName", projectName);
+		query.executeUpdate();
 	}
 }

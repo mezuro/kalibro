@@ -1,10 +1,10 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricResultFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import java.util.Arrays;

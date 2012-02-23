@@ -17,21 +17,26 @@ public class SeedsFileGenerator {
 	public static void main(String[] args) {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
+		Seeds seeds = new SeedsFileGenerator().getSeeds();
 
-		Seeds seeds = new Seeds();
-		seeds.baseToolSeeds = baseToolSeeds();
-		seeds.configurationSeeds = configurationSeeds();
 		System.out.println(yaml.dump(seeds));
 		System.exit(0);
 	}
 
-	private static List<BaseToolRecord> baseToolSeeds() {
+	public Seeds getSeeds() {
+		Seeds seeds = new Seeds();
+		seeds.baseToolSeeds = baseToolSeeds();
+		seeds.configurationSeeds = configurationSeeds();
+		return seeds;
+	}
+
+	private List<BaseToolRecord> baseToolSeeds() {
 		BaseTool analizo = new BaseTool("Analizo");
 		analizo.setCollectorClass(AnalizoMetricCollector.class);
 		return Arrays.asList(new BaseToolRecord(analizo));
 	}
 
-	private static List<ConfigurationRecord> configurationSeeds() {
+	private List<ConfigurationRecord> configurationSeeds() {
 		Configuration configuration = ConfigurationFixtures.kalibroConfiguration();
 		return Arrays.asList(new ConfigurationRecord(configuration));
 	}

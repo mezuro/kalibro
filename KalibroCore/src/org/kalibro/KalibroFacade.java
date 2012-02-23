@@ -38,7 +38,7 @@ public abstract class KalibroFacade {
 		changeSupport.removeProjectStateListener(listener);
 	}
 
-	public void fireProjectStateChanged(Project project) {
+	protected void fireProjectStateChanged(Project project) {
 		changeSupport.fireProjectStateChanged(project.getName(), project.getState());
 	}
 }

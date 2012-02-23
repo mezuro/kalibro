@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 
-public class DatabaseManager {
+class DatabaseManager {
 
 	private EntityManager entityManager;
 
@@ -19,23 +19,14 @@ public class DatabaseManager {
 	}
 
 	protected void save(Object record) {
-		save(record, new NullRunnable());
-	}
-
-	protected void save(Object record, Runnable beforeSave) {
-		save(Arrays.asList(record), beforeSave);
+		save(Arrays.asList(record));
 	}
 
 	protected void save(Collection<?> records) {
-		save(records, new NullRunnable());
-	}
-
-	protected void save(Collection<?> records, Runnable beforeSave) {
-		entityManager.getTransaction().begin();
-		beforeSave.run();
+		beginTransaction();
 		for (Object record : records)
 			persist(record);
-		entityManager.getTransaction().commit();
+		commitTransaction();
 	}
 
 	protected void persist(Object record) {
@@ -43,31 +34,26 @@ public class DatabaseManager {
 	}
 
 	protected void delete(Object record) {
-		delete(record, new NullRunnable());
-	}
-
-	protected void delete(Object record, Runnable beforeRemove) {
-		entityManager.getTransaction().begin();
-		beforeRemove.run();
+		beginTransaction();
 		remove(record);
-		entityManager.getTransaction().commit();
+		commitTransaction();
 	}
 
 	protected void remove(Object record) {
 		entityManager.remove(entityManager.merge(record));
 	}
 
+	protected void beginTransaction() {
+		entityManager.getTransaction().begin();
+	}
+
+	protected void commitTransaction() {
+		entityManager.getTransaction().commit();
+	}
+
 	@Override
 	protected void finalize() throws Throwable {
 		entityManager.close();
 		super.finalize();
-	}
-}
-
-class NullRunnable implements Runnable {
-
-	@Override
-	public void run() {
-		return;
 	}
 }

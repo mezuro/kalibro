@@ -65,7 +65,9 @@ public class AnalyzeProjectExecutorTest extends KalibroTestCase {
 		PowerMockito.mockStatic(FileUtils.class);
 
 		Collection<ModuleResult> moduleResults = ModuleResultFixtures.helloWorldModuleResults();
-		executor.continueProcessing(new TypedTaskReport<Collection<ModuleResult>>(0, null, moduleResults));
+		TypedTaskReport<Collection<ModuleResult>> report = PowerMockito.mock(TypedTaskReport.class);
+		PowerMockito.when(report.getResult()).thenReturn(moduleResults);
+		executor.continueProcessing(report);
 
 		String projectName = projectResult.getProject().getName();
 		Mockito.verify(projectResultDao).save(projectResult);

@@ -15,7 +15,6 @@ import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.persistence.database.entities.MetricResultRecord;
 
 public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResultRecord> {
 

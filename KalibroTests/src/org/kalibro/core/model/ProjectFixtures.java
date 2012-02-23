@@ -5,7 +5,7 @@ import static org.kalibro.core.model.RepositoryFixtures.*;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.model.enums.RepositoryType;
 
-public class ProjectFixtures {
+public final class ProjectFixtures {
 
 	public static Project helloWorld() {
 		Project project = new Project();
@@ -15,5 +15,9 @@ public class ProjectFixtures {
 		project.setConfigurationName(ConfigurationFixtures.kalibroConfiguration().getName());
 		project.setState(ProjectState.READY);
 		return project;
+	}
+
+	private ProjectFixtures() {
+		// Utility class
 	}
 }

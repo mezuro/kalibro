@@ -16,7 +16,7 @@ import org.kalibro.core.model.enums.Granularity;
 public interface MetricCollector {
 
 	/** Returns the set of {@link NativeMetric}s provided by the metric collector tool. */
-	public Set<NativeMetric> getSupportedMetrics();
+	Set<NativeMetric> getSupportedMetrics();
 
 	/**
 	 * Collect metric results for a software project.<br/>
@@ -26,5 +26,5 @@ public interface MetricCollector {
 	 * @param metrics Set of metrics Kalibro wants from the collector.
 	 * @return Set of {@link NativeModuleResult}s obtained.
 	 */
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception;
+	Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception;
 }

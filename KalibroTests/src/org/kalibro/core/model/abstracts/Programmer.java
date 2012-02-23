@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SortingMethods({"getUseMetrics", "getName"})
-public class Programmer extends Person {
+class Programmer extends Person {
 
 	private Boolean useMetrics;
 
 	private List<Programmer> colleagues;
 
-	public Programmer(Person person, Boolean useMetrics) {
+	protected Programmer(Person person, Boolean useMetrics) {
 		super(person.getIdentityNumber(), person.getName(), person.getSex());
 		this.useMetrics = useMetrics;
 		colleagues = new ArrayList<Programmer>();

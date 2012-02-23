@@ -5,9 +5,9 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class DeepEqualityEvaluator extends EqualityEvaluator {
+class DeepEqualityEvaluator extends EqualityEvaluator {
 
-	public DeepEqualityEvaluator(AbstractEntity<?> entity) {
+	protected DeepEqualityEvaluator(AbstractEntity<?> entity) {
 		super(entity);
 	}
 
@@ -48,7 +48,7 @@ public class DeepEqualityEvaluator extends EqualityEvaluator {
 		if (myCollection.size() != otherCollection.size())
 			return false;
 		for (Object myElement : myCollection)
-			if (! sameFieldValue(myElement, find(myElement, otherCollection)))
+			if (!sameFieldValue(myElement, find(myElement, otherCollection)))
 				return false;
 		return true;
 	}
@@ -61,10 +61,10 @@ public class DeepEqualityEvaluator extends EqualityEvaluator {
 	}
 
 	private boolean mapEquals(Map<?, ?> myMap, Map<?, ?> otherMap) {
-		if (! collectionEquals(myMap.keySet(), otherMap.keySet()))
+		if (!collectionEquals(myMap.keySet(), otherMap.keySet()))
 			return false;
 		for (Object key : myMap.keySet())
-			if (! sameFieldValue(myMap.get(key), otherMap.get(key)))
+			if (!sameFieldValue(myMap.get(key), otherMap.get(key)))
 				return false;
 		return true;
 	}

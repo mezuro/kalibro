@@ -6,9 +6,9 @@ import org.kalibro.core.model.BaseTool;
 
 public interface BaseToolDao {
 
-	public void save(BaseTool baseTool);
+	void save(BaseTool baseTool);
 
-	public List<String> getBaseToolNames();
+	List<String> getBaseToolNames();
 
-	public BaseTool getBaseTool(String baseToolName);
+	BaseTool getBaseTool(String baseToolName);
 }

@@ -9,10 +9,11 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public class ColorFieldManualTest {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("ColorField", createPanel()).setVisible(true);
+		JPanel panel = new ColorFieldManualTest().createPanel();
+		new ComponentWrapperDialog("ColorField", panel).setVisible(true);
 	}
 
-	private static JPanel createPanel() {
+	public JPanel createPanel() {
 		JPanel panel = new JPanel(new GridLayout(1, 1));
 		panel.add(new ColorField(""));
 		return panel;

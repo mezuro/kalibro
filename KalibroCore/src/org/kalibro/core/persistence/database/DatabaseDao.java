@@ -7,12 +7,12 @@ import javax.persistence.Entity;
 import org.kalibro.core.util.DataTransferObject;
 import org.kalibro.core.util.Identifier;
 
-public abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
+abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	protected Class<RECORD> recordClass;
 	protected DatabaseManager databaseManager;
 
-	public DatabaseDao(DatabaseManager databaseManager, Class<RECORD> recordClass) {
+	protected DatabaseDao(DatabaseManager databaseManager, Class<RECORD> recordClass) {
 		this.recordClass = recordClass;
 		this.databaseManager = databaseManager;
 	}

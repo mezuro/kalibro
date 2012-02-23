@@ -84,4 +84,8 @@ public final class Kalibro {
 	private static void createFacade() {
 		facade = currentSettings().isClient() ? new KalibroClient() : new KalibroLocal();
 	}
+
+	private Kalibro() {
+		// Utility class
+	}
 }

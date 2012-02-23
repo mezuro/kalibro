@@ -1,9 +1,9 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -13,11 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.persistence.database.DatabaseManager;
-import org.kalibro.core.persistence.database.NullRunnable;
-import org.kalibro.core.persistence.database.Query;
 import org.mockito.InOrder;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -53,87 +49,51 @@ public class DatabaseManagerTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldClearEntityManagerWhenCreatingTypedQuery() {
 		connectionManager.createQuery("42", String.class);
-		Mockito.verify(entityManager).clear();
+		verify(entityManager).clear();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforePersist() {
 		connectionManager.persist("unmerged");
-		Mockito.verify(entityManager).persist("merged");
+		verify(entityManager).persist("merged");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforeRemove() {
 		connectionManager.remove("unmerged");
-		Mockito.verify(entityManager).remove("merged");
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveWithNullBeforeSaveByDefault() throws Exception {
-		NullRunnable runnable = mockNullRunnable();
-		connectionManager.save("42");
-		PowerMockito.verifyPrivate(connectionManager).invoke("save", "42", runnable);
+		verify(entityManager).remove("merged");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveSingleEntityAsUnitaryList() throws Exception {
-		NullRunnable runnable = mockNullRunnable();
+		connectionManager = PowerMockito.spy(connectionManager);
 		connectionManager.save("42");
-		PowerMockito.verifyPrivate(connectionManager).invoke("save", Arrays.asList("42"), runnable);
+		PowerMockito.verifyPrivate(connectionManager).invoke("save", Arrays.asList("42"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveListWithNullBeforeSaveByDefault() throws Exception {
-		List<String> list = Arrays.asList("4", "2", "42");
-		NullRunnable runnable = mockNullRunnable();
-		connectionManager.save(list);
-		PowerMockito.verifyPrivate(connectionManager).invoke("save", list, runnable);
-	}
+	public void shouldSaveList() {
+		connectionManager.save(Arrays.asList("unmerged", "unmerged", "unmerged"));
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveListWithBeforeBlock() {
-		Runnable beforeSave = PowerMockito.mock(Runnable.class);
-		connectionManager.save(Arrays.asList("unmerged", "unmerged", "unmerged"), beforeSave);
-
-		InOrder order = verifyTransactionBeginning(beforeSave);
-		order.verify(entityManager, Mockito.times(3)).persist("merged");
+		InOrder order = inOrder(transaction, entityManager, transaction);
+		order.verify(transaction).begin();
+		order.verify(entityManager, times(3)).persist("merged");
 		order.verify(transaction).commit();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testDelete() throws Exception {
-		NullRunnable runnable = mockNullRunnable();
-		connectionManager.delete("42");
-		PowerMockito.verifyPrivate(connectionManager).invoke("delete", "42", runnable);
-	}
+	public void testDelete() {
+		connectionManager.delete("unmerged");
 
-	private NullRunnable mockNullRunnable() throws Exception {
-		connectionManager = PowerMockito.spy(connectionManager);
-		NullRunnable runnable = new NullRunnable();
-		PowerMockito.whenNew(NullRunnable.class).withNoArguments().thenReturn(runnable);
-		return runnable;
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testDeleteWithBeforeBlock() {
-		Runnable beforeDelete = PowerMockito.mock(Runnable.class);
-		connectionManager.delete("unmerged", beforeDelete);
-
-		InOrder order = verifyTransactionBeginning(beforeDelete);
+		InOrder order = inOrder(transaction, entityManager, transaction);
+		order.verify(transaction).begin();
 		order.verify(entityManager).remove("merged");
 		order.verify(transaction).commit();
-	}
-
-	private InOrder verifyTransactionBeginning(Runnable beforeBlock) {
-		InOrder order = Mockito.inOrder(transaction, beforeBlock, entityManager, transaction);
-		order.verify(transaction).begin();
-		order.verify(beforeBlock).run();
-		return order;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
 		connectionManager.finalize();
-		Mockito.verify(entityManager).close();
+		verify(entityManager).close();
 	}
 }

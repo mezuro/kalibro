@@ -4,7 +4,7 @@ import static org.kalibro.core.model.NativeMetricFixtures.*;
 
 import java.util.Arrays;
 
-public class MetricResultFixtures {
+public final class MetricResultFixtures {
 
 	public static NativeMetricResult nativeMetricResult(String code, Double value) {
 		return new NativeMetricResult(nativeMetric(code), value);
@@ -14,5 +14,9 @@ public class MetricResultFixtures {
 		MetricResult metricResult = new MetricResult(nativeMetric(code), value);
 		metricResult.addDescendentResults(Arrays.asList(descendentResults));
 		return metricResult;
+	}
+
+	private MetricResultFixtures() {
+		// Utility class
 	}
 }

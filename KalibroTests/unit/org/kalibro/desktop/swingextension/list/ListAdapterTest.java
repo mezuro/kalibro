@@ -3,7 +3,6 @@ package org.kalibro.desktop.swingextension.list;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.desktop.swingextension.list.ListAdapter;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
@@ -39,7 +38,7 @@ public class ListAdapterTest extends KalibroTestCase {
 
 	private class MyListAdapter extends ListAdapter<String> {
 
-		private MyListAdapter() {
+		protected MyListAdapter() {
 			super();
 		}
 	}

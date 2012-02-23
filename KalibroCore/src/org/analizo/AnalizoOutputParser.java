@@ -15,11 +15,11 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.yaml.snakeyaml.Yaml;
 
-public class AnalizoOutputParser {
+class AnalizoOutputParser {
 
 	private Map<String, NativeMetric> supportedMetrics;
 
-	public AnalizoOutputParser(InputStream metricListOuput) throws IOException {
+	protected AnalizoOutputParser(InputStream metricListOuput) throws IOException {
 		supportedMetrics = new HashMap<String, NativeMetric>();
 		parseSupportedMetrics(metricListOuput);
 	}
@@ -40,11 +40,11 @@ public class AnalizoOutputParser {
 		supportedMetrics.put(code, metric);
 	}
 
-	public Set<NativeMetric> getSupportedMetrics() {
+	protected Set<NativeMetric> getSupportedMetrics() {
 		return new HashSet<NativeMetric>(supportedMetrics.values());
 	}
 
-	public Set<NativeModuleResult> parseResults(InputStream resultsOutput, Set<NativeMetric> wantedMetrics) {
+	protected Set<NativeModuleResult> parseResults(InputStream resultsOutput, Set<NativeMetric> wantedMetrics) {
 		Set<NativeModuleResult> results = new HashSet<NativeModuleResult>();
 		for (Object resultMap : new Yaml().loadAll(resultsOutput))
 			results.add(parseResult((Map<?, ?>) resultMap, wantedMetrics));

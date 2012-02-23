@@ -2,15 +2,15 @@ package org.kalibro.core.model.abstracts;
 
 import java.lang.reflect.Method;
 
-public class EntityComparator<T extends Comparable<? super T>> {
+class EntityComparator<T extends Comparable<? super T>> {
 
 	private EntityReflector reflector;
 
-	public EntityComparator(AbstractEntity<T> entity) {
+	protected EntityComparator(AbstractEntity<T> entity) {
 		reflector = new EntityReflector(entity);
 	}
 
-	public int compare(T other) {
+	protected int compare(T other) {
 		for (Method method : reflector.getSortingMethods()) {
 			int compare = compare(other, method);
 			if (compare != 0)

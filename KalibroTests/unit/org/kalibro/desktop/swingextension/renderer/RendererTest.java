@@ -50,7 +50,7 @@ public class RendererTest extends KalibroTestCase {
 
 	private class MyRenderer extends Renderer {
 
-		private MyRenderer() {
+		protected MyRenderer() {
 			super();
 		}
 	}

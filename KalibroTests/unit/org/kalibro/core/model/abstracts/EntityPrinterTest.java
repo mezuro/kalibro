@@ -35,16 +35,22 @@ public class EntityPrinterTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldPrintAllFieldsOnDeepPrint() {
-		String expected = "$Person(identityNumber = CM, name = Carlos Morais, relatives = {"
-			+ "mother = $Person(identityNumber = CN, name = Cristina Nascimento, relatives = {}, sex = Female), "
-			+ "sister = $Person(identityNumber = IN, name = Isis Nascimento, relatives = {}, sex = Female)"
-			+ "}, sex = Male)";
+		String expected = "$Person(identityNumber = CM, name = Carlos Morais, relatives = {" +
+			"mother = $Person(identityNumber = CN, name = Cristina Nascimento, relatives = {}, sex = Female), " +
+			"sister = $Person(identityNumber = IN, name = Isis Nascimento, relatives = {}, sex = Female)" +
+			"}, sex = Male)";
 		assertEquals(expected, personPrinter.deepPrint());
 
-		expected = "$Programmer(colleagues = {$Programmer(colleagues = {}, identityNumber = PM, "
-			+ "name = Paulo Meirelles, relatives = {}, sex = Male, useMetrics = true)}, "
-			+ "identityNumber = CM, name = Carlos Morais, relatives = {}, sex = Male, useMetrics = true)";
+		expected = "$Programmer(colleagues = {$Programmer(colleagues = {}, identityNumber = PM, " +
+			"name = Paulo Meirelles, relatives = {}, sex = Male, useMetrics = true)}, " +
+			"identityNumber = CM, name = Carlos Morais, relatives = {}, sex = Male, useMetrics = true)";
 		assertEquals(expected, programmerPrinter.deepPrint());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldPrintAllFieldsWhenThereIsNoIdentity() {
+		String expected = "$NoIdentityEntity(field1 = null, field2 = null)";
+		assertEquals(expected, new EntityPrinter(new NoIdentityEntity()).simplePrint());
 	}
 
 	private class PersonWrapper extends AbstractEntity<PersonWrapper> {
@@ -52,11 +58,5 @@ public class EntityPrinterTest extends KalibroTestCase {
 		@IdentityField
 		@SuppressWarnings("unused" /* read via reflection */)
 		private Person person = carlos();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintAllFieldsWhenThereIsNoIdentity() {
-		String expected = "$NoIdentityEntity(field1 = null, field2 = null)";
-		assertEquals(expected, new EntityPrinter(new NoIdentityEntity()).simplePrint());
 	}
 }

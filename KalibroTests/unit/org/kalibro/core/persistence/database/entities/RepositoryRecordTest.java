@@ -9,7 +9,6 @@ import java.util.List;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.persistence.database.entities.RepositoryRecord;
 
 public class RepositoryRecordTest extends DtoTestCase<Repository, RepositoryRecord> {
 

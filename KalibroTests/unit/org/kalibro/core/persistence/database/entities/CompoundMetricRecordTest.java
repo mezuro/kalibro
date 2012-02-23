@@ -6,7 +6,6 @@ import java.util.Collection;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.CompoundMetricFixtures;
-import org.kalibro.core.persistence.database.entities.CompoundMetricRecord;
 
 public class CompoundMetricRecordTest extends DtoTestCase<CompoundMetric, CompoundMetricRecord> {
 

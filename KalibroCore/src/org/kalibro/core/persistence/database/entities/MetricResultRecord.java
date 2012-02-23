@@ -22,7 +22,7 @@ public class MetricResultRecord implements DataTransferObject<MetricResult> {
 	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, String projectName, Date date) {
 		List<MetricResultRecord> records = new ArrayList<MetricResultRecord>();
 		for (MetricResult metricResult : moduleResult.getMetricResults())
-			if (! metricResult.getMetric().isCompound())
+			if (!metricResult.getMetric().isCompound())
 				records.add(new MetricResultRecord(metricResult, moduleResult.getModule(), projectName, date));
 		return records;
 	}
@@ -32,11 +32,11 @@ public class MetricResultRecord implements DataTransferObject<MetricResult> {
 		ModuleResult moduleResult = null;
 		for (MetricResultRecord metricResult : metricResults) {
 			ModuleResult newModuleResult = metricResult.module.convertIntoModuleResult();
-			if (! newModuleResult.equals(moduleResult)) {
+			if (!newModuleResult.equals(moduleResult)) {
 				moduleResults.add(newModuleResult);
 				moduleResult = newModuleResult;
 			}
-			assert (moduleResult != null);
+			assert moduleResult != null;
 			moduleResult.addMetricResult(metricResult.convert());
 		}
 		return moduleResults;

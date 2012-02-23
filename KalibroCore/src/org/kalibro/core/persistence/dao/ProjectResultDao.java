@@ -6,19 +6,19 @@ import org.kalibro.core.model.ProjectResult;
 
 public interface ProjectResultDao {
 
-	public void save(ProjectResult projectResult);
+	void save(ProjectResult projectResult);
 
-	public boolean hasResultsFor(String projectName);
+	boolean hasResultsFor(String projectName);
 
-	public boolean hasResultsBefore(Date date, String projectName);
+	boolean hasResultsBefore(Date date, String projectName);
 
-	public boolean hasResultsAfter(Date date, String projectName);
+	boolean hasResultsAfter(Date date, String projectName);
 
-	public ProjectResult getFirstResultOf(String projectName);
+	ProjectResult getFirstResultOf(String projectName);
 
-	public ProjectResult getLastResultOf(String projectName);
+	ProjectResult getLastResultOf(String projectName);
 
-	public ProjectResult getLastResultBefore(Date date, String projectName);
+	ProjectResult getLastResultBefore(Date date, String projectName);
 
-	public ProjectResult getFirstResultAfter(Date date, String projectName);
+	ProjectResult getFirstResultAfter(Date date, String projectName);
 }

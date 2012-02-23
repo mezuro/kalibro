@@ -3,7 +3,7 @@ package org.kalibro.core.concurrent;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class TaskExecutor {
+class TaskExecutor {
 
 	private Task task;
 	private Timer periodicExecutionTimer;

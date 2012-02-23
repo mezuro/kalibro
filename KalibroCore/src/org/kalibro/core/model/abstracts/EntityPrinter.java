@@ -4,36 +4,20 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-public class EntityPrinter {
+class EntityPrinter {
 
 	private EntityReflector reflector;
 
-	public EntityPrinter(AbstractEntity<?> entity) {
+	protected EntityPrinter(AbstractEntity<?> entity) {
 		reflector = new EntityReflector(entity);
 	}
 
-	public String simplePrint() {
+	protected String simplePrint() {
 		return print(reflector.getIdentityFields(), new SimpleFieldPrinter());
 	}
 
-	private class SimpleFieldPrinter implements FieldPrinter {
-
-		@Override
-		public String print(AbstractEntity<?> fieldValue) {
-			return new EntityPrinter(fieldValue).simplePrint();
-		}
-	}
-
-	public String deepPrint() {
+	protected String deepPrint() {
 		return print(reflector.getAllFields(), new DeepFieldPrinter());
-	}
-
-	private class DeepFieldPrinter implements FieldPrinter {
-
-		@Override
-		public String print(AbstractEntity<?> fieldValue) {
-			return new EntityPrinter(fieldValue).deepPrint();
-		}
 	}
 
 	private String print(List<String> fields, FieldPrinter fieldPrinter) {
@@ -48,7 +32,7 @@ public class EntityPrinter {
 		return field + " = " + printValue(reflector.get(field), fieldPrinter);
 	}
 
-	public String printValue(Object value, FieldPrinter fieldPrinter) {
+	protected String printValue(Object value, FieldPrinter fieldPrinter) {
 		if (value instanceof AbstractEntity<?>)
 			return fieldPrinter.print((AbstractEntity<?>) value);
 		if (value instanceof Collection<?>)
@@ -78,6 +62,22 @@ public class EntityPrinter {
 
 	private interface FieldPrinter {
 
-		public abstract String print(AbstractEntity<?> fieldValue);
+		String print(AbstractEntity<?> fieldValue);
+	}
+
+	private class SimpleFieldPrinter implements FieldPrinter {
+
+		@Override
+		public String print(AbstractEntity<?> fieldValue) {
+			return new EntityPrinter(fieldValue).simplePrint();
+		}
+	}
+
+	private class DeepFieldPrinter implements FieldPrinter {
+
+		@Override
+		public String print(AbstractEntity<?> fieldValue) {
+			return new EntityPrinter(fieldValue).deepPrint();
+		}
 	}
 }

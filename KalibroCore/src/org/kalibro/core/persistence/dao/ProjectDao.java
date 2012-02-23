@@ -6,11 +6,11 @@ import org.kalibro.core.model.Project;
 
 public interface ProjectDao {
 
-	public void save(Project project);
+	void save(Project project);
 
-	public List<String> getProjectNames();
+	List<String> getProjectNames();
 
-	public Project getProject(String projectName);
+	Project getProject(String projectName);
 
-	public void removeProject(String projectName);
+	void removeProject(String projectName);
 }

@@ -9,7 +9,7 @@ import org.kalibro.core.command.CommandExecutor;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Project;
 
-public class LoadProjectTask extends Task {
+class LoadProjectTask extends Task {
 
 	private static final long LOAD_TIMEOUT = 30 * MINUTE;
 

@@ -50,7 +50,7 @@ public class StackTraceElementRecord implements DataTransferObject<StackTraceEle
 		return new StackTraceElement(declaringClass, methodName, fileName, lineNumber);
 	}
 
-	public void putIntoStackTrace(StackTraceElement[] stackTrace) {
+	protected void putIntoStackTrace(StackTraceElement[] stackTrace) {
 		stackTrace[index] = convert();
 	}
 }

@@ -3,7 +3,7 @@ package org.kalibro.core.settings;
 import java.util.HashMap;
 import java.util.Map;
 
-public class SettingsFixtures {
+public final class SettingsFixtures {
 
 	public static Map<?, ?> kalibroSettingsMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -35,5 +35,9 @@ public class SettingsFixtures {
 		map.put("username", "user");
 		map.put("password", "pass");
 		return map;
+	}
+
+	private SettingsFixtures() {
+		// Utility class
 	}
 }

@@ -6,9 +6,9 @@ import org.kalibro.core.model.Repository;
 
 public interface ProjectLoader {
 
-	public List<String> getValidationCommands();
+	List<String> getValidationCommands();
 
-	public boolean supportsAuthentication();
+	boolean supportsAuthentication();
 
-	public List<String> getLoadCommands(Repository repository, String loadPath);
+	List<String> getLoadCommands(Repository repository, String loadPath);
 }

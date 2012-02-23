@@ -2,7 +2,7 @@ package org.kalibro.core.model;
 
 import org.kalibro.core.model.enums.Granularity;
 
-public class ModuleFixtures {
+public final class ModuleFixtures {
 
 	public static Module helloWorldClass() {
 		return new Module(Granularity.CLASS, "HelloWorld");
@@ -10,5 +10,9 @@ public class ModuleFixtures {
 
 	public static Module helloWorldApplication() {
 		return new Module(Granularity.APPLICATION, "HelloWorld-1.0");
+	}
+
+	private ModuleFixtures() {
+		// Utility class
 	}
 }

@@ -27,8 +27,8 @@ import org.powermock.reflect.Whitebox;
 public class KalibroTest extends KalibroTestCase {
 
 	@BeforeClass
-	public static void emmaCoverage() {
-		new Kalibro();
+	public static void emmaCoverage() throws Exception {
+		Kalibro.class.getDeclaredConstructor().newInstance();
 	}
 
 	private KalibroSettings settings;

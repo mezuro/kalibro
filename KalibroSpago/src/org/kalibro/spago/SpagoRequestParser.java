@@ -12,23 +12,23 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 
-public class SpagoRequestParser {
+class SpagoRequestParser {
 
 	private Element root;
 	private Project project;
 
-	public SpagoRequestParser(String xmlRequest) throws Exception {
+	protected SpagoRequestParser(String xmlRequest) throws Exception {
 		InputSource inputSource = new InputSource(new StringReader(xmlRequest));
 		Document document = DocumentBuilderFactory.newInstance().newDocumentBuilder().parse(inputSource);
 		root = (Element) document.getElementsByTagName("qualipso-spago4q").item(0);
 		parseProject();
 	}
 
-	public Project getProject() {
+	protected Project getProject() {
 		return project;
 	}
 
-	public boolean shouldIncludeProject() {
+	protected boolean shouldIncludeProject() {
 		return isLanguageAccepted() && isModelAccepted();
 	}
 

@@ -1,5 +1,8 @@
 package org.checkstyle;
 
+import com.puppycrawl.tools.checkstyle.api.AuditEvent;
+import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -8,9 +11,6 @@ import org.kalibro.core.concurrent.Task;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-
-import com.puppycrawl.tools.checkstyle.api.AuditEvent;
-import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AuditEvent.class, LocalizedMessage.class})
@@ -53,16 +53,16 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 			parser.addError(mockEvent("too.many.methods", "1"));
 			parser.auditFinished(null);
 		}
-	}
 
-	private AuditEvent mockEvent(String messageKey, String message) {
-		LocalizedMessage localizedMessage = PowerMockito.mock(LocalizedMessage.class);
-		PowerMockito.when(localizedMessage.getKey()).thenReturn(messageKey);
+		private AuditEvent mockEvent(String messageKey, String message) {
+			LocalizedMessage localizedMessage = PowerMockito.mock(LocalizedMessage.class);
+			PowerMockito.when(localizedMessage.getKey()).thenReturn(messageKey);
 
-		AuditEvent event = PowerMockito.mock(AuditEvent.class);
-		PowerMockito.when(event.getLocalizedMessage()).thenReturn(localizedMessage);
-		PowerMockito.when(event.getFileName()).thenReturn("HelloWorld.java");
-		PowerMockito.when(event.getMessage()).thenReturn(message);
-		return event;
+			AuditEvent event = PowerMockito.mock(AuditEvent.class);
+			PowerMockito.when(event.getLocalizedMessage()).thenReturn(localizedMessage);
+			PowerMockito.when(event.getFileName()).thenReturn("HelloWorld.java");
+			PowerMockito.when(event.getMessage()).thenReturn(message);
+			return event;
+		}
 	}
 }

@@ -31,7 +31,7 @@ public enum CheckstyleMetric {
 		supportedMetrics.put(messageKey, new NativeMetric(metricName, Granularity.CLASS, Language.JAVA));
 	}
 
-	private String modulePath[];
+	private String[] modulePath;
 	private String attributeName;
 	private String messageKey;
 

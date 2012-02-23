@@ -96,26 +96,26 @@ public abstract class KalibroTestCase {
 	protected void assertClassEquals(Class<?> expectedClass, Object object) {
 		assertEquals(expectedClass, object.getClass());
 	}
-}
 
-class CollectionWrapper<T> extends AbstractEntity<CollectionWrapper<T>> {
+	private class CollectionWrapper<T> extends AbstractEntity<CollectionWrapper<T>> {
 
-	@IdentityField
-	@SuppressWarnings("unused" /* read by EntityReflector */)
-	private Collection<T> collection;
+		@IdentityField
+		@SuppressWarnings("unused" /* read by EntityReflector */)
+		private Collection<T> collection;
 
-	public CollectionWrapper(Collection<T> collection) {
-		this.collection = collection;
+		public CollectionWrapper(Collection<T> collection) {
+			this.collection = collection;
+		}
 	}
-}
 
-class MapWrapper<K, V> extends AbstractEntity<MapWrapper<K, V>> {
+	private class MapWrapper<K, V> extends AbstractEntity<MapWrapper<K, V>> {
 
-	@IdentityField
-	@SuppressWarnings("unused" /* read by EntityReflector */)
-	private Map<K, V> map;
+		@IdentityField
+		@SuppressWarnings("unused" /* read by EntityReflector */)
+		private Map<K, V> map;
 
-	public MapWrapper(Map<K, V> map) {
-		this.map = map;
+		public MapWrapper(Map<K, V> map) {
+			this.map = map;
+		}
 	}
 }

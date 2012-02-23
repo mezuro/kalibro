@@ -9,7 +9,6 @@ import java.util.Collection;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.persistence.database.entities.ProjectRecord;
 
 public class ProjectRecordTest extends DtoTestCase<Project, ProjectRecord> {
 
