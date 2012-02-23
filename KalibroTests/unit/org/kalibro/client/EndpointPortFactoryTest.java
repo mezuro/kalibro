@@ -2,6 +2,7 @@ package org.kalibro.client;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -30,7 +31,9 @@ public class EndpointPortFactoryTest extends KalibroTestCase {
 
 	@BeforeClass
 	public static void emmaCoverage() throws Exception {
-		EndpointPortFactory.class.getDeclaredConstructor().newInstance();
+		Constructor<EndpointPortFactory> constructor = EndpointPortFactory.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		constructor.newInstance();
 	}
 
 	private Service service;

@@ -18,7 +18,8 @@ public class ScriptBuilder extends AbstractScriptBuilder {
 
 	@Override
 	public boolean shouldInclude(Metric metric) {
-		return isScopeCompatible(metric) && (metric.equals(compoundMetric) || moduleResult.hasResultFor(metric));
+		boolean mayInclude = metric.equals(compoundMetric) || moduleResult.hasResultFor(metric);
+		return mayInclude && isScopeCompatible(metric);
 	}
 
 	private boolean isScopeCompatible(Metric metric) {
