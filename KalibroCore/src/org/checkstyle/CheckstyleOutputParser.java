@@ -9,19 +9,15 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
 
 public class CheckstyleOutputParser extends AuditAdapter {
 
-	private Map<String, NativeModuleResult> resultsMap;
+	private Map<String, PreModuleResult> resultsMap;
 	private boolean finished;
 
 	public CheckstyleOutputParser() {
-		resultsMap = new HashMap<String, NativeModuleResult>();
+		resultsMap = new HashMap<String, PreModuleResult>();
 		finished = true;
 	}
 
@@ -30,12 +26,12 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		String messageKey = event.getLocalizedMessage().getKey();
 		String className = fileNameToClass(event.getFileName());
 		Double value = Double.parseDouble(event.getMessage());
-		addMetricResult(className, CheckstyleMetric.getNativeMetricFor(messageKey), value);
+		addMetricResult(className, messageKey, value);
 	}
 
 	@Override
 	public synchronized void auditStarted(AuditEvent aEvt) {
-		resultsMap = new HashMap<String, NativeModuleResult>();
+		resultsMap = new HashMap<String, PreModuleResult>();
 		finished = false;
 	}
 
@@ -46,9 +42,12 @@ public class CheckstyleOutputParser extends AuditAdapter {
 	}
 
 	public synchronized Set<NativeModuleResult> getResults() throws InterruptedException {
-		while (! finished)
+		while (!finished)
 			wait();
-		return new HashSet<NativeModuleResult>(resultsMap.values());
+		Set<NativeModuleResult> results = new HashSet<NativeModuleResult>();
+		for (PreModuleResult result : resultsMap.values())
+			results.add(result.getModuleResult());
+		return results;
 	}
 
 	private String fileNameToClass(String group) {
@@ -56,14 +55,13 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		return parts[parts.length - 2];
 	}
 
-	private void addMetricResult(String className, NativeMetric nativeMetric, Double value) {
-		NativeMetricResult metricResult = new NativeMetricResult(nativeMetric, value);
-		getModuleResult(className).addMetricResult(metricResult);
+	private void addMetricResult(String className, String messageKey, Double value) {
+		getPreResult(className).addMetricResult(messageKey, value);
 	}
 
-	private NativeModuleResult getModuleResult(String className) {
-		if (! resultsMap.containsKey(className))
-			resultsMap.put(className, new NativeModuleResult(new Module(Granularity.CLASS, className)));
+	private PreModuleResult getPreResult(String className) {
+		if (!resultsMap.containsKey(className))
+			resultsMap.put(className, new PreModuleResult(className));
 		return resultsMap.get(className);
 	}
 }
