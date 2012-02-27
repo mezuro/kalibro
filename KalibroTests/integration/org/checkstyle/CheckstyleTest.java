@@ -19,7 +19,8 @@ public class CheckstyleTest extends KalibroTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldCollectMetrics() throws Exception {
-		File codeDirectory = new File(SAMPLES_DIRECTORY, "checkstyle");
+		File samplesDirectory = new File(SAMPLES_DIRECTORY, "checkstyle");
+		File codeDirectory = new File(samplesDirectory, "HelloWorld");
 		Set<NativeMetric> metrics = CheckstyleMetric.supportedMetrics();
 		assertDeepEquals(checkstyle.collectMetrics(codeDirectory, metrics), CheckstyleStub.result());
 	}
