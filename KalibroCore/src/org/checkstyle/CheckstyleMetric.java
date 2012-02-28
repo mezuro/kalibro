@@ -25,26 +25,32 @@ public enum CheckstyleMetric {
 		return supportedMetrics.get(messageKey);
 	}
 
-	private static void addSupportedMetric(String messageKey, String metricName) {
+	private static void addSupportedMetric(String messageKey, NativeMetric nativeMetric) {
 		if (supportedMetrics == null)
 			supportedMetrics = new HashMap<String, NativeMetric>();
-		supportedMetrics.put(messageKey, new NativeMetric(metricName, Granularity.CLASS, Language.JAVA));
+		supportedMetrics.put(messageKey, nativeMetric);
 	}
 
 	private String[] modulePath;
 	private String attributeName;
 	private String messageKey;
+	private NativeMetric nativeMetric;
 
 	private CheckstyleMetric(String modulePath, String attributeName, String messageKey) {
 		this.modulePath = modulePath.split("\\.");
 		this.attributeName = attributeName;
 		this.messageKey = messageKey;
-		addSupportedMetric(messageKey, toString());
+		this.nativeMetric = new NativeMetric(toString(), Granularity.CLASS, Language.JAVA);
+		addSupportedMetric(messageKey, nativeMetric);
 	}
 
 	@Override
 	public String toString() {
 		return Identifier.fromConstant(name()).asText();
+	}
+
+	public NativeMetric getNativeMetric() {
+		return nativeMetric;
 	}
 
 	public void addToChecker(CheckstyleConfiguration checker) {

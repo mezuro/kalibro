@@ -2,9 +2,12 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.model.NativeMetric;
 
 public class CheckstyleConfigurationTest extends KalibroTestCase {
 
@@ -52,9 +55,16 @@ public class CheckstyleConfigurationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCreateCheckerConfiguration() {
-		configuration = CheckstyleConfiguration.checkerConfiguration();
-		CheckstyleConfiguration methodCount = configuration.getChildByName("TreeWalker").getChildByName("MethodCount");
+	public void shouldCreateCheckerConfigurationFilteringMetrics() {
+		NativeMetric numberOfMethods = CheckstyleMetric.NUMBER_OF_METHODS.getNativeMetric();
+		configuration = CheckstyleConfiguration.checkerConfiguration(Arrays.asList(numberOfMethods));
+
+		assertEquals(1, configuration.getChildren().length);
+
+		CheckstyleConfiguration treeWalker = configuration.getChildByName("TreeWalker");
+		assertEquals(1, treeWalker.getChildren().length);
+
+		CheckstyleConfiguration methodCount = treeWalker.getChildByName("MethodCount");
 		assertTrue(methodCount.getMessages().containsKey("too.many.methods"));
 	}
 }

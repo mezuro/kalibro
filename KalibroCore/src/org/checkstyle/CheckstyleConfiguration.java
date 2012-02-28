@@ -3,17 +3,17 @@ package org.checkstyle;
 import com.google.common.collect.ImmutableMap;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+
+import org.kalibro.core.model.NativeMetric;
 
 public class CheckstyleConfiguration implements Configuration {
 
-	public static CheckstyleConfiguration checkerConfiguration() {
+	public static CheckstyleConfiguration checkerConfiguration(Collection<NativeMetric> wantedMetrics) {
 		CheckstyleConfiguration checker = new CheckstyleConfiguration("Checker");
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			metric.addToChecker(checker);
+			if (wantedMetrics.contains(metric.getNativeMetric()))
+				metric.addToChecker(checker);
 		return checker;
 	}
 
