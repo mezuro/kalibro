@@ -14,11 +14,14 @@ import org.kalibro.core.model.NativeModuleResult;
 public class CheckstyleOutputParser extends AuditAdapter {
 
 	private Map<String, PreModuleResult> resultsMap;
-	private boolean finished;
 
 	public CheckstyleOutputParser() {
 		resultsMap = new HashMap<String, PreModuleResult>();
-		finished = true;
+	}
+
+	@Override
+	public void auditStarted(AuditEvent aEvt) {
+		resultsMap = new HashMap<String, PreModuleResult>();
 	}
 
 	@Override
@@ -29,21 +32,7 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		addMetricResult(className, messageKey, value);
 	}
 
-	@Override
-	public synchronized void auditStarted(AuditEvent aEvt) {
-		resultsMap = new HashMap<String, PreModuleResult>();
-		finished = false;
-	}
-
-	@Override
-	public synchronized void auditFinished(AuditEvent aEvt) {
-		finished = true;
-		notify();
-	}
-
-	public synchronized Set<NativeModuleResult> getResults() throws InterruptedException {
-		while (!finished)
-			wait();
+	public Set<NativeModuleResult> getResults() {
 		Set<NativeModuleResult> results = new HashSet<NativeModuleResult>();
 		for (PreModuleResult result : resultsMap.values())
 			results.add(result.getModuleResult());
