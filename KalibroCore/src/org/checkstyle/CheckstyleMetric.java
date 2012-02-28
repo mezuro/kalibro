@@ -12,6 +12,7 @@ import org.kalibro.core.util.Identifier;
 public enum CheckstyleMetric {
 
 	AVERAGE_ANONYMOUS_CLASSES_LENGTH("TreeWalker.AnonInnerLength", "max", "maxLen.anonInner"),
+	AVERAGE_METHOD_LENGTH("TreeWalker.MethodLength", "max", "maxLen.method"),
 	EXECUTABLE_STATEMENTS("TreeWalker.ExecutableStatementCount", "max", "executableStatementCount", Statistic.SUM),
 	FILE_LENGTH("FileLength", "max", "maxLen.file"),
 	NUMBER_OF_METHODS("TreeWalker.MethodCount", "maxTotal", "too.many.methods");
