@@ -1,6 +1,7 @@
 package org.checkstyle;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 
 import java.util.Collection;
 
@@ -20,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({NativeMetricResult.class, PreModuleResult.class})
 public class PreModuleResultTest extends KalibroTestCase {
 
-	private static final String MESSAGE_KEY = "PreModuleResultTestMessageKey";
+	private static final String MESSAGE_KEY = "too.many.methods";
 	private static final String MODULE_NAME = "PreModuleResultTestModule";
 
 	private PreMetricResult preMetricResult;
@@ -31,14 +32,15 @@ public class PreModuleResultTest extends KalibroTestCase {
 	@Before
 	public void setUp() throws Exception {
 		mockPreMetricResult();
-		result = new PreModuleResult(MODULE_NAME);
+		result = new PreModuleResult(MODULE_NAME, CheckstyleStub.nativeMetrics());
 	}
 
 	private void mockPreMetricResult() throws Exception {
 		metricResult = PowerMockito.mock(NativeMetricResult.class);
 		preMetricResult = PowerMockito.mock(PreMetricResult.class);
-		PowerMockito.whenNew(PreMetricResult.class).withArguments(MESSAGE_KEY).thenReturn(preMetricResult);
+		PowerMockito.whenNew(PreMetricResult.class).withArguments(any()).thenReturn(preMetricResult);
 		PowerMockito.when(preMetricResult.getResult()).thenReturn(metricResult);
+		PowerMockito.when(metricResult.getMetric()).thenReturn(CheckstyleMetric.FILE_LENGTH.getNativeMetric());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

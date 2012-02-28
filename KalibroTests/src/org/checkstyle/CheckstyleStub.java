@@ -25,8 +25,9 @@ public class CheckstyleStub implements MetricCollector {
 
 		Module module = new Module(Granularity.CLASS, "HelloWorld");
 		result = new NativeModuleResult(module);
-		addMetricResult(NUMBER_OF_METHODS, 1.0);
+		addMetricResult(AVERAGE_ANONYMOUS_CLASSES_LENGTH, 0.0);
 		addMetricResult(FILE_LENGTH, 6.0);
+		addMetricResult(NUMBER_OF_METHODS, 1.0);
 		return result;
 	}
 

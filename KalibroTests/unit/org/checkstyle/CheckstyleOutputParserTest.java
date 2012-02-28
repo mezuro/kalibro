@@ -19,7 +19,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		parser = new CheckstyleOutputParser();
+		parser = new CheckstyleOutputParser(CheckstyleStub.nativeMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

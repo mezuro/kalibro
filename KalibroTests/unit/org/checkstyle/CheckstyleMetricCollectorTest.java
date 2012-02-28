@@ -38,7 +38,7 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
 	private void mockParser() throws Exception {
 		parser = PowerMockito.mock(CheckstyleOutputParser.class);
-		PowerMockito.whenNew(CheckstyleOutputParser.class).withNoArguments().thenReturn(parser);
+		PowerMockito.whenNew(CheckstyleOutputParser.class).withArguments(wantedMetrics).thenReturn(parser);
 	}
 
 	private void mockConfiguration() {

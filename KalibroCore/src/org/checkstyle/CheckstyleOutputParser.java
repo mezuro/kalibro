@@ -9,13 +9,16 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 
 public class CheckstyleOutputParser extends AuditAdapter {
 
+	private Set<NativeMetric> wantedMetrics;
 	private Map<String, PreModuleResult> resultsMap;
 
-	public CheckstyleOutputParser() {
+	public CheckstyleOutputParser(Set<NativeMetric> wantedMetrics) {
+		this.wantedMetrics = wantedMetrics;
 		resultsMap = new HashMap<String, PreModuleResult>();
 	}
 
@@ -50,7 +53,7 @@ public class CheckstyleOutputParser extends AuditAdapter {
 
 	private PreModuleResult getPreResult(String className) {
 		if (!resultsMap.containsKey(className))
-			resultsMap.put(className, new PreModuleResult(className));
+			resultsMap.put(className, new PreModuleResult(className, wantedMetrics));
 		return resultsMap.get(className);
 	}
 }

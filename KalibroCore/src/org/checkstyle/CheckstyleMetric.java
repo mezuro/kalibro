@@ -11,6 +11,7 @@ import org.kalibro.core.util.Identifier;
 
 public enum CheckstyleMetric {
 
+	AVERAGE_ANONYMOUS_CLASSES_LENGTH("TreeWalker.AnonInnerLength", "max", "maxLen.anonInner"),
 	FILE_LENGTH("FileLength", "max", "maxLen.file"),
 	NUMBER_OF_METHODS("TreeWalker.MethodCount", "maxTotal", "too.many.methods");
 
@@ -48,6 +49,10 @@ public enum CheckstyleMetric {
 	@Override
 	public String toString() {
 		return Identifier.fromConstant(name()).asText();
+	}
+
+	public String getMessageKey() {
+		return messageKey;
 	}
 
 	public NativeMetric getNativeMetric() {

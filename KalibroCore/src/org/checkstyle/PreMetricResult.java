@@ -11,8 +11,8 @@ class PreMetricResult {
 	private CheckstyleMetric metric;
 	private Collection<Double> values;
 
-	public PreMetricResult(String messageKey) {
-		this.metric = CheckstyleMetric.getMetricFor(messageKey);
+	public PreMetricResult(CheckstyleMetric metric) {
+		this.metric = metric;
 		values = new ArrayList<Double>();
 	}
 
@@ -22,7 +22,7 @@ class PreMetricResult {
 
 	public NativeMetricResult getResult() {
 		NativeMetric nativeMetric = metric.getNativeMetric();
-		Double value = metric.getAggregationType().calculate(values);
+		Double value = values.isEmpty() ? 0.0 : metric.getAggregationType().calculate(values);
 		return new NativeMetricResult(nativeMetric, value);
 	}
 }

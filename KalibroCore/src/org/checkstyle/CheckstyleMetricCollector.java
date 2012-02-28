@@ -22,7 +22,7 @@ public class CheckstyleMetricCollector implements MetricCollector {
 
 	@Override
 	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
-		CheckstyleOutputParser parser = new CheckstyleOutputParser();
+		CheckstyleOutputParser parser = new CheckstyleOutputParser(metrics);
 		Configuration configuration = CheckstyleConfiguration.checkerConfiguration(metrics);
 		new KalibroChecker(parser, configuration).process(codeDirectory);
 		return parser.getResults();

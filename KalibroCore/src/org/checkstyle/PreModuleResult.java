@@ -2,24 +2,33 @@ package org.checkstyle;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.kalibro.core.model.Module;
+import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
 
 public class PreModuleResult {
 
 	private Module module;
+	private Set<NativeMetric> wantedMetrics;
 	private Map<String, PreMetricResult> metricResults;
 
-	public PreModuleResult(String className) {
+	public PreModuleResult(String className, Set<NativeMetric> wantedMetrics) {
 		module = new Module(Granularity.CLASS, className);
+		this.wantedMetrics = wantedMetrics;
+		initializeMetricResults();
+	}
+
+	private void initializeMetricResults() {
 		metricResults = new HashMap<String, PreMetricResult>();
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			if (wantedMetrics.contains(metric.getNativeMetric()))
+				metricResults.put(metric.getMessageKey(), new PreMetricResult(metric));
 	}
 
 	public void addMetricResult(String messageKey, Double value) {
-		if (!metricResults.containsKey(messageKey))
-			metricResults.put(messageKey, new PreMetricResult(messageKey));
 		metricResults.get(messageKey).addValue(value);
 	}
 
