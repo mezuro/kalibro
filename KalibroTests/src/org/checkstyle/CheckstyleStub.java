@@ -30,6 +30,7 @@ public class CheckstyleStub implements MetricCollector {
 		addMetricResult(EXECUTABLE_STATEMENTS, 1.0);
 		addMetricResult(FILE_LENGTH, 6.0);
 		addMetricResult(NUMBER_OF_METHODS, 1.0);
+		addMetricResult(NUMBER_OF_OUTER_TYPES, 1.0);
 		return result;
 	}
 

@@ -15,7 +15,8 @@ public enum CheckstyleMetric {
 	AVERAGE_METHOD_LENGTH("TreeWalker.MethodLength", "max", "maxLen.method"),
 	EXECUTABLE_STATEMENTS("TreeWalker.ExecutableStatementCount", "max", "executableStatementCount", Statistic.SUM),
 	FILE_LENGTH("FileLength", "max", "maxLen.file"),
-	NUMBER_OF_METHODS("TreeWalker.MethodCount", "maxTotal", "too.many.methods");
+	NUMBER_OF_METHODS("TreeWalker.MethodCount", "maxTotal", "too.many.methods"),
+	NUMBER_OF_OUTER_TYPES("TreeWalker.OuterTypeNumber", "max", "maxOuterTypes", Statistic.SUM);
 
 	private static Map<String, CheckstyleMetric> metrics;
 
