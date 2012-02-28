@@ -17,9 +17,12 @@ import org.kalibro.core.model.enums.Language;
 
 public class CheckstyleStub implements MetricCollector {
 
+	private static Set<NativeMetric> nativeMetrics;
 	private static NativeModuleResult result = initializeResult();
 
 	private static NativeModuleResult initializeResult() {
+		nativeMetrics = new HashSet<NativeMetric>();
+
 		Module module = new Module(Granularity.CLASS, "HelloWorld");
 		result = new NativeModuleResult(module);
 		addMetricResult(NUMBER_OF_METHODS, 1.0);
@@ -29,7 +32,12 @@ public class CheckstyleStub implements MetricCollector {
 
 	private static void addMetricResult(CheckstyleMetric metric, Double value) {
 		NativeMetric nativeMetric = new NativeMetric(metric.toString(), Granularity.CLASS, Language.JAVA);
+		nativeMetrics.add(nativeMetric);
 		result.addMetricResult(new NativeMetricResult(nativeMetric, value));
+	}
+
+	public static Set<NativeMetric> nativeMetrics() {
+		return nativeMetrics;
 	}
 
 	public static NativeModuleResult result() {
@@ -42,7 +50,7 @@ public class CheckstyleStub implements MetricCollector {
 
 	@Override
 	public Set<NativeMetric> getSupportedMetrics() {
-		return CheckstyleMetric.supportedMetrics();
+		return nativeMetrics();
 	}
 
 	@Override

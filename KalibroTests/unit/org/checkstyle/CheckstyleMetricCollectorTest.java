@@ -29,11 +29,11 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		wantedMetrics = CheckstyleMetric.supportedMetrics();
+		collector = new CheckstyleMetricCollector();
+		wantedMetrics = collector.getSupportedMetrics();
 		mockParser();
 		mockConfiguration();
 		mockChecker();
-		collector = new CheckstyleMetricCollector();
 	}
 
 	private void mockParser() throws Exception {
@@ -54,7 +54,7 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkSupportedMetrics() {
-		assertDeepEquals(CheckstyleMetric.supportedMetrics(), collector.getSupportedMetrics());
+		assertDeepEquals(CheckstyleStub.nativeMetrics(), collector.getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -10,6 +10,7 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
+import org.kalibro.core.model.enums.Statistic;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -32,8 +33,12 @@ public class PreMetricResultTest extends KalibroTestCase {
 
 	private void mockNativeMetric() {
 		nativeMetric = new NativeMetric(messageKey, Granularity.PACKAGE, Language.CPP);
+		CheckstyleMetric metric = PowerMockito.mock(CheckstyleMetric.class);
+		PowerMockito.when(metric.getNativeMetric()).thenReturn(nativeMetric);
+		PowerMockito.when(metric.getAggregationType()).thenReturn(Statistic.AVERAGE);
+
 		PowerMockito.mockStatic(CheckstyleMetric.class);
-		PowerMockito.when(CheckstyleMetric.getNativeMetricFor(messageKey)).thenReturn(nativeMetric);
+		PowerMockito.when(CheckstyleMetric.getMetricFor(messageKey)).thenReturn(metric);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

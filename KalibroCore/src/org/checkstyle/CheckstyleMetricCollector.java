@@ -3,6 +3,7 @@ package org.checkstyle;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.kalibro.core.MetricCollector;
@@ -13,7 +14,10 @@ public class CheckstyleMetricCollector implements MetricCollector {
 
 	@Override
 	public Set<NativeMetric> getSupportedMetrics() {
-		return CheckstyleMetric.supportedMetrics();
+		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			supportedMetrics.add(metric.getNativeMetric());
+		return supportedMetrics;
 	}
 
 	@Override

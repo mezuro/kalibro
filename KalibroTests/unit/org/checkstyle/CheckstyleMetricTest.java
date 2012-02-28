@@ -23,28 +23,21 @@ public class CheckstyleMetricTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkSupportedMetrics() {
-		assertDeepEquals(CheckstyleMetric.supportedMetrics(),
-			new NativeMetric("File length", CLASS, JAVA),
-			new NativeMetric("Number of methods", CLASS, JAVA));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkNativeMetricNames() {
-		assertEquals("File length", CheckstyleMetric.getNativeMetricFor("maxLen.file").getName());
-		assertEquals("Number of methods", CheckstyleMetric.getNativeMetricFor("too.many.methods").getName());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkNativeMetricForKeys() {
-		assertDeepEquals(FILE_LENGTH.getNativeMetric(), CheckstyleMetric.getNativeMetricFor("maxLen.file"));
-		assertDeepEquals(NUMBER_OF_METHODS.getNativeMetric(), CheckstyleMetric.getNativeMetricFor("too.many.methods"));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNames() {
 		assertEquals("File length", "" + FILE_LENGTH);
 		assertEquals("Number of methods", "" + NUMBER_OF_METHODS);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkNativeMetrics() {
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			assertDeepEquals(new NativeMetric(metric.toString(), CLASS, JAVA), metric.getNativeMetric());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkMetricKeys() {
+		assertEquals(FILE_LENGTH, CheckstyleMetric.getMetricFor("maxLen.file"));
+		assertEquals(NUMBER_OF_METHODS, CheckstyleMetric.getMetricFor("too.many.methods"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
