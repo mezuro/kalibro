@@ -30,7 +30,7 @@ public class ConfigurationEndpointImplTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		mockDao();
-		configuration = kalibroConfiguration();
+		configuration = simpleConfiguration();
 		endpoint = new ConfigurationEndpointImpl();
 	}
 

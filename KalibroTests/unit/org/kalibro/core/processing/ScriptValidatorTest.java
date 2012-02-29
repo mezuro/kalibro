@@ -20,7 +20,7 @@ public class ScriptValidatorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = kalibroConfiguration();
+		configuration = simpleConfiguration();
 		validator = new ScriptValidator(configuration);
 	}
 

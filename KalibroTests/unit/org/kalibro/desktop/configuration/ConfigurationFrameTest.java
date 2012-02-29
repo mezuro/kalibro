@@ -32,7 +32,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = ConfigurationFixtures.kalibroConfiguration();
+		configuration = ConfigurationFixtures.simpleConfiguration();
 		mockPanel();
 		mockMetricConfigurationController();
 		frame = new ConfigurationFrame(configuration);

@@ -21,7 +21,7 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		sc = CompoundMetricFixtures.sc();
-		configuration = kalibroConfiguration();
+		configuration = simpleConfiguration();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -39,8 +39,8 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testContains() {
-		assertTrue(configuration.contains(nativeMetric("loc")));
-		assertTrue(configuration.contains(nativeMetric("nom")));
+		assertTrue(configuration.contains(nativeMetric("cbo")));
+		assertTrue(configuration.contains(nativeMetric("lcom4")));
 		assertFalse(configuration.contains(sc));
 	}
 
@@ -56,13 +56,13 @@ public class ConfigurationTest extends KalibroTestCase {
 	public void shouldRetrieveNativeMetricsPerOrigin() {
 		Map<String, Set<NativeMetric>> nativeMetrics = configuration.getNativeMetrics();
 		assertEquals(1, nativeMetrics.size());
-		assertEquals(metricsWithThresholds().size(), nativeMetrics.get("Analizo").size());
+		assertEquals(3, nativeMetrics.get("Analizo").size());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveConfigurationForMetric() {
-		for (String code : metricsWithThresholds())
-			assertDeepEquals(configuration(code), configuration.getConfigurationFor(nativeMetric(code)));
+		assertDeepEquals(configuration("cbo"), configuration.getConfigurationFor(nativeMetric("cbo")));
+		assertDeepEquals(configuration("lcom4"), configuration.getConfigurationFor(nativeMetric("lcom4")));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -83,7 +83,7 @@ public class ConfigurationTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				configuration.addMetricConfiguration(configuration("acc"));
+				configuration.addMetricConfiguration(configuration("cbo"));
 			}
 		}, IllegalArgumentException.class, "A metric configuration with the same code already exists");
 	}

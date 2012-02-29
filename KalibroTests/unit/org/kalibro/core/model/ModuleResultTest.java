@@ -27,7 +27,7 @@ public class ModuleResultTest extends KalibroTestCase {
 	public void setUp() {
 		result = helloWorldClassResult();
 		result.metricResults.remove(nativeMetric("sc"));
-		configuration = kalibroConfiguration();
+		configuration = simpleConfiguration();
 		configuration.addMetricConfiguration(createScConfiguration());
 		configuration.addMetricConfiguration(createInvalidConfiguration());
 	}
@@ -72,14 +72,17 @@ public class ModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkGrade() {
-		NativeMetric metric = nativeMetric("acc");
-		MetricResult metricResult = result.getResultFor(metric);
-		MetricConfiguration metricConfiguration = configuration.getConfigurationFor(metric);
+		configuration.removeMetric(sc);
+
+		NativeMetric cbo = nativeMetric("cbo");
+		MetricResult cboResult = result.getResultFor(cbo);
+		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
+
 		for (Double weight : new Double[]{0.0, 1.0, 2.0, 3.0, 4.0}) {
-			metricConfiguration.setWeight(weight);
+			cboConfiguration.setWeight(weight);
 			result.setConfiguration(configuration);
-			Double numerator = 90.0 + metricResult.getGrade() * weight;
-			Double denominator = 10.0 + weight;
+			Double numerator = 20.0 + cboResult.getGrade() * weight;
+			Double denominator = 2.0 + weight;
 			assertDoubleEquals(numerator / denominator, result.getGrade());
 		}
 	}

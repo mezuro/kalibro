@@ -34,7 +34,7 @@ public class ConfigurationPortDaoTest extends KalibroTestCase {
 	public void setUp() {
 		mockPort();
 		dao = new ConfigurationPortDao();
-		configuration = ConfigurationFixtures.kalibroConfiguration();
+		configuration = ConfigurationFixtures.simpleConfiguration();
 	}
 
 	private void mockPort() {

@@ -20,8 +20,8 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Before
 	public void setUp() {
-		kalibroForJava = kalibroConfiguration();
-		configuration2 = kalibroConfiguration();
+		kalibroForJava = simpleConfiguration();
+		configuration2 = simpleConfiguration();
 		configuration2.setName("Configuration 2");
 		configuration2.addMetricConfiguration(new MetricConfiguration(CompoundMetricFixtures.sc()));
 		dao = daoFactory.getConfigurationDao();

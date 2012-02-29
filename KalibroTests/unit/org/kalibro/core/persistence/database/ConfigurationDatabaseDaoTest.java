@@ -29,7 +29,7 @@ public class ConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = ConfigurationFixtures.kalibroConfiguration();
+		configuration = ConfigurationFixtures.simpleConfiguration();
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		dao = PowerMockito.spy(new ConfigurationDatabaseDao(databaseManager));
 	}

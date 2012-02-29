@@ -40,7 +40,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		mockPanels();
 		mockDialogs();
 		mockRangeController();
-		configuration = ConfigurationFixtures.kalibroConfiguration();
+		configuration = ConfigurationFixtures.simpleConfiguration();
 		controller = new MetricConfigurationController(configuration, cardStack);
 	}
 
@@ -173,7 +173,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		controller.edit(metricConfiguration);
 
 		metricConfiguration = new MetricConfiguration(amloc);
-		metricConfiguration.setCode("loc");
+		metricConfiguration.setCode("cbo");
 		PowerMockito.when(panel.retrieve()).thenReturn(metricConfiguration);
 		clickButton("ok");
 	}
@@ -182,7 +182,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	public void oldConfigurationShouldStillBeThereOnError() {
 		NativeMetric amloc = NativeMetricFixtures.nativeMetric("amloc");
 		MetricConfiguration oldConfiguration = MetricConfigurationFixtures.configuration("amloc");
-		MetricConfiguration newConfiguration = new MetricConfiguration(NativeMetricFixtures.nativeMetric("loc"));
+		MetricConfiguration newConfiguration = new MetricConfiguration(NativeMetricFixtures.nativeMetric("cbo"));
 		PowerMockito.when(panel.retrieve()).thenReturn(newConfiguration);
 		controller.edit(oldConfiguration);
 		clickButton("ok");

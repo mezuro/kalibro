@@ -44,7 +44,7 @@ public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResu
 
 		assertEquals(1, converted.size());
 		ModuleResult convertedResult = converted.get(0);
-		convertedResult.setConfiguration(kalibroConfiguration());
+		convertedResult.setConfiguration(simpleConfiguration());
 		assertDeepEquals(moduleResult, convertedResult);
 	}
 }

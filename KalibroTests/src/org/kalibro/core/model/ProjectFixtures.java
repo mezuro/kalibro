@@ -12,7 +12,7 @@ public final class ProjectFixtures {
 		project.setName("HelloWorld-1.0");
 		project.setLicense("Creative Commons");
 		project.setRepository(helloWorldRepository(RepositoryType.LOCAL_DIRECTORY));
-		project.setConfigurationName(ConfigurationFixtures.kalibroConfiguration().getName());
+		project.setConfigurationName(ConfigurationFixtures.simpleConfiguration().getName());
 		project.setState(ProjectState.READY);
 		return project;
 	}
