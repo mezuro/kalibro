@@ -5,27 +5,21 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
-import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
-
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.NativeMetric;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(DefaultConfiguration.class)
 public class CheckstyleMetricTest extends KalibroTestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkSupportedMetrics() {
-		assertDeepEquals(CheckstyleMetric.supportedMetrics(),
-			new NativeMetric("File length", CLASS, JAVA),
-			new NativeMetric("Number of methods", CLASS, JAVA));
+	private CheckstyleConfiguration checker, treeWalker;
+
+	@Before
+	public void setUp() {
+		checker = new CheckstyleConfiguration("Checker");
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			metric.addToChecker(checker);
+		treeWalker = checker.getChildByName("TreeWalker");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -36,50 +30,25 @@ public class CheckstyleMetricTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNativeMetrics() {
-		assertDeepEquals(new NativeMetric("File length", CLASS, JAVA), FILE_LENGTH.getNativeMetric());
-		assertDeepEquals(new NativeMetric("Number of methods", CLASS, JAVA), NUMBER_OF_METHODS.getNativeMetric());
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			assertDeepEquals(new NativeMetric(metric.toString(), CLASS, JAVA), metric.getNativeMetric());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkPatterns() {
-		assertEquals("^File length is (\\d+) lines \\(max allowed is -1\\)\\.$",
-			FILE_LENGTH.getPattern().pattern());
-		assertEquals("^Total number of methods is (\\d+) \\(max allowed is -1\\)\\.$",
-			NUMBER_OF_METHODS.getPattern().pattern());
+	public void checkMetricKeys() {
+		assertEquals(FILE_LENGTH, CheckstyleMetric.getMetricFor("maxLen.file"));
+		assertEquals(NUMBER_OF_METHODS, CheckstyleMetric.getMetricFor("too.many.methods"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldChangeParentToTreeWalkerOnNumberOfMethods() {
-		assertSameParent(FILE_LENGTH);
-		assertParentChange(NUMBER_OF_METHODS, "TreeWalker");
-
-	}
-
-	private void assertSameParent(CheckstyleMetric metric) {
-		DefaultConfiguration parent = PowerMockito.mock(DefaultConfiguration.class);
-		assertSame(parent, metric.addToConfiguration(parent));
-	}
-
-	private void assertParentChange(CheckstyleMetric metric, String newParent) {
-		DefaultConfiguration parent = PowerMockito.mock(DefaultConfiguration.class);
-		assertEquals(newParent, metric.addToConfiguration(parent).getName());
+	public void shouldAddAttributesToConfiguration() {
+		assertEquals("-1", checker.getChildByName("FileLength").getAttribute("max"));
+		assertEquals("-1", treeWalker.getChildByName("MethodCount").getAttribute("maxTotal"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAddConfigurationToParent() throws Exception {
-		testConfiguration(FILE_LENGTH, "FileLength", "max", "-1");
-		testConfiguration(NUMBER_OF_METHODS, "TreeWalker");
-	}
-
-	private void testConfiguration(CheckstyleMetric metric, String moduleName, String... properties) throws Exception {
-		DefaultConfiguration parent = PowerMockito.mock(DefaultConfiguration.class);
-		metric.addToConfiguration(parent);
-
-		ArgumentCaptor<DefaultConfiguration> captor = ArgumentCaptor.forClass(DefaultConfiguration.class);
-		Mockito.verify(parent).addChild(captor.capture());
-		DefaultConfiguration argument = captor.getValue();
-		assertEquals(moduleName, argument.getName());
-		for (int i = 0; i < properties.length; i += 2)
-			assertEquals(properties[i + 1], argument.getAttribute(properties[i]));
+	public void shouldAddMessagesToConfiguration() {
+		assertTrue(checker.getChildByName("FileLength").getMessages().containsKey("maxLen.file"));
+		assertTrue(treeWalker.getChildByName("MethodCount").getMessages().containsKey("too.many.methods"));
 	}
 }

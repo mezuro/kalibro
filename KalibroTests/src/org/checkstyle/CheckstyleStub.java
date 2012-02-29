@@ -13,30 +13,48 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.core.model.enums.Language;
 
 public class CheckstyleStub implements MetricCollector {
 
+	private static Set<NativeMetric> nativeMetrics;
 	private static NativeModuleResult result = initializeResult();
 
 	private static NativeModuleResult initializeResult() {
+		nativeMetrics = new HashSet<NativeMetric>();
+
 		Module module = new Module(Granularity.CLASS, "HelloWorld");
 		result = new NativeModuleResult(module);
-		result.addMetricResult(new NativeMetricResult(NUMBER_OF_METHODS.getNativeMetric(), 1.0));
-		result.addMetricResult(new NativeMetricResult(FILE_LENGTH.getNativeMetric(), 6.0));
+		addMetricResult(AVERAGE_ANONYMOUS_CLASSES_LENGTH, 0.0);
+		addMetricResult(AVERAGE_METHOD_LENGTH, 3.0);
+		addMetricResult(EXECUTABLE_STATEMENTS, 1.0);
+		addMetricResult(FILE_LENGTH, 6.0);
+		addMetricResult(NUMBER_OF_METHODS, 1.0);
+		addMetricResult(NUMBER_OF_OUTER_TYPES, 1.0);
 		return result;
+	}
+
+	private static void addMetricResult(CheckstyleMetric metric, Double value) {
+		NativeMetric nativeMetric = new NativeMetric(metric.toString(), Granularity.CLASS, Language.JAVA);
+		nativeMetrics.add(nativeMetric);
+		result.addMetricResult(new NativeMetricResult(nativeMetric, value));
+	}
+
+	public static Set<NativeMetric> nativeMetrics() {
+		return nativeMetrics;
 	}
 
 	public static NativeModuleResult result() {
 		return result;
 	}
-	
+
 	public static Set<NativeModuleResult> results() {
 		return new HashSet<NativeModuleResult>(Arrays.asList(result));
 	}
 
 	@Override
 	public Set<NativeMetric> getSupportedMetrics() {
-		return CheckstyleMetric.supportedMetrics();
+		return nativeMetrics();
 	}
 
 	@Override

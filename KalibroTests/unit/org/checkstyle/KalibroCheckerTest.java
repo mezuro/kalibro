@@ -1,9 +1,8 @@
 package org.checkstyle;
 
-import static org.mockito.Matchers.*;
-
 import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
+import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -26,6 +25,7 @@ public class KalibroCheckerTest extends KalibroTestCase {
 
 	private Checker checker;
 	private AuditListener listener;
+	private Configuration configuration;
 
 	private KalibroChecker kalibroChecker;
 
@@ -33,7 +33,8 @@ public class KalibroCheckerTest extends KalibroTestCase {
 	public void setUp() throws Exception {
 		mockChecker();
 		listener = PowerMockito.mock(AuditListener.class);
-		kalibroChecker = new KalibroChecker(listener);
+		configuration = PowerMockito.mock(Configuration.class);
+		kalibroChecker = new KalibroChecker(listener, configuration);
 	}
 
 	private void mockChecker() throws Exception {
@@ -53,7 +54,7 @@ public class KalibroCheckerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConfigureChecker() throws Exception {
-		Mockito.verify(checker).configure(any(CheckstyleConfiguration.class));
+		Mockito.verify(checker).configure(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

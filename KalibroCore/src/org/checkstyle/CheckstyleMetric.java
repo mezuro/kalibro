@@ -1,54 +1,52 @@
 package org.checkstyle;
 
-import static org.kalibro.core.model.enums.Granularity.*;
-
-import com.puppycrawl.tools.checkstyle.DefaultConfiguration;
-
-import java.util.HashSet;
-import java.util.Set;
-import java.util.regex.Pattern;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
+import org.kalibro.core.model.enums.Statistic;
 import org.kalibro.core.util.Identifier;
 
 public enum CheckstyleMetric {
 
-	FILE_LENGTH(CLASS, "^File length is (\\d+) lines \\(max allowed is -1\\)\\.$", "FileLength", "max", "-1"),
-	NUMBER_OF_METHODS(CLASS, "^Total number of methods is (\\d+) \\(max allowed is -1\\)\\.$",
-		"MethodCount", "maxTotal", "-1") {
+	AVERAGE_ANONYMOUS_CLASSES_LENGTH("TreeWalker.AnonInnerLength", "max", "maxLen.anonInner"),
+	AVERAGE_METHOD_LENGTH("TreeWalker.MethodLength", "max", "maxLen.method"),
+	EXECUTABLE_STATEMENTS("TreeWalker.ExecutableStatementCount", "max", "executableStatementCount", Statistic.SUM),
+	FILE_LENGTH("FileLength", "max", "maxLen.file"),
+	NUMBER_OF_METHODS("TreeWalker.MethodCount", "maxTotal", "too.many.methods"),
+	NUMBER_OF_OUTER_TYPES("TreeWalker.OuterTypeNumber", "max", "maxOuterTypes", Statistic.SUM);
 
-		@Override
-		public DefaultConfiguration addToConfiguration(DefaultConfiguration parent) {
-			DefaultConfiguration treeWalker = new DefaultConfiguration("TreeWalker");
-			super.addToConfiguration(treeWalker);
-			parent.addChild(treeWalker);
-			return treeWalker;
-		}
-	};
+	private static Map<String, CheckstyleMetric> metrics;
 
-	public static Set<NativeMetric> supportedMetrics() {
-		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			supportedMetrics.add(metric.getNativeMetric());
-		return supportedMetrics;
+	public static CheckstyleMetric getMetricFor(String messageKey) {
+		return metrics.get(messageKey);
 	}
 
-	private DefaultConfiguration configuration;
+	private static void addMetric(String messageKey, CheckstyleMetric metric) {
+		if (metrics == null)
+			metrics = new HashMap<String, CheckstyleMetric>();
+		metrics.put(messageKey, metric);
+	}
+
+	private String[] modulePath;
+	private String attributeName;
+	private String messageKey;
 	private NativeMetric nativeMetric;
-	private Pattern pattern;
+	private Statistic aggregationType;
 
-	private CheckstyleMetric(Granularity scope, String regularExpression, String moduleName, String... properties) {
-		initializeConfiguration(moduleName, properties);
-		nativeMetric = new NativeMetric(toString(), scope, Language.JAVA);
-		pattern = Pattern.compile(regularExpression);
+	private CheckstyleMetric(String modulePath, String attributeName, String messageKey) {
+		this(modulePath, attributeName, messageKey, Statistic.AVERAGE);
 	}
 
-	private void initializeConfiguration(String moduleName, String... properties) {
-		configuration = new DefaultConfiguration(moduleName);
-		for (int i = 0; i < properties.length; i += 2)
-			configuration.addAttribute(properties[i], properties[i + 1]);
+	private CheckstyleMetric(String modulePath, String attributeName, String messageKey, Statistic aggregationType) {
+		this.modulePath = modulePath.split("\\.");
+		this.attributeName = attributeName;
+		this.messageKey = messageKey;
+		this.nativeMetric = new NativeMetric(toString(), Granularity.CLASS, Language.JAVA);
+		this.aggregationType = aggregationType;
+		addMetric(messageKey, this);
 	}
 
 	@Override
@@ -56,16 +54,31 @@ public enum CheckstyleMetric {
 		return Identifier.fromConstant(name()).asText();
 	}
 
-	public DefaultConfiguration addToConfiguration(DefaultConfiguration parent) {
-		parent.addChild(configuration);
-		return parent;
+	public String getMessageKey() {
+		return messageKey;
 	}
 
 	public NativeMetric getNativeMetric() {
 		return nativeMetric;
 	}
 
-	public Pattern getPattern() {
-		return pattern;
+	public Statistic getAggregationType() {
+		return aggregationType;
+	}
+
+	public void addToChecker(CheckstyleConfiguration checker) {
+		addTo(checker, 0);
+	}
+
+	private void addTo(CheckstyleConfiguration configuration, int firstIndex) {
+		if (firstIndex == modulePath.length)
+			addTo(configuration);
+		else
+			addTo(configuration.getChildByName(modulePath[firstIndex]), firstIndex + 1);
+	}
+
+	private void addTo(CheckstyleConfiguration configuration) {
+		configuration.addAttributeName(attributeName);
+		configuration.addMessageKey(messageKey);
 	}
 }

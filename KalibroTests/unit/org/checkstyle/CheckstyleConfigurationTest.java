@@ -2,17 +2,12 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
-import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
-
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.model.NativeMetric;
 
 public class CheckstyleConfigurationTest extends KalibroTestCase {
 
@@ -20,50 +15,56 @@ public class CheckstyleConfigurationTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = new CheckstyleConfiguration();
+		configuration = new CheckstyleConfiguration("The module name");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkName() {
-		assertEquals("Checker", configuration.getName());
+		assertEquals("The module name", configuration.getName());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkAttributeNames() {
-		List<String> attributeNames = Arrays.asList(configuration.getAttributeNames());
-		assertDeepEquals(attributeNames, "localeCountry", "localeLanguage");
+	public void checkAttributes() {
+		assertArrayEquals(new String[0], configuration.getAttributeNames());
+
+		configuration.addAttributeName("my attribute");
+		assertArrayEquals(new String[]{"my attribute"}, configuration.getAttributeNames());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkAttributes() throws CheckstyleException {
-		assertEquals("", configuration.getAttribute("localeCountry"));
-		assertEquals("", configuration.getAttribute("localeLanguage"));
+	public void attributeShouldBeAlwaysBeOneNegative() {
+		assertEquals("-1", configuration.getAttribute("anything"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkMessages() {
 		assertTrue(configuration.getMessages().isEmpty());
+
+		String key = "my message key";
+		configuration.addMessageKey(key);
+		assertTrue(configuration.getMessages().containsKey(key));
+		assertEquals("{0}", configuration.getMessages().get(key));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkChildren() {
-		assertDeepEquals(getChildrenNames(configuration), "FileLength", "TreeWalker");
+	public void shouldCreateChildOnFirstGetByName() {
+		assertEquals(0, configuration.getChildren().length);
 
-		Configuration treeWalker = getChildByName(configuration, "TreeWalker");
-		assertDeepEquals(getChildrenNames(treeWalker), "MethodCount");
+		CheckstyleConfiguration fileLength = configuration.getChildByName("FileLength");
+		assertSame(fileLength, configuration.getChildByName("FileLength"));
 	}
 
-	private Configuration getChildByName(CheckstyleConfiguration parent, String childName) {
-		for (Configuration child : parent.getChildren())
-			if (child.getName().equals(childName))
-				return child;
-		return null;
-	}
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCreateCheckerConfigurationFilteringMetrics() {
+		NativeMetric numberOfMethods = CheckstyleMetric.NUMBER_OF_METHODS.getNativeMetric();
+		configuration = CheckstyleConfiguration.checkerConfiguration(Arrays.asList(numberOfMethods));
 
-	private Collection<String> getChildrenNames(Configuration parent) {
-		List<String> names = new ArrayList<String>();
-		for (Configuration child : parent.getChildren())
-			names.add(child.getName());
-		return names;
+		assertEquals(1, configuration.getChildren().length);
+
+		CheckstyleConfiguration treeWalker = configuration.getChildByName("TreeWalker");
+		assertEquals(1, treeWalker.getChildren().length);
+
+		CheckstyleConfiguration methodCount = treeWalker.getChildByName("MethodCount");
+		assertTrue(methodCount.getMessages().containsKey("too.many.methods"));
 	}
 }
