@@ -21,12 +21,14 @@ public final class ColorChooserManualTest extends JPanel {
 		super();
 		colorChooser = new ColorChooser(this);
 		setPreferredSize(new Dimension(640, 480));
-		addMouseListener(new MouseAdapter() {
+		addMouseListener(new ClickAction());
+	}
 
-			@Override
-			public void mouseClicked(MouseEvent event) {
-				setBackground(colorChooser.chooseColor(getBackground()));
-			}
-		});
+	private class ClickAction extends MouseAdapter {
+
+		@Override
+		public void mouseClicked(MouseEvent event) {
+			setBackground(colorChooser.chooseColor(getBackground()));
+		}
 	}
 }
