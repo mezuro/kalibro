@@ -14,23 +14,21 @@ import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class AbstractDialogTest extends KalibroTestCase {
 
-	private String title;
-	private JPanel panel;
-	private boolean createdComponents;
+	private static final String TITLE = "AbstractDialogTest";
+	private static final JPanel PANEL = new JPanel();
 
-	private DialogMock dialog;
+	private DialogStub dialog;
+	private boolean createdComponents;
 
 	@Before
 	public void setUp() {
-		title = "My title";
-		panel = new JPanel();
 		createdComponents = false;
-		dialog = new DialogMock();
+		dialog = new DialogStub();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetTitle() {
-		assertSame(title, dialog.getTitle());
+		assertSame(TITLE, dialog.getTitle());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -55,7 +53,7 @@ public class AbstractDialogTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetBuiltPanelAsContentPane() {
-		assertSame(panel, dialog.getContentPane());
+		assertSame(PANEL, dialog.getContentPane());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -64,10 +62,10 @@ public class AbstractDialogTest extends KalibroTestCase {
 		assertEquals(dialog.getMinimumSize(), dialog.getSize());
 	}
 
-	class DialogMock extends AbstractDialog {
+	class DialogStub extends AbstractDialog {
 
-		public DialogMock() {
-			super(title);
+		public DialogStub() {
+			super(TITLE);
 		}
 
 		@Override
@@ -77,7 +75,7 @@ public class AbstractDialogTest extends KalibroTestCase {
 
 		@Override
 		protected Container buildPanel() {
-			return panel;
+			return PANEL;
 		}
 	}
 }
