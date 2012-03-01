@@ -4,7 +4,7 @@ import javax.swing.JInternalFrame;
 
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.desktop.icon.KalibroIcon;
+import org.kalibro.desktop.swingextension.icon.Icon;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;
 
@@ -15,7 +15,7 @@ public class ConfigurationFrame extends JInternalFrame implements TablePanelList
 
 	public ConfigurationFrame(Configuration configuration) {
 		super(configuration.getName(), true, true, true, true);
-		setFrameIcon(new KalibroIcon().scaleForInternalFrame());
+		new Icon(Icon.KALIBRO).replaceIconOf(this);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		buildContentPane(configuration);
 		setName("configuration");

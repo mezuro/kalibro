@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import org.kalibro.desktop.icon.KalibroIcon;
+import org.kalibro.desktop.swingextension.icon.KalibroIcon;
 import org.kalibro.desktop.old.listeners.KalibroFrameListener;
 
 public class KalibroFrame extends JFrame {

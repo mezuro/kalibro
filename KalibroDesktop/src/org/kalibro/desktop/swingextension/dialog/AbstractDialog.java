@@ -7,13 +7,13 @@ import java.awt.Toolkit;
 
 import javax.swing.JDialog;
 
-import org.kalibro.desktop.icon.KalibroIcon;
+import org.kalibro.desktop.swingextension.icon.Icon;
 
 public abstract class AbstractDialog extends JDialog {
 
 	public AbstractDialog(String title) {
 		super((Frame) null, title, true);
-		setIconImage(new KalibroIcon().getImage());
+		setIconImage(new Icon(Icon.KALIBRO).getImage());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		createComponents();

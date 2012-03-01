@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.*;
 
-import org.kalibro.desktop.icon.KalibroIcon;
+import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class KalibroFrame extends JFrame {
 
@@ -19,7 +19,7 @@ public class KalibroFrame extends JFrame {
 		setSize();
 		createMenuBar();
 		setContentPane(new JDesktopPane());
-		setIconImage(new KalibroIcon().getImage());
+		setIconImage(new Icon(Icon.KALIBRO).getImage());
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 	}
 

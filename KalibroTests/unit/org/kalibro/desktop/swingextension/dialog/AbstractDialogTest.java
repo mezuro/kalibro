@@ -10,7 +10,7 @@ import javax.swing.WindowConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.desktop.icon.KalibroIcon;
+import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class AbstractDialogTest extends KalibroTestCase {
 
@@ -40,7 +40,7 @@ public class AbstractDialogTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveKalibroIcon() {
-		assertDeepEquals(dialog.getIconImages(), new KalibroIcon().getImage());
+		assertDeepEquals(dialog.getIconImages(), new Icon(Icon.KALIBRO).getImage());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -9,7 +9,7 @@ import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.desktop.icon.MethodIcon;
+import org.kalibro.desktop.swingextension.icon.MethodIcon;
 import org.kalibro.desktop.swingextension.renderer.Renderer;
 
 public class ResultTreeCellRenderer extends Renderer {
