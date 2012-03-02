@@ -6,16 +6,14 @@ import javax.swing.JPanel;
 
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public class ColorFieldManualTest {
+public final class ColorFieldManualTest extends JPanel {
 
 	public static void main(String[] args) {
-		JPanel panel = new ColorFieldManualTest().createPanel();
-		new ComponentWrapperDialog("ColorField", panel).setVisible(true);
+		new ComponentWrapperDialog("ColorFieldManualTest", new ColorFieldManualTest()).setVisible(true);
 	}
 
-	public JPanel createPanel() {
-		JPanel panel = new JPanel(new GridLayout(1, 1));
-		panel.add(new ColorField(""));
-		return panel;
+	private ColorFieldManualTest() {
+		super(new GridLayout(1, 1));
+		add(new ColorField(""));
 	}
 }
