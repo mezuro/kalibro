@@ -8,24 +8,23 @@ import javax.swing.JPanel;
 
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public class BooleanFieldManualTest implements ActionListener {
+public final class BooleanFieldManualTest extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("BooleanField", createPanel()).setVisible(true);
+		new ComponentWrapperDialog("BooleanFieldManualTest", new BooleanFieldManualTest()).setVisible(true);
 	}
 
-	private static JPanel createPanel() {
-		BooleanField field = new BooleanField("", "My boolean field");
-		field.addActionListener(new BooleanFieldManualTest());
+	private BooleanField booleanField;
 
-		JPanel panel = new JPanel(new GridLayout(1, 1));
-		panel.add(field);
-		return panel;
+	private BooleanFieldManualTest() {
+		super(new GridLayout(1, 1));
+		booleanField = new BooleanField("", "BooleanFieldManualTest");
+		booleanField.addActionListener(this);
+		add(booleanField);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		BooleanField field = (BooleanField) event.getSource();
-		System.out.println(field.getValue());
+		System.out.println(booleanField.getValue());
 	}
 }
