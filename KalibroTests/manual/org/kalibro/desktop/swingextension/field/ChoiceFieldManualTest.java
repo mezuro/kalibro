@@ -9,24 +9,23 @@ import javax.swing.JPanel;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public class ChoiceFieldManualTest implements ActionListener {
+public final class ChoiceFieldManualTest extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("ChoiceField", createPanel()).setVisible(true);
+		new ComponentWrapperDialog("ChoiceFieldManualTest", new ChoiceFieldManualTest()).setVisible(true);
 	}
 
-	private static JPanel createPanel() {
-		ChoiceField<Granularity> field = new ChoiceField<Granularity>("", Granularity.values());
-		field.addActionListener(new ChoiceFieldManualTest());
+	private static ChoiceField<Granularity> choiceField;
 
-		JPanel panel = new JPanel(new GridLayout(1, 1));
-		panel.add(field);
-		return panel;
+	private ChoiceFieldManualTest() {
+		super(new GridLayout(1, 1));
+		choiceField = new ChoiceField<Granularity>("", Granularity.values());
+		choiceField.addActionListener(this);
+		add(choiceField);
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		ChoiceField<Granularity> field = (ChoiceField<Granularity>) event.getSource();
-		System.out.println(field.getValue());
+		System.out.println(choiceField.getValue());
 	}
 }
