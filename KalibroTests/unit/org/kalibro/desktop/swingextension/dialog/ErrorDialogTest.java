@@ -16,6 +16,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(JOptionPane.class)
 public class ErrorDialogTest extends KalibroTestCase {
 
+	private static final String ERROR_MESSAGE = "ErrorDialogTest";
+	private static final Exception ERROR = new Exception(ERROR_MESSAGE);
+
 	private Component parent;
 	private ErrorDialog dialog;
 
@@ -28,10 +31,18 @@ public class ErrorDialogTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowErrorMessage() {
-		Exception error = new Exception("Error message");
-		dialog.show(error);
+		dialog.show(ERROR_MESSAGE);
+		verifyErrorMessageDialog();
+	}
 
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldShowMessageFromError() {
+		dialog.show(ERROR);
+		verifyErrorMessageDialog();
+	}
+
+	private void verifyErrorMessageDialog() {
 		PowerMockito.verifyStatic();
-		JOptionPane.showMessageDialog(parent, error.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+		JOptionPane.showMessageDialog(parent, ERROR_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }
