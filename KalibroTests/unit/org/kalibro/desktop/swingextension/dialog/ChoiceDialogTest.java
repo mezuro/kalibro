@@ -20,35 +20,43 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(JOptionPane.class)
 public class ChoiceDialogTest extends KalibroTestCase {
 
-	private String title;
+	private static final String TITLE = "ChoiceDialogTest title";
+	private static final String MESSAGE = "ChoiceDialogTest message";
+	private static final Language[] OPTIONS = Language.values();
+
 	private Component parent;
-	private Language[] options;
 
 	private ChoiceDialog<Language> dialog;
 
 	@Before
 	public void setUp() {
 		PowerMockito.mockStatic(JOptionPane.class);
-		title = "Choose Language";
-		options = Language.values();
 		parent = PowerMockito.mock(Component.class);
-		dialog = new ChoiceDialog<Language>(title, parent);
+		dialog = new ChoiceDialog<Language>(TITLE, parent);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldChooseFromCollection() throws Exception {
-		mockJOptionPane("Testing ChooseDialog", Language.JAVA);
-		assertEquals(Language.JAVA, dialog.choose("Testing ChooseDialog", Arrays.asList(options)));
+	public void shouldReturnFalseIfNotConfirmed() throws Exception {
+		mockJOptionPane(null);
+		assertFalse(dialog.choose(MESSAGE, OPTIONS));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldChooseFromArray() throws Exception {
-		mockJOptionPane("42", Language.C);
-		assertEquals(Language.C, dialog.choose("42", options));
+		mockJOptionPane(Language.C);
+		assertTrue(dialog.choose(MESSAGE, OPTIONS));
+		assertEquals(Language.C, dialog.getChoice());
 	}
 
-	private void mockJOptionPane(String message, Language choice) throws Exception {
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldChooseFromCollection() throws Exception {
+		mockJOptionPane(Language.JAVA);
+		assertTrue(dialog.choose(MESSAGE, Arrays.asList(OPTIONS)));
+		assertEquals(Language.JAVA, dialog.getChoice());
+	}
+
+	private void mockJOptionPane(Language choice) throws Exception {
 		PowerMockito.doReturn(choice).when(JOptionPane.class, "showInputDialog",
-			parent, message, title, JOptionPane.PLAIN_MESSAGE, null, options, options[0]);
+			parent, MESSAGE, TITLE, JOptionPane.PLAIN_MESSAGE, null, OPTIONS, OPTIONS[0]);
 	}
 }

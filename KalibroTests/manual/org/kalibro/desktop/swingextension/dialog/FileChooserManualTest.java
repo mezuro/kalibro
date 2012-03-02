@@ -19,7 +19,7 @@ public final class FileChooserManualTest extends JLabel {
 	private FileChooserManualTest() {
 		super("Click");
 		fileChooser = new FileChooser(this);
-		setPreferredSize(new Dimension(400, 30));
+		setPreferredSize(new Dimension(640, 30));
 		addMouseListener(new ClickAction());
 	}
 
