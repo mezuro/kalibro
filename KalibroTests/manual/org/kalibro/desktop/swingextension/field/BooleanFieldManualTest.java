@@ -11,7 +11,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class BooleanFieldManualTest extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("BooleanFieldManualTest", new BooleanFieldManualTest()).setVisible(true);
+		new ComponentWrapperDialog("BooleanField", new BooleanFieldManualTest()).setVisible(true);
 	}
 
 	private BooleanField booleanField;

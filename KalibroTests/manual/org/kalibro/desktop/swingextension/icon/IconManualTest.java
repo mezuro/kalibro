@@ -11,7 +11,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class IconManualTest extends JDesktopPane {
 
 	public static void main(String[] args) throws PropertyVetoException {
-		new ComponentWrapperDialog("IconManualTest", new IconManualTest()).setVisible(true);
+		new ComponentWrapperDialog("Icon", new IconManualTest()).setVisible(true);
 	}
 
 	private IconManualTest() throws PropertyVetoException {

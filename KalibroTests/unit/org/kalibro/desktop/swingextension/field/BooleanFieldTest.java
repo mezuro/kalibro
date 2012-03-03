@@ -37,7 +37,7 @@ public class BooleanFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetValue() {
+	public void shouldGet() {
 		for (Boolean value : VALUES) {
 			field.setSelected(value);
 			assertEquals(value, field.get());
@@ -45,7 +45,7 @@ public class BooleanFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetValue() {
+	public void shouldSet() {
 		for (Boolean value : VALUES) {
 			field.set(value);
 			assertEquals(value, field.isSelected());

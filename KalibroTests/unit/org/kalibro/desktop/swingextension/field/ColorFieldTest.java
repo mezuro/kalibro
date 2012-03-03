@@ -50,13 +50,13 @@ public class ColorFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetValue() {
+	public void shouldGet() {
 		field.setBackground(COLOR);
 		assertEquals(COLOR, field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetValue() {
+	public void shouldSet() {
 		field.set(COLOR);
 		assertEquals(COLOR, field.getBackground());
 	}
@@ -64,8 +64,8 @@ public class ColorFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetForegroundToContrastWithBackground() {
 		field.set(COLOR);
-		Color foreground = field.getForeground();
-		assertEquals(Integer.MAX_VALUE, COLOR.getRGB() + foreground.getRGB());
+		int expectedRGB = 0xff000000 | (Integer.MAX_VALUE - COLOR.getRGB());
+		assertEquals(expectedRGB, field.getForeground().getRGB());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

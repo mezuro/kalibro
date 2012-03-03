@@ -12,7 +12,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class ChoiceFieldManualTest extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("ChoiceFieldManualTest", new ChoiceFieldManualTest()).setVisible(true);
+		new ComponentWrapperDialog("ChoiceField", new ChoiceFieldManualTest()).setVisible(true);
 	}
 
 	private static ChoiceField<Granularity> choiceField;

@@ -9,7 +9,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class ColorFieldManualTest extends JPanel {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("ColorFieldManualTest", new ColorFieldManualTest()).setVisible(true);
+		new ComponentWrapperDialog("ColorField", new ColorFieldManualTest()).setVisible(true);
 	}
 
 	private ColorFieldManualTest() {

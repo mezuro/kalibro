@@ -13,7 +13,7 @@ import org.kalibro.desktop.swingextension.field.StringField;
 public final class CardStackPanelManualTest extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("CardStackPanelManualTest", new CardStackPanelManualTest()).setVisible(true);
+		new ComponentWrapperDialog("CardStackPanel", new CardStackPanelManualTest()).setVisible(true);
 	}
 
 	private int panels;

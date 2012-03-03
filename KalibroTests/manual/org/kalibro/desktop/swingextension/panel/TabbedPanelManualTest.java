@@ -12,7 +12,7 @@ import org.kalibro.desktop.swingextension.Label;
 public final class TabbedPanelManualTest extends TabbedPanel implements TabbedPanelListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("TabbedPanelManualTest", new TabbedPanelManualTest()).setVisible(true);
+		new ComponentWrapperDialog("TabbedPanel", new TabbedPanelManualTest()).setVisible(true);
 	}
 
 	private TabbedPanelManualTest() {

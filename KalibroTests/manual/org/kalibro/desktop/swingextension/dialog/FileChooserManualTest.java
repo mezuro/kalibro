@@ -11,7 +11,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class FileChooserManualTest extends JLabel {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("FileChooserManualTest", new FileChooserManualTest()).setVisible(true);
+		new ComponentWrapperDialog("FileChooser", new FileChooserManualTest()).setVisible(true);
 	}
 
 	private FileChooser fileChooser;

@@ -12,7 +12,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class ChoiceDialogManualTest extends JLabel {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("ChoiceDialogManualTest", new ChoiceDialogManualTest()).setVisible(true);
+		new ComponentWrapperDialog("ChoiceDialog", new ChoiceDialogManualTest()).setVisible(true);
 	}
 
 	private ChoiceDialog<Language> choiceDialog;

@@ -11,7 +11,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class ColorChooserManualTest extends JPanel {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("ColorChooserManualTest", new ColorChooserManualTest()).setVisible(true);
+		new ComponentWrapperDialog("ColorChooser", new ColorChooserManualTest()).setVisible(true);
 		System.exit(0);
 	}
 
