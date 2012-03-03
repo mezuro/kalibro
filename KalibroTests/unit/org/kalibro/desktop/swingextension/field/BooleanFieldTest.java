@@ -40,14 +40,14 @@ public class BooleanFieldTest extends KalibroTestCase {
 	public void shouldGetValue() {
 		for (Boolean value : VALUES) {
 			field.setSelected(value);
-			assertEquals(value, field.getValue());
+			assertEquals(value, field.get());
 		}
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetValue() {
 		for (Boolean value : VALUES) {
-			field.setValue(value);
+			field.set(value);
 			assertEquals(value, field.isSelected());
 		}
 	}

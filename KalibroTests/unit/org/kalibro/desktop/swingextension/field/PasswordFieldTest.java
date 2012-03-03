@@ -21,8 +21,8 @@ public class PasswordFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotTrimText() {
-		field.setValue("  my text  ");
-		assertEquals("  my text  ", field.getValue());
+		field.set("  my text  ");
+		assertEquals("  my text  ", field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

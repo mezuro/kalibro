@@ -61,16 +61,16 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 
 	@Override
 	public void show(Configuration configuration) {
-		nameField.setValue(configuration.getName());
-		descriptionField.setValue(configuration.getDescription());
+		nameField.set(configuration.getName());
+		descriptionField.set(configuration.getDescription());
 		metricConfigurationsPanel.show(configuration.getMetricConfigurations());
 	}
 
 	@Override
 	public Configuration get() {
 		Configuration configuration = new Configuration();
-		configuration.setName(nameField.getValue());
-		configuration.setDescription(descriptionField.getValue());
+		configuration.setName(nameField.get());
+		configuration.setDescription(descriptionField.get());
 		for (MetricConfiguration metric : metricConfigurationsPanel.get())
 			configuration.addMetricConfiguration(metric);
 		return configuration;

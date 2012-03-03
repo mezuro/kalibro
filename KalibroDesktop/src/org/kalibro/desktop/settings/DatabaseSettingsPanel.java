@@ -41,7 +41,7 @@ public class DatabaseSettingsPanel extends EditPanel<DatabaseSettings> {
 
 	@Override
 	public void show(DatabaseSettings settings) {
-		databaseTypeField.setValue(settings.getDatabaseType());
+		databaseTypeField.set(settings.getDatabaseType());
 		jdbcUrlField.setText(settings.getJdbcUrl());
 		usernameField.setText(settings.getUsername());
 		passwordField.setText(settings.getPassword());
@@ -50,10 +50,10 @@ public class DatabaseSettingsPanel extends EditPanel<DatabaseSettings> {
 	@Override
 	public DatabaseSettings get() {
 		DatabaseSettings settings = new DatabaseSettings();
-		settings.setDatabaseType(databaseTypeField.getValue());
+		settings.setDatabaseType(databaseTypeField.get());
 		settings.setJdbcUrl(jdbcUrlField.getText());
 		settings.setUsername(usernameField.getText());
-		settings.setPassword(passwordField.getValue());
+		settings.setPassword(passwordField.get());
 		return settings;
 	}
 }

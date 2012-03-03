@@ -69,7 +69,7 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 		public void selected(String baseToolName) {
 			BaseTool baseTool = Kalibro.getBaseToolDao().getBaseTool(baseToolName);
 			metricTable.setData(baseTool.getSupportedMetrics());
-			descriptionField.setValue(baseTool.getDescription());
+			descriptionField.set(baseTool.getDescription());
 		}
 	}
 
@@ -77,7 +77,7 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 
 		@Override
 		public void selected(NativeMetric metric) {
-			descriptionField.setValue(metric.getDescription());
+			descriptionField.set(metric.getDescription());
 		}
 	}
 }

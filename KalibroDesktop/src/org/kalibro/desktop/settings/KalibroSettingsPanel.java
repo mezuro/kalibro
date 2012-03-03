@@ -73,7 +73,7 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	}
 
 	private void switchPanels(boolean client) {
-		clientField.setValue(client);
+		clientField.set(client);
 		clientSettingsPanel.setVisible(client);
 		serverSettingsPanel.setVisible(! client);
 		adjustSize();

@@ -64,9 +64,9 @@ public class MetricPanel extends EditPanel<Metric> {
 	@Override
 	public void show(Metric metric) {
 		boolean compound = metric.isCompound();
-		nameField.setValue(metric.getName());
-		scopeField.setValue(metric.getScope());
-		descriptionField.setValue(metric.getDescription());
+		nameField.set(metric.getName());
+		scopeField.set(metric.getScope());
+		descriptionField.set(metric.getDescription());
 		if (compound)
 			showCompoundMetric((CompoundMetric) metric);
 		else
@@ -77,35 +77,35 @@ public class MetricPanel extends EditPanel<Metric> {
 	}
 
 	private void showNativeMetric(NativeMetric metric) {
-		originField.setValue(metric.getOrigin());
-		languagesField.setValue(metric.getLanguages());
+		originField.set(metric.getOrigin());
+		languagesField.set(metric.getLanguages());
 	}
 
 	private void showCompoundMetric(CompoundMetric metric) {
-		scriptField.setValue(metric.getScript());
+		scriptField.set(metric.getScript());
 	}
 
 	@Override
 	public Metric get() {
 		Metric metric = nameField.isEditable() ? retrieveCompoundMetric() : retrieveNativeMetric();
-		metric.setDescription(descriptionField.getValue());
+		metric.setDescription(descriptionField.get());
 		return metric;
 	}
 
 	private NativeMetric retrieveNativeMetric() {
-		String name = nameField.getValue();
-		Granularity scope = scopeField.getValue();
-		List<Language> languages = languagesField.getValue();
+		String name = nameField.get();
+		Granularity scope = scopeField.get();
+		List<Language> languages = languagesField.get();
 		NativeMetric metric = new NativeMetric(name, scope, languages);
-		metric.setOrigin(originField.getValue());
+		metric.setOrigin(originField.get());
 		return metric;
 	}
 
 	private CompoundMetric retrieveCompoundMetric() {
 		CompoundMetric metric = new CompoundMetric();
-		metric.setName(nameField.getValue());
-		metric.setScope(scopeField.getValue());
-		metric.setScript(scriptField.getValue());
+		metric.setName(nameField.get());
+		metric.setScope(scopeField.get());
+		metric.setScript(scriptField.get());
 		return metric;
 	}
 }

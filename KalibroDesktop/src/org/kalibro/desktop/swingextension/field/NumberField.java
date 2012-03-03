@@ -54,7 +54,7 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				setValue(specialNumber);
+				set(specialNumber);
 			}
 		});
 		builder.add(new Label("  "));
@@ -63,21 +63,16 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 
 	@Override
 	public void show(T value) {
-		setValue(value);
+		set(value);
 	}
 
 	@Override
-	public void setValue(T value) {
+	public void set(T value) {
 		valueField.setValue(value);
 	}
 
 	@Override
 	public T get() {
-		return getValue();
-	}
-
-	@Override
-	public T getValue() {
 		Number value = (Number) valueField.getValue();
 		return (value == null) ? null : parseValue(value);
 	}

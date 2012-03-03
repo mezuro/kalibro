@@ -33,14 +33,14 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
 		panel.show(settings);
-		assertEquals(settings.isClient(), clientField().getValue());
+		assertEquals(settings.isClient(), clientField().get());
 		assertDeepEquals(settings.getClientSettings(), clientSettingsPanel().get());
 		assertDeepEquals(settings.getServerSettings(), serverSettingsPanel().get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieve() {
-		clientField().setValue(settings.isClient());
+		clientField().set(settings.isClient());
 		clientSettingsPanel().show(settings.getClientSettings());
 		serverSettingsPanel().show(settings.getServerSettings());
 		assertDeepEquals(settings, panel.get());

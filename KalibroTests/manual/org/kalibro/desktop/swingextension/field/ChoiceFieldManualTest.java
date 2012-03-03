@@ -26,6 +26,6 @@ public final class ChoiceFieldManualTest extends JPanel implements ActionListene
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		System.out.println(choiceField.getValue());
+		System.out.println(choiceField.get());
 	}
 }

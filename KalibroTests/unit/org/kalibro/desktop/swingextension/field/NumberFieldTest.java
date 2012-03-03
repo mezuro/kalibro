@@ -37,7 +37,7 @@ public class NumberFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveNullValueByDefault() {
-		assertNull(field.getValue());
+		assertNull(field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -49,14 +49,14 @@ public class NumberFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptValidNumber() {
 		changeText("42", true);
-		assertEquals(new Byte((byte) 42), field.getValue());
+		assertEquals(new Byte((byte) 42), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptChangingBackToNull() {
 		changeText("42", true);
 		changeText("", false);
-		assertEquals(new Byte((byte) 42), field.getValue());
+		assertEquals(new Byte((byte) 42), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -89,7 +89,7 @@ public class NumberFieldTest extends KalibroTestCase {
 	public void buttonShouldSetSpecialNumber() {
 		field = new ByteField("", Byte.MIN_VALUE);
 		new ComponentFinder(field).find("", Button.class).doClick();
-		assertEquals(Byte.MIN_VALUE, field.getValue().byteValue());
+		assertEquals(Byte.MIN_VALUE, field.get().byteValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

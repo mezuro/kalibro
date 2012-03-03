@@ -46,39 +46,39 @@ public class ColorFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void defaultColorShouldBeWhite() {
-		assertEquals(Color.WHITE, field.getValue());
+		assertEquals(Color.WHITE, field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetValue() {
 		field.setBackground(COLOR);
-		assertEquals(COLOR, field.getValue());
+		assertEquals(COLOR, field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetValue() {
-		field.setValue(COLOR);
+		field.set(COLOR);
 		assertEquals(COLOR, field.getBackground());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetForegroundToContrastWithBackground() {
-		field.setValue(COLOR);
+		field.set(COLOR);
 		Color foreground = field.getForeground();
 		assertEquals(Integer.MAX_VALUE, COLOR.getRGB() + foreground.getRGB());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowColorDialogWithCurrentValueSelected() {
-		field.setValue(COLOR);
+		field.set(COLOR);
 		field.doClick();
 		Mockito.verify(chooser).chooseColor(COLOR);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetColorWhenColorDialogCloses() {
-		field.setValue(COLOR);
+		field.set(COLOR);
 		field.doClick();
-		assertEquals(COLOR.brighter(), field.getValue());
+		assertEquals(COLOR.brighter(), field.get());
 	}
 }

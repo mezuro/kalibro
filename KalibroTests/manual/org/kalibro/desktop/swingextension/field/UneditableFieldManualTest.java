@@ -31,6 +31,6 @@ public class UneditableFieldManualTest implements CaretListener {
 		StringField source = (StringField) event.getSource();
 		JPanel parent = (JPanel) source.getParent();
 		UneditableField<String> field = (UneditableField<String>) parent.getComponent(1);
-		field.setValue(source.getValue());
+		field.set(source.get());
 	}
 }

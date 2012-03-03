@@ -30,17 +30,17 @@ public class DoubleFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveAtLeast2FractionDigits() {
-		field.setValue(3.0);
+		field.set(3.0);
 		assertEquals("3" + getDecimalSeparator() + "00", valueField.getText());
-		field.setValue(3.1);
+		field.set(3.1);
 		assertEquals("3" + getDecimalSeparator() + "10", valueField.getText());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveAtMost2FractionDigits() {
-		field.setValue(3.1415);
+		field.set(3.1415);
 		assertEquals("3" + getDecimalSeparator() + "14", valueField.getText());
-		field.setValue(2.7182);
+		field.set(2.7182);
 		assertEquals("2" + getDecimalSeparator() + "72", valueField.getText());
 	}
 
@@ -51,9 +51,9 @@ public class DoubleFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetSpecialNumberWhenButtonIsClicked() {
 		field = new DoubleField("field", Double.POSITIVE_INFINITY);
-		assertNull(field.getValue());
+		assertNull(field.get());
 
 		new ComponentFinder(field).find("field", Button.class).doClick();
-		assertDoubleEquals(Double.POSITIVE_INFINITY, field.getValue());
+		assertDoubleEquals(Double.POSITIVE_INFINITY, field.get());
 	}
 }

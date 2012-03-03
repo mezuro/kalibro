@@ -19,12 +19,12 @@ public class ChoiceField<T> extends JComboBox implements Field<T> {
 	}
 
 	@Override
-	public T getValue() {
+	public T get() {
 		return (T) super.getSelectedItem();
 	}
 
 	@Override
-	public void setValue(T value) {
+	public void set(T value) {
 		super.setSelectedItem(value);
 	}
 }

@@ -13,12 +13,12 @@ public class BooleanField extends JCheckBox implements Field<Boolean> {
 	}
 
 	@Override
-	public Boolean getValue() {
+	public Boolean get() {
 		return isSelected();
 	}
 
 	@Override
-	public void setValue(Boolean value) {
+	public void set(Boolean value) {
 		setSelected(value);
 	}
 }

@@ -98,7 +98,7 @@ public class DirectoryFieldTest extends KalibroTestCase {
 		PowerMockito.when(chooser.getChosenFile()).thenReturn(TESTS_DIRECTORY);
 		browseButton().doClick();
 		assertEquals(TESTS_DIRECTORY, field.getDirectory());
-		assertEquals(TESTS_DIRECTORY.getAbsolutePath(), pathField().getValue());
+		assertEquals(TESTS_DIRECTORY.getAbsolutePath(), pathField().get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -107,7 +107,7 @@ public class DirectoryFieldTest extends KalibroTestCase {
 		PowerMockito.when(chooser.getChosenFile()).thenReturn(TESTS_DIRECTORY);
 		browseButton().doClick();
 		assertNull(field.getDirectory());
-		assertEquals("", pathField().getValue());
+		assertEquals("", pathField().get());
 	}
 
 	private StringField pathField() {

@@ -31,22 +31,22 @@ public class RangePanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
 		panel.show(range);
-		assertDoubleEquals(range.getBeginning(), doubleField("beginning").getValue());
-		assertDoubleEquals(range.getEnd(), doubleField("end").getValue());
-		assertEquals(range.getLabel(), labelField().getValue());
-		assertDoubleEquals(range.getGrade(), doubleField("grade").getValue());
-		assertEquals(range.getColor(), colorField().getValue());
-		assertEquals(range.getComments(), commentsField().getValue());
+		assertDoubleEquals(range.getBeginning(), doubleField("beginning").get());
+		assertDoubleEquals(range.getEnd(), doubleField("end").get());
+		assertEquals(range.getLabel(), labelField().get());
+		assertDoubleEquals(range.getGrade(), doubleField("grade").get());
+		assertEquals(range.getColor(), colorField().get());
+		assertEquals(range.getComments(), commentsField().get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieve() {
-		doubleField("beginning").setValue(range.getBeginning());
-		doubleField("end").setValue(range.getEnd());
-		labelField().setValue(range.getLabel());
-		doubleField("grade").setValue(range.getGrade());
-		colorField().setValue(range.getColor());
-		commentsField().setValue(range.getComments());
+		doubleField("beginning").set(range.getBeginning());
+		doubleField("end").set(range.getEnd());
+		labelField().set(range.getLabel());
+		doubleField("grade").set(range.getGrade());
+		colorField().set(range.getColor());
+		commentsField().set(range.getComments());
 		assertDeepEquals(range, panel.get());
 	}
 

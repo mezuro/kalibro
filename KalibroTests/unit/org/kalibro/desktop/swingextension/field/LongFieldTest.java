@@ -36,9 +36,9 @@ public class LongFieldTest extends KalibroTestCase {
 	@Test
 	public void shouldSetSpecialNumberWhenButtonIsClicked() {
 		field = new LongField("field", Long.MIN_VALUE);
-		assertNull(field.getValue());
+		assertNull(field.get());
 
 		new ComponentFinder(field).find("field", Button.class).doClick();
-		assertEquals(Long.MIN_VALUE, field.getValue().longValue());
+		assertEquals(Long.MIN_VALUE, field.get().longValue());
 	}
 }

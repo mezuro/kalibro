@@ -37,14 +37,14 @@ public class ClientSettingsPanel extends EditPanel<ClientSettings> {
 	@Override
 	public void show(ClientSettings settings) {
 		serviceAddressField.setText(settings.getServiceAddress());
-		pollingIntervalField.setValue(settings.getPollingInterval());
+		pollingIntervalField.set(settings.getPollingInterval());
 	}
 
 	@Override
 	public ClientSettings get() {
 		ClientSettings settings = new ClientSettings();
 		settings.setServiceAddress(serviceAddressField.getText());
-		settings.setPollingInterval(pollingIntervalField.getValue().longValue());
+		settings.setPollingInterval(pollingIntervalField.get().longValue());
 		return settings;
 	}
 }

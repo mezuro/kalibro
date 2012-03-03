@@ -81,7 +81,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 	public void shouldShowBaseToolDescription() {
 		analizo.setDescription("This is the description of Analizo");
 		baseToolList().setSelectedIndex(0);
-		assertTrue(descriptionPane().getValue().contains(analizo.getDescription()));
+		assertTrue(descriptionPane().get().contains(analizo.getDescription()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -91,7 +91,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 		firstMetric.setDescription("This is the description of the first metric");
 
 		selectFirsMetric();
-		assertTrue(descriptionPane().getValue().contains(firstMetric.getDescription()));
+		assertTrue(descriptionPane().get().contains(firstMetric.getDescription()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

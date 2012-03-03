@@ -24,7 +24,7 @@ public class MaybeEditableFieldManualTest implements ActionListener {
 
 	private static BooleanField chooseEditable() {
 		BooleanField chooseEditable = new BooleanField("", "Editable");
-		chooseEditable.setValue(true);
+		chooseEditable.set(true);
 		chooseEditable.addActionListener(new MaybeEditableFieldManualTest());
 		return chooseEditable;
 	}
@@ -39,6 +39,6 @@ public class MaybeEditableFieldManualTest implements ActionListener {
 		BooleanField source = (BooleanField) event.getSource();
 		JPanel parent = (JPanel) source.getParent();
 		MaybeEditableField<Granularity> field = (MaybeEditableField<Granularity>) parent.getComponent(1);
-		field.setEditable(source.getValue());
+		field.setEditable(source.get());
 	}
 }

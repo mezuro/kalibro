@@ -25,6 +25,6 @@ public final class BooleanFieldManualTest extends JPanel implements ActionListen
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		System.out.println(booleanField.getValue());
+		System.out.println(booleanField.get());
 	}
 }

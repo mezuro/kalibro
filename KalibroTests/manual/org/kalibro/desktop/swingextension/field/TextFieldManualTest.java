@@ -59,7 +59,7 @@ public class TextFieldManualTest {
 
 	private TextField newTextField(String name, int lines, int columns, String title, boolean showHtml) {
 		TextField textField = new TextField(name, lines, columns, title, showHtml);
-		textField.setValue(TEXT);
+		textField.set(TEXT);
 		return textField;
 	}
 }

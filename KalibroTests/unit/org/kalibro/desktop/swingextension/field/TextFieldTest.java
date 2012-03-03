@@ -44,8 +44,8 @@ public class TextFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldTrimText() {
-		field.setValue("\n  my text  \n");
-		assertEquals("my text", field.getValue());
+		field.set("\n  my text  \n");
+		assertEquals("my text", field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

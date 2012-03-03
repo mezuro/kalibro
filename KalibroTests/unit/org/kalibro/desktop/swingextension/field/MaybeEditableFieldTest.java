@@ -45,11 +45,11 @@ public class MaybeEditableFieldTest extends KalibroTestCase {
 	}
 
 	private void testLastValue(String value, boolean editable) {
-		field.setValue(value);
+		field.set(value);
 		field.setEditable(editable);
 		Field<String> innerField = editable ? findEditableField() : findUneditableField();
-		assertEquals(value, field.getValue());
-		assertEquals(value, innerField.getValue());
+		assertEquals(value, field.get());
+		assertEquals(value, innerField.get());
 	}
 
 	private StringField findEditableField() {
