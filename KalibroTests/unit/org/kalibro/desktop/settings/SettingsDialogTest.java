@@ -47,7 +47,7 @@ public class SettingsDialogTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowCurrentSettings() {
 		KalibroSettingsPanel settingsPanel = finder.find("settings", KalibroSettingsPanel.class);
-		assertDeepEquals(settings, settingsPanel.retrieve());
+		assertDeepEquals(settings, settingsPanel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

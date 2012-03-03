@@ -50,7 +50,7 @@ public class MetricConfigurationPanelTest extends KalibroTestCase {
 	public void shouldShow() {
 		panel.show(configuration);
 		assertEquals(configuration.getCode(), codeField().getValue());
-		assertDeepEquals(configuration.getMetric(), metricPanel().retrieve());
+		assertDeepEquals(configuration.getMetric(), metricPanel().get());
 		assertDoubleEquals(configuration.getWeight(), weightField().getValue());
 		assertEquals(configuration.getAggregationForm(), aggregationFormField().getValue());
 		assertDeepEquals(configuration.getRanges(), rangesTable().getData());
@@ -63,7 +63,7 @@ public class MetricConfigurationPanelTest extends KalibroTestCase {
 		weightField().setValue(configuration.getWeight());
 		aggregationFormField().setValue(configuration.getAggregationForm());
 		rangesTable().setData(configuration.getRanges());
-		assertDeepEquals(configuration, panel.retrieve());
+		assertDeepEquals(configuration, panel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -66,7 +66,7 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 
 	private void confirm(boolean editing) {
 		try {
-			configuration.addMetricConfiguration(panel.retrieve());
+			configuration.addMetricConfiguration(panel.get());
 			cardStack.pop();
 		} catch (Exception exception) {
 			putOldMetricConfigurationBack(editing);

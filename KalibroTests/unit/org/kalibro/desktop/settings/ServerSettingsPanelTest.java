@@ -30,7 +30,7 @@ public class ServerSettingsPanelTest extends KalibroTestCase {
 		panel.show(settings);
 		assertEquals(settings.getLoadDirectory(), loadDirectoryField().getDirectory());
 		assertEquals(settings.shouldRemoveSources(), removeSourcesField().getValue());
-		assertDeepEquals(settings.getDatabaseSettings(), databaseSettingsPanel().retrieve());
+		assertDeepEquals(settings.getDatabaseSettings(), databaseSettingsPanel().get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -38,7 +38,7 @@ public class ServerSettingsPanelTest extends KalibroTestCase {
 		loadDirectoryField().setDirectory(settings.getLoadDirectory());
 		removeSourcesField().setValue(settings.shouldRemoveSources());
 		databaseSettingsPanel().show(settings.getDatabaseSettings());
-		assertDeepEquals(settings, panel.retrieve());
+		assertDeepEquals(settings, panel.get());
 	}
 
 	private DirectoryField loadDirectoryField() {

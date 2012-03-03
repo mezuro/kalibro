@@ -117,7 +117,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	public void shouldPopPanelOnOk() {
 		MetricConfiguration metricConfiguration = new MetricConfiguration(new CompoundMetric());
 		controller.edit(metricConfiguration);
-		PowerMockito.when(panel.retrieve()).thenReturn(metricConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(metricConfiguration);
 		clickButton("ok");
 		verify(cardStack).pop();
 	}
@@ -126,7 +126,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	public void shouldAddMetricConfigurationOnAdd() {
 		CompoundMetric metric = new CompoundMetric();
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
-		PowerMockito.when(panel.retrieve()).thenReturn(metricConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(metricConfiguration);
 
 		chooseNewMetric(metric);
 		clickButton("ok");
@@ -149,7 +149,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		NativeMetric amloc = NativeMetricFixtures.nativeMetric("amloc");
 		MetricConfiguration oldConfiguration = MetricConfigurationFixtures.configuration("amloc");
 		MetricConfiguration newConfiguration = new MetricConfiguration(amloc);
-		PowerMockito.when(panel.retrieve()).thenReturn(newConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(newConfiguration);
 		controller.edit(oldConfiguration);
 		clickButton("ok");
 		assertSame(newConfiguration, configuration.getConfigurationFor(amloc));
@@ -174,7 +174,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 
 		metricConfiguration = new MetricConfiguration(amloc);
 		metricConfiguration.setCode("cbo");
-		PowerMockito.when(panel.retrieve()).thenReturn(metricConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(metricConfiguration);
 		clickButton("ok");
 	}
 
@@ -183,7 +183,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		NativeMetric amloc = NativeMetricFixtures.nativeMetric("amloc");
 		MetricConfiguration oldConfiguration = MetricConfigurationFixtures.configuration("amloc");
 		MetricConfiguration newConfiguration = new MetricConfiguration(NativeMetricFixtures.nativeMetric("cbo"));
-		PowerMockito.when(panel.retrieve()).thenReturn(newConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(newConfiguration);
 		controller.edit(oldConfiguration);
 		clickButton("ok");
 		assertSame(oldConfiguration, configuration.getConfigurationFor(amloc));

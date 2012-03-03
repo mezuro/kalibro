@@ -56,7 +56,7 @@ public class SettingsDialog extends AbstractDialog implements ActionListener {
 
 	private void changeSettings() {
 		try {
-			Kalibro.changeSettings(settingsPanel.retrieve());
+			Kalibro.changeSettings(settingsPanel.get());
 			dispose();
 		} catch (Exception exception) {
 			new ErrorDialog(this).show(exception);

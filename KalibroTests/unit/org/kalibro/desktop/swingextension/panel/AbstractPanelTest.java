@@ -16,7 +16,7 @@ public class AbstractPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void minimumSizeShouldBeSet() {
+	public void shouldSetMinimumSize() {
 		assertTrue(panel.isMinimumSizeSet());
 	}
 

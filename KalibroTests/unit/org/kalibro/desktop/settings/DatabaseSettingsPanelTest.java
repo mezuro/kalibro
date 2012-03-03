@@ -42,7 +42,7 @@ public class DatabaseSettingsPanelTest extends KalibroTestCase {
 		jdbcUrlField().setValue(settings.getJdbcUrl());
 		usernameField().setValue(settings.getUsername());
 		passwordField().setValue(settings.getPassword());
-		assertDeepEquals(settings, panel.retrieve());
+		assertDeepEquals(settings, panel.get());
 	}
 
 	private ChoiceField<SupportedDatabase> databaseTypeField() {

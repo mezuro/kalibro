@@ -47,7 +47,7 @@ public class RangePanelTest extends KalibroTestCase {
 		doubleField("grade").setValue(range.getGrade());
 		colorField().setValue(range.getColor());
 		commentsField().setValue(range.getComments());
-		assertDeepEquals(range, panel.retrieve());
+		assertDeepEquals(range, panel.get());
 	}
 
 	private DoubleField doubleField(String name) {

@@ -76,7 +76,7 @@ public class AddMetricDialog extends AbstractDialog implements ActionListener, L
 	public Metric getMetric() {
 		if (compoundRadio.isSelected())
 			return new CompoundMetric();
-		return nativeMetricPanel.retrieve();
+		return nativeMetricPanel.get();
 	}
 
 	public void addOkListener(ActionListener listener) {

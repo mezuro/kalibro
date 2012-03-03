@@ -100,12 +100,12 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 	}
 
 	@Override
-	public MetricConfiguration retrieve() {
-		MetricConfiguration configuration = new MetricConfiguration(metricPanel.retrieve());
+	public MetricConfiguration get() {
+		MetricConfiguration configuration = new MetricConfiguration(metricPanel.get());
 		configuration.setCode(codeField.getValue());
 		configuration.setWeight(weightField.getValue());
 		configuration.setAggregationForm(aggregationFormField.getValue());
-		for (Range range : rangesPanel.retrieve())
+		for (Range range : rangesPanel.get())
 			configuration.addRange(range);
 		return configuration;
 	}

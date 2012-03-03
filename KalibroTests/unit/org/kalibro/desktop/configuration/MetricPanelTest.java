@@ -65,7 +65,7 @@ public class MetricPanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveNativeMetric() {
 		panel.show(nativeMetric);
-		assertDeepEquals(nativeMetric, panel.retrieve());
+		assertDeepEquals(nativeMetric, panel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -74,7 +74,7 @@ public class MetricPanelTest extends KalibroTestCase {
 		scopeField().setValue(compoundMetric.getScope());
 		textField("description").setValue(compoundMetric.getDescription());
 		textField("script").setValue(compoundMetric.getScript());
-		assertDeepEquals(compoundMetric, panel.retrieve());
+		assertDeepEquals(compoundMetric, panel.get());
 	}
 
 	private MaybeEditableField<String> nameField() {

@@ -67,11 +67,11 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 	}
 
 	@Override
-	public Configuration retrieve() {
+	public Configuration get() {
 		Configuration configuration = new Configuration();
 		configuration.setName(nameField.getValue());
 		configuration.setDescription(descriptionField.getValue());
-		for (MetricConfiguration metric : metricConfigurationsPanel.retrieve())
+		for (MetricConfiguration metric : metricConfigurationsPanel.get())
 			configuration.addMetricConfiguration(metric);
 		return configuration;
 	}

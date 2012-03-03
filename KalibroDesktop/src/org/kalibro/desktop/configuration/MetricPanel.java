@@ -86,7 +86,7 @@ public class MetricPanel extends EditPanel<Metric> {
 	}
 
 	@Override
-	public Metric retrieve() {
+	public Metric get() {
 		Metric metric = nameField.isEditable() ? retrieveCompoundMetric() : retrieveNativeMetric();
 		metric.setDescription(descriptionField.getValue());
 		return metric;

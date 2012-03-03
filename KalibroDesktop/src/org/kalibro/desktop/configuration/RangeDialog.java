@@ -46,7 +46,7 @@ public class RangeDialog extends AbstractDialog {
 	}
 
 	public Range getRange() {
-		return rangePanel.retrieve();
+		return rangePanel.get();
 	}
 
 	public void setRange(Range range) {

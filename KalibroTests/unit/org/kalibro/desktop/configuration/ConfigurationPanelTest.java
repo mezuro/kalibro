@@ -44,7 +44,7 @@ public class ConfigurationPanelTest extends KalibroTestCase {
 		nameField().setValue(configuration.getName());
 		descriptionField().setValue(configuration.getDescription());
 		metricConfigurationsTable().setData(configuration.getMetricConfigurations());
-		assertDeepEquals(configuration, panel.retrieve());
+		assertDeepEquals(configuration, panel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

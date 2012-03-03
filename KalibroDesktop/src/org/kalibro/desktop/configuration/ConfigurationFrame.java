@@ -35,14 +35,14 @@ public class ConfigurationFrame extends JInternalFrame implements TablePanelList
 
 	@Override
 	public void add() {
-		Configuration configuration = configurationPanel.retrieve();
+		Configuration configuration = configurationPanel.get();
 		createController(configuration).add();
 		configurationPanel.show(configuration);
 	}
 
 	@Override
 	public void edit(MetricConfiguration metricConfiguration) {
-		Configuration configuration = configurationPanel.retrieve();
+		Configuration configuration = configurationPanel.get();
 		createController(configuration).edit(metricConfiguration);
 		configurationPanel.show(configuration);
 	}

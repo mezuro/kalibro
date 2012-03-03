@@ -51,7 +51,7 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 	}
 
 	@Override
-	public NativeMetric retrieve() {
+	public NativeMetric get() {
 		return metricTable.getSelectedObject();
 	}
 

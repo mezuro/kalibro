@@ -36,7 +36,7 @@ public class ClientSettingsPanelTest extends KalibroTestCase {
 	public void shouldRetrieve() {
 		serviceAddressField().setValue(settings.getServiceAddress());
 		pollingIntervalField().setValue(settings.getPollingInterval());
-		assertDeepEquals(settings, panel.retrieve());
+		assertDeepEquals(settings, panel.get());
 	}
 
 	private StringField serviceAddressField() {

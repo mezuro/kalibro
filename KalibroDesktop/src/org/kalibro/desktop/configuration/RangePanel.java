@@ -58,7 +58,7 @@ public class RangePanel extends EditPanel<Range> {
 	}
 
 	@Override
-	public Range retrieve() {
+	public Range get() {
 		Range range = new Range(beginningField.getValue(), endField.getValue());
 		range.setLabel(labelField.getText());
 		range.setGrade(gradeField.getValue());

@@ -50,7 +50,7 @@ public class DirectoryField extends EditPanel<File> implements ActionListener, F
 	}
 
 	@Override
-	public File retrieve() {
+	public File get() {
 		return getDirectory();
 	}
 

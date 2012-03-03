@@ -43,7 +43,7 @@ public class NumberFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testShowRetrieve() {
 		field.show((byte) 42);
-		assertEquals(new Byte((byte) 42), field.retrieve());
+		assertEquals(new Byte((byte) 42), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

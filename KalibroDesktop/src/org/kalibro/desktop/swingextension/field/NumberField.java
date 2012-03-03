@@ -72,7 +72,7 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 	}
 
 	@Override
-	public T retrieve() {
+	public T get() {
 		return getValue();
 	}
 

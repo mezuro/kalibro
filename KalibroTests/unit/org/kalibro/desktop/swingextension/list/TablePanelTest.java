@@ -51,7 +51,7 @@ public class TablePanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testRetrieve() {
-		assertSame(table().getData(), panel.retrieve());
+		assertSame(table().getData(), panel.get());
 	}
 
 	private Table<Range> table() {

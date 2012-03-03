@@ -19,7 +19,7 @@ class LanguagePanelStub extends EditPanel<Language> {
 	}
 
 	@Override
-	public Language retrieve() {
+	public Language get() {
 		return null;
 	}
 

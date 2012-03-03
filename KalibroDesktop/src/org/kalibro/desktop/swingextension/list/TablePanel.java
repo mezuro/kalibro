@@ -56,7 +56,7 @@ public class TablePanel<T> extends EditPanel<Collection<T>> {
 	}
 
 	@Override
-	public List<T> retrieve() {
+	public List<T> get() {
 		return table.getData();
 	}
 

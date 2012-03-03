@@ -59,7 +59,7 @@ public class DirectoryFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testShowRetrieve() {
 		field.show(TESTS_DIRECTORY);
-		assertSame(TESTS_DIRECTORY, field.retrieve());
+		assertSame(TESTS_DIRECTORY, field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

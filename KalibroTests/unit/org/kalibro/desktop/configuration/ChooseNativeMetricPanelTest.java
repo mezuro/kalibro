@@ -108,7 +108,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 		baseToolList().setSelectedIndex(0);
 		selectFirsMetric();
 		NativeMetric firstMetric = table.getData().get(0);
-		assertSame(firstMetric, panel.retrieve());
+		assertSame(firstMetric, panel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
