@@ -3,8 +3,8 @@ package org.kalibro.desktop.swingextension.field;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 
 import org.kalibro.desktop.swingextension.Button;
@@ -14,11 +14,10 @@ import org.kalibro.desktop.swingextension.dialog.FileChooser;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public class DirectoryField extends EditPanel<File> implements ActionListener, FocusListener {
+public class DirectoryField extends EditPanel<File> implements ActionListener {
 
 	private StringField pathField;
 	private Button browseButton;
-
 	private FileChooser chooser;
 
 	private File directory;
@@ -32,8 +31,8 @@ public class DirectoryField extends EditPanel<File> implements ActionListener, F
 	protected void createComponents() {
 		browseButton = new Button("browse", "Browse", this);
 		pathField = new StringField("path", 20);
-		browseButton.addFocusListener(this);
-		pathField.addFocusListener(this);
+		browseButton.addFocusListener(new FocusListener());
+		pathField.addFocusListener(new FocusListener());
 	}
 
 	@Override
@@ -45,49 +44,39 @@ public class DirectoryField extends EditPanel<File> implements ActionListener, F
 	}
 
 	@Override
-	public void set(File aDirectory) {
-		setDirectory(aDirectory);
-	}
-
-	@Override
 	public File get() {
-		return getDirectory();
-	}
-
-	public File getDirectory() {
 		return directory;
 	}
 
 	@Override
-	public void focusGained(FocusEvent event) {
-		return;
-	}
-
-	@Override
-	public void focusLost(FocusEvent event) {
-		if (reallyLostFocus(event))
-			setDirectory(new File(pathField.getText()));
-	}
-
-	private boolean reallyLostFocus(FocusEvent event) {
-		Component focusOwner = event.getOppositeComponent();
-		boolean focusStillHere = focusOwner == browseButton || focusOwner == pathField;
-		return !(event.isTemporary() || focusStillHere);
+	public void set(File value) {
+		if (value.exists() && value.isDirectory()) {
+			directory = value;
+			pathField.setText(value.getAbsolutePath());
+		} else {
+			new ErrorDialog(this).show("\"" + value + "\" is not a valid directory");
+			pathField.requestFocus();
+		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		if (chooser.chooseDirectoryToOpen())
-			setDirectory(chooser.getChosenFile());
+			set(chooser.getChosenFile());
 	}
 
-	public void setDirectory(File directory) {
-		if (directory.exists() && directory.isDirectory()) {
-			this.directory = directory;
-			pathField.setText(directory.getAbsolutePath());
-		} else {
-			new ErrorDialog(this).show("\"" + directory + "\" is not a valid directory");
-			pathField.requestFocus();
+	private class FocusListener extends FocusAdapter {
+
+		@Override
+		public void focusLost(FocusEvent event) {
+			if (reallyLostFocus(event))
+				set(new File(pathField.getText()));
+		}
+
+		private boolean reallyLostFocus(FocusEvent event) {
+			Component focusOwner = event.getOppositeComponent();
+			boolean focusStillHere = focusOwner == browseButton || focusOwner == pathField;
+			return !(event.isTemporary() || focusStillHere);
 		}
 	}
 }
