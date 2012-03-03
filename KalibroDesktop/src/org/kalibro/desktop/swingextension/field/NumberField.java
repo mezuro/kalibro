@@ -14,7 +14,7 @@ import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public abstract class NumberField<T extends Number> extends EditPanel<T> implements Field<T> {
+public abstract class NumberField<T extends Number> extends EditPanel<T> {
 
 	private JFormattedTextField valueField;
 
@@ -59,11 +59,6 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 		});
 		builder.add(new Label("  "));
 		builder.add(specialNumberButton);
-	}
-
-	@Override
-	public void show(T value) {
-		set(value);
 	}
 
 	@Override

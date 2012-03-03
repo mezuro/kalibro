@@ -89,7 +89,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		chooseNewMetric(chosenMetric);
 
 		ArgumentCaptor<MetricConfiguration> captor = ArgumentCaptor.forClass(MetricConfiguration.class);
-		verify(panel).show(captor.capture());
+		verify(panel).set(captor.capture());
 		assertDeepEquals(new MetricConfiguration(chosenMetric), captor.getValue());
 		verify(cardStack).push(panel);
 	}
@@ -100,7 +100,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		controller.edit(metricConfiguration);
 
 		ArgumentCaptor<MetricConfiguration> captor = ArgumentCaptor.forClass(MetricConfiguration.class);
-		verify(panel).show(captor.capture());
+		verify(panel).set(captor.capture());
 		assertDeepEquals(metricConfiguration, captor.getValue());
 		verify(cardStack).push(panel);
 	}

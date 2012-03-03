@@ -62,7 +62,7 @@ public class MetricPanel extends EditPanel<Metric> {
 	}
 
 	@Override
-	public void show(Metric metric) {
+	public void set(Metric metric) {
 		boolean compound = metric.isCompound();
 		nameField.set(metric.getName());
 		scopeField.set(metric.getScope());

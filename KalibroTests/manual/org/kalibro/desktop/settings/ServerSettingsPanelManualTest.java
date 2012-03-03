@@ -7,7 +7,7 @@ public final class ServerSettingsPanelManualTest {
 
 	public static void main(String[] args) {
 		ServerSettingsPanel panel = new ServerSettingsPanel();
-		panel.show(new ServerSettings());
+		panel.set(new ServerSettings());
 		new ComponentWrapperDialog("ServerSettingsPanel", panel).setVisible(true);
 		System.exit(0);
 	}

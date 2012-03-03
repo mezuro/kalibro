@@ -30,7 +30,7 @@ public class RangePanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
-		panel.show(range);
+		panel.set(range);
 		assertDoubleEquals(range.getBeginning(), doubleField("beginning").get());
 		assertDoubleEquals(range.getEnd(), doubleField("end").get());
 		assertEquals(range.getLabel(), labelField().get());

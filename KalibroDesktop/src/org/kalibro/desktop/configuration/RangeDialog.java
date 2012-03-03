@@ -50,7 +50,7 @@ public class RangeDialog extends AbstractDialog {
 	}
 
 	public void setRange(Range range) {
-		rangePanel.show(range);
+		rangePanel.set(range);
 	}
 
 	public void addOkListener(ActionListener listener) {

@@ -27,7 +27,7 @@ public class ClientSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
-		panel.show(settings);
+		panel.set(settings);
 		assertEquals(settings.getServiceAddress(), serviceAddressField().get());
 		assertEquals(settings.getPollingInterval(), pollingIntervalField().get().longValue());
 	}

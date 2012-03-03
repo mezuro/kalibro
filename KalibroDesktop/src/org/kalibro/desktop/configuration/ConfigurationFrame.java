@@ -25,7 +25,7 @@ public class ConfigurationFrame extends JInternalFrame implements TablePanelList
 
 	private void buildContentPane(Configuration configuration) {
 		configurationPanel = new ConfigurationPanel();
-		configurationPanel.show(configuration);
+		configurationPanel.set(configuration);
 		configurationPanel.addMetricConfigurationsPanelListener(this);
 		cardStack = new CardStackPanel();
 		cardStack.push(configurationPanel);
@@ -37,14 +37,14 @@ public class ConfigurationFrame extends JInternalFrame implements TablePanelList
 	public void add() {
 		Configuration configuration = configurationPanel.get();
 		createController(configuration).add();
-		configurationPanel.show(configuration);
+		configurationPanel.set(configuration);
 	}
 
 	@Override
 	public void edit(MetricConfiguration metricConfiguration) {
 		Configuration configuration = configurationPanel.get();
 		createController(configuration).edit(metricConfiguration);
-		configurationPanel.show(configuration);
+		configurationPanel.set(configuration);
 	}
 
 	private MetricConfigurationController createController(Configuration configuration) {

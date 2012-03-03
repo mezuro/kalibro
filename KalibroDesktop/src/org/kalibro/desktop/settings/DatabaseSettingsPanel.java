@@ -40,7 +40,7 @@ public class DatabaseSettingsPanel extends EditPanel<DatabaseSettings> {
 	}
 
 	@Override
-	public void show(DatabaseSettings settings) {
+	public void set(DatabaseSettings settings) {
 		databaseTypeField.set(settings.getDatabaseType());
 		jdbcUrlField.setText(settings.getJdbcUrl());
 		usernameField.setText(settings.getUsername());

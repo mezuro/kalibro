@@ -24,7 +24,7 @@ class LanguagePanelStub extends EditPanel<Language> {
 	}
 
 	@Override
-	public void show(Language language) {
+	public void set(Language language) {
 		return;
 	}
 }

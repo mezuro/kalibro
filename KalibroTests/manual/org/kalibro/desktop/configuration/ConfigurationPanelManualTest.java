@@ -10,7 +10,7 @@ public class ConfigurationPanelManualTest implements TablePanelListener<MetricCo
 
 	public static void main(String[] args) {
 		ConfigurationPanel panel = new ConfigurationPanel();
-		panel.show(simpleConfiguration());
+		panel.set(simpleConfiguration());
 		panel.addMetricConfigurationsPanelListener(new ConfigurationPanelManualTest());
 		new ComponentWrapperDialog("ConfigurationPanel", panel).setVisible(true);
 	}

@@ -33,7 +33,7 @@ public class ConfigurationPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
-		panel.show(configuration);
+		panel.set(configuration);
 		assertEquals(configuration.getName(), nameField().get());
 		assertEquals(configuration.getDescription(), descriptionField().get());
 		assertDeepEquals(configuration.getMetricConfigurations(), metricConfigurationsTable().getData());

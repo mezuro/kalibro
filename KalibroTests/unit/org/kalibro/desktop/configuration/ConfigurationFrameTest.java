@@ -82,7 +82,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowConfigurationOnPanel() {
-		Mockito.verify(panel).show(configuration);
+		Mockito.verify(panel).set(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -96,7 +96,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 		InOrder order = Mockito.inOrder(panel, metricConfigurationController, panel);
 		order.verify(panel).get();
 		order.verify(metricConfigurationController).add();
-		order.verify(panel).show(configuration);
+		order.verify(panel).set(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -106,6 +106,6 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 		InOrder order = Mockito.inOrder(panel, metricConfigurationController, panel);
 		order.verify(panel).get();
 		order.verify(metricConfigurationController).edit(metricConfiguration);
-		order.verify(panel).show(configuration);
+		order.verify(panel).set(configuration);
 	}
 }

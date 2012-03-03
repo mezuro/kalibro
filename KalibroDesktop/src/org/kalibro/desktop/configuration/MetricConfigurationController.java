@@ -40,7 +40,7 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 	}
 
 	private void showMetricConfiguration() {
-		panel.show(metricConfiguration);
+		panel.set(metricConfiguration);
 		cardStack.push(panel);
 	}
 

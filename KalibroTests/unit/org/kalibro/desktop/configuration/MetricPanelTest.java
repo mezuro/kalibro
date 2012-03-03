@@ -36,7 +36,7 @@ public class MetricPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowNativeMetric() {
-		panel.show(nativeMetric);
+		panel.set(nativeMetric);
 		assertEquals(nativeMetric.getName(), nameField().get());
 		assertEquals(nativeMetric.getScope(), scopeField().get());
 		assertEquals(nativeMetric.getDescription(), textField("description").get());
@@ -50,7 +50,7 @@ public class MetricPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowCompoundMetric() {
-		panel.show(compoundMetric);
+		panel.set(compoundMetric);
 		assertEquals(compoundMetric.getName(), nameField().get());
 		assertEquals(compoundMetric.getScope(), scopeField().get());
 		assertEquals(compoundMetric.getDescription(), textField("description").get());
@@ -64,7 +64,7 @@ public class MetricPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveNativeMetric() {
-		panel.show(nativeMetric);
+		panel.set(nativeMetric);
 		assertDeepEquals(nativeMetric, panel.get());
 	}
 

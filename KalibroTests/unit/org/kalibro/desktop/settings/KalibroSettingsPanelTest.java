@@ -32,7 +32,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
-		panel.show(settings);
+		panel.set(settings);
 		assertEquals(settings.isClient(), clientField().get());
 		assertDeepEquals(settings.getClientSettings(), clientSettingsPanel().get());
 		assertDeepEquals(settings.getServerSettings(), serverSettingsPanel().get());
@@ -41,8 +41,8 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieve() {
 		clientField().set(settings.isClient());
-		clientSettingsPanel().show(settings.getClientSettings());
-		serverSettingsPanel().show(settings.getServerSettings());
+		clientSettingsPanel().set(settings.getClientSettings());
+		serverSettingsPanel().set(settings.getServerSettings());
 		assertDeepEquals(settings, panel.get());
 	}
 
@@ -59,7 +59,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowOnlyClientPanelWhenShowingClientSettings() {
-		panel.show(settings);
+		panel.set(settings);
 		assertTrue(clientSettingsPanel().isVisible());
 		assertFalse(serverSettingsPanel().isVisible());
 	}
@@ -67,7 +67,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowOnlyServerPanelWhenShowingServerSettings() {
 		settings.setClient(false);
-		panel.show(settings);
+		panel.set(settings);
 		assertFalse(clientSettingsPanel().isVisible());
 		assertTrue(serverSettingsPanel().isVisible());
 	}

@@ -48,7 +48,7 @@ public class RangePanel extends EditPanel<Range> {
 	}
 
 	@Override
-	public void show(Range range) {
+	public void set(Range range) {
 		beginningField.set(range.getBeginning());
 		endField.set(range.getEnd());
 		labelField.setText(range.getLabel());

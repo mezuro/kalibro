@@ -39,7 +39,7 @@ public class RangeDialogTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieve() {
-		rangePanel().show(range);
+		rangePanel().set(range);
 		assertDeepEquals(range, dialog.getRange());
 	}
 

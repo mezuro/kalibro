@@ -21,7 +21,7 @@ public class SettingsDialog extends AbstractDialog implements ActionListener {
 	public SettingsDialog() {
 		super("Kalibro Settings");
 		setResizable(false);
-		settingsPanel.show(Kalibro.currentSettings());
+		settingsPanel.set(Kalibro.currentSettings());
 	}
 
 	@Override

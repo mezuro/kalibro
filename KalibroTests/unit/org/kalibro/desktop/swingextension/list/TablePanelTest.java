@@ -45,7 +45,7 @@ public class TablePanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testShow() {
-		panel.show(new ArrayList<Range>());
+		panel.set(new ArrayList<Range>());
 		assertTrue(table().getData().isEmpty());
 	}
 

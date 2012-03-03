@@ -51,7 +51,7 @@ public class TablePanel<T> extends EditPanel<Collection<T>> {
 	}
 
 	@Override
-	public void show(Collection<T> data) {
+	public void set(Collection<T> data) {
 		table.setData(data);
 	}
 

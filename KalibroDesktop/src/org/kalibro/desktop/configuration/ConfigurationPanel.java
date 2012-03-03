@@ -60,10 +60,10 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 	}
 
 	@Override
-	public void show(Configuration configuration) {
+	public void set(Configuration configuration) {
 		nameField.set(configuration.getName());
 		descriptionField.set(configuration.getDescription());
-		metricConfigurationsPanel.show(configuration.getMetricConfigurations());
+		metricConfigurationsPanel.set(configuration.getMetricConfigurations());
 	}
 
 	@Override

@@ -45,7 +45,7 @@ public class DirectoryField extends EditPanel<File> implements ActionListener, F
 	}
 
 	@Override
-	public void show(File aDirectory) {
+	public void set(File aDirectory) {
 		setDirectory(aDirectory);
 	}
 

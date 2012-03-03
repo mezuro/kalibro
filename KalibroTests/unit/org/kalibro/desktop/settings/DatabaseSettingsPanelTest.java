@@ -29,7 +29,7 @@ public class DatabaseSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
-		panel.show(settings);
+		panel.set(settings);
 		assertEquals(settings.getDatabaseType(), databaseTypeField().get());
 		assertEquals(settings.getJdbcUrl(), jdbcUrlField().get());
 		assertEquals(settings.getUsername(), usernameField().get());

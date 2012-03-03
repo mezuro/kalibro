@@ -8,9 +8,9 @@ public final class MetricPanelManualTest {
 
 	public static void main(String[] args) {
 		MetricPanel panel = new MetricPanel();
-		panel.show(NativeMetricFixtures.nativeMetric("amloc"));
+		panel.set(NativeMetricFixtures.nativeMetric("amloc"));
 		new ComponentWrapperDialog("MetricPanel", panel).setVisible(true);
-		panel.show(CompoundMetricFixtures.sc());
+		panel.set(CompoundMetricFixtures.sc());
 		new ComponentWrapperDialog("MetricPanel", panel).setVisible(true);
 	}
 

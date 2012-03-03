@@ -91,12 +91,12 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 	}
 
 	@Override
-	public void show(MetricConfiguration configuration) {
-		metricPanel.show(configuration.getMetric());
+	public void set(MetricConfiguration configuration) {
+		metricPanel.set(configuration.getMetric());
 		codeField.set(configuration.getCode());
 		weightField.set(configuration.getWeight());
 		aggregationFormField.set(configuration.getAggregationForm());
-		rangesPanel.show(configuration.getRanges());
+		rangesPanel.set(configuration.getRanges());
 	}
 
 	@Override
