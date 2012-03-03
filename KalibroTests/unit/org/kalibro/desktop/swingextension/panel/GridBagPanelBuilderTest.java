@@ -96,8 +96,8 @@ public class GridBagPanelBuilderTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void weightedComponentShouldHaveSameWeightXandY() {
 		builder.add(new JLabel(), 4.2);
-		assertEquals(4.2, getLastComponentConstraints().weightx, 0.0);
-		assertEquals(4.2, getLastComponentConstraints().weighty, 0.0);
+		assertDoubleEquals(4.2, getLastComponentConstraints().weightx);
+		assertDoubleEquals(4.2, getLastComponentConstraints().weighty);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

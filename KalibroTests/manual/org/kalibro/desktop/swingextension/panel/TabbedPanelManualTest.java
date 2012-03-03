@@ -9,22 +9,21 @@ import javax.swing.JPanel;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Label;
 
-public class TabbedPanelManualTest implements TabbedPanelListener {
+public final class TabbedPanelManualTest extends TabbedPanel implements TabbedPanelListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("TabbedPanel", createPanel()).setVisible(true);
+		new ComponentWrapperDialog("TabbedPanelManualTest", new TabbedPanelManualTest()).setVisible(true);
 	}
 
-	private static TabbedPanel createPanel() {
-		TabbedPanel panel = new TabbedPanel();
-		panel.addTab("Configuration", newPanel("configuration"));
-		panel.addTab("Metric", newPanel("metric"));
-		panel.addTab("Range", newPanel("range"));
-		panel.addPanelListener(new TabbedPanelManualTest());
-		return panel;
+	private TabbedPanelManualTest() {
+		super();
+		addTab("First", newPanel("first"));
+		addTab("Second", newPanel("second"));
+		addTab("Third", newPanel("third"));
+		addPanelListener(this);
 	}
 
-	private static JPanel newPanel(String name) {
+	private JPanel newPanel(String name) {
 		JPanel panel = new JPanel(new BorderLayout());
 		panel.add(new Label("This is the " + name + " panel"), BorderLayout.CENTER);
 		panel.setPreferredSize(new Dimension(300, 100));
