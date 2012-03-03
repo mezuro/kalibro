@@ -40,7 +40,7 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 
 	@Override
 	public void set(ServerSettings settings) {
-		loadDirectoryField.setDirectory(settings.getLoadDirectory());
+		loadDirectoryField.set(settings.getLoadDirectory());
 		removeSourcesField.setSelected(settings.shouldRemoveSources());
 		databasePanel.set(settings.getDatabaseSettings());
 	}
@@ -48,7 +48,7 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 	@Override
 	public ServerSettings get() {
 		ServerSettings settings = new ServerSettings();
-		settings.setLoadDirectory(loadDirectoryField.getDirectory());
+		settings.setLoadDirectory(loadDirectoryField.get());
 		settings.setRemoveSources(removeSourcesField.isSelected());
 		settings.setDatabaseSettings(databasePanel.get());
 		return settings;
