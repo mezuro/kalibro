@@ -5,17 +5,16 @@ import javax.swing.JPanel;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public class StringFieldManualTest {
+public final class StringFieldManualTest extends JPanel {
 
 	public static void main(String[] args) {
-		JPanel panel = new StringFieldManualTest().createPanel();
-		new ComponentWrapperDialog("StringField", panel).setVisible(true);
+		new ComponentWrapperDialog("StringField", new StringFieldManualTest()).setVisible(true);
 	}
 
-	public JPanel createPanel() {
-		GridBagPanelBuilder builder = new GridBagPanelBuilder();
-		builder.addSimpleLine(new StringField("", 10));
-		builder.addSimpleLine(new StringField("", 10));
-		return builder.getPanel();
+	private StringFieldManualTest() {
+		super();
+		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
+		builder.addSimpleLine(new StringField("", 15));
+		builder.addSimpleLine(new StringField("", 15));
 	}
 }

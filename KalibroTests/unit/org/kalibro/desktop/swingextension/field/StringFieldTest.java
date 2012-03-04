@@ -20,12 +20,6 @@ public class StringFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldTrimText() {
-		field.set("  my text  ");
-		assertEquals("my text", field.get());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHavePlainFont() {
 		assertEquals(Font.PLAIN, field.getFont().getStyle());
 	}
@@ -33,5 +27,11 @@ public class StringFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveLeftHorizontalAlignment() {
 		assertEquals(SwingConstants.LEFT, field.getHorizontalAlignment());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldTrimText() {
+		field.set("  my text  ");
+		assertEquals("my text", field.get());
 	}
 }
