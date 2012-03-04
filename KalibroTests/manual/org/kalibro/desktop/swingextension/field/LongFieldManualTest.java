@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
-public class LongFieldManualTest extends NumberFieldManualTest<Long> {
+public final class LongFieldManualTest extends NumberFieldManualTest<Long> {
 
 	public static void main(String[] args) {
 		new LongFieldManualTest().execute();

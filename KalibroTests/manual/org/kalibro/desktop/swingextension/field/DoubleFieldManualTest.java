@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
-public class DoubleFieldManualTest extends NumberFieldManualTest<Double> {
+public final class DoubleFieldManualTest extends NumberFieldManualTest<Double> {
 
 	public static void main(String[] args) {
 		new DoubleFieldManualTest().execute();

@@ -31,21 +31,21 @@ public class DoubleFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveAtLeast2FractionDigits() {
 		field.set(3.0);
-		assertEquals("3" + getDecimalSeparator() + "00", valueField.getText());
+		assertEquals(format("3.00"), valueField.getText());
 		field.set(3.1);
-		assertEquals("3" + getDecimalSeparator() + "10", valueField.getText());
+		assertEquals(format("3.10"), valueField.getText());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveAtMost2FractionDigits() {
 		field.set(3.1415);
-		assertEquals("3" + getDecimalSeparator() + "14", valueField.getText());
+		assertEquals(format("3.14"), valueField.getText());
 		field.set(2.7182);
-		assertEquals("2" + getDecimalSeparator() + "72", valueField.getText());
+		assertEquals(format("2.72"), valueField.getText());
 	}
 
-	private char getDecimalSeparator() {
-		return new DecimalFormatSymbols().getDecimalSeparator();
+	private String format(String numberText) {
+		return numberText.replace('.', new DecimalFormatSymbols().getDecimalSeparator());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

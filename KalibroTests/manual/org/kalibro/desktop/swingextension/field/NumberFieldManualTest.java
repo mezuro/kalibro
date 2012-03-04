@@ -5,17 +5,17 @@ import javax.swing.JPanel;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public abstract class NumberFieldManualTest<T extends Number> {
+abstract class NumberFieldManualTest<T extends Number> extends JPanel {
 
-	public void execute() {
-		new ComponentWrapperDialog(title(), createPanel()).setVisible(true);
-	}
-
-	private JPanel createPanel() {
-		GridBagPanelBuilder builder = new GridBagPanelBuilder();
+	protected NumberFieldManualTest() {
+		super();
+		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
 		builder.addSimpleLine(normalField());
 		builder.addSimpleLine(specialNumberField());
-		return builder.getPanel();
+	}
+
+	public void execute() {
+		new ComponentWrapperDialog(title(), this).setVisible(true);
 	}
 
 	protected abstract String title();
