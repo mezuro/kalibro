@@ -1,38 +1,56 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
 
-import java.util.SortedSet;
+import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.Collection;
 
-import org.kalibro.core.model.Range;
+import javax.swing.JList;
+import javax.swing.JPanel;
+
+import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.desktop.swingextension.Button;
 
-public class ListManualTest implements ListListener<Range> {
+public final class ListManualTest extends JPanel implements ActionListener, ListListener<MetricConfiguration> {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("List<Range>", createList()).setVisible(true);
-		System.exit(0);
+		new ComponentWrapperDialog("List<MetricConfiguration>", new ListManualTest()).setVisible(true);
 	}
 
-	public static List<Range> createList() {
-		SortedSet<Range> ranges = configuration("amloc").getRanges();
-		List<Range> list = new List<Range>("", ranges, 5);
-		list.addListListener(new ListManualTest());
-		return list;
+	private List<MetricConfiguration> list;
+
+	private ListManualTest() {
+		super(new BorderLayout());
+		Collection<MetricConfiguration> data = kalibroConfiguration().getMetricConfigurations();
+		list = new List<MetricConfiguration>("", data, 8);
+		list.addListListener(this);
+		Button button = new Button("", "Clear selection", this);
+
+		add(list, BorderLayout.CENTER);
+		add(button, BorderLayout.SOUTH);
 	}
 
 	@Override
-	public void doubleClicked(Range range) {
+	public void doubleClicked(MetricConfiguration range) {
 		System.out.println("Double clicked " + range);
 	}
 
 	@Override
-	public void selected(Range range) {
+	public void selected(MetricConfiguration range) {
 		System.out.println("Selected " + range);
 	}
 
 	@Override
 	public void selectionCleared() {
 		System.out.println("Selection cleared");
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		JList jList = (JList) list.getViewport().getView();
+		jList.clearSelection();
 	}
 }

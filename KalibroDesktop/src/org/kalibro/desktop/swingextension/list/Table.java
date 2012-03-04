@@ -59,7 +59,7 @@ public class Table<T> extends JScrollPane implements ListComponent<T> {
 	}
 
 	@Override
-	public T getSelectedObject() {
+	public T getSelected() {
 		return tableModel.getObjectAt(table.convertRowIndexToModel(table.getSelectedRow()));
 	}
 

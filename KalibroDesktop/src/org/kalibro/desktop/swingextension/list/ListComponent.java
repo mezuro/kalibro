@@ -4,5 +4,5 @@ public interface ListComponent<T> {
 
 	boolean hasSelection();
 
-	T getSelectedObject();
+	T getSelected();
 }

@@ -40,7 +40,7 @@ public class List<T> extends JScrollPane implements ListComponent<T> {
 	}
 
 	@Override
-	public T getSelectedObject() {
+	public T getSelected() {
 		return (T) list.getSelectedValue();
 	}
 

@@ -85,13 +85,13 @@ public class TablePanelTest extends KalibroTestCase {
 	public void testEditButton() {
 		selectFirstLine();
 		button("edit").doClick();
-		Mockito.verify(listener).edit(table.getSelectedObject());
+		Mockito.verify(listener).edit(table.getSelected());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testRemoveButton() {
 		selectFirstLine();
-		Range selected = table.getSelectedObject();
+		Range selected = table.getSelected();
 		button("remove").doClick();
 		Mockito.verify(table).remove(selected);
 	}
@@ -103,7 +103,7 @@ public class TablePanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testDoubleClick() {
 		doubleClickFirstRow();
-		Mockito.verify(listener).edit(table.getSelectedObject());
+		Mockito.verify(listener).edit(table.getSelected());
 	}
 
 	private void doubleClickFirstRow() {

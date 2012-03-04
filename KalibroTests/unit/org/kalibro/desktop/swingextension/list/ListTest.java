@@ -52,7 +52,7 @@ public class ListTest extends KalibroTestCase {
 	public void checkSelectedObject() {
 		innerList.getSelectionModel().setSelectionInterval(0, 0);
 		assertTrue(list.hasSelection());
-		assertSame(ranges.first(), list.getSelectedObject());
+		assertSame(ranges.first(), list.getSelected());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

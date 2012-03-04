@@ -34,7 +34,7 @@ public class TablePanel<T> extends EditPanel<Collection<T>> {
 
 			@Override
 			public void actionPerformed(ActionEvent event) {
-				table.remove(table.getSelectedObject());
+				table.remove(table.getSelected());
 			}
 		});
 		enableButtons(false);
@@ -99,7 +99,7 @@ public class TablePanel<T> extends EditPanel<Collection<T>> {
 			if (source == addButton)
 				tablePanelListener.add();
 			else if (source == editButton)
-				tablePanelListener.edit(table.getSelectedObject());
+				tablePanelListener.edit(table.getSelected());
 		}
 
 		@Override
