@@ -12,17 +12,14 @@ import org.kalibro.KalibroTestCase;
 
 public class PasswordFieldTest extends KalibroTestCase {
 
+	private static final String PASSWORD = "  PasswordFieldTest password  ";
+
 	private PasswordField field;
 
 	@Before
 	public void setUp() {
 		field = new PasswordField("", 5);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotTrimText() {
-		field.set("  my text  ");
-		assertEquals("  my text  ", field.get());
+		field.set(PASSWORD);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -33,5 +30,10 @@ public class PasswordFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveLeftHorizontalAlignment() {
 		assertEquals(SwingConstants.LEFT, field.getHorizontalAlignment());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotTrimText() {
+		assertEquals(PASSWORD, field.get());
 	}
 }

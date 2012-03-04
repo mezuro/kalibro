@@ -19,7 +19,7 @@ public class PasswordField extends JPasswordField implements Field<String> {
 	}
 
 	@Override
-	public void set(String value) {
-		setText(value);
+	public void set(String password) {
+		setText(password);
 	}
 }
