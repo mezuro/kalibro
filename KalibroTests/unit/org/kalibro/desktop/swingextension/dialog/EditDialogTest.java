@@ -34,7 +34,8 @@ public class EditDialogTest extends KalibroTestCase {
 		field = new PalindromeField();
 		listener = PowerMockito.mock(EditDialogListener.class);
 
-		editDialog = new EditDialog<String>("", field);
+		editDialog = new EditDialog<String>("");
+		editDialog.setField(field);
 		editDialog.addListener(listener);
 		finder = new ComponentFinder(editDialog);
 		mockErrorDialog();

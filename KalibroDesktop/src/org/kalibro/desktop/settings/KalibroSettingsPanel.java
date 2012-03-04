@@ -52,19 +52,19 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	}
 
 	@Override
-	public void set(KalibroSettings settings) {
-		clientSettingsPanel.set(settings.getClientSettings());
-		serverSettingsPanel.set(settings.getServerSettings());
-		switchPanels(settings.isClient());
-	}
-
-	@Override
 	public KalibroSettings get() {
 		KalibroSettings settings = new KalibroSettings();
 		settings.setClient(clientField.isSelected());
 		settings.setClientSettings(clientSettingsPanel.get());
 		settings.setServerSettings(serverSettingsPanel.get());
 		return settings;
+	}
+
+	@Override
+	public void set(KalibroSettings settings) {
+		clientSettingsPanel.set(settings.getClientSettings());
+		serverSettingsPanel.set(settings.getServerSettings());
+		switchPanels(settings.isClient());
 	}
 
 	@Override

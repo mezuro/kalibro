@@ -9,7 +9,8 @@ public final class EditDialogManualTest extends EditDialog<String> implements Ed
 	}
 
 	private EditDialogManualTest() {
-		super("EditDialog", new PalindromeField());
+		super("EditDialog");
+		setField(new PalindromeField());
 		addListener(this);
 	}
 
