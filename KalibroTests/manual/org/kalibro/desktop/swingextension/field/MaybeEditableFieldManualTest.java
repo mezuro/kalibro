@@ -9,36 +9,32 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public class MaybeEditableFieldManualTest implements ActionListener {
+public final class MaybeEditableFieldManualTest extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("MaybeEditableField", createPanel()).setVisible(true);
+		new ComponentWrapperDialog("MaybeEditableField", new MaybeEditableFieldManualTest()).setVisible(true);
 	}
 
-	private static JPanel createPanel() {
-		GridBagPanelBuilder builder = new GridBagPanelBuilder();
-		builder.addSimpleLine(chooseEditable());
-		builder.addSimpleLine(maybeEditable());
-		return builder.getPanel();
+	private BooleanField chooseEditable;
+	private MaybeEditableField<Granularity> field;
+
+	private MaybeEditableFieldManualTest() {
+		super();
+		initializeComponents();
+		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
+		builder.addSimpleLine(chooseEditable);
+		builder.addSimpleLine(field);
 	}
 
-	private static BooleanField chooseEditable() {
-		BooleanField chooseEditable = new BooleanField("", "Editable");
+	private void initializeComponents() {
+		chooseEditable = new BooleanField("", "Editable");
 		chooseEditable.set(true);
-		chooseEditable.addActionListener(new MaybeEditableFieldManualTest());
-		return chooseEditable;
-	}
-
-	private static MaybeEditableField<Granularity> maybeEditable() {
-		ChoiceField<Granularity> editable = new ChoiceField<Granularity>("", Granularity.values());
-		return new MaybeEditableField<Granularity>(editable);
+		chooseEditable.addActionListener(this);
+		field = new MaybeEditableField<Granularity>(new ChoiceField<Granularity>("", Granularity.values()));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		BooleanField source = (BooleanField) event.getSource();
-		JPanel parent = (JPanel) source.getParent();
-		MaybeEditableField<Granularity> field = (MaybeEditableField<Granularity>) parent.getComponent(1);
-		field.setEditable(source.get());
+		field.setEditable(chooseEditable.get());
 	}
 }
