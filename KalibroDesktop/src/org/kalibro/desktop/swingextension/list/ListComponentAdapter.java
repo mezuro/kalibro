@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class ListComponentAdapter<T> extends MouseAdapter implements ListSelectionListener {
+class ListComponentAdapter<T> extends MouseAdapter implements ListSelectionListener {
 
 	private ListListener<T> listener;
 	private ListComponent<T> component;

@@ -3,6 +3,7 @@ package org.kalibro.desktop.swingextension.list;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
 import java.awt.Color;
+import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
@@ -10,21 +11,23 @@ import org.kalibro.core.model.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
 
-public class TableManualTest implements ListListener<Range> {
+public final class TableManualTest extends JPanel implements ListListener<Range> {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("Table<Range>", createTable()).setVisible(true);
-		System.exit(0);
+		new ComponentWrapperDialog("Table<Range>", new TableManualTest()).setVisible(true);
 	}
 
-	public static Table<Range> createTable() {
-		Table<Range> table = new Table<Range>("", createModel(), 5);
+	private Table<Range> table;
+
+	protected TableManualTest() {
+		super(new GridLayout());
+		table = new Table<Range>("", createModel(), 5);
 		table.setData(configuration("amloc").getRanges());
-		table.addListListener(new TableManualTest());
-		return table;
+		table.addListListener(this);
+		add(table);
 	}
 
-	private static TableModel<Range> createModel() {
+	private TableModel<Range> createModel() {
 		TableModel<Range> model = new ReflectionTableModel<Range>(Range.class);
 		model.addColumn(new ReflectionColumn("beginning", 8));
 		model.addColumn(new ReflectionColumn("end", 8));
@@ -32,6 +35,10 @@ public class TableManualTest implements ListListener<Range> {
 		model.addColumn(new ReflectionColumn("grade", 8));
 		model.addColumn(new ReflectionColumn("color", 5, new ColorRenderer()));
 		return model;
+	}
+
+	protected Table<Range> getTable() {
+		return table;
 	}
 
 	@Override
@@ -49,7 +56,7 @@ public class TableManualTest implements ListListener<Range> {
 		System.out.println("Selection cleared");
 	}
 
-	private static class ColorRenderer extends TableRenderer {
+	private class ColorRenderer extends TableRenderer {
 
 		@Override
 		protected JPanel render(Object value, Object context) {

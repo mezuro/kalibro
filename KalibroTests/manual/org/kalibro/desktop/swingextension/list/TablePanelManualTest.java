@@ -3,13 +3,15 @@ package org.kalibro.desktop.swingextension.list;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public class TablePanelManualTest implements TablePanelListener<Range> {
+public final class TablePanelManualTest extends TablePanel<Range> implements TablePanelListener<Range> {
 
 	public static void main(String[] args) {
-		Table<Range> table = TableManualTest.createTable();
-		TablePanel<Range> panel = new TablePanel<Range>(table);
-		panel.addTablePanelListener(new TablePanelManualTest());
-		new ComponentWrapperDialog("TablePanel<Range>", panel).setVisible(true);
+		new ComponentWrapperDialog("TablePanel<Range>", new TablePanelManualTest()).setVisible(true);
+	}
+
+	private TablePanelManualTest() {
+		super(new TableManualTest().getTable());
+		addTablePanelListener(this);
 	}
 
 	@Override
