@@ -18,33 +18,18 @@ import org.powermock.api.mockito.PowerMockito;
 public class TableRendererTest extends KalibroTestCase {
 
 	private boolean isSelected;
-	private Component component;
+	private Component component, renderedComponent;
+
 	private TableRenderer renderer;
 
 	@Before
 	public void setUp() {
 		component = PowerMockito.mock(Component.class);
 		renderer = PowerMockito.spy(new MyRenderer());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRenderValueWithContext() {
 		render();
-		Mockito.verify(renderer).render("value", "context");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldChangeBackgroundIfSelected() {
-		render();
-		Mockito.verify(renderer).changeBackgroundIfSelected(component, isSelected);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldReturnRenderedComponent() {
-		assertSame(component, render());
-	}
-
-	private Component render() {
+	private void render() {
 		Random random = new Random(System.currentTimeMillis());
 		isSelected = random.nextBoolean();
 		boolean hasFocus = random.nextBoolean();
@@ -57,7 +42,22 @@ public class TableRendererTest extends KalibroTestCase {
 		PowerMockito.when(table.getModel()).thenReturn(model);
 		PowerMockito.when(table.convertRowIndexToModel(24)).thenReturn(42);
 		PowerMockito.when(model.getObjectAt(42)).thenReturn("context");
-		return renderer.getTableCellRendererComponent(table, "value", isSelected, hasFocus, 24, column);
+		renderedComponent = renderer.getTableCellRendererComponent(table, "value", isSelected, hasFocus, 24, column);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRenderValueWithContext() {
+		Mockito.verify(renderer).render("value", "context");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldChangeBackgroundIfSelected() {
+		Mockito.verify(renderer).changeBackgroundIfSelected(component, isSelected);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldReturnRenderedComponent() {
+		assertSame(component, renderedComponent);
 	}
 
 	private class MyRenderer extends TableRenderer {

@@ -17,7 +17,7 @@ public final class BooleanFieldManualTest extends JPanel implements ActionListen
 	private BooleanField booleanField;
 
 	private BooleanFieldManualTest() {
-		super(new GridLayout(1, 1));
+		super(new GridLayout());
 		booleanField = new BooleanField("", "BooleanFieldManualTest");
 		booleanField.addActionListener(this);
 		add(booleanField);

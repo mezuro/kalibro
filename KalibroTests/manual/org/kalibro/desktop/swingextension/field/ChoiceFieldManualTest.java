@@ -18,7 +18,7 @@ public final class ChoiceFieldManualTest extends JPanel implements ActionListene
 	private static ChoiceField<Granularity> choiceField;
 
 	private ChoiceFieldManualTest() {
-		super(new GridLayout(1, 1));
+		super(new GridLayout());
 		choiceField = new ChoiceField<Granularity>("", Granularity.values());
 		choiceField.addActionListener(this);
 		add(choiceField);

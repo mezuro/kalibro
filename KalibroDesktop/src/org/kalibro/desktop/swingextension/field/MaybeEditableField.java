@@ -11,7 +11,7 @@ public class MaybeEditableField<T> extends JPanel implements Field<T> {
 	private UneditableField<T> uneditableField;
 
 	public MaybeEditableField(Field<T> editableField) {
-		super(new GridLayout(1, 1));
+		super(new GridLayout());
 		this.editableField = editableField;
 		String name = editableComponent().getName();
 		this.uneditableField = new UneditableField<T>(name);

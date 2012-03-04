@@ -27,7 +27,7 @@ public class ResultTreePanel extends JPanel implements TreeExpansionListener {
 		this.model = model;
 
 		createTree();
-		setLayout(new GridLayout(1, 1));
+		setLayout(new GridLayout());
 		add(new JScrollPane(tree));
 
 		Dimension size = new Dimension(300, 400);
