@@ -26,12 +26,16 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 	public void shouldParseMetricResults() {
 		parser.auditStarted(null);
 		simulateCheckstyle();
-		assertDeepEquals(parser.getResults(), CheckstyleStub.result());
+		assertDeepEquals(CheckstyleStub.results(), parser.getResults());
 	}
 
 	public void simulateCheckstyle() {
+		parser.addError(mockEvent("maxLen.anonInner", "0"));
+		parser.addError(mockEvent("maxLen.method", "3"));
+		parser.addError(mockEvent("executableStatementCount", "1"));
 		parser.addError(mockEvent("maxLen.file", "6"));
 		parser.addError(mockEvent("too.many.methods", "1"));
+		parser.addError(mockEvent("maxOuterTypes", "1"));
 		parser.auditFinished(null);
 	}
 
