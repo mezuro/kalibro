@@ -15,6 +15,7 @@ public class StatisticTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testToString() {
 		assertEquals("Average", "" + AVERAGE);
+		assertEquals("Count", "" + COUNT);
 		assertEquals("Maximum", "" + MAXIMUM);
 		assertEquals("Median", "" + MEDIAN);
 		assertEquals("Minimum", "" + MINIMUM);
@@ -25,6 +26,7 @@ public class StatisticTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testCalculate() {
 		testCalculate(AVERAGE, Double.NaN, 6.0, 5.0);
+		testCalculate(COUNT, 0.0, 5.0, 6.0);
 		testCalculate(MAXIMUM, Double.NEGATIVE_INFINITY, 10.0, 10.0);
 		testCalculate(MEDIAN, Double.NaN, 6.0, 5.0);
 		testCalculate(MINIMUM, Double.POSITIVE_INFINITY, 2.0, 0.0);
