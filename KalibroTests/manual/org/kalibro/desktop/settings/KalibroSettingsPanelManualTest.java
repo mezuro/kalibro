@@ -8,7 +8,7 @@ public final class KalibroSettingsPanelManualTest {
 	public static void main(String[] args) {
 		ComponentWrapperDialog dialog = new ComponentWrapperDialog("KalibroSettingsPanel");
 		KalibroSettingsPanel panel = new KalibroSettingsPanel(dialog);
-		panel.show(new KalibroSettings());
+		panel.set(new KalibroSettings());
 		dialog.setComponent(panel);
 		dialog.setVisible(true);
 	}

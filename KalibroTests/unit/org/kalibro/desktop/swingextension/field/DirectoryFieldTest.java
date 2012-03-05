@@ -3,11 +3,12 @@ package org.kalibro.desktop.swingextension.field;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 
+import java.awt.Component;
 import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.io.File;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
@@ -26,11 +27,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareOnlyThisForTest(DirectoryField.class)
 public class DirectoryFieldTest extends KalibroTestCase {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		new DirectoryField("").focusGained(null);
-	}
-
 	private FileChooser chooser;
 	private ErrorDialog errorDialog;
 
@@ -39,27 +35,31 @@ public class DirectoryFieldTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		createMocks();
+		mockFileChooser();
+		mockErrorDialog();
 		field = new DirectoryField("");
 		finder = new ComponentFinder(field);
 	}
 
-	private void createMocks() throws Exception {
+	private void mockFileChooser() throws Exception {
 		chooser = PowerMockito.mock(FileChooser.class);
-		errorDialog = PowerMockito.mock(ErrorDialog.class);
 		PowerMockito.whenNew(FileChooser.class).withArguments(any(DirectoryField.class)).thenReturn(chooser);
+	}
+
+	private void mockErrorDialog() throws Exception {
+		errorDialog = PowerMockito.mock(ErrorDialog.class);
 		PowerMockito.whenNew(ErrorDialog.class).withArguments(any(DirectoryField.class)).thenReturn(errorDialog);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void directoryShouldBeNullByDefault() {
-		assertNull(field.getDirectory());
+	public void valueShouldBeNullByDefault() {
+		assertNull(field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testShowRetrieve() {
-		field.show(TESTS_DIRECTORY);
-		assertSame(TESTS_DIRECTORY, field.retrieve());
+	public void shouldSetAndGet() {
+		field.set(TESTS_DIRECTORY);
+		assertSame(TESTS_DIRECTORY, field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -74,22 +74,35 @@ public class DirectoryFieldTest extends KalibroTestCase {
 	}
 
 	private void shouldNotAccept(File file) {
-		field.setDirectory(file);
+		field.set(file);
 		Mockito.verify(errorDialog).show("\"" + file.getAbsolutePath() + "\" is not a valid directory");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldUpdateDirectoryWhenPathChanges() {
 		pathField().setText(TESTS_DIRECTORY.getAbsolutePath());
-		field.focusLost(new FocusEvent(field, 0));
-		assertEquals(TESTS_DIRECTORY, field.getDirectory());
+		simulateFocusLost(false, null);
+		assertEquals(TESTS_DIRECTORY, field.get());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotUpdateDirectoryIfPathFieldLostFocusForBrowseButton() {
+		pathField().setText(TESTS_DIRECTORY.getAbsolutePath());
+		simulateFocusLost(false, browseButton());
+		assertNull(field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotUpdateDirectoryIfFocusEventIsTemporary() {
 		pathField().setText(TESTS_DIRECTORY.getAbsolutePath());
-		field.focusLost(new FocusEvent(field, 0, true));
-		assertNull(field.getDirectory());
+		simulateFocusLost(true, null);
+		assertNull(field.get());
+	}
+
+	private void simulateFocusLost(boolean temporary, Component opposite) {
+		FocusEvent event = new FocusEvent(pathField(), FocusEvent.FOCUS_LOST, temporary, opposite);
+		for (FocusListener listener : pathField().getFocusListeners())
+			listener.focusLost(event);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -97,8 +110,8 @@ public class DirectoryFieldTest extends KalibroTestCase {
 		PowerMockito.when(chooser.chooseDirectoryToOpen()).thenReturn(true);
 		PowerMockito.when(chooser.getChosenFile()).thenReturn(TESTS_DIRECTORY);
 		browseButton().doClick();
-		assertEquals(TESTS_DIRECTORY, field.getDirectory());
-		assertEquals(TESTS_DIRECTORY.getAbsolutePath(), pathField().getValue());
+		assertEquals(TESTS_DIRECTORY, field.get());
+		assertEquals(TESTS_DIRECTORY.getAbsolutePath(), pathField().get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -106,8 +119,8 @@ public class DirectoryFieldTest extends KalibroTestCase {
 		PowerMockito.when(chooser.chooseDirectoryToOpen()).thenReturn(false);
 		PowerMockito.when(chooser.getChosenFile()).thenReturn(TESTS_DIRECTORY);
 		browseButton().doClick();
-		assertNull(field.getDirectory());
-		assertEquals("", pathField().getValue());
+		assertNull(field.get());
+		assertEquals("", pathField().get());
 	}
 
 	private StringField pathField() {

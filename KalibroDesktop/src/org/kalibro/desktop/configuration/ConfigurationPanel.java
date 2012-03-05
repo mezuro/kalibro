@@ -60,18 +60,18 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 	}
 
 	@Override
-	public void show(Configuration configuration) {
-		nameField.setValue(configuration.getName());
-		descriptionField.setValue(configuration.getDescription());
-		metricConfigurationsPanel.show(configuration.getMetricConfigurations());
+	public void set(Configuration configuration) {
+		nameField.set(configuration.getName());
+		descriptionField.set(configuration.getDescription());
+		metricConfigurationsPanel.set(configuration.getMetricConfigurations());
 	}
 
 	@Override
-	public Configuration retrieve() {
+	public Configuration get() {
 		Configuration configuration = new Configuration();
-		configuration.setName(nameField.getValue());
-		configuration.setDescription(descriptionField.getValue());
-		for (MetricConfiguration metric : metricConfigurationsPanel.retrieve())
+		configuration.setName(nameField.get());
+		configuration.setDescription(descriptionField.get());
+		for (MetricConfiguration metric : metricConfigurationsPanel.get())
 			configuration.addMetricConfiguration(metric);
 		return configuration;
 	}

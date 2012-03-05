@@ -12,6 +12,8 @@ import org.kalibro.KalibroTestCase;
 
 public class BooleanFieldTest extends KalibroTestCase {
 
+	private static final Boolean[] VALUES = new Boolean[]{true, false};
+
 	private BooleanField field;
 
 	@Before
@@ -35,16 +37,18 @@ public class BooleanFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowValue() {
-		assertFalse(field.isSelected());
-		field.setValue(true);
-		assertTrue(field.isSelected());
+	public void shouldGet() {
+		for (Boolean value : VALUES) {
+			field.setSelected(value);
+			assertEquals(value, field.get());
+		}
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveValue() {
-		assertFalse(field.getValue());
-		field.setSelected(true);
-		assertTrue(field.getValue());
+	public void shouldSet() {
+		for (Boolean value : VALUES) {
+			field.set(value);
+			assertEquals(value, field.isSelected());
+		}
 	}
 }

@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
-public class ListComponentAdapter<T> extends MouseAdapter implements ListSelectionListener {
+class ListComponentAdapter<T> extends MouseAdapter implements ListSelectionListener {
 
 	private ListListener<T> listener;
 	private ListComponent<T> component;
@@ -19,7 +19,7 @@ public class ListComponentAdapter<T> extends MouseAdapter implements ListSelecti
 	@Override
 	public void mouseClicked(MouseEvent event) {
 		if (event.getClickCount() > 1)
-			listener.doubleClicked(component.getSelectedObject());
+			listener.doubleClicked(component.getSelected());
 	}
 
 	@Override
@@ -27,7 +27,7 @@ public class ListComponentAdapter<T> extends MouseAdapter implements ListSelecti
 		if (event.getValueIsAdjusting())
 			return;
 		if (component.hasSelection())
-			listener.selected(component.getSelectedObject());
+			listener.selected(component.getSelected());
 		else
 			listener.selectionCleared();
 	}

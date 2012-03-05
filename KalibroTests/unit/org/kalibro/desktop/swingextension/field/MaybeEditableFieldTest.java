@@ -25,31 +25,31 @@ public class MaybeEditableFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowEditableFieldWhenSettingEditable() {
+	public void shouldShowEditableFieldWhenEditable() {
 		field.setEditable(true);
 		assertTrue(field.isEditable());
 		findEditableField();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowUneditableFieldWhenSettingNotEditable() {
+	public void shouldShowUneditableFieldWhenNotEditable() {
 		field.setEditable(false);
 		assertFalse(field.isEditable());
 		findUneditableField();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowLastValueSet() {
+	public void shouldShowValueSet() {
 		testLastValue("First value", false);
 		testLastValue("Another value", true);
 	}
 
 	private void testLastValue(String value, boolean editable) {
-		field.setValue(value);
+		field.set(value);
 		field.setEditable(editable);
 		Field<String> innerField = editable ? findEditableField() : findUneditableField();
-		assertEquals(value, field.getValue());
-		assertEquals(value, innerField.getValue());
+		assertEquals(value, field.get());
+		assertEquals(value, innerField.get());
 	}
 
 	private StringField findEditableField() {

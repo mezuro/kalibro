@@ -7,7 +7,7 @@ public final class DatabaseSettingsPanelManualTest {
 
 	public static void main(String[] args) {
 		DatabaseSettingsPanel panel = new DatabaseSettingsPanel();
-		panel.show(new DatabaseSettings());
+		panel.set(new DatabaseSettings());
 		new ComponentWrapperDialog("DatabaseSettingsPanel", panel).setVisible(true);
 	}
 

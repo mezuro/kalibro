@@ -1,6 +1,9 @@
 package org.checkstyle;
 
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import java.io.File;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.kalibro.core.MetricCollector;
@@ -11,14 +14,17 @@ public class CheckstyleMetricCollector implements MetricCollector {
 
 	@Override
 	public Set<NativeMetric> getSupportedMetrics() {
-		return CheckstyleMetric.supportedMetrics();
+		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			supportedMetrics.add(metric.getNativeMetric());
+		return supportedMetrics;
 	}
 
 	@Override
 	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
-		//TODO Filter using the metrics argument
-		CheckstyleOutputParser parser = new CheckstyleOutputParser();
-		new KalibroChecker(parser).process(codeDirectory);
+		CheckstyleOutputParser parser = new CheckstyleOutputParser(metrics);
+		Configuration configuration = CheckstyleConfiguration.checkerConfiguration(metrics);
+		new KalibroChecker(parser, configuration).process(codeDirectory);
 		return parser.getResults();
 	}
 }

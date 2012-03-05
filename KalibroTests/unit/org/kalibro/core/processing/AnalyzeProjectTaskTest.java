@@ -38,7 +38,7 @@ public class AnalyzeProjectTaskTest extends KalibroTestCase {
 	public void setUp() throws Exception {
 		projectResult = helloWorldResult();
 		projectResult.setSourceTree(null);
-		configuration = kalibroConfiguration();
+		configuration = simpleConfiguration();
 		mockKalibro();
 		analyzeTask = new AnalyzeProjectTask(projectResult);
 		analyzeTask.perform();

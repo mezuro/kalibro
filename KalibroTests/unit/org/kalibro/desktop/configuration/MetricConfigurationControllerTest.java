@@ -40,7 +40,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		mockPanels();
 		mockDialogs();
 		mockRangeController();
-		configuration = ConfigurationFixtures.kalibroConfiguration();
+		configuration = ConfigurationFixtures.simpleConfiguration();
 		controller = new MetricConfigurationController(configuration, cardStack);
 	}
 
@@ -89,7 +89,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		chooseNewMetric(chosenMetric);
 
 		ArgumentCaptor<MetricConfiguration> captor = ArgumentCaptor.forClass(MetricConfiguration.class);
-		verify(panel).show(captor.capture());
+		verify(panel).set(captor.capture());
 		assertDeepEquals(new MetricConfiguration(chosenMetric), captor.getValue());
 		verify(cardStack).push(panel);
 	}
@@ -100,7 +100,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		controller.edit(metricConfiguration);
 
 		ArgumentCaptor<MetricConfiguration> captor = ArgumentCaptor.forClass(MetricConfiguration.class);
-		verify(panel).show(captor.capture());
+		verify(panel).set(captor.capture());
 		assertDeepEquals(metricConfiguration, captor.getValue());
 		verify(cardStack).push(panel);
 	}
@@ -117,7 +117,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	public void shouldPopPanelOnOk() {
 		MetricConfiguration metricConfiguration = new MetricConfiguration(new CompoundMetric());
 		controller.edit(metricConfiguration);
-		PowerMockito.when(panel.retrieve()).thenReturn(metricConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(metricConfiguration);
 		clickButton("ok");
 		verify(cardStack).pop();
 	}
@@ -126,7 +126,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	public void shouldAddMetricConfigurationOnAdd() {
 		CompoundMetric metric = new CompoundMetric();
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
-		PowerMockito.when(panel.retrieve()).thenReturn(metricConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(metricConfiguration);
 
 		chooseNewMetric(metric);
 		clickButton("ok");
@@ -149,7 +149,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		NativeMetric amloc = NativeMetricFixtures.nativeMetric("amloc");
 		MetricConfiguration oldConfiguration = MetricConfigurationFixtures.configuration("amloc");
 		MetricConfiguration newConfiguration = new MetricConfiguration(amloc);
-		PowerMockito.when(panel.retrieve()).thenReturn(newConfiguration);
+		PowerMockito.when(panel.get()).thenReturn(newConfiguration);
 		controller.edit(oldConfiguration);
 		clickButton("ok");
 		assertSame(newConfiguration, configuration.getConfigurationFor(amloc));
@@ -173,8 +173,8 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		controller.edit(metricConfiguration);
 
 		metricConfiguration = new MetricConfiguration(amloc);
-		metricConfiguration.setCode("loc");
-		PowerMockito.when(panel.retrieve()).thenReturn(metricConfiguration);
+		metricConfiguration.setCode("cbo");
+		PowerMockito.when(panel.get()).thenReturn(metricConfiguration);
 		clickButton("ok");
 	}
 
@@ -182,8 +182,8 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	public void oldConfigurationShouldStillBeThereOnError() {
 		NativeMetric amloc = NativeMetricFixtures.nativeMetric("amloc");
 		MetricConfiguration oldConfiguration = MetricConfigurationFixtures.configuration("amloc");
-		MetricConfiguration newConfiguration = new MetricConfiguration(NativeMetricFixtures.nativeMetric("loc"));
-		PowerMockito.when(panel.retrieve()).thenReturn(newConfiguration);
+		MetricConfiguration newConfiguration = new MetricConfiguration(NativeMetricFixtures.nativeMetric("cbo"));
+		PowerMockito.when(panel.get()).thenReturn(newConfiguration);
 		controller.edit(oldConfiguration);
 		clickButton("ok");
 		assertSame(oldConfiguration, configuration.getConfigurationFor(amloc));

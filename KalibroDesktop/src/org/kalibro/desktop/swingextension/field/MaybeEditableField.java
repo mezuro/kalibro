@@ -11,7 +11,7 @@ public class MaybeEditableField<T> extends JPanel implements Field<T> {
 	private UneditableField<T> uneditableField;
 
 	public MaybeEditableField(Field<T> editableField) {
-		super(new GridLayout(1, 1));
+		super(new GridLayout());
 		this.editableField = editableField;
 		String name = editableComponent().getName();
 		this.uneditableField = new UneditableField<T>(name);
@@ -20,14 +20,14 @@ public class MaybeEditableField<T> extends JPanel implements Field<T> {
 	}
 
 	@Override
-	public T getValue() {
-		return editableField.getValue();
+	public T get() {
+		return editableField.get();
 	}
 
 	@Override
-	public void setValue(T value) {
-		editableField.setValue(value);
-		uneditableField.setValue(value);
+	public void set(T value) {
+		editableField.set(value);
+		uneditableField.set(value);
 	}
 
 	public boolean isEditable() {
@@ -39,7 +39,7 @@ public class MaybeEditableField<T> extends JPanel implements Field<T> {
 		if (editable)
 			add(editableComponent());
 		else {
-			uneditableField.setValue(editableField.getValue());
+			uneditableField.set(editableField.get());
 			add(uneditableField);
 		}
 		repaint();

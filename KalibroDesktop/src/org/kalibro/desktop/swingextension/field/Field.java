@@ -2,7 +2,7 @@ package org.kalibro.desktop.swingextension.field;
 
 public interface Field<T> {
 
-	T getValue();
+	T get();
 
-	void setValue(T value);
+	void set(T value);
 }

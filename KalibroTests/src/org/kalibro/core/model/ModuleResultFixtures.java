@@ -31,7 +31,7 @@ public final class ModuleResultFixtures {
 		moduleResultMap.put(helloWorldClass(), classResult);
 		new ResultsAggregator(projectResult, moduleResultMap).aggregate();
 
-		Configuration configuration = kalibroConfiguration();
+		Configuration configuration = simpleConfiguration();
 		applicationResult.setConfiguration(configuration);
 		classResult.setConfiguration(configuration);
 		return moduleResultMap.values();
@@ -44,7 +44,7 @@ public final class ModuleResultFixtures {
 	public static ModuleResult helloWorldApplicationResult(Date date) {
 		ModuleResult result = new ModuleResult(helloWorldApplication(), date);
 		result.addMetricResults(copyAndSetOrigin(AnalizoStub.applicationResult()).getMetricResults());
-		result.setConfiguration(kalibroConfiguration());
+		result.setConfiguration(simpleConfiguration());
 		return result;
 	}
 
@@ -55,7 +55,7 @@ public final class ModuleResultFixtures {
 	public static ModuleResult helloWorldClassResult(Date date) {
 		ModuleResult result = new ModuleResult(helloWorldClass(), date);
 		result.addMetricResults(copyAndSetOrigin(AnalizoStub.classResult()).getMetricResults());
-		result.setConfiguration(kalibroConfiguration());
+		result.setConfiguration(simpleConfiguration());
 		return result;
 	}
 

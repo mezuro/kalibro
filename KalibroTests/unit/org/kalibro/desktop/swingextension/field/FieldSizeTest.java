@@ -10,45 +10,40 @@ import javax.swing.JComponent;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
 public class FieldSizeTest extends KalibroTestCase {
 
-	private int height, width, fontSize;
+	private static final Random RANDOM = new Random(System.currentTimeMillis());
+	private static final int WIDTH = RANDOM.nextInt();
+	private static final int HEIGHT = RANDOM.nextInt();
+	private static final int FONT_SIZE = RANDOM.nextInt();
+
 	private JComponent component;
 	private FieldSize fieldSize;
 
 	@Before
 	public void setUp() {
-		Random random = new Random(System.currentTimeMillis());
-		width = random.nextInt();
-		height = random.nextInt();
-		fontSize = random.nextInt();
 		component = PowerMockito.mock(JComponent.class);
-		PowerMockito.when(component.getPreferredSize()).thenReturn(new Dimension(width, height));
-		PowerMockito.when(component.getFont()).thenReturn(new Font("Arial", Font.BOLD, fontSize));
+		PowerMockito.when(component.getPreferredSize()).thenReturn(new Dimension(WIDTH, HEIGHT));
+		PowerMockito.when(component.getFont()).thenReturn(new Font("Arial", Font.BOLD, FONT_SIZE));
+		fieldSize = new FieldSize(component);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetWidthFromComponent() {
-		fieldSize = new FieldSize(component);
-		assertEquals(width, fieldSize.width);
+		assertEquals(WIDTH, fieldSize.width);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetHeightFromFontSize() {
-		fieldSize = new FieldSize(component);
-		assertEquals(2 * fontSize, fieldSize.height);
+		assertEquals(2 * FONT_SIZE, fieldSize.height);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetMinimumAndPreferredSize() {
-		fieldSize = new FieldSize(component);
 		Mockito.verify(component).setMinimumSize(fieldSize);
 		Mockito.verify(component).setPreferredSize(fieldSize);
 	}

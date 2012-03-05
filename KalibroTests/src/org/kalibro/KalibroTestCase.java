@@ -3,8 +3,12 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.*;
 
+import org.junit.After;
+import org.junit.AfterClass;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
@@ -20,6 +24,32 @@ public abstract class KalibroTestCase {
 	protected static final int UNIT_TIMEOUT = 750;
 	protected static final int INTEGRATION_TIMEOUT = 2500;
 	protected static final int ACCEPTANCE_TIMEOUT = 10000;
+
+	@AfterClass
+	public static void runGabageCollector() {
+		System.gc();
+	}
+
+	@After
+	public void cleanInstanceVariables() throws Exception {
+		for (Field field : getClass().getDeclaredFields())
+			if (isObject(field) && isInstanceVariable(field))
+				setNull(field);
+	}
+
+	private boolean isObject(Field field) {
+		return !field.getType().isPrimitive();
+	}
+
+	private boolean isInstanceVariable(Field field) {
+		int modifiers = field.getModifiers();
+		return !Modifier.isStatic(modifiers) && !Modifier.isFinal(modifiers);
+	}
+
+	private void setNull(Field field) throws Exception {
+		field.setAccessible(true);
+		field.set(this, null);
+	}
 
 	private boolean waiting;
 
@@ -63,7 +93,7 @@ public abstract class KalibroTestCase {
 	}
 
 	protected void assertDeepEquals(AbstractEntity<?> expected, AbstractEntity<?> actual) {
-		if (! expected.deepEquals(actual)) {
+		if (!expected.deepEquals(actual)) {
 			String actualText = (actual == null) ? "null" : actual.deepPrint();
 			String expectedText = expected.deepPrint();
 			assertEquals(expectedText, actualText);

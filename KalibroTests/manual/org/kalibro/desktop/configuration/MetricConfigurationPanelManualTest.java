@@ -20,10 +20,10 @@ public class MetricConfigurationPanelManualTest implements ActionListener, Table
 		panel.addRangesPanelListener(listener);
 		panel.addButtonListener(listener);
 
-		panel.show(configuration("amloc"));
+		panel.set(configuration("amloc"));
 		new ComponentWrapperDialog("MetricConfigurationPanel", panel).setVisible(true);
 
-		panel.show(new MetricConfiguration(sc()));
+		panel.set(new MetricConfiguration(sc()));
 		new ComponentWrapperDialog("MetricConfigurationPanel", panel).setVisible(true);
 	}
 

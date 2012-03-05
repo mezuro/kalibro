@@ -14,7 +14,7 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.desktop.icon.KalibroIcon;
+import org.kalibro.desktop.swingextension.icon.KalibroIcon;
 import org.kalibro.desktop.old.StatusBar;
 import org.kalibro.desktop.old.listeners.ProjectFrameListener;
 

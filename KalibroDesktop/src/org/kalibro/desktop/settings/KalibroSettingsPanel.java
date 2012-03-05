@@ -52,18 +52,18 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	}
 
 	@Override
-	public void show(KalibroSettings settings) {
-		clientSettingsPanel.show(settings.getClientSettings());
-		serverSettingsPanel.show(settings.getServerSettings());
+	public void set(KalibroSettings settings) {
+		clientSettingsPanel.set(settings.getClientSettings());
+		serverSettingsPanel.set(settings.getServerSettings());
 		switchPanels(settings.isClient());
 	}
 
 	@Override
-	public KalibroSettings retrieve() {
+	public KalibroSettings get() {
 		KalibroSettings settings = new KalibroSettings();
 		settings.setClient(clientField.isSelected());
-		settings.setClientSettings(clientSettingsPanel.retrieve());
-		settings.setServerSettings(serverSettingsPanel.retrieve());
+		settings.setClientSettings(clientSettingsPanel.get());
+		settings.setServerSettings(serverSettingsPanel.get());
 		return settings;
 	}
 
@@ -73,9 +73,9 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	}
 
 	private void switchPanels(boolean client) {
-		clientField.setValue(client);
+		clientField.set(client);
 		clientSettingsPanel.setVisible(client);
-		serverSettingsPanel.setVisible(! client);
+		serverSettingsPanel.setVisible(!client);
 		adjustSize();
 		parent.adjustSize();
 	}

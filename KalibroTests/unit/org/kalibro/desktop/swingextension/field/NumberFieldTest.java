@@ -36,35 +36,35 @@ public class NumberFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldHaveNullValueByDefault() {
-		assertNull(field.getValue());
+	public void deafultValueShouldBeNull() {
+		assertNull(field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testShowRetrieve() {
-		field.show((byte) 42);
-		assertEquals(new Byte((byte) 42), field.retrieve());
+	public void shouldSetAndGet() {
+		field.set(new Byte("42"));
+		assertEquals(new Byte("42"), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptValidNumber() {
-		changeText("42", true);
-		assertEquals(new Byte((byte) 42), field.getValue());
+		validateTextChange("42", true);
+		assertEquals(new Byte("42"), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptChangingBackToNull() {
-		changeText("42", true);
-		changeText("", false);
-		assertEquals(new Byte((byte) 42), field.getValue());
+		validateTextChange("42", true);
+		validateTextChange("", false);
+		assertEquals(new Byte("42"), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptInvalidNumber() {
-		changeText("quarenta e dois", false);
+		validateTextChange("quarenta e dois", false);
 	}
 
-	private void changeText(String text, boolean shouldAccept) {
+	private void validateTextChange(String text, boolean shouldAccept) {
 		try {
 			innerField.setText(text);
 			innerField.commitEdit();
@@ -89,7 +89,7 @@ public class NumberFieldTest extends KalibroTestCase {
 	public void buttonShouldSetSpecialNumber() {
 		field = new ByteField("", Byte.MIN_VALUE);
 		new ComponentFinder(field).find("", Button.class).doClick();
-		assertEquals(Byte.MIN_VALUE, field.getValue().byteValue());
+		assertEquals(Byte.MIN_VALUE, field.get().byteValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

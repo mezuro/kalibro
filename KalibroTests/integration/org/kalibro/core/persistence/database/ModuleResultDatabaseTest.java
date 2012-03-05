@@ -57,7 +57,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		save();
 
 		MetricConfiguration badCompoundMetric = newCompoundMetric("bad", "return null;");
-		Configuration configuration = kalibroConfiguration();
+		Configuration configuration = simpleConfiguration();
 		configuration.addMetricConfiguration(badCompoundMetric);
 		daoFactory.getConfigurationDao().save(configuration);
 

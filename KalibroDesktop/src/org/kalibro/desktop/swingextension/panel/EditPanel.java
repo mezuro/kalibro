@@ -1,10 +1,10 @@
 package org.kalibro.desktop.swingextension.panel;
 
-public abstract class EditPanel<T> extends AbstractPanel<T> {
+import org.kalibro.desktop.swingextension.field.Field;
+
+public abstract class EditPanel<T> extends AbstractPanel<T> implements Field<T> {
 
 	public EditPanel(String name) {
 		super(name);
 	}
-
-	public abstract void show(T object);
 }

@@ -14,12 +14,12 @@ public class PasswordField extends JPasswordField implements Field<String> {
 	}
 
 	@Override
-	public String getValue() {
+	public String get() {
 		return new String(getPassword());
 	}
 
 	@Override
-	public void setValue(String value) {
-		setText(value);
+	public void set(String password) {
+		setText(password);
 	}
 }

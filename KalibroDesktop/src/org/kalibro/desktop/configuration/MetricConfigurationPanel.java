@@ -91,21 +91,21 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 	}
 
 	@Override
-	public void show(MetricConfiguration configuration) {
-		metricPanel.show(configuration.getMetric());
-		codeField.setValue(configuration.getCode());
-		weightField.setValue(configuration.getWeight());
-		aggregationFormField.setValue(configuration.getAggregationForm());
-		rangesPanel.show(configuration.getRanges());
+	public void set(MetricConfiguration configuration) {
+		metricPanel.set(configuration.getMetric());
+		codeField.set(configuration.getCode());
+		weightField.set(configuration.getWeight());
+		aggregationFormField.set(configuration.getAggregationForm());
+		rangesPanel.set(configuration.getRanges());
 	}
 
 	@Override
-	public MetricConfiguration retrieve() {
-		MetricConfiguration configuration = new MetricConfiguration(metricPanel.retrieve());
-		configuration.setCode(codeField.getValue());
-		configuration.setWeight(weightField.getValue());
-		configuration.setAggregationForm(aggregationFormField.getValue());
-		for (Range range : rangesPanel.retrieve())
+	public MetricConfiguration get() {
+		MetricConfiguration configuration = new MetricConfiguration(metricPanel.get());
+		configuration.setCode(codeField.get());
+		configuration.setWeight(weightField.get());
+		configuration.setAggregationForm(aggregationFormField.get());
+		for (Range range : rangesPanel.get())
 			configuration.addRange(range);
 		return configuration;
 	}

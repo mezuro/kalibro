@@ -29,7 +29,7 @@ public class ListComponentAdapterTest extends KalibroTestCase {
 	private void mockComponent() {
 		range = new Range(0.0, Double.POSITIVE_INFINITY);
 		component = PowerMockito.mock(ListComponent.class);
-		PowerMockito.when(component.getSelectedObject()).thenReturn(range);
+		PowerMockito.when(component.getSelected()).thenReturn(range);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

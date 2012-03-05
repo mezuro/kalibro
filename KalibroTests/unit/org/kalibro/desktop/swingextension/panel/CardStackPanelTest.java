@@ -5,32 +5,24 @@ import java.awt.CardLayout;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.desktop.configuration.ConfigurationPanel;
-import org.kalibro.desktop.configuration.MetricPanel;
-import org.kalibro.desktop.configuration.RangePanel;
+import org.kalibro.desktop.swingextension.field.StringField;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
 public class CardStackPanelTest extends KalibroTestCase {
 
-	private RangePanel rangePanel;
-	private MetricPanel metricPanel;
-	private ConfigurationPanel configurationPanel;
+	private StringField base, middle, top;
+	private CardLayout layout;
 
 	private CardStackPanel cardStack;
-	private CardLayout layout;
 
 	@Before
 	public void setUp() {
-		createSamplePanels();
+		base = new StringField("base", 10);
+		middle = new StringField("middle", 20);
+		top = new StringField("top", 30);
 		cardStack = PowerMockito.spy(new CardStackPanel());
 		spyLayout();
-	}
-
-	private void createSamplePanels() {
-		rangePanel = new RangePanel();
-		metricPanel = new MetricPanel();
-		configurationPanel = new ConfigurationPanel();
 	}
 
 	private void spyLayout() {
@@ -41,55 +33,49 @@ public class CardStackPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddOnPush() {
-		cardStack.push(configurationPanel);
-		Mockito.verify(cardStack).add(configurationPanel, configurationPanel.getName());
-
-		cardStack.push(metricPanel);
-		Mockito.verify(cardStack).add(metricPanel, metricPanel.getName());
-
-		cardStack.push(rangePanel);
-		Mockito.verify(cardStack).add(rangePanel, rangePanel.getName());
+		cardStack.push(base);
+		Mockito.verify(cardStack).add(base, base.getName());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowTopOnPush() {
-		cardStack.push(configurationPanel);
-		Mockito.verify(layout).show(cardStack, configurationPanel.getName());
+		cardStack.push(base);
+		Mockito.verify(layout).show(cardStack, base.getName());
+	}
 
-		cardStack.push(metricPanel);
-		Mockito.verify(layout).show(cardStack, metricPanel.getName());
-
-		cardStack.push(rangePanel);
-		Mockito.verify(layout).show(cardStack, rangePanel.getName());
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRepaintOnPush() {
+		cardStack.push(base);
+		Mockito.verify(cardStack).repaint();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveOnPop() {
-		cardStack.push(configurationPanel);
-		cardStack.push(metricPanel);
-		cardStack.push(rangePanel);
+		cardStack.push(base);
+		cardStack.push(middle);
+		cardStack.push(top);
 
 		cardStack.pop();
-		Mockito.verify(cardStack).remove(rangePanel);
+		Mockito.verify(cardStack).remove(top);
 
 		cardStack.pop();
-		Mockito.verify(cardStack).remove(metricPanel);
+		Mockito.verify(cardStack).remove(middle);
 
 		cardStack.pop();
-		Mockito.verify(cardStack).remove(configurationPanel);
+		Mockito.verify(cardStack).remove(base);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowPreviousTopOnPop() {
-		cardStack.push(configurationPanel);
-		cardStack.push(metricPanel);
-		cardStack.push(rangePanel);
+		cardStack.push(base);
+		cardStack.push(middle);
+		cardStack.push(top);
 		Mockito.reset(layout);
 
 		cardStack.pop();
-		Mockito.verify(layout).show(cardStack, metricPanel.getName());
+		Mockito.verify(layout).show(cardStack, middle.getName());
 
 		cardStack.pop();
-		Mockito.verify(layout).show(cardStack, configurationPanel.getName());
+		Mockito.verify(layout).show(cardStack, base.getName());
 	}
 }

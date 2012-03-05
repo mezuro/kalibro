@@ -5,15 +5,13 @@ import java.util.Collection;
 
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
-import org.kalibro.core.model.enums.Statistic;
-
 class PreMetricResult {
 
-	private NativeMetric metric;
+	private CheckstyleMetric metric;
 	private Collection<Double> values;
 
-	public PreMetricResult(String messageKey) {
-		this.metric = CheckstyleMetric.getNativeMetricFor(messageKey);
+	public PreMetricResult(CheckstyleMetric metric) {
+		this.metric = metric;
 		values = new ArrayList<Double>();
 	}
 
@@ -22,6 +20,8 @@ class PreMetricResult {
 	}
 
 	public NativeMetricResult getResult() {
-		return new NativeMetricResult(metric, Statistic.AVERAGE.calculate(values));
+		NativeMetric nativeMetric = metric.getNativeMetric();
+		Double value = values.isEmpty() ? 0.0 : metric.getAggregationType().calculate(values);
+		return new NativeMetricResult(nativeMetric, value);
 	}
 }

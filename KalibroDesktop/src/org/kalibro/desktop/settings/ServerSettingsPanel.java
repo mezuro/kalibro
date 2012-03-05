@@ -39,18 +39,18 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 	}
 
 	@Override
-	public void show(ServerSettings settings) {
-		loadDirectoryField.setDirectory(settings.getLoadDirectory());
+	public void set(ServerSettings settings) {
+		loadDirectoryField.set(settings.getLoadDirectory());
 		removeSourcesField.setSelected(settings.shouldRemoveSources());
-		databasePanel.show(settings.getDatabaseSettings());
+		databasePanel.set(settings.getDatabaseSettings());
 	}
 
 	@Override
-	public ServerSettings retrieve() {
+	public ServerSettings get() {
 		ServerSettings settings = new ServerSettings();
-		settings.setLoadDirectory(loadDirectoryField.getDirectory());
+		settings.setLoadDirectory(loadDirectoryField.get());
 		settings.setRemoveSources(removeSourcesField.isSelected());
-		settings.setDatabaseSettings(databasePanel.retrieve());
+		settings.setDatabaseSettings(databasePanel.get());
 		return settings;
 	}
 }

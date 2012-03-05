@@ -19,12 +19,12 @@ public class StringField extends JTextField implements Field<String> {
 	}
 
 	@Override
-	public String getValue() {
+	public String get() {
 		return getText();
 	}
 
 	@Override
-	public void setValue(String value) {
+	public void set(String value) {
 		setText(value);
 	}
 }

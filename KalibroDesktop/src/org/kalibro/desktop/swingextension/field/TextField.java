@@ -67,12 +67,12 @@ public class TextField extends JScrollPane implements Field<String> {
 	}
 
 	@Override
-	public String getValue() {
+	public String get() {
 		return textPane.getText().trim();
 	}
 
 	@Override
-	public void setValue(String text) {
+	public void set(String text) {
 		textPane.setText(text);
 	}
 

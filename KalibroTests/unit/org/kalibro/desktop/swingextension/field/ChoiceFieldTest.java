@@ -17,14 +17,18 @@ public class ChoiceFieldTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void getValueShouldReturnSelectedItem() {
-		field.setSelectedItem(Granularity.METHOD);
-		assertEquals(Granularity.METHOD, field.getValue());
+	public void shouldGet() {
+		for (Granularity granularity : Granularity.values()) {
+			field.setSelectedItem(granularity);
+			assertEquals(granularity, field.get());
+		}
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void setValueShouldChangeSelectedItem() {
-		field.setValue(Granularity.PACKAGE);
-		assertEquals(Granularity.PACKAGE, field.getSelectedItem());
+	public void shouldSet() {
+		for (Granularity granularity : Granularity.values()) {
+			field.set(granularity);
+			assertEquals(granularity, field.getSelectedItem());
+		}
 	}
 }

@@ -18,7 +18,7 @@ public class MetricConfigurationRecordTest extends DtoTestCase<MetricConfigurati
 
 	@Override
 	protected Collection<MetricConfiguration> entitiesForTestingConversion() {
-		Collection<MetricConfiguration> configurations = kalibroConfiguration().getMetricConfigurations();
+		Collection<MetricConfiguration> configurations = simpleConfiguration().getMetricConfigurations();
 		ArrayList<MetricConfiguration> entities = new ArrayList<MetricConfiguration>(configurations);
 		entities.add(new MetricConfiguration(CompoundMetricFixtures.sc()));
 		return entities;

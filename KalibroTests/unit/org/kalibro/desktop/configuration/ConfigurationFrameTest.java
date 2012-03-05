@@ -32,7 +32,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = ConfigurationFixtures.kalibroConfiguration();
+		configuration = ConfigurationFixtures.simpleConfiguration();
 		mockPanel();
 		mockMetricConfigurationController();
 		frame = new ConfigurationFrame(configuration);
@@ -40,7 +40,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	private void mockPanel() throws Exception {
 		panel = PowerMockito.spy(new ConfigurationPanel());
-		PowerMockito.when(panel.retrieve()).thenReturn(configuration);
+		PowerMockito.when(panel.get()).thenReturn(configuration);
 		PowerMockito.whenNew(ConfigurationPanel.class).withNoArguments().thenReturn(panel);
 	}
 
@@ -82,7 +82,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowConfigurationOnPanel() {
-		Mockito.verify(panel).show(configuration);
+		Mockito.verify(panel).set(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -94,9 +94,9 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 	public void shouldAddMetricConfiguration() {
 		frame.add();
 		InOrder order = Mockito.inOrder(panel, metricConfigurationController, panel);
-		order.verify(panel).retrieve();
+		order.verify(panel).get();
 		order.verify(metricConfigurationController).add();
-		order.verify(panel).show(configuration);
+		order.verify(panel).set(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -104,8 +104,8 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 		MetricConfiguration metricConfiguration = configuration.getMetricConfigurations().iterator().next();
 		frame.edit(metricConfiguration);
 		InOrder order = Mockito.inOrder(panel, metricConfigurationController, panel);
-		order.verify(panel).retrieve();
+		order.verify(panel).get();
 		order.verify(metricConfigurationController).edit(metricConfiguration);
-		order.verify(panel).show(configuration);
+		order.verify(panel).set(configuration);
 	}
 }

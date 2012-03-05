@@ -19,17 +19,18 @@ public class ColorField extends Button implements ActionListener, Field<Color> {
 	}
 
 	@Override
-	public Color getValue() {
+	public Color get() {
 		return getBackground();
 	}
 
 	@Override
-	public void setValue(Color color) {
+	public void set(Color color) {
 		setBackground(color);
+		setForeground(new Color(Integer.MAX_VALUE - color.getRGB()));
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		setValue(chooser.chooseColor(getValue()));
+		set(chooser.chooseColor(get()));
 	}
 }

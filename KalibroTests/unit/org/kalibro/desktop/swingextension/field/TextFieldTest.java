@@ -44,20 +44,25 @@ public class TextFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldTrimText() {
-		field.setValue("\n  my text  \n");
-		assertEquals("my text", field.getValue());
+		field.set("\n  my text  \n");
+		assertEquals("my text", field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testEditable() {
+	public void shouldSetEditableOnTextPane() {
+		field.setEditable(true);
 		assertTrue(textPane.isEditable());
+
 		field.setEditable(false);
 		assertFalse(textPane.isEditable());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testEnabled() {
+	public void shouldSetEnabledOnTextPane() {
+		field.setEnabled(true);
+		assertTrue(field.isEnabled());
 		assertTrue(textPane.isEnabled());
+
 		field.setEnabled(false);
 		assertFalse(field.isEnabled());
 		assertFalse(textPane.isEnabled());

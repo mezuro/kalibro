@@ -36,28 +36,28 @@ public class UneditableFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowValue() {
-		field.setValue("My string");
+		field.set("My string");
 		assertEquals("My string", field.getText());
 
-		field.setValue(null);
+		field.set(null);
 		assertEquals("", field.getText());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveValue() {
-		field.setValue("My string");
-		assertEquals("My string", field.getValue());
+		field.set("My string");
+		assertEquals("My string", field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldChangeWidthWhenSettingValue() {
 		int emptyWidth = (int) field.getSize().getWidth();
 
-		field.setValue("123456789");
+		field.set("123456789");
 		int nineWidth = (int) field.getSize().getWidth();
 		assertTrue(nineWidth > emptyWidth);
 
-		field.setValue("1234");
+		field.set("1234");
 		int fourWidth = (int) field.getSize().getWidth();
 		assertTrue(fourWidth < nineWidth);
 	}

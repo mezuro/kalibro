@@ -48,22 +48,22 @@ public class MetricConfigurationPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
-		panel.show(configuration);
-		assertEquals(configuration.getCode(), codeField().getValue());
-		assertDeepEquals(configuration.getMetric(), metricPanel().retrieve());
-		assertDoubleEquals(configuration.getWeight(), weightField().getValue());
-		assertEquals(configuration.getAggregationForm(), aggregationFormField().getValue());
+		panel.set(configuration);
+		assertEquals(configuration.getCode(), codeField().get());
+		assertDeepEquals(configuration.getMetric(), metricPanel().get());
+		assertDoubleEquals(configuration.getWeight(), weightField().get());
+		assertEquals(configuration.getAggregationForm(), aggregationFormField().get());
 		assertDeepEquals(configuration.getRanges(), rangesTable().getData());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieve() {
-		codeField().setValue(configuration.getCode());
-		metricPanel().show(configuration.getMetric());
-		weightField().setValue(configuration.getWeight());
-		aggregationFormField().setValue(configuration.getAggregationForm());
+		codeField().set(configuration.getCode());
+		metricPanel().set(configuration.getMetric());
+		weightField().set(configuration.getWeight());
+		aggregationFormField().set(configuration.getAggregationForm());
 		rangesTable().setData(configuration.getRanges());
-		assertDeepEquals(configuration, panel.retrieve());
+		assertDeepEquals(configuration, panel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

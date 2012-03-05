@@ -17,7 +17,7 @@ public class AbstractScriptBuilderTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		Configuration configuration = kalibroConfiguration();
+		Configuration configuration = simpleConfiguration();
 		CompoundMetric compoundMetric = new CompoundMetric();
 		compoundMetric.setName("Another");
 		compoundMetric.setScript("return 42;");
@@ -27,8 +27,7 @@ public class AbstractScriptBuilderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testScript() {
-		assertEquals("var acc = 72.0;\nvar accm = 40.0;\nvar amloc = 18.0;\nfunction another(){return 42;}\n",
-			scriptBuilder.buildScript());
+		assertEquals("var amloc = 18.0;\nfunction another(){return 42;}\n", scriptBuilder.buildScript());
 	}
 
 	private class MyScriptBuilder extends AbstractScriptBuilder {

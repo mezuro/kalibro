@@ -8,7 +8,7 @@ public final class RangePanelManualTest {
 
 	public static void main(String[] args) {
 		RangePanel panel = new RangePanel();
-		panel.show(RangeFixtures.amlocRange(RangeLabel.WARNING));
+		panel.set(RangeFixtures.amlocRange(RangeLabel.WARNING));
 		new ComponentWrapperDialog("RangePanel", panel).setVisible(true);
 	}
 

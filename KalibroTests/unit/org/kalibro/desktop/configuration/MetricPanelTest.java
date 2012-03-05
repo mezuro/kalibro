@@ -36,12 +36,12 @@ public class MetricPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowNativeMetric() {
-		panel.show(nativeMetric);
-		assertEquals(nativeMetric.getName(), nameField().getValue());
-		assertEquals(nativeMetric.getScope(), scopeField().getValue());
-		assertEquals(nativeMetric.getDescription(), textField("description").getValue());
-		assertEquals(nativeMetric.getOrigin(), originField().getValue());
-		assertEquals(nativeMetric.getLanguages(), languagesField().getValue());
+		panel.set(nativeMetric);
+		assertEquals(nativeMetric.getName(), nameField().get());
+		assertEquals(nativeMetric.getScope(), scopeField().get());
+		assertEquals(nativeMetric.getDescription(), textField("description").get());
+		assertEquals(nativeMetric.getOrigin(), originField().get());
+		assertEquals(nativeMetric.getLanguages(), languagesField().get());
 
 		assertFalse(nameField().isEditable());
 		assertFalse(scopeField().isEditable());
@@ -50,11 +50,11 @@ public class MetricPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowCompoundMetric() {
-		panel.show(compoundMetric);
-		assertEquals(compoundMetric.getName(), nameField().getValue());
-		assertEquals(compoundMetric.getScope(), scopeField().getValue());
-		assertEquals(compoundMetric.getDescription(), textField("description").getValue());
-		assertEquals(compoundMetric.getScript(), textField("script").getValue());
+		panel.set(compoundMetric);
+		assertEquals(compoundMetric.getName(), nameField().get());
+		assertEquals(compoundMetric.getScope(), scopeField().get());
+		assertEquals(compoundMetric.getDescription(), textField("description").get());
+		assertEquals(compoundMetric.getScript(), textField("script").get());
 
 		assertTrue(nameField().isEditable());
 		assertTrue(scopeField().isEditable());
@@ -64,17 +64,17 @@ public class MetricPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveNativeMetric() {
-		panel.show(nativeMetric);
-		assertDeepEquals(nativeMetric, panel.retrieve());
+		panel.set(nativeMetric);
+		assertDeepEquals(nativeMetric, panel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveCompoundMetric() {
-		nameField().setValue(compoundMetric.getName());
-		scopeField().setValue(compoundMetric.getScope());
-		textField("description").setValue(compoundMetric.getDescription());
-		textField("script").setValue(compoundMetric.getScript());
-		assertDeepEquals(compoundMetric, panel.retrieve());
+		nameField().set(compoundMetric.getName());
+		scopeField().set(compoundMetric.getScope());
+		textField("description").set(compoundMetric.getDescription());
+		textField("script").set(compoundMetric.getScript());
+		assertDeepEquals(compoundMetric, panel.get());
 	}
 
 	private MaybeEditableField<String> nameField() {

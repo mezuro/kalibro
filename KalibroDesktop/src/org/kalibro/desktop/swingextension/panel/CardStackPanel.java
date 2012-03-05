@@ -20,23 +20,17 @@ public class CardStackPanel extends JPanel {
 		add(component, name);
 		show(name);
 		stack.push(component);
-		adjustSize();
+		repaint();
 	}
 
 	public void pop() {
 		remove(stack.pop());
-		if (! stack.isEmpty())
+		if (!stack.isEmpty())
 			show(stack.peek().getName());
-		adjustSize();
 	}
 
 	private void show(String name) {
 		CardLayout layout = (CardLayout) getLayout();
 		layout.show(this, name);
-	}
-
-	private void adjustSize() {
-		setMinimumSize(getPreferredSize());
-		setSize(getPreferredSize());
 	}
 }

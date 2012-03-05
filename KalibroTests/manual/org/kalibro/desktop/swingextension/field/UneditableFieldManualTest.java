@@ -7,30 +7,28 @@ import javax.swing.event.CaretListener;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public class UneditableFieldManualTest implements CaretListener {
+public final class UneditableFieldManualTest extends JPanel implements CaretListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("UneditableField", createPanel()).setVisible(true);
+		new ComponentWrapperDialog("UneditableField", new UneditableFieldManualTest()).setVisible(true);
 	}
 
-	private static JPanel createPanel() {
-		GridBagPanelBuilder builder = new GridBagPanelBuilder();
-		builder.addSimpleLine(stringField());
-		builder.addSimpleLine(new UneditableField<String>(""));
-		return builder.getPanel();
-	}
+	private StringField editableField;
+	private UneditableField<String> uneditableField;
 
-	private static StringField stringField() {
-		StringField stringField = new StringField("", 10);
-		stringField.addCaretListener(new UneditableFieldManualTest());
-		return stringField;
+	private UneditableFieldManualTest() {
+		super();
+		editableField = new StringField("", 10);
+		editableField.addCaretListener(this);
+		uneditableField = new UneditableField<String>("");
+
+		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
+		builder.addSimpleLine(editableField);
+		builder.addSimpleLine(uneditableField);
 	}
 
 	@Override
 	public void caretUpdate(CaretEvent event) {
-		StringField source = (StringField) event.getSource();
-		JPanel parent = (JPanel) source.getParent();
-		UneditableField<String> field = (UneditableField<String>) parent.getComponent(1);
-		field.setValue(source.getValue());
+		uneditableField.set(editableField.get());
 	}
 }

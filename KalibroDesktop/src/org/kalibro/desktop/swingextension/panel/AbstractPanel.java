@@ -6,13 +6,17 @@ import javax.swing.JPanel;
 
 public abstract class AbstractPanel<T> extends JPanel {
 
-	public AbstractPanel(String name) {
+	protected AbstractPanel(String name) {
 		super();
 		setName(name);
 		createComponents();
 		buildPanel();
 		adjustSize();
 	}
+
+	protected abstract void createComponents();
+
+	protected abstract void buildPanel();
 
 	public void setWidth(int newWidth) {
 		setPreferredSize(new Dimension(newWidth, getPreferredSize().height));
@@ -24,9 +28,5 @@ public abstract class AbstractPanel<T> extends JPanel {
 		setSize(getPreferredSize());
 	}
 
-	protected abstract void createComponents();
-
-	protected abstract void buildPanel();
-
-	public abstract T retrieve();
+	public abstract T get();
 }

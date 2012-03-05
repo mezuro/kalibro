@@ -107,7 +107,7 @@ public class TableTest extends KalibroTestCase {
 	public void checkSelectedObject() {
 		innerTable.getSelectionModel().setSelectionInterval(0, 0);
 		assertTrue(table.hasSelection());
-		assertSame(data.get(0), table.getSelectedObject());
+		assertSame(data.get(0), table.getSelected());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

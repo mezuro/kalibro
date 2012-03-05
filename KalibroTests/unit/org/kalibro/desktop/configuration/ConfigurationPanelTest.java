@@ -26,25 +26,25 @@ public class ConfigurationPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = kalibroConfiguration();
+		configuration = simpleConfiguration();
 		panel = new ConfigurationPanel();
 		finder = new ComponentFinder(panel);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShow() {
-		panel.show(configuration);
-		assertEquals(configuration.getName(), nameField().getValue());
-		assertEquals(configuration.getDescription(), descriptionField().getValue());
+		panel.set(configuration);
+		assertEquals(configuration.getName(), nameField().get());
+		assertEquals(configuration.getDescription(), descriptionField().get());
 		assertDeepEquals(configuration.getMetricConfigurations(), metricConfigurationsTable().getData());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieve() {
-		nameField().setValue(configuration.getName());
-		descriptionField().setValue(configuration.getDescription());
+		nameField().set(configuration.getName());
+		descriptionField().set(configuration.getDescription());
 		metricConfigurationsTable().setData(configuration.getMetricConfigurations());
-		assertDeepEquals(configuration, panel.retrieve());
+		assertDeepEquals(configuration, panel.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -20,7 +20,7 @@ public class MetricResultTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		result = metricResult("amloc", 4.2, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0);
-		configuration = kalibroConfiguration().getConfigurationFor(result.getMetric());
+		configuration = simpleConfiguration().getConfigurationFor(result.getMetric());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

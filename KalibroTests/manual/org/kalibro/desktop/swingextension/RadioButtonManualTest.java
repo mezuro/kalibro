@@ -8,18 +8,17 @@ import javax.swing.JPanel;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public class RadioButtonManualTest implements ActionListener {
+public final class RadioButtonManualTest extends JPanel implements ActionListener {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("RadioButton", createPanel()).setVisible(true);
+		new ComponentWrapperDialog("RadioButton", new RadioButtonManualTest()).setVisible(true);
 	}
 
-	private static JPanel createPanel() {
-		GridBagPanelBuilder builder = new GridBagPanelBuilder();
-		ActionListener listener = new RadioButtonManualTest();
-		builder.addSimpleLine(new RadioButton("", "A button", listener));
-		builder.add(new RadioButton("", "Another button", listener));
-		return builder.getPanel();
+	private RadioButtonManualTest() {
+		super();
+		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
+		builder.addSimpleLine(new RadioButton("", "A button", this));
+		builder.add(new RadioButton("", "Another button", this));
 	}
 
 	@Override

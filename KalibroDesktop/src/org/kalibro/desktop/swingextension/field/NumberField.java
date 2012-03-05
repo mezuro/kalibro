@@ -14,8 +14,9 @@ import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public abstract class NumberField<T extends Number> extends EditPanel<T> implements Field<T> {
+abstract class NumberField<T extends Number> extends EditPanel<T> implements ActionListener {
 
+	private T specialNumber;
 	private JFormattedTextField valueField;
 
 	private GridBagPanelBuilder builder;
@@ -26,7 +27,8 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 
 	public NumberField(String name, T specialNumber) {
 		super(name);
-		addSpecialNumberButton(specialNumber);
+		this.specialNumber = specialNumber;
+		addSpecialNumberButton();
 	}
 
 	@Override
@@ -48,38 +50,22 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 		builder.add(valueField, 1.0);
 	}
 
-	private void addSpecialNumberButton(final T specialNumber) {
+	private void addSpecialNumberButton() {
 		String buttonTitle = getDecimalFormat().format(specialNumber);
-		Button specialNumberButton = new Button(getName(), buttonTitle, new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent event) {
-				setValue(specialNumber);
-			}
-		});
+		Button specialNumberButton = new Button(getName(), buttonTitle, this);
 		builder.add(new Label("  "));
 		builder.add(specialNumberButton);
 	}
 
 	@Override
-	public void show(T value) {
-		setValue(value);
-	}
-
-	@Override
-	public void setValue(T value) {
-		valueField.setValue(value);
-	}
-
-	@Override
-	public T retrieve() {
-		return getValue();
-	}
-
-	@Override
-	public T getValue() {
+	public T get() {
 		Number value = (Number) valueField.getValue();
 		return (value == null) ? null : parseValue(value);
+	}
+
+	@Override
+	public void set(T value) {
+		valueField.setValue(value);
 	}
 
 	protected abstract T parseValue(Number value);
@@ -90,5 +76,10 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 
 	public void setTextBorder(Border border) {
 		valueField.setBorder(border);
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		set(specialNumber);
 	}
 }
