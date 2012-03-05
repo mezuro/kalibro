@@ -25,13 +25,13 @@ public class CheckstyleStub implements MetricCollector {
 
 		Module module = new Module(Granularity.CLASS, "HelloWorld");
 		result = new NativeModuleResult(module);
-		addMetricResult(AVERAGE_ANONYMOUS_CLASSES_LENGTH, 0.0);
+		addMetricResult(AVERAGE_ANONYMOUS_CLASSES_LENGTH, 6.0);
 		addMetricResult(AVERAGE_FOR_DEPTH, 0.0);
 		addMetricResult(AVERAGE_IF_DEPTH, 0.0);
 		addMetricResult(AVERAGE_TRY_DEPTH, 0.0);
-		addMetricResult(AVERAGE_METHOD_LENGTH, 3.0);
-		addMetricResult(AVERAGE_RETURN_COUNT, 0.0);
-		addMetricResult(AVERAGE_THROWS_COUNT, 0.0);
+		addMetricResult(AVERAGE_METHOD_LENGTH, 54.0 / 7.0);
+		addMetricResult(AVERAGE_RETURN_COUNT, 5.0 / 7.0);
+		addMetricResult(AVERAGE_THROWS_COUNT, 4.0 / 7.0);
 		addMetricResult(EXECUTABLE_STATEMENTS, 1.0);
 		addMetricResult(FILE_LENGTH, 6.0);
 		addMetricResult(MAGIC_NUMBER_COUNT, 0.0);
