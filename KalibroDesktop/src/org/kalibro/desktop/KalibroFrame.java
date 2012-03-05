@@ -18,6 +18,7 @@ public class KalibroFrame extends JFrame {
 		this.listener = listener;
 		setSize();
 		createMenuBar();
+		setName("kalibroFrame");
 		setContentPane(new JDesktopPane());
 		setIconImage(new Icon(Icon.KALIBRO).getImage());
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);

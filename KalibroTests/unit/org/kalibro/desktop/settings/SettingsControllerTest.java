@@ -10,29 +10,37 @@ import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.settings.KalibroSettings;
-import org.kalibro.desktop.ComponentFinder;
-import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.*")
-@PrepareOnlyThisForTest({Kalibro.class, SettingsDialog.class})
-public class SettingsDialogTest extends KalibroTestCase {
+@PrepareForTest({Kalibro.class, SettingsController.class})
+public class SettingsControllerTest extends KalibroTestCase {
 
+	private EditDialog<KalibroSettings> dialog;
+	private KalibroSettingsPanel panel;
 	private KalibroSettings settings;
 
-	private SettingsDialog dialog;
-	private ComponentFinder finder;
+	private SettingsController controller;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		mockComponents();
 		mockKalibro();
-		dialog = new SettingsDialog();
-		finder = new ComponentFinder(dialog);
+		SettingsController.editSettings();
+		captureController();
+	}
+
+	private void mockComponents() throws Exception {
+		dialog = PowerMockito.mock(EditDialog.class);
+		panel = PowerMockito.mock(KalibroSettingsPanel.class);
+		PowerMockito.whenNew(EditDialog.class).withArguments("Kalibro Settings").thenReturn(dialog);
+		PowerMockito.whenNew(KalibroSettingsPanel.class).withArguments(dialog).thenReturn(panel);
 	}
 
 	private void mockKalibro() {
@@ -41,38 +49,37 @@ public class SettingsDialogTest extends KalibroTestCase {
 		PowerMockito.when(Kalibro.currentSettings()).thenReturn(settings);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotBeResizable() {
-		assertFalse(dialog.isResizable());
+	private void captureController() {
+		ArgumentCaptor<SettingsController> captor = ArgumentCaptor.forClass(SettingsController.class);
+		Mockito.verify(dialog).addListener(captor.capture());
+		controller = captor.getValue();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowCurrentSettings() {
-		KalibroSettingsPanel settingsPanel = finder.find("settings", KalibroSettingsPanel.class);
-		assertDeepEquals(settings, settingsPanel.get());
+		Mockito.verify(panel).set(settings);
+		Mockito.verify(dialog).setField(panel);
+		Mockito.verify(dialog).setVisible(true);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldListenToOkButton() {
-		okButton().doClick();
-		PowerMockito.verifyStatic();
-		Kalibro.changeSettings(settings);
-	}
-
-	private Button okButton() {
-		return finder.find("ok", Button.class);
+	public void dialogShouldNotBeResizable() {
+		Mockito.verify(dialog).setResizable(false);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConfirmValidSettings() {
-		assertTrue(dialog.dialogConfirm(settings));
+		assertTrue(controller.dialogConfirm(settings));
+
+		PowerMockito.verifyStatic();
+		Kalibro.changeSettings(settings);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotConfirmInvalidSettingsAndShowError() throws Exception {
 		RuntimeException error = new RuntimeException();
 		ErrorDialog errorDialog = prepareError(error);
-		assertFalse(dialog.dialogConfirm(settings));
+		assertFalse(controller.dialogConfirm(settings));
 		verify(errorDialog).show(error);
 	}
 

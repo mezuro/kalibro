@@ -1,13 +1,13 @@
 package org.kalibro.desktop;
 
 import org.kalibro.Kalibro;
-import org.kalibro.desktop.settings.SettingsDialog;
+import org.kalibro.desktop.settings.SettingsController;
 
 public class KalibroController implements KalibroFrameListener {
 
 	public static void main(String[] arguments) {
 		KalibroController controller = new KalibroController();
-		if (! Kalibro.settingsFileExists())
+		if (!Kalibro.settingsFileExists())
 			controller.editSettings();
 		if (Kalibro.settingsFileExists())
 			controller.showFrame();
@@ -19,6 +19,6 @@ public class KalibroController implements KalibroFrameListener {
 
 	@Override
 	public void editSettings() {
-		new SettingsDialog().setVisible(true);
+		SettingsController.editSettings();
 	}
 }
