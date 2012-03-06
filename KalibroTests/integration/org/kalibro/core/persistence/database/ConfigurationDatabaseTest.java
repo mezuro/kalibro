@@ -16,50 +16,50 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	private ConfigurationDatabaseDao dao;
 
-	private Configuration kalibroForJava, configuration2;
+	private Configuration kalibroConfiguration, simpleConfiguration;
 
 	@Before
 	public void setUp() {
-		kalibroForJava = simpleConfiguration();
-		configuration2 = simpleConfiguration();
-		configuration2.setName("Configuration 2");
-		configuration2.addMetricConfiguration(new MetricConfiguration(CompoundMetricFixtures.sc()));
+		kalibroConfiguration = kalibroConfiguration();
+		simpleConfiguration = kalibroConfiguration();
+		simpleConfiguration.setName("Simple");
+		simpleConfiguration.addMetricConfiguration(new MetricConfiguration(CompoundMetricFixtures.sc()));
 		dao = daoFactory.getConfigurationDao();
 		daoFactory.getBaseToolDao().save(BaseToolFixtures.analizoStub());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListSavedConfigurationNames() {
-		assertDeepEquals(dao.getConfigurationNames(), kalibroForJava.getName());
+		assertDeepEquals(dao.getConfigurationNames(), kalibroConfiguration.getName());
 
-		dao.save(configuration2);
-		assertDeepEquals(dao.getConfigurationNames(), configuration2.getName(), kalibroForJava.getName());
+		dao.save(simpleConfiguration);
+		assertDeepEquals(dao.getConfigurationNames(), simpleConfiguration.getName(), kalibroConfiguration.getName());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRetrieveSavedConfiguration() {
-		dao.save(configuration2);
-		Configuration retrieved = retrieve(configuration2);
-		assertNotSame(configuration2, retrieved);
-		assertDeepEquals(configuration2, retrieved);
+		dao.save(simpleConfiguration);
+		Configuration retrieved = retrieve(simpleConfiguration);
+		assertNotSame(simpleConfiguration, retrieved);
+		assertDeepEquals(simpleConfiguration, retrieved);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRetrieveConfigurationForProject() {
 		Project project = ProjectFixtures.helloWorld();
 		daoFactory.getProjectDao().save(project);
-		assertDeepEquals(kalibroForJava, dao.getConfigurationFor(project.getName()));
+		assertDeepEquals(kalibroConfiguration, dao.getConfigurationFor(project.getName()));
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRemoveConfigurationByName() {
-		dao.save(configuration2);
-		assertDeepEquals(dao.getConfigurationNames(), configuration2.getName(), kalibroForJava.getName());
+		dao.save(simpleConfiguration);
+		assertDeepEquals(dao.getConfigurationNames(), simpleConfiguration.getName(), kalibroConfiguration.getName());
 
-		dao.removeConfiguration(kalibroForJava.getName());
-		assertDeepEquals(dao.getConfigurationNames(), configuration2.getName());
+		dao.removeConfiguration(kalibroConfiguration.getName());
+		assertDeepEquals(dao.getConfigurationNames(), simpleConfiguration.getName());
 
-		dao.removeConfiguration(configuration2.getName());
+		dao.removeConfiguration(simpleConfiguration.getName());
 		assertTrue(dao.getConfigurationNames().isEmpty());
 	}
 
@@ -69,32 +69,32 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 			@Override
 			public void perform() {
-				dao.getConfiguration(configuration2.getName());
+				dao.getConfiguration(simpleConfiguration.getName());
 			}
-		}, NoResultException.class, "There is no configuration named '" + configuration2.getName() + "'");
+		}, NoResultException.class, "There is no configuration named '" + simpleConfiguration.getName() + "'");
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveAndRetrieveMetric() {
 		NativeMetric loc = nativeMetric("loc");
-		assertTrue(kalibroForJava.contains(loc));
-		assertTrue(retrieve(kalibroForJava).contains(loc));
+		assertTrue(kalibroConfiguration.contains(loc));
+		assertTrue(retrieve(kalibroConfiguration).contains(loc));
 
-		kalibroForJava.getConfigurationFor(loc).setWeight(42.0);
-		dao.save(kalibroForJava);
-		assertDoubleEquals(42.0, retrieve(kalibroForJava).getConfigurationFor(loc).getWeight());
+		kalibroConfiguration.getConfigurationFor(loc).setWeight(42.0);
+		dao.save(kalibroConfiguration);
+		assertDoubleEquals(42.0, retrieve(kalibroConfiguration).getConfigurationFor(loc).getWeight());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void configurationsShouldNotShareMetrics() {
-		NativeMetric nom = nativeMetric("nom");
-		assertDeepEquals(kalibroForJava.getConfigurationFor(nom), configuration2.getConfigurationFor(nom));
-		dao.save(configuration2);
+		NativeMetric cbo = nativeMetric("cbo");
+		assertDeepEquals(kalibroConfiguration.getConfigurationFor(cbo), simpleConfiguration.getConfigurationFor(cbo));
+		dao.save(simpleConfiguration);
 
-		configuration2.getConfigurationFor(nom).setAggregationForm(Statistic.STANDARD_DEVIATION);
-		dao.save(configuration2);
+		simpleConfiguration.getConfigurationFor(cbo).setAggregationForm(Statistic.STANDARD_DEVIATION);
+		dao.save(simpleConfiguration);
 
-		assertEquals(Statistic.AVERAGE, retrieve(kalibroForJava).getConfigurationFor(nom).getAggregationForm());
+		assertEquals(Statistic.AVERAGE, retrieve(kalibroConfiguration).getConfigurationFor(cbo).getAggregationForm());
 	}
 
 	private Configuration retrieve(Configuration configuration) {

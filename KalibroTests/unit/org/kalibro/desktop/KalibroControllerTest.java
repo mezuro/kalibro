@@ -8,23 +8,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.desktop.settings.SettingsDialog;
+import org.kalibro.desktop.settings.SettingsController;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, KalibroController.class})
+@PrepareForTest({Kalibro.class, KalibroController.class, SettingsController.class})
 public class KalibroControllerTest extends KalibroTestCase {
 
 	private KalibroFrame kalibroFrame;
-	private SettingsDialog settingsDialog;
 
 	@Before
 	public void setUp() throws Exception {
 		PowerMockito.mockStatic(Kalibro.class);
+		PowerMockito.mockStatic(SettingsController.class);
 		mockKalibroFrame();
-		mockSettingsDialog();
 	}
 
 	private void mockKalibroFrame() throws Exception {
@@ -32,23 +31,22 @@ public class KalibroControllerTest extends KalibroTestCase {
 		PowerMockito.whenNew(KalibroFrame.class).withArguments(any()).thenReturn(kalibroFrame);
 	}
 
-	private void mockSettingsDialog() throws Exception {
-		settingsDialog = PowerMockito.mock(SettingsDialog.class);
-		PowerMockito.whenNew(SettingsDialog.class).withNoArguments().thenReturn(settingsDialog);
-	}
-
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldOpenSettingsDialogIfSettingsFileDoesNotExist() {
 		prepareSettingsFileExists(false);
 		KalibroController.main(null);
-		verify(settingsDialog).setVisible(true);
+
+		PowerMockito.verifyStatic();
+		SettingsController.editSettings();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotOpenSettingsDialogIfSettingsFileDoExist() {
 		prepareSettingsFileExists(true);
 		KalibroController.main(null);
-		verify(settingsDialog, never()).setVisible(true);
+
+		PowerMockito.verifyStatic(never());
+		SettingsController.editSettings();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

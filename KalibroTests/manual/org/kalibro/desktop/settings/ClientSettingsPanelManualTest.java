@@ -3,16 +3,14 @@ package org.kalibro.desktop.settings;
 import org.kalibro.core.settings.ClientSettings;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public final class ClientSettingsPanelManualTest {
+public final class ClientSettingsPanelManualTest extends ClientSettingsPanel {
 
 	public static void main(String[] args) {
-		ClientSettingsPanel panel = new ClientSettingsPanel();
-		panel.set(new ClientSettings());
-		new ComponentWrapperDialog("ClientSettingsPanel", panel).setVisible(true);
-		System.exit(0);
+		new ComponentWrapperDialog("ClientSettingsPanel", new ClientSettingsPanelManualTest()).setVisible(true);
 	}
 
 	private ClientSettingsPanelManualTest() {
-		// Utility class
+		super();
+		set(new ClientSettings());
 	}
 }

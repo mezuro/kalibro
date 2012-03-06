@@ -27,6 +27,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		date = new Date();
 		project = helloWorld();
 		result = helloWorldClassResult(date);
+		result.setConfiguration(kalibroConfiguration());
 		dao = daoFactory.getModuleResultDao();
 		daoFactory.getProjectDao().save(project);
 		save();

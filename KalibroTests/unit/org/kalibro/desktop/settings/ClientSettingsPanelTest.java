@@ -26,17 +26,17 @@ public class ClientSettingsPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShow() {
-		panel.set(settings);
-		assertEquals(settings.getServiceAddress(), serviceAddressField().get());
-		assertEquals(settings.getPollingInterval(), pollingIntervalField().get().longValue());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieve() {
+	public void shouldGet() {
 		serviceAddressField().set(settings.getServiceAddress());
 		pollingIntervalField().set(settings.getPollingInterval());
 		assertDeepEquals(settings, panel.get());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSet() {
+		panel.set(settings);
+		assertEquals(settings.getServiceAddress(), serviceAddressField().get());
+		assertEquals(settings.getPollingInterval(), pollingIntervalField().get().longValue());
 	}
 
 	private StringField serviceAddressField() {

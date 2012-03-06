@@ -1,17 +1,17 @@
 package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
+import org.fest.swing.exception.ComponentLookupException;
+import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 import org.kalibro.KalibroDesktopTestCase;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.settings.ClientSettings;
 import org.kalibro.core.settings.DatabaseSettings;
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.core.settings.ServerSettings;
-import org.kalibro.desktop.KalibroFrame;
 import org.kalibro.desktop.swingextension.field.LongField;
-import org.powermock.api.mockito.PowerMockito;
 
 /**
  * When opening for the first time, the dialog for editing the settings should open showing the default settings. If the
@@ -22,11 +22,10 @@ import org.powermock.api.mockito.PowerMockito;
 public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void cancelFirstEditSettings() {
-		startKalibroDesktop();
-		captureSettingsDialog();
-		KalibroSettings settings = new KalibroSettings();
+	public void cancelFirstEditSettings() throws Exception {
+		startFromMain();
 
+		KalibroSettings settings = new KalibroSettings();
 		assertFalse(settings.isClient());
 		fixture.checkBox("client").requireNotSelected();
 		checkServerSettings(settings.getServerSettings());
@@ -37,7 +36,7 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 
 		fixture.button("cancel").click();
 		assertFalse(KalibroSettings.settingsFileExists());
-		PowerMockito.verifyNew(KalibroFrame.class, never());
+		verifyFrameNotOpen();
 	}
 
 	private void checkServerSettings(ServerSettings settings) {
@@ -58,5 +57,15 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 		fixture.textBox("serviceAddress").requireText(settings.getServiceAddress());
 		String pollingInterval = new LongField("").getDecimalFormat().format(settings.getPollingInterval());
 		fixture.textBox("pollingInterval").requireText(pollingInterval);
+	}
+
+	private void verifyFrameNotOpen() {
+		checkException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				fixture = new FrameFixture(fixture.robot, "kalibroFrame");
+			}
+		}, ComponentLookupException.class);
 	}
 }

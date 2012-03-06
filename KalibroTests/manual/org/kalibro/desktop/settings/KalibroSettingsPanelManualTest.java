@@ -3,17 +3,16 @@ package org.kalibro.desktop.settings;
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public final class KalibroSettingsPanelManualTest {
+public final class KalibroSettingsPanelManualTest extends KalibroSettingsPanel {
 
 	public static void main(String[] args) {
-		ComponentWrapperDialog dialog = new ComponentWrapperDialog("KalibroSettingsPanel");
-		KalibroSettingsPanel panel = new KalibroSettingsPanel(dialog);
-		panel.set(new KalibroSettings());
-		dialog.setComponent(panel);
-		dialog.setVisible(true);
+		new KalibroSettingsPanelManualTest(new ComponentWrapperDialog("KalibroSettingsPanel"));
 	}
 
-	private KalibroSettingsPanelManualTest() {
-		// Utility class
+	private KalibroSettingsPanelManualTest(ComponentWrapperDialog dialog) {
+		super(dialog);
+		set(new KalibroSettings());
+		dialog.setComponent(this);
+		dialog.setVisible(true);
 	}
 }

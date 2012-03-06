@@ -28,21 +28,21 @@ public class DatabaseSettingsPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShow() {
-		panel.set(settings);
-		assertEquals(settings.getDatabaseType(), databaseTypeField().get());
-		assertEquals(settings.getJdbcUrl(), jdbcUrlField().get());
-		assertEquals(settings.getUsername(), usernameField().get());
-		assertEquals(settings.getPassword(), passwordField().get());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieve() {
+	public void shouldGet() {
 		databaseTypeField().set(settings.getDatabaseType());
 		jdbcUrlField().set(settings.getJdbcUrl());
 		usernameField().set(settings.getUsername());
 		passwordField().set(settings.getPassword());
 		assertDeepEquals(settings, panel.get());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSet() {
+		panel.set(settings);
+		assertEquals(settings.getDatabaseType(), databaseTypeField().get());
+		assertEquals(settings.getJdbcUrl(), jdbcUrlField().get());
+		assertEquals(settings.getUsername(), usernameField().get());
+		assertEquals(settings.getPassword(), passwordField().get());
 	}
 
 	private ChoiceField<SupportedDatabase> databaseTypeField() {
