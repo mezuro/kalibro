@@ -1,10 +1,10 @@
 package org.checkstyle;
 
-import static org.checkstyle.CheckstyleMetric.*;
-
 import java.io.File;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.core.MetricCollector;
@@ -14,6 +14,7 @@ import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
+import org.yaml.snakeyaml.Yaml;
 
 public class CheckstyleStub implements MetricCollector {
 
@@ -23,27 +24,17 @@ public class CheckstyleStub implements MetricCollector {
 	private static NativeModuleResult initializeResult() {
 		nativeMetrics = new HashSet<NativeMetric>();
 
-		Module module = new Module(Granularity.CLASS, "HelloWorld");
+		Module module = new Module(Granularity.CLASS, "Fibonacci");
 		result = new NativeModuleResult(module);
-		addMetricResult(AVERAGE_ANONYMOUS_CLASSES_LENGTH, 6.0);
-		addMetricResult(AVERAGE_FOR_DEPTH, 0.0);
-		addMetricResult(AVERAGE_IF_DEPTH, 0.0);
-		addMetricResult(AVERAGE_TRY_DEPTH, 0.0);
-		addMetricResult(AVERAGE_METHOD_LENGTH, 54.0 / 7.0);
-		addMetricResult(AVERAGE_RETURN_COUNT, 5.0 / 7.0);
-		addMetricResult(AVERAGE_THROWS_COUNT, 4.0 / 7.0);
-		addMetricResult(EXECUTABLE_STATEMENTS, 1.0);
-		addMetricResult(FILE_LENGTH, 6.0);
-		addMetricResult(MAGIC_NUMBER_COUNT, 0.0);
-		addMetricResult(NUMBER_OF_EMPTY_STATEMENTS, 0.0);
-		addMetricResult(NUMBER_OF_INLINE_CONDITIONALS, 0.0);
-		addMetricResult(NUMBER_OF_METHODS, 1.0);
-		addMetricResult(NUMBER_OF_OUTER_TYPES, 1.0);
-		addMetricResult(NUMBER_OF_TODO_COMMENTS, 0.0);
-		addMetricResult(NUMBER_OF_TRAILING_COMMENTS, 0.0);
-		addMetricResult(SIMPLIFIABLE_BOOLEAN_RETURNS, 0.0);
-		addMetricResult(SIMPLIFIABLE_BOOLEAN_EXPRESSIONS, 0.0);
+		Map<String, Double> resultsMap = loadResults();
+		for (String metricName : resultsMap.keySet())
+			addMetricResult(CheckstyleMetric.valueOf(metricName), resultsMap.get(metricName));
 		return result;
+	}
+
+	private static Map<String, Double> loadResults() {
+		InputStream resource = CheckstyleStub.class.getResourceAsStream("fibonacci_results.yml");
+		return new Yaml().loadAs(resource, Map.class);
 	}
 
 	private static void addMetricResult(CheckstyleMetric metric, Double value) {
