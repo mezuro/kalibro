@@ -7,6 +7,10 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
+
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.NativeMetric;
@@ -26,21 +30,31 @@ public class CheckstyleStub implements MetricCollector {
 
 		Module module = new Module(Granularity.CLASS, "Fibonacci");
 		result = new NativeModuleResult(module);
-		Map<String, Double> resultsMap = loadResults();
+		Map<String, String> resultsMap = loadResults();
 		for (String metricName : resultsMap.keySet())
 			addMetricResult(CheckstyleMetric.valueOf(metricName), resultsMap.get(metricName));
 		return result;
 	}
 
-	private static Map<String, Double> loadResults() {
+	private static Map<String, String> loadResults() {
 		InputStream resource = CheckstyleStub.class.getResourceAsStream("fibonacci_results.yml");
 		return new Yaml().loadAs(resource, Map.class);
 	}
 
-	private static void addMetricResult(CheckstyleMetric metric, Double value) {
+	private static void addMetricResult(CheckstyleMetric metric, String valueExpression) {
 		NativeMetric nativeMetric = new NativeMetric(metric.toString(), Granularity.CLASS, Language.JAVA);
 		nativeMetrics.add(nativeMetric);
+		Double value = evaluateExpression(valueExpression);
 		result.addMetricResult(new NativeMetricResult(nativeMetric, value));
+	}
+
+	private static Double evaluateExpression(String expression) {
+		try {
+			ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
+			return ((Number) engine.eval(expression)).doubleValue();
+		} catch (ScriptException exception) {
+			return Double.NaN;
+		}
 	}
 
 	public static Set<NativeMetric> nativeMetrics() {
