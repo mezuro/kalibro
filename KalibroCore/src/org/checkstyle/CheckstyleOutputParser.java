@@ -31,16 +31,8 @@ public class CheckstyleOutputParser extends AuditAdapter {
 	public void addError(AuditEvent event) {
 		String messageKey = event.getLocalizedMessage().getKey();
 		String className = fileNameToClass(event.getFileName());
-		String message = event.getMessage();
-		Double value = "{0}".equals(message) ? 0.0 : Double.parseDouble(message);
+		Double value = parseValue(event);
 		addMetricResult(className, messageKey, value);
-	}
-
-	public Set<NativeModuleResult> getResults() {
-		Set<NativeModuleResult> results = new HashSet<NativeModuleResult>();
-		for (PreModuleResult result : resultsMap.values())
-			results.add(result.getModuleResult());
-		return results;
 	}
 
 	private String fileNameToClass(String group) {
@@ -48,13 +40,29 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		return parts[parts.length - 2];
 	}
 
+	private Double parseValue(AuditEvent event) {
+		String message = event.getMessage();
+		try {
+			return Double.parseDouble(message);
+		} catch (NumberFormatException exception) {
+			return 0.0;
+		}
+	}
+
 	private void addMetricResult(String className, String messageKey, Double value) {
 		getPreResult(className).addMetricResult(messageKey, value);
 	}
 
 	private PreModuleResult getPreResult(String className) {
-		if (!resultsMap.containsKey(className))
+		if (! resultsMap.containsKey(className))
 			resultsMap.put(className, new PreModuleResult(className, wantedMetrics));
 		return resultsMap.get(className);
+	}
+
+	public Set<NativeModuleResult> getResults() {
+		Set<NativeModuleResult> results = new HashSet<NativeModuleResult>();
+		for (PreModuleResult result : resultsMap.values())
+			results.add(result.getModuleResult());
+		return results;
 	}
 }
