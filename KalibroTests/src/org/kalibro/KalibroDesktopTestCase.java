@@ -6,9 +6,7 @@ import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 import org.fest.swing.core.BasicRobot;
-import org.fest.swing.core.Robot;
 import org.fest.swing.fixture.DialogFixture;
-import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.WindowFixture;
 import org.junit.After;
 import org.junit.Before;
@@ -59,7 +57,7 @@ public class KalibroDesktopTestCase extends KalibroTestCase {
 		FileUtils.deleteQuietly(KALIBRO_DIRECTORY);
 	}
 
-	protected void startKalibroDesktop() {
+	protected void startFromMain() throws Exception {
 		new Task() {
 
 			@Override
@@ -67,23 +65,7 @@ public class KalibroDesktopTestCase extends KalibroTestCase {
 				KalibroController.main(null);
 			}
 		}.executeInBackground();
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	protected void captureKalibroFrame() {
-		fixture = new FrameFixture(robot(), "kalibroFrame");
-	}
-
-	protected void captureSettingsDialog() {
-		fixture = new DialogFixture(robot(), "settingsDialog");
-	}
-
-	private Robot robot() {
-		return (fixture == null) ? BasicRobot.robotWithCurrentAwtHierarchy() : fixture.robot;
+		Thread.sleep(1500);
+		fixture = new DialogFixture(BasicRobot.robotWithCurrentAwtHierarchy(), "settingsDialog");
 	}
 }

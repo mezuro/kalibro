@@ -63,6 +63,11 @@ public class SettingsControllerTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void dialogShouldBeNamed() {
+		Mockito.verify(dialog).setName("settingsDialog");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void dialogShouldNotBeResizable() {
 		Mockito.verify(dialog).setResizable(false);
 	}

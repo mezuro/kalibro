@@ -2,6 +2,7 @@ package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.*;
 
+import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 import org.kalibro.KalibroDesktopTestCase;
 import org.kalibro.core.settings.KalibroSettings;
@@ -17,18 +18,16 @@ public class FirstEditSettings extends KalibroDesktopTestCase {
 	private KalibroSettings settings;
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void firstEditSettings() {
-		startKalibroDesktop();
-		captureSettingsDialog();
+	public void firstEditSettings() throws Exception {
+		startFromMain();
 		editSettings();
 
 		fixture.button("ok").click();
 		assertTrue(KalibroSettings.settingsFileExists());
 		assertDeepEquals(settings, KalibroSettings.load());
 
-		captureKalibroFrame();
+		fixture = new FrameFixture(fixture.robot, "kalibroFrame");
 		verifyDatabaseSettings();
-		fixture.close();
 	}
 
 	private void editSettings() {
