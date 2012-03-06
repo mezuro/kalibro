@@ -43,7 +43,7 @@ public class CheckstyleConfigurationTest extends KalibroTestCase {
 		String key = "my message key";
 		configuration.addMessageKey(key);
 		assertTrue(configuration.getMessages().containsKey(key));
-		assertEquals("{0}", configuration.getMessages().get(key));
+		assertEquals(key + "{0}", configuration.getMessages().get(key));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
