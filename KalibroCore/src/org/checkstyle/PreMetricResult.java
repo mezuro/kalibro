@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
+
 class PreMetricResult {
 
 	private CheckstyleMetric metric;

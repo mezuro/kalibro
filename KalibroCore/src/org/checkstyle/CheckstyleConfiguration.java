@@ -45,11 +45,13 @@ public class CheckstyleConfiguration implements Configuration {
 
 	@Override
 	public String getAttribute(String attributeName) {
+		// Maximum = -1 for always fire max checks
 		return "-1";
 	}
 
 	protected void addMessageKey(String messageKey) {
-		messages.put(messageKey, "{0}");
+		// Checkstyle does not fire two equal events, so messages must be different
+		messages.put(messageKey, messageKey + "{0}");
 	}
 
 	@Override
@@ -58,7 +60,7 @@ public class CheckstyleConfiguration implements Configuration {
 	}
 
 	protected CheckstyleConfiguration getChildByName(String childName) {
-		if (!children.containsKey(childName))
+		if (! children.containsKey(childName))
 			children.put(childName, new CheckstyleConfiguration(childName));
 		return children.get(childName);
 	}

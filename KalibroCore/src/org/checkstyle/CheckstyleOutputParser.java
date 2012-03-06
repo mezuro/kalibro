@@ -31,7 +31,8 @@ public class CheckstyleOutputParser extends AuditAdapter {
 	public void addError(AuditEvent event) {
 		String messageKey = event.getLocalizedMessage().getKey();
 		String className = fileNameToClass(event.getFileName());
-		Double value = parseValue(event);
+		String message = event.getMessage().replace(messageKey, "");
+		Double value = parseValue(message);
 		addMetricResult(className, messageKey, value);
 	}
 
@@ -40,8 +41,7 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		return parts[parts.length - 2];
 	}
 
-	private Double parseValue(AuditEvent event) {
-		String message = event.getMessage();
+	private Double parseValue(String message) {
 		try {
 			return Double.parseDouble(message);
 		} catch (NumberFormatException exception) {
