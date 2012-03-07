@@ -39,23 +39,18 @@ public class RangeController implements EditDialogListener<Range> {
 	@Override
 	public boolean dialogConfirm(Range newRange) {
 		try {
-			removeOldRange();
-			configuration.addRange(newRange);
+			confirmRange(newRange);
 			return true;
 		} catch (Exception exception) {
-			putOldRangeBack();
 			new ErrorDialog(dialog).show(exception);
 			return false;
 		}
 	}
 
-	private void removeOldRange() {
-		if (range != null)
-			configuration.removeRange(range);
-	}
-
-	private void putOldRangeBack() {
-		if (range != null)
-			configuration.addRange(range);
+	private void confirmRange(Range newRange) {
+		if (range == null)
+			configuration.addRange(newRange);
+		else
+			configuration.replaceRange(range.getBeginning(), newRange);
 	}
 }

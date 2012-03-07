@@ -112,7 +112,7 @@ public class RangeControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void oldRangeShouldStillBeThereOnError() {
-		Range oldRange = RangeFixtures.amlocRange(RangeLabel.EXCELLENT);
+		Range oldRange = configuration.getRangeFor(0.0);
 		controller.editRange(oldRange);
 		assertFalse(controller.dialogConfirm(new Range()));
 		assertSame(oldRange, configuration.getRangeFor(0.0));

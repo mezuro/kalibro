@@ -118,6 +118,37 @@ public class MetricConfigurationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldReplaceExistingRange() {
+		Range newRange = new Range(-1.0, 0.0);
+		configuration.replaceRange(0.0, newRange);
+		assertFalse(configuration.hasRangeFor(0.0));
+		assertSame(newRange, configuration.getRangeFor(-1.0));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkErrorReplacingInexistentRange() {
+		checkException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				configuration.replaceRange(-1.0, new Range(-1.0, 0.0));
+			}
+		}, IllegalArgumentException.class);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkErrorForConflictingRangeReplace() {
+		checkException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				configuration.replaceRange(0.0, new Range());
+			}
+		}, IllegalArgumentException.class);
+		assertTrue(configuration.hasRangeFor(0.0));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testRemoveRange() {
 		assertEquals(5, configuration.getRanges().size());
 		assertTrue(configuration.hasRangeFor(Double.MAX_VALUE));

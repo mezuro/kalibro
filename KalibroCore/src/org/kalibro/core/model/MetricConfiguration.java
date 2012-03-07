@@ -94,6 +94,17 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		ranges.add(newRange);
 	}
 
+	public void replaceRange(Double oldBeginning, Range newRange) {
+		Range oldRange = getRangeFor(oldBeginning);
+		removeRange(oldRange);
+		try {
+			addRange(newRange);
+		} catch (IllegalArgumentException exception) {
+			addRange(oldRange);
+			throw exception;
+		}
+	}
+
 	public boolean removeRange(Range range) {
 		return ranges.remove(range);
 	}
