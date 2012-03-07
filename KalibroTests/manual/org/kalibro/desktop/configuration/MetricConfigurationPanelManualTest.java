@@ -12,18 +12,18 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 
-public class MetricConfigurationPanelManualTest implements ActionListener, TablePanelListener<Range> {
+public final class MetricConfigurationPanelManualTest implements ActionListener, TablePanelListener<Range> {
 
 	public static void main(String[] args) {
+		new MetricConfigurationPanelManualTest(configuration("amloc"));
+		new MetricConfigurationPanelManualTest(new MetricConfiguration(sc()));
+	}
+
+	private MetricConfigurationPanelManualTest(MetricConfiguration configuration) {
 		MetricConfigurationPanel panel = new MetricConfigurationPanel();
-		MetricConfigurationPanelManualTest listener = new MetricConfigurationPanelManualTest();
-		panel.addRangesPanelListener(listener);
-		panel.addButtonListener(listener);
-
-		panel.set(configuration("amloc"));
-		new ComponentWrapperDialog("MetricConfigurationPanel", panel).setVisible(true);
-
-		panel.set(new MetricConfiguration(sc()));
+		panel.addRangesPanelListener(this);
+		panel.addButtonListener(this);
+		panel.set(configuration);
 		new ComponentWrapperDialog("MetricConfigurationPanel", panel).setVisible(true);
 	}
 

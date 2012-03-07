@@ -91,15 +91,6 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 	}
 
 	@Override
-	public void set(MetricConfiguration configuration) {
-		metricPanel.set(configuration.getMetric());
-		codeField.set(configuration.getCode());
-		weightField.set(configuration.getWeight());
-		aggregationFormField.set(configuration.getAggregationForm());
-		rangesPanel.set(configuration.getRanges());
-	}
-
-	@Override
 	public MetricConfiguration get() {
 		MetricConfiguration configuration = new MetricConfiguration(metricPanel.get());
 		configuration.setCode(codeField.get());
@@ -108,6 +99,15 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 		for (Range range : rangesPanel.get())
 			configuration.addRange(range);
 		return configuration;
+	}
+
+	@Override
+	public void set(MetricConfiguration configuration) {
+		metricPanel.set(configuration.getMetric());
+		codeField.set(configuration.getCode());
+		weightField.set(configuration.getWeight());
+		aggregationFormField.set(configuration.getAggregationForm());
+		rangesPanel.set(configuration.getRanges());
 	}
 
 	public void addRangesPanelListener(TablePanelListener<Range> listener) {
