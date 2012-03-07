@@ -1,5 +1,6 @@
 package org.kalibro.core.persistence;
 
+import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.io.File;
@@ -28,6 +29,7 @@ public class ModuleResultCsvExporterTest extends KalibroTestCase {
 		PowerMockito.mockStatic(FileUtils.class);
 		file = PowerMockito.mock(File.class);
 		moduleResult = helloWorldClassResult();
+		moduleResult.setConfiguration(simpleConfiguration());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

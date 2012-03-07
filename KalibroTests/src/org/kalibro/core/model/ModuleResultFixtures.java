@@ -1,6 +1,5 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
 import static org.kalibro.core.model.ProjectResultFixtures.*;
@@ -31,9 +30,6 @@ public final class ModuleResultFixtures {
 		moduleResultMap.put(helloWorldClass(), classResult);
 		new ResultsAggregator(projectResult, moduleResultMap).aggregate();
 
-		Configuration configuration = simpleConfiguration();
-		applicationResult.setConfiguration(configuration);
-		classResult.setConfiguration(configuration);
 		return moduleResultMap.values();
 	}
 
@@ -44,7 +40,6 @@ public final class ModuleResultFixtures {
 	public static ModuleResult helloWorldApplicationResult(Date date) {
 		ModuleResult result = new ModuleResult(helloWorldApplication(), date);
 		result.addMetricResults(copyAndSetOrigin(AnalizoStub.applicationResult()).getMetricResults());
-		result.setConfiguration(simpleConfiguration());
 		return result;
 	}
 
@@ -55,7 +50,6 @@ public final class ModuleResultFixtures {
 	public static ModuleResult helloWorldClassResult(Date date) {
 		ModuleResult result = new ModuleResult(helloWorldClass(), date);
 		result.addMetricResults(copyAndSetOrigin(AnalizoStub.classResult()).getMetricResults());
-		result.setConfiguration(simpleConfiguration());
 		return result;
 	}
 

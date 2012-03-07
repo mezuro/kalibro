@@ -1,7 +1,6 @@
 package org.kalibro.core.persistence.database.entities;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricResultFixtures.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
@@ -44,7 +43,6 @@ public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResu
 
 		assertEquals(1, converted.size());
 		ModuleResult convertedResult = converted.get(0);
-		convertedResult.setConfiguration(simpleConfiguration());
 		assertDeepEquals(moduleResult, convertedResult);
 	}
 }
