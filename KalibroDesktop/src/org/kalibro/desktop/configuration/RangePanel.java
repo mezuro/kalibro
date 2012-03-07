@@ -11,8 +11,7 @@ import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
 public class RangePanel extends EditPanel<Range> {
 
-	private DoubleField beginningField;
-	private DoubleField endField;
+	private DoubleField beginningField, endField;
 	private StringField labelField;
 	private DoubleField gradeField;
 	private ColorField colorField;
@@ -48,16 +47,6 @@ public class RangePanel extends EditPanel<Range> {
 	}
 
 	@Override
-	public void set(Range range) {
-		beginningField.set(range.getBeginning());
-		endField.set(range.getEnd());
-		labelField.setText(range.getLabel());
-		gradeField.set(range.getGrade());
-		colorField.set(range.getColor());
-		commentsField.set(range.getComments());
-	}
-
-	@Override
 	public Range get() {
 		Range range = new Range(beginningField.get(), endField.get());
 		range.setLabel(labelField.getText());
@@ -65,5 +54,15 @@ public class RangePanel extends EditPanel<Range> {
 		range.setColor(colorField.get());
 		range.setComments(commentsField.get());
 		return range;
+	}
+
+	@Override
+	public void set(Range range) {
+		beginningField.set(range.getBeginning());
+		endField.set(range.getEnd());
+		labelField.setText(range.getLabel());
+		gradeField.set(range.getGrade());
+		colorField.set(range.getColor());
+		commentsField.set(range.getComments());
 	}
 }
