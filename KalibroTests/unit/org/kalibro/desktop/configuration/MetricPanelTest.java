@@ -35,7 +35,22 @@ public class MetricPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowNativeMetric() {
+	public void shouldGetNativeMetric() {
+		panel.set(nativeMetric);
+		assertDeepEquals(nativeMetric, panel.get());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetCompoundMetric() {
+		nameField().set(compoundMetric.getName());
+		scopeField().set(compoundMetric.getScope());
+		textField("description").set(compoundMetric.getDescription());
+		textField("script").set(compoundMetric.getScript());
+		assertDeepEquals(compoundMetric, panel.get());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSetNativeMetric() {
 		panel.set(nativeMetric);
 		assertEquals(nativeMetric.getName(), nameField().get());
 		assertEquals(nativeMetric.getScope(), scopeField().get());
@@ -49,7 +64,7 @@ public class MetricPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowCompoundMetric() {
+	public void shouldSetCompoundMetric() {
 		panel.set(compoundMetric);
 		assertEquals(compoundMetric.getName(), nameField().get());
 		assertEquals(compoundMetric.getScope(), scopeField().get());
@@ -60,21 +75,6 @@ public class MetricPanelTest extends KalibroTestCase {
 		assertTrue(scopeField().isEditable());
 		finder.assertNotPresent("origin");
 		finder.assertNotPresent("language");
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveNativeMetric() {
-		panel.set(nativeMetric);
-		assertDeepEquals(nativeMetric, panel.get());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveCompoundMetric() {
-		nameField().set(compoundMetric.getName());
-		scopeField().set(compoundMetric.getScope());
-		textField("description").set(compoundMetric.getDescription());
-		textField("script").set(compoundMetric.getScript());
-		assertDeepEquals(compoundMetric, panel.get());
 	}
 
 	private MaybeEditableField<String> nameField() {
