@@ -39,13 +39,8 @@ public class RangeControllerTest extends KalibroTestCase {
 		rangeDialog = PowerMockito.mock(EditDialog.class);
 		errorDialog = PowerMockito.mock(ErrorDialog.class);
 		PowerMockito.whenNew(RangePanel.class).withNoArguments().thenReturn(panel);
-		PowerMockito.whenNew(EditDialog.class).withArguments("Range").thenReturn(rangeDialog);
+		PowerMockito.whenNew(EditDialog.class).withArguments("Range", panel).thenReturn(rangeDialog);
 		PowerMockito.whenNew(ErrorDialog.class).withArguments(rangeDialog).thenReturn(errorDialog);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPutRangePanelOnDialog() {
-		verify(rangeDialog).setField(panel);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -17,8 +17,9 @@ public class EditDialog<T> extends AbstractDialog implements ActionListener {
 	private Field<T> field;
 	private Button cancelButton, okButton;
 
-	public EditDialog(String title) {
+	public EditDialog(String title, Field<T> field) {
 		super(title);
+		setField(field);
 	}
 
 	@Override
@@ -41,7 +42,7 @@ public class EditDialog<T> extends AbstractDialog implements ActionListener {
 		return buttonsPanel;
 	}
 
-	public void setField(Field<T> field) {
+	private void setField(Field<T> field) {
 		this.field = field;
 		getContentPane().setDropTarget(null);
 		getContentPane().add((Component) field, BorderLayout.CENTER);

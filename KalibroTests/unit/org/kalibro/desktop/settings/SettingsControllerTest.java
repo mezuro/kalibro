@@ -44,7 +44,7 @@ public class SettingsControllerTest extends KalibroTestCase {
 
 	private void mockDialog() throws Exception {
 		dialog = PowerMockito.mock(EditDialog.class);
-		PowerMockito.whenNew(EditDialog.class).withArguments("Kalibro Settings").thenReturn(dialog);
+		PowerMockito.whenNew(EditDialog.class).withArguments("Kalibro Settings", panel).thenReturn(dialog);
 	}
 
 	private void mockKalibro() {
@@ -62,7 +62,6 @@ public class SettingsControllerTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowCurrentSettings() {
 		Mockito.verify(panel).set(settings);
-		Mockito.verify(dialog).setField(panel);
 		Mockito.verify(dialog).setVisible(true);
 	}
 

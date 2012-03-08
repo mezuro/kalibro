@@ -17,8 +17,7 @@ public class RangeController implements EditDialogListener<Range> {
 	public RangeController(MetricConfiguration configuration) {
 		this.configuration = configuration;
 		panel = new RangePanel();
-		dialog = new EditDialog<Range>("Range");
-		dialog.setField(panel);
+		dialog = new EditDialog<Range>("Range", panel);
 		dialog.addListener(this);
 		dialog.setName("rangeDialog");
 		dialog.setResizable(false);
