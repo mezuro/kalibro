@@ -18,7 +18,7 @@ public class MetricPanel extends EditPanel<Metric> {
 	private MaybeEditableField<Granularity> scopeField;
 	private TextField descriptionField;
 	private UneditableField<String> originField;
-	private UneditableField<List<Language>> languagesField;
+	private LanguagesField languagesField;
 	private TextField scriptField;
 
 	public MetricPanel() {
@@ -31,7 +31,7 @@ public class MetricPanel extends EditPanel<Metric> {
 		scopeField = new MaybeEditableField<Granularity>(new ChoiceField<Granularity>("scope", Granularity.values()));
 		descriptionField = new TextField("description", 1, 1, "Description");
 		originField = new UneditableField<String>("origin");
-		languagesField = new UneditableField<List<Language>>("languages");
+		languagesField = new LanguagesField();
 		scriptField = new TextField("script", 4, 25, "Script");
 	}
 
@@ -107,5 +107,18 @@ public class MetricPanel extends EditPanel<Metric> {
 		metric.setScope(scopeField.get());
 		metric.setScript(scriptField.get());
 		return metric;
+	}
+
+	private class LanguagesField extends UneditableField<List<Language>> {
+
+		LanguagesField() {
+			super("languages");
+		}
+
+		@Override
+		public void set(List<Language> languages) {
+			super.set(languages);
+			setText(languages.toString().replaceAll("[\\[\\]]", ""));
+		}
 	}
 }
