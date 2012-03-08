@@ -62,20 +62,20 @@ public class Configuration extends AbstractEntity<Configuration> {
 	public Map<String, Set<NativeMetric>> getNativeMetrics() {
 		Map<String, Set<NativeMetric>> nativeMetrics = new HashMap<String, Set<NativeMetric>>();
 		for (Metric metric : metricConfigurations.keySet())
-			if (! metric.isCompound())
+			if (!metric.isCompound())
 				putNativeMetric((NativeMetric) metric, nativeMetrics);
 		return nativeMetrics;
 	}
 
 	private void putNativeMetric(NativeMetric metric, Map<String, Set<NativeMetric>> nativeMetrics) {
 		String origin = metric.getOrigin();
-		if (! nativeMetrics.containsKey(origin))
+		if (!nativeMetrics.containsKey(origin))
 			nativeMetrics.put(origin, new HashSet<NativeMetric>());
 		nativeMetrics.get(origin).add(metric);
 	}
 
 	public MetricConfiguration getConfigurationFor(Metric metric) {
-		if (! contains(metric))
+		if (!contains(metric))
 			throw new IllegalArgumentException("No configuration found for metric '" + metric + "'");
 		return metricConfigurations.get(metric);
 	}
@@ -84,6 +84,17 @@ public class Configuration extends AbstractEntity<Configuration> {
 		for (MetricConfiguration metricConfiguration : metricConfigurations.values())
 			metricConfiguration.assertNoConflictWith(newMetricConfiguration);
 		metricConfigurations.put(newMetricConfiguration.getMetric(), newMetricConfiguration);
+	}
+
+	public void replaceMetricConfiguration(Metric metric, MetricConfiguration newMetricConfiguration) {
+		MetricConfiguration oldConfiguration = getConfigurationFor(metric);
+		removeMetric(metric);
+		try {
+			addMetricConfiguration(newMetricConfiguration);
+		} catch (IllegalArgumentException exception) {
+			addMetricConfiguration(oldConfiguration);
+			throw exception;
+		}
 	}
 
 	public boolean removeMetric(Metric metric) {
