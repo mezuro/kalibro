@@ -3,18 +3,18 @@ package org.kalibro.desktop.swingextension.panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.kalibro.core.model.enums.Language;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
-import org.kalibro.desktop.swingextension.field.TextField;
 
-public final class ConfirmPanelManualTest extends ConfirmPanel implements ActionListener {
+public final class ConfirmPanelManualTest extends ConfirmPanel<Language> implements ActionListener {
 
 	public static void main(String[] args) {
 		new ComponentWrapperDialog("ConfirmPanel", new ConfirmPanelManualTest()).setVisible(true);
 	}
 
 	private ConfirmPanelManualTest() {
-		super(new TextField("", 5, 20));
+		super(new LanguagePanelStub());
 		addCancelListener(this);
 		addOkListener(this);
 	}

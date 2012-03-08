@@ -9,23 +9,44 @@ import javax.swing.JPanel;
 
 import org.kalibro.desktop.swingextension.Button;
 
-public class ConfirmPanel extends JPanel {
+public class ConfirmPanel<T> extends EditPanel<T> {
 
+	private EditPanel<T> panel;
 	private Button cancelButton, okButton;
 
-	public ConfirmPanel(Component contentPane) {
-		super(new BorderLayout());
-		add(contentPane, BorderLayout.CENTER);
+	public ConfirmPanel(EditPanel<T> innerPanel) {
+		super(innerPanel.getName(), innerPanel);
+	}
+
+	@Override
+	protected void createComponents(Component... innerComponents) {
+		panel = (EditPanel<T>) innerComponents[0];
+		cancelButton = new Button("cancel", "Cancel");
+		okButton = new Button("ok", "Ok");
+	}
+
+	@Override
+	protected void buildPanel() {
+		setLayout(new BorderLayout());
+		add(panel, BorderLayout.CENTER);
 		add(createButtonsPanel(), BorderLayout.SOUTH);
 	}
 
 	private JPanel createButtonsPanel() {
-		cancelButton = new Button("cancel", "Cancel");
-		okButton = new Button("ok", "Ok");
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonsPanel.add(cancelButton);
 		buttonsPanel.add(okButton);
 		return buttonsPanel;
+	}
+
+	@Override
+	public T get() {
+		return panel.get();
+	}
+
+	@Override
+	public void set(T value) {
+		panel.set(value);
 	}
 
 	public void addCancelListener(ActionListener listener) {
