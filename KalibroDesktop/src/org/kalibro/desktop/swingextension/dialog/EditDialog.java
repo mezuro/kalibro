@@ -1,57 +1,40 @@
 package org.kalibro.desktop.swingextension.dialog;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Container;
-import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JPanel;
-
-import org.kalibro.desktop.swingextension.Button;
-import org.kalibro.desktop.swingextension.field.Field;
+import org.kalibro.desktop.swingextension.panel.ConfirmPanel;
+import org.kalibro.desktop.swingextension.panel.EditPanel;
 
 public class EditDialog<T> extends AbstractDialog implements ActionListener {
 
-	private Field<T> field;
-	private Button cancelButton, okButton;
+	private ConfirmPanel<T> confirmPanel;
 
-	public EditDialog(String title, Field<T> field) {
-		super(title);
-		setField(field);
+	public EditDialog(String title, EditPanel<T> editPanel) {
+		super(title, editPanel);
+		setName(editPanel.getName());
+		confirmPanel.addCancelListener(this);
 	}
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
-		cancelButton = new Button("cancel", "Cancel", this);
-		okButton = new Button("ok", "Ok");
+		confirmPanel = new ConfirmPanel<T>((EditPanel<T>) innerComponents[0]);
 	}
 
 	@Override
 	protected Container buildPanel() {
-		JPanel panel = new JPanel(new BorderLayout());
-		panel.add(createButtonsPanel(), BorderLayout.SOUTH);
-		return panel;
-	}
-
-	private JPanel createButtonsPanel() {
-		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonsPanel.add(cancelButton);
-		buttonsPanel.add(okButton);
-		return buttonsPanel;
-	}
-
-	private void setField(Field<T> field) {
-		this.field = field;
-		getContentPane().setDropTarget(null);
-		getContentPane().add((Component) field, BorderLayout.CENTER);
-		adjustSize();
-		centralize();
+		return confirmPanel;
 	}
 
 	public void addListener(EditDialogListener<T> listener) {
-		okButton.addActionListener(new OkAdapter(listener));
+		confirmPanel.addOkListener(new OkAdapter(listener));
+	}
+
+	public void edit(T value) {
+		confirmPanel.set(value);
+		setVisible(true);
 	}
 
 	@Override
@@ -74,7 +57,7 @@ public class EditDialog<T> extends AbstractDialog implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent event) {
 			try {
-				if (listener.dialogConfirm(field.get()))
+				if (listener.dialogConfirm(confirmPanel.get()))
 					dispose();
 			} catch (Exception exception) {
 				showError(exception);
