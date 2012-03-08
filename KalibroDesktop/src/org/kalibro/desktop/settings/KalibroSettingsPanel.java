@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.kalibro.core.settings.KalibroSettings;
-import org.kalibro.desktop.swingextension.dialog.AbstractDialog;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
@@ -15,11 +14,8 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	private ClientSettingsPanel clientSettingsPanel;
 	private ServerSettingsPanel serverSettingsPanel;
 
-	private AbstractDialog parent;
-
-	public KalibroSettingsPanel(AbstractDialog parent) {
+	public KalibroSettingsPanel() {
 		super("settings");
-		this.parent = parent;
 	}
 
 	@Override
@@ -77,6 +73,5 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 		clientSettingsPanel.setVisible(client);
 		serverSettingsPanel.setVisible(!client);
 		adjustSize();
-		parent.adjustSize();
 	}
 }

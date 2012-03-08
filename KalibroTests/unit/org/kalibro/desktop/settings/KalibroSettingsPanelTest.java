@@ -8,25 +8,19 @@ import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.desktop.ComponentFinder;
-import org.kalibro.desktop.swingextension.dialog.AbstractDialog;
 import org.kalibro.desktop.swingextension.field.BooleanField;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 
 public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	private KalibroSettings settings;
 
-	private AbstractDialog parent;
 	private KalibroSettingsPanel panel;
-
 	private ComponentFinder finder;
 
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings(kalibroSettingsMap());
-		parent = PowerMockito.mock(AbstractDialog.class);
-		panel = new KalibroSettingsPanel(parent);
+		panel = new KalibroSettingsPanel();
 		finder = new ComponentFinder(panel);
 	}
 
@@ -77,12 +71,6 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 		assertEquals(clientSettingsPanel().getSize().width, serverSettingsPanel().getSize().width);
 		assertEquals(clientSettingsPanel().getMinimumSize().width, serverSettingsPanel().getMinimumSize().width);
 		assertEquals(clientSettingsPanel().getPreferredSize().width, serverSettingsPanel().getPreferredSize().width);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAdjustParentSizeWhenSwitchingPanels() {
-		clientField().doClick();
-		Mockito.verify(parent).adjustSize();
 	}
 
 	private BooleanField clientField() {

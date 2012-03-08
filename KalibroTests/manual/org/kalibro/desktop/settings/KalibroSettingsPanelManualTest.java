@@ -1,18 +1,30 @@
 package org.kalibro.desktop.settings;
 
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public final class KalibroSettingsPanelManualTest extends KalibroSettingsPanel {
+public final class KalibroSettingsPanelManualTest extends ComponentWrapperDialog {
 
 	public static void main(String[] args) {
-		new KalibroSettingsPanelManualTest(new ComponentWrapperDialog("KalibroSettingsPanel"));
+		KalibroSettingsPanel panel = new KalibroSettingsPanel();
+		panel.set(new KalibroSettings());
+		new KalibroSettingsPanelManualTest(panel);
 	}
 
-	private KalibroSettingsPanelManualTest(ComponentWrapperDialog dialog) {
-		super(dialog);
-		set(new KalibroSettings());
-		dialog.setComponent(this);
-		dialog.setVisible(true);
+	private KalibroSettingsPanelManualTest(KalibroSettingsPanel panel) {
+		super("KalibroSettingsPanel", panel);
+		panel.addComponentListener(new PanelListener());
+		setVisible(true);
+	}
+
+	private class PanelListener extends ComponentAdapter {
+
+		@Override
+		public void componentResized(ComponentEvent event) {
+			adjustSize();
+		}
 	}
 }
