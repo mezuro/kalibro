@@ -15,21 +15,18 @@ public final class SettingsController extends ComponentAdapter implements EditDi
 		new SettingsController().edit(Kalibro.currentSettings());
 	}
 
-	private KalibroSettingsPanel panel;
 	private EditDialog<KalibroSettings> dialog;
 
 	private SettingsController() {
-		panel = new KalibroSettingsPanel();
+		KalibroSettingsPanel panel = new KalibroSettingsPanel();
 		panel.addComponentListener(this);
 		dialog = new EditDialog<KalibroSettings>("Kalibro Settings", panel);
-		dialog.setName("settingsDialog");
 		dialog.setResizable(false);
 		dialog.addListener(this);
 	}
 
 	private void edit(KalibroSettings settings) {
-		panel.set(settings);
-		dialog.setVisible(true);
+		dialog.edit(settings);
 	}
 
 	@Override

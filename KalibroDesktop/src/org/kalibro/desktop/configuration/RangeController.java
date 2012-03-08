@@ -11,28 +11,23 @@ public class RangeController implements EditDialogListener<Range> {
 	private MetricConfiguration configuration;
 	private Range range;
 
-	private RangePanel panel;
 	private EditDialog<Range> dialog;
 
 	public RangeController(MetricConfiguration configuration) {
 		this.configuration = configuration;
-		panel = new RangePanel();
-		dialog = new EditDialog<Range>("Range", panel);
-		dialog.addListener(this);
-		dialog.setName("rangeDialog");
+		dialog = new EditDialog<Range>("Range", new RangePanel());
 		dialog.setResizable(false);
+		dialog.addListener(this);
 	}
 
 	public void addRange() {
 		range = null;
-		panel.set(new Range());
-		dialog.setVisible(true);
+		dialog.edit(new Range());
 	}
 
 	public void editRange(Range theRange) {
 		range = theRange;
-		panel.set(theRange);
-		dialog.setVisible(true);
+		dialog.edit(theRange);
 	}
 
 	@Override

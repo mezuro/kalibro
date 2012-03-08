@@ -61,13 +61,7 @@ public class SettingsControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowCurrentSettings() {
-		Mockito.verify(panel).set(settings);
-		Mockito.verify(dialog).setVisible(true);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void dialogShouldBeNamed() {
-		Mockito.verify(dialog).setName("settingsDialog");
+		Mockito.verify(dialog).edit(settings);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

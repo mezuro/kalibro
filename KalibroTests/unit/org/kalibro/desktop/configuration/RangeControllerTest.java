@@ -49,11 +49,6 @@ public class RangeControllerTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void dialogShouldBeNamed() {
-		verify(rangeDialog).setName("rangeDialog");
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void dialogShouldNotBeResizable() {
 		verify(rangeDialog).setResizable(false);
 	}
@@ -61,23 +56,20 @@ public class RangeControllerTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowDialogWithNewRangeWhenAdding() {
 		controller.addRange();
-		assertDeepEquals(new Range(), captureRangeFromPanel());
-		verify(rangeDialog).setVisible(true);
+		verifyDialogEdit(new Range());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowDialogWithRangeWhenEditing() {
 		Range range = RangeFixtures.amlocRange(RangeLabel.GOOD);
 		controller.editRange(range);
-
-		assertSame(range, captureRangeFromPanel());
-		verify(rangeDialog).setVisible(true);
+		verifyDialogEdit(range);
 	}
 
-	private Range captureRangeFromPanel() {
+	private void verifyDialogEdit(Range range) {
 		ArgumentCaptor<Range> captor = ArgumentCaptor.forClass(Range.class);
-		verify(panel).set(captor.capture());
-		return captor.getValue();
+		verify(rangeDialog).edit(captor.capture());
+		assertDeepEquals(range, captor.getValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
