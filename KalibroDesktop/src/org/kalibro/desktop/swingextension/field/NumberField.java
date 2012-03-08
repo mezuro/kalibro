@@ -1,5 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -32,7 +33,7 @@ abstract class NumberField<T extends Number> extends EditPanel<T> implements Act
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		valueField = new JFormattedTextField(new NumberFormatter(getDecimalFormat()));
 		valueField.setName(getName());
 		valueField.setSize(new FieldSize(valueField));

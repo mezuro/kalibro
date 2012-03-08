@@ -1,6 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -25,7 +26,7 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		nameField = new StringField("name", 30);
 		descriptionField = new TextField("description", 4, 30);
 		createMetricsPanel();

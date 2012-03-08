@@ -2,6 +2,7 @@ package org.kalibro.desktop.swingextension.dialog;
 
 import static org.junit.Assert.*;
 
+import java.awt.Component;
 import java.awt.Container;
 
 import javax.swing.JPanel;
@@ -69,7 +70,7 @@ public class AbstractDialogTest extends KalibroTestCase {
 		}
 
 		@Override
-		protected void createComponents(Object... innerComponents) {
+		protected void createComponents(Component... innerComponents) {
 			createdComponents = true;
 		}
 

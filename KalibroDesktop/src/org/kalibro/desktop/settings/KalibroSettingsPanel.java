@@ -1,5 +1,6 @@
 package org.kalibro.desktop.settings;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -19,7 +20,7 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		clientField = new BooleanField("client", "Use as client to Kalibro Service");
 		clientField.addActionListener(this);
 		clientSettingsPanel = new ClientSettingsPanel();

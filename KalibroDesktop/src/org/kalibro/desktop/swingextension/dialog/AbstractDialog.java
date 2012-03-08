@@ -1,9 +1,6 @@
 package org.kalibro.desktop.swingextension.dialog;
 
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Frame;
-import java.awt.Toolkit;
+import java.awt.*;
 
 import javax.swing.JDialog;
 
@@ -11,7 +8,7 @@ import org.kalibro.desktop.swingextension.icon.Icon;
 
 public abstract class AbstractDialog extends JDialog {
 
-	public AbstractDialog(String title, Object... innerComponents) {
+	public AbstractDialog(String title, Component... innerComponents) {
 		super((Frame) null, title, true);
 		setIconImage(new Icon(Icon.KALIBRO).getImage());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
@@ -22,7 +19,7 @@ public abstract class AbstractDialog extends JDialog {
 		centralize();
 	}
 
-	protected abstract void createComponents(Object... innerComponents);
+	protected abstract void createComponents(Component... innerComponents);
 
 	protected abstract Container buildPanel();
 

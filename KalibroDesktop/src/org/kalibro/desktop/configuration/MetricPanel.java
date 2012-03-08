@@ -1,5 +1,6 @@
 package org.kalibro.desktop.configuration;
 
+import java.awt.Component;
 import java.util.List;
 
 import org.kalibro.core.model.CompoundMetric;
@@ -26,7 +27,7 @@ public class MetricPanel extends EditPanel<Metric> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		nameField = new MaybeEditableField<String>(new StringField("name", 30));
 		scopeField = new MaybeEditableField<Granularity>(new ChoiceField<Granularity>("scope", Granularity.values()));
 		descriptionField = new TextField("description", 1, 1, "Description");

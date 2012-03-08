@@ -1,5 +1,7 @@
 package org.kalibro.desktop.settings;
 
+import java.awt.Component;
+
 import javax.swing.border.TitledBorder;
 
 import org.kalibro.core.settings.DatabaseSettings;
@@ -22,7 +24,7 @@ public class DatabaseSettingsPanel extends EditPanel<DatabaseSettings> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		databaseTypeField = new ChoiceField<SupportedDatabase>("databaseType", SupportedDatabase.values());
 		jdbcUrlField = new StringField("jdbcUrl", 25);
 		usernameField = new StringField("username", 25);

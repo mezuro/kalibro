@@ -1,5 +1,7 @@
 package org.kalibro.desktop.configuration;
 
+import java.awt.Component;
+
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ColorField;
@@ -22,7 +24,7 @@ public class RangePanel extends EditPanel<Range> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		beginningField = new DoubleField("beginning", Double.NEGATIVE_INFINITY);
 		endField = new DoubleField("end", Double.POSITIVE_INFINITY);
 		labelField = new StringField("label", 20);

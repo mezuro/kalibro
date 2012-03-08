@@ -28,7 +28,7 @@ public class DirectoryField extends EditPanel<File> implements ActionListener {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		browseButton = new Button("browse", "Browse", this);
 		pathField = new StringField("path", 20);
 		browseButton.addFocusListener(new FocusListener());
@@ -76,7 +76,7 @@ public class DirectoryField extends EditPanel<File> implements ActionListener {
 		private boolean reallyLostFocus(FocusEvent event) {
 			Component focusOwner = event.getOppositeComponent();
 			boolean focusStillHere = focusOwner == browseButton || focusOwner == pathField;
-			return !(event.isTemporary() || focusStillHere);
+			return ! (event.isTemporary() || focusStillHere);
 		}
 	}
 }

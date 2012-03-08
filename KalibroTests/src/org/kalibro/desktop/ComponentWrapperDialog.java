@@ -1,5 +1,6 @@
 package org.kalibro.desktop;
 
+import java.awt.Component;
 import java.awt.Container;
 
 import org.kalibro.desktop.swingextension.dialog.AbstractDialog;
@@ -13,7 +14,7 @@ public class ComponentWrapperDialog extends AbstractDialog {
 	}
 
 	@Override
-	protected void createComponents(Object... innerComponents) {
+	protected void createComponents(Component... innerComponents) {
 		contentPane = (Container) innerComponents[0];
 	}
 

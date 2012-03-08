@@ -1,5 +1,7 @@
 package org.kalibro.desktop.configuration;
 
+import java.awt.Component;
+
 import javax.swing.border.TitledBorder;
 
 import org.kalibro.Kalibro;
@@ -21,7 +23,7 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		createBaseToolList();
 		createMetricTable();
 		descriptionField = new TextField("description", 2, 20, null, true);

@@ -35,7 +35,7 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		metricPanel = new MetricPanel();
 		metricPanel.setBorder(new TitledBorder("Metric"));
 		codeField = new StringField("code", 10);

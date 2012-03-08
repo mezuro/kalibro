@@ -1,5 +1,7 @@
 package org.kalibro.desktop.swingextension.panel;
 
+import java.awt.Component;
+
 import org.kalibro.core.model.enums.Language;
 
 class LanguagePanelStub extends EditPanel<Language> {
@@ -9,7 +11,7 @@ class LanguagePanelStub extends EditPanel<Language> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		return;
 	}
 
