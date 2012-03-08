@@ -28,7 +28,7 @@ public class AddMetricDialog extends AbstractDialog implements ActionListener, L
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Object... innerComponents) {
 		createRadioButtons();
 		createNativeMetricPanel();
 		cancelButton = new Button("cancel", "Cancel", this);

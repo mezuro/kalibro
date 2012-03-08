@@ -69,7 +69,7 @@ public class AbstractDialogTest extends KalibroTestCase {
 		}
 
 		@Override
-		protected void createComponents() {
+		protected void createComponents(Object... innerComponents) {
 			createdComponents = true;
 		}
 

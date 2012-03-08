@@ -23,7 +23,7 @@ public class EditDialog<T> extends AbstractDialog implements ActionListener {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Object... innerFields) {
 		cancelButton = new Button("cancel", "Cancel", this);
 		okButton = new Button("ok", "Ok");
 	}

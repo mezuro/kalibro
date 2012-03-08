@@ -11,18 +11,18 @@ import org.kalibro.desktop.swingextension.icon.Icon;
 
 public abstract class AbstractDialog extends JDialog {
 
-	public AbstractDialog(String title) {
+	public AbstractDialog(String title, Object... innerComponents) {
 		super((Frame) null, title, true);
 		setIconImage(new Icon(Icon.KALIBRO).getImage());
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
-		createComponents();
+		createComponents(innerComponents);
 		setContentPane(buildPanel());
 		adjustSize();
 		centralize();
 	}
 
-	protected abstract void createComponents();
+	protected abstract void createComponents(Object... innerComponents);
 
 	protected abstract Container buildPanel();
 
