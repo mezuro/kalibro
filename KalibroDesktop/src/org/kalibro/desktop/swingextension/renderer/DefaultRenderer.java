@@ -6,6 +6,7 @@ public class DefaultRenderer extends StandardRenderer {
 
 	private StandardRenderer[] knownRenderers = new StandardRenderer[]{
 		new BooleanRenderer(),
+		new CollectionRenderer(),
 		new DoubleRenderer(),
 		new NullRenderer(),
 		new StringRenderer()
