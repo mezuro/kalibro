@@ -1,9 +1,6 @@
 package org.kalibro.desktop.configuration;
 
-import java.awt.BorderLayout;
 import java.awt.Component;
-import java.awt.FlowLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
@@ -11,7 +8,6 @@ import javax.swing.border.TitledBorder;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.DoubleField;
@@ -28,8 +24,6 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 	private ChoiceField<Statistic> aggregationFormField;
 	private TablePanel<Range> rangesPanel;
 
-	private Button cancelButton, okButton;
-
 	public MetricConfigurationPanel() {
 		super("metricConfiguration");
 	}
@@ -42,8 +36,6 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 		aggregationFormField = new ChoiceField<Statistic>("aggregationForm", Statistic.values());
 		weightField = new DoubleField("weight");
 		createRangesPanel();
-		cancelButton = new Button("cancel", "Cancel");
-		okButton = new Button("ok", "Ok");
 	}
 
 	private void createRangesPanel() {
@@ -59,19 +51,12 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 
 	@Override
 	protected void buildPanel() {
-		setLayout(new BorderLayout());
-		add(mainPanel(), BorderLayout.CENTER);
-		add(buttonsPanel(), BorderLayout.SOUTH);
-	}
-
-	private JPanel mainPanel() {
-		GridBagPanelBuilder builder = new GridBagPanelBuilder();
+		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
 		builder.add(metricPanel, 6);
 		builder.newLine();
 		builder.add(configurationPanel(), 1.0);
 		builder.newLine();
 		builder.add(rangesPanel, 6);
-		return builder.getPanel();
 	}
 
 	private JPanel configurationPanel() {
@@ -81,13 +66,6 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 		builder.newLine();
 		builder.addSimpleLine(new Label("Aggregation Form:"), aggregationFormField, new Label("Weight:"), weightField);
 		return builder.getPanel();
-	}
-
-	private Component buttonsPanel() {
-		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
-		buttonsPanel.add(cancelButton);
-		buttonsPanel.add(okButton);
-		return buttonsPanel;
 	}
 
 	@Override
@@ -112,10 +90,5 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 
 	public void addRangesPanelListener(TablePanelListener<Range> listener) {
 		rangesPanel.addTablePanelListener(listener);
-	}
-
-	public void addButtonListener(ActionListener listener) {
-		cancelButton.addActionListener(listener);
-		okButton.addActionListener(listener);
 	}
 }
