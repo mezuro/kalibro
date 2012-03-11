@@ -17,7 +17,7 @@ public final class MetricConfigurationPanelManualTest implements TablePanelListe
 
 	private MetricConfigurationPanelManualTest(MetricConfiguration configuration) {
 		MetricConfigurationPanel panel = new MetricConfigurationPanel();
-		panel.addRangesPanelListener(this);
+		panel.addRangesListener(this);
 		panel.set(configuration);
 		new ComponentWrapperDialog("MetricConfigurationPanel", panel).setVisible(true);
 	}

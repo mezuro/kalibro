@@ -88,7 +88,7 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 		rangesPanel.set(configuration.getRanges());
 	}
 
-	public void addRangesPanelListener(TablePanelListener<Range> listener) {
+	public void addRangesListener(TablePanelListener<Range> listener) {
 		rangesPanel.addTablePanelListener(listener);
 	}
 }

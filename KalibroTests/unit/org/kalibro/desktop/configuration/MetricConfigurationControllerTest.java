@@ -23,6 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(MetricConfigurationController.class)
 public class MetricConfigurationControllerTest extends KalibroTestCase {
 
+	private MetricConfiguration metricConfiguration;
 	private Configuration configuration;
 	private CardStackPanel cardStack;
 
@@ -34,6 +35,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		metricConfiguration = PowerMockito.mock(MetricConfiguration.class);
 		configuration = PowerMockito.mock(Configuration.class);
 		cardStack = PowerMockito.mock(CardStackPanel.class);
 
@@ -53,7 +55,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListenToMetricConfigurationPanel() {
-		verify(metricPanel).addRangesPanelListener(controller);
+		verify(metricPanel).addRangesListener(controller);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -87,7 +89,6 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowNewConfigurationForChosenMetricWhenAdding() throws Exception {
 		Metric chosenMetric = PowerMockito.mock(Metric.class);
-		MetricConfiguration metricConfiguration = PowerMockito.mock(MetricConfiguration.class);
 		PowerMockito.when(addDialog.getMetric()).thenReturn(chosenMetric);
 		PowerMockito.whenNew(MetricConfiguration.class).withArguments(chosenMetric).thenReturn(metricConfiguration);
 
@@ -102,7 +103,6 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowMetricConfigurationWhenEditing() {
-		MetricConfiguration metricConfiguration = PowerMockito.mock(MetricConfiguration.class);
 		controller.edit(metricConfiguration);
 		verify(confirmPanel).set(metricConfiguration);
 		verify(cardStack).push(confirmPanel);
@@ -133,7 +133,6 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 	public void shouldNotPopPanelOnError() throws Exception {
 		Exception error = new IllegalArgumentException();
 		ErrorDialog errorDialog = mockErrorDialog();
-		MetricConfiguration metricConfiguration = PowerMockito.mock(MetricConfiguration.class);
 		PowerMockito.doThrow(error).when(configuration).replaceMetricConfiguration(null, null);
 
 		controller.edit(metricConfiguration);
@@ -163,6 +162,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		RangeController rangeController = mockRangeController();
 		controller.add();
 		verify(rangeController).addRange();
+		verify(confirmPanel).set(metricConfiguration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -171,11 +171,13 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		Range range = new Range();
 		controller.edit(range);
 		verify(rangeController).editRange(range);
+		verify(confirmPanel).set(metricConfiguration);
 	}
 
 	private RangeController mockRangeController() throws Exception {
 		RangeController rangeController = PowerMockito.mock(RangeController.class);
-		PowerMockito.whenNew(RangeController.class).withArguments(any()).thenReturn(rangeController);
+		PowerMockito.when(confirmPanel.get()).thenReturn(metricConfiguration);
+		PowerMockito.whenNew(RangeController.class).withArguments(metricConfiguration).thenReturn(rangeController);
 		return rangeController;
 	}
 }

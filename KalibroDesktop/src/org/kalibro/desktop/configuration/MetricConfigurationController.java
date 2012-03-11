@@ -26,7 +26,7 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 		this.configuration = configuration;
 		this.cardStack = cardStack;
 		MetricConfigurationPanel metricPanel = new MetricConfigurationPanel();
-		metricPanel.addRangesPanelListener(this);
+		metricPanel.addRangesListener(this);
 		panel = new ConfirmPanel<MetricConfiguration>(metricPanel);
 		panel.addCancelListener(this);
 		panel.addOkListener(this);
@@ -87,11 +87,15 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 
 	@Override
 	public void add() {
+		metricConfiguration = panel.get();
 		new RangeController(metricConfiguration).addRange();
+		panel.set(metricConfiguration);
 	}
 
 	@Override
 	public void edit(Range range) {
+		metricConfiguration = panel.get();
 		new RangeController(metricConfiguration).editRange(range);
+		panel.set(metricConfiguration);
 	}
 }
