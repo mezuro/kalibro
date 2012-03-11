@@ -26,7 +26,7 @@ public class ConfigurationFrame extends JInternalFrame implements TablePanelList
 	private void buildContentPane(Configuration configuration) {
 		configurationPanel = new ConfigurationPanel();
 		configurationPanel.set(configuration);
-		configurationPanel.addMetricConfigurationsPanelListener(this);
+		configurationPanel.addMetricConfigurationsListener(this);
 		cardStack = new CardStackPanel();
 		cardStack.push(configurationPanel);
 		setContentPane(cardStack);

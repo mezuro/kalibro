@@ -6,13 +6,17 @@ import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 
-public class ConfigurationPanelManualTest implements TablePanelListener<MetricConfiguration> {
+public final class ConfigurationPanelManualTest extends ConfigurationPanel implements
+	TablePanelListener<MetricConfiguration> {
 
 	public static void main(String[] args) {
-		ConfigurationPanel panel = new ConfigurationPanel();
-		panel.set(simpleConfiguration());
-		panel.addMetricConfigurationsPanelListener(new ConfigurationPanelManualTest());
-		new ComponentWrapperDialog("ConfigurationPanel", panel).setVisible(true);
+		new ComponentWrapperDialog("ConfigurationPanel", new ConfigurationPanelManualTest()).setVisible(true);
+	}
+
+	private ConfigurationPanelManualTest() {
+		super();
+		set(simpleConfiguration());
+		addMetricConfigurationsListener(this);
 	}
 
 	@Override

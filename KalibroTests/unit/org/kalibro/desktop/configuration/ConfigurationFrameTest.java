@@ -87,7 +87,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListenToMetricConfigurationsPanel() {
-		Mockito.verify(panel).addMetricConfigurationsPanelListener(frame);
+		Mockito.verify(panel).addMetricConfigurationsListener(frame);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

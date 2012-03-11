@@ -40,8 +40,7 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 		model.addColumn(new ReflectionColumn("metric.compound", 7));
 		model.addColumn(new ReflectionColumn("metric.scope", 7));
 		model.addColumn(new ReflectionColumn("metric", 25));
-		Table<MetricConfiguration> metricsTable;
-		metricsTable = new Table<MetricConfiguration>("metricConfigurations", model, 15);
+		Table<MetricConfiguration> metricsTable = new Table<MetricConfiguration>("metricConfigurations", model, 15);
 		metricConfigurationsPanel = new TablePanel<MetricConfiguration>(metricsTable);
 		metricConfigurationsPanel.setBorder(new TitledBorder("Metric configurations"));
 	}
@@ -61,13 +60,6 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 	}
 
 	@Override
-	public void set(Configuration configuration) {
-		nameField.set(configuration.getName());
-		descriptionField.set(configuration.getDescription());
-		metricConfigurationsPanel.set(configuration.getMetricConfigurations());
-	}
-
-	@Override
 	public Configuration get() {
 		Configuration configuration = new Configuration();
 		configuration.setName(nameField.get());
@@ -77,7 +69,14 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 		return configuration;
 	}
 
-	public void addMetricConfigurationsPanelListener(TablePanelListener<MetricConfiguration> listener) {
+	@Override
+	public void set(Configuration configuration) {
+		nameField.set(configuration.getName());
+		descriptionField.set(configuration.getDescription());
+		metricConfigurationsPanel.set(configuration.getMetricConfigurations());
+	}
+
+	public void addMetricConfigurationsListener(TablePanelListener<MetricConfiguration> listener) {
 		metricConfigurationsPanel.addTablePanelListener(listener);
 	}
 }
