@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
-import java.awt.event.ContainerAdapter;
 import java.awt.event.ContainerEvent;
+import java.awt.event.ContainerListener;
 
 import javax.swing.JInternalFrame;
 
@@ -11,7 +11,8 @@ import org.kalibro.desktop.swingextension.icon.Icon;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;
 
-public class ConfigurationFrame extends JInternalFrame implements TablePanelListener<MetricConfiguration> {
+public class ConfigurationFrame extends JInternalFrame implements ContainerListener,
+	TablePanelListener<MetricConfiguration> {
 
 	private ConfigurationPanel configurationPanel;
 	private CardStackPanel cardStack;
@@ -35,9 +36,15 @@ public class ConfigurationFrame extends JInternalFrame implements TablePanelList
 		configurationPanel.addMetricConfigurationsListener(this);
 		cardStack = new CardStackPanel();
 		cardStack.push(configurationPanel);
-		cardStack.addContainerListener(new CardStackListener());
+		cardStack.addContainerListener(this);
 		setContentPane(cardStack);
+		adjustSize();
+	}
+
+	private void adjustSize() {
 		pack();
+		setMinimumSize(getPreferredSize());
+		setSize(getPreferredSize());
 	}
 
 	@Override
@@ -52,11 +59,14 @@ public class ConfigurationFrame extends JInternalFrame implements TablePanelList
 		new MetricConfigurationController(configuration, cardStack).edit(metricConfiguration);
 	}
 
-	private class CardStackListener extends ContainerAdapter {
+	@Override
+	public void componentAdded(ContainerEvent event) {
+		adjustSize();
+	}
 
-		@Override
-		public void componentRemoved(ContainerEvent event) {
-			configurationPanel.set(configuration);
-		}
+	@Override
+	public void componentRemoved(ContainerEvent event) {
+		configurationPanel.set(configuration);
+		adjustSize();
 	}
 }
