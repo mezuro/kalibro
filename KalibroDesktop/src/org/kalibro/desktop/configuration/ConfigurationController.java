@@ -3,10 +3,15 @@ package org.kalibro.desktop.configuration;
 import java.awt.Point;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.util.List;
 
 import javax.swing.JDesktopPane;
 
+import org.kalibro.Kalibro;
 import org.kalibro.core.model.Configuration;
+import org.kalibro.core.persistence.dao.ConfigurationDao;
+import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
+import org.kalibro.desktop.swingextension.dialog.MessageDialog;
 
 public class ConfigurationController extends WindowAdapter {
 
@@ -21,8 +26,31 @@ public class ConfigurationController extends WindowAdapter {
 	}
 
 	public void open() {
-		// TODO Auto-generated method stub
+		String chosen = chooseConfiguration();
+		if (chosen != null)
+			addFrameFor(dao().getConfiguration(chosen));
+	}
 
+	public void delete() {
+		String chosen = chooseConfiguration();
+		if (chosen != null)
+			dao().removeConfiguration(chosen);
+	}
+
+	private String chooseConfiguration() {
+		List<String> names = dao().getConfigurationNames();
+		ChoiceDialog<String> choiceDialog = new ChoiceDialog<String>("Choose configuration", desktopPane);
+		if (noConfiguration(names) || !choiceDialog.choose("Select configuration:", names))
+			return null;
+		return choiceDialog.getChoice();
+	}
+
+	private boolean noConfiguration(List<String> configurationNames) {
+		if (configurationNames.isEmpty()) {
+			new MessageDialog(desktopPane).show("No configuration found", "No configuration");
+			return true;
+		}
+		return false;
 	}
 
 	private void addFrameFor(Configuration configuration) {
@@ -33,31 +61,22 @@ public class ConfigurationController extends WindowAdapter {
 	}
 
 	private Point newLocation() {
-		ConfigurationFrame selectedFrame = getSelectedFrame();
-		if (selectedFrame == null)
+		if (selectedFrame() == null)
 			return new Point(0, 0);
-		Point selectedLocation = selectedFrame.getLocation();
+		Point selectedLocation = selectedFrame().getLocation();
 		return new Point(selectedLocation.x + 20, selectedLocation.y + 20);
-	}
-
-	public void delete() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void save() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void saveAs() {
 		// TODO Auto-generated method stub
-
 	}
 
 	public void close() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -65,7 +84,11 @@ public class ConfigurationController extends WindowAdapter {
 		// TODO Auto-generated method stub
 	}
 
-	private ConfigurationFrame getSelectedFrame() {
+	private ConfigurationFrame selectedFrame() {
 		return (ConfigurationFrame) desktopPane.getSelectedFrame();
+	}
+
+	private ConfigurationDao dao() {
+		return Kalibro.getConfigurationDao();
 	}
 }
