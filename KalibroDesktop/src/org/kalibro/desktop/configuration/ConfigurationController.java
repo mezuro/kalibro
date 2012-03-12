@@ -48,7 +48,7 @@ public class ConfigurationController extends WindowAdapter {
 
 	private boolean noConfiguration(List<String> configurationNames) {
 		if (configurationNames.isEmpty()) {
-			new MessageDialog(desktopPane).show("No configuration found", "No configuration");
+			new MessageDialog("No configuration", desktopPane).show("No configuration found");
 			return true;
 		}
 		return false;

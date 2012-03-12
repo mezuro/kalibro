@@ -26,12 +26,12 @@ public class MessageDialogTest extends KalibroTestCase {
 	public void setUp() {
 		PowerMockito.mockStatic(JOptionPane.class);
 		parent = PowerMockito.mock(Component.class);
-		dialog = new MessageDialog(parent);
+		dialog = new MessageDialog(TITLE, parent);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowMessage() {
-		dialog.show(MESSAGE, TITLE);
+		dialog.show(MESSAGE);
 
 		PowerMockito.verifyStatic();
 		JOptionPane.showMessageDialog(parent, MESSAGE, TITLE, JOptionPane.PLAIN_MESSAGE);

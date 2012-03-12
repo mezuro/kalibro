@@ -7,7 +7,7 @@ import org.kalibro.desktop.ComponentWrapperDialog;
 public final class MessageDialogManualTest extends ComponentWrapperDialog {
 
 	public static void main(String[] args) {
-		new MessageDialog(new MessageDialogManualTest()).show("MessageDialogManualTest", "MessageDialog");
+		new MessageDialog("MessageDialog", new MessageDialogManualTest()).show("MessageDialogManualTest");
 		System.exit(0);
 	}
 

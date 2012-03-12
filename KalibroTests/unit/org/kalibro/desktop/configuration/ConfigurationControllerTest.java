@@ -119,7 +119,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		MessageDialog messageDialog = prepareMessageDialog();
 		controller.open();
 
-		verify(messageDialog).show("No configuration found", "No configuration");
+		verify(messageDialog).show("No configuration found");
 		verify(configurationDao, never()).getConfiguration(anyString());
 		verify(desktopPane, never()).add(frame);
 		verify(frame, never()).select();
@@ -128,7 +128,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 	private MessageDialog prepareMessageDialog() throws Exception {
 		MessageDialog dialog = PowerMockito.mock(MessageDialog.class);
 		PowerMockito.when(configurationDao.getConfigurationNames()).thenReturn(new ArrayList<String>());
-		PowerMockito.whenNew(MessageDialog.class).withArguments(desktopPane).thenReturn(dialog);
+		PowerMockito.whenNew(MessageDialog.class).withArguments("No configuration", desktopPane).thenReturn(dialog);
 		return dialog;
 	}
 
