@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JInternalFrame;
 
 import org.kalibro.Kalibro;
 import org.kalibro.core.model.Configuration;
@@ -61,14 +62,15 @@ public class ConfigurationController extends WindowAdapter {
 	}
 
 	private Point newLocation() {
-		if (selectedFrame() == null)
+		JInternalFrame selectedFrame = desktopPane.getSelectedFrame();
+		if (selectedFrame == null)
 			return new Point(0, 0);
-		Point selectedLocation = selectedFrame().getLocation();
+		Point selectedLocation = selectedFrame.getLocation();
 		return new Point(selectedLocation.x + 20, selectedLocation.y + 20);
 	}
 
 	public void save() {
-		// TODO Auto-generated method stub
+		dao().save(selectedConfiguration());
 	}
 
 	public void saveAs() {
@@ -84,8 +86,9 @@ public class ConfigurationController extends WindowAdapter {
 		// TODO Auto-generated method stub
 	}
 
-	private ConfigurationFrame selectedFrame() {
-		return (ConfigurationFrame) desktopPane.getSelectedFrame();
+	private Configuration selectedConfiguration() {
+		ConfigurationFrame selectedFrame = (ConfigurationFrame) desktopPane.getSelectedFrame();
+		return selectedFrame.getConfiguration();
 	}
 
 	private ConfigurationDao dao() {

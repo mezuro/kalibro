@@ -131,4 +131,13 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		PowerMockito.whenNew(MessageDialog.class).withArguments(desktopPane).thenReturn(dialog);
 		return dialog;
 	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSaveSelectedConfiguration() {
+		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(frame);
+		PowerMockito.when(frame.getConfiguration()).thenReturn(configuration);
+		controller.save();
+
+		verify(configurationDao).save(configuration);
+	}
 }
