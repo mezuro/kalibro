@@ -18,7 +18,9 @@ import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
+import org.kalibro.desktop.swingextension.dialog.InputDialog;
 import org.kalibro.desktop.swingextension.dialog.MessageDialog;
+import org.mockito.InOrder;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -66,9 +68,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddFramesOnDifferentLocations() throws Exception {
-		Point existingLocation = new Point(0, 0);
-		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(frame);
-		PowerMockito.when(frame.getLocation()).thenReturn(existingLocation);
+		prepareSelectedFrame();
 		PowerMockito.whenNew(Configuration.class).withNoArguments().thenReturn(configuration);
 
 		controller.newConfiguration();
@@ -85,7 +85,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRemoveOpenConfiguration() throws Exception {
+	public void shouldRemoveConfiguration() throws Exception {
 		prepareChoiceDialog(true);
 		controller.delete();
 		verify(configurationDao).removeConfiguration("");
@@ -134,10 +134,48 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveSelectedConfiguration() {
-		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(frame);
-		PowerMockito.when(frame.getConfiguration()).thenReturn(configuration);
+		prepareSelectedFrame();
 		controller.save();
 
 		verify(configurationDao).save(configuration);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSaveConfigurationWithOtherName() throws Exception {
+		prepareSelectedFrame();
+		InputDialog dialog = prepareInputDialog(true);
+		PowerMockito.when(dialog.getInput()).thenReturn("Other name");
+		controller.saveAs();
+
+		InOrder order = inOrder(configuration, configurationDao, desktopPane, frame);
+		order.verify(configuration).setName("Other name");
+		order.verify(configurationDao).save(configuration);
+		order.verify(desktopPane).add(frame);
+		order.verify(frame).select();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotSaveIfUserDoesNotTypeNewName() throws Exception {
+		prepareInputDialog(false);
+		controller.saveAs();
+
+		verify(configurationDao, never()).save(configuration);
+		verify(desktopPane, never()).add(frame);
+		verify(frame, never()).select();
+	}
+
+	private InputDialog prepareInputDialog(boolean typed) throws Exception {
+		String title = "Save configuration as...";
+		InputDialog dialog = PowerMockito.mock(InputDialog.class);
+		PowerMockito.whenNew(InputDialog.class).withArguments(title, desktopPane).thenReturn(dialog);
+		PowerMockito.when(dialog.userTyped("Configuration name:")).thenReturn(typed);
+		return dialog;
+	}
+
+	private void prepareSelectedFrame() {
+		Point existingLocation = new Point(0, 0);
+		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(frame);
+		PowerMockito.when(frame.getLocation()).thenReturn(existingLocation);
+		PowerMockito.when(frame.getConfiguration()).thenReturn(configuration);
 	}
 }

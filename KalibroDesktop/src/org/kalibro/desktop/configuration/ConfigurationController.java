@@ -12,6 +12,7 @@ import org.kalibro.Kalibro;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
+import org.kalibro.desktop.swingextension.dialog.InputDialog;
 import org.kalibro.desktop.swingextension.dialog.MessageDialog;
 
 public class ConfigurationController extends WindowAdapter {
@@ -54,6 +55,29 @@ public class ConfigurationController extends WindowAdapter {
 		return false;
 	}
 
+	public void save() {
+		dao().save(selectedConfiguration());
+	}
+
+	public void saveAs() {
+		InputDialog inputDialog = new InputDialog("Save configuration as...", desktopPane);
+		if (!inputDialog.userTyped("Configuration name:"))
+			return;
+		Configuration configuration = selectedConfiguration();
+		configuration.setName(inputDialog.getInput());
+		dao().save(configuration);
+		addFrameFor(configuration);
+	}
+
+	public void close() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowClosing(WindowEvent event) {
+		// TODO Auto-generated method stub
+	}
+
 	private void addFrameFor(Configuration configuration) {
 		ConfigurationFrame configurationFrame = new ConfigurationFrame(configuration);
 		desktopPane.add(configurationFrame);
@@ -67,23 +91,6 @@ public class ConfigurationController extends WindowAdapter {
 			return new Point(0, 0);
 		Point selectedLocation = selectedFrame.getLocation();
 		return new Point(selectedLocation.x + 20, selectedLocation.y + 20);
-	}
-
-	public void save() {
-		dao().save(selectedConfiguration());
-	}
-
-	public void saveAs() {
-		// TODO Auto-generated method stub
-	}
-
-	public void close() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void windowClosing(WindowEvent event) {
-		// TODO Auto-generated method stub
 	}
 
 	private Configuration selectedConfiguration() {
