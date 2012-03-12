@@ -7,10 +7,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
-
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.NativeMetric;
@@ -49,12 +45,10 @@ public class CheckstyleStub implements MetricCollector {
 	}
 
 	private static Double evaluateExpression(String expression) {
-		try {
-			ScriptEngine engine = new ScriptEngineManager().getEngineByName("JavaScript");
-			return ((Number) engine.eval(expression)).doubleValue();
-		} catch (ScriptException exception) {
-			return Double.NaN;
-		}
+		String[] values = expression.split("/", 2);
+		if (values.length > 1)
+			return Double.parseDouble(values[0]) / Double.parseDouble(values[1]);
+		return Double.parseDouble(expression);
 	}
 
 	public static Set<NativeMetric> nativeMetrics() {
