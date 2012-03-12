@@ -2,6 +2,7 @@ package org.kalibro.desktop.configuration;
 
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
+import java.beans.PropertyVetoException;
 
 import javax.swing.JInternalFrame;
 
@@ -49,6 +50,14 @@ public class ConfigurationFrame extends JInternalFrame implements ContainerListe
 
 	public Configuration getConfiguration() {
 		return configuration;
+	}
+
+	public void select() {
+		try {
+			setSelected(true);
+		} catch (PropertyVetoException exception) {
+			throw new IllegalStateException(exception);
+		}
 	}
 
 	@Override

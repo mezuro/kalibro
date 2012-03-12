@@ -3,6 +3,8 @@ package org.kalibro.desktop.configuration;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 
+import java.beans.PropertyVetoException;
+
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.WindowConstants;
@@ -11,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.core.model.MetricConfiguration;
@@ -133,5 +136,21 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 		Mockito.reset(panel);
 		cardStack.pop();
 		Mockito.verify(panel).set(configuration);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSelectHidingPropertyVetoException() throws Exception {
+		frame = PowerMockito.spy(frame);
+		frame.select();
+		Mockito.verify(frame).setSelected(true);
+
+		PowerMockito.doThrow(new PropertyVetoException("", null)).when(frame).setSelected(true);
+		checkException(new Task() {
+
+			@Override
+			public void perform() {
+				frame.select();
+			}
+		}, IllegalStateException.class, "java.beans.PropertyVetoException: ", PropertyVetoException.class);
 	}
 }
