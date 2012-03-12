@@ -105,7 +105,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 		finder.find("add", Button.class).doClick();
 
 		Mockito.verify(panel).get();
-		Mockito.verify(metricConfigurationController).add();
+		Mockito.verify(metricConfigurationController).addMetricConfiguration();
 		assertSame(newConfiguration, frame.getConfiguration());
 	}
 

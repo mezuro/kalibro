@@ -63,7 +63,7 @@ public class ConfigurationFrame extends JInternalFrame implements ContainerListe
 	@Override
 	public void add() {
 		configuration = configurationPanel.get();
-		new MetricConfigurationController(configuration, cardStack).add();
+		new MetricConfigurationController(configuration, cardStack).addMetricConfiguration();
 	}
 
 	@Override
