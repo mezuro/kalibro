@@ -36,22 +36,6 @@ public class KalibroController implements KalibroFrameListener {
 		frame.setVisible(true);
 	}
 
-	@Override
-	public void newConfiguration() {
-		try {
-			String name = userInput(frame, "Configuration name:", "New configuration");
-			if (name != null) {
-				Configuration configuration = new Configuration();
-				configuration.setName(name);
-//				for (NativeMetric metric : Kalibro.getSupportedMetrics())
-//					configuration.addMetricConfiguration(new MetricConfiguration(metric));
-				new ConfigurationController(frame.desktopPane(), configuration);
-			}
-		} catch (Exception exception) {
-			new ErrorDialog(frame).show(exception);
-		}
-	}
-
 	private boolean noConfiguration() {
 		boolean noConfiguration = Kalibro.getConfigurationDao().getConfigurationNames().isEmpty();
 		if (noConfiguration)
