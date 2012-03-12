@@ -49,6 +49,7 @@ public class ConfigurationFrame extends JInternalFrame implements ContainerListe
 	}
 
 	public Configuration getConfiguration() {
+		configuration = configurationPanel.get();
 		return configuration;
 	}
 

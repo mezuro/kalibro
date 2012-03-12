@@ -101,31 +101,26 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddMetricConfiguration() {
-		Configuration newConfiguration = mockPanelGet();
 		finder.find("add", Button.class).doClick();
 
 		Mockito.verify(panel).get();
 		Mockito.verify(metricConfigurationController).addMetricConfiguration();
-		assertSame(newConfiguration, frame.getConfiguration());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldEditMetricConfiguration() {
-		Configuration newConfiguration = mockPanelGet();
 		finder.find("metricConfigurations", JTable.class).getSelectionModel().setSelectionInterval(0, 0);
 		finder.find("edit", Button.class).doClick();
 
 		MetricConfiguration metricConfiguration = configuration.getMetricConfigurations().iterator().next();
 		Mockito.verify(panel).get();
 		Mockito.verify(metricConfigurationController).edit(metricConfiguration);
-		assertSame(newConfiguration, frame.getConfiguration());
 	}
 
-	private Configuration mockPanelGet() {
-		Configuration newConfiguration = new Configuration();
-		newConfiguration.setName(configuration.getName());
-		PowerMockito.when(panel.get()).thenReturn(newConfiguration);
-		return newConfiguration;
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetConfiguration() {
+		PowerMockito.when(panel.get()).thenReturn(configuration);
+		assertSame(configuration, frame.getConfiguration());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
