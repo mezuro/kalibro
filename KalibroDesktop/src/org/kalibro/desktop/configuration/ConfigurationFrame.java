@@ -47,6 +47,10 @@ public class ConfigurationFrame extends JInternalFrame implements ContainerListe
 		setSize(getPreferredSize());
 	}
 
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
 	@Override
 	public void add() {
 		configuration = configurationPanel.get();
