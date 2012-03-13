@@ -64,6 +64,19 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotAddFrameIfConfigurationNameAlreadyExists() throws Exception {
+		String name = "My configuration";
+		InputDialog inputDialog = prepareInputDialog("New configuration", true);
+		PowerMockito.when(inputDialog.getInput()).thenReturn(name);
+		PowerMockito.when(dao.getConfigurationNames()).thenReturn(Arrays.asList(name));
+		MessageDialog messageDialog = prepareMessageDialog("Configuration exists");
+
+		controller.newConfiguration();
+		verify(messageDialog).show("Configuration '" + name + "' already exists");
+		PowerMockito.verifyPrivate(controller, never()).invoke("addFrameFor", any(Configuration.class));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddFrameIfUserDoesTypeConfigurationName() throws Exception {
 		InputDialog dialog = prepareInputDialog("New configuration", true);
 		PowerMockito.when(dialog.getInput()).thenReturn("My configuration");
@@ -122,7 +135,8 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowMessageForNoConfiguration() throws Exception {
-		MessageDialog messageDialog = prepareMessageDialog();
+		PowerMockito.when(dao.getConfigurationNames()).thenReturn(new ArrayList<String>());
+		MessageDialog messageDialog = prepareMessageDialog("No configuration");
 
 		controller.open();
 		controller.delete();
@@ -131,10 +145,9 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		verify(dao, never()).removeConfiguration(anyString());
 	}
 
-	private MessageDialog prepareMessageDialog() throws Exception {
+	private MessageDialog prepareMessageDialog(String title) throws Exception {
 		MessageDialog dialog = PowerMockito.mock(MessageDialog.class);
-		PowerMockito.when(dao.getConfigurationNames()).thenReturn(new ArrayList<String>());
-		PowerMockito.whenNew(MessageDialog.class).withArguments("No configuration", desktopPane).thenReturn(dialog);
+		PowerMockito.whenNew(MessageDialog.class).withArguments(title, desktopPane).thenReturn(dialog);
 		return dialog;
 	}
 

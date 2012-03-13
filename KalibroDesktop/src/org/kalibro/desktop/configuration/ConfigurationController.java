@@ -27,10 +27,16 @@ public class ConfigurationController extends InternalFrameAdapter {
 
 	public void newConfiguration() {
 		InputDialog inputDialog = new InputDialog("New configuration", desktopPane);
-		if (inputDialog.userTyped("Configuration name:")) {
-			// TODO if already exists?
+		if (inputDialog.userTyped("Configuration name:"))
+			newConfiguration(inputDialog.getInput());
+	}
+
+	private void newConfiguration(String name) {
+		if (dao().getConfigurationNames().contains(name))
+			new MessageDialog("Configuration exists", desktopPane).show("Configuration '" + name + "' already exists");
+		else {
 			Configuration configuration = new Configuration();
-			configuration.setName(inputDialog.getInput());
+			configuration.setName(name);
 			addFrameFor(configuration);
 		}
 	}
