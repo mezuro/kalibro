@@ -1,12 +1,12 @@
 package org.kalibro.desktop.configuration;
 
 import java.awt.Point;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.util.List;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
+import javax.swing.event.InternalFrameAdapter;
+import javax.swing.event.InternalFrameEvent;
 
 import org.kalibro.Kalibro;
 import org.kalibro.core.model.Configuration;
@@ -15,7 +15,7 @@ import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
 import org.kalibro.desktop.swingextension.dialog.InputDialog;
 import org.kalibro.desktop.swingextension.dialog.MessageDialog;
 
-public class ConfigurationController extends WindowAdapter {
+public class ConfigurationController extends InternalFrameAdapter {
 
 	private JDesktopPane desktopPane;
 
@@ -77,6 +77,7 @@ public class ConfigurationController extends WindowAdapter {
 	private void addFrameFor(Configuration configuration) {
 		ConfigurationFrame configurationFrame = new ConfigurationFrame(configuration);
 		desktopPane.add(configurationFrame);
+		configurationFrame.addInternalFrameListener(this);
 		configurationFrame.setLocation(newLocation());
 		configurationFrame.select();
 	}
@@ -89,12 +90,12 @@ public class ConfigurationController extends WindowAdapter {
 		return new Point(selectedLocation.x + 20, selectedLocation.y + 20);
 	}
 
-	public void close() {
-		// TODO Auto-generated method stub
+	@Override
+	public void internalFrameClosing(InternalFrameEvent event) {
+		close();
 	}
 
-	@Override
-	public void windowClosing(WindowEvent event) {
+	public void close() {
 		// TODO Auto-generated method stub
 	}
 

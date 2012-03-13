@@ -180,6 +180,8 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 		invokeAddFrame();
 		verify(desktopPane).add(newFrame);
+		verify(newFrame).addInternalFrameListener(controller);
+		verify(newFrame).setLocation(new Point(0, 0));
 		verify(newFrame).select();
 	}
 
@@ -209,5 +211,13 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		Method addFrameFor = ConfigurationController.class.getDeclaredMethod("addFrameFor", Configuration.class);
 		addFrameFor.setAccessible(true);
 		addFrameFor.invoke(controller, configuration);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCloseSelectedFrameOnClosingEvent() {
+		PowerMockito.doNothing().when(controller).close();
+
+		controller.internalFrameClosing(null);
+		verify(controller).close();
 	}
 }
