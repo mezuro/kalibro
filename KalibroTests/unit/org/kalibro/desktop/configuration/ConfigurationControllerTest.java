@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JOptionPane;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ConfigurationController.class, Kalibro.class})
+@PrepareForTest({ConfigurationController.class, JOptionPane.class, Kalibro.class})
 public class ConfigurationControllerTest extends KalibroTestCase {
 
 	private ConfigurationDao dao;
@@ -200,12 +201,6 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		return newFrame;
 	}
 
-	private void prepareSelectedFrame() {
-		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(frame);
-		PowerMockito.when(frame.getLocation()).thenReturn(new Point(0, 0));
-		PowerMockito.when(frame.getConfiguration()).thenReturn(configuration);
-	}
-
 	private void invokeAddFrame() throws Exception {
 		PowerMockito.doCallRealMethod().when(controller, "addFrameFor", configuration);
 		Method addFrameFor = ConfigurationController.class.getDeclaredMethod("addFrameFor", Configuration.class);
@@ -219,5 +214,65 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 		controller.internalFrameClosing(null);
 		verify(controller).close();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldJustCloseFrameIfUnmodified() {
+		prepareToClose(true);
+
+		controller.close();
+		verify(dao, never()).save(any(Configuration.class));
+		verify(frame).dispose();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotSaveNeitherCloseOnCancel() throws Exception {
+		prepareToClose(false);
+		prepareConfirmDialog(JOptionPane.CANCEL_OPTION);
+
+		controller.close();
+		verify(dao, never()).save(any(Configuration.class));
+		verify(frame, never()).dispose();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSaveAndCloseOnYes() throws Exception {
+		prepareToClose(false);
+		prepareConfirmDialog(JOptionPane.YES_OPTION);
+
+		controller.close();
+		verify(dao).save(configuration);
+		verify(frame).dispose();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotSaveButCloseOnNo() throws Exception {
+		prepareToClose(false);
+		prepareConfirmDialog(JOptionPane.NO_OPTION);
+
+		controller.close();
+		verify(dao, never()).save(any(Configuration.class));
+		verify(frame).dispose();
+	}
+
+	private void prepareToClose(boolean unmodified) {
+		prepareSelectedFrame();
+		PowerMockito.when(configuration.getName()).thenReturn("");
+		PowerMockito.when(dao.getConfigurationNames()).thenReturn(Arrays.asList(""));
+		PowerMockito.when(dao.getConfiguration("")).thenReturn(configuration);
+		PowerMockito.when(configuration.deepEquals(configuration)).thenReturn(unmodified);
+	}
+
+	private void prepareSelectedFrame() {
+		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(frame);
+		PowerMockito.when(frame.getLocation()).thenReturn(new Point(0, 0));
+		PowerMockito.when(frame.getConfiguration()).thenReturn(configuration);
+	}
+
+	private void prepareConfirmDialog(int option) throws Exception {
+		String message = "Configuration '' has been modified. Save changes?";
+		PowerMockito.mockStatic(JOptionPane.class);
+		PowerMockito.doReturn(option).when(JOptionPane.class, "showConfirmDialog",
+			frame, message, "Save configuration", JOptionPane.YES_NO_CANCEL_OPTION);
 	}
 }

@@ -1,5 +1,7 @@
 package org.kalibro.desktop.configuration;
 
+import static javax.swing.JOptionPane.*;
+
 import java.awt.Point;
 import java.util.List;
 
@@ -26,6 +28,7 @@ public class ConfigurationController extends InternalFrameAdapter {
 	public void newConfiguration() {
 		InputDialog inputDialog = new InputDialog("New configuration", desktopPane);
 		if (inputDialog.userTyped("Configuration name:")) {
+			// TODO if already exists?
 			Configuration configuration = new Configuration();
 			configuration.setName(inputDialog.getInput());
 			addFrameFor(configuration);
@@ -96,7 +99,29 @@ public class ConfigurationController extends InternalFrameAdapter {
 	}
 
 	public void close() {
-		// TODO Auto-generated method stub
+		if (unmodified())
+			desktopPane.getSelectedFrame().dispose();
+		else
+			confirmClose();
+	}
+
+	private boolean unmodified() {
+		Configuration configuration = selectedConfiguration();
+		String name = configuration.getName();
+		boolean exists = dao().getConfigurationNames().contains(name);
+		return exists && dao().getConfiguration(name).deepEquals(configuration);
+	}
+
+	private void confirmClose() {
+		String name = selectedConfiguration().getName();
+		JInternalFrame frame = desktopPane.getSelectedFrame();
+		String message = "Configuration '" + name + "' has been modified. Save changes?";
+		int answer = showConfirmDialog(frame, message, "Save configuration", YES_NO_CANCEL_OPTION);
+		if (answer != CANCEL_OPTION) {
+			if (answer == YES_OPTION)
+				save();
+			frame.dispose();
+		}
 	}
 
 	private Configuration selectedConfiguration() {

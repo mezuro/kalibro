@@ -19,8 +19,4 @@ public final class DialogUtils {
 	public static void hideWaitingDialog() {
 		WaitingDialog.hideDialog();
 	}
-
-	public static int yesNoCancelConfirmation(Component parent, String message, String title) {
-		return showConfirmDialog(parent, message, title, JOptionPane.YES_NO_CANCEL_OPTION);
-	}
 }
