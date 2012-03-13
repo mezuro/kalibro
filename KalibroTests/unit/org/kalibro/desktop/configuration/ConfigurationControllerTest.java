@@ -89,7 +89,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotOpenIfUserDoesNotChooseConfiguration() throws Exception {
-		prepareChoiceDialog(false);
+		prepareChoiceDialog("Open configuration", false);
 
 		controller.open();
 		verify(dao, never()).getConfiguration(anyString());
@@ -98,7 +98,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldOpenConfigurationIfUserChooses() throws Exception {
-		prepareChoiceDialog(true);
+		prepareChoiceDialog("Open configuration", true);
 
 		controller.open();
 		PowerMockito.verifyPrivate(controller).invoke("addFrameFor", configuration);
@@ -106,7 +106,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotRemoveIfUserDoesNotChooseConfiguration() throws Exception {
-		prepareChoiceDialog(false);
+		prepareChoiceDialog("Delete configuration", false);
 
 		controller.delete();
 		verify(dao, never()).removeConfiguration(anyString());
@@ -114,17 +114,17 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveConfiguration() throws Exception {
-		prepareChoiceDialog(true);
+		prepareChoiceDialog("Delete configuration", true);
 
 		controller.delete();
 		verify(dao).removeConfiguration("");
 	}
 
-	private void prepareChoiceDialog(boolean choose) throws Exception {
+	private void prepareChoiceDialog(String title, boolean choose) throws Exception {
 		List<String> names = Arrays.asList("");
 		ChoiceDialog<String> dialog = PowerMockito.mock(ChoiceDialog.class);
 		PowerMockito.when(dao.getConfigurationNames()).thenReturn(names);
-		PowerMockito.whenNew(ChoiceDialog.class).withArguments("Choose configuration", desktopPane).thenReturn(dialog);
+		PowerMockito.whenNew(ChoiceDialog.class).withArguments(title, desktopPane).thenReturn(dialog);
 		PowerMockito.when(dialog.choose("Select configuration:", names)).thenReturn(choose);
 		if (choose) {
 			String chosen = names.get(0);

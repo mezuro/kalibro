@@ -42,20 +42,20 @@ public class ConfigurationController extends InternalFrameAdapter {
 	}
 
 	public void open() {
-		String chosen = chooseConfiguration();
+		String chosen = chooseConfiguration("Open configuration");
 		if (chosen != null)
 			addFrameFor(dao().getConfiguration(chosen));
 	}
 
 	public void delete() {
-		String chosen = chooseConfiguration();
+		String chosen = chooseConfiguration("Delete configuration");
 		if (chosen != null)
 			dao().removeConfiguration(chosen);
 	}
 
-	private String chooseConfiguration() {
+	private String chooseConfiguration(String title) {
 		List<String> names = dao().getConfigurationNames();
-		ChoiceDialog<String> choiceDialog = new ChoiceDialog<String>("Choose configuration", desktopPane);
+		ChoiceDialog<String> choiceDialog = new ChoiceDialog<String>(title, desktopPane);
 		if (noConfiguration(names) || !choiceDialog.choose("Select configuration:", names))
 			return null;
 		return choiceDialog.getChoice();
