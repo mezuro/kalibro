@@ -9,15 +9,15 @@ import javax.swing.border.TitledBorder;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.swingextension.Label;
-import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
+import org.kalibro.desktop.swingextension.field.UneditableField;
 import org.kalibro.desktop.swingextension.list.*;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
 public class ConfigurationPanel extends EditPanel<Configuration> {
 
-	private StringField nameField;
+	private UneditableField<String> nameField;
 	private TextField descriptionField;
 	private TablePanel<MetricConfiguration> metricConfigurationsPanel;
 
@@ -27,7 +27,7 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
-		nameField = new StringField("name", 30);
+		nameField = new UneditableField<String>("name");
 		descriptionField = new TextField("description", 4, 30);
 		createMetricsPanel();
 	}

@@ -10,8 +10,8 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
-import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
+import org.kalibro.desktop.swingextension.field.UneditableField;
 import org.kalibro.desktop.swingextension.list.Table;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.mockito.Mockito;
@@ -55,8 +55,8 @@ public class ConfigurationPanelTest extends KalibroTestCase {
 		Mockito.verify(listener).add();
 	}
 
-	private StringField nameField() {
-		return finder.find("name", StringField.class);
+	private UneditableField<String> nameField() {
+		return finder.find("name", UneditableField.class);
 	}
 
 	private TextField descriptionField() {
