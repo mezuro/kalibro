@@ -24,7 +24,12 @@ public class ConfigurationController extends WindowAdapter {
 	}
 
 	public void newConfiguration() {
-		addFrameFor(new Configuration());
+		InputDialog inputDialog = new InputDialog("New configuration", desktopPane);
+		if (inputDialog.userTyped("Configuration name:")) {
+			Configuration configuration = new Configuration();
+			configuration.setName(inputDialog.getInput());
+			addFrameFor(configuration);
+		}
 	}
 
 	public void open() {
@@ -69,15 +74,6 @@ public class ConfigurationController extends WindowAdapter {
 		addFrameFor(configuration);
 	}
 
-	public void close() {
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void windowClosing(WindowEvent event) {
-		// TODO Auto-generated method stub
-	}
-
 	private void addFrameFor(Configuration configuration) {
 		ConfigurationFrame configurationFrame = new ConfigurationFrame(configuration);
 		desktopPane.add(configurationFrame);
@@ -91,6 +87,15 @@ public class ConfigurationController extends WindowAdapter {
 			return new Point(0, 0);
 		Point selectedLocation = selectedFrame.getLocation();
 		return new Point(selectedLocation.x + 20, selectedLocation.y + 20);
+	}
+
+	public void close() {
+		// TODO Auto-generated method stub
+	}
+
+	@Override
+	public void windowClosing(WindowEvent event) {
+		// TODO Auto-generated method stub
 	}
 
 	private Configuration selectedConfiguration() {

@@ -24,49 +24,9 @@ public class KalibroController implements KalibroFrameListener {
 		return frame;
 	}
 
-	public static String chooseConfiguration(Component parent, String title, boolean withNone) {
-		List<String> configurations = Kalibro.getConfigurationDao().getConfigurationNames();
-		if (withNone)
-			configurations.add("<none>");
-		return choose(parent, "Configuration", title, configurations.toArray(new String[0]));
-	}
-
 	public KalibroController() {
 		frame = new KalibroFrame(this);
 		frame.setVisible(true);
-	}
-
-	private boolean noConfiguration() {
-		boolean noConfiguration = Kalibro.getConfigurationDao().getConfigurationNames().isEmpty();
-		if (noConfiguration)
-			message(frame, "No configurations found", "No configuration");
-		return noConfiguration;
-	}
-
-	@Override
-	public void openConfiguration() {
-		try {
-			if (noConfiguration())
-				return;
-			String configuration = chooseConfiguration(frame, "Open configuration", false);
-			if (configuration != null)
-				new ConfigurationController(frame.desktopPane(), configuration);
-		} catch (Exception exception) {
-			new ErrorDialog(frame).show(exception);
-		}
-	}
-
-	@Override
-	public void removeConfiguration() {
-		try {
-			if (noConfiguration())
-				return;
-			String configuration = chooseConfiguration(frame, "Remove configuration", false);
-			if (configuration != null)
-				Kalibro.getConfigurationDao().removeConfiguration(configuration);
-		} catch (Exception exception) {
-			new ErrorDialog(frame).show(exception);
-		}
 	}
 
 	@Override
