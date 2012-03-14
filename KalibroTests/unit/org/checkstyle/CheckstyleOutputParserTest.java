@@ -19,7 +19,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AuditEvent.class, LocalizedMessage.class})
 public class CheckstyleOutputParserTest extends KalibroTestCase {
@@ -46,7 +45,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 	public void shouldParseMetricResults() {
 		parser.auditStarted(null);
 		simulateCheckstyle();
-		
+
 		Set<NativeModuleResult> expected = filterStubResultWithWantedMetrics();
 		assertDeepEquals(expected, parser.getResults());
 	}
@@ -54,11 +53,11 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 	private Set<NativeModuleResult> filterStubResultWithWantedMetrics() {
 		NativeModuleResult stubResult = CheckstyleStub.result();
 		NativeModuleResult expectedModuleResult = new NativeModuleResult(stubResult.getModule());
-		
-		for (NativeMetric wantedMetric: wantedMetricsSet)
+
+		for (NativeMetric wantedMetric : wantedMetricsSet)
 			if (stubResult.hasResultFor(wantedMetric))
 				expectedModuleResult.addMetricResult(stubResult.getResultFor(wantedMetric));
-		
+
 		return new HashSet<NativeModuleResult>(Arrays.asList(expectedModuleResult));
 	}
 
