@@ -26,9 +26,9 @@ public final class Kalibro {
 	}
 
 	public static void changeSettings(KalibroSettings newSettings) {
+		createFacade(newSettings);
 		newSettings.write();
 		settings = newSettings;
-		createFacade();
 	}
 
 	public static BaseToolDao getBaseToolDao() {
@@ -77,12 +77,12 @@ public final class Kalibro {
 
 	private static KalibroFacade getFacade() {
 		if (facade == null)
-			createFacade();
+			createFacade(currentSettings());
 		return facade;
 	}
 
-	private static void createFacade() {
-		facade = currentSettings().isClient() ? new KalibroClient() : new KalibroLocal();
+	private static void createFacade(KalibroSettings newSettings) {
+		facade = newSettings.isClient() ? new KalibroClient() : new KalibroLocal();
 	}
 
 	private Kalibro() {
