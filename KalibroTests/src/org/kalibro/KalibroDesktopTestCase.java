@@ -66,6 +66,6 @@ public class KalibroDesktopTestCase extends KalibroTestCase {
 			}
 		}.executeInBackground();
 		Thread.sleep(1500);
-		fixture = new DialogFixture(BasicRobot.robotWithCurrentAwtHierarchy(), "settingsDialog");
+		fixture = new DialogFixture(BasicRobot.robotWithCurrentAwtHierarchy(), "settings");
 	}
 }

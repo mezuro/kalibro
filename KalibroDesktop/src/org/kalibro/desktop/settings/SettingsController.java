@@ -31,7 +31,8 @@ public final class SettingsController extends ComponentAdapter implements EditDi
 
 	@Override
 	public void componentResized(ComponentEvent event) {
-		dialog.adjustSize();
+		if (dialog != null)
+			dialog.adjustSize();
 	}
 
 	@Override
