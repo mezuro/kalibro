@@ -6,11 +6,18 @@ import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.NativeMetric;
 
 public class CheckstyleMetricTest extends KalibroTestCase {
+
+	@BeforeClass
+	public static void emmaCoverage() {
+		CheckstyleMetric.values();
+		CheckstyleMetric.valueOf(FILE_LENGTH.name());
+	}
 
 	private CheckstyleConfiguration checker, treeWalker;
 

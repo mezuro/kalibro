@@ -1,7 +1,6 @@
 package org.analizo;
 
 import static org.analizo.AnalizoStub.*;
-import static org.junit.Assert.*;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,7 +21,7 @@ public class AnalizoOutputParserTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldParseMetricListOutputToSupportedMetrics() {
-		assertEquals(nativeMetrics(), parser.getSupportedMetrics());
+		assertDeepEquals(nativeMetrics(), parser.getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
