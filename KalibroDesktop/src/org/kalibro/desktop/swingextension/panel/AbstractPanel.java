@@ -1,20 +1,21 @@
 package org.kalibro.desktop.swingextension.panel;
 
+import java.awt.Component;
 import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
 public abstract class AbstractPanel<T> extends JPanel {
 
-	protected AbstractPanel(String name) {
+	protected AbstractPanel(String name, Component... innerComponents) {
 		super();
 		setName(name);
-		createComponents();
+		createComponents(innerComponents);
 		buildPanel();
 		adjustSize();
 	}
 
-	protected abstract void createComponents();
+	protected abstract void createComponents(Component... innerComponents);
 
 	protected abstract void buildPanel();
 

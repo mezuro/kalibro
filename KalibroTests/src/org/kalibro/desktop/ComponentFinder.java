@@ -24,7 +24,7 @@ public class ComponentFinder {
 	}
 
 	private <T extends Component> T find(String name, Class<T> componentClass, Component component) {
-		if (component.getName() == name && componentClass.isInstance(component))
+		if (name.equals(component.getName()) && componentClass.isInstance(component))
 			return (T) component;
 		if (component instanceof Container)
 			return findInChildren(name, componentClass, (Container) component);

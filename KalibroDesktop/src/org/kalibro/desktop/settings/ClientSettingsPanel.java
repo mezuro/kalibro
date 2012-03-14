@@ -1,5 +1,7 @@
 package org.kalibro.desktop.settings;
 
+import java.awt.Component;
+
 import javax.swing.border.TitledBorder;
 
 import org.kalibro.core.settings.ClientSettings;
@@ -19,7 +21,7 @@ public class ClientSettingsPanel extends EditPanel<ClientSettings> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		serviceAddressField = new StringField("serviceAddress", 35);
 		pollingIntervalField = new LongField("pollingInterval");
 	}

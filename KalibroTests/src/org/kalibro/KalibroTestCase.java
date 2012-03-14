@@ -83,7 +83,7 @@ public abstract class KalibroTestCase {
 		Class<? extends Exception> causeClass) {
 		try {
 			errorTask.perform();
-			fail("Preceding line should throw Exception");
+			fail("Should throw exception on performing task");
 		} catch (Exception exception) {
 			assertEquals(exceptionClass, exception.getClass());
 			if (message != null)

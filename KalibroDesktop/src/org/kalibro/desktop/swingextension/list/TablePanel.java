@@ -1,6 +1,7 @@
 package org.kalibro.desktop.swingextension.list;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +28,7 @@ public class TablePanel<T> extends EditPanel<Collection<T>> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		addButton = new Button("add", "Add");
 		editButton = new Button("edit", "Edit");
 		removeButton = new Button("remove", "Remove", new ActionListener() {

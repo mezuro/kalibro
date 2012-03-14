@@ -4,12 +4,16 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.ListListener;
 
-public class ChooseNativeMetricPanelManualTest implements ListListener<NativeMetric> {
+public final class ChooseNativeMetricPanelManualTest extends ChooseNativeMetricPanel implements
+	ListListener<NativeMetric> {
 
 	public static void main(String[] args) {
-		ChooseNativeMetricPanel panel = new ChooseNativeMetricPanel();
-		panel.addListListener(new ChooseNativeMetricPanelManualTest());
-		new ComponentWrapperDialog("ChooseNativeMetricPanel", panel).setVisible(true);
+		new ComponentWrapperDialog("ChooseNativeMetricPanel", new ChooseNativeMetricPanelManualTest()).setVisible(true);
+	}
+
+	private ChooseNativeMetricPanelManualTest() {
+		super();
+		addListListener(this);
 	}
 
 	@Override

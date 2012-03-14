@@ -103,6 +103,10 @@ public class KalibroSettingsTest extends KalibroTestCase {
 		InputStream resource = getClass().getResourceAsStream("default.settings");
 		String expected = IOUtils.toString(resource).replace("~", System.getProperty("user.home"));
 		assertEquals(expected, settings.toString());
+
+		settings.setClient(true);
+		expected = expected.replace("settings: SERVER", "settings: CLIENT");
+		assertEquals(expected, settings.toString());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -3,7 +3,7 @@ package org.kalibro.desktop.configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.MetricConfigurationFixtures;
 
-public final class RangeDialogManualTest {
+public final class RangeControllerManualTest {
 
 	public static void main(String[] args) {
 		MetricConfiguration configuration = MetricConfigurationFixtures.configuration("amloc");
@@ -11,7 +11,7 @@ public final class RangeDialogManualTest {
 		System.out.println("Ranges: " + configuration.getRanges());
 	}
 
-	private RangeDialogManualTest() {
+	private RangeControllerManualTest() {
 		// Utility class
 	}
 }

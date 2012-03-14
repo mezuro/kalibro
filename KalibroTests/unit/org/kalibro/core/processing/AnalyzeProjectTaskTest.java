@@ -62,15 +62,10 @@ public class AnalyzeProjectTaskTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetSourceTreeOnProjectResult() {
-		assertDeepEquals(helloWorldTree(), projectResult.getSourceTree());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetModuleResultsOnTaskResult() {
+	public void shouldSetSourceTreeOnProjectResultAndModuleResultsOnTaskResult() {
 		Collection<ModuleResult> results = Whitebox.getInternalState(analyzeTask, "result");
-		for (ModuleResult result : results)
-			result.setConfiguration(configuration);
+
+		assertDeepEquals(helloWorldTree(), projectResult.getSourceTree());
 		assertDeepEquals(helloWorldModuleResults(projectResult.getDate()), results);
 	}
 }

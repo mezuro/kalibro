@@ -1,56 +1,50 @@
 package org.kalibro.desktop.configuration;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
+import org.kalibro.desktop.swingextension.dialog.EditDialog;
+import org.kalibro.desktop.swingextension.dialog.EditDialogListener;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 
-public class RangeController implements ActionListener {
+public class RangeController implements EditDialogListener<Range> {
 
 	private MetricConfiguration configuration;
 	private Range range;
 
-	private RangeDialog dialog;
+	private EditDialog<Range> dialog;
 
 	public RangeController(MetricConfiguration configuration) {
 		this.configuration = configuration;
-		dialog = new RangeDialog();
-		dialog.addOkListener(this);
+		dialog = new EditDialog<Range>("Range", new RangePanel());
+		dialog.setResizable(false);
+		dialog.addListener(this);
 	}
 
 	public void addRange() {
 		range = null;
-		dialog.setRange(new Range());
-		dialog.setVisible(true);
+		dialog.edit(new Range());
 	}
 
 	public void editRange(Range theRange) {
 		range = theRange;
-		dialog.setRange(theRange);
-		dialog.setVisible(true);
+		dialog.edit(theRange);
 	}
 
 	@Override
-	public void actionPerformed(ActionEvent event) {
+	public boolean dialogConfirm(Range newRange) {
 		try {
-			removeOldRange();
-			configuration.addRange(dialog.getRange());
-			dialog.dispose();
+			confirmRange(newRange);
+			return true;
 		} catch (Exception exception) {
-			putOldRangeBack();
 			new ErrorDialog(dialog).show(exception);
+			return false;
 		}
 	}
 
-	private void removeOldRange() {
-		if (range != null)
-			configuration.removeRange(range);
-	}
-
-	private void putOldRangeBack() {
-		if (range != null)
-			configuration.addRange(range);
+	private void confirmRange(Range newRange) {
+		if (range == null)
+			configuration.addRange(newRange);
+		else
+			configuration.replaceRange(range.getBeginning(), newRange);
 	}
 }

@@ -4,33 +4,37 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.kalibro.core.model.Configuration;
+import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;
+import org.kalibro.desktop.swingextension.panel.ConfirmPanel;
 
 public class MetricConfigurationController implements ActionListener, TablePanelListener<Range> {
 
-	private Configuration configuration;
 	private MetricConfiguration metricConfiguration;
+	private Configuration configuration;
 
-	private CardStackPanel cardStack;
+	private ConfirmPanel<MetricConfiguration> panel;
 	private AddMetricDialog addDialog;
-	private MetricConfigurationPanel panel;
+	private CardStackPanel cardStack;
 
 	public MetricConfigurationController(Configuration configuration, CardStackPanel cardStack) {
-		this.cardStack = cardStack;
 		this.configuration = configuration;
-		panel = new MetricConfigurationPanel();
-		panel.addRangesPanelListener(this);
-		panel.addButtonListener(this);
+		this.cardStack = cardStack;
+		MetricConfigurationPanel metricPanel = new MetricConfigurationPanel();
+		metricPanel.addRangesListener(this);
+		panel = new ConfirmPanel<MetricConfiguration>(metricPanel);
+		panel.addCancelListener(this);
+		panel.addOkListener(this);
 	}
 
 	public void addMetricConfiguration() {
 		addDialog = new AddMetricDialog();
-		addDialog.addOkListener(new AddMetricListener());
+		addDialog.addOkListener(this);
 		addDialog.setVisible(true);
 	}
 
@@ -39,63 +43,59 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 		showMetricConfiguration();
 	}
 
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		Button source = (Button) event.getSource();
+		if (addDialog != null && addDialog.isAncestorOf(source))
+			addMetric();
+		else if (panel.isAncestorOf(source))
+			panelButtonClicked(source.getName());
+	}
+
+	private void addMetric() {
+		try {
+			metricConfiguration = new MetricConfiguration(addDialog.getMetric());
+			configuration.addMetricConfiguration(metricConfiguration);
+			showMetricConfiguration();
+			addDialog.dispose();
+		} catch (Exception exception) {
+			new ErrorDialog(addDialog).show(exception);
+		}
+	}
+
 	private void showMetricConfiguration() {
 		panel.set(metricConfiguration);
 		cardStack.push(panel);
 	}
 
-	@Override
-	public void add() {
-		new RangeController(metricConfiguration).addRange();
+	private void panelButtonClicked(String buttonName) {
+		if (buttonName.equals("cancel"))
+			cardStack.pop();
+		else if (buttonName.equals("ok"))
+			confirmEdit();
 	}
 
-	@Override
-	public void edit(Range range) {
-		new RangeController(metricConfiguration).editRange(range);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		boolean ok = ((Button) event.getSource()).getName().equals("ok");
-		boolean editing = configuration.removeMetric(metricConfiguration.getMetric());
-		if (ok)
-			confirm(editing);
-		else
-			cancel(editing);
-	}
-
-	private void confirm(boolean editing) {
+	private void confirmEdit() {
 		try {
-			configuration.addMetricConfiguration(panel.get());
+			Metric metric = metricConfiguration.getMetric();
+			configuration.replaceMetricConfiguration(metric, panel.get());
 			cardStack.pop();
 		} catch (Exception exception) {
-			putOldMetricConfigurationBack(editing);
 			new ErrorDialog(panel).show(exception);
 		}
 	}
 
-	private void cancel(boolean editing) {
-		putOldMetricConfigurationBack(editing);
-		cardStack.pop();
+	@Override
+	public void add() {
+		metricConfiguration = panel.get();
+		new RangeController(metricConfiguration).addRange();
+		panel.set(metricConfiguration);
 	}
 
-	private void putOldMetricConfigurationBack(boolean editing) {
-		if (editing)
-			configuration.addMetricConfiguration(metricConfiguration);
-	}
-
-	private class AddMetricListener implements ActionListener {
-
-		@Override
-		public void actionPerformed(ActionEvent event) {
-			try {
-				metricConfiguration = new MetricConfiguration(addDialog.getMetric());
-				configuration.addMetricConfiguration(metricConfiguration);
-				showMetricConfiguration();
-				addDialog.dispose();
-			} catch (Exception exception) {
-				new ErrorDialog(addDialog).show(exception);
-			}
-		}
+	@Override
+	public void edit(Range range) {
+		metricConfiguration = panel.get();
+		new RangeController(metricConfiguration).editRange(range);
+		panel.set(metricConfiguration);
 	}
 }

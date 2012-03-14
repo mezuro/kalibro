@@ -1,36 +1,25 @@
 package org.kalibro.desktop;
 
+import java.awt.Component;
 import java.awt.Container;
-
-import javax.swing.JComponent;
-import javax.swing.JPanel;
 
 import org.kalibro.desktop.swingextension.dialog.AbstractDialog;
 
 public class ComponentWrapperDialog extends AbstractDialog {
 
-	public ComponentWrapperDialog(String title) {
-		super(title);
-	}
+	private Container contentPane;
 
-	public ComponentWrapperDialog(String title, JComponent component) {
-		super(title);
-		setComponent(component);
-	}
-
-	public void setComponent(JComponent component) {
-		setContentPane(component);
-		adjustSize();
-		centralize();
+	public ComponentWrapperDialog(String title, Container contentPane) {
+		super(title, contentPane);
 	}
 
 	@Override
-	protected void createComponents() {
-		return;
+	protected void createComponents(Component... innerComponents) {
+		contentPane = (Container) innerComponents[0];
 	}
 
 	@Override
 	protected Container buildPanel() {
-		return new JPanel();
+		return contentPane;
 	}
 }

@@ -1,5 +1,7 @@
 package org.kalibro.desktop.settings;
 
+import java.awt.Component;
+
 import javax.swing.border.TitledBorder;
 
 import org.kalibro.core.settings.ServerSettings;
@@ -20,7 +22,7 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 	}
 
 	@Override
-	protected void createComponents() {
+	protected void createComponents(Component... innerComponents) {
 		loadDirectoryField = new DirectoryField("loadDirectory");
 		removeSourcesField = new BooleanField("removeSources", "Remove source code after analysis");
 		databasePanel = new DatabaseSettingsPanel();

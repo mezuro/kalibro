@@ -89,10 +89,45 @@ public class ConfigurationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldReplaceExistingMetricConfiguration() {
+		MetricConfiguration newMetricConfiguration = configuration("cbo");
+		NativeMetric cbo = nativeMetric("cbo");
+		configuration.replaceMetricConfiguration(cbo, newMetricConfiguration);
+		assertSame(newMetricConfiguration, configuration.getConfigurationFor(cbo));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkErrorReplacingInexistentMetricConfiguration() {
+		checkException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				configuration.replaceMetricConfiguration(nativeMetric("noa"), configuration("noa"));
+			}
+		}, IllegalArgumentException.class);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkErrorForConflictingMetricConfigurationReplace() {
+		final NativeMetric cbo = nativeMetric("cbo");
+		checkException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				MetricConfiguration newMetricConfiguration = configuration("cbo");
+				newMetricConfiguration.setCode("lcom4");
+				configuration.replaceMetricConfiguration(cbo, newMetricConfiguration);
+			}
+		}, IllegalArgumentException.class);
+		assertTrue(configuration.contains(cbo));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testRemoveMetric() {
 		final NativeMetric metric = nativeMetric("amloc");
 		configuration.getConfigurationFor(metric);
 		assertTrue(configuration.removeMetric(metric));
+		assertFalse(configuration.removeMetric(metric));
 		checkException(new Task() {
 
 			@Override

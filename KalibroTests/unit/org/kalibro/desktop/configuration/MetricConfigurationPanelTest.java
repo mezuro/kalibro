@@ -2,10 +2,6 @@ package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.mockito.Matchers.*;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,37 +23,21 @@ public class MetricConfigurationPanelTest extends KalibroTestCase {
 
 	private MetricConfiguration configuration;
 
+	private TablePanelListener<Range> rangesListener;
 	private MetricConfigurationPanel panel;
 	private ComponentFinder finder;
-
-	private ActionListener buttonListener;
-	private TablePanelListener<Range> tableListener;
 
 	@Before
 	public void setUp() {
 		configuration = configuration("amloc");
+		rangesListener = PowerMockito.mock(TablePanelListener.class);
 		panel = new MetricConfigurationPanel();
+		panel.addRangesListener(rangesListener);
 		finder = new ComponentFinder(panel);
-		createListeners();
-	}
-
-	private void createListeners() {
-		buttonListener = PowerMockito.mock(ActionListener.class);
-		tableListener = PowerMockito.mock(TablePanelListener.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShow() {
-		panel.set(configuration);
-		assertEquals(configuration.getCode(), codeField().get());
-		assertDeepEquals(configuration.getMetric(), metricPanel().get());
-		assertDoubleEquals(configuration.getWeight(), weightField().get());
-		assertEquals(configuration.getAggregationForm(), aggregationFormField().get());
-		assertDeepEquals(configuration.getRanges(), rangesTable().getData());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieve() {
+	public void shouldGet() {
 		codeField().set(configuration.getCode());
 		metricPanel().set(configuration.getMetric());
 		weightField().set(configuration.getWeight());
@@ -67,24 +47,19 @@ public class MetricConfigurationPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSet() {
+		panel.set(configuration);
+		assertEquals(configuration.getCode(), codeField().get());
+		assertDeepEquals(configuration.getMetric(), metricPanel().get());
+		assertDoubleEquals(configuration.getWeight(), weightField().get());
+		assertEquals(configuration.getAggregationForm(), aggregationFormField().get());
+		assertDeepEquals(configuration.getRanges(), rangesTable().getData());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotifyRangesPanelListener() {
-		panel.addRangesPanelListener(tableListener);
-		button("add").doClick();
-		Mockito.verify(tableListener).add();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotifyButtonListenerOnCancel() {
-		panel.addButtonListener(buttonListener);
-		button("cancel").doClick();
-		Mockito.verify(buttonListener).actionPerformed(any(ActionEvent.class));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotifyButtonListener() {
-		panel.addButtonListener(buttonListener);
-		button("ok").doClick();
-		Mockito.verify(buttonListener).actionPerformed(any(ActionEvent.class));
+		buttonAdd().doClick();
+		Mockito.verify(rangesListener).add();
 	}
 
 	private StringField codeField() {
@@ -107,7 +82,7 @@ public class MetricConfigurationPanelTest extends KalibroTestCase {
 		return finder.find("ranges", Table.class);
 	}
 
-	private Button button(String name) {
-		return finder.find(name, Button.class);
+	private Button buttonAdd() {
+		return finder.find("add", Button.class);
 	}
 }

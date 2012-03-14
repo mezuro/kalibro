@@ -1,19 +1,22 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.NativeMetricFixtures.*;
 
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.MetricCollector;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.reflect.Whitebox;
 
 public class BaseToolTest extends KalibroTestCase {
 
@@ -33,7 +36,15 @@ public class BaseToolTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetSupportedMetricsFromMetricCollector() {
-		assertEquals(nativeMetrics(), analizo.getSupportedMetrics());
+		Whitebox.setInternalState(analizo, "supportedMetrics", (Set<NativeMetric>) null);
+
+		analizo = PowerMockito.spy(analizo);
+		MetricCollector metricCollector = PowerMockito.mock(MetricCollector.class);
+		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
+		PowerMockito.doReturn(metricCollector).when(analizo).createMetricCollector();
+		PowerMockito.when(metricCollector.getSupportedMetrics()).thenReturn(supportedMetrics);
+
+		assertSame(supportedMetrics, analizo.getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -75,7 +86,7 @@ public class BaseToolTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkErroSettingCollectorByName() {
+	public void checkErrorSettingCollectorByName() {
 		checkException(new Task() {
 
 			@Override

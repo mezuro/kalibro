@@ -29,18 +29,7 @@ public class RangePanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShow() {
-		panel.set(range);
-		assertDoubleEquals(range.getBeginning(), doubleField("beginning").get());
-		assertDoubleEquals(range.getEnd(), doubleField("end").get());
-		assertEquals(range.getLabel(), labelField().get());
-		assertDoubleEquals(range.getGrade(), doubleField("grade").get());
-		assertEquals(range.getColor(), colorField().get());
-		assertEquals(range.getComments(), commentsField().get());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieve() {
+	public void shouldGet() {
 		doubleField("beginning").set(range.getBeginning());
 		doubleField("end").set(range.getEnd());
 		labelField().set(range.getLabel());
@@ -48,6 +37,17 @@ public class RangePanelTest extends KalibroTestCase {
 		colorField().set(range.getColor());
 		commentsField().set(range.getComments());
 		assertDeepEquals(range, panel.get());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSet() {
+		panel.set(range);
+		assertDoubleEquals(range.getBeginning(), doubleField("beginning").get());
+		assertDoubleEquals(range.getEnd(), doubleField("end").get());
+		assertEquals(range.getLabel(), labelField().get());
+		assertDoubleEquals(range.getGrade(), doubleField("grade").get());
+		assertEquals(range.getColor(), colorField().get());
+		assertEquals(range.getComments(), commentsField().get());
 	}
 
 	private DoubleField doubleField(String name) {

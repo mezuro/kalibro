@@ -10,8 +10,8 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
-import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
+import org.kalibro.desktop.swingextension.field.UneditableField;
 import org.kalibro.desktop.swingextension.list.Table;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.mockito.Mockito;
@@ -32,15 +32,7 @@ public class ConfigurationPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShow() {
-		panel.set(configuration);
-		assertEquals(configuration.getName(), nameField().get());
-		assertEquals(configuration.getDescription(), descriptionField().get());
-		assertDeepEquals(configuration.getMetricConfigurations(), metricConfigurationsTable().getData());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieve() {
+	public void shouldGet() {
 		nameField().set(configuration.getName());
 		descriptionField().set(configuration.getDescription());
 		metricConfigurationsTable().setData(configuration.getMetricConfigurations());
@@ -48,15 +40,23 @@ public class ConfigurationPanelTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSet() {
+		panel.set(configuration);
+		assertEquals(configuration.getName(), nameField().get());
+		assertEquals(configuration.getDescription(), descriptionField().get());
+		assertDeepEquals(configuration.getMetricConfigurations(), metricConfigurationsTable().getData());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotifyRangesPanelListener() {
 		TablePanelListener<MetricConfiguration> listener = PowerMockito.mock(TablePanelListener.class);
-		panel.addMetricConfigurationsPanelListener(listener);
+		panel.addMetricConfigurationsListener(listener);
 		finder.find("add", Button.class).doClick();
 		Mockito.verify(listener).add();
 	}
 
-	private StringField nameField() {
-		return finder.find("name", StringField.class);
+	private UneditableField<String> nameField() {
+		return finder.find("name", UneditableField.class);
 	}
 
 	private TextField descriptionField() {

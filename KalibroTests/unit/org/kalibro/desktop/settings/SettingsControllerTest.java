@@ -30,17 +30,21 @@ public class SettingsControllerTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		mockComponents();
+		mockPanel();
+		mockDialog();
 		mockKalibro();
 		SettingsController.editSettings();
 		captureController();
 	}
 
-	private void mockComponents() throws Exception {
-		dialog = PowerMockito.mock(EditDialog.class);
+	private void mockPanel() throws Exception {
 		panel = PowerMockito.mock(KalibroSettingsPanel.class);
-		PowerMockito.whenNew(EditDialog.class).withArguments("Kalibro Settings").thenReturn(dialog);
-		PowerMockito.whenNew(KalibroSettingsPanel.class).withArguments(dialog).thenReturn(panel);
+		PowerMockito.whenNew(KalibroSettingsPanel.class).withNoArguments().thenReturn(panel);
+	}
+
+	private void mockDialog() throws Exception {
+		dialog = PowerMockito.mock(EditDialog.class);
+		PowerMockito.whenNew(EditDialog.class).withArguments("Kalibro Settings", panel).thenReturn(dialog);
 	}
 
 	private void mockKalibro() {
@@ -57,19 +61,19 @@ public class SettingsControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowCurrentSettings() {
-		Mockito.verify(panel).set(settings);
-		Mockito.verify(dialog).setField(panel);
-		Mockito.verify(dialog).setVisible(true);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void dialogShouldBeNamed() {
-		Mockito.verify(dialog).setName("settingsDialog");
+		Mockito.verify(dialog).edit(settings);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void dialogShouldNotBeResizable() {
 		Mockito.verify(dialog).setResizable(false);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void dialogAdjustDialogSizeOnPanelResize() {
+		Mockito.verify(panel).addComponentListener(controller);
+		controller.componentResized(null);
+		Mockito.verify(dialog).adjustSize();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

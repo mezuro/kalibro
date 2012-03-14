@@ -4,15 +4,14 @@ import org.kalibro.core.model.RangeFixtures;
 import org.kalibro.core.model.RangeLabel;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
-public final class RangePanelManualTest {
+public final class RangePanelManualTest extends RangePanel {
 
 	public static void main(String[] args) {
-		RangePanel panel = new RangePanel();
-		panel.set(RangeFixtures.amlocRange(RangeLabel.WARNING));
-		new ComponentWrapperDialog("RangePanel", panel).setVisible(true);
+		new ComponentWrapperDialog("RangePanel", new RangePanelManualTest()).setVisible(true);
 	}
 
 	private RangePanelManualTest() {
-		// Utility class
+		super();
+		set(RangeFixtures.amlocRange(RangeLabel.WARNING));
 	}
 }

@@ -1,6 +1,11 @@
 package org.kalibro.desktop.swingextension.panel;
 
+import static org.junit.Assert.*;
+
 import java.awt.CardLayout;
+import java.awt.Dimension;
+
+import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -77,5 +82,20 @@ public class CardStackPanelTest extends KalibroTestCase {
 
 		cardStack.pop();
 		Mockito.verify(layout).show(cardStack, base.getName());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldAdjustSize() {
+		Dimension preferredSize = new Dimension(1024, 768);
+		Dimension minimumSize = new Dimension(640, 480);
+		Dimension size = new Dimension(768, 640);
+		JPanel panel = new JPanel();
+		panel.setPreferredSize(preferredSize);
+		panel.setMinimumSize(minimumSize);
+		panel.setSize(size);
+		cardStack.push(panel);
+		assertEquals(preferredSize, cardStack.getPreferredSize());
+		assertEquals(minimumSize, cardStack.getMinimumSize());
+		assertEquals(size, cardStack.getSize());
 	}
 }

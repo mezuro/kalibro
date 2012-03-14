@@ -1,5 +1,7 @@
 package org.kalibro.desktop.swingextension.dialog;
 
+import javax.swing.JPanel;
+
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class ErrorDialogManualTest extends ComponentWrapperDialog {
@@ -11,6 +13,6 @@ public final class ErrorDialogManualTest extends ComponentWrapperDialog {
 	}
 
 	private ErrorDialogManualTest() {
-		super("");
+		super("", new JPanel());
 	}
 }

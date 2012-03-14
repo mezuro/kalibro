@@ -9,114 +9,99 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.*;
+import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.mockito.ArgumentCaptor;
 import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.*")
 @PrepareForTest(RangeController.class)
 public class RangeControllerTest extends KalibroTestCase {
 
-	private RangeDialog dialog;
+	private RangePanel panel;
 	private ErrorDialog errorDialog;
+	private EditDialog<Range> rangeDialog;
 
 	private MetricConfiguration configuration;
 	private RangeController controller;
 
 	@Before
 	public void setUp() throws Exception {
-		mockDialogs();
+		mockComponents();
 		configuration = MetricConfigurationFixtures.configuration("amloc");
 		controller = new RangeController(configuration);
 	}
 
-	private void mockDialogs() throws Exception {
-		dialog = PowerMockito.mock(RangeDialog.class);
-		PowerMockito.whenNew(RangeDialog.class).withNoArguments().thenReturn(dialog);
-
+	private void mockComponents() throws Exception {
+		panel = PowerMockito.mock(RangePanel.class);
+		rangeDialog = PowerMockito.mock(EditDialog.class);
 		errorDialog = PowerMockito.mock(ErrorDialog.class);
-		PowerMockito.whenNew(ErrorDialog.class).withArguments(dialog).thenReturn(errorDialog);
+		PowerMockito.whenNew(RangePanel.class).withNoArguments().thenReturn(panel);
+		PowerMockito.whenNew(EditDialog.class).withArguments("Range", panel).thenReturn(rangeDialog);
+		PowerMockito.whenNew(ErrorDialog.class).withArguments(rangeDialog).thenReturn(errorDialog);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListenToTheRangeDialog() {
-		verify(dialog).addOkListener(controller);
+		verify(rangeDialog).addListener(controller);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void dialogShouldNotBeResizable() {
+		verify(rangeDialog).setResizable(false);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowDialogWithNewRangeWhenAdding() {
 		controller.addRange();
-
-		ArgumentCaptor<Range> captor = ArgumentCaptor.forClass(Range.class);
-		verify(dialog).setRange(captor.capture());
-
-		assertDeepEquals(new Range(), captor.getValue());
-		verify(dialog).setVisible(true);
+		verifyDialogEdit(new Range());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowDialogWithRangeWhenEditing() {
 		Range range = RangeFixtures.amlocRange(RangeLabel.GOOD);
 		controller.editRange(range);
+		verifyDialogEdit(range);
+	}
 
+	private void verifyDialogEdit(Range range) {
 		ArgumentCaptor<Range> captor = ArgumentCaptor.forClass(Range.class);
-		verify(dialog).setRange(captor.capture());
-
+		verify(rangeDialog).edit(captor.capture());
 		assertDeepEquals(range, captor.getValue());
-		verify(dialog).setVisible(true);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCloseDialogOnOk() {
-		PowerMockito.when(dialog.getRange()).thenReturn(new Range(Double.NEGATIVE_INFINITY, 0.0));
-		controller.actionPerformed(null);
-		verify(dialog).dispose();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAddRangeOnAdd() {
-		Range range = new Range(Double.NEGATIVE_INFINITY, 0.0);
-		PowerMockito.when(dialog.getRange()).thenReturn(range);
+	public void shouldConfirmValidRangeAddition() {
+		Range newRange = new Range(Double.NEGATIVE_INFINITY, 0.0);
 		controller.addRange();
-		controller.actionPerformed(null);
-		assertSame(range, configuration.getRangeFor(-1.0));
+		assertTrue(controller.dialogConfirm(newRange));
+		assertSame(newRange, configuration.getRangeFor(-1.0));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldReplaceRangeOnEdit() {
+	public void shouldConfirmValidRangeEdition() {
 		Range oldRange = RangeFixtures.amlocRange(RangeLabel.EXCELLENT);
 		Range newRange = new Range(0.0, 5.0);
-		PowerMockito.when(dialog.getRange()).thenReturn(newRange);
 		controller.editRange(oldRange);
-		controller.actionPerformed(null);
+		assertTrue(controller.dialogConfirm(newRange));
 		assertFalse(configuration.hasRangeFor(6.0));
 		assertSame(newRange, configuration.getRangeFor(0.0));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowErrorDialogOnError() {
-		PowerMockito.when(dialog.getRange()).thenReturn(new Range());
-		controller.actionPerformed(null);
+	public void shouldNotConfirmConflictingRangeAndShowError() {
+		controller.addRange();
+		assertFalse(controller.dialogConfirm(new Range()));
 		verify(errorDialog).show(any(IllegalArgumentException.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotCloseDialogOnError() {
-		PowerMockito.when(dialog.getRange()).thenReturn(new Range());
-		controller.actionPerformed(null);
-		verify(dialog, never()).dispose();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void oldRangeShouldStillBeThereOnError() {
-		Range oldRange = RangeFixtures.amlocRange(RangeLabel.EXCELLENT);
-		PowerMockito.when(dialog.getRange()).thenReturn(new Range());
+		Range oldRange = configuration.getRangeFor(0.0);
 		controller.editRange(oldRange);
-		controller.actionPerformed(null);
+		assertFalse(controller.dialogConfirm(new Range()));
 		assertSame(oldRange, configuration.getRangeFor(0.0));
 	}
 }

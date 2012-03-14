@@ -22,24 +22,23 @@ public class MetricResultRecord implements DataTransferObject<MetricResult> {
 	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, String projectName, Date date) {
 		List<MetricResultRecord> records = new ArrayList<MetricResultRecord>();
 		for (MetricResult metricResult : moduleResult.getMetricResults())
-			if (!metricResult.getMetric().isCompound())
+			if (! metricResult.getMetric().isCompound())
 				records.add(new MetricResultRecord(metricResult, moduleResult.getModule(), projectName, date));
 		return records;
 	}
 
 	public static List<ModuleResult> convertIntoModuleResults(List<MetricResultRecord> metricResults) {
 		List<ModuleResult> moduleResults = new ArrayList<ModuleResult>();
-		ModuleResult moduleResult = null;
-		for (MetricResultRecord metricResult : metricResults) {
-			ModuleResult newModuleResult = metricResult.module.convertIntoModuleResult();
-			if (!newModuleResult.equals(moduleResult)) {
-				moduleResults.add(newModuleResult);
-				moduleResult = newModuleResult;
-			}
-			assert moduleResult != null;
-			moduleResult.addMetricResult(metricResult.convert());
-		}
+		for (MetricResultRecord metricResult : metricResults)
+			getCurrentResult(metricResult, moduleResults).addMetricResult(metricResult.convert());
 		return moduleResults;
+	}
+
+	private static ModuleResult getCurrentResult(MetricResultRecord metricResult, List<ModuleResult> results) {
+		ModuleResult moduleResult = metricResult.module.convertIntoModuleResult();
+		if (! results.contains(moduleResult))
+			results.add(moduleResult);
+		return results.get(results.size() - 1);
 	}
 
 	@ManyToOne(optional = false)
