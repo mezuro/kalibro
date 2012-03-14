@@ -17,7 +17,7 @@ import org.kalibro.core.persistence.database.DatabaseDaoFactory;
 import org.kalibro.core.persistence.database.derby.DerbyTestSettings;
 import org.kalibro.core.settings.DatabaseSettings;
 import org.kalibro.core.util.Directories;
-import org.kalibro.desktop.KalibroController;
+import org.kalibro.desktop.KalibroDesktop;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -62,7 +62,7 @@ public class KalibroDesktopTestCase extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				KalibroController.main(null);
+				KalibroDesktop.main(null);
 			}
 		}.executeInBackground();
 		Thread.sleep(1500);

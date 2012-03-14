@@ -5,27 +5,36 @@ import static org.junit.Assert.*;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 
-import javax.swing.JMenuItem;
+import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
+import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class KalibroFrameTest extends KalibroTestCase {
 
-	private KalibroFrameListener listener;
-
 	private KalibroFrame frame;
-	private ComponentFinder finder;
 
 	@Before
 	public void setUp() {
-		listener = PowerMockito.mock(KalibroFrameListener.class);
-		frame = new KalibroFrame(listener);
-		finder = new ComponentFinder(frame);
+		frame = new KalibroFrame();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldExitWhenClosing() {
+		assertEquals(WindowConstants.EXIT_ON_CLOSE, frame.getDefaultCloseOperation());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldHaveKalibroIcon() {
+		assertEquals(new Icon(Icon.KALIBRO).getImage(), frame.getIconImage());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkName() {
+		assertEquals("kalibroFrame", frame.getName());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -39,17 +48,9 @@ public class KalibroFrameTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldExitWhenClosing() {
-		assertEquals(WindowConstants.EXIT_ON_CLOSE, frame.getDefaultCloseOperation());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldEditSettings() {
-		menuItem("settings").doClick();
-		Mockito.verify(listener).editSettings();
-	}
-
-	private JMenuItem menuItem(String name) {
-		return finder.find(name, JMenuItem.class);
+	public void checkMenu() {
+		JMenuBar menuBar = frame.getJMenuBar();
+		assertEquals(1, menuBar.getMenuCount());
+		assertTrue(menuBar.getMenu(0) instanceof KalibroMenu);
 	}
 }
