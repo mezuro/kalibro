@@ -3,12 +3,14 @@ package org.kalibro.service.entities;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.util.DataTransferObject;
 
 @XmlAccessorType(XmlAccessType.FIELD)
+@XmlSeeAlso({CompoundMetricXml.class, NativeMetricXml.class})
 public abstract class MetricXml<METRIC extends Metric> implements DataTransferObject<METRIC> {
 
 	@XmlElement(required = true)

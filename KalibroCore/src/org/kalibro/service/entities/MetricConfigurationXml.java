@@ -22,10 +22,8 @@ public class MetricConfigurationXml implements DataTransferObject<MetricConfigur
 	@XmlElement(required = true)
 	private String code;
 
-	@XmlElement(required = true)
 	private Double weight;
 
-	@XmlElement(required = true)
 	private Statistic aggregationForm;
 
 	@XmlElement(name = "range")
