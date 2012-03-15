@@ -32,6 +32,7 @@ public class KalibroFrame extends JFrame {
 	private void createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(new KalibroMenu());
+		menuBar.add(new ConfigurationMenu(desktopPane));
 		setJMenuBar(menuBar);
 	}
 

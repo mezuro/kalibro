@@ -50,7 +50,8 @@ public class KalibroFrameTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkMenu() {
 		JMenuBar menuBar = frame.getJMenuBar();
-		assertEquals(1, menuBar.getMenuCount());
+		assertEquals(2, menuBar.getMenuCount());
 		assertTrue(menuBar.getMenu(0) instanceof KalibroMenu);
+		assertTrue(menuBar.getMenu(1) instanceof ConfigurationMenu);
 	}
 }
