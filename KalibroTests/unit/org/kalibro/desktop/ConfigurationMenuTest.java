@@ -1,5 +1,9 @@
 package org.kalibro.desktop;
 
+import static org.junit.Assert.*;
+
+import java.awt.event.ActionEvent;
+
 import javax.swing.JDesktopPane;
 
 import org.junit.Before;
@@ -7,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.desktop.configuration.ConfigurationController;
+import org.kalibro.desktop.configuration.ConfigurationFrame;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -83,5 +88,30 @@ public class ConfigurationMenuTest extends KalibroTestCase {
 
 		menu.getItem(SAVE).doClick();
 		Mockito.verify(errorDialog).show(error);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void itemsForCurrentConfigurationShouldBeDisabledWhenThereIsNoConfigurationFrameSelected() {
+		clickMenu();
+
+		assertFalse(menu.getItem(SAVE).isEnabled());
+		assertFalse(menu.getItem(SAVE_AS).isEnabled());
+		assertFalse(menu.getItem(CLOSE).isEnabled());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void itemsForCurrentConfigurationShouldBeEnabledWhenConfigurationFrameIsSelected() {
+		ConfigurationFrame configurationFrame = PowerMockito.mock(ConfigurationFrame.class);
+		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(configurationFrame);
+		clickMenu();
+
+		assertTrue(menu.getItem(SAVE).isEnabled());
+		assertTrue(menu.getItem(SAVE_AS).isEnabled());
+		assertTrue(menu.getItem(CLOSE).isEnabled());
+	}
+
+	private void clickMenu() {
+		assertSame(menu, menu.getActionListeners()[0]);
+		menu.actionPerformed(new ActionEvent(menu, 0, ""));
 	}
 }

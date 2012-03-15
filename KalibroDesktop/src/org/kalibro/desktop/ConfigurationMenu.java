@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JDesktopPane;
+import javax.swing.JMenuItem;
 
 import org.kalibro.desktop.configuration.ConfigurationController;
 import org.kalibro.desktop.configuration.ConfigurationFrame;
@@ -21,7 +22,8 @@ public class ConfigurationMenu extends AbstractMenu implements ActionListener {
 	public ConfigurationMenu(JDesktopPane desktopPane) {
 		super("configuration", "Configuration", 'C');
 		this.desktopPane = desktopPane;
-		controller = new ConfigurationController(desktopPane);
+		this.controller = new ConfigurationController(desktopPane);
+		addActionListener(this);
 	}
 
 	@Override
@@ -47,20 +49,25 @@ public class ConfigurationMenu extends AbstractMenu implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		MenuItem source = (MenuItem) event.getSource();
-		String methodName = source.getName();
+		JMenuItem source = (JMenuItem) event.getSource();
+		if (source == this)
+			checkItems();
+		else
+			invokeController(source.getName());
+	}
+
+	private void checkItems() {
+		boolean hasSelectedConfiguration = desktopPane.getSelectedFrame() instanceof ConfigurationFrame;
+		saveItem.setEnabled(hasSelectedConfiguration);
+		saveAsItem.setEnabled(hasSelectedConfiguration);
+		closeItem.setEnabled(hasSelectedConfiguration);
+	}
+
+	private void invokeController(String methodName) {
 		try {
 			ConfigurationController.class.getMethod(methodName).invoke(controller);
 		} catch (Exception exception) {
 			new ErrorDialog(desktopPane).show(exception.getCause());
 		}
-	}
-
-	private void checkItems() {
-		// TODO listen when selected frame changes and do this
-		boolean hasSelectedConfiguration = desktopPane.getSelectedFrame() instanceof ConfigurationFrame;
-		saveItem.setEnabled(hasSelectedConfiguration);
-		saveAsItem.setEnabled(hasSelectedConfiguration);
-		closeItem.setEnabled(hasSelectedConfiguration);
 	}
 }
