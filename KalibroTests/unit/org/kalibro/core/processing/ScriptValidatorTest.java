@@ -25,22 +25,22 @@ public class ScriptValidatorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateSimpleReturn() throws Exception {
+	public void shouldValidateSimpleReturn() {
 		validate("return 0;");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateExponentNotation() throws Exception {
+	public void shouldValidateExponentNotation() {
 		validate("return 1E10;");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateExpressions() throws Exception {
+	public void shouldValidateExpressions() {
 		validate("flag = true; return flag ? 1 : 0;");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateReferenceToValidIdentifiers() throws Exception {
+	public void shouldValidateReferenceToValidIdentifiers() {
 		validate(CompoundMetricFixtures.sc().getScript());
 	}
 
@@ -85,20 +85,20 @@ public class ScriptValidatorTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				validate(code, script);
 			}
-		}, exceptionClass);
+		}, RuntimeException.class, null, exceptionClass);
 	}
 
-	private void validate(String script) throws Exception {
+	private void validate(String script) {
 		validate("metric", script);
 	}
 
-	private void validate(String code, String script) throws Exception {
+	private void validate(String code, String script) {
 		CompoundMetric metric = new CompoundMetric();
 		metric.setName(code);
 		metric.setScript(script);
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
 		metricConfiguration.setCode(code);
 		configuration.addMetricConfiguration(metricConfiguration);
-		validator.validateScriptOf(metric);
+		validator.validateScriptOf(new MetricConfiguration(metric));
 	}
 }

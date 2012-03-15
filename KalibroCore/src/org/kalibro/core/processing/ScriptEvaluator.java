@@ -12,8 +12,12 @@ public class ScriptEvaluator {
 		this.script = script;
 	}
 
-	public Double invokeFunction(String functionName) throws Exception {
-		return doInvoke(functionName);
+	public Double invokeFunction(String functionName) {
+		try {
+			return doInvoke(functionName);
+		} catch (Exception exception) {
+			throw new RuntimeException(exception);
+		}
 	}
 
 	private Double doInvoke(String functionName) throws Exception {

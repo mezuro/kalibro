@@ -9,14 +9,14 @@ import org.kalibro.core.concurrent.Task;
 public class ScriptEvaluatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldEvaluateFunction() throws Exception {
+	public void shouldEvaluateFunction() {
 		invokeAndCheck("getZero", "function getZero() {return 0;}", 0.0);
 		invokeAndCheck("getMillion", "function getMillion() {return 1E6;}", 1E6);
 		invokeAndCheck("flagToInt", "flag = true; function flagToInt(){return flag ? 1 : 0;}", 1.0);
 		invokeAndCheck("sc", "cbo = 3; lcom4 = 2; function sc(){ return cbo * lcom4;}", 6.0);
 	}
 
-	private void invokeAndCheck(String function, String script, Double result) throws Exception {
+	private void invokeAndCheck(String function, String script, Double result) {
 		assertDoubleEquals(result, invoke(function, script));
 	}
 
@@ -61,10 +61,10 @@ public class ScriptEvaluatorTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				invoke(function, script);
 			}
-		}, exceptionClass);
+		}, RuntimeException.class, null, exceptionClass);
 	}
 
-	private Double invoke(String function, String script) throws Exception {
+	private Double invoke(String function, String script) {
 		return new ScriptEvaluator(script).invokeFunction(function);
 	}
 }
