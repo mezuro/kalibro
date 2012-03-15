@@ -3,7 +3,7 @@ package org.kalibro.desktop.configuration;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroDesktopTestCase;
+import org.kalibro.desktop.KalibroDesktopTestCase;
 
 /**
  * Database should be seeded automatically with the default configuration and the base tools.
