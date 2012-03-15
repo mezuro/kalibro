@@ -3,6 +3,8 @@ package org.kalibro.service;
 import java.util.List;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.service.entities.ProjectXml;
@@ -12,14 +14,16 @@ import org.kalibro.service.entities.RawProjectXml;
 public interface ProjectEndpoint {
 
 	@WebMethod
-	void saveProject(RawProjectXml project);
+	void saveProject(@WebParam(name = "project") RawProjectXml project);
 
 	@WebMethod
+	@WebResult(name = "projectName")
 	List<String> getProjectNames();
 
 	@WebMethod
-	ProjectXml getProject(String projectName);
+	@WebResult(name = "project")
+	ProjectXml getProject(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	void removeProject(String projectName);
+	void removeProject(@WebParam(name = "projectName") String projectName);
 }

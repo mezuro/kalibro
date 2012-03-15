@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.service.entities.ConfigurationXml;
@@ -15,11 +16,13 @@ public interface ConfigurationEndpoint {
 	void saveConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration);
 
 	@WebMethod
+	@WebResult(name = "configurationName")
 	List<String> getConfigurationNames();
 
 	@WebMethod
-	ConfigurationXml getConfiguration(String configurationName);
+	@WebResult(name = "configuration")
+	ConfigurationXml getConfiguration(@WebParam(name = "configurationName") String configurationName);
 
 	@WebMethod
-	void removeConfiguration(String configurationName);
+	void removeConfiguration(@WebParam(name = "configurationName") String configurationName);
 }
