@@ -8,6 +8,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
+import org.kalibro.desktop.configuration.ConfigurationMenu;
 import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class KalibroFrame extends JFrame {

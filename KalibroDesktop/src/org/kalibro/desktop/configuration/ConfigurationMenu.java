@@ -1,13 +1,11 @@
-package org.kalibro.desktop;
+package org.kalibro.desktop.configuration;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JDesktopPane;
-import javax.swing.JMenuItem;
+import javax.swing.event.MenuEvent;
 
-import org.kalibro.desktop.configuration.ConfigurationController;
-import org.kalibro.desktop.configuration.ConfigurationFrame;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.kalibro.desktop.swingextension.menu.AbstractMenu;
 import org.kalibro.desktop.swingextension.menu.MenuItem;
@@ -23,7 +21,6 @@ public class ConfigurationMenu extends AbstractMenu implements ActionListener {
 		super("configuration", "Configuration", 'C');
 		this.desktopPane = desktopPane;
 		this.controller = new ConfigurationController(desktopPane);
-		addActionListener(this);
 	}
 
 	@Override
@@ -49,25 +46,20 @@ public class ConfigurationMenu extends AbstractMenu implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		JMenuItem source = (JMenuItem) event.getSource();
-		if (source == this)
-			checkItems();
-		else
-			invokeController(source.getName());
+		MenuItem source = (MenuItem) event.getSource();
+		String methodName = source.getName();
+		try {
+			ConfigurationController.class.getMethod(methodName).invoke(controller);
+		} catch (Exception exception) {
+			new ErrorDialog(desktopPane).show(exception);
+		}
 	}
 
-	private void checkItems() {
+	@Override
+	public void menuSelected(MenuEvent event) {
 		boolean hasSelectedConfiguration = desktopPane.getSelectedFrame() instanceof ConfigurationFrame;
 		saveItem.setEnabled(hasSelectedConfiguration);
 		saveAsItem.setEnabled(hasSelectedConfiguration);
 		closeItem.setEnabled(hasSelectedConfiguration);
-	}
-
-	private void invokeController(String methodName) {
-		try {
-			ConfigurationController.class.getMethod(methodName).invoke(controller);
-		} catch (Exception exception) {
-			new ErrorDialog(desktopPane).show(exception.getCause());
-		}
 	}
 }

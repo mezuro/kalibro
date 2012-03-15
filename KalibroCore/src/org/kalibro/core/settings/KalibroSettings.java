@@ -16,7 +16,7 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 	private static final File SETTINGS_FILE = new File(Directories.kalibro(), "kalibro.settings");
 
 	public static KalibroSettings load() {
-		if (! settingsFileExists())
+		if (!settingsFileExists())
 			return new KalibroSettings();
 		try {
 			return new KalibroSettings((Map<?, ?>) new Yaml().load(new FileInputStream(SETTINGS_FILE)));

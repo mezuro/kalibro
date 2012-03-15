@@ -11,6 +11,7 @@ import javax.swing.WindowConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.desktop.configuration.ConfigurationMenu;
 import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class KalibroFrameTest extends KalibroTestCase {
