@@ -1,23 +1,21 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
 
 class ValidationScriptBuilder extends AbstractScriptBuilder {
 
-	private CompoundMetric validatonMetric;
+	private MetricConfiguration toValidate;
 
-	protected ValidationScriptBuilder(Configuration configuration, CompoundMetric validationMetric) {
+	protected ValidationScriptBuilder(Configuration configuration, MetricConfiguration toValidate) {
 		super(configuration);
-		this.validatonMetric = validationMetric;
+		this.toValidate = toValidate;
 	}
 
 	@Override
 	public String buildScript() {
-		MetricConfiguration compoundMetric = configuration.getConfigurationFor(validatonMetric);
-		return super.buildScript() + getScriptFor(compoundMetric);
+		return super.buildScript() + getScriptFor(toValidate);
 	}
 
 	@Override

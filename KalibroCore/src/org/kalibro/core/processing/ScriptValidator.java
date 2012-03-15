@@ -1,7 +1,7 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.Configuration;
+import org.kalibro.core.model.MetricConfiguration;
 
 public class ScriptValidator {
 
@@ -11,9 +11,10 @@ public class ScriptValidator {
 		this.configuration = configuration;
 	}
 
-	public void validateScriptOf(CompoundMetric metric) throws Exception {
-		String code = configuration.getConfigurationFor(metric).getCode();
-		String validationScript = new ValidationScriptBuilder(configuration, metric).buildScript();
-		new ScriptEvaluator(validationScript).invokeFunction(code);
+	public void validateScriptOf(MetricConfiguration metricConfiguration) {
+		if (metricConfiguration.getMetric().isCompound()) {
+			String validationScript = new ValidationScriptBuilder(configuration, metricConfiguration).buildScript();
+			new ScriptEvaluator(validationScript).invokeFunction(metricConfiguration.getCode());
+		}
 	}
 }

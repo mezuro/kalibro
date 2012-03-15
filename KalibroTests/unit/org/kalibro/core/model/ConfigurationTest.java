@@ -138,33 +138,20 @@ public class ConfigurationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateValidCompoundMetric() throws Exception {
+	public void shouldValidateValidCompoundMetric() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-		configuration.validateCompoundMetric(sc);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInvalidateInvalidCompoundMetric() {
 		sc.setScript("return null;");
-		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 		checkException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
-				configuration.validateCompoundMetric(sc);
+				configuration.addMetricConfiguration(new MetricConfiguration(sc));
 			}
-		}, NullPointerException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateNotFoundMetric() {
-		checkException(new Task() {
-
-			@Override
-			public void perform() throws Exception {
-				configuration.validateCompoundMetric(new CompoundMetric());
-			}
-		}, IllegalArgumentException.class);
+		}, RuntimeException.class, null, NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
