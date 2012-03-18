@@ -7,6 +7,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
 
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.kalibro.KalibroTestCase;
 
@@ -14,9 +15,16 @@ public abstract class KalibroServiceTestCase extends KalibroTestCase {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 
+	private Endpoint endpoint;
+
 	@BeforeClass
 	public static void suppressStandardOutput() {
 		System.setOut(null);
+	}
+
+	@After
+	public void tearDown() {
+		endpoint.stop();
 	}
 
 	protected <T> T publishAndGetPort(Object implementor, Class<T> endpointClass) throws MalformedURLException {
@@ -29,7 +37,8 @@ public abstract class KalibroServiceTestCase extends KalibroTestCase {
 
 	private URL publish(Object implementor, String endpointName) throws MalformedURLException {
 		String address = "http://localhost:8080/KalibroService/" + endpointName + "/";
-		Endpoint.publish(address, implementor);
+		endpoint = Endpoint.create(implementor);
+		endpoint.publish(address);
 		return new URL(address + "?wsdl");
 	}
 }

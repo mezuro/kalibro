@@ -2,55 +2,49 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 
+import java.net.MalformedURLException;
+
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.client.dao.PortDaoFactory;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.ConfigurationFixtures;
-import org.kalibro.core.persistence.dao.ConfigurationDao;
+import org.kalibro.core.persistence.dao.ConfigurationDaoStub;
+import org.kalibro.service.entities.ConfigurationXml;
 
 public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 
-	private ConfigurationDao dao;
-	private Configuration configuration;
+	private Configuration sample;
+	private ConfigurationEndpoint port;
 
 	@Before
-	public void setUp() {
-		dao = new PortDaoFactory().getConfigurationDao();
+	public void setUp() throws MalformedURLException {
+		sample = ConfigurationFixtures.simpleConfiguration();
+		ConfigurationDaoStub daoStub = new ConfigurationDaoStub();
+		daoStub.save(sample);
+		port = publishAndGetPort(new ConfigurationEndpointImpl(daoStub), ConfigurationEndpoint.class);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldHaveDefaultConfiguration() {
-		configuration = ConfigurationFixtures.kalibroConfiguration();
-		assertTrue(dao.getConfigurationNames().contains(configuration.getName()));
-
-		Configuration retrieved = dao.getConfiguration(configuration.getName());
-		assertDeepEquals(configuration, retrieved);
+	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldListConfigurationNames() {
+		assertDeepEquals(port.getConfigurationNames(), sample.getName());
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldSaveAndRemoveConfiguration() {
-		String configurationName = "ConfigurationEndpointTest configuration";
-		configuration = ConfigurationFixtures.simpleConfiguration();
-		configuration.setName(configurationName);
-
-		dao.save(configuration);
-		assertTrue(dao.getConfigurationNames().contains(configurationName));
-		assertDeepEquals(configuration, dao.getConfiguration(configurationName));
-
-		dao.removeConfiguration(configurationName);
-		assertFalse(dao.getConfigurationNames().contains(configuration));
+	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldGetConfigurationByName() {
+		assertDeepEquals(sample, port.getConfiguration(sample.getName()).convert());
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldNotGetConfigurationForProjectRemotely() {
-		checkException(new Task() {
+	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldRemoveConfigurationByName() {
+		port.removeConfiguration(sample.getName());
+		assertTrue(port.getConfigurationNames().isEmpty());
+	}
 
-			@Override
-			public void perform() throws Exception {
-				dao.getConfigurationFor("");
-			}
-		}, UnsupportedOperationException.class, "Not available remotely");
+	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldSaveConfiguration() {
+		Configuration newConfiguration = ConfigurationFixtures.simpleConfiguration();
+		newConfiguration.setName("ConfigurationEndpointTest configuration");
+		port.saveConfiguration(new ConfigurationXml(newConfiguration));
+		assertDeepEquals(port.getConfigurationNames(), sample.getName(), newConfiguration.getName());
 	}
 }
