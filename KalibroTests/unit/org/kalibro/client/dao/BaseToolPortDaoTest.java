@@ -49,7 +49,7 @@ public class BaseToolPortDaoTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				dao.save(baseTool);
 			}
-		}, UnsupportedOperationException.class, "Can not save base tool remotely");
+		}, UnsupportedOperationException.class, "Cannot save base tool remotely");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
