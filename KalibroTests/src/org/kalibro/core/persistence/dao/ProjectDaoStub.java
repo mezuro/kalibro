@@ -1,4 +1,4 @@
-package org.kalibro.client;
+package org.kalibro.core.persistence.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.dao.ProjectDao;
 
-class ProjectDaoStub implements ProjectDao {
+public class ProjectDaoStub implements ProjectDao {
 
 	private Map<String, Project> projects = new HashMap<String, Project>();
 

@@ -14,6 +14,7 @@ import org.kalibro.core.ProjectStateListener;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ProjectDao;
+import org.kalibro.core.persistence.dao.ProjectDaoStub;
 import org.powermock.api.mockito.PowerMockito;
 
 public class ProjectStateTrackerTest extends KalibroTestCase {
