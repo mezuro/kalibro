@@ -1,5 +1,6 @@
 package org.kalibro.service;
 
+import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -8,6 +9,7 @@ import javax.xml.ws.Endpoint;
 import javax.xml.ws.Service;
 
 import org.junit.After;
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.kalibro.KalibroTestCase;
 
@@ -15,12 +17,23 @@ public abstract class KalibroServiceTestCase extends KalibroTestCase {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 
-	private Endpoint endpoint;
+	private static PrintStream out, err;
 
 	@BeforeClass
-	public static void suppressStandardOutput() {
+	public static void suppressOutput() {
+		out = System.out;
+		err = System.err;
 		System.setOut(null);
+		System.setErr(null);
 	}
+
+	@AfterClass
+	public static void restoreOutput() {
+		System.setOut(out);
+		System.setErr(err);
+	}
+
+	private Endpoint endpoint;
 
 	@After
 	public void tearDown() {
