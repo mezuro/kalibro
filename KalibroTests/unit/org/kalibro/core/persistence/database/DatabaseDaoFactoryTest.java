@@ -52,6 +52,7 @@ public class DatabaseDaoFactoryTest extends KalibroTestCase {
 	public void checkDaoCreation() {
 		assertClassEquals(BaseToolDatabaseDao.class, daoFactory.getBaseToolDao());
 		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.getConfigurationDao());
+		assertClassEquals(MetricConfigurationDatabaseDao.class, daoFactory.getMetricConfigurationDao());
 		assertClassEquals(ProjectDatabaseDao.class, daoFactory.getProjectDao());
 		assertClassEquals(ProjectResultDatabaseDao.class, daoFactory.getProjectResultDao());
 		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.getModuleResultDao());

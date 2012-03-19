@@ -21,6 +21,7 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 	@Override
 	public void save(MetricConfiguration metricConfiguration, String configurationName) {
 		Configuration configuration = getConfiguration(configurationName);
+		configuration.addMetricConfiguration(metricConfiguration);
 		databaseManager.save(newRecord(metricConfiguration, configuration));
 	}
 
@@ -34,6 +35,7 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 	public void removeMetricConfiguration(String configurationName, String metricName) {
 		Configuration configuration = getConfiguration(configurationName);
 		MetricConfiguration metricConfiguration = findMetricConfiguration(configuration, metricName);
+		configuration.removeMetric(metricConfiguration.getMetric());
 		databaseManager.delete(newRecord(metricConfiguration, configuration));
 	}
 
