@@ -40,7 +40,7 @@ public abstract class KalibroServiceTestCase extends KalibroTestCase {
 		endpoint.stop();
 	}
 
-	protected <T> T publishAndGetPort(Object implementor, Class<T> endpointClass) throws MalformedURLException {
+	protected <T> T publishAndGetPort(T implementor, Class<T> endpointClass) throws MalformedURLException {
 		String endpointName = endpointClass.getSimpleName();
 		URL wsdlLocation = publish(implementor, endpointName);
 		QName serviceName = new QName(NAMESPACE, endpointName + "ImplService");
