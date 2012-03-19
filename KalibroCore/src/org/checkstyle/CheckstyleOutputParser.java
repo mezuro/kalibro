@@ -9,36 +9,41 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
+import org.kalibro.core.model.Module;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.core.model.enums.Granularity;
 
 public class CheckstyleOutputParser extends AuditAdapter {
 
+	private File codeDirectory;
 	private Set<NativeMetric> wantedMetrics;
-	private Map<String, PreModuleResult> resultsMap;
+	private Map<Module, PreModuleResult> resultsMap;
 
-	public CheckstyleOutputParser(Set<NativeMetric> wantedMetrics) {
+	public CheckstyleOutputParser(File codeDirectory, Set<NativeMetric> wantedMetrics) {
+		this.codeDirectory = codeDirectory;
 		this.wantedMetrics = wantedMetrics;
-		resultsMap = new HashMap<String, PreModuleResult>();
+		resultsMap = new HashMap<Module, PreModuleResult>();
 	}
 
 	@Override
 	public void auditStarted(AuditEvent aEvt) {
-		resultsMap = new HashMap<String, PreModuleResult>();
+		resultsMap = new HashMap<Module, PreModuleResult>();
 	}
 
 	@Override
 	public void addError(AuditEvent event) {
 		String messageKey = event.getLocalizedMessage().getKey();
-		String className = fileNameToClass(event.getFileName());
+		Module module = fileNameToModule(event.getFileName());
 		String message = event.getMessage().replace(messageKey, "");
 		Double value = parseValue(message);
-		addMetricResult(className, messageKey, value);
+		addMetricResult(module, messageKey, value);
 	}
 
-	private String fileNameToClass(String group) {
-		String[] parts = group.split("\\.|" + Pattern.quote(File.separator));
-		return parts[parts.length - 2];
+	private Module fileNameToModule(String fileName) {
+		String relativeFileName = fileName.replace(codeDirectory.getAbsolutePath() + File.separator, "");
+		String[] parts = relativeFileName.split(Pattern.quote(File.separator));
+		return new Module(Granularity.CLASS, parts);
 	}
 
 	private Double parseValue(String message) {
@@ -49,14 +54,14 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		}
 	}
 
-	private void addMetricResult(String className, String messageKey, Double value) {
-		getPreResult(className).addMetricResult(messageKey, value);
+	private void addMetricResult(Module module, String messageKey, Double value) {
+		getPreResult(module).addMetricResult(messageKey, value);
 	}
 
-	private PreModuleResult getPreResult(String className) {
-		if (! resultsMap.containsKey(className))
-			resultsMap.put(className, new PreModuleResult(className, wantedMetrics));
-		return resultsMap.get(className);
+	private PreModuleResult getPreResult(Module module) {
+		if (!resultsMap.containsKey(module))
+			resultsMap.put(module, new PreModuleResult(module, wantedMetrics));
+		return resultsMap.get(module);
 	}
 
 	public Set<NativeModuleResult> getResults() {

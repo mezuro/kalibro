@@ -38,7 +38,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 		};
 
 		wantedMetricsSet = new HashSet<NativeMetric>(Arrays.asList(wantedMetrics));
-		parser = new CheckstyleOutputParser(wantedMetricsSet);
+		parser = new CheckstyleOutputParser(PROJECTS_DIRECTORY, wantedMetricsSet);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -63,9 +63,9 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 
 	public void simulateCheckstyle() {
 		parser.addError(mockEvent("maxLen.anonInner", "6"));
-		parser.addError(mockEvent("maxLen.method", "" + 56.0 / 7.0));
+		parser.addError(mockEvent("maxLen.method", "" + 54.0 / 7.0));
 		parser.addError(mockEvent("executableStatementCount", "19"));
-		parser.addError(mockEvent("maxLen.file", "58"));
+		parser.addError(mockEvent("maxLen.file", "60"));
 		parser.addError(mockEvent("too.many.methods", "6"));
 		parser.addError(mockEvent("maxOuterTypes", "2"));
 		parser.auditFinished(null);
@@ -77,7 +77,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 
 		AuditEvent event = PowerMockito.mock(AuditEvent.class);
 		PowerMockito.when(event.getLocalizedMessage()).thenReturn(localizedMessage);
-		PowerMockito.when(event.getFileName()).thenReturn("Fibonacci.java");
+		PowerMockito.when(event.getFileName()).thenReturn(PROJECTS_DIRECTORY + "/org/fibonacci/Fibonacci.java");
 		PowerMockito.when(event.getMessage()).thenReturn(message);
 		return event;
 	}

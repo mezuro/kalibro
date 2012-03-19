@@ -7,7 +7,6 @@ import java.util.Set;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
 
 public class PreModuleResult {
 
@@ -15,8 +14,8 @@ public class PreModuleResult {
 	private Set<NativeMetric> wantedMetrics;
 	private Map<String, PreMetricResult> metricResults;
 
-	public PreModuleResult(String className, Set<NativeMetric> wantedMetrics) {
-		module = new Module(Granularity.CLASS, className);
+	public PreModuleResult(Module module, Set<NativeMetric> wantedMetrics) {
+		this.module = module;
 		this.wantedMetrics = wantedMetrics;
 		initializeMetricResults();
 	}

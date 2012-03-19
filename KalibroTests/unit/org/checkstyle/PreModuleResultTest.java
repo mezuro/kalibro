@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class PreModuleResultTest extends KalibroTestCase {
 
 	private static final String MESSAGE_KEY = "too.many.methods";
-	private static final String MODULE_NAME = "PreModuleResultTestModule";
+	private static final Module MODULE = new Module(Granularity.CLASS, "PreModuleResultTestModule");
 
 	private PreMetricResult preMetricResult;
 	private NativeMetricResult metricResult;
@@ -32,7 +32,7 @@ public class PreModuleResultTest extends KalibroTestCase {
 	@Before
 	public void setUp() throws Exception {
 		mockPreMetricResult();
-		result = new PreModuleResult(MODULE_NAME, CheckstyleStub.nativeMetrics());
+		result = new PreModuleResult(MODULE, CheckstyleStub.nativeMetrics());
 	}
 
 	private void mockPreMetricResult() throws Exception {
@@ -46,7 +46,7 @@ public class PreModuleResultTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveModule() {
 		Module module = result.getModuleResult().getModule();
-		assertEquals(MODULE_NAME, module.getName());
+		assertEquals(MODULE, module);
 		assertEquals(Granularity.CLASS, module.getGranularity());
 	}
 

@@ -2,7 +2,6 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
-import java.io.File;
 import java.util.Set;
 
 import org.junit.Before;
@@ -38,7 +37,8 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
 	private void mockParser() throws Exception {
 		parser = PowerMockito.mock(CheckstyleOutputParser.class);
-		PowerMockito.whenNew(CheckstyleOutputParser.class).withArguments(wantedMetrics).thenReturn(parser);
+		PowerMockito.whenNew(CheckstyleOutputParser.class).withArguments(PROJECTS_DIRECTORY, wantedMetrics).
+			thenReturn(parser);
 	}
 
 	private void mockConfiguration() {
@@ -59,12 +59,11 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCollectMetrics() throws Exception {
-		File codeDirectory = PowerMockito.mock(File.class);
 		Set<NativeModuleResult> results = CheckstyleStub.results();
 		PowerMockito.when(parser.getResults()).thenReturn(results);
 
-		assertSame(results, collector.collectMetrics(codeDirectory, wantedMetrics));
-		Mockito.verify(checker).process(codeDirectory);
+		assertSame(results, collector.collectMetrics(PROJECTS_DIRECTORY, wantedMetrics));
+		Mockito.verify(checker).process(PROJECTS_DIRECTORY);
 		Mockito.verify(parser).getResults();
 	}
 }
