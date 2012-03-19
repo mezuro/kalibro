@@ -23,7 +23,6 @@ public class MetricConfigurationXml implements DataTransferObject<MetricConfigur
 	private String code;
 
 	private Double weight;
-
 	private Statistic aggregationForm;
 
 	@XmlElement(name = "range")
@@ -59,14 +58,15 @@ public class MetricConfigurationXml implements DataTransferObject<MetricConfigur
 	public MetricConfiguration convert() {
 		MetricConfiguration metricConfiguration = new MetricConfiguration(metric.convert());
 		metricConfiguration.setCode(code);
-		metricConfiguration.setWeight(weight);
-		metricConfiguration.setAggregationForm(aggregationForm);
+		metricConfiguration.setWeight(weight == null ? 1.0 : weight);
+		metricConfiguration.setAggregationForm(aggregationForm == null ? Statistic.AVERAGE : aggregationForm);
 		convertRanges(metricConfiguration);
 		return metricConfiguration;
 	}
 
 	private void convertRanges(MetricConfiguration metricConfiguration) {
-		for (RangeXml range : ranges)
-			metricConfiguration.addRange(range.convert());
+		if (ranges != null)
+			for (RangeXml range : ranges)
+				metricConfiguration.addRange(range.convert());
 	}
 }

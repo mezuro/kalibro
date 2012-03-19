@@ -57,7 +57,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 	public void shouldRetrieveWithConfiguredResults() {
 		save();
 
-		MetricConfiguration badCompoundMetric = newCompoundMetric("bad", "return null;");
+		MetricConfiguration badCompoundMetric = newCompoundMetric("bad", "return cbo > 0 ? 1.0 : null;");
 		Configuration configuration = simpleConfiguration();
 		configuration.addMetricConfiguration(badCompoundMetric);
 		daoFactory.getConfigurationDao().save(configuration);

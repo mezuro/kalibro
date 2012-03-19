@@ -1,13 +1,17 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.NativeMetricFixtures.*;
 
 import java.net.MalformedURLException;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ConfigurationFixtures;
+import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.core.model.NativeMetric;
+import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.persistence.dao.ConfigurationDaoStub;
 import org.kalibro.service.entities.ConfigurationXml;
 
@@ -18,7 +22,7 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		sample = ConfigurationFixtures.simpleConfiguration();
+		sample = simpleConfiguration();
 		ConfigurationDaoStub daoStub = new ConfigurationDaoStub();
 		daoStub.save(sample);
 		port = publishAndGetPort(new ConfigurationEndpointImpl(daoStub), ConfigurationEndpoint.class);
@@ -42,7 +46,30 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveConfiguration() {
-		Configuration newConfiguration = ConfigurationFixtures.simpleConfiguration();
+		testSaveConfiguration(simpleConfiguration());
+	}
+
+	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldSaveEmptyConfiguration() {
+		testSaveConfiguration(new Configuration());
+	}
+
+	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldSaveConfigurationWithoutRanges() {
+		Configuration newConfiguration = new Configuration();
+		newConfiguration.addMetricConfiguration(new MetricConfiguration(nativeMetric("loc")));
+		testSaveConfiguration(newConfiguration);
+	}
+
+	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldSaveMetricWithoutLanguages() {
+		NativeMetric nativeMetric = new NativeMetric("name", Granularity.METHOD);
+		Configuration newConfiguration = new Configuration();
+		newConfiguration.addMetricConfiguration(new MetricConfiguration(nativeMetric));
+		testSaveConfiguration(newConfiguration);
+	}
+
+	private void testSaveConfiguration(Configuration newConfiguration) {
 		newConfiguration.setName("ConfigurationEndpointTest configuration");
 		port.saveConfiguration(new ConfigurationXml(newConfiguration));
 		assertDeepEquals(port.getConfigurationNames(), sample.getName(), newConfiguration.getName());
