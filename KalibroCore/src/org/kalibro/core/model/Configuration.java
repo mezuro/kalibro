@@ -83,6 +83,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	public void addMetricConfiguration(MetricConfiguration newMetricConfiguration) {
 		for (MetricConfiguration metricConfiguration : metricConfigurations.values())
 			metricConfiguration.assertNoConflictWith(newMetricConfiguration);
+		new ScriptValidator(this).validateScriptOf(newMetricConfiguration);
 		metricConfigurations.put(newMetricConfiguration.getMetric(), newMetricConfiguration);
 	}
 
@@ -99,9 +100,5 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public boolean removeMetric(Metric metric) {
 		return metricConfigurations.remove(metric) != null;
-	}
-
-	public void validateCompoundMetric(CompoundMetric metric) throws Exception {
-		new ScriptValidator(this).validateScriptOf(metric);
 	}
 }

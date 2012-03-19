@@ -31,11 +31,11 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 		KalibroSettings settings = new KalibroSettings();
 		assertFalse(settings.isClient());
 		fixture.checkBox("client").requireNotSelected();
-		checkServerSettings(settings.getServerSettings());
+		verifyDefaultServerSettings();
 
 		fixture.checkBox("client").click();
 		fixture.checkBox("client").requireSelected();
-		checkClientSettings(settings.getClientSettings());
+		verifyDefaultClientSettings();
 
 		fixture.button("ok").click();
 		verifyErrorMessageForConnectionRefused();
@@ -45,24 +45,30 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 		verifyFrameNotOpen();
 	}
 
-	private void checkServerSettings(ServerSettings settings) {
+	private void verifyDefaultServerSettings() {
+		ServerSettings settings = new ServerSettings();
 		assertTrue(settings.shouldRemoveSources());
 		fixture.textBox("path").requireText(settings.getLoadDirectory().getAbsolutePath());
 		fixture.checkBox("removeSources").requireSelected();
-		checkDatabaseSettings(settings.getDatabaseSettings());
+		verifyDefaultDatabaseSettings();
 	}
 
-	private void checkDatabaseSettings(DatabaseSettings settings) {
+	private void verifyDefaultDatabaseSettings() {
+		DatabaseSettings settings = new DatabaseSettings();
 		fixture.comboBox("databaseType").requireSelection(settings.getDatabaseType().toString());
 		fixture.textBox("jdbcUrl").requireText(settings.getJdbcUrl());
 		fixture.textBox("username").requireText(settings.getUsername());
 		fixture.textBox("password").requireText(settings.getPassword());
 	}
 
-	private void checkClientSettings(ClientSettings settings) {
+	private void verifyDefaultClientSettings() {
+		ClientSettings settings = new ClientSettings();
 		fixture.textBox("serviceAddress").requireText(settings.getServiceAddress());
-		String pollingInterval = new LongField("").getDecimalFormat().format(settings.getPollingInterval());
-		fixture.textBox("pollingInterval").requireText(pollingInterval);
+		fixture.textBox("pollingInterval").requireText(format(settings.getPollingInterval()));
+	}
+
+	private String format(long pollingInterval) {
+		return new LongField("").getDecimalFormat().format(pollingInterval);
 	}
 
 	private void verifyErrorMessageForConnectionRefused() {

@@ -23,12 +23,8 @@ public class RangeXml implements DataTransferObject<Range> {
 	@XmlElement(required = true)
 	private String label;
 
-	@XmlElement(required = false)
 	private Double grade;
-
-	@XmlElement(required = true)
 	private String color;
-
 	private String comments;
 
 	public RangeXml() {

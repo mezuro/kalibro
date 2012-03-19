@@ -10,8 +10,6 @@ import static org.kalibro.core.model.enums.Granularity.*;
 import java.util.Arrays;
 import java.util.Date;
 
-import javax.script.ScriptException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
@@ -29,7 +27,6 @@ public class ModuleResultTest extends KalibroTestCase {
 		result.metricResults.remove(nativeMetric("sc"));
 		configuration = simpleConfiguration();
 		configuration.addMetricConfiguration(createScConfiguration());
-		configuration.addMetricConfiguration(createInvalidConfiguration());
 	}
 
 	private MetricConfiguration createScConfiguration() {
@@ -37,13 +34,6 @@ public class ModuleResultTest extends KalibroTestCase {
 		MetricConfiguration scConfiguration = new MetricConfiguration(sc);
 		scConfiguration.addRange(new Range());
 		return scConfiguration;
-	}
-
-	private MetricConfiguration createInvalidConfiguration() {
-		invalid = new CompoundMetric();
-		invalid.setName("Invalid");
-		invalid.setScript("invalid script");
-		return new MetricConfiguration(invalid);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -124,14 +114,25 @@ public class ModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveCompoundMetricsWithError() {
+		addCompoundMetricWithError();
 		result.setConfiguration(configuration);
 		assertDeepEquals(result.getCompoundMetricsWithError(), invalid);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveCompoundMetricError() {
+		addCompoundMetricWithError();
 		result.setConfiguration(configuration);
-		assertClassEquals(ScriptException.class, result.getErrorFor(invalid));
+		Exception error = result.getErrorFor(invalid);
+		assertClassEquals(RuntimeException.class, error);
+		assertClassEquals(NullPointerException.class, error.getCause());
+	}
+
+	private void addCompoundMetricWithError() {
+		invalid = new CompoundMetric();
+		invalid.setName("Invalid");
+		invalid.setScript("return cbo > 0 ? 1.0 : null;");
+		configuration.addMetricConfiguration(new MetricConfiguration(invalid));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

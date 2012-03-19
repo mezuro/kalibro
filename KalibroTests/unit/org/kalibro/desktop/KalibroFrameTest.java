@@ -11,6 +11,7 @@ import javax.swing.WindowConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.desktop.configuration.ConfigurationMenu;
 import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class KalibroFrameTest extends KalibroTestCase {
@@ -50,7 +51,8 @@ public class KalibroFrameTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkMenu() {
 		JMenuBar menuBar = frame.getJMenuBar();
-		assertEquals(1, menuBar.getMenuCount());
+		assertEquals(2, menuBar.getMenuCount());
 		assertTrue(menuBar.getMenu(0) instanceof KalibroMenu);
+		assertTrue(menuBar.getMenu(1) instanceof ConfigurationMenu);
 	}
 }

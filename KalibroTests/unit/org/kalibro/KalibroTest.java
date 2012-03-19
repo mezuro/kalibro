@@ -1,6 +1,7 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.util.Set;
 
@@ -12,11 +13,11 @@ import org.junit.runner.RunWith;
 import org.kalibro.client.KalibroClient;
 import org.kalibro.core.KalibroLocal;
 import org.kalibro.core.ProjectStateListener;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.*;
 import org.kalibro.core.settings.KalibroSettings;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -75,7 +76,7 @@ public class KalibroTest extends KalibroTestCase {
 	public void testCurrentSettings() {
 		assertSame(settings, Kalibro.currentSettings());
 		assertSame(settings, Kalibro.currentSettings());
-		PowerMockito.verifyStatic(Mockito.times(1));
+		PowerMockito.verifyStatic(times(1));
 		KalibroSettings.load();
 	}
 
@@ -94,8 +95,27 @@ public class KalibroTest extends KalibroTestCase {
 		Kalibro.changeSettings(settings);
 
 		assertSame(settings, Kalibro.currentSettings());
-		Mockito.verify(settings).write();
+		verify(settings).write();
 		PowerMockito.verifyNew(facadeClass);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotWriteNewSettingsIfFacadeCreationThrowsException() throws Exception {
+		PowerMockito.when(settings.isClient()).thenReturn(false);
+		PowerMockito.whenNew(KalibroLocal.class).withNoArguments().thenThrow(new RuntimeException());
+
+		checkException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				Kalibro.changeSettings(settings);
+			}
+		}, RuntimeException.class);
+		verify(settings, never()).write();
+
+		Kalibro.currentSettings();
+		PowerMockito.verifyStatic();
+		KalibroSettings.load();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -144,13 +164,13 @@ public class KalibroTest extends KalibroTestCase {
 	public void testProcessProject() {
 		String projectName = "My project";
 		Kalibro.processProject(projectName);
-		Mockito.verify(facade).processProject(projectName);
+		verify(facade).processProject(projectName);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessPeriodically() {
 		Kalibro.processPeriodically("My project", 42);
-		Mockito.verify(facade).processPeriodically("My project", 42);
+		verify(facade).processPeriodically("My project", 42);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -158,20 +178,20 @@ public class KalibroTest extends KalibroTestCase {
 		Project project = PowerMockito.mock(Project.class);
 		ProjectStateListener listener = PowerMockito.mock(ProjectStateListener.class);
 		Kalibro.addProjectStateListener(project, listener);
-		Mockito.verify(facade).addProjectStateListener(project, listener);
+		verify(facade).addProjectStateListener(project, listener);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testRemoveProjectStateListener() {
 		ProjectStateListener listener = PowerMockito.mock(ProjectStateListener.class);
 		Kalibro.removeProjectStateListener(listener);
-		Mockito.verify(facade).removeProjectStateListener(listener);
+		verify(facade).removeProjectStateListener(listener);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testFireProjectStateChanged() {
 		Project project = PowerMockito.mock(Project.class);
 		Kalibro.fireProjectStateChanged(project);
-		Mockito.verify(facade).fireProjectStateChanged(project);
+		verify(facade).fireProjectStateChanged(project);
 	}
 }

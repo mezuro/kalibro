@@ -27,9 +27,17 @@ public class AbstractMenuTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shoudCreateItemsAndBuildMenu() {
+	public void shouldCreateItemsAndBuildMenu() {
 		assertTrue(itemsCreated);
 		assertTrue(menuBuilded);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldListenToItself() {
+		assertSame(menu, menu.getMenuListeners()[0]);
+		menu.menuSelected(null);
+		menu.menuDeselected(null);
+		menu.menuCanceled(null);
 	}
 
 	private class MenuStub extends AbstractMenu {

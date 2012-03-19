@@ -12,7 +12,7 @@ public class ErrorDialog {
 		this.parent = parent;
 	}
 
-	public void show(Exception error) {
+	public void show(Throwable error) {
 		show(error.getMessage());
 	}
 

@@ -26,9 +26,14 @@ public final class Kalibro {
 	}
 
 	public static void changeSettings(KalibroSettings newSettings) {
-		createFacade(newSettings);
-		newSettings.write();
 		settings = newSettings;
+		try {
+			createFacade(newSettings);
+		} catch (RuntimeException exception) {
+			settings = null;
+			throw exception;
+		}
+		newSettings.write();
 	}
 
 	public static BaseToolDao getBaseToolDao() {
