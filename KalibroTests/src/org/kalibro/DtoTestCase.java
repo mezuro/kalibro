@@ -17,8 +17,14 @@ public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTI
 	public void defaultConstructorShouldDoNothing() throws Exception {
 		RECORD record = newDtoUsingDefaultConstructor();
 		for (Field field : record.getClass().getDeclaredFields())
-			if (!Modifier.isStatic(field.getModifiers()))
-				assertNull(Whitebox.getInternalState(record, field.getName()));
+			if (isInstanceField(field))
+				assertNull(field.getName(), Whitebox.getInternalState(record, field.getName()));
+	}
+
+	private boolean isInstanceField(Field field) {
+		boolean isStatic = Modifier.isStatic(field.getModifiers());
+		boolean isOuterField = field.getName().startsWith("this$");
+		return ! (isStatic || isOuterField);
 	}
 
 	protected abstract RECORD newDtoUsingDefaultConstructor();
