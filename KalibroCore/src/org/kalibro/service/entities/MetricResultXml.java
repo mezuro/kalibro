@@ -58,7 +58,8 @@ public class MetricResultXml implements DataTransferObject<MetricResult> {
 		MetricResult metricResult = new MetricResult(metric.convert(), value);
 		metricResult.setWeight(weight);
 		convertRange(metricResult);
-		metricResult.addDescendentResults(descendentResults);
+		if (descendentResults != null)
+			metricResult.addDescendentResults(descendentResults);
 		return metricResult;
 	}
 
