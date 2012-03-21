@@ -19,7 +19,7 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 		this(Kalibro.getConfigurationDao());
 	}
 
-	public ConfigurationEndpointImpl(ConfigurationDao configurationDao) {
+	protected ConfigurationEndpointImpl(ConfigurationDao configurationDao) {
 		dao = configurationDao;
 	}
 

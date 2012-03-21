@@ -22,7 +22,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 		this(Kalibro.getModuleResultDao());
 	}
 
-	public ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {
+	protected ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {
 		dao = moduleResultDao;
 	}
 

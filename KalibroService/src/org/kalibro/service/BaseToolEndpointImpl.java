@@ -19,7 +19,7 @@ public class BaseToolEndpointImpl implements BaseToolEndpoint {
 		this(Kalibro.getBaseToolDao());
 	}
 
-	public BaseToolEndpointImpl(BaseToolDao baseToolDao) {
+	protected BaseToolEndpointImpl(BaseToolDao baseToolDao) {
 		dao = baseToolDao;
 	}
 

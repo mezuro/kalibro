@@ -20,7 +20,7 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 		this(Kalibro.getProjectDao());
 	}
 
-	public ProjectEndpointImpl(ProjectDao projectDao) {
+	protected ProjectEndpointImpl(ProjectDao projectDao) {
 		dao = projectDao;
 	}
 
