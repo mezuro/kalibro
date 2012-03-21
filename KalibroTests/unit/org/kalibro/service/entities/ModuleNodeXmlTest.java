@@ -1,12 +1,15 @@
 package org.kalibro.service.entities;
 
+import static org.junit.Assert.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
 
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.ModuleNode;
+import org.powermock.reflect.Whitebox;
 
 public class ModuleNodeXmlTest extends DtoTestCase<ModuleNode, ModuleNodeXml> {
 
@@ -23,5 +26,13 @@ public class ModuleNodeXmlTest extends DtoTestCase<ModuleNode, ModuleNodeXml> {
 	@Override
 	protected ModuleNodeXml createDto(ModuleNode moduleNode) {
 		return new ModuleNodeXml(moduleNode);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldTurnNullChildrenIntoEmpty() {
+		ModuleNode node = helloWorldNode();
+		ModuleNodeXml dto = createDto(node);
+		Whitebox.setInternalState(dto, "children", (Object) null);
+		assertTrue(dto.convert().getChildren().isEmpty());
 	}
 }

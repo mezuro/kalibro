@@ -43,7 +43,8 @@ public class ModuleNodeXml implements DataTransferObject<ModuleNode> {
 	}
 
 	private void convertChildren(ModuleNode moduleNode) {
-		for (ModuleNodeXml child : children)
-			moduleNode.addChild(child.convert());
+		if (children != null)
+			for (ModuleNodeXml child : children)
+				moduleNode.addChild(child.convert());
 	}
 }
