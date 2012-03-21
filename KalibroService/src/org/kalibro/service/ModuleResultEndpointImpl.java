@@ -32,8 +32,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 		@WebParam(name = "projectName") String projectName,
 		@WebParam(name = "moduleName") String moduleName,
 		@WebParam(name = "date") Date date) {
-		ModuleResult moduleResult = dao.getModuleResult(projectName, moduleName, date);
-		return new ModuleResultXml(moduleResult);
+		return new ModuleResultXml(dao.getModuleResult(projectName, moduleName, date));
 	}
 
 	@Override

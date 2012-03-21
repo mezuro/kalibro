@@ -7,7 +7,6 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.Kalibro;
-import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.service.entities.BaseToolXml;
 
@@ -33,7 +32,6 @@ public class BaseToolEndpointImpl implements BaseToolEndpoint {
 	@Override
 	@WebResult(name = "baseTool")
 	public BaseToolXml getBaseTool(@WebParam(name = "baseToolName") String baseToolName) {
-		BaseTool baseTool = dao.getBaseTool(baseToolName);
-		return new BaseToolXml(baseTool);
+		return new BaseToolXml(dao.getBaseTool(baseToolName));
 	}
 }
