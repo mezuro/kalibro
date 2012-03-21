@@ -39,8 +39,10 @@ class AnalyzeProjectExecutor extends ProjectTaskExecutor {
 		Collection<ModuleResult> moduleResults = ((TypedTaskReport<Collection<ModuleResult>>) report).getResult();
 		Kalibro.getProjectResultDao().save(projectResult);
 		ModuleResultDao moduleResultDao = Kalibro.getModuleResultDao();
-		for (ModuleResult moduleResult : moduleResults)
+		for (ModuleResult moduleResult : moduleResults) {
+			assert moduleResult.getDate().equals(projectResult.getDate());
 			moduleResultDao.save(moduleResult, getProject().getName(), projectResult.getDate());
+		}
 		updateProjectState(ProjectState.READY);
 		deleteSourcePathIfNecessary();
 	}

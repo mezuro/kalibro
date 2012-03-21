@@ -13,7 +13,8 @@ public class ProcessProjectTask extends Task {
 	}
 
 	@Override
-	public void perform() throws Exception {
+	public void perform() {
+		// TODO execute all parts of project processing in the same thread
 		new LoadProjectExecutor(project).execute();
 	}
 }
