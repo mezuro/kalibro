@@ -1,6 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.net.MalformedURLException;
@@ -20,42 +21,51 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 	private static final Date DATE_1 = new Date(1);
 	private static final Date DATE_2 = new Date(2);
 
-	private ModuleResult applicationResult1, applicationResult2, classResult1, classResult2;
-
+	private ModuleResultDaoStub daoStub;
 	private ModuleResultEndpoint port;
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		applicationResult1 = helloWorldApplicationResult(DATE_1);
-		applicationResult2 = helloWorldApplicationResult(DATE_2);
-		classResult1 = helloWorldClassResult(DATE_1);
-		classResult2 = helloWorldClassResult(DATE_2);
-		ModuleResultDaoStub daoStub = new ModuleResultDaoStub();
-		daoStub.save(classResult1, PROJECT_NAME, DATE_1);
-		daoStub.save(classResult2, PROJECT_NAME, DATE_2);
-		daoStub.save(applicationResult1, PROJECT_NAME, DATE_1);
-		daoStub.save(applicationResult2, PROJECT_NAME, DATE_2);
+		daoStub = new ModuleResultDaoStub();
+		configureAndAddModuleResult(helloWorldApplicationResult(DATE_1));
+		configureAndAddModuleResult(helloWorldApplicationResult(DATE_2));
+		configureAndAddModuleResult(helloWorldClassResult(DATE_1));
+		configureAndAddModuleResult(helloWorldClassResult(DATE_2));
 		port = publishAndGetPort(new ModuleResultEndpointImpl(daoStub), ModuleResultEndpoint.class);
+	}
+
+	private void configureAndAddModuleResult(ModuleResult moduleResult) {
+		moduleResult.setConfiguration(simpleConfiguration());
+		daoStub.save(moduleResult, PROJECT_NAME, moduleResult.getDate());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRetrieveModuleResult() {
-		assertDeepEquals(applicationResult1, port.getModuleResult(PROJECT_NAME, PROJECT_NAME, DATE_1).convert());
-		assertDeepEquals(applicationResult2, port.getModuleResult(PROJECT_NAME, PROJECT_NAME, DATE_2).convert());
-		assertDeepEquals(classResult1, port.getModuleResult(PROJECT_NAME, CLASS_NAME, DATE_1).convert());
-		assertDeepEquals(classResult2, port.getModuleResult(PROJECT_NAME, CLASS_NAME, DATE_2).convert());
+		verifyModuleResult(PROJECT_NAME, DATE_1);
+		verifyModuleResult(PROJECT_NAME, DATE_1);
+		verifyModuleResult(PROJECT_NAME, DATE_2);
+		verifyModuleResult(CLASS_NAME, DATE_1);
+		verifyModuleResult(CLASS_NAME, DATE_2);
+	}
+
+	private void verifyModuleResult(String moduleName, Date date) {
+		ModuleResult expected = daoStub.getModuleResult(PROJECT_NAME, moduleName, date);
+		ModuleResult actual = port.getModuleResult(PROJECT_NAME, moduleName, date).convert();
+		assertNotSame(expected, actual);
+		assertDeepEquals(expected, actual);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRetrieveResultHistory() {
-		List<ModuleResultXml> applicationHistory = port.getResultHistory(PROJECT_NAME, PROJECT_NAME);
-		assertEquals(2, applicationHistory.size());
-		assertDeepEquals(applicationResult1, applicationHistory.get(0).convert());
-		assertDeepEquals(applicationResult2, applicationHistory.get(1).convert());
+		verifyResultHistory(PROJECT_NAME);
+		verifyResultHistory(CLASS_NAME);
+	}
 
-		List<ModuleResultXml> classHistory = port.getResultHistory(PROJECT_NAME, CLASS_NAME);
-		assertEquals(2, classHistory.size());
-		assertDeepEquals(classResult1, classHistory.get(0).convert());
-		assertDeepEquals(classResult2, classHistory.get(1).convert());
+	private void verifyResultHistory(String moduleName) {
+		List<ModuleResult> expected = daoStub.getResultHistory(PROJECT_NAME, moduleName);
+		List<ModuleResultXml> actual = port.getResultHistory(PROJECT_NAME, moduleName);
+		assertEquals(expected.size(), actual.size());
+		for (int i = 0; i < expected.size(); i++)
+			assertDeepEquals(expected.get(i), actual.get(i).convert());
 	}
 }
