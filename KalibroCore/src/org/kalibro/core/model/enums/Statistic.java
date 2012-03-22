@@ -16,6 +16,13 @@ public enum Statistic {
 			return SUM.calculate(values) / values.size();
 		}
 	},
+	COUNT {
+
+		@Override
+		public Double calculate(Collection<Double> values) {
+			return new Double(values.size());
+		}
+	},
 	MAXIMUM {
 
 		@Override

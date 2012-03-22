@@ -19,7 +19,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(CheckstyleMetric.class)
 public class PreMetricResultTest extends KalibroTestCase {
 
-	private String messageKey;
 	private CheckstyleMetric metric;
 	private NativeMetric nativeMetric;
 
@@ -27,14 +26,13 @@ public class PreMetricResultTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		messageKey = "PreMetricResultTest";
 		mockMetric();
 		result = new PreMetricResult(metric);
 	}
 
 	private void mockMetric() {
 		metric = PowerMockito.mock(CheckstyleMetric.class);
-		nativeMetric = new NativeMetric(messageKey, Granularity.PACKAGE, Language.CPP);
+		nativeMetric = new NativeMetric("PreMetricResultTest", Granularity.PACKAGE, Language.CPP);
 		PowerMockito.when(metric.getNativeMetric()).thenReturn(nativeMetric);
 		PowerMockito.when(metric.getAggregationType()).thenReturn(Statistic.AVERAGE);
 	}
@@ -58,7 +56,7 @@ public class PreMetricResultTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCalculateAverageOfAddedValues() {
+	public void shouldCalculateStatisticOfAddedValues() {
 		result.addValue(42.0);
 		result.addValue(58.0);
 		NativeMetricResult metricResult = result.getResult();

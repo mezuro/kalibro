@@ -7,21 +7,18 @@ import java.util.Set;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
 
 public class PreModuleResult {
 
 	private Module module;
-	private Set<NativeMetric> wantedMetrics;
 	private Map<String, PreMetricResult> metricResults;
 
-	public PreModuleResult(String className, Set<NativeMetric> wantedMetrics) {
-		module = new Module(Granularity.CLASS, className);
-		this.wantedMetrics = wantedMetrics;
-		initializeMetricResults();
+	public PreModuleResult(Module module, Set<NativeMetric> wantedMetrics) {
+		this.module = module;
+		initializeMetricResults(wantedMetrics);
 	}
 
-	private void initializeMetricResults() {
+	private void initializeMetricResults(Set<NativeMetric> wantedMetrics) {
 		metricResults = new HashMap<String, PreMetricResult>();
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
 			if (wantedMetrics.contains(metric.getNativeMetric()))
@@ -29,7 +26,8 @@ public class PreModuleResult {
 	}
 
 	public void addMetricResult(String messageKey, Double value) {
-		metricResults.get(messageKey).addValue(value);
+		if (metricResults.containsKey(messageKey))
+			metricResults.get(messageKey).addValue(value);
 	}
 
 	public NativeModuleResult getModuleResult() {
