@@ -24,7 +24,7 @@ public class CheckstyleStub implements MetricCollector {
 	private static NativeModuleResult initializeResult() {
 		nativeMetrics = new HashSet<NativeMetric>();
 
-		Module module = new Module(Granularity.CLASS, "org", "fibonacci", "Fibonacci.java");
+		Module module = new Module(Granularity.CLASS, "org", "fibonacci", "Fibonacci");
 		result = new NativeModuleResult(module);
 		Map<String, String> resultsMap = loadResults();
 		for (String metricName : resultsMap.keySet())

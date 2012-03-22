@@ -42,7 +42,7 @@ public class CheckstyleOutputParser extends AuditAdapter {
 
 	private Module fileNameToModule(String fileName) {
 		String relativeFileName = fileName.replace(codeDirectory.getAbsolutePath() + File.separator, "");
-		String[] parts = relativeFileName.split(Pattern.quote(File.separator));
+		String[] parts = relativeFileName.replace(".java", "").split(Pattern.quote(File.separator));
 		return new Module(Granularity.CLASS, parts);
 	}
 
