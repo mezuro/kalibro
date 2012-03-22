@@ -4,58 +4,80 @@ import static org.checkstyle.CheckstyleMetric.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
+import static org.mockito.Matchers.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.NativeMetric;
+import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.core.util.Identifier;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 
 public class CheckstyleMetricTest extends KalibroTestCase {
 
 	@BeforeClass
 	public static void emmaCoverage() {
 		CheckstyleMetric.values();
-		CheckstyleMetric.valueOf(FILE_LENGTH.name());
+		CheckstyleMetric.valueOf(FAN_OUT.name());
 	}
 
-	private CheckstyleConfiguration checker, treeWalker;
+	private CheckstyleConfiguration configuration;
 
 	@Before
 	public void setUp() {
-		checker = new CheckstyleConfiguration("Checker");
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			metric.addToChecker(checker);
-		treeWalker = checker.getChildByName("TreeWalker");
+		configuration = PowerMockito.mock(CheckstyleConfiguration.class);
+		PowerMockito.when(configuration.getChildByName(anyString())).thenReturn(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkNames() {
-		assertEquals("File length", "" + FILE_LENGTH);
-		assertEquals("Number of methods", "" + NUMBER_OF_METHODS);
+	public void checkToString() {
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			assertEquals(Identifier.fromConstant(metric.name()).asText(), "" + metric);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void checkMessageKeys() {
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			assertSame(metric, getMetricFor(metric.getMessageKey()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNativeMetrics() {
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			assertDeepEquals(new NativeMetric(metric.toString(), CLASS, JAVA), metric.getNativeMetric());
+			assertDeepEquals(new NativeMetric("" + metric, CLASS, JAVA), metric.getNativeMetric());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkMetricKeys() {
-		assertEquals(FILE_LENGTH, CheckstyleMetric.getMetricFor("maxLen.file"));
-		assertEquals(NUMBER_OF_METHODS, CheckstyleMetric.getMetricFor("too.many.methods"));
+	public void checkAggregationType() {
+		for (CheckstyleMetric metric : CheckstyleMetric.values())
+			if (metric.name().startsWith("AVERAGE"))
+				assertEquals(Statistic.AVERAGE, metric.getAggregationType());
+			else if (metric.getAggregationType() == Statistic.COUNT)
+				assertTrue(metric.name().endsWith("S") || metric.name().endsWith("COUNT"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAddAttributesToConfiguration() {
-		assertEquals("-1", checker.getChildByName("FileLength").getAttribute("max"));
-		assertEquals("-1", treeWalker.getChildByName("MethodCount").getAttribute("maxTotal"));
+	public void shouldAddToCheckerIfNotTreeWalker() {
+		FILE_LENGTH.addToChecker(configuration);
+		InOrder order = Mockito.inOrder(configuration);
+		order.verify(configuration).getChildByName("FileLength");
+		order.verify(configuration).addMessageKey(FILE_LENGTH.getMessageKey());
+		order.verify(configuration).addAttributeName("max");
+		Mockito.verifyNoMoreInteractions(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAddMessagesToConfiguration() {
-		assertTrue(checker.getChildByName("FileLength").getMessages().containsKey("maxLen.file"));
-		assertTrue(treeWalker.getChildByName("MethodCount").getMessages().containsKey("too.many.methods"));
+	public void shouldAddToTreeWalkerIfTreeWalker() {
+		FAN_OUT.addToChecker(configuration);
+		InOrder order = Mockito.inOrder(configuration);
+		order.verify(configuration).getChildByName("TreeWalker");
+		order.verify(configuration).getChildByName("ClassFanOutComplexity");
+		order.verify(configuration).addMessageKey(FAN_OUT.getMessageKey());
+		order.verify(configuration).addAttributeName("max");
+		Mockito.verifyNoMoreInteractions(configuration);
 	}
 }

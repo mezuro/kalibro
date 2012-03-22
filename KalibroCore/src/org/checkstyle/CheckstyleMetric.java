@@ -54,7 +54,6 @@ public enum CheckstyleMetric {
 	private String moduleName;
 	private String attributeName;
 	private String messageKey;
-	private NativeMetric nativeMetric;
 	private Statistic aggregationType;
 
 	private CheckstyleMetric(String moduleName, String attributeName, String messageKey) {
@@ -71,7 +70,6 @@ public enum CheckstyleMetric {
 		this.moduleName = moduleName;
 		this.attributeName = attributeName;
 		this.messageKey = messageKey;
-		this.nativeMetric = new NativeMetric(toString(), Granularity.CLASS, Language.JAVA);
 		this.aggregationType = aggregationType;
 		addMetric(messageKey, this);
 	}
@@ -81,23 +79,23 @@ public enum CheckstyleMetric {
 		return Identifier.fromConstant(name()).asText();
 	}
 
-	public String getMessageKey() {
+	protected String getMessageKey() {
 		return messageKey;
 	}
 
-	public NativeMetric getNativeMetric() {
-		return nativeMetric;
+	protected NativeMetric getNativeMetric() {
+		return new NativeMetric(toString(), Granularity.CLASS, Language.JAVA);
 	}
 
-	public Statistic getAggregationType() {
+	protected Statistic getAggregationType() {
 		return aggregationType;
 	}
 
-	public void addToChecker(CheckstyleConfiguration checker) {
+	protected void addToChecker(CheckstyleConfiguration checker) {
 		CheckstyleConfiguration configuration = getParent(checker).getChildByName(moduleName);
-		if (! attributeName.isEmpty())
-			configuration.addAttributeName(attributeName);
 		configuration.addMessageKey(messageKey);
+		if (!attributeName.isEmpty())
+			configuration.addAttributeName(attributeName);
 	}
 
 	protected CheckstyleConfiguration getParent(CheckstyleConfiguration checker) {

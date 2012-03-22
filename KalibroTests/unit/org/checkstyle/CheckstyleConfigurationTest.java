@@ -51,6 +51,7 @@ public class CheckstyleConfigurationTest extends KalibroTestCase {
 		assertEquals(0, configuration.getChildren().length);
 
 		CheckstyleConfiguration fileLength = configuration.getChildByName("FileLength");
+		assertEquals(1, configuration.getChildren().length);
 		assertSame(fileLength, configuration.getChildByName("FileLength"));
 	}
 
