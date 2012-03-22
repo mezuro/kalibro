@@ -2,59 +2,73 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
+import com.puppycrawl.tools.checkstyle.Checker;
+
+import java.io.File;
+import java.util.List;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({CheckstyleConfiguration.class, CheckstyleMetricCollector.class})
+@PrepareForTest({Checker.class, CheckstyleConfiguration.class, CheckstyleMetricCollector.class, FileUtils.class})
 public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
-	private CheckstyleMetricCollector collector;
+	private static final File DIRECTORY = PROJECTS_DIRECTORY;
+	private static final Set<NativeMetric> METRICS = CheckstyleStub.nativeMetrics();
 
-	private KalibroChecker checker;
-	private CheckstyleOutputParser parser;
 	private CheckstyleConfiguration configuration;
-	private Set<NativeMetric> wantedMetrics;
+	private CheckstyleOutputParser parser;
+	private List<File> files;
+	private Checker checker;
+
+	private CheckstyleMetricCollector collector;
 
 	@Before
 	public void setUp() throws Exception {
 		collector = new CheckstyleMetricCollector();
-		wantedMetrics = collector.getSupportedMetrics();
-		mockParser();
 		mockConfiguration();
+		mockParser();
+		mockFiles();
 		mockChecker();
-	}
-
-	private void mockParser() throws Exception {
-		parser = PowerMockito.mock(CheckstyleOutputParser.class);
-		PowerMockito.whenNew(CheckstyleOutputParser.class).withArguments(PROJECTS_DIRECTORY, wantedMetrics).
-			thenReturn(parser);
 	}
 
 	private void mockConfiguration() {
 		configuration = PowerMockito.mock(CheckstyleConfiguration.class);
 		PowerMockito.mockStatic(CheckstyleConfiguration.class);
-		PowerMockito.when(CheckstyleConfiguration.checkerConfiguration(wantedMetrics)).thenReturn(configuration);
+		PowerMockito.when(CheckstyleConfiguration.checkerConfiguration(METRICS)).thenReturn(configuration);
+	}
+
+	private void mockParser() throws Exception {
+		parser = PowerMockito.mock(CheckstyleOutputParser.class);
+		PowerMockito.whenNew(CheckstyleOutputParser.class).withArguments(DIRECTORY, METRICS).thenReturn(parser);
+	}
+
+	private void mockFiles() {
+		files = PowerMockito.mock(List.class);
+		PowerMockito.mockStatic(FileUtils.class);
+		PowerMockito.when(FileUtils.listFiles(DIRECTORY, new String[]{"java"}, true)).thenReturn(files);
 	}
 
 	private void mockChecker() throws Exception {
-		checker = PowerMockito.mock(KalibroChecker.class);
-		PowerMockito.whenNew(KalibroChecker.class).withArguments(parser, configuration).thenReturn(checker);
+		checker = PowerMockito.mock(Checker.class);
+		PowerMockito.whenNew(Checker.class).withNoArguments().thenReturn(checker);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkSupportedMetrics() {
-		assertDeepEquals(CheckstyleStub.nativeMetrics(), collector.getSupportedMetrics());
+		assertDeepEquals(METRICS, collector.getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -62,8 +76,13 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 		Set<NativeModuleResult> results = CheckstyleStub.results();
 		PowerMockito.when(parser.getResults()).thenReturn(results);
 
-		assertSame(results, collector.collectMetrics(PROJECTS_DIRECTORY, wantedMetrics));
-		Mockito.verify(checker).process(PROJECTS_DIRECTORY);
-		Mockito.verify(parser).getResults();
+		assertSame(results, collector.collectMetrics(PROJECTS_DIRECTORY, METRICS));
+		InOrder order = Mockito.inOrder(checker, parser);
+		order.verify(checker).setModuleClassLoader(Checker.class.getClassLoader());
+		order.verify(checker).addListener(parser);
+		order.verify(checker).configure(configuration);
+		order.verify(checker).process(files);
+		order.verify(checker).destroy();
+		order.verify(parser).getResults();
 	}
 }
