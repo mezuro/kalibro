@@ -133,6 +133,13 @@ public class KalibroTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void testMetricConfigurationDao() {
+		MetricConfigurationDao metricConfigurationDao = PowerMockito.mock(MetricConfigurationDao.class);
+		PowerMockito.when(daoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
+		assertSame(metricConfigurationDao, Kalibro.getMetricConfigurationDao());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testProjectDao() {
 		ProjectDao projectDao = PowerMockito.mock(ProjectDao.class);
 		PowerMockito.when(daoFactory.getProjectDao()).thenReturn(projectDao);

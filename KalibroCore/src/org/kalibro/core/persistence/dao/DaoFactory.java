@@ -6,6 +6,8 @@ public interface DaoFactory {
 
 	ConfigurationDao getConfigurationDao();
 
+	MetricConfigurationDao getMetricConfigurationDao();
+
 	ProjectDao getProjectDao();
 
 	ProjectResultDao getProjectResultDao();

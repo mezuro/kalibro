@@ -32,6 +32,7 @@ public class DatabaseDaoFactory implements DaoFactory {
 		return new ConfigurationDatabaseDao(createDatabaseManager());
 	}
 
+	@Override
 	public MetricConfigurationDatabaseDao getMetricConfigurationDao() {
 		return new MetricConfigurationDatabaseDao(createDatabaseManager());
 	}

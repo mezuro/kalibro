@@ -29,6 +29,12 @@ public class PortDaoFactory implements DaoFactory {
 	}
 
 	@Override
+	public MetricConfigurationDao getMetricConfigurationDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public ProjectDao getProjectDao() {
 		return projectDao;
 	}

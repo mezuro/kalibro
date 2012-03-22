@@ -45,8 +45,7 @@ public final class Kalibro {
 	}
 
 	public static MetricConfigurationDao getMetricConfigurationDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return getFacade().getDaoFactory().getMetricConfigurationDao();
 	}
 
 	public static ProjectDao getProjectDao() {
