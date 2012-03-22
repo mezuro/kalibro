@@ -11,16 +11,14 @@ import org.kalibro.core.model.NativeModuleResult;
 public class PreModuleResult {
 
 	private Module module;
-	private Set<NativeMetric> wantedMetrics;
 	private Map<String, PreMetricResult> metricResults;
 
 	public PreModuleResult(Module module, Set<NativeMetric> wantedMetrics) {
 		this.module = module;
-		this.wantedMetrics = wantedMetrics;
-		initializeMetricResults();
+		initializeMetricResults(wantedMetrics);
 	}
 
-	private void initializeMetricResults() {
+	private void initializeMetricResults(Set<NativeMetric> wantedMetrics) {
 		metricResults = new HashMap<String, PreMetricResult>();
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
 			if (wantedMetrics.contains(metric.getNativeMetric()))
@@ -28,7 +26,8 @@ public class PreModuleResult {
 	}
 
 	public void addMetricResult(String messageKey, Double value) {
-		metricResults.get(messageKey).addValue(value);
+		if (metricResults.containsKey(messageKey))
+			metricResults.get(messageKey).addValue(value);
 	}
 
 	public NativeModuleResult getModuleResult() {
