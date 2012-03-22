@@ -7,16 +7,26 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.Kalibro;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.kalibro.service.entities.ProjectResultXml;
 
 @WebService
 public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 
+	private ProjectResultDao dao;
+
+	public ProjectResultEndpointImpl() {
+		this(Kalibro.getProjectResultDao());
+	}
+
+	protected ProjectResultEndpointImpl(ProjectResultDao projectResultDao) {
+		dao = projectResultDao;
+	}
+
 	@Override
 	@WebResult(name = "hasResults")
 	public boolean hasResultsFor(@WebParam(name = "projectName") String projectName) {
-		return Kalibro.getProjectResultDao().hasResultsFor(projectName);
+		return dao.hasResultsFor(projectName);
 	}
 
 	@Override
@@ -24,7 +34,7 @@ public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 	public boolean hasResultsBefore(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName) {
-		return Kalibro.getProjectResultDao().hasResultsBefore(date, projectName);
+		return dao.hasResultsBefore(date, projectName);
 	}
 
 	@Override
@@ -32,21 +42,19 @@ public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 	public boolean hasResultsAfter(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName) {
-		return Kalibro.getProjectResultDao().hasResultsAfter(date, projectName);
+		return dao.hasResultsAfter(date, projectName);
 	}
 
 	@Override
 	@WebResult(name = "projectResult")
 	public ProjectResultXml getFirstResultOf(@WebParam(name = "projectName") String projectName) {
-		ProjectResult firstResult = Kalibro.getProjectResultDao().getFirstResultOf(projectName);
-		return new ProjectResultXml(firstResult);
+		return new ProjectResultXml(dao.getFirstResultOf(projectName));
 	}
 
 	@Override
 	@WebResult(name = "projectResult")
 	public ProjectResultXml getLastResultOf(@WebParam(name = "projectName") String projectName) {
-		ProjectResult lastResult = Kalibro.getProjectResultDao().getLastResultOf(projectName);
-		return new ProjectResultXml(lastResult);
+		return new ProjectResultXml(dao.getLastResultOf(projectName));
 	}
 
 	@Override
@@ -54,8 +62,7 @@ public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 	public ProjectResultXml getLastResultBefore(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName) {
-		ProjectResult lastResult = Kalibro.getProjectResultDao().getLastResultBefore(date, projectName);
-		return new ProjectResultXml(lastResult);
+		return new ProjectResultXml(dao.getLastResultBefore(date, projectName));
 	}
 
 	@Override
@@ -63,7 +70,6 @@ public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 	public ProjectResultXml getFirstResultAfter(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName) {
-		ProjectResult firstResult = Kalibro.getProjectResultDao().getFirstResultAfter(date, projectName);
-		return new ProjectResultXml(firstResult);
+		return new ProjectResultXml(dao.getFirstResultAfter(date, projectName));
 	}
 }

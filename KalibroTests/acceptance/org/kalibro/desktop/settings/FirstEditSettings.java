@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
-import org.kalibro.KalibroDesktopTestCase;
 import org.kalibro.core.settings.KalibroSettings;
+import org.kalibro.desktop.KalibroDesktopTestCase;
 
 /**
  * On the first execution, if the user edit the settings and confirms, the settings file should be written and the

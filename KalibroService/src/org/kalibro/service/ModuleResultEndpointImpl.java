@@ -10,10 +10,21 @@ import javax.jws.WebService;
 
 import org.kalibro.Kalibro;
 import org.kalibro.core.model.ModuleResult;
+import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.service.entities.ModuleResultXml;
 
 @WebService
 public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
+
+	private ModuleResultDao dao;
+
+	public ModuleResultEndpointImpl() {
+		this(Kalibro.getModuleResultDao());
+	}
+
+	protected ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {
+		dao = moduleResultDao;
+	}
 
 	@Override
 	@WebResult(name = "moduleResult")
@@ -21,8 +32,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 		@WebParam(name = "projectName") String projectName,
 		@WebParam(name = "moduleName") String moduleName,
 		@WebParam(name = "date") Date date) {
-		ModuleResult moduleResult = Kalibro.getModuleResultDao().getModuleResult(projectName, moduleName, date);
-		return new ModuleResultXml(moduleResult);
+		return new ModuleResultXml(dao.getModuleResult(projectName, moduleName, date));
 	}
 
 	@Override
@@ -31,7 +41,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 		@WebParam(name = "projectName") String projectName,
 		@WebParam(name = "moduleName") String moduleName) {
 		List<ModuleResultXml> history = new ArrayList<ModuleResultXml>();
-		for (ModuleResult result : Kalibro.getModuleResultDao().getResultHistory(projectName, moduleName))
+		for (ModuleResult result : dao.getResultHistory(projectName, moduleName))
 			history.add(new ModuleResultXml(result));
 		return history;
 	}

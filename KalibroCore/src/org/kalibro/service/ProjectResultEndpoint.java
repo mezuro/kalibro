@@ -3,6 +3,8 @@ package org.kalibro.service;
 import java.util.Date;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.service.entities.ProjectResultXml;
@@ -11,23 +13,38 @@ import org.kalibro.service.entities.ProjectResultXml;
 public interface ProjectResultEndpoint {
 
 	@WebMethod
-	boolean hasResultsFor(String projectName);
+	@WebResult(name = "hasResults")
+	boolean hasResultsFor(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	boolean hasResultsBefore(Date date, String projectName);
+	@WebResult(name = "hasResults")
+	boolean hasResultsBefore(
+		@WebParam(name = "date") Date date,
+		@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	boolean hasResultsAfter(Date date, String projectName);
+	@WebResult(name = "hasResults")
+	boolean hasResultsAfter(
+		@WebParam(name = "date") Date date,
+		@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	ProjectResultXml getFirstResultOf(String projectName);
+	@WebResult(name = "projectResult")
+	ProjectResultXml getFirstResultOf(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	ProjectResultXml getLastResultOf(String projectName);
+	@WebResult(name = "projectResult")
+	ProjectResultXml getLastResultOf(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	ProjectResultXml getLastResultBefore(Date date, String projectName);
+	@WebResult(name = "projectResult")
+	ProjectResultXml getLastResultBefore(
+		@WebParam(name = "date") Date date,
+		@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	ProjectResultXml getFirstResultAfter(Date date, String projectName);
+	@WebResult(name = "projectResult")
+	ProjectResultXml getFirstResultAfter(
+		@WebParam(name = "date") Date date,
+		@WebParam(name = "projectName") String projectName);
 }

@@ -3,6 +3,8 @@ package org.kalibro.service;
 import java.util.List;
 
 import javax.jws.WebMethod;
+import javax.jws.WebParam;
+import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.service.entities.BaseToolXml;
@@ -11,8 +13,10 @@ import org.kalibro.service.entities.BaseToolXml;
 public interface BaseToolEndpoint {
 
 	@WebMethod
+	@WebResult(name = "baseToolName")
 	List<String> getBaseToolNames();
 
 	@WebMethod
-	BaseToolXml getBaseTool(String baseToolName);
+	@WebResult(name = "baseTool")
+	BaseToolXml getBaseTool(@WebParam(name = "baseToolName") String baseToolName);
 }

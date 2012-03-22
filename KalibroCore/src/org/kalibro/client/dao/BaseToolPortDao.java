@@ -17,7 +17,7 @@ class BaseToolPortDao implements BaseToolDao {
 
 	@Override
 	public void save(BaseTool baseTool) {
-		throw new UnsupportedOperationException("Can not save base tool remotely");
+		throw new UnsupportedOperationException("Cannot save base tool remotely");
 	}
 
 	@Override

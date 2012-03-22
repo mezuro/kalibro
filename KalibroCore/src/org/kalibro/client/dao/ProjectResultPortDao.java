@@ -17,7 +17,7 @@ class ProjectResultPortDao implements ProjectResultDao {
 
 	@Override
 	public void save(ProjectResult result) {
-		throw new UnsupportedOperationException("Can not save project result remotely");
+		throw new UnsupportedOperationException("Cannot save project result remotely");
 	}
 
 	@Override

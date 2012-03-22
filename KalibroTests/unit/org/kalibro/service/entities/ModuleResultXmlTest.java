@@ -1,5 +1,6 @@
 package org.kalibro.service.entities;
 
+import static org.junit.Assert.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 
@@ -30,7 +31,6 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 
 	@Override
 	protected ModuleResultXml newDtoUsingDefaultConstructor() {
-		new CompoundMetricWithErrorXml();
 		return new ModuleResultXml();
 	}
 
@@ -63,5 +63,13 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 
 	private void removeCompoundMetricsWithError(ModuleResult moduleResult) {
 		WhiteboxImpl.setInternalState(moduleResult, "compoundMetricsWithError", (Object) null);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldConvertNullCompoundMetricsWithErrorIntoEmptyMap() {
+		ModuleResult moduleResult = helloWorldClassResult();
+		ModuleResultXml dto = createDto(moduleResult);
+		WhiteboxImpl.setInternalState(dto, "compoundMetricsWithError", (Object) null);
+		assertTrue(dto.convert().getCompoundMetricsWithError().isEmpty());
 	}
 }

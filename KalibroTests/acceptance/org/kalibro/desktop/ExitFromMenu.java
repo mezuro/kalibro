@@ -2,7 +2,6 @@ package org.kalibro.desktop;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroDesktopTestCase;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;

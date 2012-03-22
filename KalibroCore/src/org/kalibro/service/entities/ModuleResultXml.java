@@ -67,7 +67,8 @@ public class ModuleResultXml implements DataTransferObject<ModuleResult> {
 	}
 
 	private void convertCompoundMetricsWithError(ModuleResult moduleResult) {
-		for (CompoundMetricWithErrorXml metricWithError : compoundMetricsWithError)
-			moduleResult.addCompoundMetricWithError(metricWithError.getMetric(), metricWithError.getError());
+		if (compoundMetricsWithError != null)
+			for (CompoundMetricWithErrorXml metricWithError : compoundMetricsWithError)
+				moduleResult.addCompoundMetricWithError(metricWithError.getMetric(), metricWithError.getError());
 	}
 }

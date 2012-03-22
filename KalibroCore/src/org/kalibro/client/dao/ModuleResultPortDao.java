@@ -20,7 +20,7 @@ class ModuleResultPortDao implements ModuleResultDao {
 
 	@Override
 	public void save(ModuleResult moduleResult, String projectName, Date date) {
-		throw new UnsupportedOperationException("Can not save module result remotely");
+		throw new UnsupportedOperationException("Cannot save module result remotely");
 	}
 
 	@Override

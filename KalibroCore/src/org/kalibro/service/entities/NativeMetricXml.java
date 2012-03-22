@@ -1,5 +1,6 @@
 package org.kalibro.service.entities;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -32,8 +33,9 @@ public class NativeMetricXml extends MetricXml<NativeMetric> {
 
 	@Override
 	public NativeMetric convert() {
-		NativeMetric nativeMetric = new NativeMetric(name, scope, languages);
-		nativeMetric.setDescription(description);
+		Collection<Language> convertedLanguages = languages == null ? new ArrayList<Language>() : languages;
+		NativeMetric nativeMetric = new NativeMetric(name, scope, convertedLanguages);
+		nativeMetric.setDescription(description == null ? "" : description);
 		nativeMetric.setOrigin(origin);
 		return nativeMetric;
 	}

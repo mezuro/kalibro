@@ -1,23 +1,30 @@
 package org.kalibro;
 
+import static org.junit.Assert.*;
+
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.util.DataTransferObject;
+import org.powermock.reflect.Whitebox;
 
 public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void defaultConstructorShouldDoNothing() {
-		checkException(new Task() {
+	public void defaultConstructorShouldDoNothing() throws Exception {
+		RECORD record = newDtoUsingDefaultConstructor();
+		for (Field field : record.getClass().getDeclaredFields())
+			if (isInstanceField(field))
+				assertNull(field.getName(), Whitebox.getInternalState(record, field.getName()));
+	}
 
-			@Override
-			public void perform() {
-				newDtoUsingDefaultConstructor().convert();
-			}
-		}, NullPointerException.class);
+	private boolean isInstanceField(Field field) {
+		boolean isStatic = Modifier.isStatic(field.getModifiers());
+		boolean isOuterField = field.getName().startsWith("this$");
+		return ! (isStatic || isOuterField);
 	}
 
 	protected abstract RECORD newDtoUsingDefaultConstructor();

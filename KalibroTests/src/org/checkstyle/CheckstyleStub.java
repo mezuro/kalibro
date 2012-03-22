@@ -1,10 +1,10 @@
 package org.checkstyle;
 
-import static org.checkstyle.CheckstyleMetric.*;
-
 import java.io.File;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.core.MetricCollector;
@@ -14,6 +14,7 @@ import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
+import org.yaml.snakeyaml.Yaml;
 
 public class CheckstyleStub implements MetricCollector {
 
@@ -23,21 +24,31 @@ public class CheckstyleStub implements MetricCollector {
 	private static NativeModuleResult initializeResult() {
 		nativeMetrics = new HashSet<NativeMetric>();
 
-		Module module = new Module(Granularity.CLASS, "HelloWorld");
+		Module module = new Module(Granularity.CLASS, "org", "fibonacci", "Fibonacci");
 		result = new NativeModuleResult(module);
-		addMetricResult(AVERAGE_ANONYMOUS_CLASSES_LENGTH, 0.0);
-		addMetricResult(AVERAGE_METHOD_LENGTH, 3.0);
-		addMetricResult(EXECUTABLE_STATEMENTS, 1.0);
-		addMetricResult(FILE_LENGTH, 6.0);
-		addMetricResult(NUMBER_OF_METHODS, 1.0);
-		addMetricResult(NUMBER_OF_OUTER_TYPES, 1.0);
+		Map<String, String> resultsMap = loadResults();
+		for (String metricName : resultsMap.keySet())
+			addMetricResult(CheckstyleMetric.valueOf(metricName), resultsMap.get(metricName));
 		return result;
 	}
 
-	private static void addMetricResult(CheckstyleMetric metric, Double value) {
+	private static Map<String, String> loadResults() {
+		InputStream resource = CheckstyleStub.class.getResourceAsStream("fibonacci_results.yml");
+		return new Yaml().loadAs(resource, Map.class);
+	}
+
+	private static void addMetricResult(CheckstyleMetric metric, String valueExpression) {
 		NativeMetric nativeMetric = new NativeMetric(metric.toString(), Granularity.CLASS, Language.JAVA);
 		nativeMetrics.add(nativeMetric);
+		Double value = evaluateExpression(valueExpression);
 		result.addMetricResult(new NativeMetricResult(nativeMetric, value));
+	}
+
+	private static Double evaluateExpression(String expression) {
+		String[] values = expression.split("/", 2);
+		if (values.length > 1)
+			return Double.parseDouble(values[0]) / Double.parseDouble(values[1]);
+		return Double.parseDouble(expression);
 	}
 
 	public static Set<NativeMetric> nativeMetrics() {

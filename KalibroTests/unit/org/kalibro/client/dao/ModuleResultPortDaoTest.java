@@ -47,7 +47,7 @@ public class ModuleResultPortDaoTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				dao.save(null, null, null);
 			}
-		}, UnsupportedOperationException.class, "Can not save module result remotely");
+		}, UnsupportedOperationException.class, "Cannot save module result remotely");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

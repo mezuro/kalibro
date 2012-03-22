@@ -1,9 +1,12 @@
 package org.kalibro.core.persistence.database;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.analizo.AnalizoMetricCollector;
+import org.checkstyle.CheckstyleMetricCollector;
+import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.ConfigurationFixtures;
@@ -31,9 +34,16 @@ public class SeedsFileGenerator {
 	}
 
 	private List<BaseToolRecord> baseToolSeeds() {
-		BaseTool analizo = new BaseTool("Analizo");
-		analizo.setCollectorClass(AnalizoMetricCollector.class);
-		return Arrays.asList(new BaseToolRecord(analizo));
+		List<BaseToolRecord> baseTools = new ArrayList<BaseToolRecord>();
+		baseTools.add(newBaseTool("Analizo", AnalizoMetricCollector.class));
+		baseTools.add(newBaseTool("Checkstyle", CheckstyleMetricCollector.class));
+		return baseTools;
+	}
+
+	private BaseToolRecord newBaseTool(String name, Class<? extends MetricCollector> collectorClass) {
+		BaseTool baseTool = new BaseTool(name);
+		baseTool.setCollectorClass(collectorClass);
+		return new BaseToolRecord(baseTool);
 	}
 
 	private List<ConfigurationRecord> configurationSeeds() {

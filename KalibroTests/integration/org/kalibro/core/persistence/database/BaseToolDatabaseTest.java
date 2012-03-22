@@ -14,32 +14,32 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	private BaseToolDatabaseDao dao;
 
-	private BaseTool analizo;
+	private BaseTool analizoStub;
 
 	@Before
 	public void setUp() {
-		analizo = analizoStub();
+		analizoStub = analizoStub();
 		dao = daoFactory.getBaseToolDao();
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListSavedBaseToolNames() {
-		assertDeepEquals(dao.getBaseToolNames(), "Analizo");
+		assertDeepEquals(dao.getBaseToolNames(), "Analizo", "Checkstyle");
 
-		dao.save(analizo);
-		assertDeepEquals(dao.getBaseToolNames(), "Analizo");
+		dao.save(analizoStub);
+		assertDeepEquals(dao.getBaseToolNames(), "Analizo", "Checkstyle");
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRetrieveSavedBaseTool() {
-		dao.save(analizo);
-		BaseTool retrieved = dao.getBaseTool(analizo.getName());
-		assertNotSame(analizo, retrieved);
-		assertDeepEquals(analizo, retrieved);
+		dao.save(analizoStub);
+		BaseTool retrieved = dao.getBaseTool(analizoStub.getName());
+		assertNotSame(analizoStub, retrieved);
+		assertDeepEquals(analizoStub, retrieved);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
-	public void shouldNotRetrieveRemovedBaseTool() {
+	public void shouldNotRetrieveInexistentBaseTool() {
 		checkException(new Task() {
 
 			@Override

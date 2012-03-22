@@ -25,7 +25,6 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		simpleConfiguration.setName("Simple");
 		simpleConfiguration.addMetricConfiguration(new MetricConfiguration(CompoundMetricFixtures.sc()));
 		dao = daoFactory.getConfigurationDao();
-		daoFactory.getBaseToolDao().save(BaseToolFixtures.analizoStub());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
