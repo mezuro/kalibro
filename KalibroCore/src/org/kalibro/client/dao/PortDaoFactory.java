@@ -6,6 +6,7 @@ public class PortDaoFactory implements DaoFactory {
 
 	private BaseToolDao baseToolDao;
 	private ConfigurationDao configurationDao;
+	private MetricConfigurationDao metricConfigurationDao;
 	private ProjectDao projectDao;
 	private ProjectResultDao projectResultDao;
 	private ModuleResultDao moduleResultDao;
@@ -13,6 +14,7 @@ public class PortDaoFactory implements DaoFactory {
 	public PortDaoFactory() {
 		baseToolDao = new BaseToolPortDao();
 		configurationDao = new ConfigurationPortDao();
+		metricConfigurationDao = new MetricConfigurationPortDao();
 		projectDao = new ProjectPortDao();
 		projectResultDao = new ProjectResultPortDao();
 		moduleResultDao = new ModuleResultPortDao();
@@ -26,6 +28,11 @@ public class PortDaoFactory implements DaoFactory {
 	@Override
 	public ConfigurationDao getConfigurationDao() {
 		return configurationDao;
+	}
+
+	@Override
+	public MetricConfigurationDao getMetricConfigurationDao() {
+		return metricConfigurationDao;
 	}
 
 	@Override

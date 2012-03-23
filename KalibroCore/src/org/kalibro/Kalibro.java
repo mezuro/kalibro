@@ -44,6 +44,10 @@ public final class Kalibro {
 		return getFacade().getDaoFactory().getConfigurationDao();
 	}
 
+	public static MetricConfigurationDao getMetricConfigurationDao() {
+		return getFacade().getDaoFactory().getMetricConfigurationDao();
+	}
+
 	public static ProjectDao getProjectDao() {
 		return getFacade().getDaoFactory().getProjectDao();
 	}

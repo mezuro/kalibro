@@ -12,6 +12,9 @@
 	<endpoint						  name="ConfigurationEndpoint"
 							  url-pattern="/ConfigurationEndpoint/"
 		implementation="org.kalibro.service.ConfigurationEndpointImpl"/>
+	<endpoint						  name="MetricConfigurationEndpoint"
+							  url-pattern="/MetricConfigurationEndpoint/"
+		implementation="org.kalibro.service.MetricConfigurationEndpointImpl"/>
 	<endpoint						  name="ProjectEndpoint"
 							  url-pattern="/ProjectEndpoint/"
 		implementation="org.kalibro.service.ProjectEndpointImpl"/>

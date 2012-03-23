@@ -27,6 +27,7 @@ public class PortDaoFactoryTest extends KalibroTestCase {
 	public void checkDaoClasses() {
 		assertClassEquals(BaseToolPortDao.class, factory.getBaseToolDao());
 		assertClassEquals(ConfigurationPortDao.class, factory.getConfigurationDao());
+		assertClassEquals(MetricConfigurationPortDao.class, factory.getMetricConfigurationDao());
 		assertClassEquals(ProjectPortDao.class, factory.getProjectDao());
 		assertClassEquals(ProjectResultPortDao.class, factory.getProjectResultDao());
 		assertClassEquals(ModuleResultPortDao.class, factory.getModuleResultDao());
@@ -36,6 +37,7 @@ public class PortDaoFactoryTest extends KalibroTestCase {
 	public void shouldInitializeOnlyOnce() {
 		assertSame(factory.getBaseToolDao(), factory.getBaseToolDao());
 		assertSame(factory.getConfigurationDao(), factory.getConfigurationDao());
+		assertSame(factory.getMetricConfigurationDao(), factory.getMetricConfigurationDao());
 		assertSame(factory.getProjectDao(), factory.getProjectDao());
 		assertSame(factory.getProjectResultDao(), factory.getProjectResultDao());
 		assertSame(factory.getModuleResultDao(), factory.getModuleResultDao());
