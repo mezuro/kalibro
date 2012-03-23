@@ -71,14 +71,35 @@ public abstract class KalibroTestCase {
 		}
 	}
 
+	protected void checkKalibroException(Runnable errorBlock, String message) {
+		checkKalibroException(errorBlock, message, null);
+	}
+
+	protected void checkKalibroException(Runnable errorBlock, String message, Class<? extends Throwable> causeClass) {
+		try {
+			errorBlock.run();
+			fail("Task should throw exception");
+		} catch (KalibroException exception) {
+			assertEquals(message, exception.getMessage());
+			Throwable cause = exception.getCause();
+			if (causeClass == null)
+				assertNull(cause);
+			else
+				assertClassEquals(causeClass, cause);
+		}
+	}
+
+	@Deprecated
 	protected void checkException(Task errorTask, Class<? extends Exception> exceptionClass) {
 		checkException(errorTask, exceptionClass, null);
 	}
 
+	@Deprecated
 	protected void checkException(Task errorTask, Class<? extends Exception> exceptionClass, String message) {
 		checkException(errorTask, exceptionClass, message, null);
 	}
 
+	@Deprecated
 	protected void checkException(Task errorTask, Class<? extends Exception> exceptionClass, String message,
 		Class<? extends Exception> causeClass) {
 		try {

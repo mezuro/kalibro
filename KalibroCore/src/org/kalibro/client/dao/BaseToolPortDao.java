@@ -2,6 +2,7 @@ package org.kalibro.client.dao;
 
 import java.util.List;
 
+import org.kalibro.KalibroException;
 import org.kalibro.client.EndpointPortFactory;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.dao.BaseToolDao;
@@ -17,7 +18,7 @@ class BaseToolPortDao implements BaseToolDao {
 
 	@Override
 	public void save(BaseTool baseTool) {
-		throw new UnsupportedOperationException("Cannot save base tool remotely");
+		throw new KalibroException("Cannot save base tool remotely");
 	}
 
 	@Override

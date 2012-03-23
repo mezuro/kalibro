@@ -2,6 +2,7 @@ package org.kalibro.client.dao;
 
 import java.util.List;
 
+import org.kalibro.KalibroException;
 import org.kalibro.client.EndpointPortFactory;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
@@ -33,7 +34,7 @@ class ConfigurationPortDao implements ConfigurationDao {
 
 	@Override
 	public Configuration getConfigurationFor(String projectName) {
-		throw new UnsupportedOperationException("Not available remotely");
+		throw new KalibroException("Not available remotely");
 	}
 
 	@Override

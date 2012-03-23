@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.client.EndpointPortFactory;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.ProjectResultFixtures;
 import org.kalibro.service.ProjectResultEndpoint;
@@ -44,13 +43,13 @@ public class ProjectResultPortDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSaveResultRemotely() {
-		checkException(new Task() {
+		checkKalibroException(new Runnable() {
 
 			@Override
-			public void perform() throws Exception {
+			public void run() {
 				dao.save(projectResult);
 			}
-		}, UnsupportedOperationException.class, "Cannot save project result remotely");
+		}, "Cannot save project result remotely");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

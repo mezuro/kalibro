@@ -2,6 +2,7 @@ package org.kalibro.client.dao;
 
 import java.util.Date;
 
+import org.kalibro.KalibroException;
 import org.kalibro.client.EndpointPortFactory;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
@@ -17,7 +18,7 @@ class ProjectResultPortDao implements ProjectResultDao {
 
 	@Override
 	public void save(ProjectResult result) {
-		throw new UnsupportedOperationException("Cannot save project result remotely");
+		throw new KalibroException("Cannot save project result remotely");
 	}
 
 	@Override

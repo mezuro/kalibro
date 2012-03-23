@@ -10,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.client.EndpointPortFactory;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.service.ConfigurationEndpoint;
@@ -67,13 +66,13 @@ public class ConfigurationPortDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetConfigurationFor() {
-		checkException(new Task() {
+		checkKalibroException(new Runnable() {
 
 			@Override
-			public void perform() throws Exception {
+			public void run() {
 				dao.getConfigurationFor("42");
 			}
-		}, UnsupportedOperationException.class, "Not available remotely");
+		}, "Not available remotely");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
