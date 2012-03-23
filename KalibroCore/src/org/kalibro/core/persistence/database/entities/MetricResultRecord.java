@@ -19,10 +19,11 @@ import org.kalibro.core.util.DataTransferObject;
 	@Column(name = "metricName")})
 public class MetricResultRecord implements DataTransferObject<MetricResult> {
 
-	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, String projectName, Date date) {
+	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, String projectName) {
+		Date date = moduleResult.getDate();
 		List<MetricResultRecord> records = new ArrayList<MetricResultRecord>();
 		for (MetricResult metricResult : moduleResult.getMetricResults())
-			if (! metricResult.getMetric().isCompound())
+			if (!metricResult.getMetric().isCompound())
 				records.add(new MetricResultRecord(metricResult, moduleResult.getModule(), projectName, date));
 		return records;
 	}
@@ -36,7 +37,7 @@ public class MetricResultRecord implements DataTransferObject<MetricResult> {
 
 	private static ModuleResult getCurrentResult(MetricResultRecord metricResult, List<ModuleResult> results) {
 		ModuleResult moduleResult = metricResult.module.convertIntoModuleResult();
-		if (! results.contains(moduleResult))
+		if (!results.contains(moduleResult))
 			results.add(moduleResult);
 		return results.get(results.size() - 1);
 	}

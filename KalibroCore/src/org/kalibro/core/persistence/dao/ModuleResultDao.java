@@ -7,8 +7,7 @@ import org.kalibro.core.model.ModuleResult;
 
 public interface ModuleResultDao {
 
-	// TODO remove parameter date (already in ModuleResult)
-	void save(ModuleResult moduleResult, String projectName, Date date);
+	void save(ModuleResult moduleResult, String projectName);
 
 	ModuleResult getModuleResult(String projectName, String moduleName, Date date);
 

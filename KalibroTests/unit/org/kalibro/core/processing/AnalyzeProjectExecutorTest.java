@@ -72,7 +72,7 @@ public class AnalyzeProjectExecutorTest extends KalibroTestCase {
 		String projectName = projectResult.getProject().getName();
 		Mockito.verify(projectResultDao).save(projectResult);
 		for (ModuleResult moduleResult : moduleResults)
-			Mockito.verify(moduleResultDao).save(moduleResult, projectName, projectResult.getDate());
+			Mockito.verify(moduleResultDao).save(moduleResult, projectName);
 		PowerMockito.verifyPrivate(executor).invoke("updateProjectState", ProjectState.READY);
 		PowerMockito.verifyStatic();
 		FileUtils.deleteQuietly(HELLO_WORLD_DIRECTORY);

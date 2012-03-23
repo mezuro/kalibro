@@ -23,12 +23,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({MetricResultRecord.class, ModuleResultDatabaseDao.class})
 public class ModuleResultDatabaseDaoTest extends KalibroTestCase {
 
+	private static final Date DATE = new Date();
+	private static final String MODULE_NAME = "ModuleResultDatabaseDaoTest module";
+	private static final String PROJECT_NAME = "ModuleResultDatabaseDaoTest project";
 	private static final String QUERY = "SELECT result FROM MetricResult result " +
 		"WHERE result.module.projectResult.project.name = :projectName AND result.module.name = :moduleName";
 
-	private Date date;
-	private String moduleName;
-	private String projectName;
 	private ModuleResult moduleResult;
 	private Configuration configuration;
 	private List<MetricResultRecord> records;
@@ -40,9 +40,6 @@ public class ModuleResultDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		date = new Date();
-		moduleName = "My module";
-		projectName = "My project";
 		mockRecords();
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		dao = PowerMockito.spy(new ModuleResultDatabaseDao(databaseManager));
@@ -54,7 +51,7 @@ public class ModuleResultDatabaseDaoTest extends KalibroTestCase {
 		configuration = PowerMockito.mock(Configuration.class);
 		records = PowerMockito.mock(List.class);
 		PowerMockito.mockStatic(MetricResultRecord.class);
-		PowerMockito.when(MetricResultRecord.createRecords(moduleResult, projectName, date)).thenReturn(records);
+		PowerMockito.when(MetricResultRecord.createRecords(moduleResult, PROJECT_NAME)).thenReturn(records);
 		PowerMockito.when(MetricResultRecord.convertIntoModuleResults(records)).thenReturn(Arrays.asList(moduleResult));
 	}
 
@@ -65,45 +62,45 @@ public class ModuleResultDatabaseDaoTest extends KalibroTestCase {
 
 		ConfigurationDatabaseDao configDao = PowerMockito.mock(ConfigurationDatabaseDao.class);
 		PowerMockito.whenNew(ConfigurationDatabaseDao.class).withArguments(databaseManager).thenReturn(configDao);
-		PowerMockito.when(configDao.getConfigurationFor(projectName)).thenReturn(configuration);
+		PowerMockito.when(configDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSave() {
-		dao.save(moduleResult, projectName, date);
+		dao.save(moduleResult, PROJECT_NAME);
 		Mockito.verify(databaseManager).save(records);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetModuleResult() {
-		assertSame(moduleResult, dao.getModuleResult(projectName, moduleName, date));
+		assertSame(moduleResult, dao.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE));
 
 		Mockito.verify(dao).createRecordQuery(QUERY + " AND result.module.projectResult.date = :date");
-		Mockito.verify(query).setParameter("projectName", projectName);
-		Mockito.verify(query).setParameter("moduleName", moduleName);
-		Mockito.verify(query).setParameter("date", date.getTime());
+		Mockito.verify(query).setParameter("projectName", PROJECT_NAME);
+		Mockito.verify(query).setParameter("moduleName", MODULE_NAME);
+		Mockito.verify(query).setParameter("date", DATE.getTime());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetResultHistory() {
-		List<ModuleResult> resultHistory = dao.getResultHistory(projectName, moduleName);
+		List<ModuleResult> resultHistory = dao.getResultHistory(PROJECT_NAME, MODULE_NAME);
 		assertEquals(1, resultHistory.size());
 		assertSame(moduleResult, resultHistory.get(0));
 
 		Mockito.verify(dao).createRecordQuery(QUERY + " ORDER BY result.module.projectResult.date");
-		Mockito.verify(query).setParameter("projectName", projectName);
-		Mockito.verify(query).setParameter("moduleName", moduleName);
+		Mockito.verify(query).setParameter("projectName", PROJECT_NAME);
+		Mockito.verify(query).setParameter("moduleName", MODULE_NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConfigureModuleResult() {
-		dao.getModuleResult(projectName, moduleName, date);
+		dao.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE);
 		Mockito.verify(moduleResult).setConfiguration(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConfigureResultHistory() {
-		dao.getResultHistory(projectName, moduleName);
+		dao.getResultHistory(PROJECT_NAME, MODULE_NAME);
 		Mockito.verify(moduleResult).setConfiguration(configuration);
 	}
 }

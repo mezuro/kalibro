@@ -37,7 +37,7 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 
 	private void configureAndAddModuleResult(ModuleResult moduleResult) {
 		moduleResult.setConfiguration(simpleConfiguration());
-		daoStub.save(moduleResult, PROJECT_NAME, moduleResult.getDate());
+		daoStub.save(moduleResult, PROJECT_NAME);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

@@ -6,7 +6,6 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
-import java.util.Date;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
@@ -89,6 +88,6 @@ public class ProcessProjectTest extends KalibroTestCase {
 	private void assertAnalyzed() {
 		verify(projectDao).save(project);
 		verify(projectResultDao).save(any(ProjectResult.class));
-		verify(moduleResultDao).save(any(ModuleResult.class), anyString(), any(Date.class));
+		verify(moduleResultDao).save(any(ModuleResult.class), anyString());
 	}
 }

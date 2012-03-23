@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.*;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
+import org.powermock.reflect.Whitebox;
 
 public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
@@ -87,13 +88,13 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		result.getResultFor(loc).addDescendentResult(1.0);
 		save();
 
-		Date second = new Date(date.getTime() + 1);
+		incrementDate();
 		result.getResultFor(loc).addDescendentResult(2.0);
-		dao.save(result, project.getName(), second);
+		dao.save(result, project.getName());
 
-		Date third = new Date(second.getTime() + 1);
+		incrementDate();
 		result.getResultFor(loc).addDescendentResult(3.0);
-		dao.save(result, project.getName(), third);
+		dao.save(result, project.getName());
 
 		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), result.getModule().getName());
 		assertEquals(3, resultHistory.size());
@@ -102,7 +103,12 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(resultHistory.get(2).getResultFor(loc).getDescendentResults(), 1.0, 2.0, 3.0);
 	}
 
+	private void incrementDate() {
+		date = new Date(date.getTime() + 1);
+		Whitebox.setInternalState(result, "date", date);
+	}
+
 	private void save() {
-		dao.save(result, project.getName(), date);
+		dao.save(result, project.getName());
 	}
 }

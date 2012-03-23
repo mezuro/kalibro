@@ -36,9 +36,8 @@ public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResu
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConvertModuleResult() {
-		Date date = new Date();
-		ModuleResult moduleResult = helloWorldClassResult(date);
-		List<MetricResultRecord> metricResults = MetricResultRecord.createRecords(moduleResult, "", date);
+		ModuleResult moduleResult = helloWorldClassResult();
+		List<MetricResultRecord> metricResults = MetricResultRecord.createRecords(moduleResult, "");
 		List<ModuleResult> converted = MetricResultRecord.convertIntoModuleResults(metricResults);
 
 		assertEquals(1, converted.size());

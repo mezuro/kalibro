@@ -41,7 +41,7 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRunLoadProjectExecutor() throws Exception {
+	public void shouldRunLoadProjectExecutor() {
 		processTask.perform();
 		Mockito.verify(loadExecutor).execute();
 	}

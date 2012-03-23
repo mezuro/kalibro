@@ -19,8 +19,8 @@ class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 	}
 
 	@Override
-	public void save(ModuleResult moduleResult, String projectName, Date date) {
-		databaseManager.save(MetricResultRecord.createRecords(moduleResult, projectName, date));
+	public void save(ModuleResult moduleResult, String projectName) {
+		databaseManager.save(MetricResultRecord.createRecords(moduleResult, projectName));
 	}
 
 	@Override

@@ -9,8 +9,9 @@ public class ModuleResultDaoStub implements ModuleResultDao {
 	private SortedMap<ModuleResultKey, ModuleResult> moduleResults = new TreeMap<ModuleResultKey, ModuleResult>();
 
 	@Override
-	public void save(ModuleResult moduleResult, String projectName, Date date) {
+	public void save(ModuleResult moduleResult, String projectName) {
 		String moduleName = moduleResult.getModule().getName();
+		Date date = moduleResult.getDate();
 		moduleResults.put(new ModuleResultKey(projectName, moduleName, date), moduleResult);
 	}
 
