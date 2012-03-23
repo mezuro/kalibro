@@ -41,7 +41,7 @@ public class SpagoExtractor extends AbstractQualipsoExtractor {
 	private GenericItemInterface getErrorItem(Exception exception) {
 		GenericItem genericItem = new GenericItem();
 		genericItem.setValue("Resource", "Extraction failed.");
-		genericItem.setValue("Metric", new StackTracePrinter(exception).printStackTrace());
+		genericItem.setValue("Metric", new StackTracePrinter(1000).printStackTrace(exception));
 		genericItem.setValue("Value", "0.0");
 		return genericItem;
 	}
@@ -57,7 +57,7 @@ public class SpagoExtractor extends AbstractQualipsoExtractor {
 
 	private List<GenericItem> extract(ProjectDetail projectDetail) throws Exception {
 		SpagoRequestParser parser = new SpagoRequestParser(projectDetail.getDetail());
-		if (! parser.shouldIncludeProject())
+		if (!parser.shouldIncludeProject())
 			return new ArrayList<GenericItem>();
 		return extractMetrics(parser.getProject());
 	}
