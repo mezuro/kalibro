@@ -102,7 +102,6 @@ class EntityReflector {
 		try {
 			return type.getMethod(fieldName);
 		} catch (NoSuchMethodException exception) {
-			// TODO create Kalibro exception(s) instead of using RuntimeException
 			throw new RuntimeException("Method not found", exception);
 		}
 	}
