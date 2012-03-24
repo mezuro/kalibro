@@ -7,7 +7,7 @@ import java.util.Collection;
 
 import org.kalibro.DtoTestCase;
 
-public class ErrorRecordTest extends DtoTestCase<Exception, ErrorRecord> {
+public class ErrorRecordTest extends DtoTestCase<Throwable, ErrorRecord> {
 
 	@Override
 	protected ErrorRecord newDtoUsingDefaultConstructor() {
@@ -15,17 +15,17 @@ public class ErrorRecordTest extends DtoTestCase<Exception, ErrorRecord> {
 	}
 
 	@Override
-	protected Collection<Exception> entitiesForTestingConversion() {
-		return Arrays.asList(new Exception("My error message"));
+	protected Collection<Throwable> entitiesForTestingConversion() {
+		return Arrays.asList(new Throwable("My error message"));
 	}
 
 	@Override
-	protected ErrorRecord createDto(Exception error) {
+	protected ErrorRecord createDto(Throwable error) {
 		return new ErrorRecord(error, null);
 	}
 
 	@Override
-	protected void assertCorrectConversion(Exception original, Exception converted) {
+	protected void assertCorrectConversion(Throwable original, Throwable converted) {
 		assertEquals(original.getMessage(), converted.getMessage());
 		assertCorrectConversion(original.getStackTrace(), converted.getStackTrace());
 	}

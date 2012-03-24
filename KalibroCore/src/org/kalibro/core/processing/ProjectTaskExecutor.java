@@ -45,7 +45,7 @@ abstract class ProjectTaskExecutor implements TaskListener {
 
 	protected abstract void continueProcessing(TaskReport report);
 
-	private void reportError(Exception error) {
+	private void reportError(Throwable error) {
 		getProject().setError(error);
 		saveProject();
 	}

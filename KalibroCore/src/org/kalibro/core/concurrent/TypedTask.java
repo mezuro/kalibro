@@ -2,10 +2,15 @@ package org.kalibro.core.concurrent;
 
 public abstract class TypedTask<T> extends Task {
 
-	protected T result;
+	private T result;
 
 	protected void setResult(T result) {
 		this.result = result;
+	}
+
+	public T executeAndWaitResult() {
+		super.executeAndWait();
+		return result;
 	}
 
 	public T executeAndWaitResult(long timeout) {
@@ -14,16 +19,16 @@ public abstract class TypedTask<T> extends Task {
 	}
 
 	@Override
-	public void perform() throws Exception {
-		setResult(generateResult());
+	protected void perform() throws Throwable {
+		setResult(performAndGetResult());
 	}
 
-	public abstract T generateResult() throws Exception;
+	protected abstract T performAndGetResult() throws Throwable;
 
 	@Override
 	protected void reportTaskFinished(TaskReport report) {
 		long executionTime = report.getExecutionTime();
-		Exception error = report.getError();
+		Throwable error = report.getError();
 		super.reportTaskFinished(new TypedTaskReport<T>(executionTime, error, result));
 	}
 }

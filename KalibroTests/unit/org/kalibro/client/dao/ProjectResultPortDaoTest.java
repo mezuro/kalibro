@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.ProjectResultFixtures;
 import org.kalibro.service.ProjectResultEndpoint;
@@ -43,10 +44,10 @@ public class ProjectResultPortDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSaveResultRemotely() {
-		checkKalibroException(new Runnable() {
+		checkKalibroException(new Task() {
 
 			@Override
-			public void run() {
+			public void perform() {
 				dao.save(projectResult);
 			}
 		}, "Cannot save project result remotely");

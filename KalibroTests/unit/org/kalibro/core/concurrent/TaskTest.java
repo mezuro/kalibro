@@ -2,6 +2,7 @@ package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
+import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,62 +17,75 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Task.class)
 public class TaskTest extends KalibroTestCase implements TaskListener {
 
-	private TaskExecutor taskExecutor;
-	private TaskReport taskReport;
+	private TaskReport report;
+	private TaskExecutor executor;
 
 	@Before
 	public void setUp() throws Exception {
-		taskExecutor = PowerMockito.mock(TaskExecutor.class);
-		PowerMockito.whenNew(TaskExecutor.class).withArguments(any()).thenReturn(taskExecutor);
+		executor = PowerMockito.mock(TaskExecutor.class);
+		PowerMockito.whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldExecuteInBackground() {
 		new DoNothingTask().executeInBackground();
-		Mockito.verify(taskExecutor).executeInBackground();
+		verify(executor).executeInBackground();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldExecuteWithTimeout() {
+	public void shouldExecuteAndWaitWithoutTimeout() {
+		new DoNothingTask().executeAndWait();
+		verify(executor).executeAndWait();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldExecuteAndWaitWithTimeout() {
 		new DoNothingTask().executeAndWait(42);
-		Mockito.verify(taskExecutor).executeAndWait(42);
+		verify(executor).executeAndWait(42);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldExecutePeriodically() {
 		new DoNothingTask().executePeriodically(42);
-		Mockito.verify(taskExecutor).executePeriodically(42);
+		Mockito.verify(executor).executePeriodically(42);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCancelPeriodicExecution() {
 		new DoNothingTask().cancelPeriodicExecution();
-		Mockito.verify(taskExecutor).cancelPeriodicExecution();
+		verify(executor).cancelPeriodicExecution();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testTaskDone() throws InterruptedException {
+	public void shouldNotifyListenerOfTaskDone() throws InterruptedException {
 		runAndGetReport(new DoNothingTask());
-		assertTrue(taskReport.isTaskDone());
-		assertNull(taskReport.getError());
+		assertTrue(report.isTaskDone());
+		assertNull(report.getError());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testTaskHalted() throws InterruptedException {
-		runAndGetReport(new ThrowExceptionTask());
-		assertFalse(taskReport.isTaskDone());
-		assertNotNull(taskReport.getError());
+	public void shouldNotifyListenerOfTaskHalted() throws InterruptedException {
+		runAndGetReport(new ThrowErrorTask());
+		assertFalse(report.isTaskDone());
+		assertNotNull(report.getError());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldHaveDefaultDescription() {
+		assertEquals("running task: org.kalibro.core.concurrent.DoNothingTask", "" + new DoNothingTask());
+		assertEquals("running task: org.kalibro.core.concurrent.ThrowErrorTask", "" + new ThrowErrorTask());
 	}
 
 	private synchronized void runAndGetReport(Task task) throws InterruptedException {
+		report = null;
 		task.setListener(this);
 		new Thread(task).start();
 		waitNotification();
 	}
 
 	@Override
-	public synchronized void taskFinished(TaskReport report) {
-		taskReport = report;
+	public synchronized void taskFinished(TaskReport taskReport) {
+		report = taskReport;
 		notifyTest();
 	}
 }

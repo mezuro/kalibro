@@ -56,13 +56,13 @@ public class CommandTaskTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkExceptionExecutingForOuput() throws IOException {
 		PowerMockito.when(runtime.exec(COMMAND)).thenThrow(new IOException());
-		checkTaskException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws IOException {
 				commandTask.executeAndGetOuput();
 			}
-		}, IOException.class);
+		}, "", IOException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -74,19 +74,13 @@ public class CommandTaskTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkExceptionOnSimpleExecution() throws IOException {
 		PowerMockito.when(runtime.exec(COMMAND)).thenThrow(new IOException());
-		checkTaskException(commandTask, IOException.class);
+		checkKalibroException(commandTask, "", IOException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowExceptionOnBadExitValue() {
 		PowerMockito.when(process.exitValue()).thenReturn(1);
-		checkKalibroException(new Runnable() {
-
-			@Override
-			public void run() {
-				commandTask.executeAndWait(100);
-			}
-		}, "Command returned with error status: " + COMMAND);
+		checkKalibroException(commandTask, "Command returned with error status: " + COMMAND);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -98,7 +92,7 @@ public class CommandTaskTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDestroyProcessOnInterruptedException() throws InterruptedException {
 		PowerMockito.when(process.waitFor()).thenThrow(new InterruptedException());
-		checkTaskException(commandTask, InterruptedException.class);
+		checkKalibroException(commandTask, "", InterruptedException.class);
 		Mockito.verify(process).destroy();
 	}
 

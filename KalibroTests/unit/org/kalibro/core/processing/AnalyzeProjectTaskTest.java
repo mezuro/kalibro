@@ -35,13 +35,13 @@ public class AnalyzeProjectTaskTest extends KalibroTestCase {
 	private AnalyzeProjectTask analyzeTask;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		projectResult = helloWorldResult();
 		projectResult.setSourceTree(null);
 		configuration = simpleConfiguration();
 		mockKalibro();
 		analyzeTask = new AnalyzeProjectTask(projectResult);
-		analyzeTask.perform();
+		analyzeTask.executeAndWait();
 	}
 
 	private void mockKalibro() {

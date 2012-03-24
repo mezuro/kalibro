@@ -12,7 +12,7 @@ import org.kalibro.core.util.DataTransferObject;
 
 @XmlRootElement(name = "Error")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorXml implements DataTransferObject<Exception> {
+public class ErrorXml implements DataTransferObject<Throwable> {
 
 	private String message;
 
@@ -23,25 +23,25 @@ public class ErrorXml implements DataTransferObject<Exception> {
 		super();
 	}
 
-	public ErrorXml(Exception error) {
+	public ErrorXml(Throwable error) {
 		message = error.getMessage();
 		initializeStackTrace(error);
 	}
 
-	private void initializeStackTrace(Exception error) {
+	private void initializeStackTrace(Throwable error) {
 		stackTrace = new ArrayList<StackTraceElementXml>();
 		for (StackTraceElement element : error.getStackTrace())
 			stackTrace.add(new StackTraceElementXml(element));
 	}
 
 	@Override
-	public Exception convert() {
-		Exception error = new Exception(message);
+	public Throwable convert() {
+		Throwable error = new Throwable(message);
 		convertStackTrace(error);
 		return error;
 	}
 
-	private void convertStackTrace(Exception error) {
+	private void convertStackTrace(Throwable error) {
 		StackTraceElement[] stackTraceConverted = new StackTraceElement[stackTrace.size()];
 		for (int i = 0; i < stackTrace.size(); i++)
 			stackTraceConverted[i] = stackTrace.get(i).convert();

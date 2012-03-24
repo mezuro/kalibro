@@ -14,12 +14,12 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	private Date date;
 
 	private Double grade;
-	private Map<CompoundMetric, Exception> compoundMetricsWithError;
+	private Map<CompoundMetric, Throwable> compoundMetricsWithError;
 
 	public ModuleResult(Module module, Date date) {
 		super(module);
 		this.date = date;
-		this.compoundMetricsWithError = new TreeMap<CompoundMetric, Exception>();
+		this.compoundMetricsWithError = new TreeMap<CompoundMetric, Throwable>();
 	}
 
 	public void setConfiguration(Configuration configuration) {
@@ -99,11 +99,11 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		return compoundMetricsWithError.keySet();
 	}
 
-	public Exception getErrorFor(CompoundMetric metric) {
+	public Throwable getErrorFor(CompoundMetric metric) {
 		return compoundMetricsWithError.get(metric);
 	}
 
-	public void addCompoundMetricWithError(CompoundMetric metric, Exception error) {
+	public void addCompoundMetricWithError(CompoundMetric metric, Throwable error) {
 		compoundMetricsWithError.put(metric, error);
 	}
 }

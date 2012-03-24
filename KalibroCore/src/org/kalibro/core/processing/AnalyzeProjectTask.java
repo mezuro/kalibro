@@ -21,7 +21,7 @@ class AnalyzeProjectTask extends TypedTask<Collection<ModuleResult>> {
 	}
 
 	@Override
-	public Collection<ModuleResult> generateResult() throws Exception {
+	public Collection<ModuleResult> performAndGetResult() throws Exception {
 		resultMap = new HashMap<Module, ModuleResult>();
 		collectResults();
 		new SourceTreeBuilder(projectResult).buildSourceTree(resultMap.keySet());

@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.service.*;
 import org.mockito.ArgumentCaptor;
@@ -59,10 +60,10 @@ public class EndpointPortFactoryTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testMalformedUrl() {
 		settings.getClientSettings().setServiceAddress("mal formed URL");
-		checkKalibroException(new Runnable() {
+		checkKalibroException(new Task() {
 
 			@Override
-			public void run() {
+			public void perform() {
 				EndpointPortFactory.getEndpointPort(KalibroEndpoint.class);
 			}
 		}, "Invalid service address: mal formed URL", MalformedURLException.class);

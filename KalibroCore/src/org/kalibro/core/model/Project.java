@@ -18,7 +18,7 @@ public class Project extends AbstractEntity<Project> {
 	private String configurationName;
 	private Repository repository;
 
-	private Exception error;
+	private Throwable error;
 	private ProjectState state;
 
 	public Project() {
@@ -101,7 +101,7 @@ public class Project extends AbstractEntity<Project> {
 		this.state = state;
 	}
 
-	public Exception getError() {
+	public Throwable getError() {
 		assertHasError();
 		return error;
 	}
@@ -111,7 +111,7 @@ public class Project extends AbstractEntity<Project> {
 			throw new IllegalStateException("Project " + name + " has no error.");
 	}
 
-	public void setError(Exception error) {
+	public void setError(Throwable error) {
 		this.error = error;
 	}
 }

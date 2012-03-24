@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.persistence.database.entities.BaseToolRecord;
 import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
 import org.kalibro.core.util.Directories;
@@ -39,7 +40,7 @@ class Seeds {
 		try {
 			SEEDED_FILE.createNewFile();
 		} catch (IOException exception) {
-			throw new RuntimeException(exception);
+			throw new KalibroException("Could not create file: " + SEEDED_FILE, exception);
 		}
 	}
 

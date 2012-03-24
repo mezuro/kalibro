@@ -22,6 +22,10 @@ public abstract class Task implements Runnable {
 		executor.executeInBackground();
 	}
 
+	public void executeAndWait() {
+		executor.executeAndWait();
+	}
+
 	public void executeAndWait(long timeout) {
 		executor.executeAndWait(timeout);
 	}
@@ -36,32 +40,36 @@ public abstract class Task implements Runnable {
 
 	@Override
 	public void run() {
-		Exception error = null;
 		long start = System.currentTimeMillis();
-		try {
-			perform();
-		} catch (Exception exception) {
-			error = exception;
-		}
+		Throwable error = performAndGetError();
 		long executionTime = System.currentTimeMillis() - start;
-		reportTaskFinished(new TaskReport(executionTime, error));
+		if (listener != null)
+			reportTaskFinished(new TaskReport(executionTime, error));
 	}
 
-	public abstract void perform() throws Exception;
+	private Throwable performAndGetError() {
+		try {
+			perform();
+			return null;
+		} catch (Throwable exception) {
+			return exception;
+		}
+	}
+
+	protected abstract void perform() throws Throwable;
 
 	protected void reportTaskFinished(final TaskReport report) {
 		new Thread(new Runnable() {
 
 			@Override
 			public void run() {
-				if (listener != null)
-					listener.taskFinished(report);
+				listener.taskFinished(report);
 			}
 		}).start();
 	}
 
 	@Override
 	public String toString() {
-		return "running task: " + getClass();
+		return "running task: " + getClass().getCanonicalName();
 	}
 }

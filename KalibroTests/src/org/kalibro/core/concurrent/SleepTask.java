@@ -12,4 +12,9 @@ class SleepTask extends Task {
 	public void perform() throws InterruptedException {
 		Thread.sleep(sleepingTime);
 	}
+
+	@Override
+	public String toString() {
+		return "sleeping";
+	}
 }

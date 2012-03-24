@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.BaseToolFixtures;
 import org.kalibro.service.BaseToolEndpoint;
@@ -42,10 +43,10 @@ public class BaseToolPortDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSave() {
-		checkKalibroException(new Runnable() {
+		checkKalibroException(new Task() {
 
 			@Override
-			public void run() {
+			public void perform() {
 				dao.save(baseTool);
 			}
 		}, "Cannot save base tool remotely");

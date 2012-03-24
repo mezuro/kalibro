@@ -17,7 +17,7 @@ class CompoundMetricWithErrorXml {
 		super();
 	}
 
-	protected CompoundMetricWithErrorXml(CompoundMetric metric, Exception error) {
+	protected CompoundMetricWithErrorXml(CompoundMetric metric, Throwable error) {
 		this.metric = new CompoundMetricXml(metric);
 		this.error = new ErrorXml(error);
 	}
@@ -26,7 +26,7 @@ class CompoundMetricWithErrorXml {
 		return metric.convert();
 	}
 
-	protected Exception getError() {
+	protected Throwable getError() {
 		return error.convert();
 	}
 }

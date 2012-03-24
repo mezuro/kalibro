@@ -3,9 +3,9 @@ package org.kalibro.core.concurrent;
 public class TaskReport {
 
 	private long executionTime;
-	private Exception error;
+	private Throwable error;
 
-	protected TaskReport(long executionTime, Exception error) {
+	protected TaskReport(long executionTime, Throwable error) {
 		this.executionTime = executionTime;
 		this.error = error;
 	}
@@ -18,7 +18,7 @@ public class TaskReport {
 		return executionTime;
 	}
 
-	public Exception getError() {
+	public Throwable getError() {
 		return error;
 	}
 }

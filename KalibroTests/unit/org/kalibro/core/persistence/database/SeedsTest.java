@@ -59,13 +59,13 @@ public class SeedsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorCreatingSeededFile() throws IOException {
 		PowerMockito.when(seededFile.exists()).thenReturn(false);
-		PowerMockito.when(seededFile.createNewFile()).thenThrow(new IOException("The error message"));
-		checkException(new Task() {
+		PowerMockito.when(seededFile.createNewFile()).thenThrow(new IOException());
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				Seeds.saveSeedsIfFirstTime(databaseManager);
 			}
-		}, RuntimeException.class, "java.io.IOException: The error message", IOException.class);
+		}, "Could not create file: " + seededFile, IOException.class);
 	}
 }

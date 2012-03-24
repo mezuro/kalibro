@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ModuleResultFixtures;
 import org.kalibro.service.ModuleResultEndpoint;
@@ -40,10 +41,10 @@ public class ModuleResultPortDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSaveResultRemotely() {
-		checkKalibroException(new Runnable() {
+		checkKalibroException(new Task() {
 
 			@Override
-			public void run() {
+			public void perform() {
 				dao.save(null, null);
 			}
 		}, "Cannot save module result remotely");

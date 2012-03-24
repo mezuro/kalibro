@@ -4,7 +4,7 @@ public class TypedTaskReport<T> extends TaskReport {
 
 	private T result;
 
-	protected TypedTaskReport(long executionTime, Exception error, T result) {
+	protected TypedTaskReport(long executionTime, Throwable error, T result) {
 		super(executionTime, error);
 		this.result = result;
 	}

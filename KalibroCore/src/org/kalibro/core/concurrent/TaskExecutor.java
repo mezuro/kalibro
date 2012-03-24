@@ -19,18 +19,27 @@ class TaskExecutor {
 		new Thread(task).start();
 	}
 
+	protected void executeAndWait() {
+		try {
+			task.perform();
+		} catch (KalibroException exception) {
+			throw exception;
+		} catch (Throwable exception) {
+			throw new KalibroException("Error while " + task, exception);
+		}
+	}
+
 	protected void executeAndWait(long timeout) {
 		Timer timer = new Timer();
 		timer.schedule(new ThreadInterrupter(Thread.currentThread()), timeout);
-
 		try {
 			task.perform();
-		} catch (InterruptedException exception) {
-			throw new RuntimeException("Task timed out after " + timeout + " milliseconds.", exception);
 		} catch (KalibroException exception) {
 			throw exception;
-		} catch (Exception exception) {
-			throw new RuntimeException("Task did not end normally.", exception);
+		} catch (InterruptedException exception) {
+			throw new KalibroException("Timed out after " + timeout + " milliseconds while " + task, exception);
+		} catch (Throwable exception) {
+			throw new KalibroException("Error while " + task, exception);
 		} finally {
 			timer.cancel();
 		}
