@@ -73,7 +73,6 @@ public class TaskTest extends KalibroTestCase implements TaskListener {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveDefaultDescription() {
 		assertEquals("running task: org.kalibro.core.concurrent.DoNothingTask", "" + new DoNothingTask());
-		assertEquals("running task: org.kalibro.core.concurrent.ThrowErrorTask", "" + new ThrowErrorTask());
 	}
 
 	private synchronized void runAndGetReport(Task task) throws InterruptedException {

@@ -9,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -20,6 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class CommandTaskTest extends KalibroTestCase {
 
 	private static final String COMMAND = "CommandTaskTest command";
+	private static final String ERROR_MESSAGE = "Error while executing command: " + COMMAND;
 
 	private Runtime runtime;
 	private Process process;
@@ -54,18 +54,6 @@ public class CommandTaskTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkExceptionExecutingForOuput() throws IOException {
-		PowerMockito.when(runtime.exec(COMMAND)).thenThrow(new IOException());
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() throws IOException {
-				commandTask.executeAndGetOuput();
-			}
-		}, "", IOException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetCommandOutput() throws IOException {
 		assertSame(output, commandTask.executeAndGetOuput());
 		Mockito.verify(logger).logErrorStream(process, COMMAND);
@@ -74,7 +62,7 @@ public class CommandTaskTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkExceptionOnSimpleExecution() throws IOException {
 		PowerMockito.when(runtime.exec(COMMAND)).thenThrow(new IOException());
-		checkKalibroException(commandTask, "", IOException.class);
+		checkKalibroException(commandTask, ERROR_MESSAGE, IOException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -92,7 +80,7 @@ public class CommandTaskTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDestroyProcessOnInterruptedException() throws InterruptedException {
 		PowerMockito.when(process.waitFor()).thenThrow(new InterruptedException());
-		checkKalibroException(commandTask, "", InterruptedException.class);
+		checkKalibroException(commandTask, ERROR_MESSAGE, InterruptedException.class);
 		Mockito.verify(process).destroy();
 	}
 
