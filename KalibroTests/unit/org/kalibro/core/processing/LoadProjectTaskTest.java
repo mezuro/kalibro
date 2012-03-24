@@ -14,7 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.command.CommandExecutor;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.settings.KalibroSettings;
@@ -32,7 +32,7 @@ public class LoadProjectTaskTest extends KalibroTestCase {
 
 	private String loadPath;
 	private File loadDirectory;
-	private CommandExecutor executor;
+	private CommandTask executor;
 
 	@Before
 	public void setUp() throws Exception {
@@ -75,13 +75,13 @@ public class LoadProjectTaskTest extends KalibroTestCase {
 	}
 
 	private void mockCommandExecutor() throws Exception {
-		executor = PowerMockito.mock(CommandExecutor.class);
+		executor = PowerMockito.mock(CommandTask.class);
 		for (String loadCommand : project.getLoadCommands(loadPath))
-			PowerMockito.whenNew(CommandExecutor.class).withArguments(loadCommand).thenReturn(executor);
+			PowerMockito.whenNew(CommandTask.class).withArguments(loadCommand).thenReturn(executor);
 	}
 
 	private void verifyCommandsExecution() {
 		int invocations = project.getLoadCommands(loadPath).size();
-		verify(executor, times(invocations)).executeCommandWithTimeout(anyLong());
+		verify(executor, times(invocations)).executeAndWait(anyLong());
 	}
 }

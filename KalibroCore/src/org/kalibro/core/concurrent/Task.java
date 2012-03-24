@@ -59,4 +59,9 @@ public abstract class Task implements Runnable {
 			}
 		}).start();
 	}
+
+	@Override
+	public String toString() {
+		return "running task: " + getClass();
+	}
 }

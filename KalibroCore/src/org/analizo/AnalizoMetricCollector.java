@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.Set;
 
 import org.kalibro.core.MetricCollector;
-import org.kalibro.core.command.CommandExecutor;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 
@@ -17,7 +17,7 @@ public class AnalizoMetricCollector implements MetricCollector {
 	private AnalizoOutputParser outputParser;
 
 	public AnalizoMetricCollector() throws IOException {
-		InputStream metricListOutput = new CommandExecutor(COMMAND + "--list").executeCommandAndGetOuput();
+		InputStream metricListOutput = new CommandTask(COMMAND + "--list").executeAndGetOuput();
 		outputParser = new AnalizoOutputParser(metricListOutput);
 	}
 
@@ -27,9 +27,9 @@ public class AnalizoMetricCollector implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) {
+	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws IOException {
 		String command = COMMAND + codeDirectory.getAbsolutePath();
-		InputStream analizoOuput = new CommandExecutor(command).executeCommandAndGetOuput();
+		InputStream analizoOuput = new CommandTask(command).executeAndGetOuput();
 		return outputParser.parseResults(analizoOuput, metrics);
 	}
 }

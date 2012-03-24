@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.command.CommandExecutor;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -61,7 +61,7 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 	}
 
 	protected void executeCommand(String command) {
-		new CommandExecutor(command).executeCommandWithTimeout(INTEGRATION_TIMEOUT);
+		new CommandTask(command).executeAndWait(INTEGRATION_TIMEOUT);
 	}
 
 	private void assertLoaded() {

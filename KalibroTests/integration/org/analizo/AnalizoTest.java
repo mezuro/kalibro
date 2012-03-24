@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.command.CommandExecutor;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.command.FileProcessStreamLogger;
 import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -35,7 +35,7 @@ public class AnalizoTest extends KalibroTestCase {
 
 	private static String getAnalizoVersion() throws IOException {
 		MemberModifier.suppress(FileProcessStreamLogger.class.getMethods());
-		InputStream output = new CommandExecutor("analizo --version").executeCommandAndGetOuput();
+		InputStream output = new CommandTask("analizo --version").executeAndGetOuput();
 		return IOUtils.toString(output).replace("analizo version", "").trim();
 	}
 
@@ -53,7 +53,7 @@ public class AnalizoTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
-	public void shouldCollectMetrics() {
+	public void shouldCollectMetrics() throws IOException {
 		File codeDirectory = new File(SAMPLES_DIRECTORY, "analizo");
 		assertDeepEquals(collectMetrics(), analizo.collectMetrics(codeDirectory, nativeMetrics()));
 	}

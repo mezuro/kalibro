@@ -19,7 +19,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 	private static final long PIPE_TIMEOUT = 50;
 	private static final File LOGS = Directories.logs();
 
-	private CommandExecutor executor;
+	private CommandTask executor;
 
 	@After
 	public void tearDown() {
@@ -33,8 +33,8 @@ public class CommandExecutionTest extends KalibroTestCase {
 		checkException(new Task() {
 
 			@Override
-			public void perform() {
-				executor.executeCommandAndGetOuput();
+			public void perform() throws IOException {
+				executor.executeAndGetOuput();
 			}
 		}, RuntimeException.class, "Command {invalid command} could not be executed", IOException.class);
 	}
@@ -46,7 +46,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				executor.executeCommandWithTimeout(COMMAND_TIMEOUT);
+				executor.executeAndWait(COMMAND_TIMEOUT);
 			}
 		}, RuntimeException.class, "Command {invalid command} could not be executed", IOException.class);
 	}
@@ -58,7 +58,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				executor.executeCommandWithTimeout(COMMAND_TIMEOUT);
+				executor.executeAndWait(COMMAND_TIMEOUT);
 			}
 		}, RuntimeException.class, "Command {make etc} returned with error status");
 	}
@@ -70,7 +70,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				executor.executeCommandWithTimeout(COMMAND_TIMEOUT);
+				executor.executeAndWait(COMMAND_TIMEOUT);
 			}
 		}, RuntimeException.class, "Task timed out after " + COMMAND_TIMEOUT + " milliseconds.",
 			InterruptedException.class);
@@ -79,13 +79,13 @@ public class CommandExecutionTest extends KalibroTestCase {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldGetCommandOutput() throws IOException {
 		createCommandExecutor("echo test");
-		assertEquals("test\n", IOUtils.toString(executor.executeCommandAndGetOuput()));
+		assertEquals("test\n", IOUtils.toString(executor.executeAndGetOuput()));
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldLogCommandOutput() throws Exception {
 		createCommandExecutor("echo test");
-		executor.executeCommandWithTimeout(COMMAND_TIMEOUT);
+		executor.executeAndWait(COMMAND_TIMEOUT);
 		waitPipeTask();
 		assertEquals("$ echo test\ntest\n", getLog("out"));
 		assertEquals("$ echo test\n", getLog("err"));
@@ -101,7 +101,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 
 	private void executeErrorCommandQuietly() throws InterruptedException {
 		try {
-			executor.executeCommandWithTimeout(COMMAND_TIMEOUT);
+			executor.executeAndWait(COMMAND_TIMEOUT);
 			fail("Should have thrown exception");
 		} catch (RuntimeException exception) {
 			waitPipeTask();
@@ -118,6 +118,6 @@ public class CommandExecutionTest extends KalibroTestCase {
 	}
 
 	private void createCommandExecutor(String command) {
-		executor = new CommandExecutor(command);
+		executor = new CommandTask(command);
 	}
 }

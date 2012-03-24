@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.command.CommandExecutor;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.database.DatabaseDaoFactory;
@@ -67,8 +67,8 @@ public class KalibroLocalTest extends KalibroTestCase {
 	}
 
 	private void mockCommandExecutor() throws Exception {
-		CommandExecutor executor = PowerMockito.mock(CommandExecutor.class);
-		PowerMockito.whenNew(CommandExecutor.class).withArguments(Matchers.anyString()).thenReturn(executor);
+		CommandTask executor = PowerMockito.mock(CommandTask.class);
+		PowerMockito.whenNew(CommandTask.class).withArguments(Matchers.anyString()).thenReturn(executor);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

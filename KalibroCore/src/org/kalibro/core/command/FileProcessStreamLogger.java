@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
+import org.kalibro.KalibroException;
 import org.kalibro.core.util.Directories;
 
 public class FileProcessStreamLogger extends ProcessStreamLogger {
@@ -43,7 +44,7 @@ public class FileProcessStreamLogger extends ProcessStreamLogger {
 			IOUtils.write("$ " + command + "\n", outputStream);
 			return outputStream;
 		} catch (IOException exception) {
-			throw new RuntimeException("Error logging command {" + command + "} on file " + file, exception);
+			throw new KalibroException("Error logging command: " + command + "\nFile: " + file, exception);
 		}
 	}
 }

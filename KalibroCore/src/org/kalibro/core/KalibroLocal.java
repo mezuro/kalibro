@@ -6,7 +6,7 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.kalibro.KalibroFacade;
-import org.kalibro.core.command.CommandExecutor;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.DaoFactory;
@@ -44,7 +44,7 @@ public class KalibroLocal extends KalibroFacade {
 
 	private void validateRepositoryType(RepositoryType type) {
 		for (String validationCommand : type.getProjectLoader().getValidationCommands())
-			new CommandExecutor(validationCommand).executeCommandWithTimeout(1000);
+			new CommandTask(validationCommand).executeAndWait(1000);
 	}
 
 	@Override

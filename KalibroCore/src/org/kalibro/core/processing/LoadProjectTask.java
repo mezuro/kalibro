@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.Kalibro;
-import org.kalibro.core.command.CommandExecutor;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Project;
 
@@ -33,6 +33,6 @@ class LoadProjectTask extends Task {
 
 	private void executeLoadCommands(String loadPath) {
 		for (String loadCommand : project.getLoadCommands(loadPath))
-			new CommandExecutor(loadCommand).executeCommandWithTimeout(LOAD_TIMEOUT);
+			new CommandTask(loadCommand).executeAndWait(LOAD_TIMEOUT);
 	}
 }

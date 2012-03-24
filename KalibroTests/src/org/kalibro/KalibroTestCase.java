@@ -71,6 +71,15 @@ public abstract class KalibroTestCase {
 		}
 	}
 
+	protected void checkTaskException(Task task, Class<? extends Throwable> exceptionClass) {
+		try {
+			task.perform();
+			fail("Should throw " + exceptionClass.getSimpleName() + " on performing task");
+		} catch (Exception exception) {
+			assertClassEquals(exceptionClass, exception);
+		}
+	}
+
 	protected void checkKalibroException(Runnable errorBlock, String message) {
 		checkKalibroException(errorBlock, message, null);
 	}
@@ -78,7 +87,7 @@ public abstract class KalibroTestCase {
 	protected void checkKalibroException(Runnable errorBlock, String message, Class<? extends Throwable> causeClass) {
 		try {
 			errorBlock.run();
-			fail("Task should throw exception");
+			fail("Should throw KalibroException on running block");
 		} catch (KalibroException exception) {
 			assertEquals(message, exception.getMessage());
 			Throwable cause = exception.getCause();

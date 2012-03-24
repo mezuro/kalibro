@@ -3,6 +3,8 @@ package org.kalibro.core.concurrent;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import org.kalibro.KalibroException;
+
 class TaskExecutor {
 
 	private Task task;
@@ -25,6 +27,8 @@ class TaskExecutor {
 			task.perform();
 		} catch (InterruptedException exception) {
 			throw new RuntimeException("Task timed out after " + timeout + " milliseconds.", exception);
+		} catch (KalibroException exception) {
+			throw exception;
 		} catch (Exception exception) {
 			throw new RuntimeException("Task did not end normally.", exception);
 		} finally {

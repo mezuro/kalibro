@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.util.Directories;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -85,12 +84,12 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorOnLog() throws Exception {
 		PowerMockito.whenNew(FileOutputStream.class).withArguments(logFile).thenThrow(new IOException());
-		checkException(new Task() {
+		checkKalibroException(new Runnable() {
 
 			@Override
-			public void perform() {
+			public void run() {
 				logger.logOutputStream(process, "my command");
 			}
-		}, RuntimeException.class, "Error logging command {my command} on file " + logFile, IOException.class);
+		}, "Error logging command: my command\nFile: " + logFile, IOException.class);
 	}
 }
