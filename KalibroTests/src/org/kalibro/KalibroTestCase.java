@@ -83,7 +83,7 @@ public abstract class KalibroTestCase {
 			assertEquals(message, exception.getMessage());
 			Throwable cause = exception.getCause();
 			if (causeClass == null)
-				assertNull(cause);
+				assertNull("Cause not expected: " + cause, cause);
 			else
 				assertClassEquals(causeClass, cause);
 		}

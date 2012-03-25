@@ -44,13 +44,13 @@ public class AbstractModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorForInexistentResultMetric() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				moduleResult.getResultFor(dit);
 			}
-		}, IllegalArgumentException.class, "No result found for metric 'Depth of Inheritance Tree'");
+		}, "No result found for metric: Depth of Inheritance Tree");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

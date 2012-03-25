@@ -68,24 +68,24 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNoConfigurationFoundForMetricError() {
 		final NativeMetric metric = nativeMetric("anpm");
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.getConfigurationFor(metric);
 			}
-		}, IllegalArgumentException.class, "No configuration found for metric '" + metric + "'");
+		}, "No configuration found for metric '" + metric + "'");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void verifyErrorAddingConflictingMetricConfiguration() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.addMetricConfiguration(configuration("cbo"));
 			}
-		}, IllegalArgumentException.class, "A metric configuration with the same code already exists");
+		}, "A metric configuration with code 'cbo' already exists");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -98,19 +98,19 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorReplacingInexistentMetricConfiguration() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.replaceMetricConfiguration(nativeMetric("noa"), configuration("noa"));
 			}
-		}, IllegalArgumentException.class);
+		}, "No configuration found for metric 'Number of Attributes'");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorForConflictingMetricConfigurationReplace() {
 		final NativeMetric cbo = nativeMetric("cbo");
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
@@ -118,7 +118,7 @@ public class ConfigurationTest extends KalibroTestCase {
 				newMetricConfiguration.setCode("lcom4");
 				configuration.replaceMetricConfiguration(cbo, newMetricConfiguration);
 			}
-		}, IllegalArgumentException.class);
+		}, "A metric configuration with code 'lcom4' already exists");
 		assertTrue(configuration.contains(cbo));
 	}
 
@@ -128,13 +128,13 @@ public class ConfigurationTest extends KalibroTestCase {
 		configuration.getConfigurationFor(metric);
 		assertTrue(configuration.removeMetric(metric));
 		assertFalse(configuration.removeMetric(metric));
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.getConfigurationFor(metric);
 			}
-		}, IllegalArgumentException.class, "No configuration found for metric '" + metric + "'");
+		}, "No configuration found for metric '" + metric + "'");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -145,13 +145,13 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInvalidateInvalidCompoundMetric() {
 		sc.setScript("return null;");
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.addMetricConfiguration(new MetricConfiguration(sc));
 			}
-		}, RuntimeException.class, null, NullPointerException.class);
+		}, "Compound metric with invalid script: Structural complexity", NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

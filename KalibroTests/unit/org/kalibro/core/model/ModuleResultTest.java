@@ -123,9 +123,7 @@ public class ModuleResultTest extends KalibroTestCase {
 	public void shouldRetrieveCompoundMetricError() {
 		addCompoundMetricWithError();
 		result.setConfiguration(configuration);
-		Throwable error = result.getErrorFor(invalid);
-		assertClassEquals(RuntimeException.class, error);
-		assertClassEquals(NullPointerException.class, error.getCause());
+		assertClassEquals(NullPointerException.class, result.getErrorFor(invalid));
 	}
 
 	private void addCompoundMetricWithError() {

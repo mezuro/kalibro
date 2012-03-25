@@ -109,12 +109,12 @@ public class RangeTest extends KalibroTestCase {
 	}
 
 	private void assertInvalid(final Double beginning, final Double end) {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				new Range(beginning, end);
 			}
-		}, IllegalArgumentException.class, "[" + beginning + ", " + end + "[ is not a valid range");
+		}, "[" + beginning + ", " + end + "[ is not a valid range");
 	}
 }

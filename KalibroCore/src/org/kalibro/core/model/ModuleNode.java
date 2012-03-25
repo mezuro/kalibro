@@ -3,6 +3,7 @@ package org.kalibro.core.model;
 import java.util.Set;
 import java.util.TreeSet;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
@@ -38,19 +39,21 @@ public class ModuleNode extends AbstractEntity<ModuleNode> {
 	}
 
 	public boolean hasChildFor(Module childModule) {
-		try {
-			getChildFor(childModule);
-			return true;
-		} catch (IllegalArgumentException exception) {
-			return false;
-		}
+		return findChildFor(childModule) != null;
 	}
 
 	public ModuleNode getChildFor(Module childModule) {
+		ModuleNode child = findChildFor(childModule);
+		if (child == null)
+			throw new KalibroException("Module " + module.getName() + " has no child named " + childModule);
+		return child;
+	}
+
+	private ModuleNode findChildFor(Module childModule) {
 		for (ModuleNode child : children)
 			if (child.getModule().equals(childModule))
 				return child;
-		throw new IllegalArgumentException("Module " + module.getName() + " has no child named " + childModule);
+		return null;
 	}
 
 	public void addChild(ModuleNode child) {

@@ -87,14 +87,13 @@ public class MetricResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorForInexistentRange() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				result.getRange();
 			}
-		}, IllegalStateException.class,
-			"No range found for metric '" + result.getMetric() + "' and value " + result.getValue());
+		}, "No range found for metric '" + result.getMetric() + "' and value " + result.getValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

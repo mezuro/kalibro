@@ -3,6 +3,7 @@ package org.kalibro.core.model;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.enums.Statistic;
 
 public class MetricResult extends AbstractMetricResult {
@@ -37,7 +38,7 @@ public class MetricResult extends AbstractMetricResult {
 
 	public Range getRange() {
 		if (range == null)
-			throw new IllegalStateException("No range found for metric '" + metric + "' and value " + value);
+			throw new KalibroException("No range found for metric '" + metric + "' and value " + value);
 		return range;
 	}
 
@@ -54,7 +55,7 @@ public class MetricResult extends AbstractMetricResult {
 	}
 
 	public boolean hasStatistics() {
-		return ! descendentResults.isEmpty();
+		return !descendentResults.isEmpty();
 	}
 
 	public Double getStatistic(Statistic statistic) {

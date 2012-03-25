@@ -82,24 +82,24 @@ public class ProjectTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				project.getStateWhenErrorOcurred();
 			}
-		}, IllegalStateException.class, "Project " + project + " has no error.");
+		}, "Project " + project + " has no error");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAllowErrorStateWithoutException() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				project.setState(ERROR);
 			}
-		}, IllegalArgumentException.class, "Cannot set error state without exception. Use setError(exception)");
+		}, "Use setError(Throwable) to put project in error state");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -110,13 +110,13 @@ public class ProjectTest extends KalibroTestCase {
 	}
 
 	private void assertNoError() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				project.getError();
 			}
-		}, IllegalStateException.class, "Project " + project + " has no error.");
+		}, "Project " + project + " has no error");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -3,6 +3,7 @@ package org.kalibro.core.model;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
@@ -30,9 +31,9 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 
 	public void assertNoConflictWith(MetricConfiguration other) {
 		if (other.code.equals(this.code))
-			throw new IllegalArgumentException("A metric configuration with the same code already exists");
+			throw new KalibroException("A metric configuration with code '" + code + "' already exists");
 		else if (other.metric.equals(this.metric))
-			throw new IllegalArgumentException("There is already a configuration for this metric");
+			throw new KalibroException("There is already a configuration for this metric: " + metric);
 	}
 
 	public String getCode() {
@@ -72,25 +73,27 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	}
 
 	public boolean hasRangeFor(Double value) {
-		try {
-			getRangeFor(value);
-			return true;
-		} catch (IllegalArgumentException exception) {
-			return false;
-		}
+		return findRangeFor(value) != null;
 	}
 
 	public Range getRangeFor(Double value) {
+		Range range = findRangeFor(value);
+		if (range == null)
+			throw new KalibroException("No range found for value " + value + " and metric '" + metric + "'");
+		return range;
+	}
+
+	private Range findRangeFor(Double value) {
 		for (Range range : ranges)
 			if (range.contains(value))
 				return range;
-		throw new IllegalArgumentException("No range found for value " + value);
+		return null;
 	}
 
 	public void addRange(Range newRange) {
 		for (Range range : ranges)
 			if (range.intersectsWith(newRange))
-				throw new IllegalArgumentException("New range " + newRange + " would conflict with " + range);
+				throw new KalibroException("New range " + newRange + " would conflict with " + range);
 		ranges.add(newRange);
 	}
 
@@ -99,7 +102,7 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		removeRange(oldRange);
 		try {
 			addRange(newRange);
-		} catch (IllegalArgumentException exception) {
+		} catch (KalibroException exception) {
 			addRange(oldRange);
 			throw exception;
 		}

@@ -2,6 +2,7 @@ package org.kalibro.core.model;
 
 import java.util.List;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
@@ -96,7 +97,7 @@ public class Project extends AbstractEntity<Project> {
 
 	public void setState(ProjectState state) {
 		if (state == ProjectState.ERROR)
-			throw new IllegalArgumentException("Cannot set error state without exception. Use setError(exception)");
+			throw new KalibroException("Use setError(Throwable) to put project in error state");
 		error = null;
 		this.state = state;
 	}
@@ -108,7 +109,7 @@ public class Project extends AbstractEntity<Project> {
 
 	private void assertHasError() {
 		if (error == null)
-			throw new IllegalStateException("Project " + name + " has no error.");
+			throw new KalibroException("Project " + name + " has no error");
 	}
 
 	public void setError(Throwable error) {

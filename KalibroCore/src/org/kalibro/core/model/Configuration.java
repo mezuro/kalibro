@@ -2,6 +2,7 @@ package org.kalibro.core.model;
 
 import java.util.*;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
@@ -76,7 +77,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public MetricConfiguration getConfigurationFor(Metric metric) {
 		if (!contains(metric))
-			throw new IllegalArgumentException("No configuration found for metric '" + metric + "'");
+			throw new KalibroException("No configuration found for metric '" + metric + "'");
 		return metricConfigurations.get(metric);
 	}
 
@@ -92,7 +93,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 		removeMetric(metric);
 		try {
 			addMetricConfiguration(newMetricConfiguration);
-		} catch (IllegalArgumentException exception) {
+		} catch (KalibroException exception) {
 			addMetricConfiguration(oldConfiguration);
 			throw exception;
 		}

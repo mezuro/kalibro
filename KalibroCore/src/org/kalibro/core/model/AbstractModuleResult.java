@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
@@ -35,8 +36,8 @@ public abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricR
 	}
 
 	public METRIC_RESULT getResultFor(Metric metric) {
-		if (! hasResultFor(metric))
-			throw new IllegalArgumentException("No result found for metric '" + metric + "'");
+		if (!hasResultFor(metric))
+			throw new KalibroException("No result found for metric: " + metric);
 		return metricResults.get(metric);
 	}
 

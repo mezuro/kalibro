@@ -1,6 +1,8 @@
 package org.kalibro.core.processing;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.Configuration;
+import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
 
 public class ScriptValidator {
@@ -12,9 +14,17 @@ public class ScriptValidator {
 	}
 
 	public void validateScriptOf(MetricConfiguration metricConfiguration) {
-		if (metricConfiguration.getMetric().isCompound()) {
-			String validationScript = new ValidationScriptBuilder(configuration, metricConfiguration).buildScript();
-			new ScriptEvaluator(validationScript).invokeFunction(metricConfiguration.getCode());
+		Metric metric = metricConfiguration.getMetric();
+		try {
+			if (metric.isCompound())
+				doValidate(metricConfiguration);
+		} catch (Exception exception) {
+			throw new KalibroException("Compound metric with invalid script: " + metric, exception);
 		}
+	}
+
+	private void doValidate(MetricConfiguration metricConfiguration) throws Exception {
+		String validationScript = new ValidationScriptBuilder(configuration, metricConfiguration).buildScript();
+		new ScriptEvaluator(validationScript).invokeFunction(metricConfiguration.getCode());
 	}
 }

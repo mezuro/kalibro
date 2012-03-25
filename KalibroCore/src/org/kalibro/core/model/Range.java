@@ -2,6 +2,7 @@ package org.kalibro.core.model;
 
 import java.awt.Color;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
@@ -73,7 +74,7 @@ public class Range extends AbstractEntity<Range> {
 
 	private void validate(Double leftPoint, Double rightPoint) {
 		if (! (leftPoint < rightPoint))
-			throw new IllegalArgumentException("[" + leftPoint + ", " + rightPoint + "[ is not a valid range");
+			throw new KalibroException("[" + leftPoint + ", " + rightPoint + "[ is not a valid range");
 	}
 
 	public String getLabel() {

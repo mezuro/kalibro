@@ -47,13 +47,13 @@ public class ModuleNodeTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNoChildError() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				junit.getChildFor(analizo.getModule());
 			}
-		}, IllegalArgumentException.class, "Module org.junit has no child named analizo");
+		}, "Module org.junit has no child named analizo");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

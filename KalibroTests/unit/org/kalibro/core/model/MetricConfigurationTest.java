@@ -44,7 +44,7 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void configurationsWithSameCodeShouldConflict() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
@@ -52,19 +52,19 @@ public class MetricConfigurationTest extends KalibroTestCase {
 				configurationWithSameCode.setCode(configuration.getCode());
 				configurationWithSameCode.assertNoConflictWith(configuration);
 			}
-		}, IllegalArgumentException.class, "A metric configuration with the same code already exists");
+		}, "A metric configuration with code 'amloc' already exists");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void configurationsForSameMetricShouldConflict() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				MetricConfiguration configurationForSameMetric = new MetricConfiguration(metric);
 				configurationForSameMetric.assertNoConflictWith(configuration);
 			}
-		}, IllegalArgumentException.class, "There is already a configuration for this metric");
+		}, "There is already a configuration for this metric: " + metric);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -90,13 +90,13 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testNoRangeFound() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.getRangeFor(-1.0);
 			}
-		}, IllegalArgumentException.class, "No range found for value -1.0");
+		}, "No range found for value -1.0 and metric '" + metric + "'");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -108,13 +108,13 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testConflictingRange() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.addRange(new Range(6.0, 12.0));
 			}
-		}, IllegalArgumentException.class, "New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
+		}, "New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -127,24 +127,24 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorReplacingInexistentRange() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.replaceRange(-1.0, new Range(-1.0, 0.0));
 			}
-		}, IllegalArgumentException.class);
+		}, "No range found for value -1.0 and metric '" + metric + "'");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorForConflictingRangeReplace() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.replaceRange(0.0, new Range());
 			}
-		}, IllegalArgumentException.class);
+		}, "New range [-Infinity, Infinity[ would conflict with [7.0, 10.0[");
 		assertTrue(configuration.hasRangeFor(0.0));
 	}
 

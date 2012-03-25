@@ -69,14 +69,13 @@ public class BaseToolTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorCreatingCollector() {
 		analizo.setCollectorClass(null);
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				analizo.createMetricCollector();
 			}
-		}, RuntimeException.class, "Could not create metric collector of base tool 'Analizo'",
-			NullPointerException.class);
+		}, "Could not create metric collector of base tool 'Analizo'", NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -87,13 +86,12 @@ public class BaseToolTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorSettingCollectorByName() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				analizo.setCollectorClassName("");
 			}
-		}, RuntimeException.class, "Could not find metric collector class of base tool 'Analizo'",
-			ClassNotFoundException.class);
+		}, "Could not find metric collector class of base tool 'Analizo'", ClassNotFoundException.class);
 	}
 }

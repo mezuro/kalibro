@@ -12,15 +12,7 @@ public class ScriptEvaluator {
 		this.script = script;
 	}
 
-	public Double invokeFunction(String functionName) {
-		try {
-			return doInvoke(functionName);
-		} catch (Exception exception) {
-			throw new RuntimeException(exception);
-		}
-	}
-
-	private Double doInvoke(String functionName) throws Exception {
+	public Double invokeFunction(String functionName) throws Exception {
 		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("JavaScript");
 		scriptEngine.eval(script);
 		Object returnValue = ((Invocable) scriptEngine).invokeFunction(functionName);
