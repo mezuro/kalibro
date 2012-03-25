@@ -147,22 +147,22 @@ public class EntityReflectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowKalibroExceptionIfMethodThrowsKalibroException() throws Exception {
-		reflector = new EntityReflector(new NoIdentityEntity());
-		final Method method = NoIdentityEntity.class.getMethod("throwKalibroException");
+		reflector = new EntityReflector(new ExceptionEntity());
+		final Method method = ExceptionEntity.class.getMethod("throwException");
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				reflector.invoke(method);
 			}
-		}, "throwing KalibroException");
+		}, "ExceptionEntity", NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowKalibroExceptionForInvokationTargetException() throws Exception {
-		reflector = new EntityReflector(new NoIdentityEntity());
-		final Method method = NoIdentityEntity.class.getMethod("throwNullPointer");
-		String message = "Method org.kalibro.core.model.abstracts.NoIdentityEntity.throwNullPointer threw exception";
+		reflector = new EntityReflector(new ExceptionEntity());
+		final Method method = ExceptionEntity.class.getMethod("throwCause");
+		String message = "Method org.kalibro.core.model.abstracts.ExceptionEntity.throwCause threw exception";
 		checkKalibroException(new Task() {
 
 			@Override
