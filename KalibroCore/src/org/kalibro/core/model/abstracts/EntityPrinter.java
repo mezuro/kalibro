@@ -13,11 +13,11 @@ class EntityPrinter {
 	}
 
 	protected String simplePrint() {
-		return print(reflector.getIdentityFields(), new SimpleFieldPrinter());
+		return print(reflector.listIdentityFields(), new SimpleFieldPrinter());
 	}
 
 	protected String deepPrint() {
-		return print(reflector.getAllFields(), new DeepFieldPrinter());
+		return print(reflector.listAllFields(), new DeepFieldPrinter());
 	}
 
 	private String print(List<String> fields, FieldPrinter fieldPrinter) {

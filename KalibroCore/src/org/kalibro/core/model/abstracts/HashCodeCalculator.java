@@ -10,7 +10,7 @@ class HashCodeCalculator {
 
 	protected int calculate() {
 		Integer codeSum = 1;
-		for (String field : reflector.getIdentityFields())
+		for (String field : reflector.listIdentityFields())
 			codeSum += reflector.get(field).hashCode();
 		return codeSum.hashCode();
 	}

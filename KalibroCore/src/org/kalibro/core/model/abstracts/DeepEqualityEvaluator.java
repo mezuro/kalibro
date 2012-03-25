@@ -18,7 +18,7 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 
 	@Override
 	protected List<String> equalityFields() {
-		return reflector.getAllFields();
+		return reflector.listAllFields();
 	}
 
 	@Override

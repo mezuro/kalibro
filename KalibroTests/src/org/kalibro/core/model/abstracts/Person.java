@@ -22,6 +22,10 @@ class Person extends AbstractEntity<Person> {
 		setIdentityNumber(identityNumber);
 		setName(name);
 		setSex(sex);
+		createRelatives();
+	}
+
+	private void createRelatives() {
 		setRelatives(new TreeMap<String, Person>());
 	}
 

@@ -11,7 +11,7 @@ class EntityComparator<T extends Comparable<? super T>> {
 	}
 
 	protected int compare(T other) {
-		for (Method method : reflector.getSortingMethods()) {
+		for (Method method : reflector.listSortingMethods()) {
 			int compare = compare(other, method);
 			if (compare != 0)
 				return compare;
@@ -27,19 +27,10 @@ class EntityComparator<T extends Comparable<? super T>> {
 		}
 	}
 
-	private int doCompare(T other, Method method) {
+	private int doCompare(T other, Method method) throws Exception {
 		Object myValue = reflector.invoke(method);
 		Object otherValue = new EntityReflector((AbstractEntity<?>) other).invoke(method);
-		return compareValues(myValue, otherValue);
-	}
-
-	private int compareValues(Object myValue, Object otherValue) {
-		try {
-			Method compareTo = myValue.getClass().getMethod("compareTo", Object.class);
-			return (Integer) compareTo.invoke(myValue, otherValue);
-		} catch (Exception exception) {
-			// not comparable values
-			return 0;
-		}
+		Method compareTo = myValue.getClass().getMethod("compareTo", Object.class);
+		return (Integer) compareTo.invoke(myValue, otherValue);
 	}
 }

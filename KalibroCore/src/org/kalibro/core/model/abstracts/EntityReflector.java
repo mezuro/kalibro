@@ -1,12 +1,15 @@
 package org.kalibro.core.model.abstracts;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
+
+import org.kalibro.KalibroException;
 
 class EntityReflector {
 
@@ -33,11 +36,16 @@ class EntityReflector {
 	private void putDeclaredFields(Class<?> type) {
 		for (Field field : type.getDeclaredFields())
 			if (!isStatic(field))
-				fields.put(field.getName(), field);
+				putField(field);
 	}
 
 	private boolean isStatic(Field field) {
 		return Modifier.isStatic(field.getModifiers());
+	}
+
+	private void putField(Field field) {
+		field.setAccessible(true);
+		fields.put(field.getName(), field);
 	}
 
 	protected AbstractEntity<?> getEntity() {
@@ -48,38 +56,30 @@ class EntityReflector {
 		return entity.getClass();
 	}
 
-	protected List<String> getAllFields() {
+	protected List<String> listAllFields() {
 		return new ArrayList<String>(fields.keySet());
 	}
 
-	protected List<String> getIdentityFields() {
+	protected List<String> listIdentityFields() {
 		List<String> identityFields = new ArrayList<String>();
 		for (Field field : fields.values())
 			if (field.isAnnotationPresent(IdentityField.class))
 				identityFields.add(field.getName());
-		return identityFields.isEmpty() ? getAllFields() : identityFields;
+		return identityFields.isEmpty() ? listAllFields() : identityFields;
 	}
 
 	protected Object get(String fieldName) {
+		String completeFieldName = "Field " + getEntityClass().getName() + "." + fieldName;
+		if (!fields.containsKey(fieldName))
+			throw new KalibroException(completeFieldName + " does not exist");
 		try {
-			Field field = fields.get(fieldName);
-			field.setAccessible(true);
-			return field.get(entity);
-		} catch (Exception exception) {
-			String errorMessage = "Field " + entity.getClass().getName() + "." + fieldName + " does not exist";
-			throw new IllegalArgumentException(errorMessage, exception);
+			return fields.get(fieldName).get(entity);
+		} catch (IllegalAccessException exception) {
+			throw new KalibroException(completeFieldName + " inaccessible", exception);
 		}
 	}
 
-	protected Object invoke(Method method) {
-		try {
-			return method.invoke(entity);
-		} catch (Exception exception) {
-			throw new RuntimeException("Error invoking method", exception);
-		}
-	}
-
-	protected List<Method> getSortingMethods() {
+	protected List<Method> listSortingMethods() {
 		return findSortingMethods(getEntityClass());
 	}
 
@@ -98,11 +98,25 @@ class EntityReflector {
 		return sortingMethods;
 	}
 
-	private Method getSortingMethod(Class<?> type, String fieldName) {
+	private Method getSortingMethod(Class<?> type, String methodName) {
 		try {
-			return type.getMethod(fieldName);
+			return type.getMethod(methodName);
 		} catch (NoSuchMethodException exception) {
-			throw new RuntimeException("Method not found", exception);
+			throw new KalibroException("Sorting method not found: " + type.getName() + "." + methodName, exception);
+		}
+	}
+
+	protected Object invoke(Method method) {
+		String methodName = getEntityClass().getName() + "." + method.getName();
+		try {
+			return method.invoke(entity);
+		} catch (IllegalAccessException exception) {
+			throw new KalibroException("Method " + methodName + " inaccessible", exception);
+		} catch (InvocationTargetException exception) {
+			Throwable targetException = exception.getTargetException();
+			if (targetException instanceof KalibroException)
+				throw (KalibroException) targetException;
+			throw new KalibroException("Method " + methodName + " threw exception", targetException);
 		}
 	}
 }

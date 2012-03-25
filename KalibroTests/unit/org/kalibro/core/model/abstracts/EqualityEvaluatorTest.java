@@ -20,8 +20,35 @@ public class EqualityEvaluatorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotAcceptNull() {
+		assertFalse(evaluator.isEquals(null));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptSelf() {
 		assertTrue(evaluator.isEquals(person));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotAcceptIfNotAnEntity() {
+		assertFalse(evaluator.isEquals(""));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotAcceptIfIdentityFieldsAreDifferent() {
+		assertFalse(evaluator.isEquals(new NoIdentityEntity()));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotAcceptIfIdentityValuesAreDifferent() {
+		assertFalse(evaluator.isEquals(paulo()));
+
+		Person different = carlos();
+		different.setIdentityNumber("0");
+		assertFalse(evaluator.isEquals(different));
+
+		different.setIdentityNumber(null);
+		assertFalse(evaluator.isEquals(different));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -46,24 +73,7 @@ public class EqualityEvaluatorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotAcceptNull() {
-		assertFalse(evaluator.isEquals(null));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptOtherTypeIfHasSameIdentityFields() {
 		assertTrue(evaluator.isEquals(new PersonImitation(person)));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotAcceptDifferentByIdentityField() {
-		assertFalse(evaluator.isEquals(paulo()));
-
-		Person different = carlos();
-		different.setIdentityNumber("0");
-		assertFalse(evaluator.isEquals(different));
-
-		different.setIdentityNumber(null);
-		assertFalse(evaluator.isEquals(different));
 	}
 }

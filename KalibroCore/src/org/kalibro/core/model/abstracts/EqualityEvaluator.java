@@ -23,7 +23,7 @@ class EqualityEvaluator {
 	}
 
 	private boolean sameIdentityFields(AbstractEntity<?> other) {
-		return new EntityReflector(other).getIdentityFields().equals(reflector.getIdentityFields());
+		return new EntityReflector(other).listIdentityFields().equals(reflector.listIdentityFields());
 	}
 
 	private boolean sameFieldValues(AbstractEntity<?> other) {
@@ -38,7 +38,7 @@ class EqualityEvaluator {
 	}
 
 	protected List<String> equalityFields() {
-		return reflector.getIdentityFields();
+		return reflector.listIdentityFields();
 	}
 
 	protected boolean sameFieldValue(Object myValue, Object otherValue) {
