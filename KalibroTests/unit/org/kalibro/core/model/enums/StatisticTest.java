@@ -7,10 +7,17 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
 public class StatisticTest extends KalibroTestCase {
+
+	@BeforeClass
+	public static void emmaCoverage() {
+		Statistic.values();
+		Statistic.valueOf("SUM");
+	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testToString() {

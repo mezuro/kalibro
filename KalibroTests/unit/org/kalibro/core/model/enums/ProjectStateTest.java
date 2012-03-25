@@ -12,6 +12,7 @@ public class ProjectStateTest extends KalibroTestCase {
 	@BeforeClass
 	public static void emmaCoverage() {
 		ProjectState.values();
+		ProjectState.valueOf("NEW");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

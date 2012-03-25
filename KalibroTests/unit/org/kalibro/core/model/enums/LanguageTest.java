@@ -12,6 +12,7 @@ public class LanguageTest extends KalibroTestCase {
 	@BeforeClass
 	public static void emmaCoverage() {
 		Language.values();
+		Language.valueOf("C");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

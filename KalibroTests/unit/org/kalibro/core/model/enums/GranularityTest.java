@@ -3,10 +3,17 @@ package org.kalibro.core.model.enums;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
 public class GranularityTest extends KalibroTestCase {
+
+	@BeforeClass
+	public static void emmaCoverage() {
+		Granularity.values();
+		Granularity.valueOf("APPLICATION");
+	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testToString() {

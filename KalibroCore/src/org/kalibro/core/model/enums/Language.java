@@ -1,5 +1,6 @@
 package org.kalibro.core.model.enums;
 
+import org.kalibro.core.util.Identifier;
 
 /**
  * Represents a software language.
@@ -8,11 +9,13 @@ package org.kalibro.core.model.enums;
  */
 public enum Language {
 
-	C("C"),
-	CPP("C++"),
-	JAVA("Java");
+	C, CPP("C++"), JAVA;
 
 	private String name;
+
+	private Language() {
+		name = Identifier.fromConstant(name()).asText();
+	}
 
 	private Language(String name) {
 		this.name = name;

@@ -2,17 +2,27 @@ package org.kalibro.core.model.enums;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.RepositoryType.*;
+import static org.mockito.Matchers.*;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.loaders.*;
+import org.kalibro.core.util.Identifier;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Identifier.class)
 public class RepositoryTypeTest extends KalibroTestCase {
 
 	@BeforeClass
 	public static void emmaCoverage() {
 		RepositoryType.values();
+		RepositoryType.valueOf("GIT");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -58,5 +68,20 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		assertClassEquals(RemoteTarballLoader.class, REMOTE_TARBALL.getProjectLoader());
 		assertClassEquals(RemoteZipLoader.class, REMOTE_ZIP.getProjectLoader());
 		assertClassEquals(SubversionLoader.class, SUBVERSION.getProjectLoader());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowKalibroExceptionIfLoaderCouldNotBeCreated() {
+		Identifier identifier = PowerMockito.mock(Identifier.class);
+		PowerMockito.mockStatic(Identifier.class);
+		PowerMockito.when(Identifier.fromConstant(anyString())).thenReturn(identifier);
+		PowerMockito.when(identifier.asClassName()).thenReturn("Inexistent");
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				GIT.getProjectLoader();
+			}
+		}, "Error creating loader for Git", ClassNotFoundException.class);
 	}
 }

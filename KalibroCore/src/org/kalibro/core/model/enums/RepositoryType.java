@@ -1,36 +1,27 @@
 package org.kalibro.core.model.enums;
 
-import org.kalibro.core.loaders.*;
+import org.kalibro.KalibroException;
+import org.kalibro.core.loaders.ProjectLoader;
 import org.kalibro.core.util.Identifier;
 
 public enum RepositoryType {
 
-	LOCAL_DIRECTORY(new LocalDirectoryLoader()),
-	LOCAL_TARBALL(new LocalTarballLoader()),
-	LOCAL_ZIP(new LocalZipLoader()),
-	BAZAAR(new BazaarLoader()),
-	CVS(new CvsLoader()) {
+	LOCAL_DIRECTORY, LOCAL_TARBALL, LOCAL_ZIP, BAZAAR, CVS("CVS"), GIT, MERCURIAL, REMOTE_ZIP, REMOTE_TARBALL,
+	SUBVERSION;
 
-		@Override
-		public String toString() {
-			return "CVS";
-		}
-	},
-	GIT(new GitLoader()),
-	MERCURIAL(new MercurialLoader()),
-	REMOTE_ZIP(new RemoteZipLoader()),
-	REMOTE_TARBALL(new RemoteTarballLoader()),
-	SUBVERSION(new SubversionLoader());
+	private String name;
 
-	private ProjectLoader loader;
+	private RepositoryType() {
+		name = Identifier.fromConstant(name()).asText();
+	}
 
-	private RepositoryType(ProjectLoader loader) {
-		this.loader = loader;
+	private RepositoryType(String name) {
+		this.name = name;
 	}
 
 	@Override
 	public String toString() {
-		return Identifier.fromConstant(name()).asText();
+		return name;
 	}
 
 	public boolean isLocal() {
@@ -38,6 +29,11 @@ public enum RepositoryType {
 	}
 
 	public ProjectLoader getProjectLoader() {
-		return loader;
+		String className = Identifier.fromConstant(name()).asClassName() + "Loader";
+		try {
+			return (ProjectLoader) Class.forName("org.kalibro.core.loaders." + className).newInstance();
+		} catch (Exception exception) {
+			throw new KalibroException("Error creating loader for " + this, exception);
+		}
 	}
 }
