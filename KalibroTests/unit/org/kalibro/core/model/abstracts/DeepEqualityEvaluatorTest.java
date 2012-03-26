@@ -64,6 +64,18 @@ public class DeepEqualityEvaluatorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldAcceptEquivalentExceptions() {
+		checkDeepEquals(new ExceptionEntity(), new ExceptionEntity());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldAcceptNotAcceptExceptionWithDifferentStackTraces() {
+		ExceptionEntity entity1 = new ExceptionEntity();
+		ExceptionEntity entity2 = new ExceptionEntity();
+		checkNotDeepEquals(entity1, entity2);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptDifferentMapSizes() {
 		Person almostEquals = PersonFixtures.carlos();
 		almostEquals.getRelatives().remove("sister");

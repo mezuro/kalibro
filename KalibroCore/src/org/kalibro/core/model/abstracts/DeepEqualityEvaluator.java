@@ -1,9 +1,6 @@
 package org.kalibro.core.model.abstracts;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 class DeepEqualityEvaluator extends EqualityEvaluator {
 
@@ -23,41 +20,45 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 
 	@Override
 	protected boolean sameFieldValue(Object myValue, Object otherValue) {
-		if (myValue == null)
-			return otherValue == null;
+		if (myValue == null && otherValue == null)
+			return true;
+		if (myValue == null || otherValue == null)
+			return false;
 		return deepEquals(myValue, otherValue);
 	}
 
 	private boolean deepEquals(Object myValue, Object otherValue) {
 		if (myValue instanceof AbstractEntity<?>)
 			return ((AbstractEntity<?>) myValue).deepEquals(otherValue);
-		return specialEquals(myValue, otherValue);
+		if (myValue instanceof Throwable)
+			return throwableEquals((Throwable) myValue, (Throwable) otherValue);
+		if (myValue instanceof StackTraceElement)
+			return stackTraceEquals((StackTraceElement) myValue, (StackTraceElement) otherValue);
+		return groupEquals(myValue, otherValue);
 	}
 
-	private boolean specialEquals(Object myValue, Object otherValue) {
-		if (myValue instanceof Collection<?>)
-			return collectionEquals((Collection<?>) myValue, (Collection<?>) otherValue);
+	private boolean throwableEquals(Throwable myError, Throwable otherError) {
+		return myError.getClass().equals(otherError.getClass())
+			&& sameFieldValue(myError.getMessage(), otherError.getMessage())
+			&& sameFieldValue(myError.getStackTrace(), otherError.getStackTrace())
+			&& sameFieldValue(myError.getCause(), otherError.getCause());
+	}
+
+	private boolean stackTraceEquals(StackTraceElement myValue, StackTraceElement otherValue) {
+		return sameFieldValue(myValue.getClassName(), otherValue.getClassName())
+			&& sameFieldValue(myValue.getMethodName(), otherValue.getMethodName())
+			&& sameFieldValue(myValue.getFileName(), otherValue.getFileName())
+			&& sameFieldValue(myValue.getLineNumber(), otherValue.getLineNumber());
+	}
+
+	private boolean groupEquals(Object myValue, Object otherValue) {
 		if (myValue instanceof Map<?, ?>)
 			return mapEquals((Map<?, ?>) myValue, (Map<?, ?>) otherValue);
+		if (myValue instanceof Collection<?>)
+			return collectionEquals((Collection<?>) myValue, (Collection<?>) otherValue);
 		if (myValue.getClass().isArray())
 			return collectionEquals(Arrays.asList((Object[]) myValue), Arrays.asList((Object[]) otherValue));
 		return myValue.equals(otherValue);
-	}
-
-	private boolean collectionEquals(Collection<?> myCollection, Collection<?> otherCollection) {
-		if (myCollection.size() != otherCollection.size())
-			return false;
-		for (Object myElement : myCollection)
-			if (!sameFieldValue(myElement, find(myElement, otherCollection)))
-				return false;
-		return true;
-	}
-
-	private Object find(Object element, Collection<?> collection) {
-		for (Object anElement : collection)
-			if (element.equals(anElement))
-				return anElement;
-		return null;
 	}
 
 	private boolean mapEquals(Map<?, ?> myMap, Map<?, ?> otherMap) {
@@ -65,6 +66,16 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 			return false;
 		for (Object key : myMap.keySet())
 			if (!sameFieldValue(myMap.get(key), otherMap.get(key)))
+				return false;
+		return true;
+	}
+
+	private boolean collectionEquals(Collection<?> myCollection, Collection<?> otherCollection) {
+		if (myCollection.size() != otherCollection.size())
+			return false;
+		Iterator<?> otherIterator = otherCollection.iterator();
+		for (Object myElement : myCollection)
+			if (!sameFieldValue(myElement, otherIterator.next()))
 				return false;
 		return true;
 	}

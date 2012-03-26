@@ -4,7 +4,7 @@ import org.kalibro.KalibroException;
 
 class ExceptionEntity extends AbstractEntity<ExceptionEntity> {
 
-	private KalibroException exception = new KalibroException("ExceptionEntity", new NullPointerException());
+	protected RuntimeException exception = new KalibroException("ExceptionEntity", new NullPointerException());
 
 	public void throwException() {
 		throw exception;
