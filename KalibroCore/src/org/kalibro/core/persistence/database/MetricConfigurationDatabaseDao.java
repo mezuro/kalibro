@@ -1,7 +1,6 @@
 package org.kalibro.core.persistence.database;
 
-import javax.persistence.EntityNotFoundException;
-
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.persistence.dao.MetricConfigurationDao;
@@ -53,6 +52,6 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 			if (metricConfiguration.getMetric().getName().equals(metricName))
 				return metricConfiguration;
 		String message = "Metric '" + metricName + "' not found in configuration '" + configuration.getName() + "'";
-		throw new EntityNotFoundException(message);
+		throw new KalibroException(message);
 	}
 }

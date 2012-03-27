@@ -40,25 +40,25 @@ public class QueryTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldChangeErrorMessage() {
 		PowerMockito.when(nativeQuery.getSingleResult()).thenThrow(new NoResultException("Original message"));
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				query.getSingleResult();
 			}
-		}, NoResultException.class, "No entity found");
+		}, "No entity found", NoResultException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCustomizeErrorMessage() {
 		PowerMockito.when(nativeQuery.getSingleResult()).thenThrow(new NoResultException("Original message"));
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				query.getSingleResult("Customized error message");
 			}
-		}, NoResultException.class, "Customized error message");
+		}, "Customized error message", NoResultException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

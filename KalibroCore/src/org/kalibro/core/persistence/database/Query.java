@@ -5,6 +5,8 @@ import java.util.List;
 import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 
+import org.kalibro.KalibroException;
+
 class Query<T> {
 
 	private TypedQuery<T> nativeQuery;
@@ -25,9 +27,7 @@ class Query<T> {
 		try {
 			return nativeQuery.getSingleResult();
 		} catch (NoResultException exception) {
-			NoResultException modifiedException = new NoResultException(noResultMessage);
-			modifiedException.setStackTrace(exception.getStackTrace());
-			throw modifiedException;
+			throw new KalibroException(noResultMessage, exception);
 		}
 	}
 

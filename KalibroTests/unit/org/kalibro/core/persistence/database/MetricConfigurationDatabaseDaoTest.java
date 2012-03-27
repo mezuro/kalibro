@@ -1,7 +1,5 @@
 package org.kalibro.core.persistence.database;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -72,13 +70,13 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowExceptionForMetricConfigurationNotFound() {
 		String expectedMessage = "Metric 'Depth of Inheritance Tree' not found in configuration 'Kalibro for Java'";
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				String metricName = ditConfiguration.getMetric().getName();
 				dao.getMetricConfiguration(configuration.getName(), metricName);
 			}
-		}, EntityNotFoundException.class, expectedMessage);
+		}, expectedMessage);
 	}
 }
