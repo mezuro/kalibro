@@ -79,13 +79,13 @@ public class ScriptValidatorTest extends KalibroTestCase {
 	}
 
 	private void assertInvalid(final String code, final String script, Class<? extends Exception> exceptionClass) {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				validate(code, script);
 			}
-		}, RuntimeException.class, null, exceptionClass);
+		}, "Compound metric with invalid script: " + code, exceptionClass);
 	}
 
 	private void validate(String script) {

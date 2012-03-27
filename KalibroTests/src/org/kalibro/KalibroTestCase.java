@@ -71,6 +71,10 @@ public abstract class KalibroTestCase {
 		}
 	}
 
+	protected void checkException(Task task, Class<? extends Throwable> exceptionClass) {
+		checkKalibroException(task, "Error while running task: null", exceptionClass);
+	}
+
 	protected void checkKalibroException(Task task, String message) {
 		checkKalibroException(task, message, null);
 	}
@@ -87,11 +91,6 @@ public abstract class KalibroTestCase {
 			else
 				assertClassEquals(causeClass, cause);
 		}
-	}
-
-	@Deprecated
-	protected void checkException(Task errorTask, Class<? extends Exception> exceptionClass) {
-		checkException(errorTask, exceptionClass, null);
 	}
 
 	@Deprecated

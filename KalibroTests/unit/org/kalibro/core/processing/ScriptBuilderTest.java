@@ -54,14 +54,22 @@ public class ScriptBuilderTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldJustTheEvaluatedCompoundMetric() {
+	public void shouldIncludeJustTheEvaluatedCompoundMetric() {
 		assertTrue(scriptBuilder.shouldInclude(sc));
 		assertFalse(scriptBuilder.shouldInclude(new CompoundMetric()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotIncludeMetricIfThereIsNoResultForIt() {
-		assertFalse(scriptBuilder.shouldInclude(nativeMetric("total_cof")));
-		assertFalse(scriptBuilder.shouldInclude(new NativeMetric("", METHOD, JAVA)));
+		assertFalse(scriptBuilder.shouldInclude(new NativeMetric("ScriptBuilderTest metric", METHOD, JAVA)));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotIncludeMetricIfScopeIsNotCompatible() {
+		NativeMetric cbo = nativeMetric("cbo");
+		assertTrue(scriptBuilder.shouldInclude(cbo));
+
+		cbo.setScope(APPLICATION);
+		assertFalse(scriptBuilder.shouldInclude(cbo));
 	}
 }

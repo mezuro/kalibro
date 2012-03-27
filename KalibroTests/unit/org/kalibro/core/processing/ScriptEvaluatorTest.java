@@ -61,7 +61,7 @@ public class ScriptEvaluatorTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				invoke(function, script);
 			}
-		}, RuntimeException.class, null, exceptionClass);
+		}, exceptionClass);
 	}
 
 	private Double invoke(String function, String script) throws Exception {
