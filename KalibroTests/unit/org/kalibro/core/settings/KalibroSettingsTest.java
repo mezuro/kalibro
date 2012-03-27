@@ -118,16 +118,15 @@ public class KalibroSettingsTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorWritingFile() throws Exception {
-		IOException error = new IOException();
-		PowerMockito.doThrow(error).when(FileUtils.class);
+		PowerMockito.doThrow(new IOException()).when(FileUtils.class);
 		FileUtils.writeStringToFile(settingsFile, settings.toString());
-		try {
-			settings.write();
-			fail("Preceding line should throw Exception");
-		} catch (RuntimeException exception) {
-			assertSame(error, exception.getCause());
-			assertEquals("Could not write settings file", exception.getMessage());
-		}
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				settings.write();
+			}
+		}, "Could not write settings file: " + settingsFile, IOException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -150,13 +149,13 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	public void testLoadError() throws Exception {
 		prepareForLoad(true);
 		PowerMockito.whenNew(FileInputStream.class).withArguments(settingsFile).thenThrow(new IOException());
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				KalibroSettings.load();
 			}
-		}, RuntimeException.class, "Could not load Kalibro settings", IOException.class);
+		}, "Could not load Kalibro settings from file: " + settingsFile, IOException.class);
 	}
 
 	private void prepareForLoad(boolean settingsFileExists) throws Exception {

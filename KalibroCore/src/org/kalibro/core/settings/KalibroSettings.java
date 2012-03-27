@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.util.Directories;
@@ -21,7 +22,7 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		try {
 			return new KalibroSettings((Map<?, ?>) new Yaml().load(new FileInputStream(SETTINGS_FILE)));
 		} catch (IOException exception) {
-			throw new RuntimeException("Could not load Kalibro settings", exception);
+			throw new KalibroException("Could not load Kalibro settings from file: " + SETTINGS_FILE, exception);
 		}
 	}
 
@@ -93,7 +94,7 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		try {
 			FileUtils.writeStringToFile(SETTINGS_FILE, toString());
 		} catch (IOException exception) {
-			throw new RuntimeException("Could not write settings file", exception);
+			throw new KalibroException("Could not write settings file: " + SETTINGS_FILE, exception);
 		}
 	}
 

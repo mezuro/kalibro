@@ -12,6 +12,7 @@ public class SupportedDatabaseTest extends KalibroTestCase {
 	@BeforeClass
 	public static void emmaCoverage() {
 		SupportedDatabase.values();
+		SupportedDatabase.valueOf("MYSQL");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
