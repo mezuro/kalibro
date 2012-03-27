@@ -7,7 +7,6 @@
 		<class>org.kalibro.core.persistence.database.entities.BaseToolRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.CompoundMetricRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.ConfigurationRecord</class>
-		<class>org.kalibro.core.persistence.database.entities.ErrorRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.MetricConfigurationRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.MetricResultRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.ModuleRecord</class>
@@ -16,6 +15,5 @@
 		<class>org.kalibro.core.persistence.database.entities.ProjectResultRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.RangeRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.RepositoryRecord</class>
-		<class>org.kalibro.core.persistence.database.entities.StackTraceElementRecord</class>
 	</persistence-unit>
 </persistence>

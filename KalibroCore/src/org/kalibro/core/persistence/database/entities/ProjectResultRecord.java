@@ -7,6 +7,7 @@ import java.util.Date;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.util.DataTransferObject;
 
@@ -70,7 +71,8 @@ public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 				projectResult.setSourceTree(node.convert());
 				return;
 			}
-		throw new IllegalStateException("No source tree root found for project result");
+		String projectName = projectResult.getProject().getName();
+		throw new KalibroException("No source tree root found in result for project: " + projectName);
 	}
 
 	protected Date getDate() {

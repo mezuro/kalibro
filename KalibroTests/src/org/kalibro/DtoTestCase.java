@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.util.DataTransferObject;
 import org.powermock.reflect.Whitebox;
 
@@ -40,6 +40,6 @@ public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTI
 	protected abstract RECORD createDto(ENTITY entity);
 
 	protected void assertCorrectConversion(ENTITY original, ENTITY converted) {
-		assertDeepEquals((AbstractEntity<?>) original, (AbstractEntity<?>) converted);
+		assertDeepEquals(Arrays.asList(original), Arrays.asList(converted));
 	}
 }

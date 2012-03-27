@@ -27,16 +27,8 @@ public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 		return new BaseToolRecord(baseTool);
 	}
 
-	@Override
-	protected void assertCorrectConversion(BaseTool original, BaseTool converted) {
-		assertEquals(original.getName(), converted.getName());
-		assertEquals(original.getDescription(), converted.getDescription());
-		assertEquals(original.getCollectorClass(), converted.getCollectorClass());
-		assertEquals(original.getSupportedMetrics(), converted.getSupportedMetrics());
-	}
-
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveName() {
-		assertEquals("My base tool", new BaseToolRecord("My base tool").getName());
+		assertEquals("BaseToolRecordTest", new BaseToolRecord("BaseToolRecordTest").getName());
 	}
 }

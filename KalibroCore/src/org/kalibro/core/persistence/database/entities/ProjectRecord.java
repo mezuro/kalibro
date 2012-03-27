@@ -28,8 +28,8 @@ public class ProjectRecord implements DataTransferObject<Project> {
 	@Column(nullable = false)
 	private String state;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
-	private ErrorRecord error;
+	@Column
+	private Throwable error;
 
 	@ManyToOne(optional = false)
 	@JoinColumn(nullable = false, referencedColumnName = "name")
@@ -64,7 +64,7 @@ public class ProjectRecord implements DataTransferObject<Project> {
 
 	private void initializeError(Project project) {
 		if (project.getState() == ERROR)
-			error = new ErrorRecord(project.getError(), this);
+			error = project.getError();
 	}
 
 	@Override
@@ -75,19 +75,8 @@ public class ProjectRecord implements DataTransferObject<Project> {
 		project.setDescription(description);
 		project.setRepository(repository.convert());
 		project.setConfigurationName(configuration.getName());
-		convertState(project);
-		convertError(project);
+		project.setState(ProjectState.valueOf(state));
+		project.setError(error);
 		return project;
-	}
-
-	private void convertState(Project project) {
-		ProjectState projectState = ProjectState.valueOf(state);
-		if (projectState != ERROR)
-			project.setState(projectState);
-	}
-
-	private void convertError(Project project) {
-		if (error != null)
-			project.setError(error.convert());
 	}
 }

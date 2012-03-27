@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.analizo.AnalizoStub;
 
@@ -12,7 +12,7 @@ public final class NativeMetricFixtures {
 	}
 
 	public static Set<NativeMetric> nativeMetrics() {
-		Set<NativeMetric> nativeMetrics = new HashSet<NativeMetric>();
+		Set<NativeMetric> nativeMetrics = new TreeSet<NativeMetric>();
 		for (NativeMetric metric : AnalizoStub.nativeMetrics())
 			nativeMetrics.add(copyAndSetOrigin(metric));
 		return nativeMetrics;

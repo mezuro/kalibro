@@ -34,13 +34,13 @@ public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectR
 	public void checkRootNotFoundError() {
 		final ProjectResultRecord record = createDto(helloWorldResult());
 		Whitebox.setInternalState(record, "sourceTree", new ArrayList<ModuleRecord>());
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				record.convert();
 			}
-		}, IllegalStateException.class, "No source tree root found for project result");
+		}, "No source tree root found in result for project: HelloWorld-1.0");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

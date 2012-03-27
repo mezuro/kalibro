@@ -48,8 +48,9 @@ public class ConfigurationRecord implements DataTransferObject<Configuration> {
 	}
 
 	private void convertMetrics(Configuration configuration) {
-		for (MetricConfigurationRecord metricConfiguration : metricConfigurations)
-			configuration.addMetricConfiguration(metricConfiguration.convert());
+		if (metricConfigurations != null)
+			for (MetricConfigurationRecord metricConfiguration : metricConfigurations)
+				configuration.addMetricConfiguration(metricConfiguration.convert());
 	}
 
 	protected String getName() {

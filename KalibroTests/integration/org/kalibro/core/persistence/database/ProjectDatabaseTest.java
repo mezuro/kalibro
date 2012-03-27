@@ -75,13 +75,13 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldNotRetrieveUnsavedProject() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				retrieve(helloWorld);
 			}
-		}, NoResultException.class, "There is no project named '" + helloWorld.getName() + "'");
+		}, "There is no project named '" + helloWorld.getName() + "'", NoResultException.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
