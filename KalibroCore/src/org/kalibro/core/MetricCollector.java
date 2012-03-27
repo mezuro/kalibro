@@ -15,6 +15,7 @@ import org.kalibro.core.model.enums.Granularity;
  */
 public interface MetricCollector {
 
+	// TODO make collector return complete BaseTool, with name, description and supported metrics.
 	/** Returns the set of {@link NativeMetric}s provided by the metric collector tool. */
 	Set<NativeMetric> getSupportedMetrics();
 
