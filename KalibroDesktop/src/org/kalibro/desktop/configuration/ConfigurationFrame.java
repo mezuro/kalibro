@@ -6,6 +6,7 @@ import java.beans.PropertyVetoException;
 
 import javax.swing.JInternalFrame;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.swingextension.icon.Icon;
@@ -57,7 +58,7 @@ public class ConfigurationFrame extends JInternalFrame implements ContainerListe
 		try {
 			setSelected(true);
 		} catch (PropertyVetoException exception) {
-			throw new IllegalStateException(exception);
+			throw new KalibroException("Could not select configuration frame: " + configuration, exception);
 		}
 	}
 

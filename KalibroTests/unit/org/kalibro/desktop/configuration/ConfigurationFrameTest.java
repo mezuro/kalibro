@@ -140,12 +140,12 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 		Mockito.verify(frame).setSelected(true);
 
 		PowerMockito.doThrow(new PropertyVetoException("", null)).when(frame).setSelected(true);
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				frame.select();
 			}
-		}, IllegalStateException.class, "java.beans.PropertyVetoException: ", PropertyVetoException.class);
+		}, "Could not select configuration frame: " + configuration, PropertyVetoException.class);
 	}
 }

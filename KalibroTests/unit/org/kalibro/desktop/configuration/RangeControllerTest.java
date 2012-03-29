@@ -94,6 +94,11 @@ public class RangeControllerTest extends KalibroTestCase {
 	public void shouldNotConfirmConflictingRangeAndShowError() {
 		controller.addRange();
 		assertFalse(controller.dialogConfirm(new Range()));
+
+		/*
+		 * TODO Review use of matcher any(Class). It is an alias to anyObject(), so it does not test the argument The
+		 * following should fail. A KalibroException is expected. A Mockito deception.
+		 */
 		verify(errorDialog).show(any(IllegalArgumentException.class));
 	}
 

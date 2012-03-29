@@ -3,6 +3,7 @@ package org.kalibro.desktop.configuration;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
@@ -58,7 +59,7 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 			configuration.addMetricConfiguration(metricConfiguration);
 			showMetricConfiguration();
 			addDialog.dispose();
-		} catch (Exception exception) {
+		} catch (KalibroException exception) {
 			new ErrorDialog(addDialog).show(exception);
 		}
 	}
@@ -80,7 +81,7 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 			Metric metric = metricConfiguration.getMetric();
 			configuration.replaceMetricConfiguration(metric, panel.get());
 			cardStack.pop();
-		} catch (Exception exception) {
+		} catch (KalibroException exception) {
 			new ErrorDialog(panel).show(exception);
 		}
 	}

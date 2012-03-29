@@ -48,10 +48,12 @@ public class ConfigurationMenu extends AbstractMenu implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		MenuItem source = (MenuItem) event.getSource();
 		String methodName = source.getName();
+		ErrorDialog errorDialog = new ErrorDialog(desktopPane);
 		try {
 			ConfigurationController.class.getMethod(methodName).invoke(controller);
 		} catch (Exception exception) {
-			new ErrorDialog(desktopPane).show(exception);
+			// TODO create a ReflectionMenuItem to avoid this
+			errorDialog.show(exception);
 		}
 	}
 

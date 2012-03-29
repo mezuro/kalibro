@@ -1,5 +1,6 @@
 package org.kalibro.desktop.configuration;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
@@ -35,7 +36,7 @@ public class RangeController implements EditDialogListener<Range> {
 		try {
 			confirmRange(newRange);
 			return true;
-		} catch (Exception exception) {
+		} catch (KalibroException exception) {
 			new ErrorDialog(dialog).show(exception);
 			return false;
 		}

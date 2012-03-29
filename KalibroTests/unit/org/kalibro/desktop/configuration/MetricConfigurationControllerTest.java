@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.KalibroException;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.*;
 import org.kalibro.desktop.swingextension.Button;
@@ -73,7 +74,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotCloseAddDialogOnConflictingMetric() throws Exception {
-		Exception error = new IllegalArgumentException();
+		Exception error = new KalibroException("MetricConfigurationControllerTest");
 		ErrorDialog errorDialog = mockErrorDialog();
 		PowerMockito.when(addDialog.getMetric()).thenReturn(new CompoundMetric());
 		PowerMockito.doThrow(error).when(configuration).addMetricConfiguration(any(MetricConfiguration.class));
@@ -131,7 +132,7 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotPopPanelOnError() throws Exception {
-		Exception error = new IllegalArgumentException();
+		Exception error = new KalibroException("MetricConfigurationControllerTest");
 		ErrorDialog errorDialog = mockErrorDialog();
 		PowerMockito.doThrow(error).when(configuration).replaceMetricConfiguration(null, null);
 
