@@ -1,11 +1,12 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.junit.Test;
 import org.kalibro.DtoTestCase;
+import org.kalibro.KalibroException;
+import org.kalibro.core.concurrent.Task;
 
 public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
@@ -16,7 +17,9 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
 	@Override
 	protected Collection<Throwable> entitiesForTestingConversion() {
-		return Arrays.asList(new Throwable("My error message"));
+		Throwable error = new Throwable("ErrorXmlTest");
+		KalibroException exception = new KalibroException("ErrorXmlTest", error);
+		return Arrays.asList(error, exception);
 	}
 
 	@Override
@@ -24,16 +27,16 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 		return new ErrorXml(error);
 	}
 
-	@Override
-	protected void assertCorrectConversion(Throwable original, Throwable converted) {
-		assertEquals(original.getMessage(), converted.getMessage());
-		assertCorrectConversion(original.getStackTrace(), converted.getStackTrace());
-	}
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowExceptionForNotConvertibleError() {
+		checkKalibroException(new Task() {
 
-	private void assertCorrectConversion(StackTraceElement[] original, StackTraceElement[] converted) {
-		assertEquals(original.length, converted.length);
-		StackTraceElementXmlTest test = new StackTraceElementXmlTest();
-		for (int i = 0; i < original.length; i++)
-			test.assertCorrectConversion(original[i], converted[i]);
+			@Override
+			protected void perform() throws Throwable {
+				new ErrorXml(new Throwable() {
+					// Anonymous class
+				}).convert();
+			}
+		}, "Could not convert Error XML to Throwable", NullPointerException.class);
 	}
 }

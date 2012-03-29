@@ -1,7 +1,5 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
 import java.util.Collection;
 
@@ -22,13 +20,5 @@ public class StackTraceElementXmlTest extends DtoTestCase<StackTraceElement, Sta
 	@Override
 	protected StackTraceElementXml createDto(StackTraceElement element) {
 		return new StackTraceElementXml(element);
-	}
-
-	@Override
-	protected void assertCorrectConversion(StackTraceElement original, StackTraceElement converted) {
-		assertEquals(original.getClassName(), converted.getClassName());
-		assertEquals(original.getMethodName(), converted.getMethodName());
-		assertEquals(original.getFileName(), converted.getFileName());
-		assertEquals(original.getLineNumber(), converted.getLineNumber());
 	}
 }

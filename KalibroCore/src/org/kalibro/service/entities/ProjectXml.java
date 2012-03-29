@@ -54,19 +54,10 @@ public class ProjectXml implements DataTransferObject<Project> {
 		project.setLicense(license);
 		project.setDescription(description);
 		project.setRepository(repository.convert());
-		convertState(project);
-		convertErrorReport(project);
-		project.setConfigurationName(configurationName);
-		return project;
-	}
-
-	private void convertState(Project project) {
-		if (state != ERROR)
-			project.setState(state);
-	}
-
-	private void convertErrorReport(Project project) {
+		project.setState(state);
 		if (error != null)
 			project.setError(error.convert());
+		project.setConfigurationName(configurationName);
+		return project;
 	}
 }

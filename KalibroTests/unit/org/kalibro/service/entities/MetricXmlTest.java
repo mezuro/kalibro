@@ -1,6 +1,5 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
 import static org.kalibro.core.model.NativeMetricFixtures.*;
 
 import java.util.ArrayList;
@@ -14,14 +13,6 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.service.entities.MetricXmlTest.MyMetric;
 
 public class MetricXmlTest extends DtoTestCase<MyMetric, MetricXml<MyMetric>> {
-
-	@Override
-	public void defaultConstructorShouldDoNothing() {
-		MyMetric metric = newDtoUsingDefaultConstructor().convert();
-		assertNull(metric.getName());
-		assertNull(metric.getScope());
-		assertNull(metric.getDescription());
-	}
 
 	@Override
 	protected MetricXml<MyMetric> newDtoUsingDefaultConstructor() {

@@ -8,13 +8,18 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.util.DataTransferObject;
 
 @XmlRootElement(name = "Error")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ErrorXml implements DataTransferObject<Throwable> {
 
+	private String errorClass;
+
 	private String message;
+
+	private ErrorXml cause;
 
 	@XmlElement(name = "stackTraceElement")
 	private List<StackTraceElementXml> stackTrace;
@@ -24,7 +29,10 @@ public class ErrorXml implements DataTransferObject<Throwable> {
 	}
 
 	public ErrorXml(Throwable error) {
+		errorClass = error.getClass().getCanonicalName();
 		message = error.getMessage();
+		if (error.getCause() != null)
+			cause = new ErrorXml(error.getCause());
 		initializeStackTrace(error);
 	}
 
@@ -36,9 +44,19 @@ public class ErrorXml implements DataTransferObject<Throwable> {
 
 	@Override
 	public Throwable convert() {
-		Throwable error = new Throwable(message);
+		Throwable error = initializeError();
+		if (cause != null)
+			error.initCause(cause.convert());
 		convertStackTrace(error);
 		return error;
+	}
+
+	private Throwable initializeError() {
+		try {
+			return (Throwable) Class.forName(errorClass).getConstructor(String.class).newInstance(message);
+		} catch (Exception exception) {
+			throw new KalibroException("Could not convert Error XML to Throwable", exception);
+		}
 	}
 
 	private void convertStackTrace(Throwable error) {

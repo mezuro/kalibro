@@ -7,6 +7,7 @@ import java.net.MalformedURLException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.KalibroException;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ProjectDaoStub;
 import org.kalibro.service.entities.RawProjectXml;
@@ -19,6 +20,7 @@ public class ProjectEndpointTest extends KalibroServiceTestCase {
 	@Before
 	public void setUp() throws MalformedURLException {
 		sample = helloWorld();
+		sample.setError(new KalibroException("ProjectEndpointTest", new Exception()));
 		ProjectDaoStub daoStub = new ProjectDaoStub();
 		daoStub.save(sample);
 		port = publishAndGetPort(new ProjectEndpointImpl(daoStub), ProjectEndpoint.class);

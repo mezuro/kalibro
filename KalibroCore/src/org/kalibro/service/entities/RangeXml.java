@@ -23,7 +23,9 @@ public class RangeXml implements DataTransferObject<Range> {
 	@XmlElement(required = true)
 	private String label;
 
+	@XmlElement(required = true)
 	private Double grade;
+
 	private String color;
 	private String comments;
 
@@ -46,9 +48,12 @@ public class RangeXml implements DataTransferObject<Range> {
 		range.setBeginning(beginning);
 		range.setEnd(end);
 		range.setLabel(label);
-		range.setGrade(grade);
-		convertColor(range);
-		range.setComments(comments);
+		if (grade != null)
+			range.setGrade(grade);
+		if (color != null)
+			convertColor(range);
+		if (comments != null)
+			range.setComments(comments);
 		return range;
 	}
 

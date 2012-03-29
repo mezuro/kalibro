@@ -7,7 +7,6 @@ import static org.kalibro.core.model.ModuleResultFixtures.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
-import java.util.Set;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
@@ -44,25 +43,6 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 	@Override
 	protected ModuleResultXml createDto(ModuleResult moduleResult) {
 		return new ModuleResultXml(moduleResult);
-	}
-
-	@Override
-	protected void assertCorrectConversion(ModuleResult original, ModuleResult converted) {
-		assertCorrectCompoundMetricsWithErrorConversion(original, converted);
-		removeCompoundMetricsWithError(original);
-		removeCompoundMetricsWithError(converted);
-		assertDeepEquals(original, converted);
-	}
-
-	private void assertCorrectCompoundMetricsWithErrorConversion(ModuleResult original, ModuleResult converted) {
-		Set<CompoundMetric> compoundMetricsWithError = original.getCompoundMetricsWithError();
-		assertDeepEquals(compoundMetricsWithError, converted.getCompoundMetricsWithError());
-		for (CompoundMetric metric : compoundMetricsWithError)
-			new ErrorXmlTest().assertCorrectConversion(original.getErrorFor(metric), converted.getErrorFor(metric));
-	}
-
-	private void removeCompoundMetricsWithError(ModuleResult moduleResult) {
-		WhiteboxImpl.setInternalState(moduleResult, "compoundMetricsWithError", (Object) null);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

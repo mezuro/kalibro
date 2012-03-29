@@ -30,6 +30,6 @@ public class BaseToolXmlTest extends DtoTestCase<BaseTool, BaseToolXml> {
 	public void assertCorrectConversion(BaseTool original, BaseTool converted) {
 		assertEquals(original.getName(), converted.getName());
 		assertEquals(original.getDescription(), converted.getDescription());
-		assertEquals(original.getSupportedMetrics(), converted.getSupportedMetrics());
+		assertDeepEquals(original.getSupportedMetrics(), converted.getSupportedMetrics());
 	}
 }

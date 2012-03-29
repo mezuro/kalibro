@@ -1,12 +1,19 @@
 package org.kalibro.service.entities;
 
+import static org.junit.Assert.*;
+
+import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.SortedSet;
 
+import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.MetricConfigurationFixtures;
 import org.kalibro.core.model.Range;
+import org.kalibro.core.model.RangeFixtures;
+import org.kalibro.core.model.RangeLabel;
+import org.powermock.reflect.Whitebox;
 
 public class RangeXmlTest extends DtoTestCase<Range, RangeXml> {
 
@@ -24,5 +31,16 @@ public class RangeXmlTest extends DtoTestCase<Range, RangeXml> {
 	@Override
 	protected RangeXml createDto(Range range) {
 		return new RangeXml(range);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldTurnNullUnrequiredValuesToDefault() {
+		Range range = RangeFixtures.amlocRange(RangeLabel.GOOD);
+		RangeXml dto = createDto(range);
+		Whitebox.setInternalState(dto, "color", (Object) null);
+		Whitebox.setInternalState(dto, "comments", (Object) null);
+		Range converted = dto.convert();
+		assertEquals(Color.WHITE, converted.getColor());
+		assertEquals("", converted.getComments());
 	}
 }
