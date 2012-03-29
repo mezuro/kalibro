@@ -53,13 +53,13 @@ public class ReflectionColumnTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorGettingMethodFromInvalidClass() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				column.getColumnClass(String.class);
 			}
-		}, IllegalArgumentException.class, "Invalid column", NoSuchMethodException.class);
+		}, "Reflection column did not found method: java.lang.String.getColor", NoSuchMethodException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

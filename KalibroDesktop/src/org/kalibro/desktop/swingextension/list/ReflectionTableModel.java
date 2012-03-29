@@ -1,5 +1,7 @@
 package org.kalibro.desktop.swingextension.list;
 
+import org.kalibro.KalibroException;
+
 public class ReflectionTableModel<T> extends TableModel<T> {
 
 	private Class<T> dataClass;
@@ -12,7 +14,7 @@ public class ReflectionTableModel<T> extends TableModel<T> {
 	@Override
 	public void addColumn(Column column) {
 		if (! (column instanceof ReflectionColumn))
-			throw new IllegalArgumentException("All columns of ReflectionTableModel should be ReflectionColumn");
+			throw new KalibroException("All columns of ReflectionTableModel should be ReflectionColumn");
 		super.addColumn(column);
 	}
 

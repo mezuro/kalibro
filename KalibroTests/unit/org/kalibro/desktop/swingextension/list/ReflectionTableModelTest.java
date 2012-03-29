@@ -26,13 +26,13 @@ public class ReflectionTableModelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptOnlyReflectionColumns() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				model.addColumn(new Column("", null, 0));
 			}
-		}, IllegalArgumentException.class, "All columns of ReflectionTableModel should be ReflectionColumn");
+		}, "All columns of ReflectionTableModel should be ReflectionColumn");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
