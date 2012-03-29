@@ -27,12 +27,7 @@ public final class Kalibro {
 
 	public static void changeSettings(KalibroSettings newSettings) {
 		settings = newSettings;
-		try {
-			createFacade(newSettings);
-		} catch (RuntimeException exception) {
-			settings = null;
-			throw exception;
-		}
+		createFacade();
 		newSettings.write();
 	}
 
@@ -86,12 +81,17 @@ public final class Kalibro {
 
 	private static KalibroFacade getFacade() {
 		if (facade == null)
-			createFacade(currentSettings());
+			createFacade();
 		return facade;
 	}
 
-	private static void createFacade(KalibroSettings newSettings) {
-		facade = newSettings.isClient() ? new KalibroClient() : new KalibroLocal();
+	private static void createFacade() {
+		try {
+			facade = currentSettings().isClient() ? new KalibroClient() : new KalibroLocal();
+		} catch (KalibroException exception) {
+			settings = null;
+			throw exception;
+		}
 	}
 
 	private Kalibro() {

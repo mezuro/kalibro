@@ -102,15 +102,15 @@ public class KalibroTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotWriteNewSettingsIfFacadeCreationThrowsException() throws Exception {
 		PowerMockito.when(settings.isClient()).thenReturn(false);
-		PowerMockito.whenNew(KalibroLocal.class).withNoArguments().thenThrow(new RuntimeException());
+		PowerMockito.whenNew(KalibroLocal.class).withNoArguments().thenThrow(new KalibroException("KalibroTest"));
 
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				Kalibro.changeSettings(settings);
 			}
-		}, RuntimeException.class);
+		}, "KalibroTest");
 		verify(settings, never()).write();
 
 		Kalibro.currentSettings();
