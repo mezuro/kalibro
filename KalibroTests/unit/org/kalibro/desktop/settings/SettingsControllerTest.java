@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
+import org.kalibro.KalibroException;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
@@ -86,13 +87,13 @@ public class SettingsControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotConfirmInvalidSettingsAndShowError() throws Exception {
-		RuntimeException error = new RuntimeException();
+		KalibroException error = new KalibroException("SettingsControllerTest");
 		ErrorDialog errorDialog = prepareError(error);
 		assertFalse(controller.dialogConfirm(settings));
 		verify(errorDialog).show(error);
 	}
 
-	private ErrorDialog prepareError(RuntimeException error) throws Exception {
+	private ErrorDialog prepareError(KalibroException error) throws Exception {
 		ErrorDialog errorDialog = PowerMockito.mock(ErrorDialog.class);
 		PowerMockito.doThrow(error).when(Kalibro.class, "changeSettings", settings);
 		PowerMockito.whenNew(ErrorDialog.class).withArguments(dialog).thenReturn(errorDialog);

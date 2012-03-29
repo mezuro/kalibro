@@ -4,6 +4,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import org.kalibro.Kalibro;
+import org.kalibro.KalibroException;
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.EditDialogListener;
@@ -40,7 +41,7 @@ public final class SettingsController extends ComponentAdapter implements EditDi
 		try {
 			Kalibro.changeSettings(settings);
 			return true;
-		} catch (Exception exception) {
+		} catch (KalibroException exception) {
 			new ErrorDialog(dialog).show(exception);
 			return false;
 		}
