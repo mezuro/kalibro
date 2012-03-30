@@ -40,12 +40,12 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldNotRetrieveInexistentBaseTool() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getBaseTool("Inexistent base tool");
 			}
-		}, NoResultException.class, "There is no base tool named 'Inexistent base tool'");
+		}, "There is no base tool named 'Inexistent base tool'", NoResultException.class);
 	}
 }

@@ -28,7 +28,7 @@ public class AnalizoTest extends KalibroTestCase {
 		try {
 			String message = "The Analizo version installed is not the expected for this test.";
 			assertEquals(message, "1.16.0", getAnalizoVersion());
-		} catch (Exception exception) {
+		} catch (IOException exception) {
 			fail("Analizo is not installed but is required for this test.");
 		}
 	}

@@ -75,13 +75,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testNoFirstResultFound() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getFirstResultOf(project.getName());
 			}
-		}, NoResultException.class, "No project result found");
+		}, "No project result found", NoResultException.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -98,13 +98,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testNoLastResultFound() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getLastResultOf(project.getName());
 			}
-		}, NoResultException.class, "No project result found");
+		}, "No project result found", NoResultException.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -116,13 +116,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testNoResultFoundBefore() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getLastResultBefore(first.getDate(), project.getName());
 			}
-		}, NoResultException.class, "No project result found");
+		}, "No project result found", NoResultException.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -134,13 +134,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testNoResultFoundAfter() {
-		checkException(new Task() {
+		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getFirstResultAfter(third.getDate(), project.getName());
 			}
-		}, NoResultException.class, "No project result found");
+		}, "No project result found", NoResultException.class);
 	}
 
 	private void saveResults() {

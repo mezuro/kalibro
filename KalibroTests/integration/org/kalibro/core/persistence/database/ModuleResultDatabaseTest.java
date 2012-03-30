@@ -47,8 +47,8 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 	public void testSaveSpecialDoubleValues() {
 		MetricResult firstResult = result.getMetricResults().iterator().next();
 		firstResult.addDescendentResult(Double.NaN);
-		firstResult.addDescendentResult(Double.POSITIVE_INFINITY);
 		firstResult.addDescendentResult(Double.NEGATIVE_INFINITY);
+		firstResult.addDescendentResult(Double.POSITIVE_INFINITY);
 
 		save();
 		assertDeepEquals(result, getSavedResult());

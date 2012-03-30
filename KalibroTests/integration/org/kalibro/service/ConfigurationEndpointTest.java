@@ -72,6 +72,6 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 	private void testSaveConfiguration(Configuration newConfiguration) {
 		newConfiguration.setName("ConfigurationEndpointTest configuration");
 		port.saveConfiguration(new ConfigurationXml(newConfiguration));
-		assertDeepEquals(port.getConfigurationNames(), sample.getName(), newConfiguration.getName());
+		assertDeepEquals(port.getConfigurationNames(), newConfiguration.getName(), sample.getName());
 	}
 }
