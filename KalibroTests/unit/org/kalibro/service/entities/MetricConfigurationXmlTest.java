@@ -12,6 +12,7 @@ import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.CompoundMetricFixtures;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.enums.Statistic;
+import org.powermock.reflect.Whitebox;
 
 public class MetricConfigurationXmlTest extends DtoTestCase<MetricConfiguration, MetricConfigurationXml> {
 
@@ -36,10 +37,13 @@ public class MetricConfigurationXmlTest extends DtoTestCase<MetricConfiguration,
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldTurnNullUnrequiredFieldsToDefault() {
 		MetricConfiguration configuration = configuration("dit");
-		configuration.setWeight(null);
-		configuration.setAggregationForm(null);
+		MetricConfigurationXml dto = createDto(configuration);
+		Whitebox.setInternalState(dto, "weight", (Object) null);
+		Whitebox.setInternalState(dto, "aggregationForm", (Object) null);
+		Whitebox.setInternalState(dto, "ranges", (Object) null);
 		MetricConfiguration converted = createDto(configuration).convert();
 		assertDoubleEquals(1.0, converted.getWeight());
 		assertEquals(Statistic.AVERAGE, converted.getAggregationForm());
+		assertTrue(converted.getRanges().isEmpty());
 	}
 }
