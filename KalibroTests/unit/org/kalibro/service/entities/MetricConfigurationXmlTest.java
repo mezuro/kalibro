@@ -41,7 +41,7 @@ public class MetricConfigurationXmlTest extends DtoTestCase<MetricConfiguration,
 		Whitebox.setInternalState(dto, "weight", (Object) null);
 		Whitebox.setInternalState(dto, "aggregationForm", (Object) null);
 		Whitebox.setInternalState(dto, "ranges", (Object) null);
-		MetricConfiguration converted = createDto(configuration).convert();
+		MetricConfiguration converted = dto.convert();
 		assertDoubleEquals(1.0, converted.getWeight());
 		assertEquals(Statistic.AVERAGE, converted.getAggregationForm());
 		assertTrue(converted.getRanges().isEmpty());

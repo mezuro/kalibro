@@ -2,7 +2,6 @@ package org.kalibro;
 
 import org.kalibro.core.util.StackTracePrinter;
 
-// TODO use KalibroException instead of RuntimeException
 public class KalibroException extends RuntimeException {
 
 	public KalibroException(String message) {

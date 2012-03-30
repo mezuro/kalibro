@@ -93,26 +93,6 @@ public abstract class KalibroTestCase {
 		}
 	}
 
-	@Deprecated
-	protected void checkException(Task errorTask, Class<? extends Exception> exceptionClass, String message) {
-		checkException(errorTask, exceptionClass, message, null);
-	}
-
-	@Deprecated
-	protected void checkException(Task errorTask, Class<? extends Exception> exceptionClass, String message,
-		Class<? extends Exception> causeClass) {
-		try {
-			errorTask.executeAndWait();
-			fail("Should throw exception on performing task");
-		} catch (Exception exception) {
-			assertEquals(exceptionClass, exception.getClass());
-			if (message != null)
-				assertEquals(message, exception.getMessage());
-			if (causeClass != null)
-				assertClassEquals(causeClass, exception.getCause());
-		}
-	}
-
 	protected void assertClassEquals(Class<?> expectedClass, Object object) {
 		assertEquals(expectedClass, object.getClass());
 	}

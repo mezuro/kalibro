@@ -65,11 +65,19 @@ public class ScriptBuilderTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotIncludeMetricIfScopeIsNotCompatible() {
+	public void shouldNotIncludeNativeMetricIfScopeIsNotCompatible() {
 		NativeMetric cbo = nativeMetric("cbo");
 		assertTrue(scriptBuilder.shouldInclude(cbo));
 
 		cbo.setScope(APPLICATION);
 		assertFalse(scriptBuilder.shouldInclude(cbo));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotIncludeCompoundMetricIfScopeIsNotCompatible() {
+		assertTrue(scriptBuilder.shouldInclude(sc));
+
+		sc.setScope(APPLICATION);
+		assertFalse(scriptBuilder.shouldInclude(sc));
 	}
 }
