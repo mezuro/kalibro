@@ -3,7 +3,10 @@
     <wb-module deploy-name="KalibroService">
         <wb-resource deploy-path="/" source-path="/WebContent"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <wb-resource deploy-path="/WEB-INF/classes" source-path="/KalibroCoreSrc"/>
+        <dependent-module archiveName="KalibroCore.jar" deploy-path="/WEB-INF/lib"
+        	handle="module:/resource/KalibroCore/KalibroCore">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
         <property name="context-root" value="KalibroService"/>
         <property name="java-output-path" value="/KalibroService/bin"/>
     </wb-module>
