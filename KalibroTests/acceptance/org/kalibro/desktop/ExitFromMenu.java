@@ -13,7 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
  * @author Carlos Morais
  */
 @RunWith(PowerMockRunner.class)
-@PowerMockIgnore("javax.*")
+@PowerMockIgnore({"com.*", "javax.*", "org.xml.*"})
 @PrepareOnlyThisForTest(KalibroMenu.class)
 public class ExitFromMenu extends KalibroDesktopTestCase {
 

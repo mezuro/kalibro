@@ -7,6 +7,7 @@ import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.WindowFixture;
 import org.junit.After;
+import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.settings.KalibroSettings;
@@ -35,7 +36,7 @@ public class KalibroDesktopTestCase extends KalibroTestCase {
 	}
 
 	protected void startKalibroFrame() {
-		new KalibroSettings().write();
+		Kalibro.changeSettings(new KalibroSettings());
 		KalibroFrame kalibroFrame = new KalibroFrame();
 		fixture = new FrameFixture(kalibroFrame);
 		((FrameFixture) fixture).show(kalibroFrame.getSize());
