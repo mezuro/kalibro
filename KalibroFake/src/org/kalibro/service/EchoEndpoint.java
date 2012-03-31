@@ -73,7 +73,7 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "parentGranularity")
-	public Granularity inferParentGranularity(Granularity granularity) {
+	public Granularity inferParentGranularity(@WebParam(name = "granularity") Granularity granularity) {
 		return granularity.inferParentGranularity();
 	}
 }
