@@ -52,13 +52,17 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 	}
 
 	private boolean groupEquals(Object myValue, Object otherValue) {
-		if (myValue instanceof Map<?, ?>)
-			return mapEquals((Map<?, ?>) myValue, (Map<?, ?>) otherValue);
-		if (myValue instanceof Collection<?>)
-			return collectionEquals((Collection<?>) myValue, (Collection<?>) otherValue);
 		if (myValue.getClass().isArray())
-			return collectionEquals(Arrays.asList((Object[]) myValue), Arrays.asList((Object[]) otherValue));
+			return arrayEquals((Object[]) myValue, (Object[]) otherValue);
+		if (myValue instanceof Map)
+			return mapEquals((Map<?, ?>) myValue, (Map<?, ?>) otherValue);
+		if (myValue instanceof Collection)
+			return collectionEquals((Collection<?>) myValue, (Collection<?>) otherValue);
 		return myValue.equals(otherValue);
+	}
+
+	private boolean arrayEquals(Object[] myArray, Object[] otherArray) {
+		return collectionEquals(Arrays.asList(myArray), Arrays.asList(otherArray));
 	}
 
 	private boolean mapEquals(Map<?, ?> myMap, Map<?, ?> otherMap) {
@@ -73,10 +77,25 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 	private boolean collectionEquals(Collection<?> myCollection, Collection<?> otherCollection) {
 		if (myCollection.size() != otherCollection.size())
 			return false;
+		sortIfPossible(myCollection, otherCollection);
 		Iterator<?> otherIterator = otherCollection.iterator();
 		for (Object myElement : myCollection)
 			if (!sameFieldValue(myElement, otherIterator.next()))
 				return false;
 		return true;
+	}
+
+	@SuppressWarnings("rawtypes" /* impossible to cast without raw types */)
+	private void sortIfPossible(Collection<?> myCollection, Collection<?> otherCollection) {
+		if (isSortable(myCollection) && isSortable(otherCollection)) {
+			Collections.sort((List<Comparable>) myCollection);
+			Collections.sort((List<Comparable>) otherCollection);
+		}
+	}
+
+	private boolean isSortable(Collection<?> collection) {
+		return collection instanceof List
+			&& !collection.isEmpty()
+			&& collection.iterator().next() instanceof Comparable;
 	}
 }

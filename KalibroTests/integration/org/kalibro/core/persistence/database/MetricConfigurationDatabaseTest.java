@@ -3,8 +3,6 @@ package org.kalibro.core.persistence.database;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 
-import javax.persistence.EntityNotFoundException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.Task;
@@ -55,6 +53,6 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 			public void perform() {
 				dao.getMetricConfiguration(configurationName, metricName);
 			}
-		}, message, EntityNotFoundException.class);
+		}, message);
 	}
 }
