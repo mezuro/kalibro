@@ -2,6 +2,7 @@ package org.kalibro.desktop.swingextension.field;
 
 import java.awt.Component;
 
+import org.kalibro.KalibroException;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 
 public class PalindromeField extends EditPanel<String> {
@@ -28,7 +29,7 @@ public class PalindromeField extends EditPanel<String> {
 		String reverse = new StringBuffer(text).reverse().toString();
 		if (text.equals(reverse))
 			return text;
-		throw new RuntimeException("Not a palindrome");
+		throw new KalibroException("Not a palindrome");
 	}
 
 	@Override

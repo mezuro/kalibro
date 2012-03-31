@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
+import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class SeedsTest extends KalibroTestCase {
 		PowerMockito.when(seededFile.exists()).thenReturn(false);
 		Seeds.saveSeedsIfFirstTime(databaseManager);
 
-		verify(databaseManager, times(2)).save(any(List.class));
+		verify(databaseManager, times(2)).save(any(Collection.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

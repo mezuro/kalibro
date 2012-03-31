@@ -68,7 +68,7 @@ public class EditDialogTest extends KalibroTestCase {
 	public void shouldShowErrorFromFieldGetAndDontClose() {
 		editPanel.set("Not a palindrome");
 		button("ok").doClick();
-		Mockito.verify(errorDialog).show(any(Exception.class));
+		Mockito.verify(errorDialog).show(any(Throwable.class));
 		assertTrue(editDialog.isDisplayable());
 	}
 

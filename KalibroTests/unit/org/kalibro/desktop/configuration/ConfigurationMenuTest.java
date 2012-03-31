@@ -1,7 +1,6 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import java.lang.reflect.InvocationTargetException;
@@ -13,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
+import org.mockito.ArgumentCaptor;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
@@ -85,7 +85,9 @@ public class ConfigurationMenuTest extends KalibroTestCase {
 		PowerMockito.doThrow(new RuntimeException()).when(controller).save();
 
 		menu.getItem(SAVE).doClick();
-		verify(errorDialog).show(any(InvocationTargetException.class));
+		ArgumentCaptor<Throwable> captor = ArgumentCaptor.forClass(Throwable.class);
+		verify(errorDialog).show(captor.capture());
+		assertClassEquals(InvocationTargetException.class, captor.getValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -1,12 +1,12 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.KalibroException;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.*;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
@@ -95,11 +95,9 @@ public class RangeControllerTest extends KalibroTestCase {
 		controller.addRange();
 		assertFalse(controller.dialogConfirm(new Range()));
 
-		/*
-		 * TODO Review use of matcher any(Class). It is an alias to anyObject(), so it does not test the argument The
-		 * following should fail. A KalibroException is expected. A Mockito deception.
-		 */
-		verify(errorDialog).show(any(IllegalArgumentException.class));
+		ArgumentCaptor<Throwable> captor = ArgumentCaptor.forClass(Throwable.class);
+		verify(errorDialog).show(captor.capture());
+		assertClassEquals(KalibroException.class, captor.getValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 
@@ -16,7 +17,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Range;
-import org.kalibro.desktop.swingextension.renderer.TableRenderer;
+import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
+import org.mockito.ArgumentCaptor;
 import org.powermock.api.mockito.PowerMockito;
 
 public class TableModelTest extends KalibroTestCase {
@@ -91,7 +93,9 @@ public class TableModelTest extends KalibroTestCase {
 
 		model.updateColumnModel(columnModel);
 		verify(tableColumn).setPreferredWidth(anyInt());
-		verify(tableColumn).setCellRenderer(any(TableRenderer.class));
+		ArgumentCaptor<TableCellRenderer> captor = ArgumentCaptor.forClass(TableCellRenderer.class);
+		verify(tableColumn).setCellRenderer(captor.capture());
+		assertClassEquals(DefaultRenderer.class, captor.getValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -60,7 +60,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		prepareInputDialog("New configuration", false);
 
 		controller.newConfiguration();
-		PowerMockito.verifyPrivate(controller, never()).invoke("addFrameFor", any(Configuration.class));
+		verifyFrameNerverAdded();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -73,7 +73,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 		controller.newConfiguration();
 		verify(messageDialog).show("Configuration '" + name + "' already exists");
-		PowerMockito.verifyPrivate(controller, never()).invoke("addFrameFor", any(Configuration.class));
+		verifyFrameNerverAdded();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -93,7 +93,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 
 		controller.open();
 		verify(dao, never()).getConfiguration(anyString());
-		PowerMockito.verifyPrivate(controller, never()).invoke("addFrameFor", any(Configuration.class));
+		verifyFrameNerverAdded();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -141,7 +141,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		controller.open();
 		controller.delete();
 		verify(messageDialog, times(2)).show("No configuration found");
-		PowerMockito.verifyPrivate(controller, never()).invoke("addFrameFor", any(Configuration.class));
+		verifyFrameNerverAdded();
 		verify(dao, never()).removeConfiguration(anyString());
 	}
 
@@ -164,7 +164,11 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		prepareInputDialog("Save configuration as...", false);
 
 		controller.saveAs();
-		verify(dao, never()).save(any(Configuration.class));
+		verifyConfigurationNerverSaved();
+		verifyFrameNerverAdded();
+	}
+
+	private void verifyFrameNerverAdded() throws Exception {
 		PowerMockito.verifyPrivate(controller, never()).invoke("addFrameFor", any(Configuration.class));
 	}
 
@@ -234,7 +238,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		prepareToClose(true);
 
 		controller.close();
-		verify(dao, never()).save(any(Configuration.class));
+		verifyConfigurationNerverSaved();
 		verify(frame).dispose();
 	}
 
@@ -244,7 +248,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		prepareConfirmDialog(JOptionPane.CANCEL_OPTION);
 
 		controller.close();
-		verify(dao, never()).save(any(Configuration.class));
+		verifyConfigurationNerverSaved();
 		verify(frame, never()).dispose();
 	}
 
@@ -264,8 +268,12 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 		prepareConfirmDialog(JOptionPane.NO_OPTION);
 
 		controller.close();
-		verify(dao, never()).save(any(Configuration.class));
+		verifyConfigurationNerverSaved();
 		verify(frame).dispose();
+	}
+
+	private void verifyConfigurationNerverSaved() {
+		verify(dao, never()).save(any(Configuration.class));
 	}
 
 	private void prepareToClose(boolean unmodified) {

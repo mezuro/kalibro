@@ -1,6 +1,7 @@
 package org.kalibro.client;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 
 import java.lang.reflect.Constructor;
 import java.net.MalformedURLException;
@@ -54,7 +55,7 @@ public class EndpointPortFactoryTest extends KalibroTestCase {
 	private void mockService() {
 		service = PowerMockito.mock(Service.class);
 		PowerMockito.mockStatic(Service.class);
-		PowerMockito.when(Service.create(Matchers.any(URL.class), Matchers.any(QName.class))).thenReturn(service);
+		PowerMockito.when(Service.create(any(URL.class), any(QName.class))).thenReturn(service);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
