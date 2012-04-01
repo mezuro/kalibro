@@ -1,10 +1,10 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import javax.persistence.NoResultException;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.Task;
@@ -18,7 +18,7 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Before
 	public void setUp() {
-		analizoStub = analizoStub();
+		analizoStub = new AnalizoStub().getBaseTool();
 		dao = daoFactory.getBaseToolDao();
 	}
 

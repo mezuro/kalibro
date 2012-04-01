@@ -1,14 +1,20 @@
 package org.kalibro.core.model;
 
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
 
-import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
 
+/**
+ * A base tool to provide metric results for Kalibro.
+ * 
+ * @author Carlos Morais
+ */
 @SortingMethods("getName")
 public class BaseTool extends AbstractEntity<BaseTool> {
 
@@ -21,8 +27,13 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	private Class<? extends MetricCollector> collectorClass;
 
 	public BaseTool(String name) {
+		this(name, "");
+	}
+
+	public BaseTool(String name, String description) {
 		setName(name);
-		setDescription("");
+		setDescription(description);
+		supportedMetrics = new HashSet<NativeMetric>();
 	}
 
 	@Override
@@ -47,27 +58,22 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	}
 
 	public Set<NativeMetric> getSupportedMetrics() {
-		if (supportedMetrics == null)
-			setSupportedMetrics(createMetricCollector().getSupportedMetrics());
 		return supportedMetrics;
 	}
 
-	public void setSupportedMetrics(Set<NativeMetric> supportedMetrics) {
-		for (NativeMetric metric : supportedMetrics)
-			metric.setOrigin(name);
-		this.supportedMetrics = supportedMetrics;
+	public void addSupportedMetric(NativeMetric supportedMetric) {
+		supportedMetric.setOrigin(name);
+		supportedMetrics.add(supportedMetric);
+	}
+
+	public void setSupportedMetrics(Collection<NativeMetric> supportedMetrics) {
+		this.supportedMetrics = new HashSet<NativeMetric>();
+		for (NativeMetric supportedMetric : supportedMetrics)
+			addSupportedMetric(supportedMetric);
 	}
 
 	public Class<? extends MetricCollector> getCollectorClass() {
 		return collectorClass;
-	}
-
-	public void setCollectorClassName(String collectorClassName) {
-		try {
-			setCollectorClass((Class<? extends MetricCollector>) Class.forName(collectorClassName));
-		} catch (ClassNotFoundException exception) {
-			throw new KalibroError("Could not find metric collector class of base tool '" + name + "'", exception);
-		}
 	}
 
 	public void setCollectorClass(Class<? extends MetricCollector> collectorClass) {

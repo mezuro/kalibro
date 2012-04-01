@@ -8,20 +8,20 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricResult;
-import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.yaml.snakeyaml.Yaml;
 
 public class CheckstyleStub implements MetricCollector {
 
+	private static BaseTool baseTool;
 	private static Set<NativeMetric> nativeMetrics;
 	private static NativeModuleResult result = initializeResult();
 
 	private static NativeModuleResult initializeResult() {
+		baseTool = new BaseTool("Checkstyle");
+		baseTool.setCollectorClass(CheckstyleStub.class);
 		nativeMetrics = new HashSet<NativeMetric>();
 
 		Module module = new Module(Granularity.CLASS, "org", "fibonacci", "Fibonacci");
@@ -39,6 +39,7 @@ public class CheckstyleStub implements MetricCollector {
 
 	private static void addMetricResult(CheckstyleMetric metric, String valueExpression) {
 		NativeMetric nativeMetric = new NativeMetric(metric.toString(), Granularity.CLASS, Language.JAVA);
+		baseTool.addSupportedMetric(nativeMetric);
 		nativeMetrics.add(nativeMetric);
 		Double value = evaluateExpression(valueExpression);
 		result.addMetricResult(new NativeMetricResult(nativeMetric, value));
@@ -64,8 +65,8 @@ public class CheckstyleStub implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeMetric> getSupportedMetrics() {
-		return nativeMetrics();
+	public BaseTool getBaseTool() {
+		return baseTool;
 	}
 
 	@Override

@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +13,6 @@ import org.kalibro.KalibroTestCase;
 import org.kalibro.client.EndpointPortFactory;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.BaseToolFixtures;
 import org.kalibro.service.BaseToolEndpoint;
 import org.kalibro.service.entities.BaseToolXml;
 import org.powermock.api.mockito.PowerMockito;
@@ -32,7 +32,7 @@ public class BaseToolPortDaoTest extends KalibroTestCase {
 	public void setUp() {
 		mockPort();
 		dao = new BaseToolPortDao();
-		baseTool = BaseToolFixtures.analizoStub();
+		baseTool = new AnalizoStub().getBaseTool();
 	}
 
 	private void mockPort() {

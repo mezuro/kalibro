@@ -3,20 +3,14 @@ package org.kalibro.core.model;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Set;
 
-import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.MetricCollector;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.reflect.Whitebox;
 
 public class BaseToolTest extends KalibroTestCase {
 
@@ -24,7 +18,7 @@ public class BaseToolTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		analizo = BaseToolFixtures.analizoStub();
+		analizo = new AnalizoStub().getBaseTool();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -32,28 +26,19 @@ public class BaseToolTest extends KalibroTestCase {
 		assertEquals("Analizo", analizo.getName());
 		assertEquals("", analizo.getDescription());
 		assertEquals(AnalizoStub.class, analizo.getCollectorClass());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetSupportedMetricsFromMetricCollector() {
-		Whitebox.setInternalState(analizo, "supportedMetrics", (Set<NativeMetric>) null);
-
-		analizo = PowerMockito.spy(analizo);
-		MetricCollector metricCollector = PowerMockito.mock(MetricCollector.class);
-		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
-		PowerMockito.doReturn(metricCollector).when(analizo).createMetricCollector();
-		PowerMockito.when(metricCollector.getSupportedMetrics()).thenReturn(supportedMetrics);
-
-		assertSame(supportedMetrics, analizo.getSupportedMetrics());
+		assertEquals(AnalizoStub.nativeMetrics(), analizo.getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetOriginOnSupportedMetrics() {
-		NativeMetric nativeMetric = new NativeMetric("My metric", Granularity.CLASS, Language.JAVA);
-		assertNull(nativeMetric.getOrigin());
+		NativeMetric metric1 = new NativeMetric("Metric 1", Granularity.CLASS, Language.JAVA);
+		NativeMetric metric2 = new NativeMetric("Metric 2", Granularity.METHOD, Language.C);
+		assertNull(metric1.getOrigin());
+		assertNull(metric2.getOrigin());
 
-		analizo.setSupportedMetrics(new HashSet<NativeMetric>(Arrays.asList(nativeMetric)));
-		assertEquals(analizo.getName(), nativeMetric.getOrigin());
+		analizo.setSupportedMetrics(Arrays.asList(metric1, metric2));
+		assertEquals(analizo.getName(), metric1.getOrigin());
+		assertEquals(analizo.getName(), metric2.getOrigin());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -76,22 +61,5 @@ public class BaseToolTest extends KalibroTestCase {
 				analizo.createMetricCollector();
 			}
 		}, "Could not create metric collector of base tool 'Analizo'", NullPointerException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetCollectorClassByName() {
-		analizo.setCollectorClassName("org.analizo.AnalizoMetricCollector");
-		assertEquals(AnalizoMetricCollector.class, analizo.getCollectorClass());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkErrorSettingCollectorByName() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				analizo.setCollectorClassName("");
-			}
-		}, "Could not find metric collector class of base tool 'Analizo'", ClassNotFoundException.class);
 	}
 }

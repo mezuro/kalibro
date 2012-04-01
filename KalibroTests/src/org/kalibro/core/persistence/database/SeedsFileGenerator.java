@@ -17,7 +17,7 @@ import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public class SeedsFileGenerator {
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws Exception {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
 		Seeds seeds = new SeedsFileGenerator().getSeeds();
@@ -26,22 +26,22 @@ public class SeedsFileGenerator {
 		System.exit(0);
 	}
 
-	public Seeds getSeeds() {
+	public Seeds getSeeds() throws Exception {
 		Seeds seeds = new Seeds();
 		seeds.baseToolSeeds = baseToolSeeds();
 		seeds.configurationSeeds = configurationSeeds();
 		return seeds;
 	}
 
-	private List<BaseToolRecord> baseToolSeeds() {
+	private List<BaseToolRecord> baseToolSeeds() throws Exception {
 		List<BaseToolRecord> baseTools = new ArrayList<BaseToolRecord>();
-		baseTools.add(newBaseTool("Analizo", AnalizoMetricCollector.class));
-		baseTools.add(newBaseTool("Checkstyle", CheckstyleMetricCollector.class));
+		baseTools.add(newBaseTool(AnalizoMetricCollector.class));
+		baseTools.add(newBaseTool(CheckstyleMetricCollector.class));
 		return baseTools;
 	}
 
-	private BaseToolRecord newBaseTool(String name, Class<? extends MetricCollector> collectorClass) {
-		BaseTool baseTool = new BaseTool(name);
+	private BaseToolRecord newBaseTool(Class<? extends MetricCollector> collectorClass) throws Exception {
+		BaseTool baseTool = collectorClass.newInstance().getBaseTool();
 		baseTool.setCollectorClass(collectorClass);
 		return new BaseToolRecord(baseTool);
 	}

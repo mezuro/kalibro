@@ -7,13 +7,13 @@ import java.util.Arrays;
 import javax.swing.JList;
 import javax.swing.JTable;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.BaseToolFixtures;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.desktop.ComponentFinder;
@@ -40,7 +40,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		analizo = BaseToolFixtures.analizoStub();
+		analizo = new AnalizoStub().getBaseTool();
 		mockKalibro();
 		panel = new ChooseNativeMetricPanel();
 		finder = new ComponentFinder(panel);

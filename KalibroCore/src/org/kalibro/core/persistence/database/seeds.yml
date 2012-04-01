@@ -7,6 +7,21 @@ baseToolSeeds:
   supportedMetrics:
   - description: ''
     languages: [C, CPP, JAVA]
+    name: Average Cyclomatic Complexity per Method
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
+    name: Structural Complexity (CBO X LCOM4)
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
+    name: Response For a Class
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
     name: Lack of Cohesion of Methods
     origin: *id001
     scope: CLASS
@@ -32,12 +47,42 @@ baseToolSeeds:
     scope: APPLICATION
   - description: ''
     languages: [C, CPP, JAVA]
+    name: Total Lines of Code
+    origin: *id001
+    scope: APPLICATION
+  - description: ''
+    languages: [C, CPP, JAVA]
+    name: Average Number of Parameters per Method
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
     name: Number of Children
     origin: *id001
     scope: CLASS
   - description: ''
     languages: [C, CPP, JAVA]
+    name: Coupling Between Objects
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
     name: Number of Public Attributes
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
+    name: Number of Public Methods
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
+    name: Max Method LOC
+    origin: *id001
+    scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
+    name: Number of Attributes
     origin: *id001
     scope: CLASS
   - description: ''
@@ -62,59 +107,14 @@ baseToolSeeds:
     scope: CLASS
   - description: ''
     languages: [C, CPP, JAVA]
-    name: Total Number of Modules/Classes
-    origin: *id001
-    scope: APPLICATION
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Average Cyclomatic Complexity per Method
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Response For a Class
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Structural Complexity (CBO X LCOM4)
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Total Lines of Code
-    origin: *id001
-    scope: APPLICATION
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Average Number of Parameters per Method
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Coupling Between Objects
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Max Method LOC
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Number of Public Methods
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
-    name: Number of Attributes
-    origin: *id001
-    scope: CLASS
-  - description: ''
-    languages: [C, CPP, JAVA]
     name: Depth of Inheritance Tree
     origin: *id001
     scope: CLASS
+  - description: ''
+    languages: [C, CPP, JAVA]
+    name: Total Number of Modules/Classes
+    origin: *id001
+    scope: APPLICATION
   - description: ''
     languages: [C, CPP, JAVA]
     name: Average Method LOC

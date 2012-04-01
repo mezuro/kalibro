@@ -7,6 +7,8 @@ import java.util.TreeSet;
 
 import javax.persistence.*;
 
+import org.kalibro.KalibroError;
+import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.util.DataTransferObject;
@@ -52,9 +54,17 @@ public class BaseToolRecord implements DataTransferObject<BaseTool> {
 	public BaseTool convert() {
 		BaseTool baseTool = new BaseTool(name);
 		baseTool.setDescription(description);
-		baseTool.setCollectorClassName(collectorClass);
+		convertCollectorClass(baseTool);
 		convertSupportedMetrics(baseTool);
 		return baseTool;
+	}
+
+	private void convertCollectorClass(BaseTool baseTool) {
+		try {
+			baseTool.setCollectorClass((Class<? extends MetricCollector>) Class.forName(collectorClass));
+		} catch (ClassNotFoundException exception) {
+			throw new KalibroError("Could not find collector class", exception);
+		}
 	}
 
 	private void convertSupportedMetrics(BaseTool baseTool) {

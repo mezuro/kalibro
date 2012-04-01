@@ -1,11 +1,11 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,7 +29,7 @@ public class BaseToolEndpointImplTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		mockDao();
-		baseTool = analizoStub();
+		baseTool = new AnalizoStub().getBaseTool();
 		endpoint = new BaseToolEndpointImpl();
 	}
 

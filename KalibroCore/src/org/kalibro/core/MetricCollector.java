@@ -3,6 +3,7 @@ package org.kalibro.core;
 import java.io.File;
 import java.util.Set;
 
+import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
@@ -15,9 +16,8 @@ import org.kalibro.core.model.enums.Granularity;
  */
 public interface MetricCollector {
 
-	// TODO make collector return complete BaseTool, with name, description and supported metrics.
-	/** Returns the set of {@link NativeMetric}s provided by the metric collector tool. */
-	Set<NativeMetric> getSupportedMetrics();
+	/** Returns the {@link BaseTool} describing the metric collector tool. */
+	BaseTool getBaseTool();
 
 	/**
 	 * Collect metric results for a software project.<br/>

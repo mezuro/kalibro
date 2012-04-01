@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.BaseToolFixtures;
 import org.kalibro.core.persistence.database.entities.BaseToolRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -28,7 +28,7 @@ public class BaseToolDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		baseTool = BaseToolFixtures.analizoStub();
+		baseTool = new AnalizoStub().getBaseTool();
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		dao = PowerMockito.spy(new BaseToolDatabaseDao(databaseManager));
 	}

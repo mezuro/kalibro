@@ -68,7 +68,7 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkSupportedMetrics() {
-		assertDeepEquals(METRICS, collector.getSupportedMetrics());
+		assertDeepEquals(METRICS, collector.getBaseTool().getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.model.BaseTool;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -32,8 +33,10 @@ public class AnalizoMetricCollectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkSupportedMetrics() {
-		assertDeepEquals(analizoStub.getSupportedMetrics(), analizo.getSupportedMetrics());
+	public void checkBaseTool() {
+		BaseTool baseTool = analizo.getBaseTool();
+		baseTool.setCollectorClass(AnalizoStub.class);
+		assertDeepEquals(analizoStub.getBaseTool(), baseTool);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -6,21 +6,21 @@ import java.io.File;
 import java.util.*;
 
 import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricResult;
-import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 
 public class AnalizoStub implements MetricCollector {
 
+	private static BaseTool baseTool;
 	private static Map<String, NativeMetric> nativeMetrics = initializeMetrics();
 
 	private static NativeModuleResult applicationResult = initializeApplicationResult();
 	private static NativeModuleResult classResult = initializeClassResult();
 
 	private static Map<String, NativeMetric> initializeMetrics() {
+		baseTool = new BaseTool("Analizo");
+		baseTool.setCollectorClass(AnalizoStub.class);
 		nativeMetrics = new HashMap<String, NativeMetric>();
 		initializeGlobalMetrics();
 		initializeModuleMetrics();
@@ -61,6 +61,7 @@ public class AnalizoStub implements MetricCollector {
 	private static void putMetric(String code, String name) {
 		Granularity scope = code.startsWith("total") ? APPLICATION : CLASS;
 		NativeMetric metric = new NativeMetric(name, scope, Language.values());
+		baseTool.addSupportedMetric(metric);
 		nativeMetrics.put(code, metric);
 	}
 
@@ -124,8 +125,8 @@ public class AnalizoStub implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeMetric> getSupportedMetrics() {
-		return nativeMetrics();
+	public BaseTool getBaseTool() {
+		return baseTool;
 	}
 
 	@Override

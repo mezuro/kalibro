@@ -13,12 +13,12 @@ import javax.swing.JList;
 import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.model.BaseToolFixtures;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.persistence.dao.BaseToolDao;
@@ -52,7 +52,7 @@ public class AddMetricDialogTest extends KalibroTestCase {
 		PowerMockito.mockStatic(Kalibro.class);
 		PowerMockito.when(Kalibro.getBaseToolDao()).thenReturn(dao);
 		PowerMockito.when(dao.getBaseToolNames()).thenReturn(Arrays.asList("Analizo"));
-		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(BaseToolFixtures.analizoStub());
+		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(new AnalizoStub().getBaseTool());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

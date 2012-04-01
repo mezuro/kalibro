@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.analizo.AnalizoStub;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.BaseToolFixtures;
 
 public class BaseToolXmlTest extends DtoTestCase<BaseTool, BaseToolXml> {
 
@@ -18,7 +18,7 @@ public class BaseToolXmlTest extends DtoTestCase<BaseTool, BaseToolXml> {
 
 	@Override
 	protected Collection<BaseTool> entitiesForTestingConversion() {
-		return Arrays.asList(BaseToolFixtures.analizoStub());
+		return Arrays.asList(new AnalizoStub().getBaseTool());
 	}
 
 	@Override

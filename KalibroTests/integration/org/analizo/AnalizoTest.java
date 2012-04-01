@@ -49,7 +49,7 @@ public class AnalizoTest extends KalibroTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void checkSupportedMetrics() {
-		assertDeepEquals(nativeMetrics(), analizo.getSupportedMetrics());
+		assertDeepEquals(nativeMetrics(), analizo.getBaseTool().getSupportedMetrics());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

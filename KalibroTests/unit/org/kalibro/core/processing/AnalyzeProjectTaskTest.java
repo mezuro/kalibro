@@ -1,6 +1,5 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.core.model.BaseToolFixtures.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
@@ -8,6 +7,7 @@ import static org.kalibro.core.model.ProjectResultFixtures.*;
 
 import java.util.Collection;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,7 +54,7 @@ public class AnalyzeProjectTaskTest extends KalibroTestCase {
 		PowerMockito.when(Kalibro.getBaseToolDao()).thenReturn(baseToolDao);
 		PowerMockito.when(Kalibro.getConfigurationDao()).thenReturn(configurationDao);
 
-		BaseTool baseTool = analizoStub();
+		BaseTool baseTool = new AnalizoStub().getBaseTool();
 		PowerMockito.when(baseToolDao.getBaseTool(baseTool.getName())).thenReturn(baseTool);
 
 		String projectName = projectResult.getProject().getName();
