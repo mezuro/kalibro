@@ -70,8 +70,8 @@ public class EntityReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionOnInexistentField() {
-		checkKalibroException(new Task() {
+	public void shouldThrowErrorOnInexistentField() {
+		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {
@@ -81,10 +81,10 @@ public class EntityReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionOnBizarreInaccessibleField() {
+	public void shouldThrowErrorOnBizarreInaccessibleField() {
 		Map<String, Field> fields = Whitebox.getInternalState(reflector, Map.class);
 		fields.get("name").setAccessible(false);
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {
@@ -109,9 +109,9 @@ public class EntityReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionOnInvalidSortingMethod() {
+	public void shouldThrowErrorOnInvalidSortingMethod() {
 		String message = "Sorting method not found: org.kalibro.core.model.abstracts.InvalidSorting.invalid";
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {
@@ -134,9 +134,9 @@ public class EntityReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionInvokingInaccessibleMethod() throws Exception {
+	public void shouldThrowErrorInvokingInaccessibleMethod() throws Exception {
 		final Method method = Person.class.getDeclaredMethod("createRelatives");
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {

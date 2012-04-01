@@ -1,6 +1,6 @@
 package org.kalibro.core.model.enums;
 
-import org.kalibro.KalibroException;
+import org.kalibro.KalibroError;
 import org.kalibro.core.loaders.ProjectLoader;
 import org.kalibro.core.util.Identifier;
 
@@ -33,7 +33,7 @@ public enum RepositoryType {
 		try {
 			return (ProjectLoader) Class.forName("org.kalibro.core.loaders." + className).newInstance();
 		} catch (Exception exception) {
-			throw new KalibroException("Error creating loader for " + this, exception);
+			throw new KalibroError("Error creating loader for " + this, exception);
 		}
 	}
 }

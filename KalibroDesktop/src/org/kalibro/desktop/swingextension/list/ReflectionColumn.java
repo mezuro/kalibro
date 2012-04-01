@@ -2,7 +2,7 @@ package org.kalibro.desktop.swingextension.list;
 
 import java.lang.reflect.Method;
 
-import org.kalibro.KalibroException;
+import org.kalibro.KalibroError;
 import org.kalibro.core.util.Identifier;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
@@ -51,7 +51,7 @@ public class ReflectionColumn extends Column {
 			return entityClass.getMethod(methodName);
 		} catch (NoSuchMethodException exception) {
 			String completeMethodName = entityClass.getCanonicalName() + "." + methodName;
-			throw new KalibroException("Reflection column did not found method: " + completeMethodName, exception);
+			throw new KalibroError("Reflection column did not found method: " + completeMethodName, exception);
 		}
 	}
 }

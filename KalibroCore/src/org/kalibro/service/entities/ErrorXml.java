@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.KalibroException;
+import org.kalibro.KalibroError;
 import org.kalibro.core.util.DataTransferObject;
 
 @XmlRootElement(name = "Error")
@@ -55,7 +55,7 @@ public class ErrorXml implements DataTransferObject<Throwable> {
 		try {
 			return (Throwable) Class.forName(errorClass).getConstructor(String.class).newInstance(message);
 		} catch (Exception exception) {
-			throw new KalibroException("Could not convert Error XML to Throwable", exception);
+			throw new KalibroError("Could not convert Error XML to Throwable", exception);
 		}
 	}
 

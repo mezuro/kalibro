@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
-import org.kalibro.KalibroException;
+import org.kalibro.KalibroError;
 
 public class ReflectionMenuItem extends MenuItem implements ActionListener {
 
@@ -23,7 +23,7 @@ public class ReflectionMenuItem extends MenuItem implements ActionListener {
 		try {
 			method = controller.getClass().getMethod(methodName);
 		} catch (NoSuchMethodException exception) {
-			throw new KalibroException("ReflectionMenuItem did not found method on controller", exception);
+			throw new KalibroError("ReflectionMenuItem did not found method on controller", exception);
 		}
 	}
 
@@ -32,7 +32,7 @@ public class ReflectionMenuItem extends MenuItem implements ActionListener {
 		try {
 			method.invoke(controller);
 		} catch (IllegalAccessException exception) {
-			throw new KalibroException("Could not access controller method", exception);
+			throw new KalibroError("Could not access controller method", exception);
 		} catch (InvocationTargetException exception) {
 			throw (RuntimeException) exception.getTargetException();
 		}

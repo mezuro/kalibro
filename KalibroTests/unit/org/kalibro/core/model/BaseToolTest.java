@@ -86,7 +86,7 @@ public class BaseToolTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorSettingCollectorByName() {
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {

@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 
 class EntityReflector {
@@ -71,11 +72,11 @@ class EntityReflector {
 	protected Object get(String fieldName) {
 		String completeFieldName = "Field " + getEntityClass().getName() + "." + fieldName;
 		if (!fields.containsKey(fieldName))
-			throw new KalibroException(completeFieldName + " does not exist");
+			throw new KalibroError(completeFieldName + " does not exist");
 		try {
 			return fields.get(fieldName).get(entity);
 		} catch (IllegalAccessException exception) {
-			throw new KalibroException(completeFieldName + " inaccessible", exception);
+			throw new KalibroError(completeFieldName + " inaccessible", exception);
 		}
 	}
 
@@ -102,7 +103,7 @@ class EntityReflector {
 		try {
 			return type.getMethod(methodName);
 		} catch (NoSuchMethodException exception) {
-			throw new KalibroException("Sorting method not found: " + type.getName() + "." + methodName, exception);
+			throw new KalibroError("Sorting method not found: " + type.getName() + "." + methodName, exception);
 		}
 	}
 
@@ -111,7 +112,7 @@ class EntityReflector {
 		try {
 			return method.invoke(entity);
 		} catch (IllegalAccessException exception) {
-			throw new KalibroException("Method " + methodName + " inaccessible", exception);
+			throw new KalibroError("Method " + methodName + " inaccessible", exception);
 		} catch (InvocationTargetException exception) {
 			Throwable targetException = exception.getTargetException();
 			if (targetException instanceof KalibroException)

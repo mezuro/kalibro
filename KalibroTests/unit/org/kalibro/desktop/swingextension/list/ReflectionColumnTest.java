@@ -53,7 +53,7 @@ public class ReflectionColumnTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorGettingMethodFromInvalidClass() {
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() throws Exception {

@@ -71,12 +71,12 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowKalibroExceptionIfLoaderCouldNotBeCreated() {
+	public void shouldThrowKalibroErrorIfLoaderCouldNotBeCreated() {
 		Identifier identifier = PowerMockito.mock(Identifier.class);
 		PowerMockito.mockStatic(Identifier.class);
 		PowerMockito.when(Identifier.fromConstant(anyString())).thenReturn(identifier);
 		PowerMockito.when(identifier.asClassName()).thenReturn("Inexistent");
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {

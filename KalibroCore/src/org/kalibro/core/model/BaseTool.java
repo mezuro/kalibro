@@ -2,6 +2,7 @@ package org.kalibro.core.model;
 
 import java.util.Set;
 
+import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.abstracts.AbstractEntity;
@@ -65,7 +66,7 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 		try {
 			setCollectorClass((Class<? extends MetricCollector>) Class.forName(collectorClassName));
 		} catch (ClassNotFoundException exception) {
-			throw new KalibroException("Could not find metric collector class of base tool '" + name + "'", exception);
+			throw new KalibroError("Could not find metric collector class of base tool '" + name + "'", exception);
 		}
 	}
 

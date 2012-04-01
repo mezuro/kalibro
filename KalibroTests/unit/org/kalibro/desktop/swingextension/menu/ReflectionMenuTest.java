@@ -24,7 +24,7 @@ public class ReflectionMenuTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptInvalidMethodOnCreation() {
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
@@ -55,7 +55,7 @@ public class ReflectionMenuTest extends KalibroTestCase {
 	public void shouldThrowErrorOnBizarreAccessException() throws Exception {
 		Method method = ConfigurationController.class.getDeclaredMethod("unmodified");
 		Whitebox.setInternalState(menuItem, "method", method);
-		checkKalibroException(new Task() {
+		checkKalibroError(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {

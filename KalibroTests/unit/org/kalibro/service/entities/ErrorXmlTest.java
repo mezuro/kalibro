@@ -28,8 +28,8 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionForNotConvertibleError() {
-		checkKalibroException(new Task() {
+	public void shouldThrowErrorForNotConvertibleError() {
+		checkKalibroError(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {

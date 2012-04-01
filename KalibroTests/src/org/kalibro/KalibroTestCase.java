@@ -75,6 +75,14 @@ public abstract class KalibroTestCase {
 		checkKalibroException(task, "Error while running task: null", exceptionClass);
 	}
 
+	protected void checkKalibroError(Task task, String message) {
+		checkKalibroError(task, message, null);
+	}
+
+	protected void checkKalibroError(Task task, String message, Class<? extends Throwable> causeClass) {
+		checkKalibroException(task, KalibroError.MESSAGE_PREFIX + message, causeClass);
+	}
+
 	protected void checkKalibroException(Task task, String message) {
 		checkKalibroException(task, message, null);
 	}
