@@ -1,5 +1,6 @@
 package org.kalibro.desktop;
 
+import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -16,7 +17,7 @@ class KalibroMenu extends AbstractMenu implements ActionListener {
 	}
 
 	@Override
-	protected void createItems() {
+	protected void createItems(Component... innerComponents) {
 		settingsItem = new MenuItem("settings", "Settings", 'S', this);
 		exitItem = new MenuItem("exit", "Exit", 'x', this);
 	}

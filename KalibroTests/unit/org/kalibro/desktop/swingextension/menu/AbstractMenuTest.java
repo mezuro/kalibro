@@ -2,6 +2,8 @@ package org.kalibro.desktop.swingextension.menu;
 
 import static org.junit.Assert.*;
 
+import java.awt.Component;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
@@ -47,7 +49,7 @@ public class AbstractMenuTest extends KalibroTestCase {
 		}
 
 		@Override
-		protected void createItems() {
+		protected void createItems(Component... innerComponents) {
 			itemsCreated = true;
 		}
 

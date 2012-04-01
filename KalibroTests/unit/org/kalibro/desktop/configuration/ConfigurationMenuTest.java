@@ -3,16 +3,12 @@ package org.kalibro.desktop.configuration;
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
-import java.lang.reflect.InvocationTargetException;
-
 import javax.swing.JDesktopPane;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
-import org.mockito.ArgumentCaptor;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
@@ -76,18 +72,6 @@ public class ConfigurationMenuTest extends KalibroTestCase {
 	public void shouldCloseConfiguration() {
 		menu.getItem(CLOSE).doClick();
 		verify(controller).close();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldShowErrorFromController() throws Exception {
-		ErrorDialog errorDialog = PowerMockito.mock(ErrorDialog.class);
-		PowerMockito.whenNew(ErrorDialog.class).withArguments(desktopPane).thenReturn(errorDialog);
-		PowerMockito.doThrow(new RuntimeException()).when(controller).save();
-
-		menu.getItem(SAVE).doClick();
-		ArgumentCaptor<Throwable> captor = ArgumentCaptor.forClass(Throwable.class);
-		verify(errorDialog).show(captor.capture());
-		assertClassEquals(InvocationTargetException.class, captor.getValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

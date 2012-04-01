@@ -1,36 +1,34 @@
 package org.kalibro.desktop.configuration;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.Component;
 
 import javax.swing.JDesktopPane;
 import javax.swing.event.MenuEvent;
 
-import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.kalibro.desktop.swingextension.menu.AbstractMenu;
-import org.kalibro.desktop.swingextension.menu.MenuItem;
+import org.kalibro.desktop.swingextension.menu.ReflectionMenuItem;
 
-public class ConfigurationMenu extends AbstractMenu implements ActionListener {
+public class ConfigurationMenu extends AbstractMenu {
 
 	private JDesktopPane desktopPane;
 	private ConfigurationController controller;
 
-	private MenuItem newItem, openItem, deleteItem, saveItem, saveAsItem, closeItem;
+	private ReflectionMenuItem newItem, openItem, deleteItem, saveItem, saveAsItem, closeItem;
 
 	public ConfigurationMenu(JDesktopPane desktopPane) {
-		super("configuration", "Configuration", 'C');
-		this.desktopPane = desktopPane;
-		this.controller = new ConfigurationController(desktopPane);
+		super("configuration", "Configuration", 'C', desktopPane);
 	}
 
 	@Override
-	protected void createItems() {
-		newItem = new MenuItem("newConfiguration", "New", 'N', this);
-		openItem = new MenuItem("open", "Open", 'O', this);
-		deleteItem = new MenuItem("delete", "Delete", 'D', this);
-		saveItem = new MenuItem("save", "Save", 'S', this);
-		saveAsItem = new MenuItem("saveAs", "Save as...", 'a', this);
-		closeItem = new MenuItem("close", "Close", 'l', this);
+	protected void createItems(Component... innerComponents) {
+		desktopPane = (JDesktopPane) innerComponents[0];
+		controller = new ConfigurationController(desktopPane);
+		newItem = new ReflectionMenuItem("new", "New", 'N', controller, "newConfiguration");
+		openItem = new ReflectionMenuItem("open", "Open", 'O', controller, "open");
+		deleteItem = new ReflectionMenuItem("delete", "Delete", 'D', controller, "delete");
+		saveItem = new ReflectionMenuItem("save", "Save", 'S', controller, "save");
+		saveAsItem = new ReflectionMenuItem("saveAs", "Save as...", 'a', controller, "saveAs");
+		closeItem = new ReflectionMenuItem("close", "Close", 'l', controller, "close");
 	}
 
 	@Override
@@ -42,19 +40,6 @@ public class ConfigurationMenu extends AbstractMenu implements ActionListener {
 		add(saveItem);
 		add(saveAsItem);
 		add(closeItem);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		MenuItem source = (MenuItem) event.getSource();
-		String methodName = source.getName();
-		ErrorDialog errorDialog = new ErrorDialog(desktopPane);
-		try {
-			ConfigurationController.class.getMethod(methodName).invoke(controller);
-		} catch (Exception exception) {
-			// TODO create a ReflectionMenuItem to avoid this
-			errorDialog.show(exception);
-		}
 	}
 
 	@Override
