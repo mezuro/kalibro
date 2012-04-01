@@ -1,9 +1,9 @@
 package org.kalibro.core.persistence.database;
 
+import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
-import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 
 import java.util.Date;

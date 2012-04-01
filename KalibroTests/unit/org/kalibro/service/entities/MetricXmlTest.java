@@ -1,6 +1,6 @@
 package org.kalibro.service.entities;
 
-import static org.kalibro.core.model.NativeMetricFixtures.*;
+import static org.analizo.AnalizoStub.*;
 
 import java.util.ArrayList;
 import java.util.Collection;

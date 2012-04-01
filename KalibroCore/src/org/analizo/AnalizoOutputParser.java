@@ -37,6 +37,7 @@ class AnalizoOutputParser {
 		String name = line.substring(hyphenIndex + 1).trim();
 		Granularity scope = code.startsWith("total") ? APPLICATION : CLASS;
 		NativeMetric metric = new NativeMetric(name, scope, Language.values());
+		metric.setOrigin("Analizo");
 		supportedMetrics.put(code, metric);
 	}
 

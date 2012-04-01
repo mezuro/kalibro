@@ -39,7 +39,7 @@ public final class ModuleResultFixtures {
 
 	public static ModuleResult helloWorldApplicationResult(Date date) {
 		ModuleResult result = new ModuleResult(helloWorldApplication(), date);
-		result.addMetricResults(copyAndSetOrigin(AnalizoStub.applicationResult()).getMetricResults());
+		result.addMetricResults(AnalizoStub.applicationResult().getMetricResults());
 		return result;
 	}
 
@@ -49,16 +49,7 @@ public final class ModuleResultFixtures {
 
 	public static ModuleResult helloWorldClassResult(Date date) {
 		ModuleResult result = new ModuleResult(helloWorldClass(), date);
-		result.addMetricResults(copyAndSetOrigin(AnalizoStub.classResult()).getMetricResults());
-		return result;
-	}
-
-	private static NativeModuleResult copyAndSetOrigin(NativeModuleResult nativeResult) {
-		NativeModuleResult result = new NativeModuleResult(nativeResult.getModule());
-		for (NativeMetricResult metricResult : nativeResult.getMetricResults()) {
-			NativeMetric copy = NativeMetricFixtures.copyAndSetOrigin((NativeMetric) metricResult.getMetric());
-			result.addMetricResult(new NativeMetricResult(copy, metricResult.getValue()));
-		}
+		result.addMetricResults(AnalizoStub.classResult().getMetricResults());
 		return result;
 	}
 

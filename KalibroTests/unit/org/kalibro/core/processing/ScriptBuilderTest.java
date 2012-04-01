@@ -1,10 +1,10 @@
 package org.kalibro.core.processing;
 
+import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.CompoundMetricFixtures.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
-import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
@@ -66,11 +66,11 @@ public class ScriptBuilderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotIncludeNativeMetricIfScopeIsNotCompatible() {
-		NativeMetric cbo = nativeMetric("cbo");
-		assertTrue(scriptBuilder.shouldInclude(cbo));
+		NativeMetric loc = new NativeMetric("Lines of Code", CLASS);
+		assertTrue(scriptBuilder.shouldInclude(loc));
 
-		cbo.setScope(APPLICATION);
-		assertFalse(scriptBuilder.shouldInclude(cbo));
+		loc.setScope(APPLICATION);
+		assertFalse(scriptBuilder.shouldInclude(loc));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

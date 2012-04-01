@@ -4,13 +4,13 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.CompoundMetricFixtures;
 import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricFixtures;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.desktop.ComponentFinder;
@@ -28,7 +28,7 @@ public class MetricPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		nativeMetric = NativeMetricFixtures.nativeMetric("loc");
+		nativeMetric = AnalizoStub.nativeMetric("loc");
 		compoundMetric = CompoundMetricFixtures.sc();
 		panel = new MetricPanel();
 		finder = new ComponentFinder(panel);

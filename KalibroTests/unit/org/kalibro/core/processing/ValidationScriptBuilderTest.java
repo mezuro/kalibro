@@ -1,6 +1,7 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
+import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,7 +27,8 @@ public class ValidationScriptBuilderTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testScript() {
 		ValidationScriptBuilder scriptBuilder = new ValidationScriptBuilder(configuration, scConfiguration);
-		String expected = "var amloc = 1.0;\nvar cbo = 1.0;\nvar lcom4 = 1.0;\nfunction sc(){return cbo * lcom4;}\n";
-		assertEquals(expected, scriptBuilder.buildScript());
+		List<String> expected = Arrays.asList("var amloc = 1.0;", "var cbo = 1.0;", "var lcom4 = 1.0;",
+			"function sc(){return cbo * lcom4;}");
+		assertDeepEquals(expected, scriptBuilder.buildScript().split("\\n"));
 	}
 }

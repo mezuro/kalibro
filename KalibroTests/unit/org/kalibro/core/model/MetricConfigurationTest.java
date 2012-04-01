@@ -1,8 +1,8 @@
 package org.kalibro.core.model;
 
+import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.NativeMetricFixtures.*;
 import static org.kalibro.core.model.RangeFixtures.*;
 import static org.kalibro.core.model.RangeLabel.*;
 

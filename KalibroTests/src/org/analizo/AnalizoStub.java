@@ -1,6 +1,7 @@
 package org.analizo;
 
 import static org.kalibro.core.model.enums.Granularity.*;
+import static org.kalibro.core.model.enums.Language.*;
 
 import java.io.File;
 import java.util.*;
@@ -8,7 +9,6 @@ import java.util.*;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
 
 public class AnalizoStub implements MetricCollector {
 
@@ -60,7 +60,7 @@ public class AnalizoStub implements MetricCollector {
 
 	private static void putMetric(String code, String name) {
 		Granularity scope = code.startsWith("total") ? APPLICATION : CLASS;
-		NativeMetric metric = new NativeMetric(name, scope, Language.values());
+		NativeMetric metric = new NativeMetric(name, scope, C, CPP, JAVA);
 		baseTool.addSupportedMetric(metric);
 		nativeMetrics.put(code, metric);
 	}
