@@ -66,7 +66,7 @@ public class ScriptBuilderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotIncludeNativeMetricIfScopeIsNotCompatible() {
-		NativeMetric loc = new NativeMetric("Lines of Code", CLASS);
+		NativeMetric loc = nativeMetric("loc");
 		assertTrue(scriptBuilder.shouldInclude(loc));
 
 		loc.setScope(APPLICATION);

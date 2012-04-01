@@ -20,7 +20,7 @@ class AnalizoOutputParser {
 	private Map<String, NativeMetric> supportedMetrics;
 
 	protected AnalizoOutputParser(InputStream metricListOuput) throws IOException {
-		supportedMetrics = new HashMap<String, NativeMetric>();
+		supportedMetrics = new TreeMap<String, NativeMetric>();
 		parseSupportedMetrics(metricListOuput);
 	}
 

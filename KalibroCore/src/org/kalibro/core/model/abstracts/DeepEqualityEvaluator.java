@@ -52,17 +52,13 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 	}
 
 	private boolean groupEquals(Object myValue, Object otherValue) {
-		if (myValue.getClass().isArray())
-			return arrayEquals((Object[]) myValue, (Object[]) otherValue);
 		if (myValue instanceof Map)
 			return mapEquals((Map<?, ?>) myValue, (Map<?, ?>) otherValue);
 		if (myValue instanceof Collection)
 			return collectionEquals((Collection<?>) myValue, (Collection<?>) otherValue);
+		if (myValue.getClass().isArray())
+			return arrayEquals((Object[]) myValue, (Object[]) otherValue);
 		return myValue.equals(otherValue);
-	}
-
-	private boolean arrayEquals(Object[] myArray, Object[] otherArray) {
-		return collectionEquals(Arrays.asList(myArray), Arrays.asList(otherArray));
 	}
 
 	private boolean mapEquals(Map<?, ?> myMap, Map<?, ?> otherMap) {
@@ -75,27 +71,32 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 	}
 
 	private boolean collectionEquals(Collection<?> myCollection, Collection<?> otherCollection) {
-		if (myCollection.size() != otherCollection.size())
+		return arrayEquals(myCollection.toArray(), otherCollection.toArray());
+	}
+
+	private boolean arrayEquals(Object[] myArray, Object[] otherArray) {
+		return listEquals(Arrays.asList(myArray), Arrays.asList(otherArray));
+	}
+
+	private boolean listEquals(List<?> myList, List<?> otherList) {
+		if (myList.size() != otherList.size())
 			return false;
-		sortIfPossible(myCollection, otherCollection);
-		Iterator<?> otherIterator = otherCollection.iterator();
-		for (Object myElement : myCollection)
-			if (!sameFieldValue(myElement, otherIterator.next()))
+		sortIfPossible(myList, otherList);
+		for (int i = 0; i < myList.size(); i++)
+			if (!sameFieldValue(myList.get(i), otherList.get(i)))
 				return false;
 		return true;
 	}
 
 	@SuppressWarnings("rawtypes" /* impossible to cast without raw types */)
-	private void sortIfPossible(Collection<?> myCollection, Collection<?> otherCollection) {
-		if (isSortable(myCollection) && isSortable(otherCollection)) {
-			Collections.sort((List<Comparable>) myCollection);
-			Collections.sort((List<Comparable>) otherCollection);
+	private void sortIfPossible(List<?> myList, List<?> otherList) {
+		if (isSortable(myList) && isSortable(otherList)) {
+			Collections.sort((List<Comparable>) myList);
+			Collections.sort((List<Comparable>) otherList);
 		}
 	}
 
-	private boolean isSortable(Collection<?> collection) {
-		return collection instanceof List
-			&& !collection.isEmpty()
-			&& collection.iterator().next() instanceof Comparable;
+	private boolean isSortable(List<?> list) {
+		return !list.isEmpty() && list.iterator().next() instanceof Comparable;
 	}
 }
