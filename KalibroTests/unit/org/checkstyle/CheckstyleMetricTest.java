@@ -48,7 +48,13 @@ public class CheckstyleMetricTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNativeMetrics() {
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			assertDeepEquals(new NativeMetric("" + metric, CLASS, JAVA), metric.getNativeMetric());
+			verifyNativeMetric(metric);
+	}
+
+	private void verifyNativeMetric(CheckstyleMetric metric) {
+		NativeMetric expected = new NativeMetric("" + metric, CLASS, JAVA);
+		expected.setOrigin("Checkstyle");
+		assertDeepEquals(expected, metric.getNativeMetric());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -84,7 +84,9 @@ public enum CheckstyleMetric {
 	}
 
 	protected NativeMetric getNativeMetric() {
-		return new NativeMetric(toString(), Granularity.CLASS, Language.JAVA);
+		NativeMetric nativeMetric = new NativeMetric(toString(), Granularity.CLASS, Language.JAVA);
+		nativeMetric.setOrigin("Checkstyle");
+		return nativeMetric;
 	}
 
 	protected Statistic getAggregationType() {
