@@ -28,8 +28,11 @@ public abstract class KalibroFacade {
 
 	protected abstract void processProject(String projectName);
 
-	// TODO Enable the user to cancel, show and change period of processing
 	protected abstract void processPeriodically(String projectName, Integer periodInDays);
+
+	protected abstract Integer getProcessPeriod(String projectName);
+
+	protected abstract void cancelPeriodicProcess(String projectName);
 
 	protected void addProjectStateListener(Project project, ProjectStateListener listener) {
 		changeSupport.addProjectStateListener(project.getName(), listener);

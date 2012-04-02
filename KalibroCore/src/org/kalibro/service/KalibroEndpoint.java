@@ -23,4 +23,11 @@ public interface KalibroEndpoint {
 	void processPeriodically(
 		@WebParam(name = "projectName") String projectName,
 		@WebParam(name = "periodInDays") Integer periodInDays);
+
+	@WebMethod
+	@WebResult(name = "period")
+	Integer getProcessPeriod(@WebParam(name = "projectName") String projectName);
+
+	@WebMethod
+	void cancelPeriodicProcess(@WebParam(name = "projectName") String projectName);
 }

@@ -67,6 +67,14 @@ public final class Kalibro {
 		getFacade().processPeriodically(projectName, periodInDays);
 	}
 
+	public static Integer getProcessPeriod(String projectName) {
+		return getFacade().getProcessPeriod(projectName);
+	}
+
+	public static void cancelPeriodicProcess(String projectName) {
+		getFacade().cancelPeriodicProcess(projectName);
+	}
+
 	public static void addProjectStateListener(Project project, ProjectStateListener listener) {
 		getFacade().addProjectStateListener(project, listener);
 	}

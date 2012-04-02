@@ -18,7 +18,7 @@ public class KalibroEndpointImpl implements KalibroEndpoint {
 	public Set<RepositoryType> getSupportedRepositoryTypes() {
 		Set<RepositoryType> types = new TreeSet<RepositoryType>();
 		for (RepositoryType type : Kalibro.getSupportedRepositoryTypes())
-			if (! type.isLocal())
+			if (!type.isLocal())
 				types.add(type);
 		return types;
 	}
@@ -33,5 +33,16 @@ public class KalibroEndpointImpl implements KalibroEndpoint {
 		@WebParam(name = "projectName") String projectName,
 		@WebParam(name = "periodInDays") Integer periodInDays) {
 		Kalibro.processPeriodically(projectName, periodInDays);
+	}
+
+	@Override
+	@WebResult(name = "period")
+	public Integer getProcessPeriod(@WebParam(name = "projectName") String projectName) {
+		return Kalibro.getProcessPeriod(projectName);
+	}
+
+	@Override
+	public void cancelPeriodicProcess(@WebParam(name = "projectName") String projectName) {
+		Kalibro.cancelPeriodicProcess(projectName);
 	}
 }

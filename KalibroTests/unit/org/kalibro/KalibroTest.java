@@ -27,6 +27,8 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest({Kalibro.class, KalibroSettings.class})
 public class KalibroTest extends KalibroTestCase {
 
+	private static final String PROJECT_NAME = "KalibroTest project";
+
 	@BeforeClass
 	public static void emmaCoverage() throws Exception {
 		Kalibro.class.getDeclaredConstructor().newInstance();
@@ -169,15 +171,26 @@ public class KalibroTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessProject() {
-		String projectName = "My project";
-		Kalibro.processProject(projectName);
-		verify(facade).processProject(projectName);
+		Kalibro.processProject(PROJECT_NAME);
+		verify(facade).processProject(PROJECT_NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessPeriodically() {
-		Kalibro.processPeriodically("My project", 42);
-		verify(facade).processPeriodically("My project", 42);
+		Kalibro.processPeriodically(PROJECT_NAME, 42);
+		verify(facade).processPeriodically(PROJECT_NAME, 42);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessPeriod() {
+		PowerMockito.when(facade.getProcessPeriod(PROJECT_NAME)).thenReturn(42);
+		assertEquals(42, Kalibro.getProcessPeriod(PROJECT_NAME).intValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testCancelPeriodicProcess() {
+		Kalibro.cancelPeriodicProcess(PROJECT_NAME);
+		verify(facade).cancelPeriodicProcess(PROJECT_NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

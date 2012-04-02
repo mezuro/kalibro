@@ -3,6 +3,8 @@ package org.kalibro.core;
 import static org.kalibro.Kalibro.*;
 import static org.kalibro.core.concurrent.Task.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -17,8 +19,13 @@ public class KalibroLocal extends KalibroFacade {
 
 	private static final long REPOSITORY_VALIDATION_TIMEOUT = 1 * MINUTE;
 
+	private Map<String, ProcessProjectTask> processTasks;
+	private Map<String, Integer> processPeriods;
+
 	public KalibroLocal() {
 		super();
+		processTasks = new HashMap<String, ProcessProjectTask>();
+		processPeriods = new HashMap<String, Integer>();
 	}
 
 	@Override
@@ -55,7 +62,26 @@ public class KalibroLocal extends KalibroFacade {
 	}
 
 	@Override
-	protected void processPeriodically(final String projectName, Integer periodInDays) {
-		new ProcessProjectTask(projectName).executePeriodically(periodInDays * DAY);
+	protected void processPeriodically(String projectName, Integer periodInDays) {
+		ProcessProjectTask processTask = getProcessTask(projectName);
+		processTask.cancelPeriodicExecution();
+		processTask.executePeriodically(periodInDays * DAY);
+		processPeriods.put(projectName, periodInDays);
+	}
+
+	@Override
+	protected Integer getProcessPeriod(String projectName) {
+		return processPeriods.containsKey(projectName) ? processPeriods.get(projectName) : 0;
+	}
+
+	@Override
+	protected void cancelPeriodicProcess(String projectName) {
+		getProcessTask(projectName).cancelPeriodicExecution();
+	}
+
+	private ProcessProjectTask getProcessTask(String projectName) {
+		if (!processTasks.containsKey(projectName))
+			processTasks.put(projectName, new ProcessProjectTask(projectName));
+		return processTasks.get(projectName);
 	}
 }

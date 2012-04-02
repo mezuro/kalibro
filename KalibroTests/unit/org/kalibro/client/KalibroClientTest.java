@@ -24,6 +24,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({EndpointPortFactory.class, Kalibro.class, KalibroClient.class})
 public class KalibroClientTest extends KalibroTestCase {
 
+	private static final String PROJECT_NAME = "KalibroClientTest project";
+
 	private KalibroClient client;
 	private KalibroEndpoint port;
 	private KalibroSettings settings;
@@ -79,13 +81,25 @@ public class KalibroClientTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessProject() {
-		client.processProject("My project");
-		Mockito.verify(port).processProject("My project");
+		client.processProject(PROJECT_NAME);
+		Mockito.verify(port).processProject(PROJECT_NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessPeriodically() {
-		client.processPeriodically("My project", 42);
-		Mockito.verify(port).processPeriodically("My project", 42);
+		client.processPeriodically(PROJECT_NAME, 42);
+		Mockito.verify(port).processPeriodically(PROJECT_NAME, 42);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessPeriod() {
+		PowerMockito.when(port.getProcessPeriod(PROJECT_NAME)).thenReturn(42);
+		assertEquals(42, client.getProcessPeriod(PROJECT_NAME).intValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testCancelPeriodicProcess() {
+		client.cancelPeriodicProcess(PROJECT_NAME);
+		Mockito.verify(port).cancelPeriodicProcess(PROJECT_NAME);
 	}
 }

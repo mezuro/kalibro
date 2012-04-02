@@ -1,5 +1,6 @@
 package org.kalibro.service;
 
+import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.RepositoryType.*;
 
 import java.util.Arrays;
@@ -20,6 +21,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Kalibro.class)
 public class KalibroEndpointImplTest extends KalibroTestCase {
 
+	private static final String PROJECT_NAME = "KalibroEndpointImplTest project";
+
 	private KalibroEndpointImpl endpoint;
 
 	@Before
@@ -38,15 +41,28 @@ public class KalibroEndpointImplTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessProject() {
-		endpoint.processProject("42");
+		endpoint.processProject(PROJECT_NAME);
 		PowerMockito.verifyStatic();
-		Kalibro.processProject("42");
+		Kalibro.processProject(PROJECT_NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessPeriodically() {
-		endpoint.processPeriodically("xpto", 42);
+		endpoint.processPeriodically(PROJECT_NAME, 42);
 		PowerMockito.verifyStatic();
-		Kalibro.processPeriodically("xpto", 42);
+		Kalibro.processPeriodically(PROJECT_NAME, 42);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessPeriod() {
+		PowerMockito.when(Kalibro.getProcessPeriod(PROJECT_NAME)).thenReturn(42);
+		assertEquals(42, endpoint.getProcessPeriod(PROJECT_NAME).intValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testCancelPeriodicProcess() {
+		endpoint.cancelPeriodicProcess(PROJECT_NAME);
+		PowerMockito.verifyStatic();
+		Kalibro.cancelPeriodicProcess(PROJECT_NAME);
 	}
 }

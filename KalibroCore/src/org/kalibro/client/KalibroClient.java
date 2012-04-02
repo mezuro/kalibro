@@ -42,6 +42,16 @@ public class KalibroClient extends KalibroFacade {
 	}
 
 	@Override
+	protected Integer getProcessPeriod(String projectName) {
+		return port.getProcessPeriod(projectName);
+	}
+
+	@Override
+	protected void cancelPeriodicProcess(String projectName) {
+		port.cancelPeriodicProcess(projectName);
+	}
+
+	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
 		stateTracker.cancelPeriodicExecution();
