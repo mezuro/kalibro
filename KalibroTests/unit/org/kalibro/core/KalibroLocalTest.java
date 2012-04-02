@@ -112,6 +112,7 @@ public class KalibroLocalTest extends KalibroTestCase {
 
 		kalibroLocal.cancelPeriodicProcess(PROJECT_NAME);
 		Mockito.verify(task).cancelPeriodicExecution();
+		assertEquals(0, kalibroLocal.getProcessPeriod(PROJECT_NAME).intValue());
 	}
 
 	private ProcessProjectTask mockProcessProjectTask(String projectName) throws Exception {

@@ -77,6 +77,8 @@ public class KalibroLocal extends KalibroFacade {
 	@Override
 	protected void cancelPeriodicProcess(String projectName) {
 		getProcessTask(projectName).cancelPeriodicExecution();
+		processTasks.remove(projectName);
+		processPeriods.remove(projectName);
 	}
 
 	private ProcessProjectTask getProcessTask(String projectName) {
