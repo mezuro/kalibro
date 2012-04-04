@@ -19,13 +19,13 @@ public class MetricResultTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		result = metricResult("amloc", 4.2, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0);
-		configuration = simpleConfiguration().getConfigurationFor(result.getMetric());
+		result = newMetricResult("amloc", 4.2, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0);
+		configuration = newConfiguration("amloc").getConfigurationFor(result.getMetric());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInitializeWithNativeMetricResult() {
-		NativeMetricResult nativeResult = nativeMetricResult("loc", 42.0);
+		NativeMetricResult nativeResult = analizoResult("loc");
 		result = new MetricResult(nativeResult);
 		assertSame(nativeResult.getMetric(), result.getMetric());
 		assertSame(nativeResult.getValue(), result.getValue());
@@ -35,7 +35,7 @@ public class MetricResultTest extends KalibroTestCase {
 	public void shouldHaveStatisticsWhenHasDescendentResults() {
 		assertTrue(result.hasStatistics());
 
-		result = new MetricResult(nativeMetricResult("nom", 16.0));
+		result = new MetricResult(analizoResult("nom"));
 		assertFalse(result.hasStatistics());
 	}
 

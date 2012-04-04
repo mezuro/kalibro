@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.database.entities;
 
-import static org.analizo.AnalizoStub.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -22,7 +22,7 @@ public class MetricRecordTest extends DtoTestCase<MyMetric, MetricRecord<MyMetri
 	@Override
 	protected Collection<MyMetric> entitiesForTestingConversion() {
 		List<MyMetric> metrics = new ArrayList<MyMetric>();
-		for (NativeMetric nativeMetric : nativeMetrics())
+		for (NativeMetric nativeMetric : analizoStub().getSupportedMetrics())
 			metrics.add(new MyMetric(nativeMetric.getName(), nativeMetric.getScope(), nativeMetric.getDescription()));
 		return metrics;
 	}

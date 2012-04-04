@@ -23,7 +23,7 @@ public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
 
 	@Override
 	protected Collection<ModuleNode> entitiesForTestingConversion() {
-		return Arrays.asList(helloWorldTree(), junitAnalizoTree());
+		return Arrays.asList(helloWorldRoot(), analizoCheckstyleTree());
 	}
 
 	@Override
@@ -33,8 +33,8 @@ public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveIfIsRoot() {
-		assertTrue(createDto(helloWorldTree()).isRoot());
-		assertFalse(new ModuleRecord(helloWorldNode(), null, new ModuleRecord()).isRoot());
+		assertTrue(createDto(helloWorldRoot()).isRoot());
+		assertFalse(new ModuleRecord(helloWorldLeaf(), null, new ModuleRecord()).isRoot());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -1,14 +1,15 @@
 package org.kalibro.core.persistence.database;
 
+import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.MetricConfigurationFixtures;
 import org.kalibro.core.persistence.database.entities.MetricConfigurationRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -30,9 +31,9 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = ConfigurationFixtures.simpleConfiguration();
-		cboConfiguration = MetricConfigurationFixtures.configuration("cbo");
-		ditConfiguration = MetricConfigurationFixtures.configuration("dit");
+		configuration = newConfiguration("cbo");
+		cboConfiguration = metricConfiguration("cbo");
+		ditConfiguration = metricConfiguration("loc");
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		configurationDao = PowerMockito.mock(ConfigurationDatabaseDao.class);
 		PowerMockito.when(configurationDao.getConfiguration(configuration.getName())).thenReturn(configuration);
@@ -69,7 +70,7 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowExceptionForMetricConfigurationNotFound() {
-		String expectedMessage = "Metric 'Depth of Inheritance Tree' not found in configuration 'Kalibro for Java'";
+		String expectedMessage = "Metric 'Lines of Code' not found in configuration 'Kalibro for Java'";
 		checkKalibroException(new Task() {
 
 			@Override

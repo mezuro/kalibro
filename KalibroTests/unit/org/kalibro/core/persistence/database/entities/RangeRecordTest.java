@@ -17,7 +17,7 @@ public class RangeRecordTest extends DtoTestCase<Range, RangeRecord> {
 
 	@Override
 	protected Collection<Range> entitiesForTestingConversion() {
-		SortedSet<Range> ranges = MetricConfigurationFixtures.configuration("amloc").getRanges();
+		SortedSet<Range> ranges = MetricConfigurationFixtures.metricConfiguration("amloc").getRanges();
 		return new ArrayList<Range>(ranges);
 	}
 

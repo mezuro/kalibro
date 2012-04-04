@@ -1,6 +1,7 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
 
 import java.util.Arrays;
 
@@ -9,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
 import org.mockito.ArgumentCaptor;
@@ -29,7 +29,7 @@ public class ConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = ConfigurationFixtures.simpleConfiguration();
+		configuration = newConfiguration("cbo", "lcom4");
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		dao = PowerMockito.spy(new ConfigurationDatabaseDao(databaseManager));
 	}

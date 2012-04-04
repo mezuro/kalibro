@@ -19,7 +19,7 @@ public class ProjectTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		project = ProjectFixtures.helloWorld();
+		project = ProjectFixtures.newHelloWorld();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

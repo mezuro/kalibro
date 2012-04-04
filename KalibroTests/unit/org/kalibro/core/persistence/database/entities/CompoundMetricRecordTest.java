@@ -1,11 +1,12 @@
 package org.kalibro.core.persistence.database.entities;
 
+import static org.kalibro.core.model.MetricFixtures.*;
+
 import java.util.Arrays;
 import java.util.Collection;
 
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.CompoundMetricFixtures;
 
 public class CompoundMetricRecordTest extends DtoTestCase<CompoundMetric, CompoundMetricRecord> {
 
@@ -16,7 +17,7 @@ public class CompoundMetricRecordTest extends DtoTestCase<CompoundMetric, Compou
 
 	@Override
 	protected Collection<CompoundMetric> entitiesForTestingConversion() {
-		return Arrays.asList(CompoundMetricFixtures.sc());
+		return Arrays.asList(sc());
 	}
 
 	@Override

@@ -19,7 +19,7 @@ public class ConfigurationRecordTest extends DtoTestCase<Configuration, Configur
 
 	@Override
 	protected Collection<Configuration> entitiesForTestingConversion() {
-		return Arrays.asList(simpleConfiguration());
+		return Arrays.asList(kalibroConfiguration());
 	}
 
 	@Override
@@ -29,7 +29,7 @@ public class ConfigurationRecordTest extends DtoTestCase<Configuration, Configur
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveName() {
-		Configuration configuration = simpleConfiguration();
+		Configuration configuration = newConfiguration();
 		assertEquals(configuration.getName(), createDto(configuration).getName());
 	}
 }

@@ -17,11 +17,11 @@ public class RangeTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		excellent = amlocRange(EXCELLENT);
-		good = amlocRange(GOOD);
-		regular = amlocRange(REGULAR);
-		warning = amlocRange(WARNING);
-		bad = amlocRange(BAD);
+		excellent = newRange("amloc", EXCELLENT);
+		good = newRange("amloc", GOOD);
+		regular = newRange("amloc", REGULAR);
+		warning = newRange("amloc", WARNING);
+		bad = newRange("amloc", BAD);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

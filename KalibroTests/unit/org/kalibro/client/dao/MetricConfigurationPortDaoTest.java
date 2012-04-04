@@ -32,7 +32,7 @@ public class MetricConfigurationPortDaoTest extends KalibroTestCase {
 	public void setUp() {
 		mockPort();
 		dao = new MetricConfigurationPortDao();
-		configuration = MetricConfigurationFixtures.configuration("cbo");
+		configuration = MetricConfigurationFixtures.metricConfiguration("cbo");
 	}
 
 	private void mockPort() {

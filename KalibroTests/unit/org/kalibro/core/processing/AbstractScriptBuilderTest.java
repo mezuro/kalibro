@@ -17,7 +17,7 @@ public class AbstractScriptBuilderTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		Configuration configuration = simpleConfiguration();
+		Configuration configuration = newConfiguration("amloc", "cbo");
 		CompoundMetric compoundMetric = new CompoundMetric();
 		compoundMetric.setName("Another");
 		compoundMetric.setScript("return 42;");

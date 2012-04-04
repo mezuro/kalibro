@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
@@ -21,7 +21,7 @@ public class NativeMetricTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void nativeMetricsShouldNotBeCompound() {
-		for (NativeMetric metric : nativeMetrics())
+		for (NativeMetric metric : analizoStub().getSupportedMetrics())
 			assertFalse(metric.isCompound());
 	}
 

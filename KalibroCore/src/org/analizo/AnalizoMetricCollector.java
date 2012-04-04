@@ -25,6 +25,7 @@ public class AnalizoMetricCollector implements MetricCollector {
 	@Override
 	public BaseTool getBaseTool() {
 		BaseTool baseTool = new BaseTool("Analizo");
+		baseTool.setCollectorClass(AnalizoMetricCollector.class);
 		baseTool.setSupportedMetrics(outputParser.getSupportedMetrics());
 		return baseTool;
 	}

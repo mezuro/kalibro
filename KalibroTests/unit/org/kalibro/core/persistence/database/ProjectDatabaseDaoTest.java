@@ -1,6 +1,7 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ProjectFixtures.*;
 
 import java.util.Arrays;
 
@@ -8,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectFixtures;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
@@ -24,7 +24,7 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		project = ProjectFixtures.helloWorld();
+		project = helloWorld();
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		dao = PowerMockito.spy(new ProjectDatabaseDao(databaseManager));
 	}

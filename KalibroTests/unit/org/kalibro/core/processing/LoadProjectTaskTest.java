@@ -36,7 +36,7 @@ public class LoadProjectTaskTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		project = helloWorld();
+		project = newHelloWorld();
 		loadTask = new LoadProjectTask(project);
 		mockLoadDirectory();
 		mockCommandExecutor();

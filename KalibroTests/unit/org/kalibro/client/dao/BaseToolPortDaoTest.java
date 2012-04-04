@@ -1,11 +1,11 @@
 package org.kalibro.client.dao;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -32,7 +32,7 @@ public class BaseToolPortDaoTest extends KalibroTestCase {
 	public void setUp() {
 		mockPort();
 		dao = new BaseToolPortDao();
-		baseTool = new AnalizoStub().getBaseTool();
+		baseTool = analizoStub();
 	}
 
 	private void mockPort() {

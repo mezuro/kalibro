@@ -1,13 +1,16 @@
 package org.analizo;
 
-import static org.analizo.AnalizoStub.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.NativeModuleResultFixtures.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.model.NativeMetric;
 
 public class AnalizoOutputParserTest extends KalibroTestCase {
 
@@ -21,13 +24,15 @@ public class AnalizoOutputParserTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldParseMetricListOutputToSupportedMetrics() {
-		assertDeepEquals(nativeMetrics(), parser.getSupportedMetrics());
+		assertDeepEquals(analizo().getSupportedMetrics(), parser.getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldParseResultsOutputToModuleResults() {
 		InputStream resultsOutput = getResource("Analizo-Output-HelloWorld.txt");
-		assertDeepEquals(collectMetrics(), parser.parseResults(resultsOutput, nativeMetrics()));
+		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
+		assertDeepEquals(parser.parseResults(resultsOutput, metrics),
+			helloWorldApplicationResult(), helloWorldClassResult());
 	}
 
 	private InputStream getResource(String resourceName) {

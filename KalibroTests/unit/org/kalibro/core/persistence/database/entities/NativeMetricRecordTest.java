@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.database.entities;
 
-import static org.analizo.AnalizoStub.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.Collection;
 
@@ -16,7 +16,7 @@ public class NativeMetricRecordTest extends DtoTestCase<NativeMetric, NativeMetr
 
 	@Override
 	protected Collection<NativeMetric> entitiesForTestingConversion() {
-		return nativeMetrics();
+		return analizoStub().getSupportedMetrics();
 	}
 
 	@Override

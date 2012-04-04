@@ -25,7 +25,7 @@ public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResu
 	@Override
 	protected Collection<MetricResult> entitiesForTestingConversion() {
 		Double[] specialvalues = new Double[]{Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
-		MetricResult metricResult = metricResult("loc", 42.0, specialvalues);
+		MetricResult metricResult = newMetricResult("loc", 42.0, specialvalues);
 		return Arrays.asList(metricResult);
 	}
 

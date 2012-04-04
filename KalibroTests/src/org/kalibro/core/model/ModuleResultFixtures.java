@@ -9,58 +9,64 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.analizo.AnalizoStub;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.processing.ResultsAggregator;
 
 public final class ModuleResultFixtures {
 
-	public static Collection<ModuleResult> helloWorldModuleResults() {
-		return helloWorldModuleResults(new Date());
-	}
-
-	public static Collection<ModuleResult> helloWorldModuleResults(Date date) {
-		ProjectResult projectResult = helloWorldResult(date);
-		ModuleResult applicationResult = helloWorldApplicationResult(date);
-		ModuleResult classResult = helloWorldClassResult(date);
-
-		Map<Module, ModuleResult> moduleResultMap = new TreeMap<Module, ModuleResult>();
-		moduleResultMap.put(helloWorldApplication(), applicationResult);
-		moduleResultMap.put(helloWorldClass(), classResult);
-		new ResultsAggregator(projectResult, moduleResultMap).aggregate();
-
-		return moduleResultMap.values();
-	}
+	private static ModuleResult helloWorldApplicationResult = newHelloWorldApplicationResult();
+	private static ModuleResult helloWorldClassResult = newHelloWorldClassResult();
 
 	public static ModuleResult helloWorldApplicationResult() {
-		return helloWorldApplicationResult(new Date());
+		return helloWorldApplicationResult;
 	}
 
-	public static ModuleResult helloWorldApplicationResult(Date date) {
-		ModuleResult result = new ModuleResult(helloWorldApplication(), date);
-		result.addMetricResults(AnalizoStub.applicationResult().getMetricResults());
+	public static ModuleResult newHelloWorldApplicationResult() {
+		return newHelloWorldApplicationResult(new Date());
+	}
+
+	public static ModuleResult newHelloWorldApplicationResult(Date date) {
+		ModuleResult result = new ModuleResult(newHelloWorldApplication(), date);
+		result.addMetricResults(NativeModuleResultFixtures.helloWorldApplicationResult().getMetricResults());
 		return result;
 	}
 
 	public static ModuleResult helloWorldClassResult() {
-		return helloWorldClassResult(new Date());
+		return helloWorldClassResult;
 	}
 
-	public static ModuleResult helloWorldClassResult(Date date) {
-		ModuleResult result = new ModuleResult(helloWorldClass(), date);
-		result.addMetricResults(AnalizoStub.classResult().getMetricResults());
+	public static ModuleResult newHelloWorldClassResult() {
+		return newHelloWorldClassResult(new Date());
+	}
+
+	public static ModuleResult newHelloWorldClassResult(Date date) {
+		ModuleResult result = new ModuleResult(newHelloWorldClass(), date);
+		result.addMetricResults(NativeModuleResultFixtures.helloWorldClassResult().getMetricResults());
 		return result;
 	}
 
-	public static Map<Module, ModuleResult> junitAnalizoResultMap() {
+	public static Collection<ModuleResult> newHelloWorldResults() {
+		return newHelloWorldResults(new Date());
+	}
+
+	public static Collection<ModuleResult> newHelloWorldResults(Date date) {
+		Map<Module, ModuleResult> moduleResultMap = new TreeMap<Module, ModuleResult>();
+		moduleResultMap.put(newHelloWorldApplication(), newHelloWorldApplicationResult(date));
+		moduleResultMap.put(newHelloWorldClass(), newHelloWorldClassResult(date));
+		new ResultsAggregator(newHelloWorldResult(date), moduleResultMap).aggregate();
+		return moduleResultMap.values();
+	}
+
+	public static Map<Module, ModuleResult> analizoCheckstyleResultMap() {
 		Map<Module, ModuleResult> resultMap = new TreeMap<Module, ModuleResult>();
-		putResult(junitAnalizoTree(), resultMap);
+		putResult(analizoCheckstyleTree(), resultMap);
 		putResult(analizoNode(), resultMap);
 		putResult(analizoMetricCollectorNode(), resultMap);
-		putResult(analizoResultParserNode(), resultMap);
-		putResult(assertNode(), resultMap);
-		putResult(comparisonFailureNode(), resultMap);
+		putResult(analizoOutputParserNode(), resultMap);
+		putResult(checkstyleNode(), resultMap);
+		putResult(checkstyleMetricCollectorNode(), resultMap);
+		putResult(checkstyleOutputParserNode(), resultMap);
 		return resultMap;
 	}
 

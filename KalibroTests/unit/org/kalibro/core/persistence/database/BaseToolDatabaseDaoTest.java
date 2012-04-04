@@ -1,10 +1,10 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.Arrays;
 
-import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,7 +28,7 @@ public class BaseToolDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		baseTool = new AnalizoStub().getBaseTool();
+		baseTool = analizoStub();
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		dao = PowerMockito.spy(new BaseToolDatabaseDao(databaseManager));
 	}

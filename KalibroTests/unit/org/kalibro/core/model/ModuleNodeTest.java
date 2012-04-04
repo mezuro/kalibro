@@ -12,13 +12,13 @@ import org.kalibro.core.concurrent.Task;
 
 public class ModuleNodeTest extends KalibroTestCase {
 
-	private ModuleNode org, analizo, junit;
+	private ModuleNode org, analizo, checkstyle;
 
 	@Before
 	public void setUp() {
-		org = junitAnalizoTree();
+		org = newAnalizoCheckstyleTree();
 		analizo = analizoNode();
-		junit = junitNode();
+		checkstyle = checkstyleNode();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -30,19 +30,19 @@ public class ModuleNodeTest extends KalibroTestCase {
 	public void toStringShouldBeModule() {
 		assertEquals("" + org.getModule(), "" + org);
 		assertEquals("" + analizo.getModule(), "" + analizo);
-		assertEquals("" + junit.getModule(), "" + junit);
+		assertEquals("" + checkstyle.getModule(), "" + checkstyle);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testHasChildFor() {
 		assertTrue(org.hasChildFor(analizo.getModule()));
-		assertFalse(analizo.hasChildFor(junit.getModule()));
+		assertFalse(analizo.hasChildFor(checkstyle.getModule()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetChildFor() {
 		assertDeepEquals(analizo, org.getChildFor(analizo.getModule()));
-		assertDeepEquals(junit, org.getChildFor(junit.getModule()));
+		assertDeepEquals(checkstyle, org.getChildFor(checkstyle.getModule()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -51,14 +51,14 @@ public class ModuleNodeTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				junit.getChildFor(analizo.getModule());
+				checkstyle.getChildFor(analizo.getModule());
 			}
-		}, "Module org.junit has no child named analizo");
+		}, "Module org.checkstyle has no child named analizo");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testAddChild() {
-		org.addChild(helloWorldNode());
+		org.addChild(helloWorldLeaf());
 		assertTrue(org.hasChildFor(helloWorldClass()));
 	}
 

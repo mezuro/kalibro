@@ -1,14 +1,16 @@
 package org.kalibro.core.model;
 
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+
 import java.util.*;
 
 public final class RangeFixtures {
 
-	public static Range amlocRange(RangeLabel type) {
-		return type.createRange(7.0, 10.0, 13.0, 19.5);
+	public static Range newRange(String code, RangeLabel type) {
+		return type.createRange(thresholds(code));
 	}
 
-	public static Set<Range> createRanges(Double... thresholds) {
+	public static Set<Range> newRanges(Double... thresholds) {
 		Set<Range> ranges = new TreeSet<Range>();
 		for (RangeLabel rangeLabel : getRangeTypes(thresholds.length))
 			ranges.add(rangeLabel.createRange(thresholds));

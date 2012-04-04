@@ -1,6 +1,7 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ModuleResultFixtures.*;
 import static org.kalibro.core.model.ProjectResultFixtures.*;
 
 import java.util.Collection;
@@ -13,7 +14,6 @@ import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.TypedTaskReport;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ModuleResultFixtures;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
@@ -64,7 +64,7 @@ public class AnalyzeProjectExecutorTest extends KalibroTestCase {
 		PowerMockito.doNothing().when(executor, "updateProjectState", ProjectState.READY);
 		PowerMockito.mockStatic(FileUtils.class);
 
-		Collection<ModuleResult> moduleResults = ModuleResultFixtures.helloWorldModuleResults();
+		Collection<ModuleResult> moduleResults = newHelloWorldResults();
 		TypedTaskReport<Collection<ModuleResult>> report = PowerMockito.mock(TypedTaskReport.class);
 		PowerMockito.when(report.getResult()).thenReturn(moduleResults);
 		executor.continueProcessing(report);

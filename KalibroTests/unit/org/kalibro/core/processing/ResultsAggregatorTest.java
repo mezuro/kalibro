@@ -23,9 +23,9 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		ProjectResult projectResult = helloWorldResult();
-		projectResult.setSourceTree(junitAnalizoTree());
-		resultMap = junitAnalizoResultMap();
+		ProjectResult projectResult = newHelloWorldResult();
+		projectResult.setSourceTree(analizoCheckstyleTree());
+		resultMap = analizoCheckstyleResultMap();
 		aggregator = new ResultsAggregator(projectResult, resultMap);
 		classMetric = new NativeMetric("Class_name_length", CLASS, JAVA);
 		packageMetric = new NativeMetric("Package_name_length", PACKAGE, JAVA);
@@ -33,13 +33,13 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkAggregationOnOrg() {
-		ModuleResult org = resultMap.get(junitAnalizoTree().getModule());
+		ModuleResult org = resultMap.get(analizoCheckstyleTree().getModule());
 		checkResult(org, packageMetric, 3.0);
 		assertFalse(org.hasResultFor(classMetric));
 
 		aggregator.aggregate();
-		checkResult(org, packageMetric, 3.0, 7.0);
-		checkResult(org, classMetric, Double.NaN, 22.0, 19.0, 6.0, 17.0);
+		checkResult(org, packageMetric, 3.0, 7.0, 10.0);
+		checkResult(org, classMetric, Double.NaN, 22.0, 19.0, 25.0, 22.0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -54,22 +54,25 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkAggregationOnJunit() {
+	public void checkAggregationOnCheckstyle() {
+		ModuleResult checkstyle = resultMap.get(checkstyleNode().getModule());
+		checkResult(checkstyle, packageMetric, 10.0);
+		assertFalse(checkstyle.hasResultFor(classMetric));
+
 		aggregator.aggregate();
-		ModuleResult junit = resultMap.get(junitNode().getModule());
-		assertFalse(junit.hasResultFor(packageMetric));
-		checkResult(junit, classMetric, Double.NaN, 6.0, 17.0);
+		checkResult(checkstyle, packageMetric, 10.0);
+		checkResult(checkstyle, classMetric, Double.NaN, 25.0, 22.0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkAggregationOnLeaf() {
-		ModuleResult comparisonFailure = resultMap.get(comparisonFailureNode().getModule());
-		assertFalse(comparisonFailure.hasResultFor(packageMetric));
-		checkResult(comparisonFailure, classMetric, 17.0);
+		ModuleResult checkstyleOutputParser = resultMap.get(checkstyleOutputParserNode().getModule());
+		assertFalse(checkstyleOutputParser.hasResultFor(packageMetric));
+		checkResult(checkstyleOutputParser, classMetric, 22.0);
 
 		aggregator.aggregate();
-		assertFalse(comparisonFailure.hasResultFor(packageMetric));
-		checkResult(comparisonFailure, classMetric, 17.0);
+		assertFalse(checkstyleOutputParser.hasResultFor(packageMetric));
+		checkResult(checkstyleOutputParser, classMetric, 22.0);
 	}
 
 	private void checkResult(ModuleResult result, NativeMetric metric, Double value, Double... descendentResults) {

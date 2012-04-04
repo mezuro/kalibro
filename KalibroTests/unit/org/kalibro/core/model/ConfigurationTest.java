@@ -1,9 +1,9 @@
 package org.kalibro.core.model;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 
 import java.util.Map;
 import java.util.Set;
@@ -20,8 +20,8 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		sc = CompoundMetricFixtures.sc();
-		configuration = simpleConfiguration();
+		sc = newSc();
+		configuration = newConfiguration("cbo", "lcom4");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -39,8 +39,8 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testContains() {
-		assertTrue(configuration.contains(nativeMetric("cbo")));
-		assertTrue(configuration.contains(nativeMetric("lcom4")));
+		assertTrue(configuration.contains(analizoMetric("cbo")));
+		assertTrue(configuration.contains(analizoMetric("lcom4")));
 		assertFalse(configuration.contains(sc));
 	}
 
@@ -56,18 +56,18 @@ public class ConfigurationTest extends KalibroTestCase {
 	public void shouldRetrieveNativeMetricsPerOrigin() {
 		Map<String, Set<NativeMetric>> nativeMetrics = configuration.getNativeMetrics();
 		assertEquals(1, nativeMetrics.size());
-		assertEquals(3, nativeMetrics.get("Analizo").size());
+		assertEquals(2, nativeMetrics.get("Analizo").size());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveConfigurationForMetric() {
-		assertDeepEquals(configuration("cbo"), configuration.getConfigurationFor(nativeMetric("cbo")));
-		assertDeepEquals(configuration("lcom4"), configuration.getConfigurationFor(nativeMetric("lcom4")));
+		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(analizoMetric("cbo")));
+		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(analizoMetric("lcom4")));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNoConfigurationFoundForMetricError() {
-		final NativeMetric metric = nativeMetric("anpm");
+		final NativeMetric metric = analizoMetric("anpm");
 		checkKalibroException(new Task() {
 
 			@Override
@@ -83,15 +83,15 @@ public class ConfigurationTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				configuration.addMetricConfiguration(configuration("cbo"));
+				configuration.addMetricConfiguration(metricConfiguration("cbo"));
 			}
 		}, "A metric configuration with code 'cbo' already exists");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldReplaceExistingMetricConfiguration() {
-		MetricConfiguration newMetricConfiguration = configuration("cbo");
-		NativeMetric cbo = nativeMetric("cbo");
+		MetricConfiguration newMetricConfiguration = metricConfiguration("cbo");
+		NativeMetric cbo = analizoMetric("cbo");
 		configuration.replaceMetricConfiguration(cbo, newMetricConfiguration);
 		assertSame(newMetricConfiguration, configuration.getConfigurationFor(cbo));
 	}
@@ -102,19 +102,19 @@ public class ConfigurationTest extends KalibroTestCase {
 
 			@Override
 			public void perform() throws Exception {
-				configuration.replaceMetricConfiguration(nativeMetric("noa"), configuration("noa"));
+				configuration.replaceMetricConfiguration(analizoMetric("noa"), metricConfiguration("noa"));
 			}
 		}, "No configuration found for metric 'Number of Attributes'");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorForConflictingMetricConfigurationReplace() {
-		final NativeMetric cbo = nativeMetric("cbo");
+		final NativeMetric cbo = analizoMetric("cbo");
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
-				MetricConfiguration newMetricConfiguration = configuration("cbo");
+				MetricConfiguration newMetricConfiguration = newMetricConfiguration("cbo");
 				newMetricConfiguration.setCode("lcom4");
 				configuration.replaceMetricConfiguration(cbo, newMetricConfiguration);
 			}
@@ -124,7 +124,7 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testRemoveMetric() {
-		final NativeMetric metric = nativeMetric("amloc");
+		final NativeMetric metric = analizoMetric("cbo");
 		configuration.getConfigurationFor(metric);
 		assertTrue(configuration.removeMetric(metric));
 		assertFalse(configuration.removeMetric(metric));
@@ -156,10 +156,10 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSortByName() {
-		assertSorted(newConfiguration("A"), newConfiguration("B"), newConfiguration("C"), configuration);
+		assertSorted(createConfiguration("A"), createConfiguration("B"), createConfiguration("C"), configuration);
 	}
 
-	private Configuration newConfiguration(String name) {
+	private Configuration createConfiguration(String name) {
 		Configuration newConfiguration = new Configuration();
 		newConfiguration.setName(name);
 		return newConfiguration;

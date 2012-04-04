@@ -1,8 +1,8 @@
 package org.kalibro.core.model;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.MetricResultFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 import static org.kalibro.core.model.enums.Granularity.*;
@@ -23,14 +23,14 @@ public class ModuleResultTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		result = helloWorldClassResult();
-		result.metricResults.remove(nativeMetric("sc"));
-		configuration = simpleConfiguration();
+		result = newHelloWorldClassResult();
+		result.metricResults.remove(analizoMetric("sc"));
+		configuration = newConfiguration("cbo", "lcom4");
 		configuration.addMetricConfiguration(createScConfiguration());
 	}
 
 	private MetricConfiguration createScConfiguration() {
-		sc = CompoundMetricFixtures.sc();
+		sc = sc();
 		MetricConfiguration scConfiguration = new MetricConfiguration(sc);
 		scConfiguration.addRange(new Range());
 		return scConfiguration;
@@ -51,7 +51,7 @@ public class ModuleResultTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConfigureNativeMetricResults() {
 		result.setConfiguration(configuration);
-		assertTrue(result.getResultFor(nativeMetric("amloc")).hasRange());
+		assertTrue(result.getResultFor(analizoMetric("cbo")).hasRange());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -64,7 +64,7 @@ public class ModuleResultTest extends KalibroTestCase {
 	public void checkGrade() {
 		configuration.removeMetric(sc);
 
-		NativeMetric cbo = nativeMetric("cbo");
+		NativeMetric cbo = analizoMetric("cbo");
 		MetricResult cboResult = result.getResultFor(cbo);
 		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
 
@@ -88,8 +88,8 @@ public class ModuleResultTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldComputeCompoundResult() {
 		result.setConfiguration(configuration);
-		Double cbo = result.getResultFor(nativeMetric("cbo")).getValue();
-		Double lcom4 = result.getResultFor(nativeMetric("lcom4")).getValue();
+		Double cbo = result.getResultFor(analizoMetric("cbo")).getValue();
+		Double lcom4 = result.getResultFor(analizoMetric("lcom4")).getValue();
 		assertDoubleEquals(cbo * lcom4, result.getResultFor(sc).getValue());
 	}
 
@@ -108,8 +108,8 @@ public class ModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddMultipleNativeMetricResults() {
-		result.addMetricResults(Arrays.asList(nativeMetricResult("sc", 42.0)));
-		assertTrue(result.hasResultFor(nativeMetric("sc")));
+		result.addMetricResults(Arrays.asList(analizoResult("sc")));
+		assertTrue(result.hasResultFor(analizoMetric("sc")));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

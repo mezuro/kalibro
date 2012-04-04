@@ -1,9 +1,8 @@
 package org.kalibro.core.processing;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.CompoundMetricFixtures.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
@@ -28,9 +27,7 @@ public class ScriptBuilderTest extends KalibroTestCase {
 	}
 
 	private Configuration createConfiguration() {
-		Configuration configuration = new Configuration();
-		configuration.addMetricConfiguration(configuration("cbo"));
-		configuration.addMetricConfiguration(configuration("lcom4"));
+		Configuration configuration = newConfiguration("cbo", "lcom4");
 		configuration.addMetricConfiguration(scConfiguration());
 		return configuration;
 	}
@@ -49,8 +46,8 @@ public class ScriptBuilderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldIncludeNativeMetricsFromModuleResult() {
-		assertTrue(scriptBuilder.shouldInclude(nativeMetric("amloc")));
-		assertTrue(scriptBuilder.shouldInclude(nativeMetric("loc")));
+		assertTrue(scriptBuilder.shouldInclude(analizoMetric("amloc")));
+		assertTrue(scriptBuilder.shouldInclude(analizoMetric("loc")));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -66,7 +63,7 @@ public class ScriptBuilderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotIncludeNativeMetricIfScopeIsNotCompatible() {
-		NativeMetric loc = nativeMetric("loc");
+		NativeMetric loc = newAnalizoMetric("loc");
 		assertTrue(scriptBuilder.shouldInclude(loc));
 
 		loc.setScope(APPLICATION);

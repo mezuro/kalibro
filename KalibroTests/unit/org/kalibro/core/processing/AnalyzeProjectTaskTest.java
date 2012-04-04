@@ -36,9 +36,9 @@ public class AnalyzeProjectTaskTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		projectResult = helloWorldResult();
+		projectResult = newHelloWorldResult();
 		projectResult.setSourceTree(null);
-		configuration = simpleConfiguration();
+		configuration = newConfiguration("cbo", "lcom4");
 		mockKalibro();
 		analyzeTask = new AnalyzeProjectTask(projectResult);
 		analyzeTask.executeAndWait();
@@ -65,7 +65,7 @@ public class AnalyzeProjectTaskTest extends KalibroTestCase {
 	public void shouldSetSourceTreeOnProjectResultAndModuleResultsOnTaskResult() {
 		Collection<ModuleResult> results = Whitebox.getInternalState(analyzeTask, "result");
 
-		assertDeepEquals(helloWorldTree(), projectResult.getSourceTree());
-		assertDeepEquals(helloWorldModuleResults(projectResult.getDate()), results);
+		assertDeepEquals(helloWorldRoot(), projectResult.getSourceTree());
+		assertDeepEquals(newHelloWorldResults(projectResult.getDate()), results);
 	}
 }

@@ -1,6 +1,7 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.Arrays;
 
@@ -18,7 +19,7 @@ public class BaseToolTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		analizo = new AnalizoStub().getBaseTool();
+		analizo = newAnalizoStub();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -26,7 +27,7 @@ public class BaseToolTest extends KalibroTestCase {
 		assertEquals("Analizo", analizo.getName());
 		assertEquals("", analizo.getDescription());
 		assertEquals(AnalizoStub.class, analizo.getCollectorClass());
-		assertEquals(AnalizoStub.nativeMetrics(), analizo.getSupportedMetrics());
+		assertEquals(analizoStub().getSupportedMetrics(), analizo.getSupportedMetrics());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

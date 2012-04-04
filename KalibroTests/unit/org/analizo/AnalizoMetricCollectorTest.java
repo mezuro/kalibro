@@ -1,16 +1,18 @@
 package org.analizo;
 
-import static org.analizo.AnalizoStub.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.NativeModuleResultFixtures.*;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.core.model.NativeMetric;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -19,14 +21,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(AnalizoMetricCollector.class)
 public class AnalizoMetricCollectorTest extends KalibroTestCase {
 
-	private AnalizoStub analizoStub;
 	private CommandTask executor;
 
 	private AnalizoMetricCollector analizo;
 
 	@Before
 	public void setUp() throws Exception {
-		analizoStub = new AnalizoStub();
 		executor = PowerMockito.mock(CommandTask.class);
 		mockOutput("analizo metrics --list", "Analizo-Output-MetricList.txt");
 		analizo = new AnalizoMetricCollector();
@@ -34,16 +34,16 @@ public class AnalizoMetricCollectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkBaseTool() {
-		BaseTool baseTool = analizo.getBaseTool();
-		baseTool.setCollectorClass(AnalizoStub.class);
-		assertDeepEquals(analizoStub.getBaseTool(), baseTool);
+		assertDeepEquals(analizo(), analizo.getBaseTool());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = new File("/");
+		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
 		mockOutput("analizo metrics /", "Analizo-Output-HelloWorld.txt");
-		assertDeepEquals(collectMetrics(), analizo.collectMetrics(codeDirectory, nativeMetrics()));
+		assertDeepEquals(analizo.collectMetrics(codeDirectory, metrics),
+			helloWorldApplicationResult(), helloWorldClassResult());
 	}
 
 	private void mockOutput(String command, String outputResource) throws Exception {

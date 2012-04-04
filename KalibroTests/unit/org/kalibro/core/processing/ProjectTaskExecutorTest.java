@@ -33,7 +33,7 @@ public class ProjectTaskExecutorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		project = helloWorld();
+		project = newHelloWorld();
 		project.setState(NEW);
 		projectTaskExecutor = new MyExecutor(project);
 	}

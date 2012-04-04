@@ -19,7 +19,7 @@ public class ProjectRecordTest extends DtoTestCase<Project, ProjectRecord> {
 	@Override
 	protected Collection<Project> entitiesForTestingConversion() {
 		Project normal = helloWorld();
-		Project withError = helloWorld();
+		Project withError = newHelloWorld();
 		withError.setError(new KalibroException("ProjectRecordTest", new Exception()));
 		return Arrays.asList(normal, withError);
 	}

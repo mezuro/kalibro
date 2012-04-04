@@ -1,6 +1,7 @@
 package org.kalibro.core.processing;
 
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 
 import javax.script.ScriptException;
 
@@ -9,7 +10,6 @@ import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.CompoundMetricFixtures;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 
@@ -20,7 +20,7 @@ public class ScriptValidatorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = simpleConfiguration();
+		configuration = newConfiguration("cbo", "lcom4");
 		validator = new ScriptValidator(configuration);
 	}
 
@@ -41,7 +41,7 @@ public class ScriptValidatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldValidateReferenceToValidIdentifiers() {
-		validate(CompoundMetricFixtures.sc().getScript());
+		validate(sc().getScript());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

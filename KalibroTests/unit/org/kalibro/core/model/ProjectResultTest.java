@@ -17,7 +17,7 @@ public class ProjectResultTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		date = new Date();
-		result = ProjectResultFixtures.helloWorldResult(date);
+		result = ProjectResultFixtures.newHelloWorldResult(date);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -26,7 +26,7 @@ public class ProjectResultTest extends KalibroTestCase {
 		assertSame(date, result.getDate());
 		assertEquals(0, result.getLoadTime().longValue());
 		assertEquals(0, result.getAnalysisTime().longValue());
-		assertDeepEquals(ModuleNodeFixtures.helloWorldTree(), result.getSourceTree());
+		assertDeepEquals(ModuleNodeFixtures.helloWorldRoot(), result.getSourceTree());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

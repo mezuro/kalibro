@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 
@@ -19,9 +19,9 @@ public class AbstractModuleResultTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		acc = nativeMetric("acc");
-		dit = nativeMetric("dit");
-		loc = nativeMetric("loc");
+		acc = analizoMetric("acc");
+		dit = analizoMetric("dit");
+		loc = analizoMetric("loc");
 		accResult = new NativeMetricResult(acc, 4.2);
 		locResult = new NativeMetricResult(loc, 42.0);
 		moduleResult = new MyModuleResult(helloWorldClass());

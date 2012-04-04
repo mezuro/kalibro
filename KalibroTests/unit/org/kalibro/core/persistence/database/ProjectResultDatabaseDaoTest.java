@@ -1,6 +1,7 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ProjectResultFixtures.*;
 
 import java.util.Date;
 
@@ -8,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.ProjectResultFixtures;
 import org.kalibro.core.persistence.database.entities.ProjectResultRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -32,7 +32,7 @@ public class ProjectResultDatabaseDaoTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		projectResult = ProjectResultFixtures.helloWorldResult();
+		projectResult = helloWorldResult();
 		projectName = projectResult.getProject().getName();
 		date = projectResult.getDate();
 		databaseManager = PowerMockito.mock(DatabaseManager.class);

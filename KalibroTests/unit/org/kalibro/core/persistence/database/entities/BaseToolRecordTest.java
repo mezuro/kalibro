@@ -1,11 +1,11 @@
 package org.kalibro.core.persistence.database.entities;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.analizo.AnalizoStub;
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.concurrent.Task;
@@ -21,7 +21,7 @@ public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 
 	@Override
 	protected Collection<BaseTool> entitiesForTestingConversion() {
-		return Arrays.asList(new AnalizoStub().getBaseTool());
+		return Arrays.asList(analizo(), analizoStub());
 	}
 
 	@Override
@@ -36,7 +36,7 @@ public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowErrorForCollectorClassNotFound() {
-		final BaseToolRecord dto = createDto(new AnalizoStub().getBaseTool());
+		final BaseToolRecord dto = createDto(analizoStub());
 		Whitebox.setInternalState(dto, "collectorClass", "inexistent");
 		checkKalibroError(new Task() {
 

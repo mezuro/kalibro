@@ -1,8 +1,8 @@
 package org.kalibro.core.model;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.RangeFixtures.*;
 import static org.kalibro.core.model.RangeLabel.*;
 
@@ -20,8 +20,8 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		metric = nativeMetric("amloc");
-		configuration = configuration("amloc");
+		metric = analizoMetric("amloc");
+		configuration = newMetricConfiguration("amloc");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -37,7 +37,7 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void configurationsWithDifferentCodeAndMetricShouldNotConflict() {
-		MetricConfiguration locConfiguration = configuration("loc");
+		MetricConfiguration locConfiguration = metricConfiguration("loc");
 		locConfiguration.assertNoConflictWith(configuration);
 		configuration.assertNoConflictWith(locConfiguration);
 	}
@@ -48,7 +48,7 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 			@Override
 			public void perform() {
-				MetricConfiguration configurationWithSameCode = new MetricConfiguration(nativeMetric("loc"));
+				MetricConfiguration configurationWithSameCode = new MetricConfiguration(analizoMetric("loc"));
 				configurationWithSameCode.setCode(configuration.getCode());
 				configurationWithSameCode.assertNoConflictWith(configuration);
 			}
@@ -80,12 +80,12 @@ public class MetricConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetRange() {
-		assertDeepEquals(amlocRange(EXCELLENT), configuration.getRangeFor(0.0));
-		assertDeepEquals(amlocRange(GOOD), configuration.getRangeFor(7.0));
-		assertDeepEquals(amlocRange(REGULAR), configuration.getRangeFor(10.0));
-		assertDeepEquals(amlocRange(WARNING), configuration.getRangeFor(13.0));
-		assertDeepEquals(amlocRange(BAD), configuration.getRangeFor(19.5));
-		assertDeepEquals(amlocRange(BAD), configuration.getRangeFor(Double.MAX_VALUE));
+		assertDeepEquals(newRange("amloc", EXCELLENT), configuration.getRangeFor(0.0));
+		assertDeepEquals(newRange("amloc", GOOD), configuration.getRangeFor(7.0));
+		assertDeepEquals(newRange("amloc", REGULAR), configuration.getRangeFor(10.0));
+		assertDeepEquals(newRange("amloc", WARNING), configuration.getRangeFor(13.0));
+		assertDeepEquals(newRange("amloc", BAD), configuration.getRangeFor(19.5));
+		assertDeepEquals(newRange("amloc", BAD), configuration.getRangeFor(Double.MAX_VALUE));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -153,14 +153,14 @@ public class MetricConfigurationTest extends KalibroTestCase {
 		assertEquals(5, configuration.getRanges().size());
 		assertTrue(configuration.hasRangeFor(Double.MAX_VALUE));
 
-		configuration.removeRange(amlocRange(BAD));
+		configuration.removeRange(newRange("amloc", BAD));
 		assertEquals(4, configuration.getRanges().size());
 		assertFalse(configuration.hasRangeFor(Double.MAX_VALUE));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldReturnIfRemovedRangeExisted() {
-		assertTrue(configuration.removeRange(amlocRange(BAD)));
+		assertTrue(configuration.removeRange(newRange("amloc", BAD)));
 		assertFalse(configuration.removeRange(new Range(-1.0, 0.0)));
 	}
 
@@ -170,6 +170,6 @@ public class MetricConfigurationTest extends KalibroTestCase {
 	}
 
 	private MetricConfiguration newConfiguration(String metricCode) {
-		return new MetricConfiguration(nativeMetric(metricCode));
+		return new MetricConfiguration(analizoMetric(metricCode));
 	}
 }

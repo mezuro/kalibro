@@ -29,7 +29,7 @@ public class ModuleResultCsvExporterTest extends KalibroTestCase {
 		PowerMockito.mockStatic(FileUtils.class);
 		file = PowerMockito.mock(File.class);
 		moduleResult = helloWorldClassResult();
-		moduleResult.setConfiguration(simpleConfiguration());
+		moduleResult.setConfiguration(newConfiguration("amloc", "cbo", "lcom4"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

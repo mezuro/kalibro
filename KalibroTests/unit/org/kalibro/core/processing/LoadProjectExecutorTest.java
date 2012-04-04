@@ -1,13 +1,13 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ProjectFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectFixtures;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.mockito.Mockito;
@@ -24,7 +24,7 @@ public class LoadProjectExecutorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		project = ProjectFixtures.helloWorld();
+		project = helloWorld();
 		executor = new LoadProjectExecutor(project);
 	}
 
