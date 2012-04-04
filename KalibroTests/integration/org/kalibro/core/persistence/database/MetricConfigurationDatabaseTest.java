@@ -38,6 +38,18 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
+	public void shouldReplaceMetricConfiguration() {
+		MetricConfiguration cboConfiguration = MetricConfigurationFixtures.configuration("cbo");
+		String configurationName = configuration.getName();
+		cboConfiguration.setWeight(42.0);
+		dao.save(cboConfiguration, configurationName);
+
+		String metricName = cboConfiguration.getMetric().getName();
+		MetricConfiguration retrieved = dao.getMetricConfiguration(configurationName, metricName);
+		assertDoubleEquals(42.0, retrieved.getWeight());
+	}
+
+	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRemoveConfigurationByName() {
 		final MetricConfiguration cboConfiguration = MetricConfigurationFixtures.configuration("cbo");
 		final String configurationName = configuration.getName();
