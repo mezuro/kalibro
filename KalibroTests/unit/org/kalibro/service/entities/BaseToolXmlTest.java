@@ -1,11 +1,11 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.analizo.AnalizoStub;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.BaseTool;
 
@@ -18,7 +18,7 @@ public class BaseToolXmlTest extends DtoTestCase<BaseTool, BaseToolXml> {
 
 	@Override
 	protected Collection<BaseTool> entitiesForTestingConversion() {
-		return Arrays.asList(new AnalizoStub().getBaseTool());
+		return Arrays.asList(analizo(), analizoStub());
 	}
 
 	@Override

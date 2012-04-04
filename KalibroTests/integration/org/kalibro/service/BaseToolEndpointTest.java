@@ -1,8 +1,9 @@
 package org.kalibro.service;
 
+import static org.kalibro.core.model.BaseToolFixtures.*;
+
 import java.net.MalformedURLException;
 
-import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.BaseTool;
@@ -16,7 +17,7 @@ public class BaseToolEndpointTest extends KalibroServiceTestCase {
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		analizo = new AnalizoStub().getBaseTool();
+		analizo = newAnalizoStub();
 		analizo.setCollectorClass(null);
 		BaseToolDao daoStub = new BaseToolDaoStub();
 		daoStub.save(analizo);

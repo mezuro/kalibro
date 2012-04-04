@@ -1,6 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.mockito.Matchers.*;
 
 import java.beans.PropertyVetoException;
@@ -15,7 +16,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
@@ -41,7 +41,7 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = ConfigurationFixtures.simpleConfiguration();
+		configuration = newConfiguration("loc");
 		mockPanel();
 		mockMetricConfigurationController();
 		frame = new ConfigurationFrame(configuration);

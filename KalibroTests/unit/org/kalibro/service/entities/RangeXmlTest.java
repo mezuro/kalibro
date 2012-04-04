@@ -1,6 +1,9 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.RangeLabel.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -9,10 +12,7 @@ import java.util.SortedSet;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.MetricConfigurationFixtures;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.model.RangeFixtures;
-import org.kalibro.core.model.RangeLabel;
 import org.powermock.reflect.Whitebox;
 
 public class RangeXmlTest extends DtoTestCase<Range, RangeXml> {
@@ -24,7 +24,7 @@ public class RangeXmlTest extends DtoTestCase<Range, RangeXml> {
 
 	@Override
 	protected Collection<Range> entitiesForTestingConversion() {
-		SortedSet<Range> ranges = MetricConfigurationFixtures.configuration("amloc").getRanges();
+		SortedSet<Range> ranges = metricConfiguration("amloc").getRanges();
 		return new ArrayList<Range>(ranges);
 	}
 
@@ -35,7 +35,7 @@ public class RangeXmlTest extends DtoTestCase<Range, RangeXml> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldTurnNullUnrequiredValuesToDefault() {
-		Range range = RangeFixtures.amlocRange(RangeLabel.GOOD);
+		Range range = newRange("amloc", GOOD);
 		RangeXml dto = createDto(range);
 		Whitebox.setInternalState(dto, "color", (Object) null);
 		Whitebox.setInternalState(dto, "comments", (Object) null);

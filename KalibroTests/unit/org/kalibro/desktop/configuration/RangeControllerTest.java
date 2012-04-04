@@ -1,6 +1,9 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.RangeLabel.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
@@ -8,7 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.model.*;
+import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.mockito.ArgumentCaptor;
@@ -30,7 +34,7 @@ public class RangeControllerTest extends KalibroTestCase {
 	@Before
 	public void setUp() throws Exception {
 		mockComponents();
-		configuration = MetricConfigurationFixtures.configuration("amloc");
+		configuration = metricConfiguration("amloc");
 		controller = new RangeController(configuration);
 	}
 
@@ -61,7 +65,7 @@ public class RangeControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowDialogWithRangeWhenEditing() {
-		Range range = RangeFixtures.amlocRange(RangeLabel.GOOD);
+		Range range = newRange("amloc", GOOD);
 		controller.editRange(range);
 		verifyDialogEdit(range);
 	}
@@ -82,7 +86,7 @@ public class RangeControllerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConfirmValidRangeEdition() {
-		Range oldRange = RangeFixtures.amlocRange(RangeLabel.EXCELLENT);
+		Range oldRange = newRange("amloc", EXCELLENT);
 		Range newRange = new Range(0.0, 5.0);
 		controller.editRange(oldRange);
 		assertTrue(controller.dialogConfirm(newRange));

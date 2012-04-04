@@ -1,13 +1,13 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
 
 import java.util.Arrays;
 
 import javax.swing.JList;
 import javax.swing.JTable;
 
-import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		analizo = new AnalizoStub().getBaseTool();
+		analizo = analizoStub();
 		mockKalibro();
 		panel = new ChooseNativeMetricPanel();
 		finder = new ComponentFinder(panel);
@@ -72,9 +72,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 		assertTrue(table.getData().isEmpty());
 
 		baseToolList().setSelectedIndex(0);
-		NativeMetric[] expected = analizo.getSupportedMetrics().toArray(new NativeMetric[0]);
-		NativeMetric[] actual = table.getData().toArray(new NativeMetric[0]);
-		assertArrayEquals(expected, actual);
+		assertDeepEquals(analizo.getSupportedMetrics(), table.getData());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

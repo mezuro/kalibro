@@ -1,13 +1,13 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.RangeLabel.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.model.RangeFixtures;
-import org.kalibro.core.model.RangeLabel;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ColorField;
 import org.kalibro.desktop.swingextension.field.DoubleField;
@@ -23,7 +23,7 @@ public class RangePanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		range = RangeFixtures.amlocRange(RangeLabel.BAD);
+		range = newRange("amloc", BAD);
 		panel = new RangePanel();
 		finder = new ComponentFinder(panel);
 	}

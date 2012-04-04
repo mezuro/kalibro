@@ -1,6 +1,8 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.RangeLabel.*;
 
 import java.awt.Color;
 
@@ -11,8 +13,6 @@ import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.model.RangeFixtures;
-import org.kalibro.core.model.RangeLabel;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
 import org.powermock.reflect.Whitebox;
@@ -44,10 +44,10 @@ public class ReflectionColumnTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkValue() {
-		Range greenRange = RangeFixtures.amlocRange(RangeLabel.EXCELLENT);
+		Range greenRange = newRange("amloc", EXCELLENT);
 		assertEquals(0, column.getValue(greenRange));
 
-		Range redRange = RangeFixtures.amlocRange(RangeLabel.BAD);
+		Range redRange = newRange("amloc", BAD);
 		assertEquals(255, column.getValue(redRange));
 	}
 

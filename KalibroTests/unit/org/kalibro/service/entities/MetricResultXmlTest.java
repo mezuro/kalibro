@@ -1,6 +1,8 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -8,7 +10,9 @@ import java.util.Set;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.*;
+import org.kalibro.core.model.CompoundMetric;
+import org.kalibro.core.model.MetricResult;
+import org.kalibro.core.model.ModuleResult;
 import org.powermock.reflect.Whitebox;
 
 public class MetricResultXmlTest extends DtoTestCase<MetricResult, MetricResultXml> {
@@ -20,8 +24,8 @@ public class MetricResultXmlTest extends DtoTestCase<MetricResult, MetricResultX
 
 	@Override
 	protected Collection<MetricResult> entitiesForTestingConversion() {
-		ModuleResult moduleResult = ModuleResultFixtures.helloWorldClassResult();
-		moduleResult.setConfiguration(ConfigurationFixtures.simpleConfiguration());
+		ModuleResult moduleResult = newHelloWorldClassResult();
+		moduleResult.setConfiguration(newConfiguration("loc"));
 		MetricResult compoundResult = new MetricResult(new CompoundMetric(), 42.0);
 		Set<MetricResult> results = new HashSet<MetricResult>(moduleResult.getMetricResults());
 		results.add(compoundResult);

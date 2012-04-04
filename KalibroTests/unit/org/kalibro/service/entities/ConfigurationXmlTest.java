@@ -17,7 +17,7 @@ public class ConfigurationXmlTest extends DtoTestCase<Configuration, Configurati
 
 	@Override
 	protected Collection<Configuration> entitiesForTestingConversion() {
-		return Arrays.asList(simpleConfiguration());
+		return Arrays.asList(newConfiguration("loc"));
 	}
 
 	@Override

@@ -60,11 +60,9 @@ public final class ModuleResultFixtures {
 
 	public static Map<Module, ModuleResult> analizoCheckstyleResultMap() {
 		Map<Module, ModuleResult> resultMap = new TreeMap<Module, ModuleResult>();
-		putResult(analizoCheckstyleTree(), resultMap);
 		putResult(analizoNode(), resultMap);
 		putResult(analizoMetricCollectorNode(), resultMap);
 		putResult(analizoOutputParserNode(), resultMap);
-		putResult(checkstyleNode(), resultMap);
 		putResult(checkstyleMetricCollectorNode(), resultMap);
 		putResult(checkstyleOutputParserNode(), resultMap);
 		return resultMap;

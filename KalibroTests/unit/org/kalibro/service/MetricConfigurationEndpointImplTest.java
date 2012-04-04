@@ -28,7 +28,7 @@ public class MetricConfigurationEndpointImplTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		mockDao();
-		configuration = configuration("cbo");
+		configuration = metricConfiguration("cbo");
 		endpoint = new MetricConfigurationEndpointImpl();
 	}
 

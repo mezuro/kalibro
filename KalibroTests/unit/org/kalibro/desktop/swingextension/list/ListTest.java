@@ -33,7 +33,7 @@ public class ListTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		ranges = configuration("amloc").getRanges();
+		ranges = metricConfiguration("amloc").getRanges();
 		list = new List<Range>("ranges", ranges, 5);
 		innerList = new ComponentFinder(list).find("ranges", JList.class);
 	}

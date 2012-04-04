@@ -19,7 +19,7 @@ public class ProjectXmlTest extends DtoTestCase<Project, ProjectXml> {
 	@Override
 	protected Collection<Project> entitiesForTestingConversion() {
 		Project normal = helloWorld();
-		Project withError = helloWorld();
+		Project withError = newHelloWorld();
 		withError.setError(new KalibroException("ProjectXmlTest", new Exception()));
 		return Arrays.asList(normal, withError);
 	}

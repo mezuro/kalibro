@@ -5,7 +5,6 @@ import static org.kalibro.core.model.enums.ProjectState.*;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.*;
 
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
@@ -62,7 +61,7 @@ public class ProjectStateTrackerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotNotifyIfStateDidNotChange() {
-		Project listenProject = helloWorld();
+		Project listenProject = newHelloWorld();
 		listenProject.setLicense("Changing license, not state.");
 		listenProject.setState(READY);
 		projectDao.save(listenProject);
@@ -94,7 +93,7 @@ public class ProjectStateTrackerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotifyIfListenProjectStateChanges() {
-		Project listenProject = helloWorld();
+		Project listenProject = newHelloWorld();
 		listenProject.setState(LOADING);
 		projectDao.save(listenProject);
 		tracker.perform();

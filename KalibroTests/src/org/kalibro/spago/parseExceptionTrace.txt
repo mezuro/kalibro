@@ -5,7 +5,7 @@ org.xml.sax.SAXParseException; lineNumber: 4; columnNumber: 3; The markup in the
 	at org.kalibro.spago.SpagoExtractor.extract(SpagoExtractor.java:59)
 	at org.kalibro.spago.SpagoExtractor.doExtract(SpagoExtractor.java:54)
 	at org.kalibro.spago.SpagoExtractor.extract(SpagoExtractor.java:35)
-	at org.kalibro.spago.SpagoExtractorTest.shouldProduceErrorItemOnException(SpagoExtractorTest.java:57)
+	at org.kalibro.spago.SpagoExtractorTest.shouldProduceErrorItemOnException(SpagoExtractorTest.java:61)
 	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
 	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:57)
 	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)

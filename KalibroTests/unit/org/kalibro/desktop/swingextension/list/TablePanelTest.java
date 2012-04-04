@@ -39,7 +39,7 @@ public class TablePanelTest extends KalibroTestCase {
 		TableModel<Range> model = new ReflectionTableModel<Range>(Range.class);
 		model.addColumn(new ReflectionColumn("label", 15));
 		table = new Table<Range>("ranges", model, 5);
-		table.setData(configuration("amloc").getRanges());
+		table.setData(metricConfiguration("amloc").getRanges());
 		table = PowerMockito.spy(table);
 	}
 

@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import org.kalibro.core.model.RangeFixtures;
-import org.kalibro.core.model.RangeLabel;
+import static org.kalibro.core.model.RangeLabel.*;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class RangePanelManualTest extends RangePanel {

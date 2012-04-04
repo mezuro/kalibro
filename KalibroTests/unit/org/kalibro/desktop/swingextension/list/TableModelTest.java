@@ -28,7 +28,7 @@ public class TableModelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		data = PowerMockito.spy(new ArrayList<Range>(configuration("amloc").getRanges()));
+		data = PowerMockito.spy(new ArrayList<Range>(metricConfiguration("amloc").getRanges()));
 		model = PowerMockito.spy(new MyModel());
 		model.setData(data);
 		model.addColumn(new Column("Label", String.class, 42));

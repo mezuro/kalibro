@@ -29,7 +29,7 @@ public class MetricConfigurationPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = configuration("amloc");
+		configuration = metricConfiguration("amloc");
 		rangesListener = PowerMockito.mock(TablePanelListener.class);
 		panel = new MetricConfigurationPanel();
 		panel.addRangesListener(rangesListener);

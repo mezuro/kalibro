@@ -26,7 +26,7 @@ public class ConfigurationPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = simpleConfiguration();
+		configuration = newConfiguration("loc");
 		panel = new ConfigurationPanel();
 		finder = new ComponentFinder(panel);
 	}

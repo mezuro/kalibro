@@ -2,6 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.RangeLabel.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,7 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.model.RangeLabel;
 import org.kalibro.core.persistence.database.entities.RangeRecord;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -42,7 +42,7 @@ public class DatabaseDaoTest extends KalibroTestCase {
 	public void testGetByName() {
 		String queryText = "SELECT x FROM \"Range\" x WHERE x.name = :name";
 		Query<RangeRecord> query = PowerMockito.mock(Query.class);
-		Range range = newRange("amloc", RangeLabel.BAD);
+		Range range = newRange("amloc", BAD);
 		String noResultMessage = "There is no range named '42'";
 		PowerMockito.when(databaseManager.createQuery(queryText, RangeRecord.class)).thenReturn(query);
 		PowerMockito.when(query.getSingleResult(noResultMessage)).thenReturn(new RangeRecord(range, null));

@@ -20,7 +20,7 @@ public class ModuleNodeXmlTest extends DtoTestCase<ModuleNode, ModuleNodeXml> {
 
 	@Override
 	protected Collection<ModuleNode> entitiesForTestingConversion() {
-		return Arrays.asList(helloWorldTree(), junitAnalizoTree());
+		return Arrays.asList(helloWorldRoot(), analizoCheckstyleTree());
 	}
 
 	@Override
@@ -30,7 +30,7 @@ public class ModuleNodeXmlTest extends DtoTestCase<ModuleNode, ModuleNodeXml> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldTurnNullChildrenIntoEmpty() {
-		ModuleNode node = helloWorldNode();
+		ModuleNode node = helloWorldLeaf();
 		ModuleNodeXml dto = createDto(node);
 		Whitebox.setInternalState(dto, "children", (Object) null);
 		assertTrue(dto.convert().getChildren().isEmpty());

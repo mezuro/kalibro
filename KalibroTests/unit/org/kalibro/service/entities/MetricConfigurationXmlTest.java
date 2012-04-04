@@ -1,15 +1,14 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.CompoundMetricFixtures;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.enums.Statistic;
 import org.powermock.reflect.Whitebox;
@@ -23,10 +22,7 @@ public class MetricConfigurationXmlTest extends DtoTestCase<MetricConfiguration,
 
 	@Override
 	protected Collection<MetricConfiguration> entitiesForTestingConversion() {
-		Collection<MetricConfiguration> configurations = simpleConfiguration().getMetricConfigurations();
-		ArrayList<MetricConfiguration> entities = new ArrayList<MetricConfiguration>(configurations);
-		entities.add(new MetricConfiguration(CompoundMetricFixtures.sc()));
-		return entities;
+		return Arrays.asList(metricConfiguration("loc"), new MetricConfiguration(sc()));
 	}
 
 	@Override
@@ -36,7 +32,7 @@ public class MetricConfigurationXmlTest extends DtoTestCase<MetricConfiguration,
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldTurnNullUnrequiredFieldsToDefault() {
-		MetricConfiguration configuration = configuration("dit");
+		MetricConfiguration configuration = metricConfiguration("loc");
 		MetricConfigurationXml dto = createDto(configuration);
 		Whitebox.setInternalState(dto, "weight", (Object) null);
 		Whitebox.setInternalState(dto, "aggregationForm", (Object) null);

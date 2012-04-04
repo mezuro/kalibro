@@ -1,13 +1,13 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.model.MetricConfigurationFixtures;
 import org.kalibro.core.model.Range;
 
 public class RangeFieldRendererTest extends KalibroTestCase {
@@ -17,7 +17,7 @@ public class RangeFieldRendererTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		ranges = MetricConfigurationFixtures.configuration("amloc").getRanges();
+		ranges = metricConfiguration("amloc").getRanges();
 		renderer = new RangeFieldRenderer();
 	}
 

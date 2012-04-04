@@ -33,13 +33,13 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkAggregationOnOrg() {
-		ModuleResult org = resultMap.get(analizoCheckstyleTree().getModule());
-		checkResult(org, packageMetric, 3.0);
-		assertFalse(org.hasResultFor(classMetric));
-
+		Module org = analizoCheckstyleTree().getModule();
+		assertFalse(resultMap.containsKey(org));
 		aggregator.aggregate();
-		checkResult(org, packageMetric, 3.0, 7.0, 10.0);
-		checkResult(org, classMetric, Double.NaN, 22.0, 19.0, 25.0, 22.0);
+
+		ModuleResult orgResult = resultMap.get(org);
+		checkResult(orgResult, packageMetric, Double.NaN, 7.0, Double.NaN);
+		checkResult(orgResult, classMetric, Double.NaN, 22.0, 19.0, 25.0, 22.0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

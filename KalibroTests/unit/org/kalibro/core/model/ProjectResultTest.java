@@ -1,7 +1,9 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ModuleNodeFixtures.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.*;
 
 import java.util.Date;
 
@@ -17,7 +19,7 @@ public class ProjectResultTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		date = new Date();
-		result = ProjectResultFixtures.newHelloWorldResult(date);
+		result = newHelloWorldResult(date);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -26,7 +28,7 @@ public class ProjectResultTest extends KalibroTestCase {
 		assertSame(date, result.getDate());
 		assertEquals(0, result.getLoadTime().longValue());
 		assertEquals(0, result.getAnalysisTime().longValue());
-		assertDeepEquals(ModuleNodeFixtures.helloWorldRoot(), result.getSourceTree());
+		assertDeepEquals(helloWorldRoot(), result.getSourceTree());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

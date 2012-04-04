@@ -21,7 +21,7 @@ public class ReflectionTableModelTest extends KalibroTestCase {
 		model.addColumn(new ReflectionColumn("beginning", 0));
 		model.addColumn(new ReflectionColumn("label", 0));
 		model.addColumn(new ReflectionColumn("color", 0));
-		model.setData(configuration("amloc").getRanges());
+		model.setData(metricConfiguration("amloc").getRanges());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

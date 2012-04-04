@@ -1,6 +1,8 @@
 package org.kalibro.spago;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.MetricResultFixtures.*;
+import static org.kalibro.core.model.ModuleResultFixtures.*;
 import static org.mockito.Matchers.*;
 import it.eng.spago4q.extractors.bo.GenericItemInterface;
 
@@ -15,7 +17,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.command.StringOutputStream;
-import org.kalibro.core.model.*;
+import org.kalibro.core.model.MetricResult;
+import org.kalibro.core.model.ModuleResult;
+import org.kalibro.core.model.Project;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -46,7 +50,7 @@ public class SpagoExtractorTest extends KalibroTestCase {
 	@Before
 	public void setUp() throws Exception {
 		client = PowerMockito.mock(KalibroClientForSpago.class);
-		result = ModuleResultFixtures.helloWorldApplicationResult();
+		result = newHelloWorldApplicationResult();
 		PowerMockito.whenNew(KalibroClientForSpago.class).withArguments(anyString()).thenReturn(client);
 		PowerMockito.when(client.getLastApplicationResult(anyString())).thenReturn(result);
 	}
@@ -108,7 +112,7 @@ public class SpagoExtractorTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetAverageForNonApplicationResults() throws IOException {
 		result.getMetricResults().clear();
-		result.addMetricResult(MetricResultFixtures.metricResult("loc", Double.NaN, 1.0, 2.0, 3.0));
+		result.addMetricResult(newMetricResult("loc", Double.NaN, 1.0, 2.0, 3.0));
 		PowerMockito.when(client.hasResultsFor(anyString())).thenReturn(true);
 
 		extractor = new SpagoExtractorStub("HelloWorld.xml");

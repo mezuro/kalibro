@@ -1,12 +1,10 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
@@ -35,7 +33,7 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 
 	@Override
 	protected Collection<ModuleResult> entitiesForTestingConversion() {
-		ModuleResult resultWithError = new ModuleResult(helloWorldClass(), new Date());
+		ModuleResult resultWithError = newHelloWorldClassResult();
 		resultWithError.addCompoundMetricWithError(new CompoundMetric(), new Exception());
 		return Arrays.asList(helloWorldApplicationResult(), helloWorldClassResult(), resultWithError);
 	}

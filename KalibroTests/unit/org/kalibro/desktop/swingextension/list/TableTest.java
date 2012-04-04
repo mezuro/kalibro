@@ -36,7 +36,7 @@ public class TableTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		data = new ArrayList<Range>(configuration("amloc").getRanges());
+		data = new ArrayList<Range>(metricConfiguration("amloc").getRanges());
 		createModel();
 		table = new Table<Range>("ranges", model, 5);
 		table.setData(data);

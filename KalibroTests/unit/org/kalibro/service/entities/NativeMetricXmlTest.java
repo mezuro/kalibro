@@ -1,7 +1,8 @@
 package org.kalibro.service.entities;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 
 import java.util.Collection;
 
@@ -19,7 +20,7 @@ public class NativeMetricXmlTest extends DtoTestCase<NativeMetric, NativeMetricX
 
 	@Override
 	protected Collection<NativeMetric> entitiesForTestingConversion() {
-		return nativeMetrics();
+		return analizoStub().getSupportedMetrics();
 	}
 
 	@Override
@@ -29,7 +30,7 @@ public class NativeMetricXmlTest extends DtoTestCase<NativeMetric, NativeMetricX
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldTurnNullDescriptionAndLanguagesToEmpty() {
-		NativeMetric metric = nativeMetric("dit");
+		NativeMetric metric = analizoMetric("dit");
 		NativeMetricXml dto = createDto(metric);
 		Whitebox.setInternalState(dto, "description", (Object) null);
 		Whitebox.setInternalState(dto, "languages", (Object) null);

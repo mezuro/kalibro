@@ -30,7 +30,7 @@ public class ModuleResultTest extends KalibroTestCase {
 	}
 
 	private MetricConfiguration createScConfiguration() {
-		sc = sc();
+		sc = newSc();
 		MetricConfiguration scConfiguration = new MetricConfiguration(sc);
 		scConfiguration.addRange(new Range());
 		return scConfiguration;
