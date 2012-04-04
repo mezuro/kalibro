@@ -59,6 +59,6 @@ public final class ModuleNodeFixtures {
 	}
 
 	private ModuleNodeFixtures() {
-		// Utility class
+		return;
 	}
 }

@@ -22,6 +22,6 @@ final class PersonFixtures {
 	}
 
 	private PersonFixtures() {
-		// Utility class
+		return;
 	}
 }

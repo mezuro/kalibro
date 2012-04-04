@@ -26,6 +26,6 @@ public final class ConfigurationFixtures {
 	}
 
 	private ConfigurationFixtures() {
-		// Utility class
+		return;
 	}
 }

@@ -12,6 +12,6 @@ public final class RangeControllerManualTest {
 	}
 
 	private RangeControllerManualTest() {
-		// Utility class
+		return;
 	}
 }

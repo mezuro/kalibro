@@ -4,10 +4,7 @@ import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.*;
@@ -21,6 +18,27 @@ public class AnalizoStub implements MetricCollector {
 
 	private static Map<String, Double> resultsMap =
 		new Yaml().loadAs(AnalizoStub.class.getResourceAsStream("hello_world_results.yml"), Map.class);
+
+	private static BaseTool baseTool;
+	private static SortedSet<NativeModuleResult> nativeResults;
+
+	public static BaseTool baseTool() {
+		if (baseTool == null) {
+			baseTool = new BaseTool("Analizo");
+			baseTool.setCollectorClass(AnalizoStub.class);
+			baseTool.setSupportedMetrics(nativeMetrics());
+		}
+		return baseTool;
+	}
+
+	public static Set<NativeModuleResult> nativeResults() {
+		if (nativeResults == null) {
+			nativeResults = new TreeSet<NativeModuleResult>();
+			nativeResults.add(applicationResult());
+			nativeResults.add(classResult());
+		}
+		return nativeResults;
+	}
 
 	public static Set<NativeModuleResult> collectMetrics() {
 		return new HashSet<NativeModuleResult>(Arrays.asList(applicationResult(), classResult()));

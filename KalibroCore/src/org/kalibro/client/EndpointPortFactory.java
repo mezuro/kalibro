@@ -31,6 +31,6 @@ public final class EndpointPortFactory {
 	}
 
 	private EndpointPortFactory() {
-		// Utility class
+		return;
 	}
 }

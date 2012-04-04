@@ -10,6 +10,6 @@ public final class CompoundMetricFixtures {
 	}
 
 	private CompoundMetricFixtures() {
-		// Utility class
+		return;
 	}
 }

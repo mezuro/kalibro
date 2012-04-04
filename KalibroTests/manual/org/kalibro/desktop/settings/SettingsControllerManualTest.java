@@ -7,6 +7,6 @@ public final class SettingsControllerManualTest {
 	}
 
 	private SettingsControllerManualTest() {
-		// Utility class
+		return;
 	}
 }

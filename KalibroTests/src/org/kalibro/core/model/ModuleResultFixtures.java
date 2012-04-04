@@ -76,6 +76,6 @@ public final class ModuleResultFixtures {
 	}
 
 	private ModuleResultFixtures() {
-		// Utility class
+		return;
 	}
 }

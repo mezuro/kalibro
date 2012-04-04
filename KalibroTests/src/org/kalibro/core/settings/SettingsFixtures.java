@@ -38,6 +38,6 @@ public final class SettingsFixtures {
 	}
 
 	private SettingsFixtures() {
-		// Utility class
+		return;
 	}
 }

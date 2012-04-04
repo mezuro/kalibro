@@ -15,6 +15,6 @@ final class ProgrammerFixtures {
 	}
 
 	private ProgrammerFixtures() {
-		// Utility class
+		return;
 	}
 }

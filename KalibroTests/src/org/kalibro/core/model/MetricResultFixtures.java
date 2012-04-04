@@ -17,6 +17,6 @@ public final class MetricResultFixtures {
 	}
 
 	private MetricResultFixtures() {
-		// Utility class
+		return;
 	}
 }

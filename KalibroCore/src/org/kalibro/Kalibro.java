@@ -103,6 +103,6 @@ public final class Kalibro {
 	}
 
 	private Kalibro() {
-		// Utility class
+		return;
 	}
 }

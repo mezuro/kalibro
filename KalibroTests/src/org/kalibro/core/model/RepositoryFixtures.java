@@ -35,6 +35,6 @@ public final class RepositoryFixtures {
 	}
 
 	private RepositoryFixtures() {
-		// Utility class
+		return;
 	}
 }

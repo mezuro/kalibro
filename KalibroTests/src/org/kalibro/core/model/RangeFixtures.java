@@ -25,6 +25,6 @@ public final class RangeFixtures {
 	}
 
 	private RangeFixtures() {
-		// Utility class
+		return;
 	}
 }

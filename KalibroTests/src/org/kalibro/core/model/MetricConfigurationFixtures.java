@@ -45,6 +45,6 @@ public final class MetricConfigurationFixtures {
 	}
 
 	private MetricConfigurationFixtures() {
-		// Utility class
+		return;
 	}
 }

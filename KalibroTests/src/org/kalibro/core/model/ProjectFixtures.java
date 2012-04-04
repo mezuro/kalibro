@@ -18,6 +18,6 @@ public final class ProjectFixtures {
 	}
 
 	private ProjectFixtures() {
-		// Utility class
+		return;
 	}
 }

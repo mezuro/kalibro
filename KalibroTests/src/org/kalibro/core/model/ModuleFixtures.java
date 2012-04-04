@@ -13,6 +13,6 @@ public final class ModuleFixtures {
 	}
 
 	private ModuleFixtures() {
-		// Utility class
+		return;
 	}
 }

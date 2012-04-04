@@ -21,6 +21,6 @@ public final class Directories {
 	}
 
 	private Directories() {
-		// Utility class
+		return;
 	}
 }

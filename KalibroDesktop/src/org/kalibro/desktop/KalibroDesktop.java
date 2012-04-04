@@ -13,6 +13,6 @@ public final class KalibroDesktop {
 	}
 
 	private KalibroDesktop() {
-		// Utility class
+		return;
 	}
 }
