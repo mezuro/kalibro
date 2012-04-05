@@ -5,9 +5,7 @@ import static org.mockito.Mockito.*;
 
 import java.util.Arrays;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,6 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(DatabaseManager.class)
 public class DatabaseManagerTest extends KalibroTestCase {
 
+	private Cache cache;
 	private EntityManager entityManager;
 	private EntityTransaction transaction;
 
@@ -34,6 +33,14 @@ public class DatabaseManagerTest extends KalibroTestCase {
 		connectionManager = new DatabaseManager(entityManager);
 		PowerMockito.when(entityManager.getTransaction()).thenReturn(transaction);
 		PowerMockito.when(entityManager.merge("unmerged")).thenReturn("merged");
+		mockCache();
+	}
+
+	private void mockCache() {
+		cache = PowerMockito.mock(Cache.class);
+		EntityManagerFactory entityManagerFactory = PowerMockito.mock(EntityManagerFactory.class);
+		PowerMockito.when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
+		PowerMockito.when(entityManagerFactory.getCache()).thenReturn(cache);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -56,6 +63,7 @@ public class DatabaseManagerTest extends KalibroTestCase {
 	public void shouldMergeBeforePersist() {
 		connectionManager.persist("unmerged");
 		verify(entityManager).persist("merged");
+		verify(cache).evictAll();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -14,7 +14,7 @@ import org.kalibro.core.util.DataTransferObject;
 @PrimaryKey(columns = {@Column(name = "configurationName"), @Column(name = "metricName")})
 public class MetricConfigurationRecord implements DataTransferObject<MetricConfiguration> {
 
-	@ManyToOne(cascade = CascadeType.MERGE, optional = false)
+	@ManyToOne(optional = false)
 	@JoinColumn(name = "configurationName", nullable = false, referencedColumnName = "name")
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ConfigurationRecord configuration;
