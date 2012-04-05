@@ -35,10 +35,10 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 	public void checkAggregationOnOrg() {
 		Module org = analizoCheckstyleTree().getModule();
 		assertFalse(resultMap.containsKey(org));
-		aggregator.aggregate();
 
+		aggregator.aggregate();
 		ModuleResult orgResult = resultMap.get(org);
-		checkResult(orgResult, packageMetric, Double.NaN, 7.0, Double.NaN);
+		checkResult(orgResult, packageMetric, Double.NaN, 7.0);
 		checkResult(orgResult, classMetric, Double.NaN, 22.0, 19.0, 25.0, 22.0);
 	}
 
@@ -55,13 +55,13 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkAggregationOnCheckstyle() {
-		ModuleResult checkstyle = resultMap.get(checkstyleNode().getModule());
-		checkResult(checkstyle, packageMetric, 10.0);
-		assertFalse(checkstyle.hasResultFor(classMetric));
+		Module checkstyle = checkstyleNode().getModule();
+		assertFalse(resultMap.containsKey(checkstyle));
 
 		aggregator.aggregate();
-		checkResult(checkstyle, packageMetric, 10.0);
-		checkResult(checkstyle, classMetric, Double.NaN, 25.0, 22.0);
+		ModuleResult checkstyleResult = resultMap.get(checkstyle);
+		assertFalse(checkstyleResult.hasResultFor(packageMetric));
+		checkResult(checkstyleResult, classMetric, Double.NaN, 25.0, 22.0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

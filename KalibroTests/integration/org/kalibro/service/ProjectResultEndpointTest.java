@@ -25,9 +25,9 @@ public class ProjectResultEndpointTest extends KalibroServiceTestCase {
 	@Before
 	public void setUp() throws MalformedURLException {
 		daoStub = new ProjectResultDaoStub();
-		daoStub.save(helloWorldResult(DATE_1));
-		daoStub.save(helloWorldResult(DATE_2));
-		daoStub.save(helloWorldResult(DATE_3));
+		daoStub.save(newHelloWorldResult(DATE_1));
+		daoStub.save(newHelloWorldResult(DATE_2));
+		daoStub.save(newHelloWorldResult(DATE_3));
 		port = publishAndGetPort(new ProjectResultEndpointImpl(daoStub), ProjectResultEndpoint.class);
 	}
 

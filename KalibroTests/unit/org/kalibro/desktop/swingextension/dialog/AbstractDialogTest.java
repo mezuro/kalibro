@@ -12,19 +12,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.desktop.swingextension.icon.Icon;
+import org.powermock.reflect.Whitebox;
 
 public class AbstractDialogTest extends KalibroTestCase {
 
 	private static final String TITLE = "AbstractDialogTest";
 	private static final JPanel PANEL = new JPanel();
 
-	private DialogStub dialog;
-	private boolean createdComponents;
+	private DialogMock dialog;
+	private boolean createdComponents, showed;
 
 	@Before
 	public void setUp() {
 		createdComponents = false;
-		dialog = new DialogStub();
+		showed = false;
+		dialog = new DialogMock();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -63,9 +65,24 @@ public class AbstractDialogTest extends KalibroTestCase {
 		assertEquals(dialog.getMinimumSize(), dialog.getSize());
 	}
 
-	class DialogStub extends AbstractDialog {
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSetVisibleWhenNotTesting() {
+		assertFalse(showed);
+		dialog.setVisible(true);
+		assertTrue(showed);
+	}
 
-		public DialogStub() {
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotSetVisibleWhenTesting() {
+		Whitebox.setInternalState(AbstractDialog.class, "suppressShow", true);
+		dialog.setVisible(true);
+		assertFalse(showed);
+		assertFalse(Whitebox.getInternalState(AbstractDialog.class, boolean.class));
+	}
+
+	class DialogMock extends AbstractDialog {
+
+		public DialogMock() {
 			super(TITLE);
 		}
 
@@ -77,6 +94,18 @@ public class AbstractDialogTest extends KalibroTestCase {
 		@Override
 		protected Container buildPanel() {
 			return PANEL;
+		}
+
+		/**
+		 * Overriding to mock show.
+		 * 
+		 * @deprecated Ble
+		 */
+		@Override
+		@Deprecated
+		@SuppressWarnings("deprecation")
+		public void show() {
+			showed = true;
 		}
 	}
 }

@@ -1,6 +1,8 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,9 +14,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ModuleResultFixtures;
 
 public class CsvExportTest extends KalibroTestCase {
 
@@ -25,8 +25,8 @@ public class CsvExportTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		assertFalse(CSV_FILE.exists());
-		moduleResult = ModuleResultFixtures.helloWorldClassResult();
-		moduleResult.setConfiguration(ConfigurationFixtures.simpleConfiguration());
+		moduleResult = newHelloWorldClassResult();
+		moduleResult.setConfiguration(newConfiguration("amloc", "cbo", "lcom4"));
 	}
 
 	@After

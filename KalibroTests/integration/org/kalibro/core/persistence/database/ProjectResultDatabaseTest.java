@@ -25,17 +25,11 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 	@Before
 	public void setUp() {
 		project = helloWorld();
-		first = createResult(1);
-		second = createResult(2);
-		third = createResult(3);
+		first = newHelloWorldResult(new Date(1));
+		second = newHelloWorldResult(new Date(2));
+		third = newHelloWorldResult(new Date(3));
 		dao = daoFactory.getProjectResultDao();
 		daoFactory.getProjectDao().save(project);
-	}
-
-	private ProjectResult createResult(long date) {
-		ProjectResult result = helloWorldResult();
-		result.setDate(new Date(date));
-		return result;
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

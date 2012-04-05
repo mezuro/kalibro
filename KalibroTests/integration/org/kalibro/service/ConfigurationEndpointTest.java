@@ -1,8 +1,8 @@
 package org.kalibro.service;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 
 import java.net.MalformedURLException;
 
@@ -22,7 +22,7 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		sample = simpleConfiguration();
+		sample = newConfiguration();
 		ConfigurationDaoStub daoStub = new ConfigurationDaoStub();
 		daoStub.save(sample);
 		port = publishAndGetPort(new ConfigurationEndpointImpl(daoStub), ConfigurationEndpoint.class);
@@ -46,18 +46,18 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveConfiguration() {
-		testSaveConfiguration(simpleConfiguration());
+		testSaveConfiguration(newConfiguration("loc"));
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveEmptyConfiguration() {
-		testSaveConfiguration(new Configuration());
+		testSaveConfiguration(newConfiguration());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveConfigurationWithoutRanges() {
-		Configuration newConfiguration = new Configuration();
-		newConfiguration.addMetricConfiguration(new MetricConfiguration(nativeMetric("loc")));
+		Configuration newConfiguration = newConfiguration();
+		newConfiguration.addMetricConfiguration(new MetricConfiguration(analizoMetric("loc")));
 		testSaveConfiguration(newConfiguration);
 	}
 

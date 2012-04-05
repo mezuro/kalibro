@@ -77,7 +77,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public MetricConfiguration getConfigurationFor(Metric metric) {
 		if (!contains(metric))
-			throw new KalibroException("No configuration found for metric '" + metric + "'");
+			throw new KalibroException("No configuration found for metric: " + metric);
 		return metricConfigurations.get(metric);
 	}
 

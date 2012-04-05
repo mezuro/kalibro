@@ -1,8 +1,8 @@
 package org.kalibro.core.persistence.database;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 
@@ -27,7 +27,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 	public void setUp() {
 		date = new Date();
 		project = helloWorld();
-		result = helloWorldClassResult(date);
+		result = newHelloWorldClassResult(date);
 		result.setConfiguration(kalibroConfiguration());
 		dao = daoFactory.getModuleResultDao();
 		daoFactory.getProjectDao().save(project);
@@ -59,7 +59,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		save();
 
 		MetricConfiguration badCompoundMetric = newCompoundMetric("bad", "return cbo > 0 ? 1.0 : null;");
-		Configuration configuration = simpleConfiguration();
+		Configuration configuration = newConfiguration("cbo");
 		configuration.addMetricConfiguration(badCompoundMetric);
 		daoFactory.getConfigurationDao().save(configuration);
 
@@ -84,7 +84,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testResultHistory() {
-		Metric loc = nativeMetric("loc");
+		Metric loc = analizoMetric("loc");
 		result.getResultFor(loc).addDescendentResult(1.0);
 		save();
 

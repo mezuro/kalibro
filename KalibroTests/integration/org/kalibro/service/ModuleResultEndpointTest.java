@@ -28,15 +28,15 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 	@Before
 	public void setUp() throws MalformedURLException {
 		daoStub = new ModuleResultDaoStub();
-		configureAndAddModuleResult(helloWorldApplicationResult(DATE_1));
-		configureAndAddModuleResult(helloWorldApplicationResult(DATE_2));
-		configureAndAddModuleResult(helloWorldClassResult(DATE_1));
-		configureAndAddModuleResult(helloWorldClassResult(DATE_2));
+		configureAndAddModuleResult(newHelloWorldApplicationResult(DATE_1));
+		configureAndAddModuleResult(newHelloWorldApplicationResult(DATE_2));
+		configureAndAddModuleResult(newHelloWorldClassResult(DATE_1));
+		configureAndAddModuleResult(newHelloWorldClassResult(DATE_2));
 		port = publishAndGetPort(new ModuleResultEndpointImpl(daoStub), ModuleResultEndpoint.class);
 	}
 
 	private void configureAndAddModuleResult(ModuleResult moduleResult) {
-		moduleResult.setConfiguration(simpleConfiguration());
+		moduleResult.setConfiguration(newConfiguration("cbo", "lcom4"));
 		daoStub.save(moduleResult, PROJECT_NAME);
 	}
 

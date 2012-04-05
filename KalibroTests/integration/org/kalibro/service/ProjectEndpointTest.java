@@ -19,7 +19,7 @@ public class ProjectEndpointTest extends KalibroServiceTestCase {
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		sample = helloWorld();
+		sample = newHelloWorld();
 		sample.setError(new KalibroException("ProjectEndpointTest", new Exception()));
 		ProjectDaoStub daoStub = new ProjectDaoStub();
 		daoStub.save(sample);
@@ -44,7 +44,7 @@ public class ProjectEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveProject() {
-		Project newProject = helloWorld();
+		Project newProject = newHelloWorld();
 		newProject.setName("ProjectEndpointTest project");
 		port.saveProject(new RawProjectXml(newProject));
 		assertDeepEquals(port.getProjectNames(), sample.getName(), newProject.getName());

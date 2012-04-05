@@ -1,11 +1,13 @@
 package org.analizo;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.NativeModuleResultFixtures.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
@@ -15,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.command.FileProcessStreamLogger;
+import org.kalibro.core.model.NativeMetric;
 import org.powermock.api.support.membermodification.MemberModifier;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -48,13 +51,15 @@ public class AnalizoTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
-	public void checkSupportedMetrics() {
-		assertDeepEquals(nativeMetrics(), analizo.getBaseTool().getSupportedMetrics());
+	public void checkBaseTool() {
+		assertDeepEquals(analizo(), analizo.getBaseTool());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldCollectMetrics() throws IOException {
 		File codeDirectory = new File(SAMPLES_DIRECTORY, "analizo");
-		assertDeepEquals(collectMetrics(), analizo.collectMetrics(codeDirectory, nativeMetrics()));
+		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
+		assertDeepEquals(analizo.collectMetrics(codeDirectory, metrics),
+			helloWorldApplicationResult(), helloWorldClassResult());
 	}
 }

@@ -74,7 +74,7 @@ public class ConfigurationTest extends KalibroTestCase {
 			public void perform() {
 				configuration.getConfigurationFor(metric);
 			}
-		}, "No configuration found for metric '" + metric + "'");
+		}, "No configuration found for metric: " + metric);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -104,7 +104,7 @@ public class ConfigurationTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				configuration.replaceMetricConfiguration(analizoMetric("noa"), metricConfiguration("noa"));
 			}
-		}, "No configuration found for metric 'Number of Attributes'");
+		}, "No configuration found for metric: Number of Attributes");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -134,7 +134,7 @@ public class ConfigurationTest extends KalibroTestCase {
 			public void perform() {
 				configuration.getConfigurationFor(metric);
 			}
-		}, "No configuration found for metric '" + metric + "'");
+		}, "No configuration found for metric: " + metric);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

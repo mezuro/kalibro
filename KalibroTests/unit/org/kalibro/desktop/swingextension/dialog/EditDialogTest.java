@@ -10,12 +10,12 @@ import org.kalibro.KalibroTestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.field.PalindromeField;
-import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
@@ -47,14 +47,10 @@ public class EditDialogTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetAndShowOnEdit() {
-		editPanel = PowerMockito.spy(editPanel);
-		editDialog = PowerMockito.spy(new EditDialog<String>("", editPanel));
-		PowerMockito.doNothing().when(editDialog).setVisible(true);
-
-		editDialog.edit("My string");
-		InOrder order = Mockito.inOrder(editPanel, editDialog);
-		order.verify(editPanel).set("My string");
-		order.verify(editDialog).setVisible(true);
+		Whitebox.setInternalState(AbstractDialog.class, "suppressShow", true);
+		editDialog.edit("12321");
+		assertEquals("12321", editPanel.get());
+		assertFalse(Whitebox.getInternalState(AbstractDialog.class, boolean.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

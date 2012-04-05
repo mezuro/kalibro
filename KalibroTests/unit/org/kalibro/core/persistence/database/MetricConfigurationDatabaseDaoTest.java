@@ -1,5 +1,6 @@
 package org.kalibro.core.persistence.database;
 
+import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
@@ -9,9 +10,8 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
+import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.persistence.database.entities.MetricConfigurationRecord;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	private Configuration configuration;
-	private MetricConfiguration cboConfiguration, ditConfiguration;
+	private MetricConfiguration cboConfiguration, locConfiguration;
 
 	private DatabaseManager databaseManager;
 	private ConfigurationDatabaseDao configurationDao;
@@ -33,7 +33,7 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 	public void setUp() throws Exception {
 		configuration = newConfiguration("cbo");
 		cboConfiguration = metricConfiguration("cbo");
-		ditConfiguration = metricConfiguration("loc");
+		locConfiguration = metricConfiguration("loc");
 		databaseManager = PowerMockito.mock(DatabaseManager.class);
 		configurationDao = PowerMockito.mock(ConfigurationDatabaseDao.class);
 		PowerMockito.when(configurationDao.getConfiguration(configuration.getName())).thenReturn(configuration);
@@ -43,12 +43,21 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSave() {
-		dao.save(ditConfiguration, configuration.getName());
+	public void shouldAddMetricConfiguration() {
+		dao.save(locConfiguration, configuration.getName());
 
-		ArgumentCaptor<MetricConfigurationRecord> captor = ArgumentCaptor.forClass(MetricConfigurationRecord.class);
-		Mockito.verify(databaseManager).save(captor.capture());
-		assertDeepEquals(ditConfiguration, captor.getValue().convert());
+		assertDeepEquals(locConfiguration, configuration.getConfigurationFor(locConfiguration.getMetric()));
+		Mockito.verify(configurationDao).save(configuration);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldReplaceMetricConfiguration() {
+		cboConfiguration = newMetricConfiguration("cbo");
+		cboConfiguration.setWeight(42.0);
+		dao.save(cboConfiguration, configuration.getName());
+
+		assertDeepEquals(cboConfiguration, configuration.getConfigurationFor(cboConfiguration.getMetric()));
+		Mockito.verify(configurationDao).save(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -60,24 +69,22 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveMetricConfiguration() {
-		String metricName = cboConfiguration.getMetric().getName();
-		dao.removeMetricConfiguration(configuration.getName(), metricName);
+		Metric cbo = cboConfiguration.getMetric();
+		dao.removeMetricConfiguration(configuration.getName(), cbo.getName());
 
-		ArgumentCaptor<MetricConfigurationRecord> captor = ArgumentCaptor.forClass(MetricConfigurationRecord.class);
-		Mockito.verify(databaseManager).delete(captor.capture());
-		assertDeepEquals(cboConfiguration, captor.getValue().convert());
+		assertFalse(configuration.contains(cbo));
+		Mockito.verify(configurationDao).save(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowExceptionForMetricConfigurationNotFound() {
-		String expectedMessage = "Metric 'Lines of Code' not found in configuration 'Kalibro for Java'";
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
-				String metricName = ditConfiguration.getMetric().getName();
+				String metricName = locConfiguration.getMetric().getName();
 				dao.getMetricConfiguration(configuration.getName(), metricName);
 			}
-		}, expectedMessage);
+		}, "No configuration found for metric: Lines of Code");
 	}
 }

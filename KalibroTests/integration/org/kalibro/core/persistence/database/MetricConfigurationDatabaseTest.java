@@ -2,13 +2,13 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.MetricConfigurationFixtures;
 
 public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 
@@ -19,7 +19,7 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Before
 	public void setUp() {
-		configuration = simpleConfiguration();
+		configuration = newConfiguration("cbo");
 		configurationDao = daoFactory.getConfigurationDao();
 		dao = daoFactory.getMetricConfigurationDao();
 		configurationDao.save(configuration);
@@ -27,19 +27,19 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRetrieveSavedMetricConfiguration() {
-		MetricConfiguration ditConfiguration = MetricConfigurationFixtures.configuration("dit");
+		MetricConfiguration locConfiguration = metricConfiguration("loc");
 		String configurationName = configuration.getName();
-		dao.save(ditConfiguration, configurationName);
+		dao.save(locConfiguration, configurationName);
 
-		String metricName = ditConfiguration.getMetric().getName();
+		String metricName = locConfiguration.getMetric().getName();
 		MetricConfiguration retrieved = dao.getMetricConfiguration(configurationName, metricName);
-		assertNotSame(ditConfiguration, retrieved);
-		assertDeepEquals(ditConfiguration, retrieved);
+		assertNotSame(locConfiguration, retrieved);
+		assertDeepEquals(locConfiguration, retrieved);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldReplaceMetricConfiguration() {
-		MetricConfiguration cboConfiguration = MetricConfigurationFixtures.configuration("cbo");
+		MetricConfiguration cboConfiguration = newMetricConfiguration("cbo");
 		String configurationName = configuration.getName();
 		cboConfiguration.setWeight(42.0);
 		dao.save(cboConfiguration, configurationName);
@@ -51,20 +51,19 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRemoveConfigurationByName() {
-		final MetricConfiguration cboConfiguration = MetricConfigurationFixtures.configuration("cbo");
+		final MetricConfiguration cboConfiguration = metricConfiguration("cbo");
 		final String configurationName = configuration.getName();
 		final String metricName = cboConfiguration.getMetric().getName();
 
 		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
 
 		dao.removeMetricConfiguration(configurationName, metricName);
-		String message = "Metric '" + metricName + "' not found in configuration '" + configurationName + "'";
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getMetricConfiguration(configurationName, metricName);
 			}
-		}, message);
+		}, "No configuration found for metric: " + metricName);
 	}
 }

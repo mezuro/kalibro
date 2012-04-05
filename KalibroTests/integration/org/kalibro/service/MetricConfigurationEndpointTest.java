@@ -22,8 +22,8 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 	@Before
 	public void setUp() throws MalformedURLException {
 		daoStub = new MetricConfigurationDaoStub();
-		daoStub.save(configuration("cbo"), CONFIGURATION_NAME);
-		daoStub.save(configuration("loc"), CONFIGURATION_NAME);
+		daoStub.save(metricConfiguration("cbo"), CONFIGURATION_NAME);
+		daoStub.save(metricConfiguration("loc"), CONFIGURATION_NAME);
 		port = publishAndGetPort(new MetricConfigurationEndpointImpl(daoStub), MetricConfigurationEndpoint.class);
 	}
 
@@ -34,7 +34,7 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 	}
 
 	private void verifyGetMetricConfiguration(String code) {
-		String metricName = configuration(code).getMetric().getName();
+		String metricName = metricConfiguration(code).getMetric().getName();
 		MetricConfiguration expected = daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName);
 		MetricConfiguration actual = port.getMetricConfiguration(CONFIGURATION_NAME, metricName).convert();
 		assertDeepEquals(expected, actual);
@@ -47,7 +47,7 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 	}
 
 	private void verifyRemoveMetricConfiguration(String code) {
-		String metricName = configuration(code).getMetric().getName();
+		String metricName = metricConfiguration(code).getMetric().getName();
 		assertNotNull(daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 		port.removeMetricConfiguration(CONFIGURATION_NAME, metricName);
 		assertNull(daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName));
@@ -55,7 +55,7 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveConfiguration() {
-		MetricConfiguration newConfiguration = configuration("acc");
+		MetricConfiguration newConfiguration = metricConfiguration("acc");
 		String metricName = newConfiguration.getMetric().getName();
 		assertNull(daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 		port.saveMetricConfiguration(new MetricConfigurationXml(newConfiguration), CONFIGURATION_NAME);

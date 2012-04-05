@@ -2,6 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.*;
 
 import javax.persistence.NoResultException;
 
@@ -10,7 +11,6 @@ import org.junit.Test;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.ProjectResultFixtures;
 import org.kalibro.core.persistence.dao.ProjectDao;
 
 public abstract class ProjectDatabaseTest extends DatabaseTestCase {
@@ -21,8 +21,8 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 
 	@Before
 	public void setUp() {
-		helloWorld = helloWorld();
-		helloWorld2 = helloWorld();
+		helloWorld = newHelloWorld();
+		helloWorld2 = newHelloWorld();
 		helloWorld2.setName("HelloWorld-2.0");
 		dao = daoFactory.getProjectDao();
 	}
@@ -62,7 +62,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void projectRemovalShouldCascadeToResults() {
 		String projectName = helloWorld.getName();
-		ProjectResult projectResult = ProjectResultFixtures.helloWorldResult();
+		ProjectResult projectResult = helloWorldResult();
 		ProjectResultDatabaseDao projectResultDao = daoFactory.getProjectResultDao();
 
 		dao.save(helloWorld);

@@ -1,8 +1,8 @@
 package org.kalibro.core.persistence.database;
 
-import static org.analizo.AnalizoStub.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 
 import javax.persistence.NoResultException;
 
@@ -20,10 +20,10 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Before
 	public void setUp() {
-		kalibroConfiguration = kalibroConfiguration();
-		simpleConfiguration = kalibroConfiguration();
+		kalibroConfiguration = newKalibroConfiguration();
+		simpleConfiguration = newConfiguration("cbo", "lcom4");
 		simpleConfiguration.setName("Simple");
-		simpleConfiguration.addMetricConfiguration(new MetricConfiguration(CompoundMetricFixtures.sc()));
+		simpleConfiguration.addMetricConfiguration(new MetricConfiguration(sc()));
 		dao = daoFactory.getConfigurationDao();
 	}
 
@@ -75,7 +75,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveAndRetrieveMetric() {
-		NativeMetric loc = nativeMetric("loc");
+		NativeMetric loc = analizoMetric("loc");
 		assertTrue(kalibroConfiguration.contains(loc));
 		assertTrue(retrieve(kalibroConfiguration).contains(loc));
 
@@ -86,7 +86,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void configurationsShouldNotShareMetrics() {
-		NativeMetric cbo = nativeMetric("cbo");
+		NativeMetric cbo = analizoMetric("cbo");
 		assertDeepEquals(kalibroConfiguration.getConfigurationFor(cbo), simpleConfiguration.getConfigurationFor(cbo));
 		dao.save(simpleConfiguration);
 
