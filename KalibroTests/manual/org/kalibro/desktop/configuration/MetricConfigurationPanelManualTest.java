@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.core.model.CompoundMetricFixtures.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.*;
 
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
@@ -11,7 +11,7 @@ import org.kalibro.desktop.swingextension.list.TablePanelListener;
 public final class MetricConfigurationPanelManualTest implements TablePanelListener<Range> {
 
 	public static void main(String[] args) {
-		new MetricConfigurationPanelManualTest(configuration("amloc"));
+		new MetricConfigurationPanelManualTest(metricConfiguration("amloc"));
 		new MetricConfigurationPanelManualTest(new MetricConfiguration(sc()));
 	}
 

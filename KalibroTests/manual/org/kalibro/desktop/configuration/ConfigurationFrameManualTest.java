@@ -1,5 +1,7 @@
 package org.kalibro.desktop.configuration;
 
+import static org.kalibro.core.model.ConfigurationFixtures.*;
+
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;
 
@@ -7,7 +9,6 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class ConfigurationFrameManualTest extends JDesktopPane {
@@ -23,7 +24,7 @@ public final class ConfigurationFrameManualTest extends JDesktopPane {
 	}
 
 	private JInternalFrame getFrame() throws PropertyVetoException {
-		Configuration configuration = ConfigurationFixtures.kalibroConfiguration();
+		Configuration configuration = kalibroConfiguration();
 		ConfigurationFrame frame = new ConfigurationFrame(configuration);
 		frame.setSelected(true);
 		return frame;

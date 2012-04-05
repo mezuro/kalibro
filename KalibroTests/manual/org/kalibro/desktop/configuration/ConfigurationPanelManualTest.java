@@ -15,7 +15,7 @@ public final class ConfigurationPanelManualTest extends ConfigurationPanel imple
 
 	private ConfigurationPanelManualTest() {
 		super();
-		set(simpleConfiguration());
+		set(newConfiguration("amloc", "cbo"));
 		addMetricConfigurationsListener(this);
 	}
 

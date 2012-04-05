@@ -22,7 +22,7 @@ public final class TableManualTest extends JPanel implements ListListener<Range>
 	protected TableManualTest() {
 		super(new GridLayout());
 		table = new Table<Range>("", createModel(), 5);
-		table.setData(configuration("amloc").getRanges());
+		table.setData(metricConfiguration("amloc").getRanges());
 		table.addListListener(this);
 		add(table);
 	}

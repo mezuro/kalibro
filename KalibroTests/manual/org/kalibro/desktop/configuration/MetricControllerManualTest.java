@@ -1,5 +1,8 @@
 package org.kalibro.desktop.configuration;
 
+import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.event.ActionEvent;
@@ -7,8 +10,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import org.kalibro.core.model.ConfigurationFixtures;
-import org.kalibro.core.model.MetricConfigurationFixtures;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.panel.AbstractPanel;
@@ -27,7 +28,7 @@ public final class MetricControllerManualTest extends AbstractPanel<String> impl
 
 	private MetricControllerManualTest() {
 		super("");
-		controller = new MetricConfigurationController(ConfigurationFixtures.simpleConfiguration(), cardStack);
+		controller = new MetricConfigurationController(newConfiguration("amloc", "cbo", "lcom4"), cardStack);
 	}
 
 	@Override
@@ -61,6 +62,6 @@ public final class MetricControllerManualTest extends AbstractPanel<String> impl
 		if (event.getSource() == addButton)
 			controller.addMetricConfiguration();
 		if (event.getSource() == editButton)
-			controller.edit(MetricConfigurationFixtures.configuration("amloc"));
+			controller.edit(metricConfiguration("amloc"));
 	}
 }
