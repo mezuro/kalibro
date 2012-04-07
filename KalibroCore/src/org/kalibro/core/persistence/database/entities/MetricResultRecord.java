@@ -1,7 +1,6 @@
 package org.kalibro.core.persistence.database.entities;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -58,8 +57,9 @@ public class MetricResultRecord implements DataTransferObject<MetricResult> {
 	@Column(nullable = false)
 	private Long value;
 
+	@OrderColumn
 	@ElementCollection
-	private Collection<Long> descendentResults;
+	private List<Long> descendentResults;
 
 	public MetricResultRecord() {
 		super();

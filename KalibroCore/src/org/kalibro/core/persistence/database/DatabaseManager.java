@@ -30,8 +30,6 @@ class DatabaseManager {
 	}
 
 	protected void persist(Object record) {
-		// TODO Remove cache invalidation. Now needed for MetricConfigurationDatabaseTest
-		entityManager.getEntityManagerFactory().getCache().evictAll();
 		entityManager.persist(entityManager.merge(record));
 	}
 
@@ -51,6 +49,10 @@ class DatabaseManager {
 
 	protected void commitTransaction() {
 		entityManager.getTransaction().commit();
+	}
+
+	protected void evictFromCache(Class<?> classToEvitct) {
+		entityManager.getEntityManagerFactory().getCache().evict(classToEvitct);
 	}
 
 	@Override

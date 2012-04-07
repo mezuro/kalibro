@@ -20,27 +20,19 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(DatabaseManager.class)
 public class DatabaseManagerTest extends KalibroTestCase {
 
-	private Cache cache;
 	private EntityManager entityManager;
 	private EntityTransaction transaction;
 
-	private DatabaseManager connectionManager;
+	private DatabaseManager databaseManager;
 
 	@Before
 	public void setUp() {
 		entityManager = PowerMockito.mock(EntityManager.class);
 		transaction = PowerMockito.mock(EntityTransaction.class);
-		connectionManager = new DatabaseManager(entityManager);
+		databaseManager = new DatabaseManager(entityManager);
 		PowerMockito.when(entityManager.getTransaction()).thenReturn(transaction);
 		PowerMockito.when(entityManager.merge("unmerged")).thenReturn("merged");
 		mockCache();
-	}
-
-	private void mockCache() {
-		cache = PowerMockito.mock(Cache.class);
-		EntityManagerFactory entityManagerFactory = PowerMockito.mock(EntityManagerFactory.class);
-		PowerMockito.when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
-		PowerMockito.when(entityManagerFactory.getCache()).thenReturn(cache);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -50,38 +42,37 @@ public class DatabaseManagerTest extends KalibroTestCase {
 		PowerMockito.when(entityManager.createQuery("42", String.class)).thenReturn(nativeQuery);
 		PowerMockito.whenNew(Query.class).withArguments(nativeQuery).thenReturn(query);
 
-		assertSame(query, connectionManager.createQuery("42", String.class));
+		assertSame(query, databaseManager.createQuery("42", String.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldClearEntityManagerWhenCreatingTypedQuery() {
-		connectionManager.createQuery("42", String.class);
+		databaseManager.createQuery("42", String.class);
 		verify(entityManager).clear();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforePersist() {
-		connectionManager.persist("unmerged");
+		databaseManager.persist("unmerged");
 		verify(entityManager).persist("merged");
-		verify(cache).evictAll();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforeRemove() {
-		connectionManager.remove("unmerged");
+		databaseManager.remove("unmerged");
 		verify(entityManager).remove("merged");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveSingleEntityAsUnitaryList() throws Exception {
-		connectionManager = PowerMockito.spy(connectionManager);
-		connectionManager.save("42");
-		PowerMockito.verifyPrivate(connectionManager).invoke("save", Arrays.asList("42"));
+		databaseManager = PowerMockito.spy(databaseManager);
+		databaseManager.save("42");
+		PowerMockito.verifyPrivate(databaseManager).invoke("save", Arrays.asList("42"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveList() {
-		connectionManager.save(Arrays.asList("unmerged", "unmerged", "unmerged"));
+		databaseManager.save(Arrays.asList("unmerged", "unmerged", "unmerged"));
 
 		InOrder order = inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
@@ -91,7 +82,7 @@ public class DatabaseManagerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testDelete() {
-		connectionManager.delete("unmerged");
+		databaseManager.delete("unmerged");
 
 		InOrder order = inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
@@ -100,8 +91,23 @@ public class DatabaseManagerTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldEvictClassFromCache() {
+		Cache cache = mockCache();
+		databaseManager.evictFromCache(Object.class);
+		verify(cache).evict(Object.class);
+	}
+
+	private Cache mockCache() {
+		Cache cache = PowerMockito.mock(Cache.class);
+		EntityManagerFactory entityManagerFactory = PowerMockito.mock(EntityManagerFactory.class);
+		PowerMockito.when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
+		PowerMockito.when(entityManagerFactory.getCache()).thenReturn(cache);
+		return cache;
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
-		connectionManager.finalize();
+		databaseManager.finalize();
 		verify(entityManager).close();
 	}
 }

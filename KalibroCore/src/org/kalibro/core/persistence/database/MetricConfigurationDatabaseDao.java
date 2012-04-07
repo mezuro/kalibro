@@ -6,6 +6,7 @@ import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.persistence.dao.MetricConfigurationDao;
 import org.kalibro.core.persistence.database.entities.MetricConfigurationRecord;
+import org.kalibro.core.persistence.database.entities.RangeRecord;
 
 class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord> implements
 	MetricConfigurationDao {
@@ -25,6 +26,7 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 			configuration.replaceMetricConfiguration(metric, metricConfiguration);
 		else
 			configuration.addMetricConfiguration(metricConfiguration);
+		databaseManager.evictFromCache(RangeRecord.class);
 		configurationDao.save(configuration);
 	}
 
