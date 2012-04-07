@@ -2,10 +2,7 @@ package org.checkstyle;
 
 import java.io.File;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.*;
@@ -22,7 +19,7 @@ public class CheckstyleStub implements MetricCollector {
 	private static NativeModuleResult initializeResult() {
 		baseTool = new BaseTool("Checkstyle");
 		baseTool.setCollectorClass(CheckstyleStub.class);
-		nativeMetrics = new HashSet<NativeMetric>();
+		nativeMetrics = new TreeSet<NativeMetric>();
 
 		Module module = new Module(Granularity.CLASS, "org", "fibonacci", "Fibonacci");
 		result = new NativeModuleResult(module);

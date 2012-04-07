@@ -20,7 +20,7 @@ class AnalizoOutputParser {
 	private Map<String, NativeMetric> supportedMetrics;
 
 	protected AnalizoOutputParser(InputStream metricListOuput) throws IOException {
-		supportedMetrics = new TreeMap<String, NativeMetric>();
+		supportedMetrics = new HashMap<String, NativeMetric>();
 		parseSupportedMetrics(metricListOuput);
 	}
 
@@ -42,7 +42,7 @@ class AnalizoOutputParser {
 	}
 
 	protected Set<NativeMetric> getSupportedMetrics() {
-		return new HashSet<NativeMetric>(supportedMetrics.values());
+		return new TreeSet<NativeMetric>(supportedMetrics.values());
 	}
 
 	protected Set<NativeModuleResult> parseResults(InputStream resultsOutput, Set<NativeMetric> wantedMetrics) {
@@ -56,7 +56,7 @@ class AnalizoOutputParser {
 		NativeModuleResult moduleResult = createModuleResult(resultMap);
 		for (Object metricCode : resultMap.keySet()) {
 			NativeMetric metric = supportedMetrics.get(metricCode);
-			if (wantedMetrics.contains(metric))
+			if (metric != null && wantedMetrics.contains(metric))
 				addMetricResult(moduleResult, metric, resultMap.get(metricCode));
 		}
 		return moduleResult;

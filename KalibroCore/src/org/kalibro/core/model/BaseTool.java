@@ -1,8 +1,8 @@
 package org.kalibro.core.model;
 
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeSet;
 
 import org.kalibro.KalibroException;
 import org.kalibro.core.MetricCollector;
@@ -33,7 +33,7 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	public BaseTool(String name, String description) {
 		setName(name);
 		setDescription(description);
-		supportedMetrics = new HashSet<NativeMetric>();
+		supportedMetrics = new TreeSet<NativeMetric>();
 	}
 
 	@Override
@@ -67,7 +67,7 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	}
 
 	public void setSupportedMetrics(Collection<NativeMetric> supportedMetrics) {
-		this.supportedMetrics = new HashSet<NativeMetric>();
+		this.supportedMetrics = new TreeSet<NativeMetric>();
 		for (NativeMetric supportedMetric : supportedMetrics)
 			addSupportedMetric(supportedMetric);
 	}
