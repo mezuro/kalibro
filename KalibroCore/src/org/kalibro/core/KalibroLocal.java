@@ -63,10 +63,11 @@ public class KalibroLocal extends KalibroFacade {
 
 	@Override
 	protected void processPeriodically(String projectName, Integer periodInDays) {
-		ProcessProjectTask processTask = getProcessTask(projectName);
-		processTask.cancelPeriodicExecution();
-		processTask.executePeriodically(periodInDays * DAY);
+		cancelPeriodicProcess(projectName);
+		ProcessProjectTask task = new ProcessProjectTask(projectName);
+		processTasks.put(projectName, task);
 		processPeriods.put(projectName, periodInDays);
+		task.executePeriodically(periodInDays * DAY);
 	}
 
 	@Override
@@ -76,14 +77,10 @@ public class KalibroLocal extends KalibroFacade {
 
 	@Override
 	protected void cancelPeriodicProcess(String projectName) {
-		getProcessTask(projectName).cancelPeriodicExecution();
-		processTasks.remove(projectName);
-		processPeriods.remove(projectName);
-	}
-
-	private ProcessProjectTask getProcessTask(String projectName) {
-		if (!processTasks.containsKey(projectName))
-			processTasks.put(projectName, new ProcessProjectTask(projectName));
-		return processTasks.get(projectName);
+		if (processTasks.containsKey(projectName)) {
+			processTasks.get(projectName).cancelPeriodicExecution();
+			processTasks.remove(projectName);
+			processPeriods.remove(projectName);
+		}
 	}
 }
