@@ -1,5 +1,6 @@
 package org.kalibro.core.processing;
 
+import static org.junit.Assert.*;
 import static org.kalibro.core.model.BaseToolFixtures.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
@@ -67,5 +68,10 @@ public class AnalyzeProjectTaskTest extends KalibroTestCase {
 
 		assertDeepEquals(helloWorldRoot(), projectResult.getSourceTree());
 		assertDeepEquals(newHelloWorldResults(projectResult.getDate()), results);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldHaveDescription() {
+		assertEquals("analyzing project: " + projectResult.getProject().getName(), "" + analyzeTask);
 	}
 }

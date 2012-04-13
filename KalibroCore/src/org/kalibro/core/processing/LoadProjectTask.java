@@ -11,7 +11,7 @@ import org.kalibro.core.model.Project;
 
 class LoadProjectTask extends Task {
 
-	private static final long LOAD_TIMEOUT = 30 * MINUTE;
+	private static final long LOAD_TIMEOUT = 1 * HOUR;
 
 	private Project project;
 
@@ -34,5 +34,10 @@ class LoadProjectTask extends Task {
 	private void executeLoadCommands(String loadPath) {
 		for (String loadCommand : project.getLoadCommands(loadPath))
 			new CommandTask(loadCommand).executeAndWait(LOAD_TIMEOUT);
+	}
+
+	@Override
+	public String toString() {
+		return "loading project: " + project.getName();
 	}
 }

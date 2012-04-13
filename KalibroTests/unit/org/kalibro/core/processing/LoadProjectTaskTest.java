@@ -1,5 +1,6 @@
 package org.kalibro.core.processing;
 
+import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.kalibro.core.model.RepositoryFixtures.*;
 import static org.mockito.Matchers.*;
@@ -51,6 +52,11 @@ public class LoadProjectTaskTest extends KalibroTestCase {
 		PowerMockito.when(Kalibro.currentSettings()).thenReturn(settings);
 		PowerMockito.when(settings.getLoadDirectoryFor(project)).thenReturn(loadDirectory);
 		PowerMockito.when(loadDirectory.getAbsolutePath()).thenReturn(loadPath);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldHaveDescription() {
+		assertEquals("loading project: " + project.getName(), "" + loadTask);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

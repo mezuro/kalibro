@@ -70,6 +70,11 @@ class AnalyzeProjectTask extends TypedTask<Collection<ModuleResult>> {
 			module.setName(getProjectName());
 	}
 
+	@Override
+	public String toString() {
+		return "analyzing project: " + getProjectName();
+	}
+
 	private String getProjectName() {
 		return projectResult.getProject().getName();
 	}
