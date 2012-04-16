@@ -43,7 +43,7 @@ public class CommandTaskTest extends KalibroTestCase {
 
 		PowerMockito.mockStatic(Runtime.class);
 		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
-		PowerMockito.when(runtime.exec(COMMAND)).thenReturn(process);
+		PowerMockito.when(runtime.exec(COMMAND, null, null)).thenReturn(process);
 		PowerMockito.when(process.getInputStream()).thenReturn(output);
 		PowerMockito.when(process.getErrorStream()).thenReturn(error);
 	}
@@ -61,7 +61,7 @@ public class CommandTaskTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkExceptionOnSimpleExecution() throws IOException {
-		PowerMockito.when(runtime.exec(COMMAND)).thenThrow(new IOException());
+		PowerMockito.when(runtime.exec(COMMAND, null, null)).thenThrow(new IOException());
 		checkKalibroException(commandTask, ERROR_MESSAGE, IOException.class);
 	}
 

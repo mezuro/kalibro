@@ -1,5 +1,6 @@
 package org.kalibro.core.command;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -9,22 +10,28 @@ import org.kalibro.core.concurrent.Task;
 public class CommandTask extends Task {
 
 	private String command;
+	private File workingDirectory;
 	private ProcessStreamLogger processStreamLogger;
 
 	public CommandTask(String command) {
+		this(command, null);
+	}
+	
+	public CommandTask(String command, File workingDirectory) {
 		this.command = command;
+		this.workingDirectory = workingDirectory;
 		this.processStreamLogger = new FileProcessStreamLogger();
 	}
 
 	public InputStream executeAndGetOuput() throws IOException {
-		Process process = Runtime.getRuntime().exec(command);
+		Process process = Runtime.getRuntime().exec(command, null, workingDirectory);
 		processStreamLogger.logErrorStream(process, command);
 		return process.getInputStream();
 	}
 
 	@Override
 	public void perform() throws Exception {
-		Process process = Runtime.getRuntime().exec(command);
+		Process process = Runtime.getRuntime().exec(command, null, workingDirectory);
 		processStreamLogger.logErrorStream(process, command);
 		processStreamLogger.logOutputStream(process, command);
 		waitProcess(process);
