@@ -3,6 +3,7 @@ package org.kalibro.core.util;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
+import java.util.regex.Pattern;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
@@ -17,17 +18,25 @@ public class StackTracePrinterTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldPrintStackTraceWithoutMaximum() throws IOException {
 		printer = new StackTracePrinter();
-		assertEquals(expected(), printer.printStackTrace(EXCEPTION));
-		assertEquals(expected(), printer.printStackTrace(EXCEPTION));
+		assertTrue(expected().matcher(printer.printStackTrace(EXCEPTION)).matches());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRestrictBytesOfStackTraceWithMaximum() throws IOException {
-		printer = new StackTracePrinter(42);
-		assertEquals(expected().substring(0, 42), printer.printStackTrace(EXCEPTION));
+	public void shouldResetPrintStackTrace() {
+		printer = new StackTracePrinter();
+		String first = printer.printStackTrace(EXCEPTION);
+		String second = printer.printStackTrace(EXCEPTION);
+		assertEquals(first, second);
 	}
 
-	private String expected() throws IOException {
-		return IOUtils.toString(StackTracePrinterTest.class.getResourceAsStream("stackTrace.txt"));
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRestrictBytesOfStackTraceWithMaximum() {
+		printer = new StackTracePrinter(42);
+		assertEquals("java.lang.Exception: StackTracePrinterTest", printer.printStackTrace(EXCEPTION));
+	}
+
+	private Pattern expected() throws IOException {
+		String regexp = IOUtils.toString(StackTracePrinterTest.class.getResourceAsStream("stackTrace.txt"));
+		return Pattern.compile(regexp, Pattern.MULTILINE);
 	}
 }
