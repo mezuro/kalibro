@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class GitLoader implements ProjectLoader {
+public class GitLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {

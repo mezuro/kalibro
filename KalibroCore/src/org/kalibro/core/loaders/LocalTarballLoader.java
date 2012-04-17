@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class LocalTarballLoader implements ProjectLoader {
+public class LocalTarballLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {
@@ -19,11 +19,6 @@ public class LocalTarballLoader implements ProjectLoader {
 
 	@Override
 	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("tar -xf " + repository.getAddress() + " -C " + loadPath);
-	}
-
-	@Override
-	public List<String> getUpdateCommands(Repository repository, String loadPath) {
-		return Arrays.asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C " + loadPath);
+		return Arrays.asList("tar -x --keep-newer-files f " + repository.getAddress() + " -C " + loadPath);
 	}
 }

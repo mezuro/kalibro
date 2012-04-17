@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class MercurialLoader implements ProjectLoader {
+public class MercurialLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {

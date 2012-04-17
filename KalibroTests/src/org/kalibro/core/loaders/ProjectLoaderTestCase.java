@@ -18,7 +18,8 @@ public abstract class ProjectLoaderTestCase extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		loader = getRepositoryType().getProjectLoader();
+		//TODO Adapt tests
+		//loader = getRepositoryType().getProjectLoader();
 		repository = helloWorldRepository(getRepositoryType());
 		if (loader.supportsAuthentication()) {
 			repository.setUsername("USERNAME");
