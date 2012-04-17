@@ -1,5 +1,5 @@
 java\.lang\.Exception: StackTracePrinterTest message
-	at org\.kalibro\.core\.util\.StackTracePrinterTest\.<clinit>\(StackTracePrinterTest\.java:13\)
+	at org\.kalibro\.core\.util\.StackTracePrinterTest\.<clinit>\(StackTracePrinterTest\.java:\d+\)
 	at sun\.reflect\.NativeConstructorAccessorImpl\.newInstance0\(Native Method\)
 	at sun\.reflect\.NativeConstructorAccessorImpl\.newInstance\(NativeConstructorAccessorImpl\.java:\d+\)
 	at sun\.reflect\.DelegatingConstructorAccessorImpl\.newInstance\(DelegatingConstructorAccessorImpl\.java:\d+\)
