@@ -1,7 +1,9 @@
 package org.kalibro.core.command;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -43,7 +45,7 @@ public class CommandTaskTest extends KalibroTestCase {
 
 		PowerMockito.mockStatic(Runtime.class);
 		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
-		PowerMockito.when(runtime.exec(COMMAND, null, null)).thenReturn(process);
+		PowerMockito.when(runtime.exec(eq(COMMAND), any(String[].class), any(File.class))).thenReturn(process);
 		PowerMockito.when(process.getInputStream()).thenReturn(output);
 		PowerMockito.when(process.getErrorStream()).thenReturn(error);
 	}
@@ -51,6 +53,13 @@ public class CommandTaskTest extends KalibroTestCase {
 	private void mockLogger() throws Exception {
 		logger = PowerMockito.mock(FileProcessStreamLogger.class);
 		PowerMockito.whenNew(FileProcessStreamLogger.class).withNoArguments().thenReturn(logger);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldExecuteCommandOnWorkingDirectory() throws IOException {
+		File workingDirectory = PowerMockito.mock(File.class);
+		new CommandTask(COMMAND, workingDirectory).executeAndGetOuput();
+		Mockito.verify(runtime).exec(COMMAND, null, workingDirectory);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
