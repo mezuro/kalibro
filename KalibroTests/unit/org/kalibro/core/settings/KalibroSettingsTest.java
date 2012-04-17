@@ -79,12 +79,6 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testShouldRemoveSources() {
-		settings.getServerSettings().setRemoveSources(false);
-		assertFalse(settings.shouldRemoveSources());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void testDatabaseSettings() {
 		assertSame(settings.getServerSettings().getDatabaseSettings(), settings.getDatabaseSettings());
 	}

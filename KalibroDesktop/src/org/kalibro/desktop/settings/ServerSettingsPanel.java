@@ -6,7 +6,6 @@ import javax.swing.border.TitledBorder;
 
 import org.kalibro.core.settings.ServerSettings;
 import org.kalibro.desktop.swingextension.Label;
-import org.kalibro.desktop.swingextension.field.BooleanField;
 import org.kalibro.desktop.swingextension.field.DirectoryField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
@@ -14,7 +13,6 @@ import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 
 	private DirectoryField loadDirectoryField;
-	private BooleanField removeSourcesField;
 	private DatabaseSettingsPanel databasePanel;
 
 	public ServerSettingsPanel() {
@@ -24,7 +22,6 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 	@Override
 	protected void createComponents(Component... innerComponents) {
 		loadDirectoryField = new DirectoryField("loadDirectory");
-		removeSourcesField = new BooleanField("removeSources", "Remove source code after analysis");
 		databasePanel = new DatabaseSettingsPanel();
 	}
 
@@ -35,8 +32,6 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 		builder.add(new Label("Load directory:"));
 		builder.add(loadDirectoryField, 2);
 		builder.newLine();
-		builder.add(removeSourcesField, 3);
-		builder.newLine();
 		builder.add(databasePanel, 3);
 	}
 
@@ -44,7 +39,6 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 	public ServerSettings get() {
 		ServerSettings settings = new ServerSettings();
 		settings.setLoadDirectory(loadDirectoryField.get());
-		settings.setRemoveSources(removeSourcesField.isSelected());
 		settings.setDatabaseSettings(databasePanel.get());
 		return settings;
 	}
@@ -52,7 +46,6 @@ public class ServerSettingsPanel extends EditPanel<ServerSettings> {
 	@Override
 	public void set(ServerSettings settings) {
 		loadDirectoryField.set(settings.getLoadDirectory());
-		removeSourcesField.setSelected(settings.shouldRemoveSources());
 		databasePanel.set(settings.getDatabaseSettings());
 	}
 }

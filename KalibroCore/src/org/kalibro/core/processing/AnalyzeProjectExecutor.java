@@ -2,7 +2,6 @@ package org.kalibro.core.processing;
 
 import java.util.Collection;
 
-import org.apache.commons.io.FileUtils;
 import org.kalibro.Kalibro;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.concurrent.TaskReport;
@@ -11,7 +10,6 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
-import org.kalibro.core.settings.KalibroSettings;
 
 class AnalyzeProjectExecutor extends ProjectTaskExecutor {
 
@@ -42,12 +40,5 @@ class AnalyzeProjectExecutor extends ProjectTaskExecutor {
 		for (ModuleResult moduleResult : moduleResults)
 			moduleResultDao.save(moduleResult, getProject().getName());
 		updateProjectState(ProjectState.READY);
-		deleteSourcePathIfNecessary();
-	}
-
-	private void deleteSourcePathIfNecessary() {
-		KalibroSettings settings = Kalibro.currentSettings();
-		if (settings.shouldRemoveSources())
-			FileUtils.deleteQuietly(settings.getLoadDirectoryFor(getProject()));
 	}
 }

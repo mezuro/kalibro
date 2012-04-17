@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.settings.ServerSettings;
 import org.kalibro.desktop.ComponentFinder;
-import org.kalibro.desktop.swingextension.field.BooleanField;
 import org.kalibro.desktop.swingextension.field.DirectoryField;
 
 public class ServerSettingsPanelTest extends KalibroTestCase {
@@ -28,7 +27,6 @@ public class ServerSettingsPanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGet() {
 		loadDirectoryField().set(settings.getLoadDirectory());
-		removeSourcesField().set(settings.shouldRemoveSources());
 		databaseSettingsPanel().set(settings.getDatabaseSettings());
 		assertDeepEquals(settings, panel.get());
 	}
@@ -37,16 +35,11 @@ public class ServerSettingsPanelTest extends KalibroTestCase {
 	public void shouldSet() {
 		panel.set(settings);
 		assertEquals(settings.getLoadDirectory(), loadDirectoryField().get());
-		assertEquals(settings.shouldRemoveSources(), removeSourcesField().get());
 		assertDeepEquals(settings.getDatabaseSettings(), databaseSettingsPanel().get());
 	}
 
 	private DirectoryField loadDirectoryField() {
 		return finder.find("loadDirectory", DirectoryField.class);
-	}
-
-	private BooleanField removeSourcesField() {
-		return finder.find("removeSources", BooleanField.class);
 	}
 
 	private DatabaseSettingsPanel databaseSettingsPanel() {
