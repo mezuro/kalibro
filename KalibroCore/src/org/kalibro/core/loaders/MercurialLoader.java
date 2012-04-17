@@ -21,4 +21,9 @@ public class MercurialLoader implements ProjectLoader {
 	public List<String> getLoadCommands(Repository repository, String loadPath) {
 		return Arrays.asList("hg clone " + repository.getAddress() + " " + loadPath);
 	}
+
+	@Override
+	public List<String> getUpdateCommands(Repository repository, String loadPath) {
+		return Arrays.asList("hg pull -u");
+	}
 }

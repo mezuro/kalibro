@@ -11,4 +11,6 @@ public interface ProjectLoader {
 	boolean supportsAuthentication();
 
 	List<String> getLoadCommands(Repository repository, String loadPath);
+	
+	List<String> getUpdateCommands(Repository repository, String loadPath);
 }

@@ -21,4 +21,9 @@ public class LocalTarballLoader implements ProjectLoader {
 	public List<String> getLoadCommands(Repository repository, String loadPath) {
 		return Arrays.asList("tar -xf " + repository.getAddress() + " -C " + loadPath);
 	}
+
+	@Override
+	public List<String> getUpdateCommands(Repository repository, String loadPath) {
+		return Arrays.asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C " + loadPath);
+	}
 }

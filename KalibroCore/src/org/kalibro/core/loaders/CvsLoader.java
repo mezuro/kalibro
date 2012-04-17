@@ -21,4 +21,9 @@ public class CvsLoader implements ProjectLoader {
 	public List<String> getLoadCommands(Repository repository, String loadPath) {
 		return Arrays.asList("cvs -z3 -d " + repository.getAddress() + " checkout -d " + loadPath + " -P .");
 	}
+
+	@Override
+	public List<String> getUpdateCommands(Repository repository, String loadPath) {
+		return Arrays.asList("cvs update");
+	}
 }

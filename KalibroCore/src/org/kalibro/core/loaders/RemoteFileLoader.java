@@ -36,6 +36,11 @@ abstract class RemoteFileLoader implements ProjectLoader {
 		downloadCommand += repository.getAddress() + " -O " + temporaryFilePath;
 		return downloadCommand;
 	}
+	
+	@Override
+	public List<String> getUpdateCommands(Repository repository, String loadPath) {
+		return getLoadCommands(repository, loadPath);
+	}
 
 	protected abstract String getExtractionCommand(String temporaryFilePath, String loadPath);
 }

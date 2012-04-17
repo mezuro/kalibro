@@ -21,4 +21,9 @@ public class BazaarLoader implements ProjectLoader {
 	public List<String> getLoadCommands(Repository repository, String loadPath) {
 		return Arrays.asList("bzr branch --use-existing-dir " + repository.getAddress() + " " + loadPath);
 	}
+
+	@Override
+	public List<String> getUpdateCommands(Repository repository, String loadPath) {
+		return Arrays.asList("bzr pull --overwrite");
+	}
 }

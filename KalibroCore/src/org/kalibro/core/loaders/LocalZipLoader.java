@@ -25,4 +25,13 @@ public class LocalZipLoader implements ProjectLoader {
 		command += " " + repository.getAddress() + " -d " + loadPath;
 		return Arrays.asList(command);
 	}
+
+	@Override
+	public List<String> getUpdateCommands(Repository repository, String loadPath) {
+		String command = "unzip -u -o";
+		if (repository.hasAuthentication())
+			command += " -P " + repository.getPassword();
+		command += " " + repository.getAddress() + " -d " + loadPath;
+		return Arrays.asList(command);
+	}
 }
