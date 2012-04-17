@@ -19,15 +19,15 @@ public class FirstEditSettings extends KalibroDesktopTestCase {
 	public void firstEditSettings() throws Exception {
 		startFromMain();
 
-		fixture.checkBox("removeSources").requireSelected();
-		fixture.checkBox("removeSources").uncheck();
+		fixture.panel("loadDirectory").textBox("path").setText("/tmp");
 
 		fixture.button("ok").click();
 		assertTrue(KalibroSettings.settingsFileExists());
 
+		fixture.robot.waitForIdle();
 		fixture = new FrameFixture(fixture.robot, "kalibroFrame");
 		fixture.menuItem("settings").click();
 		fixture = fixture.dialog();
-		fixture.checkBox("removeSources").requireNotSelected();
+		fixture.panel("loadDirectory").textBox("path").requireText("/tmp");
 	}
 }
