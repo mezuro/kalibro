@@ -55,18 +55,32 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testLoad() {
+		executeLoadCommands();
+		File loaded = assertLoaded();
+		executeUpdateCommands();
+		File updated = assertLoaded();
+		assertEquals(updated.lastModified(), loaded.lastModified());
+	}
+
+	private void executeLoadCommands() {
 		for (String loadCommand : loader.getLoadCommands(repository, HELLO_WORLD_DIRECTORY.getAbsolutePath()))
 			executeCommand(loadCommand);
-		assertLoaded();
+	}
+
+	private void executeUpdateCommands() {
+		for (String loadCommand : loader.getUpdateCommands(repository, HELLO_WORLD_DIRECTORY.getAbsolutePath()))
+			executeCommand(loadCommand);
 	}
 
 	protected void executeCommand(String command) {
 		new CommandTask(command).executeAndWait(INTEGRATION_TIMEOUT);
 	}
 
-	private void assertLoaded() {
+	private File assertLoaded() {
 		Iterator<File> files = FileUtils.iterateFiles(HELLO_WORLD_DIRECTORY, new String[]{"c"}, true);
-		assertEquals("HelloWorld.c", files.next().getName());
+		File loaded = files.next();
+		assertEquals("HelloWorld.c", loaded.getName());
 		assertFalse(files.hasNext());
+		return loaded;
 	}
 }
