@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-abstract class RemoteFileLoader implements ProjectLoader {
+abstract class RemoteFileLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {

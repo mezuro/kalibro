@@ -1,31 +1,26 @@
 package org.kalibro.core;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.enums.RepositoryType.*;
 import static org.mockito.Matchers.*;
-
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.database.DatabaseDaoFactory;
 import org.kalibro.core.processing.ProcessProjectTask;
 import org.kalibro.core.settings.DatabaseSettings;
 import org.kalibro.core.settings.KalibroSettings;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, KalibroLocal.class})
+@PrepareForTest({Kalibro.class, KalibroLocal.class, RepositoryType.class})
 public class KalibroLocalTest extends KalibroTestCase {
 
 	private static final String PROJECT_NAME = "KalibroLocalTest project";
@@ -59,18 +54,20 @@ public class KalibroLocalTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateSupportedRepositoryTypes() throws Exception {
-		mockCommandTask();
-		kalibroLocal = PowerMockito.spy(kalibroLocal);
-		PowerMockito.doThrow(new RuntimeException()).when(kalibroLocal, "validateRepositoryType", GIT);
-		Set<RepositoryType> supportedTypes = kalibroLocal.getSupportedRepositoryTypes();
-		for (RepositoryType type : RepositoryType.values())
-			assertEquals(type != GIT, supportedTypes.contains(type));
-	}
+	public void shouldValidateSupportedRepositoryTypes() {
+		RepositoryType supported = mockRepositoryType(true);
+		RepositoryType unsupported = mockRepositoryType(false);
 
-	private void mockCommandTask() throws Exception {
-		CommandTask commandTask = PowerMockito.mock(CommandTask.class);
-		PowerMockito.whenNew(CommandTask.class).withArguments(Matchers.anyString()).thenReturn(commandTask);
+		PowerMockito.mockStatic(RepositoryType.class);
+		PowerMockito.when(RepositoryType.values()).thenReturn(new RepositoryType[]{supported , unsupported});
+
+		assertDeepEquals(kalibroLocal.getSupportedRepositoryTypes(), supported);
+	}
+	
+	private RepositoryType mockRepositoryType(boolean supported) {
+		RepositoryType repositoryType = PowerMockito.mock(RepositoryType.class);
+		PowerMockito.when(repositoryType.isSupported()).thenReturn(supported);
+		return repositoryType;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

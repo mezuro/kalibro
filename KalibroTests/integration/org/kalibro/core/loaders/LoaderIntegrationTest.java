@@ -30,7 +30,7 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		loader = getRepositoryType().getProjectLoader();
+		//loader = getRepositoryType().getProjectLoader();
 		repository = helloWorldRepository(getRepositoryType());
 		if (loader.supportsAuthentication()) {
 			repository.setUsername("USERNAME");

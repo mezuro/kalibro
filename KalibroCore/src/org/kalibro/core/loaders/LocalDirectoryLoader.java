@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class LocalDirectoryLoader implements ProjectLoader {
+public class LocalDirectoryLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {
@@ -19,11 +19,6 @@ public class LocalDirectoryLoader implements ProjectLoader {
 
 	@Override
 	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("cp -r " + repository.getAddress() + " " + loadPath);
-	}
-
-	@Override
-	public List<String> getUpdateCommands(Repository repository, String loadPath) {
 		return Arrays.asList("cp -ur " + repository.getAddress() + " " + loadPath);
 	}
 }

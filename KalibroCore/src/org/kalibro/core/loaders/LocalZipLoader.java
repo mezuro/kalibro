@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class LocalZipLoader implements ProjectLoader {
+public class LocalZipLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {
@@ -19,19 +19,11 @@ public class LocalZipLoader implements ProjectLoader {
 
 	@Override
 	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		String command = "unzip";
-		if (repository.hasAuthentication())
-			command += " -P " + repository.getPassword();
-		command += " " + repository.getAddress() + " -d " + loadPath;
-		return Arrays.asList(command);
-	}
-
-	@Override
-	public List<String> getUpdateCommands(Repository repository, String loadPath) {
 		String command = "unzip -u -o";
 		if (repository.hasAuthentication())
 			command += " -P " + repository.getPassword();
 		command += " " + repository.getAddress() + " -d " + loadPath;
 		return Arrays.asList(command);
 	}
+
 }
