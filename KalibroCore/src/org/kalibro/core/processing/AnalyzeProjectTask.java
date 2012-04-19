@@ -35,6 +35,10 @@ class AnalyzeProjectTask extends TypedTask<Collection<ModuleResult>> {
 			collectResults(baseToolName, metricsMap.get(baseToolName));
 	}
 
+	private Map<String, Set<NativeMetric>> getMetricsMap() {
+		return Kalibro.getConfigurationDao().getConfigurationFor(getProjectName()).getNativeMetrics();
+	}
+
 	private void collectResults(String baseToolName, Set<NativeMetric> metrics) throws Exception {
 		Set<NativeModuleResult> collectedResults = collectMetrics(baseToolName, metrics);
 		for (NativeModuleResult nativeResult : collectedResults) {
@@ -42,10 +46,6 @@ class AnalyzeProjectTask extends TypedTask<Collection<ModuleResult>> {
 				((NativeMetric) metricResult.getMetric()).setOrigin(baseToolName);
 			putResult(nativeResult);
 		}
-	}
-
-	private Map<String, Set<NativeMetric>> getMetricsMap() {
-		return Kalibro.getConfigurationDao().getConfigurationFor(getProjectName()).getNativeMetrics();
 	}
 
 	private Set<NativeModuleResult> collectMetrics(String baseToolName, Set<NativeMetric> metrics) throws Exception {

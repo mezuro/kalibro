@@ -2,6 +2,7 @@ package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.RepositoryFixtures.*;
 import static org.kalibro.core.model.enums.RepositoryType.*;
 
 import java.io.File;
@@ -18,7 +19,6 @@ import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.model.RepositoryFixtures;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.settings.KalibroSettings;
 import org.powermock.api.mockito.PowerMockito;
@@ -57,12 +57,12 @@ public class LoadTest extends KalibroTestCase {
 	@Test(timeout = ACCEPTANCE_TIMEOUT /* testing all repository types */)
 	public void testLoad() throws Exception {
 		for (RepositoryType repositoryType : RepositoryType.values())
-			if (! Arrays.asList(REMOTE_TARBALL, REMOTE_ZIP).contains(repositoryType))
+			if (!Arrays.asList(REMOTE_TARBALL, REMOTE_ZIP).contains(repositoryType))
 				executeAndVerifyProjectFile(repositoryType);
 	}
 
 	private void executeAndVerifyProjectFile(RepositoryType repositoryType) throws IOException {
-		project.setRepository(RepositoryFixtures.helloWorldRepository(repositoryType));
+		project.setRepository(helloWorldRepository(repositoryType));
 		loadTask.perform();
 		Iterator<?> files = FileUtils.iterateFiles(HELLO_WORLD_DIRECTORY, new String[]{"c"}, true);
 		assertEquals("HelloWorld.c", ((File) files.next()).getName());
