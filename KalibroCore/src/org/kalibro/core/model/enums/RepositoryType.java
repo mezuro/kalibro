@@ -57,6 +57,10 @@ public enum RepositoryType {
 		return loader.validate();
 	}
 
+	public boolean supportsAuthentication() {
+		return loader.supportsAuthentication();
+	}
+
 	public void load(Repository repository, File loadDirectory) {
 		loader.load(repository, loadDirectory);
 	}

@@ -41,7 +41,7 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testToString() {
+	public void checkToString() {
 		assertEquals("Local directory", "" + LOCAL_DIRECTORY);
 		assertEquals("Local tarball", "" + LOCAL_TARBALL);
 		assertEquals("Local zip", "" + LOCAL_ZIP);
@@ -56,7 +56,7 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testIsLocal() {
+	public void checkLocal() {
 		assertTrue(LOCAL_DIRECTORY.isLocal());
 		assertTrue(LOCAL_TARBALL.isLocal());
 		assertTrue(LOCAL_ZIP.isLocal());
@@ -71,7 +71,7 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testProjectLoader() {
+	public void checkProjectLoader() {
 		assertClassEquals(LocalDirectoryLoader.class, getLoader(LOCAL_DIRECTORY));
 		assertClassEquals(LocalTarballLoader.class, getLoader(LOCAL_TARBALL));
 		assertClassEquals(LocalZipLoader.class, getLoader(LOCAL_ZIP));
@@ -87,6 +87,16 @@ public class RepositoryTypeTest extends KalibroTestCase {
 
 	private ProjectLoader getLoader(RepositoryType type) {
 		return getInternalState(type, "loader");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveAuthenticationSupport() {
+		ProjectLoader loader = mockGitLoader();
+		when(loader.supportsAuthentication()).thenReturn(false);
+		assertFalse(GIT.supportsAuthentication());
+
+		when(loader.supportsAuthentication()).thenReturn(true);
+		assertTrue(GIT.supportsAuthentication());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
