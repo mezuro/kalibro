@@ -2,8 +2,9 @@ package org.kalibro.core.model.enums;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.RepositoryType.*;
+import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.reflect.Whitebox.*;
 
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,10 +12,8 @@ import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.loaders.*;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RepositoryType.class)
@@ -26,11 +25,19 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		RepositoryType.valueOf("GIT");
 	}
 
-	private ProjectLoader loader;
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveSupportedTypes() {
+		RepositoryType supported = mockType(true);
+		RepositoryType unsupported = mockType(false);
+		spy(RepositoryType.class);
+		when(RepositoryType.values()).thenReturn(new RepositoryType[]{supported, unsupported});
+		assertDeepEquals(RepositoryType.supportedTypes(), supported);
+	}
 
-	@Before
-	public void setUp() {
-		loader = PowerMockito.mock(ProjectLoader.class);
+	private RepositoryType mockType(boolean supported) {
+		RepositoryType type = mock(RepositoryType.class);
+		when(type.isSupported()).thenReturn(supported);
+		return type;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -79,34 +86,40 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	}
 
 	private ProjectLoader getLoader(RepositoryType type) {
-		return Whitebox.getInternalState(type, "loader");
+		return getInternalState(type, "loader");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldValidateProjectLoader() {
-		Whitebox.setInternalState(GIT, ProjectLoader.class, loader);
-		PowerMockito.when(loader.validate()).thenReturn(true);
+		ProjectLoader loader = mockGitLoader();
+		when(loader.validate()).thenReturn(true);
 		assertTrue(GIT.isSupported());
-		PowerMockito.when(loader.validate()).thenReturn(false);
+		when(loader.validate()).thenReturn(false);
 		assertFalse(GIT.isSupported());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldLoadRepository() {
-		Whitebox.setInternalState(GIT, ProjectLoader.class, loader);
+		ProjectLoader loader = mockGitLoader();
 		GIT.load(null, HELLO_WORLD_DIRECTORY);
 		Mockito.verify(loader).load(null, HELLO_WORLD_DIRECTORY);
 	}
 
+	private ProjectLoader mockGitLoader() {
+		ProjectLoader loader = mock(ProjectLoader.class);
+		setInternalState(GIT, ProjectLoader.class, loader);
+		return loader;
+	}
+
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowKalibroErrorIfLoaderCouldNotBeCreated() {
-		final RepositoryType type = PowerMockito.spy(GIT);
-		PowerMockito.when(type.name()).thenReturn("INEXISTENT");
+		final RepositoryType type = spy(GIT);
+		when(type.name()).thenReturn("INEXISTENT");
 		checkKalibroError(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
-				Whitebox.invokeMethod(type, "initializeLoader");
+				invokeMethod(type, "initializeLoader");
 			}
 		}, "Error creating loader for Git", ClassNotFoundException.class);
 	}

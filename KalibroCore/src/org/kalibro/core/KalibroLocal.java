@@ -6,7 +6,6 @@ import static org.kalibro.core.concurrent.Task.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import org.kalibro.KalibroFacade;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -32,11 +31,7 @@ public class KalibroLocal extends KalibroFacade {
 
 	@Override
 	protected Set<RepositoryType> getSupportedRepositoryTypes() {
-		Set<RepositoryType> types = new TreeSet<RepositoryType>();
-		for (RepositoryType type : RepositoryType.values())
-			if (type.isSupported())
-				types.add(type);
-		return types;
+		return RepositoryType.supportedTypes();
 	}
 
 	@Override

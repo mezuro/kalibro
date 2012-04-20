@@ -1,13 +1,13 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.kalibro.core.model.enums.ProjectState.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
@@ -17,12 +17,7 @@ import org.powermock.api.mockito.PowerMockito;
 
 public class ProjectTest extends KalibroTestCase {
 
-	private Project project;
-
-	@Before
-	public void setUp() {
-		project = ProjectFixtures.newHelloWorld();
-	}
+	private Project project = newHelloWorld();
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkInitializationAttributes() {

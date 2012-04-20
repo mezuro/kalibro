@@ -3,6 +3,8 @@ package org.kalibro.core;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -54,20 +56,11 @@ public class KalibroLocalTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateSupportedRepositoryTypes() {
-		RepositoryType supported = mockRepositoryType(true);
-		RepositoryType unsupported = mockRepositoryType(false);
-
+	public void shouldRetrieveSupportedRepositoryTypes() {
+		Set<RepositoryType> supportedTypes = PowerMockito.mock(Set.class);
 		PowerMockito.mockStatic(RepositoryType.class);
-		PowerMockito.when(RepositoryType.values()).thenReturn(new RepositoryType[]{supported , unsupported});
-
-		assertDeepEquals(kalibroLocal.getSupportedRepositoryTypes(), supported);
-	}
-	
-	private RepositoryType mockRepositoryType(boolean supported) {
-		RepositoryType repositoryType = PowerMockito.mock(RepositoryType.class);
-		PowerMockito.when(repositoryType.isSupported()).thenReturn(supported);
-		return repositoryType;
+		PowerMockito.when(RepositoryType.supportedTypes()).thenReturn(supportedTypes);
+		assertSame(supportedTypes, kalibroLocal.getSupportedRepositoryTypes());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

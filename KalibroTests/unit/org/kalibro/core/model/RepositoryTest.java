@@ -2,7 +2,6 @@ package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
@@ -16,12 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(RepositoryType.class)
 public class RepositoryTest extends KalibroTestCase {
 
-	private Repository repository;
-
-	@Before
-	public void setUp() {
-		repository = new Repository();
-	}
+	private Repository repository = new Repository();
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testInitialization() {
