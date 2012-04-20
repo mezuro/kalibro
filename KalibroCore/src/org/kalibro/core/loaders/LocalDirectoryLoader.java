@@ -18,7 +18,7 @@ public class LocalDirectoryLoader extends ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("cp -ur " + repository.getAddress() + " " + loadPath);
+	public List<String> getLoadCommands(Repository repository, boolean update) {
+		return Arrays.asList("cp -ru " + repository.getAddress() + " .");
 	}
 }

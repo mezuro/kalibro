@@ -18,11 +18,11 @@ public class LocalZipLoader extends ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
+	public List<String> getLoadCommands(Repository repository, boolean update) {
 		String command = "unzip -u -o";
 		if (repository.hasAuthentication())
 			command += " -P " + repository.getPassword();
-		command += " " + repository.getAddress() + " -d " + loadPath;
+		command += " " + repository.getAddress() + " -d .";
 		return Arrays.asList(command);
 	}
 

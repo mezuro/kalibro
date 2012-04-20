@@ -18,20 +18,16 @@ public class SubversionLoader extends ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		String command = "svn checkout" + authentication(repository) + " " + repository.getAddress() + " " + loadPath;
-		return Arrays.asList(command);
-	}
-
-	@Override
-	public List<String> getUpdateCommands(Repository repository, String loadPath) {
-		String command = "svn update" + authentication(repository);
-		return Arrays.asList(command);
+	public List<String> getLoadCommands(Repository repository, boolean update) {
+		if (update)
+			return Arrays.asList("svn update" + authentication(repository));
+		return Arrays.asList("svn checkout" + authentication(repository) + " " + repository.getAddress() + " .");
 	}
 
 	private String authentication(Repository repository) {
+		String authentication = "";
 		if (repository.hasAuthentication())
-			return " --username " + repository.getUsername() + " --password " + repository.getPassword();
-		return "";
+			authentication += " --username " + repository.getUsername() + " --password " + repository.getPassword();
+		return authentication;
 	}
 }

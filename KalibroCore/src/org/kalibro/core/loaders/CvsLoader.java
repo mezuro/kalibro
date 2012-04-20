@@ -18,12 +18,9 @@ public class CvsLoader extends ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("cvs -z3 -d " + repository.getAddress() + " checkout -d " + loadPath + " -P .");
-	}
-
-	@Override
-	public List<String> getUpdateCommands(Repository repository, String loadPath) {
-		return Arrays.asList("cvs update");
+	public List<String> getLoadCommands(Repository repository, boolean update) {
+		if (update)
+			return Arrays.asList("cvs update");
+		return Arrays.asList("cvs -z3 -d " + repository.getAddress() + " checkout -d . -P .");
 	}
 }

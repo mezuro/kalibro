@@ -23,7 +23,9 @@ public class BazaarLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(String loadPath) {
-		return Arrays.asList("bzr branch --use-existing-dir " + repository.getAddress() + " " + loadPath);
+	protected List<String> expectedLoadCommands(boolean update) {
+		if (update)
+			return Arrays.asList("bzr pull --overwrite");
+		return Arrays.asList("bzr branch --use-existing-dir " + repository.getAddress() + " .");
 	}
 }

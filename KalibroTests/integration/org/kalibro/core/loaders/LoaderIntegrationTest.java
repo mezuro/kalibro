@@ -30,7 +30,8 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		//loader = getRepositoryType().getProjectLoader();
+		// TODO adapt
+		// loader = getRepositoryType().getProjectLoader();
 		repository = helloWorldRepository(getRepositoryType());
 		if (loader.supportsAuthentication()) {
 			repository.setUsername("USERNAME");
@@ -63,13 +64,13 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 	}
 
 	private void executeLoadCommands() {
-		for (String loadCommand : loader.getLoadCommands(repository, HELLO_WORLD_DIRECTORY.getAbsolutePath()))
-			executeCommand(loadCommand);
+//		for (String loadCommand : loader.getLoadCommands(repository, HELLO_WORLD_DIRECTORY.getAbsolutePath()))
+//			executeCommand(loadCommand);
 	}
 
 	private void executeUpdateCommands() {
-		for (String loadCommand : loader.getUpdateCommands(repository, HELLO_WORLD_DIRECTORY.getAbsolutePath()))
-			executeCommand(loadCommand);
+//		for (String loadCommand : loader.getUpdateCommands(repository, HELLO_WORLD_DIRECTORY.getAbsolutePath()))
+//			executeCommand(loadCommand);
 	}
 
 	protected void executeCommand(String command) {

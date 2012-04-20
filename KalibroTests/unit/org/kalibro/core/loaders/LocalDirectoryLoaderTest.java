@@ -23,7 +23,7 @@ public class LocalDirectoryLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(String loadPath) {
-		return Arrays.asList("cp -r " + repository.getAddress() + " " + loadPath);
+	protected List<String> expectedLoadCommands(boolean update) {
+		return Arrays.asList("cp -ru " + repository.getAddress() + " .");
 	}
 }

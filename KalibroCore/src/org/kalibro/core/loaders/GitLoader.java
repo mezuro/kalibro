@@ -18,12 +18,9 @@ public class GitLoader extends ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("git clone --depth=1 " + repository.getAddress() + " " + loadPath);
-	}
-
-	@Override
-	public List<String> getUpdateCommands(Repository repository, String loadPath) {
-		return Arrays.asList("git pull origin master");
+	public List<String> getLoadCommands(Repository repository, boolean update) {
+		if (update)
+			return Arrays.asList("git pull origin master");
+		return Arrays.asList("git clone " + repository.getAddress() + " .");
 	}
 }
