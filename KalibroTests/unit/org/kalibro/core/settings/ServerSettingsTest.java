@@ -27,7 +27,6 @@ public class ServerSettingsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultSettings() {
 		assertEquals(new File(Directories.kalibro(), "projects"), settings.getLoadDirectory());
-		assertTrue(settings.shouldRemoveSources());
 		assertDeepEquals(new DatabaseSettings(), settings.getDatabaseSettings());
 	}
 
@@ -36,7 +35,6 @@ public class ServerSettingsTest extends KalibroTestCase {
 		Map<?, ?> map = serverSettingsMap();
 		settings = new ServerSettings(map);
 		assertEquals(new File("/"), settings.getLoadDirectory());
-		assertFalse(settings.shouldRemoveSources());
 		assertDeepEquals(new DatabaseSettings(databaseSettingsMap()), settings.getDatabaseSettings());
 	}
 

@@ -18,9 +18,9 @@ public abstract class KalibroTestCase {
 	public static final File PROJECTS_DIRECTORY = new File(TESTS_DIRECTORY, "projects");
 	public static final File HELLO_WORLD_DIRECTORY = new File(PROJECTS_DIRECTORY, "HelloWorld-1.0");
 
-	protected static final int UNIT_TIMEOUT = 750;
-	protected static final int INTEGRATION_TIMEOUT = 2500;
-	protected static final int ACCEPTANCE_TIMEOUT = 10000;
+	protected static final long UNIT_TIMEOUT = 750;
+	protected static final long INTEGRATION_TIMEOUT = 2500;
+	protected static final long ACCEPTANCE_TIMEOUT = 10000;
 
 	private boolean waiting;
 

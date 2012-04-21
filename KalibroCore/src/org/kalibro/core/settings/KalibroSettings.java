@@ -82,10 +82,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		return serverSettings.getLoadDirectoryFor(project);
 	}
 
-	public boolean shouldRemoveSources() {
-		return serverSettings.shouldRemoveSources();
-	}
-
 	public DatabaseSettings getDatabaseSettings() {
 		return serverSettings.getDatabaseSettings();
 	}

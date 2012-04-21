@@ -23,7 +23,6 @@ public final class SettingsFixtures {
 	public static Map<?, ?> serverSettingsMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("load_directory", "/");
-		map.put("remove_sources", "false");
 		map.put("database", databaseSettingsMap());
 		return map;
 	}

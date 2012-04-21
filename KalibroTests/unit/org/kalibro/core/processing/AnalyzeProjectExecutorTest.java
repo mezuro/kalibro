@@ -88,7 +88,6 @@ public class AnalyzeProjectExecutorTest extends KalibroTestCase {
 	private KalibroSettings getTestSettings() {
 		KalibroSettings settings = new KalibroSettings();
 		settings.getServerSettings().setLoadDirectory(PROJECTS_DIRECTORY);
-		settings.getServerSettings().setRemoveSources(true);
 		return settings;
 	}
 }
