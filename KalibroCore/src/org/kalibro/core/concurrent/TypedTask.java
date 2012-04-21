@@ -26,9 +26,7 @@ public abstract class TypedTask<T> extends Task {
 	protected abstract T performAndGetResult() throws Throwable;
 
 	@Override
-	protected void reportTaskFinished(TaskReport report) {
-		long executionTime = report.getExecutionTime();
-		Throwable error = report.getError();
-		super.reportTaskFinished(new TypedTaskReport<T>(executionTime, error, result));
+	protected void setReport(long executionTime, Throwable error) {
+		report = new TypedTaskReport<T>(executionTime, error, result);
 	}
 }
