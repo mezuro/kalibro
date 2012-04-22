@@ -27,7 +27,7 @@ abstract class ProjectTaskExecutor implements TaskListener {
 
 	protected void updateProjectState(ProjectState newState) {
 		getProject().setState(newState);
-		saveProject();
+		Kalibro.getProjectDao().save(getProject());
 	}
 
 	protected abstract Task getTask();
@@ -47,13 +47,7 @@ abstract class ProjectTaskExecutor implements TaskListener {
 
 	private void reportError(Throwable error) {
 		getProject().setError(error);
-		saveProject();
-	}
-
-	private void saveProject() {
-		Project project = getProject();
-		Kalibro.getProjectDao().save(project);
-		Kalibro.fireProjectStateChanged(project);
+		Kalibro.getProjectDao().save(getProject());
 	}
 
 	protected Project getProject() {
