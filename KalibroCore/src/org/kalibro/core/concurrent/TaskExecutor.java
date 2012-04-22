@@ -20,29 +20,26 @@ class TaskExecutor {
 	}
 
 	protected void executeAndWait() {
-		try {
-			task.perform();
-		} catch (KalibroException exception) {
-			throw exception;
-		} catch (Throwable exception) {
-			throw new KalibroException("Error while " + task, exception);
-		}
+		task.run();
+		checkTaskReport(0);
 	}
 
 	protected void executeAndWait(long timeout) {
 		Timer timer = new Timer();
 		timer.schedule(new ThreadInterrupter(Thread.currentThread()), timeout);
-		try {
-			task.perform();
-		} catch (KalibroException exception) {
-			throw exception;
-		} catch (InterruptedException exception) {
-			throw new KalibroException("Timed out after " + timeout + " milliseconds while " + task, exception);
-		} catch (Throwable exception) {
-			throw new KalibroException("Error while " + task, exception);
-		} finally {
-			timer.cancel();
-		}
+		task.run();
+		timer.cancel();
+		checkTaskReport(timeout);
+	}
+
+	private void checkTaskReport(long timeout) {
+		Throwable error = task.getReport().getError();
+		if (error instanceof KalibroException)
+			throw (KalibroException) error;
+		if (error instanceof InterruptedException)
+			throw new KalibroException("Timed out after " + timeout + " milliseconds while " + task, error);
+		if (error != null)
+			throw new KalibroException("Error while " + task, error);
 	}
 
 	protected void executePeriodically(long period) {
