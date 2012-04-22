@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.util.DataTransferObject;
 
 @XmlRootElement(name = "ProjectResult")
@@ -16,6 +17,7 @@ public class ProjectResultXml implements DataTransferObject<ProjectResult> {
 	private ProjectXml project;
 	private Date date;
 	private Long loadTime;
+	private Long collectTime;
 	private Long analysisTime;
 	private ModuleNodeXml sourceTree;
 
@@ -27,6 +29,7 @@ public class ProjectResultXml implements DataTransferObject<ProjectResult> {
 		project = new ProjectXml(projectResult.getProject());
 		date = projectResult.getDate();
 		loadTime = projectResult.getLoadTime();
+		collectTime = projectResult.getCollectTime();
 		analysisTime = projectResult.getAnalysisTime();
 		sourceTree = new ModuleNodeXml(projectResult.getSourceTree());
 	}
@@ -35,8 +38,9 @@ public class ProjectResultXml implements DataTransferObject<ProjectResult> {
 	public ProjectResult convert() {
 		ProjectResult projectResult = new ProjectResult(project.convert());
 		projectResult.setDate(date);
-		projectResult.setLoadTime(loadTime);
-		projectResult.setAnalysisTime(analysisTime);
+		projectResult.setStateTime(ProjectState.LOADING, loadTime);
+		projectResult.setStateTime(ProjectState.COLLECTING, collectTime);
+		projectResult.setStateTime(ProjectState.ANALYZING, analysisTime);
 		projectResult.setSourceTree(sourceTree.convert());
 		return projectResult;
 	}

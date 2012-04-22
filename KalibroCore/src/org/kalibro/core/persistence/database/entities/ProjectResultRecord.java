@@ -9,6 +9,7 @@ import javax.persistence.*;
 import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "ProjectResult")
@@ -26,6 +27,9 @@ public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 	private Long loadTime;
 
 	@Column(nullable = false)
+	private Long collectTime;
+
+	@Column(nullable = false)
 	private Long analysisTime;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "projectResult", orphanRemoval = true)
@@ -39,6 +43,7 @@ public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 		project = new ProjectRecord(projectResult.getProject());
 		date = projectResult.getDate().getTime();
 		loadTime = projectResult.getLoadTime();
+		collectTime = projectResult.getCollectTime();
 		analysisTime = projectResult.getAnalysisTime();
 		initializeSourceTree(projectResult);
 	}
@@ -59,8 +64,9 @@ public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 	public ProjectResult convert() {
 		ProjectResult projectResult = new ProjectResult(project.convert());
 		projectResult.setDate(new Date(date));
-		projectResult.setLoadTime(loadTime);
-		projectResult.setAnalysisTime(analysisTime);
+		projectResult.setStateTime(ProjectState.LOADING, loadTime);
+		projectResult.setStateTime(ProjectState.COLLECTING, collectTime);
+		projectResult.setStateTime(ProjectState.ANALYZING, analysisTime);
 		convertSourceTree(projectResult);
 		return projectResult;
 	}

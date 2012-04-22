@@ -29,7 +29,7 @@ class AnalyzeProjectExecutor extends ProjectTaskExecutor {
 
 	@Override
 	protected void setTaskExecutionTime(long executionTime) {
-		projectResult.setAnalysisTime(executionTime);
+		projectResult.setStateTime(ProjectState.ANALYZING, executionTime);
 	}
 
 	@Override

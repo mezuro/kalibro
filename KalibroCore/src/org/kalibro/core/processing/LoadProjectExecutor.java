@@ -24,7 +24,7 @@ class LoadProjectExecutor extends ProjectTaskExecutor {
 
 	@Override
 	protected void setTaskExecutionTime(long executionTime) {
-		projectResult.setLoadTime(executionTime);
+		projectResult.setStateTime(ProjectState.LOADING, executionTime);
 	}
 
 	@Override
