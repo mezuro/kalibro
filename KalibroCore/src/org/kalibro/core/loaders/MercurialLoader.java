@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class MercurialLoader implements ProjectLoader {
+public class MercurialLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {
@@ -18,7 +18,9 @@ public class MercurialLoader implements ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("hg clone " + repository.getAddress() + " " + loadPath);
+	public List<String> getLoadCommands(Repository repository, boolean update) {
+		if (update)
+			return Arrays.asList("hg pull -u");
+		return Arrays.asList("hg clone " + repository.getAddress() + " .");
 	}
 }

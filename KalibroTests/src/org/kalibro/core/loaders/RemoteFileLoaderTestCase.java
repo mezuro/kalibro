@@ -1,17 +1,19 @@
 package org.kalibro.core.loaders;
 
-import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
+
+import org.kalibro.core.model.Repository;
 
 public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("wget --version", expectedExtractorValidationCommand());
+		List<String> expectedValidationCommands = new ArrayList<String>();
+		expectedValidationCommands.add("wget --version");
+		expectedValidationCommands.addAll(expectedLocalLoader().getValidationCommands());
+		return expectedValidationCommands;
 	}
-
-	protected abstract String expectedExtractorValidationCommand();
 
 	@Override
 	protected boolean shouldSupportAuthentication() {
@@ -19,15 +21,13 @@ public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(String loadPath) {
-		String temporaryFilePath = new File(new File(loadPath), "TEMP").getAbsolutePath();
-		String downloadCommand = "wget " +
-			"--user=" + repository.getUsername() + " --password=" + repository.getPassword() + " " +
-			repository.getAddress() + " -O " + temporaryFilePath;
-		String extractionCommand = expectedExtractionCommand(temporaryFilePath, loadPath);
-		String removal = "rm " + temporaryFilePath;
-		return Arrays.asList(downloadCommand, extractionCommand, removal);
+	protected List<String> expectedLoadCommands(boolean update) {
+		List<String> expectedLoadCommands = new ArrayList<String>();
+		expectedLoadCommands.add("wget --user=USERNAME --password=PASSWORD " + repository.getAddress() + " -O ./TEMP");
+		expectedLoadCommands.addAll(expectedLocalLoader().getLoadCommands(new Repository(null, "./TEMP"), update));
+		expectedLoadCommands.add("rm ./TEMP");
+		return expectedLoadCommands;
 	}
 
-	protected abstract String expectedExtractionCommand(String temporaryFilePath, String loadPath);
+	protected abstract ProjectLoader expectedLocalLoader();
 }

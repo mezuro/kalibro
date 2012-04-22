@@ -23,10 +23,10 @@ public class SubversionLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(String loadPath) {
-		String loadCommand = "svn checkout " +
-			"--username " + repository.getUsername() + " --password " + repository.getPassword() + " " +
-			repository.getAddress() + " " + loadPath;
-		return Arrays.asList(loadCommand);
+	protected List<String> expectedLoadCommands(boolean update) {
+		String authentication = "--username USERNAME --password PASSWORD";
+		if (update)
+			return Arrays.asList("svn update " + authentication);
+		return Arrays.asList("svn checkout " + authentication + " " + repository.getAddress() + " .");
 	}
 }

@@ -1,10 +1,8 @@
 package org.kalibro.core.loaders;
 
 import org.kalibro.core.model.enums.RepositoryType;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 
-@PrepareForTest(RemoteTarballLoader.class)
-public class RemoteTarballTest extends RemoteFileTest {
+public class RemoteTarballTest extends RemoteFileLoaderIntegrationTest {
 
 	@Override
 	protected RepositoryType getRepositoryType() {

@@ -23,7 +23,9 @@ public class CvsLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(String loadPath) {
-		return Arrays.asList("cvs -z3 -d " + repository.getAddress() + " checkout -d " + loadPath + " -P .");
+	protected List<String> expectedLoadCommands(boolean update) {
+		if (update)
+			return Arrays.asList("cvs update");
+		return Arrays.asList("cvs -z3 -d " + repository.getAddress() + " checkout -d . -P .");
 	}
 }

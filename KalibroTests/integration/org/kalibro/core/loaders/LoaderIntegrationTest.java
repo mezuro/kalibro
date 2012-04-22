@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -25,18 +24,17 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(FileProcessStreamLogger.class)
 public abstract class LoaderIntegrationTest extends KalibroTestCase {
 
-	protected ProjectLoader loader;
-	protected Repository repository;
+	private RepositoryType repositoryType;
+	private Repository repository;
 
 	@Before
 	public void setUp() {
-		loader = getRepositoryType().getProjectLoader();
-		repository = helloWorldRepository(getRepositoryType());
-		if (loader.supportsAuthentication()) {
+		repositoryType = getRepositoryType();
+		repository = newHelloWorldRepository(repositoryType);
+		if (repositoryType.supportsAuthentication()) {
 			repository.setUsername("USERNAME");
 			repository.setPassword("PASSWORD");
 		}
-		HELLO_WORLD_DIRECTORY.mkdirs();
 		MemberModifier.suppress(FileProcessStreamLogger.class.getMethods());
 	}
 
@@ -49,24 +47,22 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void validateLoaderInstallation() {
-		for (String validationCommand : loader.getValidationCommands())
-			executeCommand(validationCommand);
+		assertTrue(repositoryType.isSupported());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testLoad() {
-		for (String loadCommand : loader.getLoadCommands(repository, HELLO_WORLD_DIRECTORY.getAbsolutePath()))
-			executeCommand(loadCommand);
-		assertLoaded();
+		File loaded = load();
+		File updated = load();
+		assertEquals(updated.lastModified(), loaded.lastModified());
 	}
 
-	protected void executeCommand(String command) {
-		new CommandTask(command).executeAndWait(INTEGRATION_TIMEOUT);
-	}
-
-	private void assertLoaded() {
+	private File load() {
+		repository.load(HELLO_WORLD_DIRECTORY);
 		Iterator<File> files = FileUtils.iterateFiles(HELLO_WORLD_DIRECTORY, new String[]{"c"}, true);
-		assertEquals("HelloWorld.c", files.next().getName());
+		File loaded = files.next();
+		assertEquals("HelloWorld.c", loaded.getName());
 		assertFalse(files.hasNext());
+		return loaded;
 	}
 }
