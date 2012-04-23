@@ -42,10 +42,12 @@ public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 	public ProjectResultRecord(ProjectResult projectResult) {
 		project = new ProjectRecord(projectResult.getProject());
 		date = projectResult.getDate().getTime();
-		loadTime = projectResult.getLoadTime();
-		collectTime = projectResult.getCollectTime();
-		analysisTime = projectResult.getAnalysisTime();
-		initializeSourceTree(projectResult);
+		if (projectResult.isProcessed()) {
+			loadTime = projectResult.getLoadTime();
+			collectTime = projectResult.getCollectTime();
+			analysisTime = projectResult.getAnalysisTime();
+			initializeSourceTree(projectResult);
+		}
 	}
 
 	private void initializeSourceTree(ProjectResult projectResult) {

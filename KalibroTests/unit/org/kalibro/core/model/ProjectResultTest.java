@@ -45,6 +45,12 @@ public class ProjectResultTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveIfIsProcessed() {
+		assertTrue(result.isProcessed());
+		assertFalse(new ProjectResult(helloWorld()).isProcessed());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldValidateProjectProcessedOnRetrievingProcessData() {
 		checkKalibroException(new Task() {
 

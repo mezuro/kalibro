@@ -5,6 +5,7 @@ import static org.kalibro.core.model.enums.RepositoryType.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 import static org.powermock.reflect.Whitebox.*;
 
+import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,6 +24,11 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	public static void emmaCoverage() {
 		RepositoryType.values();
 		RepositoryType.valueOf("GIT");
+	}
+
+	@After
+	public void setUp() {
+		setInternalState(GIT, ProjectLoader.class, new GitLoader());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

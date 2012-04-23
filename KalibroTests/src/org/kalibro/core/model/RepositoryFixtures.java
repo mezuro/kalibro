@@ -26,8 +26,8 @@ public final class RepositoryFixtures {
 		newAddress(CVS, repositoriesPath + "HelloWorldCvs/");
 		newAddress(GIT, repositoriesPath + "HelloWorldGit/");
 		newAddress(MERCURIAL, repositoriesPath + "HelloWorldMercurial/");
-		newAddress(REMOTE_TARBALL, "httpe:/invalid.address/HelloWorld.tar.gz");
-		newAddress(REMOTE_ZIP, "httpe://invalid.address/HelloWorld.zip");
+		newAddress(REMOTE_TARBALL, "http:/invalid.address/HelloWorld.tar.gz");
+		newAddress(REMOTE_ZIP, "http://invalid.address/HelloWorld.zip");
 		newAddress(SUBVERSION, "file://" + repositoriesPath + "HelloWorldSubversion");
 	}
 

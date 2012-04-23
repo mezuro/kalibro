@@ -73,7 +73,11 @@ public class ProjectResult extends AbstractEntity<ProjectResult> {
 	}
 
 	private void assertProcessed() {
-		if (sourceTree == null)
+		if (!isProcessed())
 			throw new KalibroException("Project not yet processed: " + project.getName());
+	}
+
+	public boolean isProcessed() {
+		return sourceTree != null;
 	}
 }

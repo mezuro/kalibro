@@ -31,7 +31,6 @@ public class ProcessProjectTask extends Task {
 		ProjectResult projectResult = new LoadSourceTask(project).execute();
 		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).execute();
 		new AnalyzeResultsTask(projectResult, resultMap).execute();
-		Kalibro.getProjectResultDao().save(projectResult);
 		project.setState(ProjectState.READY);
 		Kalibro.getProjectDao().save(project);
 	}

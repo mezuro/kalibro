@@ -9,7 +9,7 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
 
-class AnalyzeResultsTask extends ProcessProjectSubtask<ProjectResult> {
+class AnalyzeResultsTask extends ProcessProjectSubtask<Object> {
 
 	private Map<Module, ModuleResult> resultMap;
 
@@ -24,11 +24,12 @@ class AnalyzeResultsTask extends ProcessProjectSubtask<ProjectResult> {
 	}
 
 	@Override
-	public ProjectResult performAndGetResult() {
+	public Object performAndGetResult() {
 		new SourceTreeBuilder(projectResult).buildSourceTree(resultMap.keySet());
 		new ResultsAggregator(projectResult, resultMap).aggregate();
+		Kalibro.getProjectResultDao().save(projectResult);
 		saveModuleResults();
-		return projectResult;
+		return null;
 	}
 
 	private void saveModuleResults() {

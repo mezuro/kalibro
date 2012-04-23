@@ -21,7 +21,7 @@ class TaskExecutor {
 
 	protected void executeAndWait() {
 		task.run();
-		checkTaskReport(0);
+		checkTaskReport();
 	}
 
 	protected void executeAndWait(long timeout) {
@@ -32,11 +32,15 @@ class TaskExecutor {
 		checkTaskReport(timeout);
 	}
 
+	private void checkTaskReport() {
+		checkTaskReport(0);
+	}
+
 	private void checkTaskReport(long timeout) {
 		Throwable error = task.getReport().getError();
 		if (error instanceof KalibroException)
 			throw (KalibroException) error;
-		if (error instanceof InterruptedException)
+		if (timeout > 0 && error instanceof InterruptedException)
 			throw new KalibroException("Timed out after " + timeout + " milliseconds while " + task, error);
 		if (error != null)
 			throw new KalibroException("Error while " + task, error);

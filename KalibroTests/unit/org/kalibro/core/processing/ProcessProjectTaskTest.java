@@ -17,7 +17,6 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ProjectDao;
-import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -28,10 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ProcessProjectTaskTest extends KalibroTestCase {
 
 	private Project project;
-	private ProjectResult projectResult;
-
 	private ProjectDao projectDao;
-	private ProjectResultDao projectResultDao;
 
 	private LoadSourceTask loadTask;
 	private CollectMetricsTask collectTask;
@@ -43,7 +39,6 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 	public void setUp() throws Exception {
 		project = newHelloWorld();
 		project.setState(ProjectState.NEW);
-		projectResult = mock(ProjectResult.class);
 		mockKalibro();
 		mockSubtasks();
 		processTask = new ProcessProjectTask(PROJECT_NAME);
@@ -51,17 +46,16 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 
 	private void mockKalibro() {
 		projectDao = mock(ProjectDao.class);
-		projectResultDao = mock(ProjectResultDao.class);
 		mockStatic(Kalibro.class);
 		when(Kalibro.getProjectDao()).thenReturn(projectDao);
 		when(projectDao.getProject(PROJECT_NAME)).thenReturn(project);
-		when(Kalibro.getProjectResultDao()).thenReturn(projectResultDao);
 	}
 
 	private void mockSubtasks() throws Exception {
 		loadTask = mock(LoadSourceTask.class);
 		collectTask = mock(CollectMetricsTask.class);
 		analyzeTask = mock(AnalyzeResultsTask.class);
+		ProjectResult projectResult = mock(ProjectResult.class);
 		Map<Module, ModuleResult> resultMap = mock(Map.class);
 		whenNew(LoadSourceTask.class).withArguments(project).thenReturn(loadTask);
 		when(loadTask.execute()).thenReturn(projectResult);
@@ -78,12 +72,6 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 		order.verify(loadTask).execute();
 		order.verify(collectTask).execute();
 		order.verify(analyzeTask).execute();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveProjectResult() {
-		processTask.perform();
-		Mockito.verify(projectResultDao).save(projectResult);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
