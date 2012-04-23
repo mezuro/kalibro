@@ -1,14 +1,15 @@
 package org.kalibro.core.processing;
 
+import java.util.Map;
+
 import org.kalibro.Kalibro;
 import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.model.Module;
+import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
+import org.kalibro.core.model.ProjectResult;
+import org.kalibro.core.model.enums.ProjectState;
 
-/*
- * TODO Make possible to add listener to be notified when whole process finishes. This is desirable for e-mail
- * notification and integration-testing the whole process. Not possible yet because each sub-task is run in different
- * threads with different listeners, and this task just starts the others.
- */
 public class ProcessProjectTask extends Task {
 
 	private Project project;
@@ -19,6 +20,24 @@ public class ProcessProjectTask extends Task {
 
 	@Override
 	public void perform() {
-		new LoadProjectExecutor(project).execute();
+		try {
+			processProject();
+		} catch (Throwable error) {
+			reportError(error);
+		}
+	}
+
+	private void processProject() {
+		ProjectResult projectResult = new LoadSourceTask(project).execute();
+		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).execute();
+		new AnalyzeResultsTask(projectResult, resultMap).execute();
+		Kalibro.getProjectResultDao().save(projectResult);
+		project.setState(ProjectState.READY);
+		Kalibro.getProjectDao().save(project);
+	}
+
+	private void reportError(Throwable error) {
+		project.setError(error);
+		Kalibro.getProjectDao().save(project);
 	}
 }
