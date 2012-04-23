@@ -6,6 +6,8 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
+// TODO Search for better way to create a temporary file
+// TODO Search method to download only if updated
 abstract class RemoteFileLoader extends ProjectLoader {
 
 	private ProjectLoader localLoader = createLocalLoader();
