@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-// TODO Search method to download only if updated
 abstract class RemoteFileLoader extends ProjectLoader {
 
 	private ProjectLoader localLoader = createLocalLoader();
@@ -37,7 +36,7 @@ abstract class RemoteFileLoader extends ProjectLoader {
 	}
 
 	private String getDownloadCommand(Repository repository, String temporaryFilePath) {
-		String downloadCommand = "wget ";
+		String downloadCommand = "wget -N ";
 		if (repository.hasAuthentication())
 			downloadCommand += "--user=" + repository.getUsername() + " --password=" + repository.getPassword() + " ";
 		downloadCommand += repository.getAddress() + " -O " + temporaryFilePath;

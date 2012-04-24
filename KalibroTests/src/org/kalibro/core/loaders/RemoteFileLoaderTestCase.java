@@ -7,7 +7,7 @@ import org.kalibro.core.model.Repository;
 
 public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 
-	private static final String DOWNLOAD_PREFIX = "wget --user=USERNAME --password=PASSWORD ";
+	private static final String DOWNLOAD_PREFIX = "wget -N --user=USERNAME --password=PASSWORD ";
 
 	@Override
 	protected List<String> expectedValidationCommands() {

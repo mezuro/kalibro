@@ -51,7 +51,7 @@ public class RemoteFileLoaderTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkLoadCommands() {
 		assertDeepEquals(remoteLoader.getLoadCommands(repository, false),
-			"wget --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
+			"wget -N --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
 			LOCAL_LOAD_COMMAND, "rm " + temporaryFilePath());
 	}
 
