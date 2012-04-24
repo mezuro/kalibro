@@ -24,8 +24,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(FileProcessStreamLogger.class)
 public abstract class LoaderIntegrationTest extends KalibroTestCase {
 
-	private RepositoryType repositoryType;
-	private Repository repository;
+	protected RepositoryType repositoryType;
+	protected Repository repository;
 
 	@Before
 	public void setUp() {
@@ -57,7 +57,7 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 		assertEquals(updated.lastModified(), loaded.lastModified());
 	}
 
-	private File load() {
+	protected File load() {
 		repository.load(HELLO_WORLD_DIRECTORY);
 		Iterator<File> files = FileUtils.iterateFiles(HELLO_WORLD_DIRECTORY, new String[]{"c"}, true);
 		File loaded = files.next();

@@ -10,6 +10,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.concurrent.Task;
 
 public class ProjectResultTest extends KalibroTestCase {
 
@@ -27,6 +28,7 @@ public class ProjectResultTest extends KalibroTestCase {
 		assertDeepEquals(helloWorld(), result.getProject());
 		assertSame(date, result.getDate());
 		assertEquals(0, result.getLoadTime().longValue());
+		assertEquals(0, result.getCollectTime().longValue());
 		assertEquals(0, result.getAnalysisTime().longValue());
 		assertDeepEquals(helloWorldRoot(), result.getSourceTree());
 	}
@@ -40,5 +42,22 @@ public class ProjectResultTest extends KalibroTestCase {
 		ProjectResult result2 = new ProjectResult(new Project());
 
 		assertSorted(result1, result2, result3, result4);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveIfIsProcessed() {
+		assertTrue(result.isProcessed());
+		assertFalse(new ProjectResult(helloWorld()).isProcessed());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldValidateProjectProcessedOnRetrievingProcessData() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				new ProjectResult(helloWorld()).getSourceTree();
+			}
+		}, "Project not yet processed: " + result.getProject().getName());
 	}
 }
