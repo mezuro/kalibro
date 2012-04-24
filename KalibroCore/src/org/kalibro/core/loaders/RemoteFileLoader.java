@@ -6,7 +6,6 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-// TODO Search for better way to create a temporary file
 // TODO Search method to download only if updated
 abstract class RemoteFileLoader extends ProjectLoader {
 
@@ -29,7 +28,7 @@ abstract class RemoteFileLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getLoadCommands(Repository repository, boolean update) {
-		String temporaryFilePath = "." + File.separator + "TEMP";
+		String temporaryFilePath = "." + File.separator + "." + hashCode();
 		List<String> loadCommands = new ArrayList<String>();
 		loadCommands.add(getDownloadCommand(repository, temporaryFilePath));
 		loadCommands.addAll(localLoader.getLoadCommands(new Repository(null, temporaryFilePath), update));

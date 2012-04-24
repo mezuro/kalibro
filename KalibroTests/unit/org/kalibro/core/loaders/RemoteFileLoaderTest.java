@@ -51,8 +51,8 @@ public class RemoteFileLoaderTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkLoadCommands() {
 		assertDeepEquals(remoteLoader.getLoadCommands(repository, false),
-			"wget --user=USERNAME --password=PASSWORD " + ADDRESS + " -O ./TEMP",
-			LOCAL_LOAD_COMMAND, "rm ./TEMP");
+			"wget --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
+			LOCAL_LOAD_COMMAND, "rm " + temporaryFilePath());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -61,7 +61,11 @@ public class RemoteFileLoaderTest extends KalibroTestCase {
 
 		ArgumentCaptor<Repository> captor = ArgumentCaptor.forClass(Repository.class);
 		Mockito.verify(localLoader).getLoadCommands(captor.capture(), eq(false));
-		assertEquals("./TEMP", captor.getValue().getAddress());
+		assertEquals(temporaryFilePath(), captor.getValue().getAddress());
+	}
+
+	private String temporaryFilePath() {
+		return "./." + remoteLoader.hashCode();
 	}
 
 	private class FakeRemoteLoader extends RemoteFileLoader {

@@ -7,6 +7,8 @@ import org.kalibro.core.model.Repository;
 
 public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 
+	private static final String DOWNLOAD_PREFIX = "wget --user=USERNAME --password=PASSWORD ";
+
 	@Override
 	protected List<String> expectedValidationCommands() {
 		List<String> expectedValidationCommands = new ArrayList<String>();
@@ -22,10 +24,12 @@ public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedLoadCommands(boolean update) {
+		String temporaryFilePath = "./." + loader.hashCode();
+		Repository localRepository = new Repository(null, temporaryFilePath);
 		List<String> expectedLoadCommands = new ArrayList<String>();
-		expectedLoadCommands.add("wget --user=USERNAME --password=PASSWORD " + repository.getAddress() + " -O ./TEMP");
-		expectedLoadCommands.addAll(expectedLocalLoader().getLoadCommands(new Repository(null, "./TEMP"), update));
-		expectedLoadCommands.add("rm ./TEMP");
+		expectedLoadCommands.add(DOWNLOAD_PREFIX + repository.getAddress() + " -O " + temporaryFilePath);
+		expectedLoadCommands.addAll(expectedLocalLoader().getLoadCommands(localRepository, update));
+		expectedLoadCommands.add("rm " + temporaryFilePath);
 		return expectedLoadCommands;
 	}
 
