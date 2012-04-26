@@ -16,8 +16,8 @@ public final class CVSAnalyStub {
 	public static BaseTool getBaseTool() {
 		BaseTool baseTool = new BaseTool("CVSAnaly");
 		baseTool.setCollectorClass(CVSAnalyMetricCollector.class);
-		for (CVSAnalyMetric metric : CVSAnalyMetric.values())
-			baseTool.addSupportedMetric(metric.getNativeMetric());
+		for (NativeMetric metric : getSupportedMetrics())
+			baseTool.addSupportedMetric(metric);
 		return baseTool;
 	}
 
