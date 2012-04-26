@@ -31,7 +31,6 @@ abstract class RemoteFileLoader extends ProjectLoader {
 		List<String> loadCommands = new ArrayList<String>();
 		loadCommands.add(getDownloadCommand(repository, temporaryFilePath));
 		loadCommands.addAll(localLoader.getLoadCommands(new Repository(null, temporaryFilePath), update));
-		loadCommands.add("rm " + temporaryFilePath);
 		return loadCommands;
 	}
 
