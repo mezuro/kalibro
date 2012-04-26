@@ -10,12 +10,7 @@ public class RemoteTarballLoaderTest extends RemoteFileLoaderTestCase {
 	}
 
 	@Override
-	protected String expectedExtractorValidationCommand() {
-		return "tar --version";
-	}
-
-	@Override
-	protected String expectedExtractionCommand(String temporaryFilePath, String loadPath) {
-		return "tar -xf " + temporaryFilePath + " -C " + loadPath;
+	protected ProjectLoader expectedLocalLoader() {
+		return new LocalTarballLoader();
 	}
 }

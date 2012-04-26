@@ -21,6 +21,7 @@ public class RawProjectXml implements DataTransferObject<Project> {
 	@XmlElement(required = true)
 	private RepositoryXml repository;
 
+	@XmlElement(required = true)
 	private String configurationName;
 
 	public RawProjectXml() {

@@ -48,7 +48,7 @@ public class SourceTreeBuilderTest extends KalibroTestCase {
 	}
 
 	private ModuleNode getSourceTree(Module... modules) {
-		assertNull(projectResult.getSourceTree());
+		assertFalse(projectResult.isProcessed());
 		treeBuilder.buildSourceTree(Arrays.asList(modules));
 		return projectResult.getSourceTree();
 	}

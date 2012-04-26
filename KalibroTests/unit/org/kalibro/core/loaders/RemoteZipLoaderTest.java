@@ -10,12 +10,7 @@ public class RemoteZipLoaderTest extends RemoteFileLoaderTestCase {
 	}
 
 	@Override
-	protected String expectedExtractorValidationCommand() {
-		return "unzip -v";
-	}
-
-	@Override
-	protected String expectedExtractionCommand(String temporaryFilePath, String loadPath) {
-		return "unzip " + temporaryFilePath + " -d " + loadPath;
+	protected ProjectLoader expectedLocalLoader() {
+		return new LocalZipLoader();
 	}
 }

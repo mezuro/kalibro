@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class BazaarLoader implements ProjectLoader {
+public class BazaarLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {
@@ -18,7 +18,9 @@ public class BazaarLoader implements ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("bzr branch --use-existing-dir " + repository.getAddress() + " " + loadPath);
+	public List<String> getLoadCommands(Repository repository, boolean update) {
+		if (update)
+			return Arrays.asList("bzr pull --overwrite");
+		return Arrays.asList("bzr branch --use-existing-dir " + repository.getAddress() + " .");
 	}
 }

@@ -2,19 +2,26 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(Kalibro.class)
 public class ProjectDatabaseDaoTest extends KalibroTestCase {
 
 	private Project project;
@@ -25,12 +32,14 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		project = helloWorld();
-		databaseManager = PowerMockito.mock(DatabaseManager.class);
-		dao = PowerMockito.spy(new ProjectDatabaseDao(databaseManager));
+		databaseManager = mock(DatabaseManager.class);
+		dao = spy(new ProjectDatabaseDao(databaseManager));
+		mockStatic(Kalibro.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
+		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		dao.save(project);
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
@@ -39,21 +48,40 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldFireIfStateChanged() {
+		doReturn(new ArrayList<String>()).when(dao).getAllNames();
+		dao.save(project);
+
+		verifyStatic();
+		Kalibro.fireProjectStateChanged(project);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotFireIfStateDidNotChange() {
+		doReturn(Arrays.asList(PROJECT_NAME)).when(dao).getAllNames();
+		doReturn(project).when(dao).getByName(PROJECT_NAME);
+		dao.save(project);
+
+		verifyStatic(Mockito.never());
+		Kalibro.fireProjectStateChanged(project);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllProjectNames() {
-		PowerMockito.doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
+		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
 		assertDeepEquals(dao.getProjectNames(), "4", "2");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetProjectByName() {
-		PowerMockito.doReturn(project).when(dao).getByName("42");
+		doReturn(project).when(dao).getByName("42");
 		assertSame(project, dao.getProject("42"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveProjectByNameAndDependentEntities() {
-		PowerMockito.doReturn(project).when(dao).getByName("42");
-		Query<?> query = PowerMockito.mock(Query.class);
+		doReturn(project).when(dao).getByName("42");
+		Query<?> query = mock(Query.class);
 		mockQuery("MetricResult", "module.projectResult.project.name", query);
 		mockQuery("Module", "projectResult.project.name", query);
 		mockQuery("ProjectResult", "project.name", query);
@@ -74,6 +102,6 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 
 	private void mockQuery(String table, String projectNameField, Query<?> query) {
 		String queryText = "DELETE FROM " + table + " t WHERE t." + projectNameField + " = :projectName";
-		PowerMockito.doReturn(query).when(dao).createRecordQuery(queryText);
+		doReturn(query).when(dao).createRecordQuery(queryText);
 	}
 }

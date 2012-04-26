@@ -1,6 +1,8 @@
 package org.kalibro.spago;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.*;
 import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
@@ -15,7 +17,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.model.*;
+import org.kalibro.core.model.ModuleResult;
+import org.kalibro.core.model.ModuleResultFixtures;
+import org.kalibro.core.model.Project;
+import org.kalibro.core.model.ProjectResult;
 import org.kalibro.service.KalibroEndpoint;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.ProjectEndpoint;
@@ -71,7 +76,7 @@ public class KalibroClientForSpagoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSaveAndProcess() {
-		Project project = ProjectFixtures.helloWorld();
+		Project project = helloWorld();
 		client.saveAndProcess(project);
 
 		ArgumentCaptor<RawProjectXml> captor = ArgumentCaptor.forClass(RawProjectXml.class);
@@ -82,8 +87,8 @@ public class KalibroClientForSpagoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetLastApplicationResult() {
-		Project project = ProjectFixtures.helloWorld();
-		ProjectResult projectResult = new ProjectResult(project);
+		Project project = helloWorld();
+		ProjectResult projectResult = helloWorldResult();
 		mockProjectResult(projectResult);
 		ModuleResult moduleResult = mockModuleResult(projectResult);
 

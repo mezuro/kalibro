@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.model.Repository;
 
-public class GitLoader implements ProjectLoader {
+public class GitLoader extends ProjectLoader {
 
 	@Override
 	public List<String> getValidationCommands() {
@@ -18,7 +18,9 @@ public class GitLoader implements ProjectLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, String loadPath) {
-		return Arrays.asList("git clone --depth=1 " + repository.getAddress() + " " + loadPath);
+	public List<String> getLoadCommands(Repository repository, boolean update) {
+		if (update)
+			return Arrays.asList("git pull origin master");
+		return Arrays.asList("git clone " + repository.getAddress() + " .");
 	}
 }

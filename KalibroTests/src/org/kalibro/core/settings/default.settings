@@ -7,7 +7,6 @@ client:
 
 server:
     load_directory: ~/.kalibro/projects # Projects will be loaded in this directory before analysis
-    remove_sources: true # If true, removes analyzed source code from the directory specified in the previous line
     database:
         type: MYSQL # Possibilities: APACHE_DERBY MYSQL
         jdbc_url: "jdbc:mysql://localhost:3306/kalibro"

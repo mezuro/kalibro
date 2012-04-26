@@ -6,7 +6,8 @@ public enum ProjectState {
 
 	NEW("Project $projectName was not processed"),
 	LOADING("Loading $projectName from repository"),
-	ANALYZING("Calculating metric results for $projectName"),
+	COLLECTING("Collecting metric values for $projectName"),
+	ANALYZING("Processing metric results for $projectName"),
 	READY("Processing of $projectName done"),
 	ERROR("Error while processing $projectName");
 

@@ -10,6 +10,8 @@ public abstract class Task implements Runnable {
 	private TaskListener listener;
 	private TaskExecutor executor;
 
+	protected TaskReport report;
+
 	public Task() {
 		this.executor = new TaskExecutor(this);
 	}
@@ -43,8 +45,9 @@ public abstract class Task implements Runnable {
 		long start = System.currentTimeMillis();
 		Throwable error = performAndGetError();
 		long executionTime = System.currentTimeMillis() - start;
+		setReport(executionTime, error);
 		if (listener != null)
-			reportTaskFinished(new TaskReport(executionTime, error));
+			reportTaskFinished();
 	}
 
 	private Throwable performAndGetError() {
@@ -58,7 +61,15 @@ public abstract class Task implements Runnable {
 
 	protected abstract void perform() throws Throwable;
 
-	protected void reportTaskFinished(final TaskReport report) {
+	protected void setReport(long executionTime, Throwable error) {
+		report = new TaskReport(executionTime, error);
+	}
+
+	public TaskReport getReport() {
+		return report;
+	}
+
+	protected void reportTaskFinished() {
 		new Thread(new Runnable() {
 
 			@Override

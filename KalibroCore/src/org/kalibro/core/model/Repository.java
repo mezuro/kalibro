@@ -1,6 +1,6 @@
 package org.kalibro.core.model;
 
-import java.util.List;
+import java.io.File;
 
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -31,8 +31,8 @@ public class Repository extends AbstractEntity<Repository> {
 		return ! (username.isEmpty() && password.isEmpty());
 	}
 
-	public List<String> getLoadCommands(String loadPath) {
-		return type.getProjectLoader().getLoadCommands(this, loadPath);
+	public void load(File loadDirectory) {
+		type.load(this, loadDirectory);
 	}
 
 	public RepositoryType getType() {

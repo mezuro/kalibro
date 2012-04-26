@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.*;
+import java.util.regex.Pattern;
 
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.abstracts.AbstractEntity;
@@ -17,9 +18,9 @@ public abstract class KalibroTestCase {
 	public static final File PROJECTS_DIRECTORY = new File(TESTS_DIRECTORY, "projects");
 	public static final File HELLO_WORLD_DIRECTORY = new File(PROJECTS_DIRECTORY, "HelloWorld-1.0");
 
-	protected static final int UNIT_TIMEOUT = 1200;
-	protected static final int INTEGRATION_TIMEOUT = 2500;
-	protected static final int ACCEPTANCE_TIMEOUT = 10000;
+	protected static final long UNIT_TIMEOUT = 750;
+	protected static final long INTEGRATION_TIMEOUT = 2500;
+	protected static final long ACCEPTANCE_TIMEOUT = 10000;
 
 	private boolean waiting;
 
@@ -34,10 +35,6 @@ public abstract class KalibroTestCase {
 		notify();
 	}
 
-	protected void assertDoubleEquals(Double expected, Double actual) {
-		assertEquals(expected, actual, 1E-10);
-	}
-
 	protected <E extends Comparable<? super E>> void assertSorted(E... sortedElements) {
 		assertSorted(Arrays.asList(sortedElements));
 	}
@@ -50,25 +47,13 @@ public abstract class KalibroTestCase {
 		assertEquals(expected, actual);
 	}
 
-	protected <T> void assertDeepEquals(Collection<T> actual, T... expected) {
-		assertDeepEquals(Arrays.asList(expected), actual);
+	protected void assertMatches(String regularExpression, String string) {
+		assertMatches(Pattern.compile(regularExpression), string);
 	}
 
-	protected <T> void assertDeepEquals(Collection<T> expected, Collection<T> actual) {
-		assertDeepEquals(new CollectionWrapper<T>(expected), new CollectionWrapper<T>(actual));
-	}
-
-	protected <K, V> void assertDeepEquals(Map<K, V> expected, Map<K, V> actual) {
-		assertDeepEquals(new MapWrapper<K, V>(expected), new MapWrapper<K, V>(actual));
-	}
-
-	protected void assertDeepEquals(AbstractEntity<?> expected, AbstractEntity<?> actual) {
-		if (!expected.deepEquals(actual)) {
-			String actualText = (actual == null) ? "null" : actual.deepPrint();
-			String expectedText = expected.deepPrint();
-			assertEquals(expectedText, actualText);
-			fail("EXPECTED:\n" + expected.deepPrint() + "\nBUT WAS:\n" + actualText);
-		}
+	protected void assertMatches(Pattern pattern, String string) {
+		String message = "Expected to match expression:\n" + pattern.pattern() + "\nbut was:\n" + string;
+		assertTrue(message, pattern.matcher(string).matches());
 	}
 
 	protected void checkException(Task task, Class<? extends Throwable> exceptionClass) {
@@ -103,6 +88,31 @@ public abstract class KalibroTestCase {
 
 	protected void assertClassEquals(Class<?> expectedClass, Object object) {
 		assertEquals(expectedClass, object.getClass());
+	}
+
+	protected void assertDoubleEquals(Double expected, Double actual) {
+		assertEquals(expected, actual, 1E-10);
+	}
+
+	protected <T> void assertDeepEquals(Collection<T> actual, T... expected) {
+		assertDeepEquals(Arrays.asList(expected), actual);
+	}
+
+	protected <T> void assertDeepEquals(Collection<T> expected, Collection<T> actual) {
+		assertDeepEquals(new CollectionWrapper<T>(expected), new CollectionWrapper<T>(actual));
+	}
+
+	protected <K, V> void assertDeepEquals(Map<K, V> expected, Map<K, V> actual) {
+		assertDeepEquals(new MapWrapper<K, V>(expected), new MapWrapper<K, V>(actual));
+	}
+
+	protected void assertDeepEquals(AbstractEntity<?> expected, AbstractEntity<?> actual) {
+		if (!expected.deepEquals(actual)) {
+			String actualText = (actual == null) ? "null" : actual.deepPrint();
+			String expectedText = expected.deepPrint();
+			assertEquals(expectedText, actualText);
+			fail("EXPECTED:\n" + expected.deepPrint() + "\nBUT WAS:\n" + actualText);
+		}
 	}
 
 	private class CollectionWrapper<T> extends AbstractEntity<CollectionWrapper<T>> {

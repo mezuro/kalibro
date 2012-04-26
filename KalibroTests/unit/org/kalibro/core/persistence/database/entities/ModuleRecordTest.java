@@ -1,6 +1,7 @@
 package org.kalibro.core.persistence.database.entities;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
 
 import java.util.Arrays;
@@ -10,7 +11,6 @@ import java.util.Date;
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleFixtures;
 import org.kalibro.core.model.ModuleNode;
 import org.kalibro.core.model.ModuleResult;
 
@@ -40,7 +40,7 @@ public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConvertIntoModuleResult() {
 		Date date = new Date();
-		Module module = ModuleFixtures.helloWorldClass();
+		Module module = helloWorldClass();
 		ModuleNode moduleNode = new ModuleNode(module);
 		ModuleRecord record = new ModuleRecord(moduleNode, "", date);
 		assertDeepEquals(new ModuleResult(module, date), record.convertIntoModuleResult());

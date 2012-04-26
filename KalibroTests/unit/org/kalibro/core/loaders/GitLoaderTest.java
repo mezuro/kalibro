@@ -23,7 +23,9 @@ public class GitLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	public List<String> expectedLoadCommands(String loadPath) {
-		return Arrays.asList("git clone --depth=1 " + repository.getAddress() + " " + loadPath);
+	public List<String> expectedLoadCommands(boolean update) {
+		if (update)
+			return Arrays.asList("git pull origin master");
+		return Arrays.asList("git clone " + repository.getAddress() + " .");
 	}
 }

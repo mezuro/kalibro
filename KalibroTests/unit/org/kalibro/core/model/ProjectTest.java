@@ -1,26 +1,23 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.kalibro.core.model.enums.ProjectState.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.ProjectState;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
 
 public class ProjectTest extends KalibroTestCase {
 
-	private Project project;
-
-	@Before
-	public void setUp() {
-		project = ProjectFixtures.newHelloWorld();
-	}
+	private Project project = newHelloWorld();
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkInitializationAttributes() {
@@ -40,10 +37,11 @@ public class ProjectTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetLoadCommandsFromRepository() {
-		String helloWorldPath = HELLO_WORLD_DIRECTORY.getAbsolutePath();
-		List<String> expected = project.getRepository().getLoadCommands(helloWorldPath);
-		assertDeepEquals(expected, project.getLoadCommands(helloWorldPath));
+	public void shouldLoadRepository() {
+		Repository repository = PowerMockito.mock(Repository.class);
+		project.setRepository(repository);
+		project.load(HELLO_WORLD_DIRECTORY);
+		Mockito.verify(repository).load(HELLO_WORLD_DIRECTORY);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

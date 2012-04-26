@@ -19,6 +19,7 @@ public class ProjectStateTest extends KalibroTestCase {
 	public void testToString() {
 		assertEquals("New", "" + NEW);
 		assertEquals("Loading", "" + LOADING);
+		assertEquals("Collecting", "" + COLLECTING);
 		assertEquals("Analyzing", "" + ANALYZING);
 		assertEquals("Ready", "" + READY);
 		assertEquals("Error", "" + ERROR);
@@ -28,6 +29,7 @@ public class ProjectStateTest extends KalibroTestCase {
 	public void testIsTemporary() {
 		assertFalse(NEW.isTemporary());
 		assertTrue(LOADING.isTemporary());
+		assertTrue(COLLECTING.isTemporary());
 		assertTrue(ANALYZING.isTemporary());
 		assertFalse(READY.isTemporary());
 		assertFalse(ERROR.isTemporary());
@@ -38,7 +40,8 @@ public class ProjectStateTest extends KalibroTestCase {
 		String projectName = "HelloWorld-1.0";
 		assertEquals("Project HelloWorld-1.0 was not processed", NEW.getMessage(projectName));
 		assertEquals("Loading HelloWorld-1.0 from repository", LOADING.getMessage(projectName));
-		assertEquals("Calculating metric results for HelloWorld-1.0", ANALYZING.getMessage(projectName));
+		assertEquals("Collecting metric values for HelloWorld-1.0", COLLECTING.getMessage(projectName));
+		assertEquals("Processing metric results for HelloWorld-1.0", ANALYZING.getMessage(projectName));
 		assertEquals("Processing of HelloWorld-1.0 done", READY.getMessage(projectName));
 		assertEquals("Error while processing HelloWorld-1.0", ERROR.getMessage(projectName));
 	}

@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
+import org.powermock.reflect.Whitebox;
 
 public abstract class ProjectLoaderTestCase extends KalibroTestCase {
 
@@ -18,8 +19,9 @@ public abstract class ProjectLoaderTestCase extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		loader = getRepositoryType().getProjectLoader();
-		repository = helloWorldRepository(getRepositoryType());
+		RepositoryType repositoryType = getRepositoryType();
+		loader = Whitebox.getInternalState(repositoryType, ProjectLoader.class);
+		repository = helloWorldRepository(repositoryType);
 		if (loader.supportsAuthentication()) {
 			repository.setUsername("USERNAME");
 			repository.setPassword("PASSWORD");
@@ -44,9 +46,9 @@ public abstract class ProjectLoaderTestCase extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkLoadCommands() {
-		String loadPath = HELLO_WORLD_DIRECTORY.getAbsolutePath();
-		assertDeepEquals(expectedLoadCommands(loadPath), loader.getLoadCommands(repository, loadPath));
+		assertDeepEquals(expectedLoadCommands(true), loader.getLoadCommands(repository, true));
+		assertDeepEquals(expectedLoadCommands(false), loader.getLoadCommands(repository, false));
 	}
 
-	protected abstract List<String> expectedLoadCommands(String loadPath);
+	protected abstract List<String> expectedLoadCommands(boolean update);
 }

@@ -23,7 +23,7 @@ public class LocalTarballLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(String loadPath) {
-		return Arrays.asList("tar -xf " + repository.getAddress() + " -C " + loadPath);
+	protected List<String> expectedLoadCommands(boolean update) {
+		return Arrays.asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C .");
 	}
 }

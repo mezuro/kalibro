@@ -1,6 +1,6 @@
 package org.kalibro.core.model;
 
-import java.util.List;
+import java.io.File;
 
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
@@ -68,8 +68,8 @@ public class Project extends AbstractEntity<Project> {
 		this.configurationName = configurationName;
 	}
 
-	public List<String> getLoadCommands(String loadPath) {
-		return repository.getLoadCommands(loadPath);
+	public void load(File loadDirectory) {
+		repository.load(loadDirectory);
 	}
 
 	public Repository getRepository() {

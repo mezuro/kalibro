@@ -51,11 +51,16 @@ public final class ModuleResultFixtures {
 	}
 
 	public static Collection<ModuleResult> newHelloWorldResults(Date date) {
+		Map<Module, ModuleResult> moduleResultMap = newHelloWorldResultMap(date);
+		new ResultsAggregator(newHelloWorldResult(date), moduleResultMap).aggregate();
+		return moduleResultMap.values();
+	}
+
+	public static Map<Module, ModuleResult> newHelloWorldResultMap(Date date) {
 		Map<Module, ModuleResult> moduleResultMap = new TreeMap<Module, ModuleResult>();
 		moduleResultMap.put(newHelloWorldApplication(), newHelloWorldApplicationResult(date));
 		moduleResultMap.put(newHelloWorldClass(), newHelloWorldClassResult(date));
-		new ResultsAggregator(newHelloWorldResult(date), moduleResultMap).aggregate();
-		return moduleResultMap.values();
+		return moduleResultMap;
 	}
 
 	public static Map<Module, ModuleResult> analizoCheckstyleResultMap() {

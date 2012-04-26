@@ -47,9 +47,7 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 
 	private void verifyDefaultServerSettings() {
 		ServerSettings settings = new ServerSettings();
-		assertTrue(settings.shouldRemoveSources());
 		fixture.textBox("path").requireText(settings.getLoadDirectory().getAbsolutePath());
-		fixture.checkBox("removeSources").requireSelected();
 		verifyDefaultDatabaseSettings();
 	}
 

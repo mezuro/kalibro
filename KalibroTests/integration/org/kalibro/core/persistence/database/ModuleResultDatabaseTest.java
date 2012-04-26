@@ -5,6 +5,7 @@ import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.*;
 
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		result.setConfiguration(kalibroConfiguration());
 		dao = daoFactory.getModuleResultDao();
 		daoFactory.getProjectDao().save(project);
+		daoFactory.getProjectResultDao().save(newHelloWorldResult(date));
 		save();
 	}
 
@@ -106,6 +108,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 	private void incrementDate() {
 		date = new Date(date.getTime() + 1);
 		Whitebox.setInternalState(result, "date", date);
+		daoFactory.getProjectResultDao().save(newHelloWorldResult(date));
 	}
 
 	private void save() {

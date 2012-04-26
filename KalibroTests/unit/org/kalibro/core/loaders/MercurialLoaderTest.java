@@ -23,7 +23,9 @@ public class MercurialLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(String loadPath) {
-		return Arrays.asList("hg clone " + repository.getAddress() + " " + loadPath);
+	protected List<String> expectedLoadCommands(boolean update) {
+		if (update)
+			return Arrays.asList("hg pull -u");
+		return Arrays.asList("hg clone " + repository.getAddress() + " .");
 	}
 }
