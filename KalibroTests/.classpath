@@ -20,7 +20,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit 4.8.2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito 1.8.5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mysql Connector Java 5.1.13"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PowerMock 1.4.10"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PowerMock 1.4.12"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Spago"/>
 	
