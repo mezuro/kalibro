@@ -1,15 +1,14 @@
 package org.kalibro.core.processing;
 
+import java.util.Collection;
 import java.util.Map;
 
-import org.kalibro.Kalibro;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
 
-class AnalyzeResultsTask extends ProcessProjectSubtask<Object> {
+class AnalyzeResultsTask extends ProcessProjectSubtask<Collection<ModuleResult>> {
 
 	private Map<Module, ModuleResult> resultMap;
 
@@ -24,17 +23,9 @@ class AnalyzeResultsTask extends ProcessProjectSubtask<Object> {
 	}
 
 	@Override
-	public Object performAndGetResult() {
+	public Collection<ModuleResult> performAndGetResult() {
 		new SourceTreeBuilder(projectResult).buildSourceTree(resultMap.keySet());
 		new ResultsAggregator(projectResult, resultMap).aggregate();
-		Kalibro.getProjectResultDao().save(projectResult);
-		saveModuleResults();
-		return null;
-	}
-
-	private void saveModuleResults() {
-		ModuleResultDao moduleResultDao = Kalibro.getModuleResultDao();
-		for (ModuleResult moduleResult : resultMap.values())
-			moduleResultDao.save(moduleResult, project.getName());
+		return resultMap.values();
 	}
 }

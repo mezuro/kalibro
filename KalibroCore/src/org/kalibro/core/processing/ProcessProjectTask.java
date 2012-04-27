@@ -1,5 +1,6 @@
 package org.kalibro.core.processing;
 
+import java.util.Collection;
 import java.util.Map;
 
 import org.kalibro.Kalibro;
@@ -9,6 +10,7 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.core.persistence.dao.ModuleResultDao;
 
 public class ProcessProjectTask extends Task {
 
@@ -30,9 +32,18 @@ public class ProcessProjectTask extends Task {
 	private void processProject() {
 		ProjectResult projectResult = new LoadSourceTask(project).execute();
 		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).execute();
-		new AnalyzeResultsTask(projectResult, resultMap).execute();
+		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).execute();
+
+		Kalibro.getProjectResultDao().save(projectResult);
+		saveModuleResults(moduleResults);
 		project.setState(ProjectState.READY);
 		Kalibro.getProjectDao().save(project);
+	}
+
+	private void saveModuleResults(Collection<ModuleResult> moduleResults) {
+		ModuleResultDao moduleResultDao = Kalibro.getModuleResultDao();
+		for (ModuleResult moduleResult : moduleResults)
+			moduleResultDao.save(moduleResult, project.getName());
 	}
 
 	private void reportError(Throwable error) {
