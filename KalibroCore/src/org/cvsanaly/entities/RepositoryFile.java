@@ -7,7 +7,7 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "files")
-public class File {
+public class RepositoryFile {
 	@Id
 	private long id;
 	
