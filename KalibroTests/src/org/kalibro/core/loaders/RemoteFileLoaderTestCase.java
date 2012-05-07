@@ -29,7 +29,6 @@ public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 		List<String> expectedLoadCommands = new ArrayList<String>();
 		expectedLoadCommands.add(DOWNLOAD_PREFIX + repository.getAddress() + " -O " + temporaryFilePath);
 		expectedLoadCommands.addAll(expectedLocalLoader().getLoadCommands(localRepository, update));
-		expectedLoadCommands.add("rm " + temporaryFilePath);
 		return expectedLoadCommands;
 	}
 
