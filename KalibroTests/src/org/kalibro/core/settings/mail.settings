@@ -1,0 +1,5 @@
+    mail: # SMTP settings for the service to send notifications (SSL)
+        smtp_host: "smtp.gmail.com"
+        smtp_port: 465
+        sender_mail: "example@gmail.com"
+        password: ""

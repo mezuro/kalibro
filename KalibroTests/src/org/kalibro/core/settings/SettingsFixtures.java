@@ -36,6 +36,15 @@ public final class SettingsFixtures {
 		return map;
 	}
 
+	public static Map<?, ?> mailSettingsMap() {
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("smtp_host", "smtp.mail.com");
+		map.put("smpt_port", 465);
+		map.put("sender_mail", "sender@mail.com");
+		map.put("password", "pass");
+		return map;
+	}
+
 	private SettingsFixtures() {
 		return;
 	}
