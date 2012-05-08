@@ -8,7 +8,6 @@ import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 
-
 public class CVSAnalyMetricCollector implements MetricCollector {
 
 	@Override
@@ -25,5 +24,4 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
 }

@@ -10,8 +10,8 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 
 public final class CVSAnalyStub {
-	
-	private CVSAnalyStub() { }
+
+	private CVSAnalyStub() {}
 
 	public static BaseTool getBaseTool() {
 		BaseTool baseTool = new BaseTool("CVSAnaly");
@@ -32,5 +32,4 @@ public final class CVSAnalyStub {
 		};
 		return new HashSet<NativeMetric>(Arrays.asList(metric));
 	}
-
 }

@@ -11,7 +11,7 @@ import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.model.enums.Statistic;
 import org.kalibro.core.util.Identifier;
 
-public enum CheckstyleMetric {
+enum CheckstyleMetric {
 
 	AVERAGE_ANONYMOUS_CLASSES_LENGTH("AnonInnerLength", "max", "maxLen.anonInner"),
 	AVERAGE_CYCLOMATIC_COMPLEXITY("CyclomaticComplexity", "max", "cyclomaticComplexity"),
@@ -96,7 +96,7 @@ public enum CheckstyleMetric {
 	protected void addToChecker(CheckstyleConfiguration checker) {
 		CheckstyleConfiguration configuration = getParent(checker).getChildByName(moduleName);
 		configuration.addMessageKey(messageKey);
-		if (!attributeName.isEmpty())
+		if (! attributeName.isEmpty())
 			configuration.addAttributeName(attributeName);
 	}
 
