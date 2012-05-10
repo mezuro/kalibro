@@ -3,7 +3,7 @@ package org.kalibro.desktop;
 import static org.junit.Assert.*;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.Frame;
 
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
@@ -40,12 +40,12 @@ public class KalibroFrameTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkMinimumSize() {
-		assertEquals(new Dimension(800, 540), frame.getMinimumSize());
+		assertEquals(new Dimension(900, 700), frame.getMinimumSize());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void defaultSizeShouldBeScreenSize() {
-		assertEquals(Toolkit.getDefaultToolkit().getScreenSize(), frame.getSize());
+	public void shouldBeMaximized() {
+		assertEquals(Frame.MAXIMIZED_BOTH, frame.getExtendedState());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

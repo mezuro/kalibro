@@ -1,7 +1,6 @@
 package org.kalibro.desktop;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
@@ -38,7 +37,7 @@ public class KalibroFrame extends JFrame {
 	}
 
 	private void setSize() {
-		setMinimumSize(new Dimension(800, 540));
-		setSize(Toolkit.getDefaultToolkit().getScreenSize());
+		setMinimumSize(new Dimension(900, 700));
+		setExtendedState(MAXIMIZED_BOTH);
 	}
 }
