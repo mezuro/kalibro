@@ -44,9 +44,9 @@ public class RepositoryPanelTest extends KalibroTestCase {
 	}
 
 	private void mockKalibro() {
-		TreeSet<RepositoryType> supportedTypes = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
+		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
 		mockStatic(Kalibro.class);
-		when(Kalibro.getSupportedRepositoryTypes()).thenReturn(supportedTypes);
+		when(Kalibro.getSupportedRepositoryTypes()).thenReturn(types);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
