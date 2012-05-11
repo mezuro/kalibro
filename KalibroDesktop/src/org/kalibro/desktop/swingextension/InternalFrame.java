@@ -26,7 +26,7 @@ public abstract class InternalFrame<T> extends JInternalFrame {
 
 	protected abstract Container buildContentPane();
 
-	private void adjustSize() {
+	protected void adjustSize() {
 		pack();
 		setMinimumSize(getPreferredSize());
 		setSize(getPreferredSize());

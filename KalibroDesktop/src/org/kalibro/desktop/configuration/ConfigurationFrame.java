@@ -2,76 +2,49 @@ package org.kalibro.desktop.configuration;
 
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
-import java.beans.PropertyVetoException;
 
-import javax.swing.JInternalFrame;
-
-import org.kalibro.KalibroException;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.desktop.swingextension.icon.Icon;
+import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;
 
-public class ConfigurationFrame extends JInternalFrame implements ContainerListener,
+public class ConfigurationFrame extends InternalFrame<Configuration> implements ContainerListener,
 	TablePanelListener<MetricConfiguration> {
 
 	private ConfigurationPanel configurationPanel;
 	private CardStackPanel cardStack;
 
-	private Configuration configuration;
-
 	public ConfigurationFrame(Configuration configuration) {
-		super(configuration.getName() + " - Configuration", true, true, true, true);
-		new Icon(Icon.KALIBRO).replaceIconOf(this);
-		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
-		setName("configuration");
-
-		this.configuration = configuration;
-		buildContentPane();
-		setVisible(true);
+		super("configuration", configuration.getName() + " - Configuration", configuration);
 	}
 
-	private void buildContentPane() {
+	@Override
+	protected CardStackPanel buildContentPane() {
 		configurationPanel = new ConfigurationPanel();
-		configurationPanel.set(configuration);
+		configurationPanel.set(entity);
 		configurationPanel.addMetricConfigurationsListener(this);
 		cardStack = new CardStackPanel();
 		cardStack.push(configurationPanel);
 		cardStack.addContainerListener(this);
-		setContentPane(cardStack);
-		adjustSize();
-	}
-
-	private void adjustSize() {
-		pack();
-		setMinimumSize(getPreferredSize());
-		setSize(getPreferredSize());
+		return cardStack;
 	}
 
 	public Configuration getConfiguration() {
-		configuration = configurationPanel.get();
-		return configuration;
-	}
-
-	public void select() {
-		try {
-			setSelected(true);
-		} catch (PropertyVetoException exception) {
-			throw new KalibroException("Could not select configuration frame: " + configuration, exception);
-		}
+		entity = configurationPanel.get();
+		return entity;
 	}
 
 	@Override
 	public void add() {
-		configuration = configurationPanel.get();
-		new MetricConfigurationController(configuration, cardStack).addMetricConfiguration();
+		entity = configurationPanel.get();
+		new MetricConfigurationController(entity, cardStack).addMetricConfiguration();
 	}
 
 	@Override
 	public void edit(MetricConfiguration metricConfiguration) {
-		configuration = configurationPanel.get();
-		new MetricConfigurationController(configuration, cardStack).edit(metricConfiguration);
+		entity = configurationPanel.get();
+		new MetricConfigurationController(entity, cardStack).edit(metricConfiguration);
 	}
 
 	@Override
@@ -81,7 +54,7 @@ public class ConfigurationFrame extends JInternalFrame implements ContainerListe
 
 	@Override
 	public void componentRemoved(ContainerEvent event) {
-		configurationPanel.set(configuration);
+		configurationPanel.set(entity);
 		adjustSize();
 	}
 }
