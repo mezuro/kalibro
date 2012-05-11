@@ -6,7 +6,7 @@ import java.util.TreeMap;
 
 import org.kalibro.core.model.ProjectResult;
 
-public class ProjectResultDaoStub implements ProjectResultDao {
+public class ProjectResultDaoFake implements ProjectResultDao {
 
 	private static final Date BEGIN = new Date(0);
 	private static final Date END = new Date(Long.MAX_VALUE);

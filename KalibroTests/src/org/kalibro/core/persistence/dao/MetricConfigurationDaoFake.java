@@ -7,7 +7,7 @@ import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 
-public class MetricConfigurationDaoStub implements MetricConfigurationDao {
+public class MetricConfigurationDaoFake implements MetricConfigurationDao {
 
 	private Map<MetricConfigurationKey, MetricConfiguration> metricConfigurations =
 		new HashMap<MetricConfigurationKey, MetricConfiguration>();

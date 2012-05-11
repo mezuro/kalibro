@@ -7,7 +7,7 @@ import java.util.TreeMap;
 
 import org.kalibro.core.model.Project;
 
-public class ProjectDaoStub implements ProjectDao {
+public class ProjectDaoFake implements ProjectDao {
 
 	private Map<String, Project> projects = new TreeMap<String, Project>();
 

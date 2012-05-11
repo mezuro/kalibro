@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
-import org.kalibro.core.persistence.dao.ModuleResultDaoStub;
+import org.kalibro.core.persistence.dao.ModuleResultDaoFake;
 import org.kalibro.service.entities.ModuleResultXml;
 
 public class ModuleResultEndpointTest extends KalibroServiceTestCase {
@@ -22,22 +22,22 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 	private static final Date DATE_1 = new Date(1);
 	private static final Date DATE_2 = new Date(2);
 
-	private ModuleResultDao daoStub;
+	private ModuleResultDao daoFake;
 	private ModuleResultEndpoint port;
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		daoStub = new ModuleResultDaoStub();
+		daoFake = new ModuleResultDaoFake();
 		configureAndAddModuleResult(newHelloWorldApplicationResult(DATE_1));
 		configureAndAddModuleResult(newHelloWorldApplicationResult(DATE_2));
 		configureAndAddModuleResult(newHelloWorldClassResult(DATE_1));
 		configureAndAddModuleResult(newHelloWorldClassResult(DATE_2));
-		port = publishAndGetPort(new ModuleResultEndpointImpl(daoStub), ModuleResultEndpoint.class);
+		port = publishAndGetPort(new ModuleResultEndpointImpl(daoFake), ModuleResultEndpoint.class);
 	}
 
 	private void configureAndAddModuleResult(ModuleResult moduleResult) {
 		moduleResult.setConfiguration(newConfiguration("cbo", "lcom4"));
-		daoStub.save(moduleResult, PROJECT_NAME);
+		daoFake.save(moduleResult, PROJECT_NAME);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -50,7 +50,7 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 	}
 
 	private void verifyModuleResult(String moduleName, Date date) {
-		ModuleResult expected = daoStub.getModuleResult(PROJECT_NAME, moduleName, date);
+		ModuleResult expected = daoFake.getModuleResult(PROJECT_NAME, moduleName, date);
 		ModuleResult actual = port.getModuleResult(PROJECT_NAME, moduleName, date).convert();
 		assertNotSame(expected, actual);
 		assertDeepEquals(expected, actual);
@@ -63,7 +63,7 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 	}
 
 	private void verifyResultHistory(String moduleName) {
-		List<ModuleResult> expected = daoStub.getResultHistory(PROJECT_NAME, moduleName);
+		List<ModuleResult> expected = daoFake.getResultHistory(PROJECT_NAME, moduleName);
 		List<ModuleResultXml> actual = port.getResultHistory(PROJECT_NAME, moduleName);
 		assertEquals(expected.size(), actual.size());
 		for (int i = 0; i < expected.size(); i++)

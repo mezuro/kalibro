@@ -13,7 +13,7 @@ import org.kalibro.core.ProjectStateListener;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ProjectDao;
-import org.kalibro.core.persistence.dao.ProjectDaoStub;
+import org.kalibro.core.persistence.dao.ProjectDaoFake;
 import org.powermock.api.mockito.PowerMockito;
 
 public class ProjectStateTrackerTest extends KalibroTestCase {
@@ -34,7 +34,7 @@ public class ProjectStateTrackerTest extends KalibroTestCase {
 
 	private void saveProject() {
 		project = helloWorld();
-		projectDao = new ProjectDaoStub();
+		projectDao = new ProjectDaoFake();
 		projectDao.save(project);
 	}
 
