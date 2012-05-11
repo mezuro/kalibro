@@ -18,7 +18,8 @@ public class ProjectFrame extends InternalFrame<Project> {
 		return projectPanel;
 	}
 
-	public Project getProject() {
+	@Override
+	public Project get() {
 		entity = projectPanel.get();
 		return entity;
 	}

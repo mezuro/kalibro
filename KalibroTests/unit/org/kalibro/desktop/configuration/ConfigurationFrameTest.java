@@ -89,9 +89,9 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetConfiguration() {
+	public void shouldRetrieveConfiguration() {
 		PowerMockito.when(panel.get()).thenReturn(configuration);
-		assertSame(configuration, frame.getConfiguration());
+		assertSame(configuration, frame.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

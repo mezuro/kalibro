@@ -56,7 +56,7 @@ public class ConfigurationController extends InternalFrameAdapter {
 	private String chooseConfiguration(String title) {
 		List<String> names = dao().getConfigurationNames();
 		ChoiceDialog<String> choiceDialog = new ChoiceDialog<String>(title, desktopPane);
-		if (noConfiguration(names) || !choiceDialog.choose("Select configuration:", names))
+		if (noConfiguration(names) || ! choiceDialog.choose("Select configuration:", names))
 			return null;
 		return choiceDialog.getChoice();
 	}
@@ -75,7 +75,7 @@ public class ConfigurationController extends InternalFrameAdapter {
 
 	public void saveAs() {
 		InputDialog inputDialog = new InputDialog("Save configuration as...", desktopPane);
-		if (!inputDialog.userTyped("Configuration name:"))
+		if (! inputDialog.userTyped("Configuration name:"))
 			return;
 		Configuration configuration = selectedConfiguration();
 		configuration.setName(inputDialog.getInput());
@@ -132,7 +132,7 @@ public class ConfigurationController extends InternalFrameAdapter {
 
 	private Configuration selectedConfiguration() {
 		ConfigurationFrame selectedFrame = (ConfigurationFrame) desktopPane.getSelectedFrame();
-		return selectedFrame.getConfiguration();
+		return selectedFrame.get();
 	}
 
 	private ConfigurationDao dao() {

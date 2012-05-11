@@ -287,7 +287,7 @@ public class ConfigurationControllerTest extends KalibroTestCase {
 	private void prepareSelectedFrame() {
 		PowerMockito.when(desktopPane.getSelectedFrame()).thenReturn(frame);
 		PowerMockito.when(frame.getLocation()).thenReturn(new Point(0, 0));
-		PowerMockito.when(frame.getConfiguration()).thenReturn(configuration);
+		PowerMockito.when(frame.get()).thenReturn(configuration);
 	}
 
 	private void prepareConfirmDialog(int option) throws Exception {

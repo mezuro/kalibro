@@ -70,8 +70,8 @@ public class InternalFrameTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkEntity() {
-		assertSame(range, frame.entity);
+	public void shouldRetrieveEntity() {
+		assertSame(range, frame.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

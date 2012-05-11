@@ -52,8 +52,8 @@ public class ProjectFrameTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetProject() {
+	public void shouldRetrieveProject() {
 		when(panel.get()).thenReturn(project);
-		assertSame(project, frame.getProject());
+		assertSame(project, frame.get());
 	}
 }

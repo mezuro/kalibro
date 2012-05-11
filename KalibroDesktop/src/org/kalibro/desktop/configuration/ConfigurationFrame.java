@@ -30,7 +30,8 @@ public class ConfigurationFrame extends InternalFrame<Configuration> implements 
 		return cardStack;
 	}
 
-	public Configuration getConfiguration() {
+	@Override
+	public Configuration get() {
 		entity = configurationPanel.get();
 		return entity;
 	}

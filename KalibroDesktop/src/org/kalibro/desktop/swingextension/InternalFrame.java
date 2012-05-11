@@ -32,6 +32,10 @@ public abstract class InternalFrame<T> extends JInternalFrame {
 		setSize(getPreferredSize());
 	}
 
+	public T get() {
+		return entity;
+	}
+
 	public void select() {
 		try {
 			setSelected(true);
