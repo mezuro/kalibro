@@ -138,19 +138,4 @@ public class KalibroController implements KalibroFrameListener {
 			new ErrorDialog(frame).show(exception);
 		}
 	}
-
-	private boolean allClosed() {
-		boolean allClosed = frame.desktopPane().getAllFrames().length == 0;
-		if (! allClosed) {
-			String message = "All projects and configurations should be closed before editing preferences.";
-			message(frame, message, "Close all");
-		}
-		return allClosed;
-	}
-
-	@Override
-	public void editSettings() {
-		if (allClosed())
-			new SettingsDialog().setVisible(true);
-	}
 }
