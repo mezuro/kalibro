@@ -16,8 +16,7 @@ public class VerifyingSeeds extends KalibroDesktopTestCase {
 	public void shouldBeSeeded() {
 		startKalibroFrame();
 
-		fixture.menuItem("configuration").click();
-		fixture.menuItem("open").click();
+		fixture.menuItemWithPath("Configuration", "Open").click();
 		verifyChoiceDialogWithDefaultConfiguration();
 		fixture.optionPane().okButton().click();
 
