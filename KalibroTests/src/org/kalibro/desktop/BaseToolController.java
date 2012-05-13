@@ -7,7 +7,7 @@ import javax.swing.JDesktopPane;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.desktop.swingextension.InternalFrame;
 
-public class BaseToolController extends CrudController<BaseTool> {
+class BaseToolController extends CrudController<BaseTool> {
 
 	private CrudController<BaseTool> mock;
 
