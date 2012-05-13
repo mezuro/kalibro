@@ -41,7 +41,7 @@ public class ConfigurationMenuTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateNewConfiguration() {
 		menu.getItem(NEW).doClick();
-		verify(controller).newConfiguration();
+		verify(controller).newEntity();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

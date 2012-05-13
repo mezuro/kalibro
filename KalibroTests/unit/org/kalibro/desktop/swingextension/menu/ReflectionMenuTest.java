@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
+import org.kalibro.desktop.CrudController;
 import org.kalibro.desktop.configuration.ConfigurationController;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -53,7 +54,7 @@ public class ReflectionMenuTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowErrorOnBizarreAccessException() throws Exception {
-		Method method = ConfigurationController.class.getDeclaredMethod("unmodified");
+		Method method = CrudController.class.getDeclaredMethod("unmodified");
 		Whitebox.setInternalState(menuItem, "method", method);
 		checkKalibroError(new Task() {
 

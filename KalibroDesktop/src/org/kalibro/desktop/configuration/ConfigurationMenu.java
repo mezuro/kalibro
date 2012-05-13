@@ -23,7 +23,7 @@ public class ConfigurationMenu extends AbstractMenu {
 	protected void createItems(Component... innerComponents) {
 		desktopPane = (JDesktopPane) innerComponents[0];
 		controller = new ConfigurationController(desktopPane);
-		newItem = new ReflectionMenuItem("new", "New", 'N', controller, "newConfiguration");
+		newItem = new ReflectionMenuItem("new", "New", 'N', controller, "newEntity");
 		openItem = new ReflectionMenuItem("open", "Open", 'O', controller, "open");
 		deleteItem = new ReflectionMenuItem("delete", "Delete", 'D', controller, "delete");
 		saveItem = new ReflectionMenuItem("save", "Save", 'S', controller, "save");
