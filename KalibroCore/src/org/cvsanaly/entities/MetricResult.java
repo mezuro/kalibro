@@ -1,12 +1,13 @@
 package org.cvsanaly.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 @Entity
 @Table(name = "metrics")
+@NamedQuery(
+	  name = "getAllMetricResults",
+	  query = "Select metric from MetricResult metric"
+	)
 public class MetricResult {
 	@Id
 	private long id;
@@ -17,70 +18,88 @@ public class MetricResult {
 	private Commit commit;
 	
 	@Column(name = "sloc")
-	private int sloc;
+	private int numberOfSourceCodeLines;
 	@Column(name = "loc")
-	private int loc;
+	private int numberOfLinesOfCode;
 	@Column(name = "ncomment")
-	private int ncomment;
+	private int numberOfComments;
 	@Column(name = "lcomment")
-	private int lcomment;
+	private int numberOfCommentedLines;
 	@Column(name = "lblank")
-	private int lblank;
+	private int numberOfBlankLines;
 	@Column(name = "nfunctions")
-	private int nfunctions;
+	private int numberOfFunctions;
 	
 	public long getId() {
 		return id;
 	}
+	
 	public void setId(long id) {
 		this.id = id;
 	}
+	
 	public RepositoryFile getFile() {
 		return file;
 	}
+	
 	public void setFile(RepositoryFile file) {
 		this.file = file;
 	}
+	
 	public Commit getCommit() {
 		return commit;
 	}
+	
 	public void setCommit(Commit commit) {
 		this.commit = commit;
 	}
-	public int getSloc() {
-		return sloc;
+	
+	public int getNumberOfSourceCodeLines() {
+		return numberOfSourceCodeLines;
 	}
-	public void setSloc(int sloc) {
-		this.sloc = sloc;
+	
+	public void setNumberOfSourceCodeLines(int numberOfSourceCodeLines) {
+		this.numberOfSourceCodeLines = numberOfSourceCodeLines;
 	}
-	public int getLoc() {
-		return loc;
+	
+	public int getNumberOfLinesOfCode() {
+		return numberOfLinesOfCode;
 	}
-	public void setLoc(int loc) {
-		this.loc = loc;
+	
+	public void setNumberOfLinesOfCode(int numberOfLinesOfCode) {
+		this.numberOfLinesOfCode = numberOfLinesOfCode;
 	}
-	public int getNcomment() {
-		return ncomment;
+	
+	public int getNumberOfComments() {
+		return numberOfComments;
 	}
-	public void setNcomment(int ncomment) {
-		this.ncomment = ncomment;
+	
+	public void setNumberOfComments(int numberOfComments) {
+		this.numberOfComments = numberOfComments;
 	}
-	public int getLcomment() {
-		return lcomment;
+	
+	public int getNumberOfCommentedLines() {
+		return numberOfCommentedLines;
 	}
-	public void setLcomment(int lcomment) {
-		this.lcomment = lcomment;
+	
+	public void setNumberOfCommentedLines(int numberOfCommentedLines) {
+		this.numberOfCommentedLines = numberOfCommentedLines;
 	}
-	public int getLblank() {
-		return lblank;
+	
+	public int getNumberOfBlankLines() {
+		return numberOfBlankLines;
 	}
-	public void setLblank(int lblank) {
-		this.lblank = lblank;
+	
+	public void setNumberOfBlankLines(int numberOfBlankLines) {
+		this.numberOfBlankLines = numberOfBlankLines;
 	}
-	public int getNfunctions() {
-		return nfunctions;
+	
+	public int getNumberOfFunctions() {
+		return numberOfFunctions;
 	}
-	public void setNfunctions(int nfunctions) {
-		this.nfunctions = nfunctions;
+	
+	public void setNumberOfFunctions(int numberOfFunctions) {
+		this.numberOfFunctions = numberOfFunctions;
 	}
+	
 }
