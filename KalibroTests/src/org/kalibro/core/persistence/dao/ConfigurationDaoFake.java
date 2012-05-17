@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.kalibro.core.model.Configuration;
 
-public class ConfigurationDaoStub implements ConfigurationDao {
+public class ConfigurationDaoFake implements ConfigurationDao {
 
 	private Map<String, Configuration> configurations = new HashMap<String, Configuration>();
 

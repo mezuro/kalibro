@@ -4,17 +4,13 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.mockito.Matchers.*;
 
-import java.beans.PropertyVetoException;
-
 import javax.swing.JPanel;
 import javax.swing.JTable;
-import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
@@ -65,31 +61,6 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldDoNothingOnCloseByDefault() {
-		assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame.getDefaultCloseOperation());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldBeResizable() {
-		assertTrue(frame.isResizable());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldBeClosable() {
-		assertTrue(frame.isClosable());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldBeMaximizable() {
-		assertTrue(frame.isMaximizable());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldBeIconifiable() {
-		assertTrue(frame.isIconifiable());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowConfigurationOnPanel() {
 		Mockito.verify(panel).set(configuration);
 	}
@@ -118,9 +89,9 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetConfiguration() {
+	public void shouldRetrieveConfiguration() {
 		PowerMockito.when(panel.get()).thenReturn(configuration);
-		assertSame(configuration, frame.getConfiguration());
+		assertSame(configuration, frame.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -131,21 +102,5 @@ public class ConfigurationFrameTest extends KalibroTestCase {
 		Mockito.reset(panel);
 		cardStack.pop();
 		Mockito.verify(panel).set(configuration);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSelectHidingPropertyVetoException() throws Exception {
-		frame = PowerMockito.spy(frame);
-		frame.select();
-		Mockito.verify(frame).setSelected(true);
-
-		PowerMockito.doThrow(new PropertyVetoException("", null)).when(frame).setSelected(true);
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				frame.select();
-			}
-		}, "Could not select configuration frame: " + configuration, PropertyVetoException.class);
 	}
 }

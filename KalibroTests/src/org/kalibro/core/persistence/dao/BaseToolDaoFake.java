@@ -7,7 +7,7 @@ import java.util.Map;
 
 import org.kalibro.core.model.BaseTool;
 
-public class BaseToolDaoStub implements BaseToolDao {
+public class BaseToolDaoFake implements BaseToolDao {
 
 	private Map<String, BaseTool> baseTools = new HashMap<String, BaseTool>();
 

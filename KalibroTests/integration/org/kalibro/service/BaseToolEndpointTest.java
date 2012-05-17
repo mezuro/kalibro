@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.dao.BaseToolDao;
-import org.kalibro.core.persistence.dao.BaseToolDaoStub;
+import org.kalibro.core.persistence.dao.BaseToolDaoFake;
 
 public class BaseToolEndpointTest extends KalibroServiceTestCase {
 
@@ -19,9 +19,9 @@ public class BaseToolEndpointTest extends KalibroServiceTestCase {
 	public void setUp() throws MalformedURLException {
 		analizo = newAnalizoStub();
 		analizo.setCollectorClass(null);
-		BaseToolDao daoStub = new BaseToolDaoStub();
-		daoStub.save(analizo);
-		port = publishAndGetPort(new BaseToolEndpointImpl(daoStub), BaseToolEndpoint.class);
+		BaseToolDao daoFake = new BaseToolDaoFake();
+		daoFake.save(analizo);
+		port = publishAndGetPort(new BaseToolEndpointImpl(daoFake), BaseToolEndpoint.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

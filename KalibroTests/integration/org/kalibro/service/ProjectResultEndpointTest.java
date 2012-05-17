@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
-import org.kalibro.core.persistence.dao.ProjectResultDaoStub;
+import org.kalibro.core.persistence.dao.ProjectResultDaoFake;
 
 public class ProjectResultEndpointTest extends KalibroServiceTestCase {
 
@@ -19,16 +19,16 @@ public class ProjectResultEndpointTest extends KalibroServiceTestCase {
 	private static final Date DATE_2 = new Date(2);
 	private static final Date DATE_3 = new Date(3);
 
-	private ProjectResultDao daoStub;
+	private ProjectResultDao daoFake;
 	private ProjectResultEndpoint port;
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		daoStub = new ProjectResultDaoStub();
-		daoStub.save(newHelloWorldResult(DATE_1));
-		daoStub.save(newHelloWorldResult(DATE_2));
-		daoStub.save(newHelloWorldResult(DATE_3));
-		port = publishAndGetPort(new ProjectResultEndpointImpl(daoStub), ProjectResultEndpoint.class);
+		daoFake = new ProjectResultDaoFake();
+		daoFake.save(newHelloWorldResult(DATE_1));
+		daoFake.save(newHelloWorldResult(DATE_2));
+		daoFake.save(newHelloWorldResult(DATE_3));
+		port = publishAndGetPort(new ProjectResultEndpointImpl(daoFake), ProjectResultEndpoint.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -53,12 +53,12 @@ public class ProjectResultEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testFirstResult() {
-		verifyResult(daoStub.getFirstResultOf(PROJECT_NAME), port.getFirstResultOf(PROJECT_NAME).convert());
+		verifyResult(daoFake.getFirstResultOf(PROJECT_NAME), port.getFirstResultOf(PROJECT_NAME).convert());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testLastResult() {
-		verifyResult(daoStub.getLastResultOf(PROJECT_NAME), port.getLastResultOf(PROJECT_NAME).convert());
+		verifyResult(daoFake.getLastResultOf(PROJECT_NAME), port.getLastResultOf(PROJECT_NAME).convert());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -68,7 +68,7 @@ public class ProjectResultEndpointTest extends KalibroServiceTestCase {
 	}
 
 	private void verifyLastResultBefore(Date date) {
-		ProjectResult expected = daoStub.getLastResultBefore(date, PROJECT_NAME);
+		ProjectResult expected = daoFake.getLastResultBefore(date, PROJECT_NAME);
 		ProjectResult actual = port.getLastResultBefore(date, PROJECT_NAME).convert();
 		verifyResult(expected, actual);
 	}
@@ -80,7 +80,7 @@ public class ProjectResultEndpointTest extends KalibroServiceTestCase {
 	}
 
 	private void verifyFirstResultAfter(Date date) {
-		ProjectResult expected = daoStub.getFirstResultAfter(date, PROJECT_NAME);
+		ProjectResult expected = daoFake.getFirstResultAfter(date, PROJECT_NAME);
 		ProjectResult actual = port.getFirstResultAfter(date, PROJECT_NAME).convert();
 		verifyResult(expected, actual);
 	}

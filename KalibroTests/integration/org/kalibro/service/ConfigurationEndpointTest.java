@@ -12,7 +12,7 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.persistence.dao.ConfigurationDaoStub;
+import org.kalibro.core.persistence.dao.ConfigurationDaoFake;
 import org.kalibro.service.entities.ConfigurationXml;
 
 public class ConfigurationEndpointTest extends KalibroServiceTestCase {
@@ -23,9 +23,9 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 	@Before
 	public void setUp() throws MalformedURLException {
 		sample = newConfiguration();
-		ConfigurationDaoStub daoStub = new ConfigurationDaoStub();
-		daoStub.save(sample);
-		port = publishAndGetPort(new ConfigurationEndpointImpl(daoStub), ConfigurationEndpoint.class);
+		ConfigurationDaoFake daoFake = new ConfigurationDaoFake();
+		daoFake.save(sample);
+		port = publishAndGetPort(new ConfigurationEndpointImpl(daoFake), ConfigurationEndpoint.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
