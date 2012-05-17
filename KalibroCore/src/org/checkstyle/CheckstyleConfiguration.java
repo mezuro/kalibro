@@ -7,7 +7,7 @@ import java.util.*;
 
 import org.kalibro.core.model.NativeMetric;
 
-public class CheckstyleConfiguration implements Configuration {
+class CheckstyleConfiguration implements Configuration {
 
 	public static CheckstyleConfiguration checkerConfiguration(Collection<NativeMetric> wantedMetrics) {
 		CheckstyleConfiguration checker = new CheckstyleConfiguration("Checker");

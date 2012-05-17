@@ -14,7 +14,7 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
 
-public class CheckstyleOutputParser extends AuditAdapter {
+class CheckstyleOutputParser extends AuditAdapter {
 
 	private File codeDirectory;
 	private Set<NativeMetric> wantedMetrics;
@@ -59,7 +59,7 @@ public class CheckstyleOutputParser extends AuditAdapter {
 	}
 
 	private PreModuleResult getPreResult(Module module) {
-		if (!resultsMap.containsKey(module))
+		if (! resultsMap.containsKey(module))
 			resultsMap.put(module, new PreModuleResult(module, wantedMetrics));
 		return resultsMap.get(module);
 	}

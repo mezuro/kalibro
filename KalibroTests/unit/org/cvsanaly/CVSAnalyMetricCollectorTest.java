@@ -19,6 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CVSAnalyMetricCollector.class)
+
 public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 
 	private CVSAnalyMetricCollector cvsanaly;

@@ -9,14 +9,16 @@ import javax.persistence.*;
 	  query = "Select metric from MetricResult metric"
 	)
 public class MetricResult {
+
 	@Id
 	private long id;
-	
+
 	@Column(name = "file_id")
 	private RepositoryFile file;
+
 	@Column(name = "commit_id")
 	private Commit commit;
-	
+
 	@Column(name = "sloc")
 	private int numberOfSourceCodeLines;
 	@Column(name = "loc")

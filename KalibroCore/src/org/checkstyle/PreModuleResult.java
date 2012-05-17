@@ -8,7 +8,7 @@ import org.kalibro.core.model.Module;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 
-public class PreModuleResult {
+class PreModuleResult {
 
 	private Module module;
 	private Map<String, PreMetricResult> metricResults;

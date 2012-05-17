@@ -8,9 +8,10 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "scmlog")
 public class Commit {
+
 	@Id
 	private long id;
-	
+
 	@Column(name = "rev")
 	private String revision;
 

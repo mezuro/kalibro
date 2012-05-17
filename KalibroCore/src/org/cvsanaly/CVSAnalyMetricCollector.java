@@ -19,7 +19,6 @@ import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 
-
 public class CVSAnalyMetricCollector implements MetricCollector {
 
 	private static final String CVSANALY2_COMMAND_LINE = "cvsanaly2 -q --extensions=Metrics --db-driver=sqlite -d ";
