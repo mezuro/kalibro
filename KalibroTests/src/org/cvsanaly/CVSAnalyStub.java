@@ -36,42 +36,40 @@ public final class CVSAnalyStub {
 	public static List<MetricResult> getExampleEntities() {
 		List<MetricResult> result = new LinkedList<MetricResult>();
 
-		Commit firstCommit = new Commit();
-		Commit head = new Commit();
+		Commit firstCommit = createCommit(0, "1");
+		Commit head = createCommit(1, "2");
 
-		RepositoryFile helloWorldFile = new RepositoryFile();
-		RepositoryFile byeWorldFile = new RepositoryFile();
-
-		MetricResult result1File1 = new MetricResult();
-		MetricResult result2File1 = new MetricResult();
-		MetricResult result1File2 = new MetricResult();
-
-		firstCommit.setId(0);
-		firstCommit.setRevision("1");
-		head.setId(1);
-		head.setRevision("2");
+		RepositoryFile helloWorldFile = createRepositoryFile(0, "HelloWorld.java");
+		RepositoryFile byeWorldFile = createRepositoryFile(1, "ByeWorld.java");
 		
-		helloWorldFile.setId(0);
-		helloWorldFile.setFilename("HelloWorld.java");
-		byeWorldFile.setId(1);
-		helloWorldFile.setFilename("ByeWorld.java");
-		
-		result1File1.setId(0);
-		result1File1.setFile(helloWorldFile);
-		result1File1.setCommit(firstCommit);
-		result1File1.setNumberOfSourceCodeLines(2);
-		
-		result2File1.setId(1);
-		result2File1.setFile(helloWorldFile);
-		result2File1.setCommit(head);
-		result2File1.setNumberOfSourceCodeLines(10);
-		
-		result1File2.setId(3);
-		result1File2.setFile(byeWorldFile);
-		result1File2.setCommit(firstCommit);
-		result1File2.setNumberOfSourceCodeLines(6);
+		result.addAll(Arrays.asList(createMetricResult(0, firstCommit, helloWorldFile, 2),
+			createMetricResult(1, head, helloWorldFile, 10),
+			createMetricResult(2, firstCommit, byeWorldFile, 6)));
 
 		return result;
+	}
+
+	private static RepositoryFile createRepositoryFile(int id, String filename) {
+		RepositoryFile helloWorldFile = new RepositoryFile();
+		helloWorldFile.setId(id);
+		helloWorldFile.setFilename(filename);
+		return helloWorldFile;
+	}
+
+	private static Commit createCommit(int id, String revision) {
+		Commit firstCommit = new Commit();
+		firstCommit.setId(id);
+		firstCommit.setRevision(revision);
+		return firstCommit;
+	}
+
+	private static MetricResult createMetricResult(int id, Commit commit, RepositoryFile repository, int sloc) {
+		MetricResult newMetricResult = new MetricResult();
+		newMetricResult.setId(id);
+		newMetricResult.setFile(repository);
+		newMetricResult.setCommit(commit);
+		newMetricResult.setNumberOfSourceCodeLines(sloc);
+		return newMetricResult;
 	}
 
 	public static Set<NativeModuleResult> getExampleResult() {
@@ -79,13 +77,13 @@ public final class CVSAnalyStub {
 		NativeModuleResult helloWorldResult = new NativeModuleResult(new Module(Granularity.CLASS, "HelloWorld"));
 		helloWorldResult.addMetricResult(
 			new NativeMetricResult(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getNativeMetric(), 10.0));
-		
+
 		NativeModuleResult byeWorldResult = new NativeModuleResult(new Module(Granularity.CLASS, "ByeWorld"));
 		byeWorldResult.addMetricResult(
 			new NativeMetricResult(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getNativeMetric(), 6.0));
-		
+
 		result.addAll(Arrays.asList(helloWorldResult, byeWorldResult));
-		
+
 		return result;
 	}
 

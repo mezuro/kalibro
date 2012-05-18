@@ -19,16 +19,17 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CVSAnalyMetricCollector.class)
-
 public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 
 	private CVSAnalyMetricCollector cvsanaly;
 	private CommandTask executor;
+	private CVSAnalyDatabaseFetcher fetcher;
 
 	@Before
 	public void setUp() {
-		executor = PowerMockito.mock(CommandTask.class);
 		cvsanaly = new CVSAnalyMetricCollector();
+		executor = PowerMockito.mock(CommandTask.class);
+		fetcher = PowerMockito.mock(CVSAnalyDatabaseFetcher.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -42,15 +43,16 @@ public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
 
 		mockCommand();
-		mockResults();
+		mockFetcher();
 
 		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
 		Mockito.verify(executor).executeAndWait();
 		assertDeepEquals(CVSAnalyStub.getExampleResult(), actual);
 	}
 
-	private void mockResults() throws Exception {
-		PowerMockito.when(cvsanaly, "getMetricResults", any()).thenReturn(CVSAnalyStub.getExampleEntities());
+	private void mockFetcher() throws Exception {
+		PowerMockito.whenNew(CVSAnalyDatabaseFetcher.class).withArguments(any()).thenReturn(fetcher);
+		Mockito.when(fetcher.getMetricResults()).thenReturn(CVSAnalyStub.getExampleEntities());
 	}
 
 	private void mockCommand() throws Exception {
