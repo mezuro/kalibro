@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -46,7 +45,8 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 	public void shouldAddMetricConfiguration() {
 		dao.save(locConfiguration, configuration.getName());
 
-		assertDeepEquals(locConfiguration, configuration.getConfigurationFor(locConfiguration.getMetric()));
+		String locName = locConfiguration.getMetric().getName();
+		assertDeepEquals(locConfiguration, configuration.getConfigurationFor(locName));
 		Mockito.verify(configurationDao).save(configuration);
 	}
 
@@ -56,7 +56,8 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 		cboConfiguration.setWeight(42.0);
 		dao.save(cboConfiguration, configuration.getName());
 
-		assertDeepEquals(cboConfiguration, configuration.getConfigurationFor(cboConfiguration.getMetric()));
+		String cboName = cboConfiguration.getMetric().getName();
+		assertDeepEquals(cboConfiguration, configuration.getConfigurationFor(cboName));
 		Mockito.verify(configurationDao).save(configuration);
 	}
 
@@ -69,10 +70,10 @@ public class MetricConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveMetricConfiguration() {
-		Metric cbo = cboConfiguration.getMetric();
-		dao.removeMetricConfiguration(configuration.getName(), cbo.getName());
+		String cboName = cboConfiguration.getMetric().getName();
+		dao.removeMetricConfiguration(configuration.getName(), cboName);
 
-		assertFalse(configuration.contains(cbo));
+		assertFalse(configuration.containsMetric(cboName));
 		Mockito.verify(configurationDao).save(configuration);
 	}
 

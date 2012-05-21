@@ -38,9 +38,10 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	private void setConfigurationOnResults(Configuration configuration) {
 		for (Metric metric : metricResults.keySet()) {
+			String metricName = metric.getName();
 			MetricResult metricResult = metricResults.get(metric);
-			if (configuration.contains(metric))
-				metricResult.setConfiguration(configuration.getConfigurationFor(metric));
+			if (configuration.containsMetric(metricName))
+				metricResult.setConfiguration(configuration.getConfigurationFor(metricName));
 		}
 	}
 
@@ -49,7 +50,7 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 			ScriptBuilder scriptBuilder = new ScriptBuilder(configuration, this, compoundMetric);
 			ScriptEvaluator scriptEvaluator = new ScriptEvaluator(scriptBuilder.buildScript());
 			if (scriptBuilder.shouldInclude(compoundMetric))
-				includeCompoundMetric(configuration.getConfigurationFor(compoundMetric), scriptEvaluator);
+				includeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()), scriptEvaluator);
 		}
 	}
 
@@ -70,7 +71,7 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		for (Metric metric : metricResults.keySet()) {
 			MetricResult metricResult = metricResults.get(metric);
 			if (metricResult.hasRange()) {
-				Double weight = configuration.getConfigurationFor(metric).getWeight();
+				Double weight = configuration.getConfigurationFor(metric.getName()).getWeight();
 				gradeSum += metricResult.getGrade() * weight;
 				weightSum += weight;
 			}
