@@ -121,20 +121,25 @@ public class MetricConfigurationControllerTest extends KalibroTestCase {
 		MetricConfiguration oldConfiguration = PowerMockito.mock(MetricConfiguration.class);
 		MetricConfiguration newConfiguration = PowerMockito.mock(MetricConfiguration.class);
 		PowerMockito.when(oldConfiguration.getMetric()).thenReturn(metric);
+		PowerMockito.when(metric.getName()).thenReturn("42");
 		PowerMockito.when(confirmPanel.get()).thenReturn(newConfiguration);
 
 		controller.edit(oldConfiguration);
 		clickButton(confirmPanel, "ok");
 
-		verify(configuration).replaceMetricConfiguration(metric, newConfiguration);
+		verify(configuration).replaceMetricConfiguration("42", newConfiguration);
 		verify(cardStack).pop();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotPopPanelOnError() throws Exception {
+		Metric metric = PowerMockito.mock(Metric.class);
+		PowerMockito.when(metricConfiguration.getMetric()).thenReturn(metric);
+		PowerMockito.when(metric.getName()).thenReturn("42");
+
 		Exception error = new KalibroException("MetricConfigurationControllerTest");
 		ErrorDialog errorDialog = mockErrorDialog();
-		PowerMockito.doThrow(error).when(configuration).replaceMetricConfiguration(null, null);
+		PowerMockito.doThrow(error).when(configuration).replaceMetricConfiguration("42", null);
 
 		controller.edit(metricConfiguration);
 		clickButton(confirmPanel, "ok");

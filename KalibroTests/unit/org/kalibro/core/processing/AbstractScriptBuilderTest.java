@@ -27,7 +27,7 @@ public class AbstractScriptBuilderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testScript() {
-		assertEquals("var amloc = 18.0;\nfunction another(){return 42;}\n", scriptBuilder.buildScript());
+		assertEquals("function another(){return 42;}\nvar amloc = 18.0;\n", scriptBuilder.buildScript());
 	}
 
 	private class MyScriptBuilder extends AbstractScriptBuilder {

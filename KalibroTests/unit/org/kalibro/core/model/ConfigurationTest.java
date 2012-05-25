@@ -18,10 +18,15 @@ public class ConfigurationTest extends KalibroTestCase {
 	private CompoundMetric sc;
 	private Configuration configuration;
 
+	private String cboName, lcomName, scName;
+
 	@Before
 	public void setUp() {
 		sc = newSc();
 		configuration = newConfiguration("cbo", "lcom4");
+		cboName = analizoMetric("cbo").getName();
+		lcomName = analizoMetric("lcom4").getName();
+		scName = sc.getName();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -39,17 +44,22 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testContains() {
-		assertTrue(configuration.contains(analizoMetric("cbo")));
-		assertTrue(configuration.contains(analizoMetric("lcom4")));
-		assertFalse(configuration.contains(sc));
+		assertFalse(configuration.containsMetric("Unknown"));
+		assertTrue(configuration.containsMetric(cboName));
+		assertTrue(configuration.containsMetric(lcomName));
+		assertFalse(configuration.containsMetric(scName));
+
+		configuration.addMetricConfiguration(new MetricConfiguration(sc));
+		assertTrue(configuration.containsMetric(scName));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveCompoundMetrics() {
-		assertTrue(configuration.getCompoundMetrics().isEmpty());
-
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 		assertDeepEquals(configuration.getCompoundMetrics(), sc);
+
+		configuration.removeMetric(scName);
+		assertTrue(configuration.getCompoundMetrics().isEmpty());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -61,20 +71,19 @@ public class ConfigurationTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveConfigurationForMetric() {
-		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(analizoMetric("cbo")));
-		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(analizoMetric("lcom4")));
+		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(cboName));
+		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(lcomName));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkNoConfigurationFoundForMetricError() {
-		final NativeMetric metric = analizoMetric("anpm");
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
-				configuration.getConfigurationFor(metric);
+				configuration.getConfigurationFor("Unknown");
 			}
-		}, "No configuration found for metric: " + metric);
+		}, "No configuration found for metric: Unknown");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -91,9 +100,8 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldReplaceExistingMetricConfiguration() {
 		MetricConfiguration newMetricConfiguration = metricConfiguration("cbo");
-		NativeMetric cbo = analizoMetric("cbo");
-		configuration.replaceMetricConfiguration(cbo, newMetricConfiguration);
-		assertSame(newMetricConfiguration, configuration.getConfigurationFor(cbo));
+		configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
+		assertSame(newMetricConfiguration, configuration.getConfigurationFor(cboName));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -102,39 +110,38 @@ public class ConfigurationTest extends KalibroTestCase {
 
 			@Override
 			public void perform() throws Exception {
-				configuration.replaceMetricConfiguration(analizoMetric("noa"), metricConfiguration("noa"));
+				configuration.replaceMetricConfiguration("Unknown", metricConfiguration("noa"));
 			}
-		}, "No configuration found for metric: Number of Attributes");
+		}, "No configuration found for metric: Unknown");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorForConflictingMetricConfigurationReplace() {
-		final NativeMetric cbo = analizoMetric("cbo");
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				MetricConfiguration newMetricConfiguration = newMetricConfiguration("cbo");
 				newMetricConfiguration.setCode("lcom4");
-				configuration.replaceMetricConfiguration(cbo, newMetricConfiguration);
+				configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
 			}
 		}, "A metric configuration with code 'lcom4' already exists");
-		assertTrue(configuration.contains(cbo));
+		assertTrue(configuration.containsMetric(cboName));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testRemoveMetric() {
-		final NativeMetric metric = analizoMetric("cbo");
-		configuration.getConfigurationFor(metric);
-		assertTrue(configuration.removeMetric(metric));
-		assertFalse(configuration.removeMetric(metric));
+		configuration.removeMetric(cboName);
+		configuration.removeMetric(lcomName);
+		assertFalse(configuration.containsMetric(cboName));
+		assertFalse(configuration.containsMetric(lcomName));
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
-				configuration.getConfigurationFor(metric);
+				configuration.removeMetric(cboName);
 			}
-		}, "No configuration found for metric: " + metric);
+		}, "No configuration found for metric: " + cboName);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
