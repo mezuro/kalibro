@@ -13,12 +13,12 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.desktop.swingextension.Label;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareOnlyThisForTest({Kalibro.class, ProjectStatusBar.class})
+@PrepareForTest(Kalibro.class)
 public class ProjectStatusBarTest extends KalibroTestCase {
 
 	private Project project;
