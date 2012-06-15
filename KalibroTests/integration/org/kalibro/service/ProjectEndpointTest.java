@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.dao.ProjectDaoStub;
+import org.kalibro.core.persistence.dao.ProjectDaoFake;
 import org.kalibro.service.entities.RawProjectXml;
 
 public class ProjectEndpointTest extends KalibroServiceTestCase {
@@ -21,9 +21,9 @@ public class ProjectEndpointTest extends KalibroServiceTestCase {
 	public void setUp() throws MalformedURLException {
 		sample = newHelloWorld();
 		sample.setError(new KalibroException("ProjectEndpointTest", new Exception()));
-		ProjectDaoStub daoStub = new ProjectDaoStub();
-		daoStub.save(sample);
-		port = publishAndGetPort(new ProjectEndpointImpl(daoStub), ProjectEndpoint.class);
+		ProjectDaoFake daoFake = new ProjectDaoFake();
+		daoFake.save(sample);
+		port = publishAndGetPort(new ProjectEndpointImpl(daoFake), ProjectEndpoint.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

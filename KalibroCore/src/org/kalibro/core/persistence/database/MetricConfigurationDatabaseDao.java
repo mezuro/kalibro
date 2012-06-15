@@ -1,9 +1,7 @@
 package org.kalibro.core.persistence.database;
 
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.persistence.dao.MetricConfigurationDao;
 import org.kalibro.core.persistence.database.entities.MetricConfigurationRecord;
 import org.kalibro.core.persistence.database.entities.RangeRecord;
@@ -21,9 +19,9 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 	@Override
 	public void save(MetricConfiguration metricConfiguration, String configurationName) {
 		Configuration configuration = getConfiguration(configurationName);
-		Metric metric = metricConfiguration.getMetric();
-		if (configuration.contains(metric))
-			configuration.replaceMetricConfiguration(metric, metricConfiguration);
+		String metricName = metricConfiguration.getMetric().getName();
+		if (configuration.containsMetric(metricName))
+			configuration.replaceMetricConfiguration(metricName, metricConfiguration);
 		else
 			configuration.addMetricConfiguration(metricConfiguration);
 		databaseManager.evictFromCache(RangeRecord.class);
@@ -33,13 +31,13 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 	@Override
 	public MetricConfiguration getMetricConfiguration(String configurationName, String metricName) {
 		Configuration configuration = getConfiguration(configurationName);
-		return configuration.getConfigurationFor(new NativeMetric(metricName, null));
+		return configuration.getConfigurationFor(metricName);
 	}
 
 	@Override
 	public void removeMetricConfiguration(String configurationName, String metricName) {
 		Configuration configuration = getConfiguration(configurationName);
-		configuration.removeMetric(new NativeMetric(metricName, null));
+		configuration.removeMetric(metricName);
 		configurationDao.save(configuration);
 	}
 

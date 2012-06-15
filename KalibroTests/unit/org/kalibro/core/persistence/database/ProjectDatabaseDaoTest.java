@@ -9,19 +9,13 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
 public class ProjectDatabaseDaoTest extends KalibroTestCase {
 
 	private Project project;
@@ -34,7 +28,6 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 		project = helloWorld();
 		databaseManager = mock(DatabaseManager.class);
 		dao = spy(new ProjectDatabaseDao(databaseManager));
-		mockStatic(Kalibro.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -45,25 +38,6 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
 		Mockito.verify(databaseManager).save(captor.capture());
 		assertDeepEquals(project, captor.getValue().convert());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldFireIfStateChanged() {
-		doReturn(new ArrayList<String>()).when(dao).getAllNames();
-		dao.save(project);
-
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotFireIfStateDidNotChange() {
-		doReturn(Arrays.asList(PROJECT_NAME)).when(dao).getAllNames();
-		doReturn(project).when(dao).getByName(PROJECT_NAME);
-		dao.save(project);
-
-		verifyStatic(Mockito.never());
-		Kalibro.fireProjectStateChanged(project);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -4,7 +4,7 @@ import java.util.*;
 
 import org.kalibro.core.model.ModuleResult;
 
-public class ModuleResultDaoStub implements ModuleResultDao {
+public class ModuleResultDaoFake implements ModuleResultDao {
 
 	private SortedMap<ModuleResultKey, ModuleResult> moduleResults = new TreeMap<ModuleResultKey, ModuleResult>();
 

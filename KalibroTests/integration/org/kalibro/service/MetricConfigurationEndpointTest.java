@@ -9,22 +9,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.persistence.dao.MetricConfigurationDao;
-import org.kalibro.core.persistence.dao.MetricConfigurationDaoStub;
+import org.kalibro.core.persistence.dao.MetricConfigurationDaoFake;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
 public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	private static final String CONFIGURATION_NAME = "MetricConfigurationEndpointTest";
 
-	private MetricConfigurationDao daoStub;
+	private MetricConfigurationDao daoFake;
 	private MetricConfigurationEndpoint port;
 
 	@Before
 	public void setUp() throws MalformedURLException {
-		daoStub = new MetricConfigurationDaoStub();
-		daoStub.save(metricConfiguration("cbo"), CONFIGURATION_NAME);
-		daoStub.save(metricConfiguration("loc"), CONFIGURATION_NAME);
-		port = publishAndGetPort(new MetricConfigurationEndpointImpl(daoStub), MetricConfigurationEndpoint.class);
+		daoFake = new MetricConfigurationDaoFake();
+		daoFake.save(metricConfiguration("cbo"), CONFIGURATION_NAME);
+		daoFake.save(metricConfiguration("loc"), CONFIGURATION_NAME);
+		port = publishAndGetPort(new MetricConfigurationEndpointImpl(daoFake), MetricConfigurationEndpoint.class);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -35,7 +35,7 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	private void verifyGetMetricConfiguration(String code) {
 		String metricName = metricConfiguration(code).getMetric().getName();
-		MetricConfiguration expected = daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName);
+		MetricConfiguration expected = daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName);
 		MetricConfiguration actual = port.getMetricConfiguration(CONFIGURATION_NAME, metricName).convert();
 		assertDeepEquals(expected, actual);
 	}
@@ -48,17 +48,17 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	private void verifyRemoveMetricConfiguration(String code) {
 		String metricName = metricConfiguration(code).getMetric().getName();
-		assertNotNull(daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName));
+		assertNotNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 		port.removeMetricConfiguration(CONFIGURATION_NAME, metricName);
-		assertNull(daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName));
+		assertNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveConfiguration() {
 		MetricConfiguration newConfiguration = metricConfiguration("acc");
 		String metricName = newConfiguration.getMetric().getName();
-		assertNull(daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName));
+		assertNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 		port.saveMetricConfiguration(new MetricConfigurationXml(newConfiguration), CONFIGURATION_NAME);
-		assertDeepEquals(newConfiguration, daoStub.getMetricConfiguration(CONFIGURATION_NAME, metricName));
+		assertDeepEquals(newConfiguration, daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 	}
 }

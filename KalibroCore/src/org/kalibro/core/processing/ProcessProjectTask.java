@@ -38,6 +38,7 @@ public class ProcessProjectTask extends Task {
 		saveModuleResults(moduleResults);
 		project.setState(ProjectState.READY);
 		Kalibro.getProjectDao().save(project);
+		Kalibro.fireProjectStateChanged(project);
 	}
 
 	private void saveModuleResults(Collection<ModuleResult> moduleResults) {
@@ -49,5 +50,6 @@ public class ProcessProjectTask extends Task {
 	private void reportError(Throwable error) {
 		project.setError(error);
 		Kalibro.getProjectDao().save(project);
+		Kalibro.fireProjectStateChanged(project);
 	}
 }

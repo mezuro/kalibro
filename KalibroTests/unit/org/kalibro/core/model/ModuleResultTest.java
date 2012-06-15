@@ -62,11 +62,11 @@ public class ModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkGrade() {
-		configuration.removeMetric(sc);
+		configuration.removeMetric(sc.getName());
 
 		NativeMetric cbo = analizoMetric("cbo");
 		MetricResult cboResult = result.getResultFor(cbo);
-		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
+		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo.getName());
 
 		for (Double weight : new Double[]{0.0, 1.0, 2.0, 3.0, 4.0}) {
 			cboConfiguration.setWeight(weight);
@@ -101,7 +101,7 @@ public class ModuleResultTest extends KalibroTestCase {
 	}
 
 	private void changeScScope() {
-		configuration.removeMetric(sc);
+		configuration.removeMetric(sc.getName());
 		sc.setScope(Granularity.PACKAGE);
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 	}

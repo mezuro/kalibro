@@ -3,7 +3,7 @@ package org.kalibro.desktop;
 import static org.junit.Assert.*;
 
 import java.awt.Dimension;
-import java.awt.Toolkit;
+import java.awt.Frame;
 
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.desktop.configuration.ConfigurationMenu;
+import org.kalibro.desktop.project.ProjectMenu;
 import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class KalibroFrameTest extends KalibroTestCase {
@@ -40,19 +41,20 @@ public class KalibroFrameTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkMinimumSize() {
-		assertEquals(new Dimension(800, 540), frame.getMinimumSize());
+		assertEquals(new Dimension(900, 700), frame.getMinimumSize());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void defaultSizeShouldBeScreenSize() {
-		assertEquals(Toolkit.getDefaultToolkit().getScreenSize(), frame.getSize());
+	public void shouldBeMaximized() {
+		assertEquals(Frame.MAXIMIZED_BOTH, frame.getExtendedState());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkMenu() {
 		JMenuBar menuBar = frame.getJMenuBar();
-		assertEquals(2, menuBar.getMenuCount());
+		assertEquals(3, menuBar.getMenuCount());
 		assertTrue(menuBar.getMenu(0) instanceof KalibroMenu);
 		assertTrue(menuBar.getMenu(1) instanceof ConfigurationMenu);
+		assertTrue(menuBar.getMenu(2) instanceof ProjectMenu);
 	}
 }

@@ -2,9 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import java.util.List;
 
-import org.kalibro.Kalibro;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
 
@@ -16,15 +14,7 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 
 	@Override
 	public void save(Project project) {
-		ProjectState oldState = getCurrentState(project.getName());
-		ProjectState newState = project.getState();
 		databaseManager.save(new ProjectRecord(project));
-		if (newState != oldState)
-			Kalibro.fireProjectStateChanged(project);
-	}
-
-	private ProjectState getCurrentState(String projectName) {
-		return getProjectNames().contains(projectName) ? getProject(projectName).getState() : null;
 	}
 
 	@Override

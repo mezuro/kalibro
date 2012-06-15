@@ -14,7 +14,6 @@ import javax.swing.JPanel;
 public class Icon extends ImageIcon {
 
 	public static final String KALIBRO = "kalibro.gif";
-	public static final String METHOD = "method.gif";
 
 	public Icon(String resource) {
 		super(Icon.class.getResource(resource));

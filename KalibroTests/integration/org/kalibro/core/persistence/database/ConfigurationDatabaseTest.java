@@ -76,24 +76,28 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveAndRetrieveMetric() {
 		NativeMetric loc = analizoMetric("loc");
-		assertTrue(kalibroConfiguration.contains(loc));
-		assertTrue(retrieve(kalibroConfiguration).contains(loc));
+		String locName = loc.getName();
+		assertTrue(kalibroConfiguration.containsMetric(locName));
+		assertTrue(retrieve(kalibroConfiguration).containsMetric(locName));
 
-		kalibroConfiguration.getConfigurationFor(loc).setWeight(42.0);
+		kalibroConfiguration.getConfigurationFor(locName).setWeight(42.0);
 		dao.save(kalibroConfiguration);
-		assertDoubleEquals(42.0, retrieve(kalibroConfiguration).getConfigurationFor(loc).getWeight());
+		assertDoubleEquals(42.0, retrieve(kalibroConfiguration).getConfigurationFor(locName).getWeight());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void configurationsShouldNotShareMetrics() {
 		NativeMetric cbo = analizoMetric("cbo");
-		assertDeepEquals(kalibroConfiguration.getConfigurationFor(cbo), simpleConfiguration.getConfigurationFor(cbo));
+		String cboName = cbo.getName();
+		assertDeepEquals(kalibroConfiguration.getConfigurationFor(cboName),
+			simpleConfiguration.getConfigurationFor(cboName));
 		dao.save(simpleConfiguration);
 
-		simpleConfiguration.getConfigurationFor(cbo).setAggregationForm(Statistic.STANDARD_DEVIATION);
+		simpleConfiguration.getConfigurationFor(cboName).setAggregationForm(Statistic.STANDARD_DEVIATION);
 		dao.save(simpleConfiguration);
 
-		assertEquals(Statistic.AVERAGE, retrieve(kalibroConfiguration).getConfigurationFor(cbo).getAggregationForm());
+		assertEquals(Statistic.AVERAGE,
+			retrieve(kalibroConfiguration).getConfigurationFor(cboName).getAggregationForm());
 	}
 
 	private Configuration retrieve(Configuration configuration) {
