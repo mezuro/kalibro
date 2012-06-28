@@ -2,6 +2,8 @@ package org.kalibro.core.persistence.database;
 
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.kalibro.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
@@ -29,13 +31,15 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 
 	@Override
 	public void removeProject(String projectName) {
-		ProjectRecord record = new ProjectRecord(getByName(projectName));
+		Project project = getByName(projectName);
+		ProjectRecord record = new ProjectRecord(project);
 		databaseManager.beginTransaction();
 		delete("MetricResult", "module.projectResult.project.name", projectName);
 		delete("Module", "projectResult.project.name", projectName);
 		delete("ProjectResult", "project.name", projectName);
 		databaseManager.remove(record);
 		databaseManager.commitTransaction();
+		FileUtils.deleteQuietly(Kalibro.currentSettings().getLoadDirectoryFor(project));
 	}
 
 	private void delete(String table, String projectNameField, String projectName) {
