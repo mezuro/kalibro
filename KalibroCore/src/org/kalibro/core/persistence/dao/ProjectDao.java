@@ -10,6 +10,8 @@ public interface ProjectDao {
 
 	List<String> getProjectNames();
 
+	boolean hasProject(String projectName);
+
 	Project getProject(String projectName);
 
 	void removeProject(String projectName);

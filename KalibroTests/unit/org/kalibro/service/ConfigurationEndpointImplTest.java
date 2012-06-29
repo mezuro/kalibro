@@ -2,6 +2,7 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,6 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.service.entities.ConfigurationXml;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -35,9 +35,9 @@ public class ConfigurationEndpointImplTest extends KalibroTestCase {
 	}
 
 	private void mockDao() {
-		dao = PowerMockito.mock(ConfigurationDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getConfigurationDao()).thenReturn(dao);
+		dao = mock(ConfigurationDao.class);
+		mockStatic(Kalibro.class);
+		when(Kalibro.getConfigurationDao()).thenReturn(dao);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -49,13 +49,22 @@ public class ConfigurationEndpointImplTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetConfigurationNames() {
 		List<String> names = new ArrayList<String>();
-		PowerMockito.when(dao.getConfigurationNames()).thenReturn(names);
+		when(dao.getConfigurationNames()).thenReturn(names);
 		assertSame(names, endpoint.getConfigurationNames());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void testConfirmConfiguration() {
+		when(dao.hasConfiguration("42")).thenReturn(true);
+		assertTrue(endpoint.hasConfiguration("42"));
+
+		when(dao.hasConfiguration("42")).thenReturn(false);
+		assertFalse(endpoint.hasConfiguration("42"));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetConfiguration() {
-		PowerMockito.when(dao.getConfiguration("42")).thenReturn(configuration);
+		when(dao.getConfiguration("42")).thenReturn(configuration);
 		assertDeepEquals(configuration, endpoint.getConfiguration("42").convert());
 	}
 

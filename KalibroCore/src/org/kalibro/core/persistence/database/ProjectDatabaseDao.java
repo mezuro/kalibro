@@ -25,6 +25,11 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 	}
 
 	@Override
+	public boolean hasProject(String projectName) {
+		return hasEntity(projectName);
+	}
+
+	@Override
 	public Project getProject(String projectName) {
 		return getByName(projectName);
 	}

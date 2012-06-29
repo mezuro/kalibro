@@ -27,6 +27,11 @@ class ProjectPortDao implements ProjectDao {
 	}
 
 	@Override
+	public boolean hasProject(String projectName) {
+		return port.hasProject(projectName);
+	}
+
+	@Override
 	public Project getProject(String projectName) {
 		return port.getProject(projectName).convert();
 	}

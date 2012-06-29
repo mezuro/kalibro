@@ -56,6 +56,15 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldConfirmProject() {
+		doReturn(true).when(dao).hasEntity(PROJECT_NAME);
+		assertTrue(dao.hasProject(PROJECT_NAME));
+
+		doReturn(false).when(dao).hasEntity(PROJECT_NAME);
+		assertFalse(dao.hasProject(PROJECT_NAME));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetProjectByName() {
 		doReturn(project).when(dao).getByName("42");
 		assertSame(project, dao.getProject("42"));

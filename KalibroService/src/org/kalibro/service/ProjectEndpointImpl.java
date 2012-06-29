@@ -36,6 +36,12 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 	}
 
 	@Override
+	@WebResult(name = "hasProject")
+	public boolean hasProject(String projectName) {
+		return dao.hasProject(projectName);
+	}
+
+	@Override
 	@WebResult(name = "project")
 	public ProjectXml getProject(@WebParam(name = "projectName") String projectName) {
 		return new ProjectXml(dao.getProject(projectName));

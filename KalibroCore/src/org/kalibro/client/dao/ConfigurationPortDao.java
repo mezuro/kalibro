@@ -28,6 +28,11 @@ class ConfigurationPortDao implements ConfigurationDao {
 	}
 
 	@Override
+	public boolean hasConfiguration(String configurationName) {
+		return port.hasConfiguration(configurationName);
+	}
+
+	@Override
 	public Configuration getConfiguration(String configurationName) {
 		return port.getConfiguration(configurationName).convert();
 	}

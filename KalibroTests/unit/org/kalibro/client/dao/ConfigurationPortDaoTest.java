@@ -1,6 +1,7 @@
 package org.kalibro.client.dao;
 
 import static org.junit.Assert.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,7 +18,6 @@ import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -38,9 +38,9 @@ public class ConfigurationPortDaoTest extends KalibroTestCase {
 	}
 
 	private void mockPort() {
-		port = PowerMockito.mock(ConfigurationEndpoint.class);
-		PowerMockito.mockStatic(EndpointPortFactory.class);
-		PowerMockito.when(EndpointPortFactory.getEndpointPort(ConfigurationEndpoint.class)).thenReturn(port);
+		port = mock(ConfigurationEndpoint.class);
+		mockStatic(EndpointPortFactory.class);
+		when(EndpointPortFactory.getEndpointPort(ConfigurationEndpoint.class)).thenReturn(port);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -55,13 +55,22 @@ public class ConfigurationPortDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetConfigurationNames() {
 		List<String> names = new ArrayList<String>();
-		PowerMockito.when(port.getConfigurationNames()).thenReturn(names);
+		when(port.getConfigurationNames()).thenReturn(names);
 		assertSame(names, dao.getConfigurationNames());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void testConfirmConfiguration() {
+		when(port.hasConfiguration("42")).thenReturn(true);
+		assertTrue(dao.hasConfiguration("42"));
+
+		when(port.hasConfiguration("42")).thenReturn(false);
+		assertFalse(dao.hasConfiguration("42"));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetConfiguration() {
-		PowerMockito.when(port.getConfiguration("")).thenReturn(new ConfigurationXml(configuration));
+		when(port.getConfiguration("")).thenReturn(new ConfigurationXml(configuration));
 		assertDeepEquals(configuration, dao.getConfiguration(""));
 	}
 
