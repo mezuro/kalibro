@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence.database;
 
+import br.jabuti.JabutiMetricCollector;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +39,7 @@ public class SeedsFileGenerator {
 		List<BaseToolRecord> baseTools = new ArrayList<BaseToolRecord>();
 		baseTools.add(newBaseTool(AnalizoMetricCollector.class));
 		baseTools.add(newBaseTool(CheckstyleMetricCollector.class));
+		baseTools.add(newBaseTool(JabutiMetricCollector.class));
 		return baseTools;
 	}
 
