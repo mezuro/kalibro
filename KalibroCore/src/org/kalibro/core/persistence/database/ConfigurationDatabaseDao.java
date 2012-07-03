@@ -24,6 +24,11 @@ class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationR
 	}
 
 	@Override
+	public boolean hasConfiguration(String configurationName) {
+		return hasEntity(configurationName);
+	}
+
+	@Override
 	public Configuration getConfiguration(String configurationName) {
 		return getByName(configurationName);
 	}

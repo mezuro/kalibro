@@ -145,12 +145,12 @@ public class ConfigurationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateValidCompoundMetric() {
+	public void shouldValidateCompoundMetric() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateInvalidCompoundMetric() {
+	public void shouldValidateInvalidCompoundMetric() {
 		sc.setScript("return null;");
 		checkKalibroException(new Task() {
 
@@ -158,7 +158,7 @@ public class ConfigurationTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				configuration.addMetricConfiguration(new MetricConfiguration(sc));
 			}
-		}, "Compound metric with invalid script: Structural complexity", NullPointerException.class);
+		}, "Metric with invalid code or script: Structural complexity", NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

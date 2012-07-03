@@ -1,6 +1,7 @@
 package org.kalibro.core.processing;
 
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 
 import javax.script.ScriptException;
@@ -22,6 +23,24 @@ public class ScriptValidatorTest extends KalibroTestCase {
 	public void setUp() {
 		configuration = newConfiguration("cbo", "lcom4");
 		validator = new ScriptValidator(configuration);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldValidateNativeCode() {
+		checkKalibroException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				MetricConfiguration nativeConfiguration = metricConfiguration("loc");
+				nativeConfiguration.setCode("42");
+				validator.validateScriptOf(nativeConfiguration);
+			}
+		}, "Metric with invalid code or script: Lines of Code", ScriptException.class);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldValidateCompoundCode() {
+		assertInvalid("42", "return 1.0;", ScriptException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -69,11 +88,6 @@ public class ScriptValidatorTest extends KalibroTestCase {
 		assertInvalid("return 'My string';", ClassCastException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateInvalidCode() {
-		assertInvalid("42", "return 1.0;", ScriptException.class);
-	}
-
 	private void assertInvalid(String script, Class<? extends Exception> exceptionClass) {
 		assertInvalid("metric", script, exceptionClass);
 	}
@@ -85,7 +99,7 @@ public class ScriptValidatorTest extends KalibroTestCase {
 			public void perform() throws Exception {
 				validate(code, script);
 			}
-		}, "Compound metric with invalid script: " + code, exceptionClass);
+		}, "Metric with invalid code or script: " + code, exceptionClass);
 	}
 
 	private void validate(String script) {

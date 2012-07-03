@@ -22,6 +22,11 @@ public class ConfigurationDaoFake implements ConfigurationDao {
 	}
 
 	@Override
+	public boolean hasConfiguration(String configurationName) {
+		return configurations.containsKey(configurationName);
+	}
+
+	@Override
 	public Configuration getConfiguration(String configurationName) {
 		return configurations.get(configurationName);
 	}

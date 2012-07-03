@@ -21,6 +21,10 @@ public interface ProjectEndpoint {
 	List<String> getProjectNames();
 
 	@WebMethod
+	@WebResult(name = "hasProject")
+	boolean hasProject(@WebParam(name = "projectName") String projectName);
+
+	@WebMethod
 	@WebResult(name = "project")
 	ProjectXml getProject(@WebParam(name = "projectName") String projectName);
 

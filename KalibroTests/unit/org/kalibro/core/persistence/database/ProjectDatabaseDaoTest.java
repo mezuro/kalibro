@@ -4,18 +4,27 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
+import org.kalibro.core.settings.KalibroSettings;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest({FileUtils.class, Kalibro.class})
 public class ProjectDatabaseDaoTest extends KalibroTestCase {
 
 	private Project project;
@@ -47,6 +56,15 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldConfirmProject() {
+		doReturn(true).when(dao).hasEntity(PROJECT_NAME);
+		assertTrue(dao.hasProject(PROJECT_NAME));
+
+		doReturn(false).when(dao).hasEntity(PROJECT_NAME);
+		assertFalse(dao.hasProject(PROJECT_NAME));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetProjectByName() {
 		doReturn(project).when(dao).getByName("42");
 		assertSame(project, dao.getProject("42"));
@@ -54,11 +72,8 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveProjectByNameAndDependentEntities() {
-		doReturn(project).when(dao).getByName("42");
-		Query<?> query = mock(Query.class);
-		mockQuery("MetricResult", "module.projectResult.project.name", query);
-		mockQuery("Module", "projectResult.project.name", query);
-		mockQuery("ProjectResult", "project.name", query);
+		Query<?> query = mockRemoveQueries("42");
+		mockRemoveDirectory();
 		dao.removeProject("42");
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
@@ -74,8 +89,36 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 		assertDeepEquals(project, captor.getValue().convert());
 	}
 
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRemoveProjectDirectoryOnRemove() {
+		mockRemoveQueries("42");
+		File directory = mockRemoveDirectory();
+		dao.removeProject("42");
+		verifyStatic();
+		FileUtils.deleteQuietly(directory);
+	}
+
+	private Query<?> mockRemoveQueries(String projectName) {
+		doReturn(project).when(dao).getByName(projectName);
+		Query<?> query = mock(Query.class);
+		mockQuery("MetricResult", "module.projectResult.project.name", query);
+		mockQuery("Module", "projectResult.project.name", query);
+		mockQuery("ProjectResult", "project.name", query);
+		return query;
+	}
+
 	private void mockQuery(String table, String projectNameField, Query<?> query) {
 		String queryText = "DELETE FROM " + table + " t WHERE t." + projectNameField + " = :projectName";
 		doReturn(query).when(dao).createRecordQuery(queryText);
+	}
+
+	private File mockRemoveDirectory() {
+		KalibroSettings settings = mock(KalibroSettings.class);
+		File directory = mock(File.class);
+		mockStatic(Kalibro.class);
+		when(Kalibro.currentSettings()).thenReturn(settings);
+		when(settings.getLoadDirectoryFor(project)).thenReturn(directory);
+		mockStatic(FileUtils.class);
+		return directory;
 	}
 }

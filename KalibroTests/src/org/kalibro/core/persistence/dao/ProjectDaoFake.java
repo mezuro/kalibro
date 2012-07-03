@@ -22,6 +22,11 @@ public class ProjectDaoFake implements ProjectDao {
 	}
 
 	@Override
+	public boolean hasProject(String projectName) {
+		return projects.containsKey(projectName);
+	}
+
+	@Override
 	public Project getProject(String projectName) {
 		return projects.get(projectName);
 	}

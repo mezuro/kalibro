@@ -1,6 +1,7 @@
 package org.kalibro.client.dao;
 
 import static org.junit.Assert.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,8 @@ public class ProjectPortDaoTest extends KalibroTestCase {
 
 	private void mockPort() {
 		port = PowerMockito.mock(ProjectEndpoint.class);
-		PowerMockito.mockStatic(EndpointPortFactory.class);
-		PowerMockito.when(EndpointPortFactory.getEndpointPort(ProjectEndpoint.class)).thenReturn(port);
+		mockStatic(EndpointPortFactory.class);
+		when(EndpointPortFactory.getEndpointPort(ProjectEndpoint.class)).thenReturn(port);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -55,13 +56,22 @@ public class ProjectPortDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetProjectNames() {
 		List<String> names = new ArrayList<String>();
-		PowerMockito.when(port.getProjectNames()).thenReturn(names);
+		when(port.getProjectNames()).thenReturn(names);
 		assertSame(names, dao.getProjectNames());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void testConfirmProject() {
+		when(port.hasProject("42")).thenReturn(true);
+		assertTrue(dao.hasProject("42"));
+
+		when(port.hasProject("42")).thenReturn(false);
+		assertFalse(dao.hasProject("42"));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetProject() {
-		PowerMockito.when(port.getProject("")).thenReturn(new ProjectXml(project));
+		when(port.getProject("")).thenReturn(new ProjectXml(project));
 		assertDeepEquals(project, dao.getProject(""));
 	}
 
