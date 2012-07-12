@@ -64,6 +64,7 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSaveMetricWithoutLanguages() {
 		NativeMetric nativeMetric = new NativeMetric("name", Granularity.METHOD);
+		nativeMetric.setOrigin("origin");
 		Configuration newConfiguration = new Configuration();
 		newConfiguration.addMetricConfiguration(new MetricConfiguration(nativeMetric));
 		testSaveConfiguration(newConfiguration);

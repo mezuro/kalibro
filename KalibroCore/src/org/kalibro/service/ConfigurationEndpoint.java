@@ -20,6 +20,10 @@ public interface ConfigurationEndpoint {
 	List<String> getConfigurationNames();
 
 	@WebMethod
+	@WebResult(name = "hasConfiguration")
+	boolean hasConfiguration(@WebParam(name = "configurationName") String configurationName);
+
+	@WebMethod
 	@WebResult(name = "configuration")
 	ConfigurationXml getConfiguration(@WebParam(name = "configurationName") String configurationName);
 

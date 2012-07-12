@@ -2,6 +2,7 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,7 +16,6 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.service.entities.RawProjectXml;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -35,9 +35,9 @@ public class ProjectEndpointImplTest extends KalibroTestCase {
 	}
 
 	private void mockDao() {
-		dao = PowerMockito.mock(ProjectDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getProjectDao()).thenReturn(dao);
+		dao = mock(ProjectDao.class);
+		mockStatic(Kalibro.class);
+		when(Kalibro.getProjectDao()).thenReturn(dao);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -49,13 +49,22 @@ public class ProjectEndpointImplTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetProjectNames() {
 		List<String> names = new ArrayList<String>();
-		PowerMockito.when(dao.getProjectNames()).thenReturn(names);
+		when(dao.getProjectNames()).thenReturn(names);
 		assertSame(names, endpoint.getProjectNames());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void testConfirmProject() {
+		when(dao.hasProject("42")).thenReturn(true);
+		assertTrue(endpoint.hasProject("42"));
+
+		when(dao.hasProject("42")).thenReturn(false);
+		assertFalse(endpoint.hasProject("42"));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetProject() {
-		PowerMockito.when(dao.getProject("42")).thenReturn(project);
+		when(dao.getProject("42")).thenReturn(project);
 		assertDeepEquals(project, endpoint.getProject("42").convert());
 	}
 

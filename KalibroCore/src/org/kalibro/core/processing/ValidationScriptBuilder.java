@@ -15,12 +15,14 @@ class ValidationScriptBuilder extends AbstractScriptBuilder {
 
 	@Override
 	public String buildScript() {
-		return super.buildScript() + getScriptFor(toValidate);
+		if (toValidate.getMetric().isCompound())
+			return super.buildScript() + getScriptFor(toValidate);
+		return "function " + toValidate.getCode() + "(){return 1.0;}";
 	}
 
 	@Override
 	protected boolean shouldInclude(Metric metric) {
-		return !metric.isCompound();
+		return ! metric.isCompound();
 	}
 
 	@Override

@@ -79,7 +79,7 @@ public class MetricConfigurationController implements ActionListener, TablePanel
 	private void confirmEdit() {
 		try {
 			Metric metric = metricConfiguration.getMetric();
-			configuration.replaceMetricConfiguration(metric, panel.get());
+			configuration.replaceMetricConfiguration(metric.getName(), panel.get());
 			cardStack.pop();
 		} catch (KalibroException exception) {
 			new ErrorDialog(panel).show(exception);

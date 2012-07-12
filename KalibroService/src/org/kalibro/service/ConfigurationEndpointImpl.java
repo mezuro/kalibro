@@ -35,6 +35,12 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 	}
 
 	@Override
+	@WebResult(name = "hasConfiguration")
+	public boolean hasConfiguration(String configurationName) {
+		return dao.hasConfiguration(configurationName);
+	}
+
+	@Override
 	@WebResult(name = "configuration")
 	public ConfigurationXml getConfiguration(@WebParam(name = "configurationName") String configurationName) {
 		return new ConfigurationXml(dao.getConfiguration(configurationName));

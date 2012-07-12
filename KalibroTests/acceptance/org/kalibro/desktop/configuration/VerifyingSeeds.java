@@ -1,7 +1,5 @@
 package org.kalibro.desktop.configuration;
 
-import static org.junit.Assert.*;
-
 import org.junit.Test;
 import org.kalibro.desktop.KalibroDesktopTestCase;
 
@@ -17,8 +15,7 @@ public class VerifyingSeeds extends KalibroDesktopTestCase {
 		startKalibroFrame();
 
 		fixture.menuItemWithPath("Configuration", "Open").click();
-		verifyChoiceDialogWithDefaultConfiguration();
-		fixture.optionPane().okButton().click();
+		selectDefaultConfiguration();
 
 		fixture.panel("configuration").button("add").click();
 		fixture.dialog().radioButton("native").click();
@@ -26,10 +23,11 @@ public class VerifyingSeeds extends KalibroDesktopTestCase {
 		fixture.dialog().list("baseTools").requireSelection("Analizo");
 	}
 
-	private void verifyChoiceDialogWithDefaultConfiguration() {
+	private void selectDefaultConfiguration() {
 		fixture.optionPane().requirePlainMessage();
 		fixture.optionPane().requireTitle("Open configuration");
 		fixture.optionPane().requireMessage("Select configuration:");
-		assertArrayEquals(new String[]{"Kalibro for Java"}, fixture.optionPane().component().getSelectionValues());
+		fixture.optionPane().component().setSelectionValues(new Object[]{"Kalibro for Java"});
+		fixture.optionPane().okButton().click();
 	}
 }

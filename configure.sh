@@ -9,6 +9,7 @@ mv resources Resources
 mkdir -pv $HOME/.kalibro
 rm -rf $HOME/.kalibro/tests
 tar -xvf Resources/tests.tar.gz -C $HOME/.kalibro
+mv Resources/Timeouts.java KalibroTests/src/org/kalibro/
 
 echo "Should be done on Eclipse:"
 echo "1 - Install plugins Eclemma and Checkstyle"

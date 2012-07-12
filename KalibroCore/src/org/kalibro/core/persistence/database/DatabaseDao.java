@@ -22,6 +22,13 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		return databaseManager.createQuery(queryText, String.class).getResultList();
 	}
 
+	protected boolean hasEntity(String name) {
+		String queryText = "SELECT 1 FROM " + getEntityName() + " x WHERE x.name = :name";
+		Query<String> query = databaseManager.createQuery(queryText, String.class);
+		query.setParameter("name", name);
+		return ! query.getResultList().isEmpty();
+	}
+
 	protected ENTITY getByName(String name) {
 		String queryText = "SELECT x FROM " + getEntityName() + " x WHERE x.name = :name";
 		Query<RECORD> query = createRecordQuery(queryText);

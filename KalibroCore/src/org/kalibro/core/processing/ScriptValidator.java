@@ -16,10 +16,9 @@ public class ScriptValidator {
 	public void validateScriptOf(MetricConfiguration metricConfiguration) {
 		Metric metric = metricConfiguration.getMetric();
 		try {
-			if (metric.isCompound())
-				doValidate(metricConfiguration);
+			doValidate(metricConfiguration);
 		} catch (Exception exception) {
-			throw new KalibroException("Compound metric with invalid script: " + metric, exception);
+			throw new KalibroException("Metric with invalid code or script: " + metric, exception);
 		}
 	}
 

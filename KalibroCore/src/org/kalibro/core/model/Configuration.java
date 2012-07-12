@@ -15,12 +15,17 @@ public class Configuration extends AbstractEntity<Configuration> {
 	private String name;
 
 	private String description;
-	private Map<Metric, MetricConfiguration> metricConfigurations;
+
+	private SortedSet<CompoundMetric> compoundMetrics;
+	private Map<String, Set<NativeMetric>> nativeMetrics;
+	private Map<String, MetricConfiguration> metricConfigurations;
 
 	public Configuration() {
 		setName("");
 		setDescription("");
-		metricConfigurations = new TreeMap<Metric, MetricConfiguration>();
+		compoundMetrics = new TreeSet<CompoundMetric>();
+		nativeMetrics = new TreeMap<String, Set<NativeMetric>>();
+		metricConfigurations = new TreeMap<String, MetricConfiguration>();
 	}
 
 	@Override
@@ -48,49 +53,50 @@ public class Configuration extends AbstractEntity<Configuration> {
 		return metricConfigurations.values();
 	}
 
-	public boolean contains(Metric metric) {
-		return metricConfigurations.containsKey(metric);
+	public boolean containsMetric(String metricName) {
+		return metricConfigurations.containsKey(metricName);
 	}
 
 	public SortedSet<CompoundMetric> getCompoundMetrics() {
-		SortedSet<CompoundMetric> compoundMetrics = new TreeSet<CompoundMetric>();
-		for (Metric metric : metricConfigurations.keySet())
-			if (metric.isCompound())
-				compoundMetrics.add((CompoundMetric) metric);
 		return compoundMetrics;
 	}
 
 	public Map<String, Set<NativeMetric>> getNativeMetrics() {
-		Map<String, Set<NativeMetric>> nativeMetrics = new HashMap<String, Set<NativeMetric>>();
-		for (Metric metric : metricConfigurations.keySet())
-			if (!metric.isCompound())
-				putNativeMetric((NativeMetric) metric, nativeMetrics);
 		return nativeMetrics;
 	}
 
-	private void putNativeMetric(NativeMetric metric, Map<String, Set<NativeMetric>> nativeMetrics) {
+	public MetricConfiguration getConfigurationFor(String metricName) {
+		if (! containsMetric(metricName))
+			throw new KalibroException("No configuration found for metric: " + metricName);
+		return metricConfigurations.get(metricName);
+	}
+
+	public void addMetricConfiguration(MetricConfiguration metricConfiguration) {
+		for (MetricConfiguration configuration : metricConfigurations.values())
+			configuration.assertNoConflictWith(metricConfiguration);
+		new ScriptValidator(this).validateScriptOf(metricConfiguration);
+		Metric metric = metricConfiguration.getMetric();
+		addMetric(metric);
+		metricConfigurations.put(metric.getName(), metricConfiguration);
+	}
+
+	private void addMetric(Metric metric) {
+		if (metric.isCompound())
+			compoundMetrics.add((CompoundMetric) metric);
+		else
+			addNativeMetric((NativeMetric) metric);
+	}
+
+	private void addNativeMetric(NativeMetric metric) {
 		String origin = metric.getOrigin();
-		if (!nativeMetrics.containsKey(origin))
-			nativeMetrics.put(origin, new HashSet<NativeMetric>());
+		if (! nativeMetrics.containsKey(origin))
+			nativeMetrics.put(origin, new TreeSet<NativeMetric>());
 		nativeMetrics.get(origin).add(metric);
 	}
 
-	public MetricConfiguration getConfigurationFor(Metric metric) {
-		if (!contains(metric))
-			throw new KalibroException("No configuration found for metric: " + metric);
-		return metricConfigurations.get(metric);
-	}
-
-	public void addMetricConfiguration(MetricConfiguration newMetricConfiguration) {
-		for (MetricConfiguration metricConfiguration : metricConfigurations.values())
-			metricConfiguration.assertNoConflictWith(newMetricConfiguration);
-		new ScriptValidator(this).validateScriptOf(newMetricConfiguration);
-		metricConfigurations.put(newMetricConfiguration.getMetric(), newMetricConfiguration);
-	}
-
-	public void replaceMetricConfiguration(Metric metric, MetricConfiguration newMetricConfiguration) {
-		MetricConfiguration oldConfiguration = getConfigurationFor(metric);
-		removeMetric(metric);
+	public void replaceMetricConfiguration(String metricName, MetricConfiguration newMetricConfiguration) {
+		MetricConfiguration oldConfiguration = getConfigurationFor(metricName);
+		removeMetric(metricName);
 		try {
 			addMetricConfiguration(newMetricConfiguration);
 		} catch (KalibroException exception) {
@@ -99,7 +105,22 @@ public class Configuration extends AbstractEntity<Configuration> {
 		}
 	}
 
-	public boolean removeMetric(Metric metric) {
-		return metricConfigurations.remove(metric) != null;
+	public void removeMetric(String metricName) {
+		removeMetric(getConfigurationFor(metricName).getMetric());
+		metricConfigurations.remove(metricName);
+	}
+
+	private void removeMetric(Metric metric) {
+		if (metric.isCompound())
+			compoundMetrics.remove(metric);
+		else
+			removeNativeMetric((NativeMetric) metric);
+	}
+
+	private void removeNativeMetric(NativeMetric metric) {
+		String origin = metric.getOrigin();
+		nativeMetrics.get(origin).remove(metric);
+		if (nativeMetrics.get(origin).isEmpty())
+			nativeMetrics.remove(origin);
 	}
 }

@@ -10,6 +10,8 @@ public interface ConfigurationDao {
 
 	List<String> getConfigurationNames();
 
+	boolean hasConfiguration(String configurationName);
+
 	Configuration getConfiguration(String configurationName);
 
 	Configuration getConfigurationFor(String projectName);
