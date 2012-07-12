@@ -27,7 +27,7 @@ public class JavascriptEvaluator {
 	}
 
 	private void validateIdentifier(String identifier) {
-		if (! identifier.matches("[a-z][a-zA-Z0-9]*"))
+		if (! identifier.matches("[a-zA-Z_$][a-zA-_$Z0-9]*"))
 			throw new KalibroException("Invalid identifier: " + identifier);
 	}
 

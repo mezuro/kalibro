@@ -30,13 +30,13 @@ public class JavascriptEvaluatorTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddFunctionsAndExecuteThem() {
 		evaluator = new JavascriptEvaluator();
-		evaluator.addVariable("wonders", 7.0);
-		evaluator.addVariable("diceFaces", 6.0);
+		evaluator.addVariable("$wonders", 7.0);
+		evaluator.addVariable("dice_faces", 6.0);
 		assertDoubleEquals(42.0, addFunctionAndExecute("straightFoward", "return 42;"));
-		assertDoubleEquals(42.0, addFunctionAndExecute("usingVariables", "return wonders * diceFaces;"));
-		assertDoubleEquals(1E6, addFunctionAndExecute("scientificNotation", "return 1E6;"));
-		assertDoubleEquals(42E6, addFunctionAndExecute("calling", "return usingVariables() * scientificNotation();"));
-		assertDoubleEquals(1.0, addFunctionAndExecute("conditional", "return wonders > diceFaces ? 1 : 0;"));
+		assertDoubleEquals(42.0, addFunctionAndExecute("_answer", "return $wonders * dice_faces;"));
+		assertDoubleEquals(1E6, addFunctionAndExecute("scientific_notation", "return 1E6;"));
+		assertDoubleEquals(42E6, addFunctionAndExecute("calling", "return _answer() * scientific_notation();"));
+		assertDoubleEquals(1.0, addFunctionAndExecute("conditional", "return $wonders > dice_faces ? 1 : 0;"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
