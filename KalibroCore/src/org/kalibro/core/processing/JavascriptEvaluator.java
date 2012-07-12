@@ -1,5 +1,6 @@
 package org.kalibro.core.processing;
 
+import org.kalibro.KalibroException;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
@@ -15,12 +16,19 @@ public class JavascriptEvaluator {
 	}
 
 	public void addVariable(String name, Double value) {
+		validateIdentifier(name);
 		script.put(name, script, value);
 	}
 
 	public void addFunction(String name, String body) {
+		validateIdentifier(name);
 		Function function = context.compileFunction(script, "function(){\n" + body + "}", name, 0, null);
 		script.put(name, script, function);
+	}
+
+	private void validateIdentifier(String identifier) {
+		if (! identifier.matches("[a-z][a-zA-Z0-9]*"))
+			throw new KalibroException("Invalid identifier: " + identifier);
 	}
 
 	public Double evaluate(String name) {
