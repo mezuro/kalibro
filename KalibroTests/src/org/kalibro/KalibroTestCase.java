@@ -11,16 +11,12 @@ import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.util.Directories;
 
-public abstract class KalibroTestCase {
+public abstract class KalibroTestCase implements Timeouts {
 
 	public static final File TESTS_DIRECTORY = new File(Directories.kalibro(), "tests");
 	public static final File SAMPLES_DIRECTORY = new File(TESTS_DIRECTORY, "samples");
 	public static final File PROJECTS_DIRECTORY = new File(TESTS_DIRECTORY, "projects");
 	public static final File HELLO_WORLD_DIRECTORY = new File(PROJECTS_DIRECTORY, "HelloWorld-1.0");
-
-	protected static final long UNIT_TIMEOUT = 750;
-	protected static final long INTEGRATION_TIMEOUT = 2500;
-	protected static final long ACCEPTANCE_TIMEOUT = 10000;
 
 	private boolean waiting;
 
@@ -107,7 +103,7 @@ public abstract class KalibroTestCase {
 	}
 
 	protected void assertDeepEquals(AbstractEntity<?> expected, AbstractEntity<?> actual) {
-		if (!expected.deepEquals(actual)) {
+		if (! expected.deepEquals(actual)) {
 			String actualText = (actual == null) ? "null" : actual.deepPrint();
 			String expectedText = expected.deepPrint();
 			assertEquals(expectedText, actualText);
