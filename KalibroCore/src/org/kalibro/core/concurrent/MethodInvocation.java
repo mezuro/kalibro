@@ -31,11 +31,9 @@ class MethodInvocation {
 		return done;
 	}
 
-	protected Object getResult() {
+	protected Object getResult() throws Throwable {
+		if (error != null)
+			throw error;
 		return result;
-	}
-
-	protected Throwable getError() {
-		return error;
 	}
 }

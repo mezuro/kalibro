@@ -22,11 +22,10 @@ public class MethodInvocationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvoke() {
+	public void shouldInvoke() throws Throwable {
 		createInvocation(3);
 		invocation.invoke();
 		assertEquals("string", invocation.getResult());
-		assertNull(invocation.getError());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -38,12 +37,16 @@ public class MethodInvocationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveInvocationError() {
+	public void shouldThrowInvocationErrorWhenRetrievingResult() {
 		createInvocation(-1);
 		invocation.invoke();
-		assertNull(invocation.getResult());
-		assertClassEquals(InvocationTargetException.class, invocation.getError());
-		assertClassEquals(StringIndexOutOfBoundsException.class, invocation.getError().getCause());
+		checkException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				invocation.getResult();
+			}
+		}, InvocationTargetException.class);
 	}
 
 	private void createInvocation(int index) {
