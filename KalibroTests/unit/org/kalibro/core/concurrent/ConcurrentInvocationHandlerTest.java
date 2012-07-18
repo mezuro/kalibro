@@ -31,13 +31,21 @@ public class ConcurrentInvocationHandlerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldEndThreadOnFinalize() throws Throwable {
+		ConcurrentInvocationHandler handler = createHandler();
+		handler.finalize();
+		assertFalse((Boolean) Whitebox.getInternalState(handler, "running"));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldHaveDescription() throws Exception {
+		assertEquals("Handling invocations for java.lang.String", "" + createHandler());
+	}
+
+	private ConcurrentInvocationHandler createHandler() throws Exception {
 		Class<ConcurrentInvocationHandler> handlerClass = ConcurrentInvocationHandler.class;
 		Constructor<ConcurrentInvocationHandler> constructor = handlerClass.getDeclaredConstructor(Object.class);
 		constructor.setAccessible(true);
-
-		ConcurrentInvocationHandler handler = constructor.newInstance("");
-		handler.finalize();
-		assertFalse((Boolean) Whitebox.getInternalState(handler, "running"));
+		return constructor.newInstance("");
 	}
 
 	private long getThreadId() {
