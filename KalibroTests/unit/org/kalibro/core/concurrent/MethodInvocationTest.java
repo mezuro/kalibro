@@ -2,7 +2,6 @@ package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.junit.Before;
@@ -37,7 +36,7 @@ public class MethodInvocationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowInvocationErrorWhenRetrievingResult() {
+	public void shouldThrowExceptionWhenRetrievingResult() {
 		createInvocation(-1);
 		invocation.invoke();
 		checkException(new Task() {
@@ -46,7 +45,7 @@ public class MethodInvocationTest extends KalibroTestCase {
 			protected void perform() throws Throwable {
 				invocation.getResult();
 			}
-		}, InvocationTargetException.class);
+		}, StringIndexOutOfBoundsException.class);
 	}
 
 	private void createInvocation(int index) {

@@ -1,5 +1,6 @@
 package org.kalibro.core.concurrent;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 class MethodInvocation {
@@ -33,7 +34,7 @@ class MethodInvocation {
 
 	protected Object getResult() throws Throwable {
 		if (error != null)
-			throw error;
+			throw (error instanceof InvocationTargetException) ? error.getCause() : error;
 		return result;
 	}
 }
