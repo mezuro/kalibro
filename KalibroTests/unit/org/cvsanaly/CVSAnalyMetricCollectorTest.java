@@ -47,7 +47,7 @@ public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 
 		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
 		Mockito.verify(executor).executeAndWait();
-		assertDeepEquals(CVSAnalyStub.getExampleResult(), actual);
+		assertDeepEquals(CVSAnalyStub.results(), actual);
 	}
 
 	private void mockFetcher() throws Exception {

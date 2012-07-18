@@ -25,6 +25,7 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 
 	@Override
 	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
+		//TODO Only collect the given metrics
 		File tempFile = File.createTempFile("kalibro-cvsanaly-db", ".sqlite");
 		CommandTask executor = new CommandTask(CVSANALY2_COMMAND_LINE + tempFile.getAbsolutePath(), codeDirectory);
 		executor.executeAndWait();

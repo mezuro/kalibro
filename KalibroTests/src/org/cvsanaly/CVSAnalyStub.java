@@ -11,7 +11,23 @@ import org.kalibro.core.model.enums.Language;
 
 public final class CVSAnalyStub {
 
+	private static Set<NativeModuleResult> result = generateResult();
+	
 	private CVSAnalyStub() { }
+	
+	private static Set<NativeModuleResult> generateResult() {
+		result = new HashSet<NativeModuleResult>();
+		NativeModuleResult helloWorldResult = new NativeModuleResult(new Module(Granularity.CLASS, "HelloWorld"));
+		helloWorldResult.addMetricResult(
+			new NativeMetricResult(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getNativeMetric(), 10.0));
+
+		NativeModuleResult byeWorldResult = new NativeModuleResult(new Module(Granularity.CLASS, "ByeWorld"));
+		byeWorldResult.addMetricResult(
+			new NativeMetricResult(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getNativeMetric(), 6.0));
+
+		result.addAll(Arrays.asList(helloWorldResult, byeWorldResult));
+		return result;
+	}
 
 	public static BaseTool getBaseTool() {
 		BaseTool baseTool = new BaseTool("CVSAnaly");
@@ -34,19 +50,19 @@ public final class CVSAnalyStub {
 	}
 
 	public static List<MetricResult> getExampleEntities() {
-		List<MetricResult> result = new LinkedList<MetricResult>();
+		List<MetricResult> entity = new LinkedList<MetricResult>();
 
 		Commit firstCommit = createCommit(0, "1");
 		Commit head = createCommit(1, "2");
 
 		RepositoryFile helloWorldFile = createRepositoryFile(0, "HelloWorld.java");
 		RepositoryFile byeWorldFile = createRepositoryFile(1, "ByeWorld.java");
-		
-		result.addAll(Arrays.asList(createMetricResult(0, firstCommit, helloWorldFile, 2),
+
+		entity.addAll(Arrays.asList(createMetricResult(0, firstCommit, helloWorldFile, 2),
 			createMetricResult(1, head, helloWorldFile, 10),
 			createMetricResult(2, firstCommit, byeWorldFile, 6)));
 
-		return result;
+		return entity;
 	}
 
 	private static RepositoryFile createRepositoryFile(int id, String filename) {
@@ -72,18 +88,7 @@ public final class CVSAnalyStub {
 		return newMetricResult;
 	}
 
-	public static Set<NativeModuleResult> getExampleResult() {
-		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
-		NativeModuleResult helloWorldResult = new NativeModuleResult(new Module(Granularity.CLASS, "HelloWorld"));
-		helloWorldResult.addMetricResult(
-			new NativeMetricResult(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getNativeMetric(), 10.0));
-
-		NativeModuleResult byeWorldResult = new NativeModuleResult(new Module(Granularity.CLASS, "ByeWorld"));
-		byeWorldResult.addMetricResult(
-			new NativeMetricResult(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getNativeMetric(), 6.0));
-
-		result.addAll(Arrays.asList(helloWorldResult, byeWorldResult));
-
+	public static Set<NativeModuleResult> results() {
 		return result;
 	}
 
