@@ -3,6 +3,7 @@ package org.kalibro.core.processing;
 import org.kalibro.KalibroException;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
+import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 
 public class JavascriptEvaluator {
@@ -10,9 +11,21 @@ public class JavascriptEvaluator {
 	private Context context;
 	private Scriptable script;
 
+	private String source;
+
 	public JavascriptEvaluator() {
 		context = Context.enter();
 		script = context.initStandardObjects();
+	}
+
+	public JavascriptEvaluator(String source) {
+		this();
+		this.source = source;
+	}
+
+	public Double invokeFunction(String functionName) {
+		Script compiledScript = context.compileString(source + functionName + "();", "", 0, null);
+		return toDouble(compiledScript.exec(context, null));
 	}
 
 	public void addVariable(String name, Double value) {
@@ -27,7 +40,7 @@ public class JavascriptEvaluator {
 	}
 
 	private void validateIdentifier(String identifier) {
-		if (! identifier.matches("[a-zA-Z_$][a-zA-_$Z0-9]*"))
+		if (!identifier.matches("[a-zA-Z_$][a-zA-_$Z0-9]*"))
 			throw new KalibroException("Invalid identifier: " + identifier);
 	}
 

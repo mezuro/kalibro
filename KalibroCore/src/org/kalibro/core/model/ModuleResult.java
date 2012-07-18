@@ -4,8 +4,8 @@ import java.util.*;
 
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.processing.JavascriptEvaluator;
 import org.kalibro.core.processing.ScriptBuilder;
-import org.kalibro.core.processing.ScriptEvaluator;
 
 @SortingMethods({"getDate", "getModule"})
 public class ModuleResult extends AbstractModuleResult<MetricResult> {
@@ -48,13 +48,13 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	private void computeCompoundMetrics(Configuration configuration) {
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics()) {
 			ScriptBuilder scriptBuilder = new ScriptBuilder(configuration, this, compoundMetric);
-			ScriptEvaluator scriptEvaluator = new ScriptEvaluator(scriptBuilder.buildScript());
+			JavascriptEvaluator scriptEvaluator = new JavascriptEvaluator(scriptBuilder.buildScript());
 			if (scriptBuilder.shouldInclude(compoundMetric))
 				includeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()), scriptEvaluator);
 		}
 	}
 
-	private void includeCompoundMetric(MetricConfiguration configuration, ScriptEvaluator scriptEvaluator) {
+	private void includeCompoundMetric(MetricConfiguration configuration, JavascriptEvaluator scriptEvaluator) {
 		CompoundMetric compoundMetric = (CompoundMetric) configuration.getMetric();
 		try {
 			Double calculatedResult = scriptEvaluator.invokeFunction(configuration.getCode());

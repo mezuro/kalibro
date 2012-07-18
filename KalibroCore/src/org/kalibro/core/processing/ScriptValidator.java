@@ -22,8 +22,8 @@ public class ScriptValidator {
 		}
 	}
 
-	private void doValidate(MetricConfiguration metricConfiguration) throws Exception {
+	private void doValidate(MetricConfiguration metricConfiguration) {
 		String validationScript = new ValidationScriptBuilder(configuration, metricConfiguration).buildScript();
-		new ScriptEvaluator(validationScript).invokeFunction(metricConfiguration.getCode());
+		new JavascriptEvaluator(validationScript).invokeFunction(metricConfiguration.getCode());
 	}
 }
