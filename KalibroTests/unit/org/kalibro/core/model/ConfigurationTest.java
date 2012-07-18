@@ -150,7 +150,7 @@ public class ConfigurationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateInvalidCompoundMetric() {
+	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
 		checkKalibroException(new Task() {
 
