@@ -21,7 +21,7 @@ class MethodInvocation {
 	protected void invoke() {
 		try {
 			result = method.invoke(object, arguments);
-		} catch (Exception exception) {
+		} catch (Throwable exception) {
 			error = exception;
 		}
 		done = true;

@@ -13,18 +13,20 @@ public final class ConcurrentInvocationHandler extends Task implements Invocatio
 	}
 
 	private Object object;
+	private boolean running;
 	private LinkedBlockingQueue<MethodInvocation> methodInvocations;
 
 	private ConcurrentInvocationHandler(Object object) {
 		super();
 		this.object = object;
+		running = true;
 		methodInvocations = new LinkedBlockingQueue<MethodInvocation>();
 		executeInBackground();
 	}
 
 	@Override
 	protected void perform() throws Throwable {
-		while (true) {
+		while (running) {
 			MethodInvocation invocation = methodInvocations.take();
 			synchronized (invocation) {
 				invocation.invoke();
@@ -42,5 +44,13 @@ public final class ConcurrentInvocationHandler extends Task implements Invocatio
 				invocation.wait();
 		}
 		return invocation.getResult();
+	}
+
+	@Override
+	public void finalize() throws Throwable {
+		running = false;
+		MethodInvocation finalize = new MethodInvocation(object, Object.class.getDeclaredMethod("finalize"));
+		methodInvocations.add(finalize);
+		super.finalize();
 	}
 }

@@ -2,9 +2,12 @@ package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
 
+import java.lang.reflect.Constructor;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.powermock.reflect.Whitebox;
 
 public class ConcurrentInvocationHandlerTest extends KalibroTestCase {
 
@@ -24,6 +27,17 @@ public class ConcurrentInvocationHandlerTest extends KalibroTestCase {
 		testId = getThreadId();
 		assertDifferent(getterId, beforeId, testId);
 		assertEquals(getterId, getter.getId());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldEndThreadOnFinalize() throws Throwable {
+		Class<ConcurrentInvocationHandler> handlerClass = ConcurrentInvocationHandler.class;
+		Constructor<ConcurrentInvocationHandler> constructor = handlerClass.getDeclaredConstructor(Object.class);
+		constructor.setAccessible(true);
+
+		ConcurrentInvocationHandler handler = constructor.newInstance("");
+		handler.finalize();
+		assertFalse((Boolean) Whitebox.getInternalState(handler, "running"));
 	}
 
 	private long getThreadId() {
