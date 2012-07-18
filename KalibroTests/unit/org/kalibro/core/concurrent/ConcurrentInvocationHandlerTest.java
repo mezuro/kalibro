@@ -38,7 +38,7 @@ public class ConcurrentInvocationHandlerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHaveDescription() throws Exception {
-		assertEquals("Handling invocations for java.lang.String", "" + createHandler());
+		assertEquals("handling invocations for java.lang.String", "" + createHandler());
 	}
 
 	private ConcurrentInvocationHandler createHandler() throws Exception {

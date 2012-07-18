@@ -48,16 +48,17 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	private void computeCompoundMetrics(Configuration configuration) {
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics()) {
 			ScriptBuilder scriptBuilder = new ScriptBuilder(configuration, this, compoundMetric);
-			JavascriptEvaluator scriptEvaluator = new JavascriptEvaluator(scriptBuilder.buildScript());
 			if (scriptBuilder.shouldInclude(compoundMetric))
-				includeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()), scriptEvaluator);
+				includeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()),
+					scriptBuilder.buildScript());
 		}
 	}
 
-	private void includeCompoundMetric(MetricConfiguration configuration, JavascriptEvaluator scriptEvaluator) {
+	private void includeCompoundMetric(MetricConfiguration configuration, String scriptSource) {
 		CompoundMetric compoundMetric = (CompoundMetric) configuration.getMetric();
 		try {
-			Double calculatedResult = scriptEvaluator.invokeFunction(configuration.getCode());
+			Double calculatedResult = JavascriptEvaluator.create().compileAndEvaluate(
+				scriptSource + configuration.getCode() + "();");
 			MetricResult metricResult = new MetricResult(compoundMetric, calculatedResult);
 			metricResult.setConfiguration(configuration);
 			metricResults.put(compoundMetric, metricResult);

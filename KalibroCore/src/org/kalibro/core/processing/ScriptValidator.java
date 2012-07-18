@@ -24,6 +24,6 @@ public class ScriptValidator {
 
 	private void doValidate(MetricConfiguration metricConfiguration) {
 		String validationScript = new ValidationScriptBuilder(configuration, metricConfiguration).buildScript();
-		new JavascriptEvaluator(validationScript).invokeFunction(metricConfiguration.getCode());
+		JavascriptEvaluator.create().compileAndEvaluate(validationScript + metricConfiguration.getCode() + "();");
 	}
 }

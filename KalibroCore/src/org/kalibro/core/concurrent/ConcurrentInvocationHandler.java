@@ -56,6 +56,6 @@ public final class ConcurrentInvocationHandler extends Task implements Invocatio
 
 	@Override
 	public String toString() {
-		return "Handling invocations for " + object.getClass().getName();
+		return "handling invocations for " + object.getClass().getName();
 	}
 }

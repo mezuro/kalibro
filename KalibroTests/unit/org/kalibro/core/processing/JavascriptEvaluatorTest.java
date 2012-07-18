@@ -2,6 +2,9 @@ package org.kalibro.core.processing;
 
 import static org.powermock.api.mockito.PowerMockito.*;
 
+import java.lang.reflect.Constructor;
+
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
@@ -16,11 +19,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Context.class)
 public class JavascriptEvaluatorTest extends KalibroTestCase {
 
-	private JavascriptEvaluator evaluator;
+	private ScriptEvaluator evaluator;
+
+	@Before
+	public void setUp() {
+		evaluator = JavascriptEvaluator.create();
+	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddVariablesAndRetrieveTheirValues() {
-		evaluator = new JavascriptEvaluator();
 		evaluator.addVariable("wonders", 7.0);
 		evaluator.addVariable("diceFaces", 6.0);
 		assertDoubleEquals(6.0, evaluator.evaluate("diceFaces"));
@@ -29,7 +36,6 @@ public class JavascriptEvaluatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddFunctionsAndExecuteThem() {
-		evaluator = new JavascriptEvaluator();
 		evaluator.addVariable("$wonders", 7.0);
 		evaluator.addVariable("dice_faces", 6.0);
 		assertDoubleEquals(42.0, addFunctionAndExecute("straightFoward", "return 42;"));
@@ -41,7 +47,6 @@ public class JavascriptEvaluatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldValidateVariableName() {
-		evaluator = new JavascriptEvaluator();
 		checkKalibroException(new Task() {
 
 			@Override
@@ -53,7 +58,6 @@ public class JavascriptEvaluatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldValidateFunctionName() {
-		evaluator = new JavascriptEvaluator();
 		checkKalibroException(new Task() {
 
 			@Override
@@ -61,6 +65,21 @@ public class JavascriptEvaluatorTest extends KalibroTestCase {
 				evaluator.addFunction("badFunction'sName", "return 13;");
 			}
 		}, "Invalid identifier: badFunction'sName");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRemove() {
+		evaluator.addVariable("variable", 42.0);
+		assertDoubleEquals(42.0, evaluator.evaluate("variable"));
+
+		evaluator.remove("variable");
+		checkException(new Task() {
+
+			@Override
+			public void perform() throws Exception {
+				evaluator.evaluate("variable");
+			}
+		}, ClassCastException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -89,7 +108,6 @@ public class JavascriptEvaluatorTest extends KalibroTestCase {
 	}
 
 	private void assertInvalid(final String body, Class<? extends Exception> exceptionClass) {
-		evaluator = new JavascriptEvaluator();
 		checkException(new Task() {
 
 			@Override
@@ -106,10 +124,16 @@ public class JavascriptEvaluatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldExitContextOnFinalize() throws Throwable {
-		evaluator = new JavascriptEvaluator();
+		evaluator = createEvaluator();
 		mockStatic(Context.class);
-		evaluator.finalize();
+		((JavascriptEvaluator) evaluator).finalize();
 		verifyStatic();
 		Context.exit();
+	}
+
+	private JavascriptEvaluator createEvaluator() throws Exception {
+		Constructor<JavascriptEvaluator> constructor = JavascriptEvaluator.class.getDeclaredConstructor();
+		constructor.setAccessible(true);
+		return constructor.newInstance();
 	}
 }

@@ -1,41 +1,42 @@
 package org.kalibro.core.processing;
 
 import org.kalibro.KalibroException;
+import org.kalibro.core.concurrent.ConcurrentInvocationHandler;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 
-public class JavascriptEvaluator {
+public final class JavascriptEvaluator implements ScriptEvaluator {
+
+	public static ScriptEvaluator create() {
+		return ConcurrentInvocationHandler.createProxy(new JavascriptEvaluator(), ScriptEvaluator.class);
+	}
 
 	private Context context;
 	private Scriptable script;
 
-	private String source;
-
-	public JavascriptEvaluator() {
-		context = Context.enter();
-		script = context.initStandardObjects();
+	private JavascriptEvaluator() {
+		return;
 	}
 
-	public JavascriptEvaluator(String source) {
-		this();
-		this.source = source;
+	// TODO remove
+	@Override
+	public Double compileAndEvaluate(String source) {
+		Script compiledScript = getContext().compileString(source, "", 0, null);
+		return toDouble(compiledScript.exec(context, getScript()));
 	}
 
-	public Double invokeFunction(String functionName) {
-		Script compiledScript = context.compileString(source + functionName + "();", "", 0, null);
-		return toDouble(compiledScript.exec(context, null));
-	}
-
+	@Override
 	public void addVariable(String name, Double value) {
 		validateIdentifier(name);
-		script.put(name, script, value);
+		getScript().put(name, script, value);
 	}
 
+	@Override
 	public void addFunction(String name, String body) {
 		validateIdentifier(name);
-		Function function = context.compileFunction(script, "function(){\n" + body + "}", name, 0, null);
+		Function function = getContext().compileFunction(script, "function(){\n" + body + "}", name, 0, null);
 		script.put(name, script, function);
 	}
 
@@ -44,8 +45,14 @@ public class JavascriptEvaluator {
 			throw new KalibroException("Invalid identifier: " + identifier);
 	}
 
+	@Override
+	public void remove(String name) {
+		getScript().delete(name);
+	}
+
+	@Override
 	public Double evaluate(String name) {
-		Object result = script.get(name, script);
+		Object result = getScript().get(name, script);
 		if (result instanceof Function)
 			result = ((Function) result).call(context, script, null, null);
 		return toDouble(result);
@@ -55,9 +62,26 @@ public class JavascriptEvaluator {
 		return ((Number) result).doubleValue();
 	}
 
+	private Context getContext() {
+		if (context == null)
+			initialize();
+		return context;
+	}
+
+	private Scriptable getScript() {
+		if (script == null)
+			initialize();
+		return script;
+	}
+
+	private void initialize() {
+		context = Context.enter();
+		script = context.initStandardObjects();
+	}
+
 	@Override
 	protected void finalize() throws Throwable {
-		super.finalize();
 		Context.exit();
+		super.finalize();
 	}
 }
