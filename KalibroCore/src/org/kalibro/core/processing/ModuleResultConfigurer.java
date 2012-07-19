@@ -31,8 +31,7 @@ public class ModuleResultConfigurer {
 
 	private void configureNativeResults() {
 		for (MetricResult metricResult : moduleResult.getMetricResults()) {
-			Metric metric = metricResult.getMetric();
-			String metricName = metric.getName();
+			String metricName = metricResult.getMetric().getName();
 			if (configuration.containsMetric(metricName)) {
 				MetricConfiguration metricConfiguration = configuration.getConfigurationFor(metricName);
 				metricResult.setConfiguration(metricConfiguration);
@@ -45,25 +44,29 @@ public class ModuleResultConfigurer {
 	private void computeCompoundMetrics() {
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics())
 			if (isScopeCompatible(compoundMetric))
-				includeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()));
+				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()));
 	}
 
 	private boolean isScopeCompatible(Metric metric) {
 		return metric.getScope().ordinal() >= moduleResult.getModule().getGranularity().ordinal();
 	}
 
-	private void includeCompoundMetric(MetricConfiguration metricConfiguration) {
-		CompoundMetric compoundMetric = (CompoundMetric) metricConfiguration.getMetric();
+	private void computeCompoundMetric(MetricConfiguration metricConfiguration) {
 		try {
-			include(metricConfiguration);
-			Double calculatedResult = compoundEvaluator.evaluate(metricConfiguration.getCode());
-			MetricResult metricResult = new MetricResult(compoundMetric, calculatedResult);
-			metricResult.setConfiguration(metricConfiguration);
-			computeGrade(metricResult);
-			moduleResult.addMetricResult(metricResult);
+			doComputeCompoundMetric(metricConfiguration);
 		} catch (Exception exception) {
-			moduleResult.addCompoundMetricWithError(compoundMetric, exception);
+			CompoundMetric metric = (CompoundMetric) metricConfiguration.getMetric();
+			moduleResult.addCompoundMetricWithError(metric, exception);
 		}
+	}
+
+	private void doComputeCompoundMetric(MetricConfiguration metricConfiguration) {
+		include(metricConfiguration);
+		Double calculatedResult = compoundEvaluator.evaluate(metricConfiguration.getCode());
+		MetricResult metricResult = new MetricResult(metricConfiguration.getMetric(), calculatedResult);
+		metricResult.setConfiguration(metricConfiguration);
+		computeGrade(metricResult);
+		moduleResult.addMetricResult(metricResult);
 	}
 
 	private void include(MetricConfiguration metricConfiguration) {
