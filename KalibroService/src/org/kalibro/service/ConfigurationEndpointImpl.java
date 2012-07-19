@@ -36,7 +36,7 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
 	@Override
 	@WebResult(name = "hasConfiguration")
-	public boolean hasConfiguration(String configurationName) {
+	public boolean hasConfiguration(@WebParam(name = "configurationName") String configurationName) {
 		return dao.hasConfiguration(configurationName);
 	}
 

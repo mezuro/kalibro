@@ -37,7 +37,7 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 
 	@Override
 	@WebResult(name = "hasProject")
-	public boolean hasProject(String projectName) {
+	public boolean hasProject(@WebParam(name = "projectName") String projectName) {
 		return dao.hasProject(projectName);
 	}
 
