@@ -36,12 +36,16 @@ class EntityReflector {
 
 	private void putDeclaredFields(Class<?> type) {
 		for (Field field : type.getDeclaredFields())
-			if (!isStatic(field))
+			if (!isStatic(field) && !isIgnored(field))
 				putField(field);
 	}
 
 	private boolean isStatic(Field field) {
 		return Modifier.isStatic(field.getModifiers());
+	}
+
+	private boolean isIgnored(Field field) {
+		return field.isAnnotationPresent(Ignore.class);
 	}
 
 	private void putField(Field field) {

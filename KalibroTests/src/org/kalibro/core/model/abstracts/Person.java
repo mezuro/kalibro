@@ -14,6 +14,10 @@ class Person extends AbstractEntity<Person> {
 
 	private Map<String, Person> relatives;
 
+	@Ignore
+	@SuppressWarnings("unused")
+	private double toIgnore = Math.random();
+
 	protected Person() {
 		this("", "", "");
 	}

@@ -5,6 +5,7 @@ import java.util.*;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
+import org.kalibro.core.model.abstracts.Ignore;
 import org.kalibro.core.model.abstracts.SortingMethods;
 import org.kalibro.core.processing.ScriptValidator;
 
@@ -20,6 +21,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	private Map<String, Set<NativeMetric>> nativeMetrics;
 	private Map<String, MetricConfiguration> metricConfigurations;
 
+	@Ignore
 	private ScriptValidator validator;
 
 	public Configuration() {
