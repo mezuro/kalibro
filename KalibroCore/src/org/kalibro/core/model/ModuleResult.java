@@ -19,10 +19,27 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		super(module);
 		this.date = date;
 		this.compoundMetricsWithError = new TreeMap<CompoundMetric, Throwable>();
+		setGrade(null);
 	}
 
 	public void setConfiguration(Configuration configuration) {
 		new ModuleResultConfigurer(this, configuration).configure();
+	}
+
+	public void addMetricResults(Collection<NativeMetricResult> nativeResults) {
+		for (NativeMetricResult metricResult : nativeResults)
+			addMetricResult(new MetricResult(metricResult));
+	}
+
+	public void removeCompoundMetrics() {
+		compoundMetricsWithError.clear();
+		for (Metric metric : metricResults.keySet())
+			if (metric.isCompound())
+				removeResultFor(metric);
+	}
+
+	public void removeResultFor(Metric metric) {
+		metricResults.remove(metric);
 	}
 
 	public Date getDate() {
@@ -37,11 +54,6 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		this.grade = grade;
 	}
 
-	public void addMetricResults(Collection<NativeMetricResult> nativeResults) {
-		for (NativeMetricResult metricResult : nativeResults)
-			addMetricResult(new MetricResult(metricResult));
-	}
-
 	public Set<CompoundMetric> getCompoundMetricsWithError() {
 		return compoundMetricsWithError.keySet();
 	}
@@ -52,12 +64,5 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	public void addCompoundMetricWithError(CompoundMetric metric, Throwable error) {
 		compoundMetricsWithError.put(metric, error);
-	}
-
-	public void removeCompoundMetrics() {
-		compoundMetricsWithError.clear();
-		for (Metric metric : metricResults.keySet())
-			if (metric.isCompound())
-				metricResults.remove(metric);
 	}
 }
