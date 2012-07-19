@@ -9,7 +9,4 @@ public interface ScriptEvaluator {
 	void remove(String name);
 
 	Double evaluate(String name);
-
-	// TODO remove
-	Double compileAndEvaluate(String source);
 }

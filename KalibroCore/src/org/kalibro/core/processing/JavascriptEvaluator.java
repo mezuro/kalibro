@@ -4,7 +4,6 @@ import org.kalibro.KalibroException;
 import org.kalibro.core.concurrent.ConcurrentInvocationHandler;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
-import org.mozilla.javascript.Script;
 import org.mozilla.javascript.Scriptable;
 
 public final class JavascriptEvaluator implements ScriptEvaluator {
@@ -18,13 +17,6 @@ public final class JavascriptEvaluator implements ScriptEvaluator {
 
 	private JavascriptEvaluator() {
 		return;
-	}
-
-	// TODO remove
-	@Override
-	public Double compileAndEvaluate(String source) {
-		Script compiledScript = getContext().compileString(source, "", 0, null);
-		return toDouble(compiledScript.exec(context, getScript()));
 	}
 
 	@Override
