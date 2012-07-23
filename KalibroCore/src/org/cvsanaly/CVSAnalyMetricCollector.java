@@ -39,7 +39,7 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 		return result;
 	}
 
-	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities) {
+	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities) throws Exception {
 		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
 		Map<String, Module> modules = new HashMap<String, Module>();
 		
@@ -69,10 +69,11 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 		return new ArrayList<MetricResult>(result.values());
 	}
 
-	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult) {
-		//TODO Refactor this and extract all metrics, instead of just NUMBER_OF_SOURCE_LINES_OF_CODE (probably do something on CVSAnalyMetric or in the entity)
-		nativeModuleResult.addMetricResult(new NativeMetricResult(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getNativeMetric(), (double)entity.getNumberOfSourceCodeLines()));
-		// ...
+	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult) throws Exception {
+		for (CVSAnalyMetric metric : CVSAnalyMetric.values()) {
+			nativeModuleResult.addMetricResult(new NativeMetricResult(metric.getNativeMetric(), 
+				metric.getMetricValue(entity)));
+		}
 	}
 
 	private Module findModule(Map<String, Module> modules, String filename) {

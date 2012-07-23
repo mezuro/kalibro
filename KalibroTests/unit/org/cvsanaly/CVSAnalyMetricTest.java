@@ -4,12 +4,17 @@ import static org.cvsanaly.CVSAnalyMetric.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 
+import org.cvsanaly.entities.MetricResult;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Language;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-
+@RunWith(PowerMockRunner.class)
 public class CVSAnalyMetricTest extends KalibroTestCase {
 	
 	@Test(timeout = UNIT_TIMEOUT)
@@ -25,5 +30,15 @@ public class CVSAnalyMetricTest extends KalibroTestCase {
 			expected.setOrigin("CVSAnaly");
 			assertDeepEquals(expected, metric.getNativeMetric());
 		}
+	}
+	
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCallCorrectMethodToGetMetricValue() throws ReflectiveOperationException {
+		MetricResult mockResult = PowerMockito.mock(MetricResult.class);
+		CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getMetricValue(mockResult);
+		Mockito.verify(mockResult).getNumberOfSourceCodeLines();
+		
+		CVSAnalyMetric.NUMBER_OF_COMMENTS.getMetricValue(mockResult);
+		Mockito.verify(mockResult).getNumberOfComments();
 	}
 }
