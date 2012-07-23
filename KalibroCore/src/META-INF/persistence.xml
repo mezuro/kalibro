@@ -18,7 +18,7 @@
 	</persistence-unit>
 	
 	<persistence-unit name="cvsanaly" transaction-type="RESOURCE_LOCAL">
-		<class>org.cvsanaly.entities.MetricRsult</class>
+		<class>org.cvsanaly.entities.MetricResult</class>
 		<class>org.cvsanaly.entities.Commit</class>
 		<class>org.cvsanaly.entities.RepositoryFile</class>
 	</persistence-unit>

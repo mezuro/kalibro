@@ -26,7 +26,7 @@ public class CVSAnalyDatabaseFetcherTest extends KalibroTestCase {
 		Map<String, String> expected = new HashMap<String, String>();
 		expected.put(DDL_GENERATION, NONE);
 		expected.put(JDBC_DRIVER, "org.sqlite.JDBC");
-		expected.put(JDBC_URL, "jdbc:sqlite:file:/tmp/teste");
+		expected.put(JDBC_URL, "jdbc:sqlite:/tmp/teste");
 		assertDeepEquals(expected, fetcher.getPersistenceProperties());
 	}
 	

@@ -13,10 +13,10 @@ public class MetricResult {
 	@Id
 	private long id;
 
-	@Column(name = "file_id")
+	@PrimaryKeyJoinColumn(name = "file_id")
 	private RepositoryFile file;
 
-	@Column(name = "commit_id")
+	@PrimaryKeyJoinColumn(name = "commit_id")
 	private Commit commit;
 
 	@Column(name = "sloc")

@@ -36,7 +36,7 @@ public class CVSAnalyDatabaseFetcher {
 		Map<String, String> persistenceProperties = new HashMap<String, String>();
 		persistenceProperties.put(DDL_GENERATION, NONE);
 		persistenceProperties.put(JDBC_DRIVER, org.sqlite.JDBC.class.getName());
-		persistenceProperties.put(JDBC_URL, "jdbc:sqlite:" + databasePath.toURI().toString());
+		persistenceProperties.put(JDBC_URL, "jdbc:sqlite:" + databasePath.getAbsolutePath());
 		return persistenceProperties;
 	}
 
