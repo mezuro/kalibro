@@ -20,17 +20,17 @@ public class MetricResult {
 	private Commit commit;
 
 	@Column(name = "sloc")
-	private int numberOfSourceCodeLines;
+	private double numberOfSourceCodeLines;
 	@Column(name = "loc")
-	private int numberOfLinesOfCode;
+	private double numberOfLinesOfCode;
 	@Column(name = "ncomment")
-	private int numberOfComments;
+	private double numberOfComments;
 	@Column(name = "lcomment")
-	private int numberOfCommentedLines;
+	private double numberOfCommentedLines;
 	@Column(name = "lblank")
-	private int numberOfBlankLines;
+	private double numberOfBlankLines;
 	@Column(name = "nfunctions")
-	private int numberOfFunctions;
+	private double numberOfFunctions;
 	
 	public long getId() {
 		return id;
@@ -56,51 +56,51 @@ public class MetricResult {
 		this.commit = commit;
 	}
 	
-	public int getNumberOfSourceCodeLines() {
+	public double getNumberOfSourceCodeLines() {
 		return numberOfSourceCodeLines;
 	}
 	
-	public void setNumberOfSourceCodeLines(int numberOfSourceCodeLines) {
+	public void setNumberOfSourceCodeLines(double numberOfSourceCodeLines) {
 		this.numberOfSourceCodeLines = numberOfSourceCodeLines;
 	}
 	
-	public int getNumberOfLinesOfCode() {
+	public double getNumberOfLinesOfCode() {
 		return numberOfLinesOfCode;
 	}
 	
-	public void setNumberOfLinesOfCode(int numberOfLinesOfCode) {
+	public void setNumberOfLinesOfCode(double numberOfLinesOfCode) {
 		this.numberOfLinesOfCode = numberOfLinesOfCode;
 	}
 	
-	public int getNumberOfComments() {
+	public double getNumberOfComments() {
 		return numberOfComments;
 	}
 	
-	public void setNumberOfComments(int numberOfComments) {
+	public void setNumberOfComments(double numberOfComments) {
 		this.numberOfComments = numberOfComments;
 	}
 	
-	public int getNumberOfCommentedLines() {
+	public double getNumberOfCommentedLines() {
 		return numberOfCommentedLines;
 	}
 	
-	public void setNumberOfCommentedLines(int numberOfCommentedLines) {
+	public void setNumberOfCommentedLines(double numberOfCommentedLines) {
 		this.numberOfCommentedLines = numberOfCommentedLines;
 	}
 	
-	public int getNumberOfBlankLines() {
+	public double getNumberOfBlankLines() {
 		return numberOfBlankLines;
 	}
 	
-	public void setNumberOfBlankLines(int numberOfBlankLines) {
+	public void setNumberOfBlankLines(double numberOfBlankLines) {
 		this.numberOfBlankLines = numberOfBlankLines;
 	}
 	
-	public int getNumberOfFunctions() {
+	public double getNumberOfFunctions() {
 		return numberOfFunctions;
 	}
 	
-	public void setNumberOfFunctions(int numberOfFunctions) {
+	public void setNumberOfFunctions(double numberOfFunctions) {
 		this.numberOfFunctions = numberOfFunctions;
 	}
 	

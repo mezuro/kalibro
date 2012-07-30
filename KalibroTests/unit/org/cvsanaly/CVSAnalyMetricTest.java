@@ -3,19 +3,31 @@ package org.cvsanaly;
 import static org.cvsanaly.CVSAnalyMetric.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
+import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.reflect.Whitebox.*;
 
 import org.cvsanaly.entities.MetricResult;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Language;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
+@PrepareForTest(CVSAnalyMetric.class)
 public class CVSAnalyMetricTest extends KalibroTestCase {
+	
+	@BeforeClass
+	public static void emmaCoverage() {
+		CVSAnalyMetric.values();
+		CVSAnalyMetric.valueOf("NUMBER_OF_LINES_OF_CODE");
+	}
 	
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkToString() {
@@ -41,4 +53,17 @@ public class CVSAnalyMetricTest extends KalibroTestCase {
 		CVSAnalyMetric.NUMBER_OF_COMMENTS.getMetricValue(mockResult);
 		Mockito.verify(mockResult).getNumberOfComments();
 	}
+	
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowClassNotFoundExceptionIfMethodCouldNotBeFound() {
+		final CVSAnalyMetric type = spy(NUMBER_OF_LINES_OF_CODE);
+		checkException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				invokeMethod(type, "getMethodFromMethodName", "bla");
+			}
+		}, ExceptionInInitializerError.class);
+	}
+
 }

@@ -41,14 +41,13 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 
 	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities) throws Exception {
 		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
-		Map<String, Module> modules = new HashMap<String, Module>();
 		
 		List<MetricResult> filteredEntities = filterOlderRevisio1ns(entities);
 		
 		for (MetricResult entity: filteredEntities) {
 			//TODO Modify CVSAnaly to get information about path
 			String filename = entity.getFile().getFilename();
-			Module module = findModule(modules, filename);
+			Module module = new Module(Granularity.CLASS, filename);
 			NativeModuleResult nativeModuleResult = new NativeModuleResult(module);
 			extractMetrics(entity, nativeModuleResult);
 			
@@ -75,18 +74,6 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 			nativeModuleResult.addMetricResult(new NativeMetricResult(metric.getNativeMetric(), 
 				metric.getMetricValue(entity)));
 		}
-	}
-
-	private Module findModule(Map<String, Module> modules, String filename) {
-		Module module;
-		if (modules.containsKey(filename)) {
-			module = modules.get(filename);
-		} else  {
-			module = new Module(Granularity.CLASS, filename);
-			modules.put(filename, module);
-		}
-		
-		return module;
 	}
 	
 }

@@ -85,9 +85,9 @@ public final class CVSAnalyStub {
 		RepositoryFile helloWorldFile = createRepositoryFile(0, "HelloWorld.java");
 		RepositoryFile byeWorldFile = createRepositoryFile(1, "ByeWorld.java");
 
-		entity.addAll(Arrays.asList(createMetricResult(0, firstCommit, helloWorldFile, 2),
-			createMetricResult(1, head, helloWorldFile, 10),
-			createMetricResult(2, firstCommit, byeWorldFile, 6)));
+		entity.addAll(Arrays.asList(createMetricResult(0, firstCommit, helloWorldFile, 2, 2),
+			createMetricResult(1, head, helloWorldFile, 10, 13),
+			createMetricResult(2, firstCommit, byeWorldFile, 6, 8)));
 
 		return entity;
 	}
@@ -106,12 +106,13 @@ public final class CVSAnalyStub {
 		return firstCommit;
 	}
 
-	private static MetricResult createMetricResult(int id, Commit commit, RepositoryFile repository, int sloc) {
+	private static MetricResult createMetricResult(int id, Commit commit, RepositoryFile repo, int sloc, int loc) {
 		MetricResult newMetricResult = new MetricResult();
 		newMetricResult.setId(id);
-		newMetricResult.setFile(repository);
+		newMetricResult.setFile(repo);
 		newMetricResult.setCommit(commit);
 		newMetricResult.setNumberOfSourceCodeLines(sloc);
+		newMetricResult.setNumberOfLinesOfCode(loc);
 		return newMetricResult;
 	}
 

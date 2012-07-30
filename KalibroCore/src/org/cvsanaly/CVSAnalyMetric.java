@@ -20,10 +20,14 @@ public enum CVSAnalyMetric {
 	private Method methodToGetMetricValue;
 	
 	private CVSAnalyMetric(String methodName) {
+			methodToGetMetricValue = getMethodFromMethodName(methodName);
+	}
+
+	private Method getMethodFromMethodName(String methodName) {
 		try {
-			methodToGetMetricValue = MetricResult.class.getMethod(methodName);
+			return MetricResult.class.getMethod(methodName);
 		} catch (Exception e) {
-			methodToGetMetricValue = null;
+			throw new ExceptionInInitializerError("Couldn't get method");
 		}
 	}
 	
@@ -33,7 +37,7 @@ public enum CVSAnalyMetric {
 	}
 	
 	public double getMetricValue(MetricResult metricResult) throws ReflectiveOperationException {
-		return ((Integer) methodToGetMetricValue.invoke(metricResult)).doubleValue();
+		return (Double) methodToGetMetricValue.invoke(metricResult);
 	}
 
 	protected NativeMetric getNativeMetric() {
