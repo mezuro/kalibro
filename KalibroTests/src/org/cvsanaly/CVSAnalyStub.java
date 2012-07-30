@@ -24,7 +24,7 @@ public final class CVSAnalyStub {
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
-		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 0.0);
+		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 13.0);
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 10.0);
 		return helloWorldResultMap;
 	}
@@ -35,7 +35,7 @@ public final class CVSAnalyStub {
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
-		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 0.0);
+		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 8.0);
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 6.0);
 		return byeWorldResultMap;
 	}
@@ -79,8 +79,8 @@ public final class CVSAnalyStub {
 	public static List<MetricResult> getExampleEntities() {
 		List<MetricResult> entity = new LinkedList<MetricResult>();
 
-		Commit firstCommit = createCommit(0, "1");
-		Commit head = createCommit(1, "2");
+		Commit firstCommit = createCommit(0, 1);
+		Commit head = createCommit(1, 2);
 
 		RepositoryFile helloWorldFile = createRepositoryFile(0, "HelloWorld.java");
 		RepositoryFile byeWorldFile = createRepositoryFile(1, "ByeWorld.java");
@@ -99,10 +99,10 @@ public final class CVSAnalyStub {
 		return helloWorldFile;
 	}
 
-	private static Commit createCommit(int id, String revision) {
+	private static Commit createCommit(int id, int revisionTimestamp) {
 		Commit firstCommit = new Commit();
 		firstCommit.setId(id);
-		firstCommit.setRevision(revision);
+		firstCommit.setDate(new Date(revisionTimestamp));
 		return firstCommit;
 	}
 

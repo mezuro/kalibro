@@ -1,9 +1,8 @@
 package org.cvsanaly.entities;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.util.Date;
+
+import javax.persistence.*;
 
 @Entity
 @Table(name = "scmlog")
@@ -12,8 +11,9 @@ public class Commit {
 	@Id
 	private long id;
 
-	@Column(name = "rev")
-	private String revision;
+	@Column(name = "date")
+	@Temporal(TemporalType.TIMESTAMP)
+	private Date date;
 
 	public long getId() {
 		return id;
@@ -23,11 +23,11 @@ public class Commit {
 		this.id = id;
 	}
 
-	public String getRevision() {
-		return revision;
+	public Date getDate() {
+		return date;
 	}
 
-	public void setRevision(String revision) {
-		this.revision = revision;
+	public void setDate(Date revision) {
+		this.date = revision;
 	}
 }

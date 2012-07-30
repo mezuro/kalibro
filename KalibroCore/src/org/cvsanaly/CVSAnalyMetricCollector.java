@@ -62,9 +62,10 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 		Map<RepositoryFile, MetricResult> result = new HashMap<RepositoryFile, MetricResult>();
 		
 		for (MetricResult entity: entities) {
-			if (!result.containsKey(entity.getFile()) || 
-				Long.parseLong(result.get(entity.getFile()).getCommit().getRevision()) < Long.parseLong(entity.getCommit().getRevision()))
-			result.put(entity.getFile(), entity);
+			RepositoryFile file = entity.getFile();
+			if (!result.containsKey(file) || 
+				result.get(file).getCommit().getDate().before(entity.getCommit().getDate()))
+			result.put(file, entity);
 		}
 		return new ArrayList<MetricResult>(result.values());
 	}
