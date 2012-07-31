@@ -3,7 +3,7 @@ package org.kalibro.core.util.reflection;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 
-public final class AnnotatedMemberFilter extends MemberFilterAdapter {
+final class AnnotatedMemberFilter extends MemberFilterAdapter {
 
 	private Class<? extends Annotation> annotationClass;
 

@@ -3,7 +3,7 @@ package org.kalibro.core.util.reflection;
 import java.lang.reflect.Member;
 import java.lang.reflect.Modifier;
 
-public final class StaticMemberFilter implements MemberFilter {
+final class StaticMemberFilter implements MemberFilter {
 
 	@Override
 	public boolean accept(Member member) {

@@ -2,7 +2,7 @@ package org.kalibro.core.util.reflection;
 
 import java.lang.reflect.Member;
 
-public class AndMemberFilter implements MemberFilter {
+final class AndMemberFilter implements MemberFilter {
 
 	private MemberFilter[] filters;
 
