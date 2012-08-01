@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -36,6 +37,24 @@ public class ReflectorTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveEntityClass() {
 		assertEquals(ReflectorSample.class, reflector.getObjectClass());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldAskForClassAnnotation() {
+		assertTrue(reflector.hasClassAnnotation(Table.class));
+		assertFalse(reflector.hasClassAnnotation(Test.class));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveClassAnnotation() {
+		assertEquals("SAMPLE_TABLE", reflector.getClassAnnotation(Table.class).name());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldAskForField() {
+		assertTrue(reflector.hasField("id"));
+		assertTrue(reflector.hasField("counter"));
+		assertFalse(reflector.hasField("inexistent"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

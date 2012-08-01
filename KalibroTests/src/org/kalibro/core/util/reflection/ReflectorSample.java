@@ -2,7 +2,9 @@ package org.kalibro.core.util.reflection;
 
 import javax.persistence.Basic;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
+@Table(name = "SAMPLE_TABLE")
 class ReflectorSample extends AbstractReflectorSample {
 
 	private static int counter;
