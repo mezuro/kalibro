@@ -1,5 +1,8 @@
 package org.kalibro.core.util.reflection;
 
+import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
+
+import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -74,14 +77,28 @@ public class Reflector {
 	}
 
 	public Object get(String fieldName) {
-		String completeFieldName = "Field " + getObjectClass().getName() + "." + fieldName;
-		if (!fields.containsKey(fieldName))
-			throw new KalibroError(completeFieldName + " does not exist");
+		String completeFieldName = getObjectClass().getName() + "." + fieldName;
 		try {
 			return fields.get(fieldName).get(object);
-		} catch (IllegalAccessException exception) {
-			throw new KalibroError(completeFieldName + " inaccessible", exception);
+		} catch (Exception exception) {
+			throw new KalibroError("Error retrieving field: " + completeFieldName, exception);
 		}
+	}
+
+	public void set(String fieldName, Object value) {
+		String completeFieldName = getObjectClass().getName() + "." + fieldName;
+		try {
+			fields.get(fieldName).set(object, value);
+		} catch (Exception exception) {
+			throw new KalibroError("Error setting field: " + completeFieldName, exception);
+		}
+	}
+
+	public <T extends Annotation> List<T> getFieldAnnotations(Class<T> annotationClass) {
+		List<T> annotations = new ArrayList<T>();
+		for (String fieldName : listFields(hasAnnotation(annotationClass)))
+			annotations.add(fields.get(fieldName).getAnnotation(annotationClass));
+		return annotations;
 	}
 
 	public List<String> listMethods() {

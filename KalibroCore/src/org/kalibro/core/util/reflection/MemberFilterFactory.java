@@ -4,7 +4,7 @@ import java.lang.annotation.Annotation;
 
 public final class MemberFilterFactory {
 
-	public static MemberFilter isAnnotatedWith(Class<? extends Annotation> annotationClass) {
+	public static MemberFilter hasAnnotation(Class<? extends Annotation> annotationClass) {
 		return new AnnotatedMemberFilter(annotationClass);
 	}
 

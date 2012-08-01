@@ -3,19 +3,20 @@ package org.kalibro.core.util.reflection;
 import static org.junit.Assert.*;
 import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
-import java.lang.reflect.Field;
-import java.util.Map;
+import java.util.List;
 
 import javax.persistence.Basic;
+import javax.persistence.Column;
 import javax.persistence.Id;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
-import org.powermock.reflect.Whitebox;
 
 public class ReflectorTest extends KalibroTestCase {
+
+	private static final String INEXISTENT = "org.kalibro.core.util.reflection.ReflectorSample.inexistent";
 
 	private ReflectorSample sample;
 
@@ -46,75 +47,83 @@ public class ReflectorTest extends KalibroTestCase {
 	public void shouldFilterFields() {
 		assertDeepEquals(reflector.listFields(isStatic()), "counter");
 		assertDeepEquals(reflector.listFields(not(isStatic())), "description", "id", "name");
-		assertDeepEquals(reflector.listFields(isAnnotatedWith(Id.class)), "id");
+		assertDeepEquals(reflector.listFields(hasAnnotation(Id.class)), "id");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAccessFields() {
+	public void shouldListFieldAnnotations() {
+		List<Column> columns = reflector.getFieldAnnotations(Column.class);
+		assertEquals(2, columns.size());
+		assertEquals("description_column", columns.get(0).name());
+		assertEquals("name_column", columns.get(1).name());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveFields() {
 		assertEquals(ReflectorSample.count(), reflector.get("counter"));
 		assertEquals(sample.getId(), reflector.get("id"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAccessParentFields() {
+	public void shouldRetrieveParentFields() {
 		assertEquals(sample.getName(), reflector.get("name"));
 		assertEquals(sample.getDescription(), reflector.get("description"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorOnInexistentField() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.get("inexistentField");
-			}
-		}, "Field org.kalibro.core.util.reflection.ReflectorSample.inexistentField does not exist");
+	public void shouldSetFields() {
+		reflector.set("id", 42);
+		assertEquals(42, sample.getId());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorOnBizarreInaccessibleField() {
-		Map<String, Field> fields = Whitebox.getInternalState(reflector, "fields");
-		fields.get("name").setAccessible(false);
+	public void shouldThrowErrorOnExceptionRetrievingField() {
 		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {
-				reflector.get("name");
+				reflector.get("inexistent");
 			}
-		}, "Field org.kalibro.core.util.reflection.ReflectorSample.name inaccessible", IllegalAccessException.class);
+		}, "Error retrieving field: " + INEXISTENT, NullPointerException.class);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowErrorOnExceptionSettingField() {
+		checkKalibroError(new Task() {
+
+			@Override
+			public void perform() {
+				reflector.set("inexistent", "anything");
+			}
+		}, "Error setting field: " + INEXISTENT, NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllMethods() {
-		assertDeepEquals(reflector.listMethods(), "count", "getDescription", "getId", "getName", "setDescription",
-			"setId", "setName");
+		assertDeepEquals(reflector.listMethods(), "count", "getDescription", "getId", "getName", "setDescription");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldFilterMethods() {
 		assertDeepEquals(reflector.listMethods(isStatic()), "count");
-		assertDeepEquals(reflector.listMethods(not(isStatic())), "getDescription", "getId", "getName",
-			"setDescription", "setId", "setName");
-		assertDeepEquals(reflector.listMethods(isAnnotatedWith(Basic.class)), "getId");
+		assertDeepEquals(reflector.listMethods(hasAnnotation(Basic.class)), "getId");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInvokeMethods() {
 		assertEquals(sample.getId(), reflector.invoke("getId"));
-		assertEquals(sample.getName(), reflector.invoke("getName"));
-		assertEquals(sample.getDescription(), reflector.invoke("getDescription"));
+		reflector.invoke("setDescription", "sample for test");
+		assertEquals("sample for test", sample.getDescription());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowKalibroExceptionOnError() {
-		String message = "Error invoking method: org.kalibro.core.util.reflection.ReflectorSample.setId";
+	public void shouldThrowErrorOnExceptionInvokingMethod() {
 		checkKalibroException(new Task() {
 
 			@Override
 			public void perform() {
-				reflector.invoke("setId");
+				reflector.invoke("inexistent");
 			}
-		}, message, IllegalArgumentException.class);
+		}, "Error invoking method: " + INEXISTENT, NullPointerException.class);
 	}
 }

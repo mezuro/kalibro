@@ -1,17 +1,21 @@
 package org.kalibro.core.util.reflection;
 
+import javax.persistence.Column;
+
 abstract class AbstractReflectorSample {
 
+	@Column(name = "name_column")
 	private String name;
 
+	@Column(name = "description_column")
 	private String description;
+
+	protected AbstractReflectorSample(String name) {
+		this.name = name;
+	}
 
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getDescription() {

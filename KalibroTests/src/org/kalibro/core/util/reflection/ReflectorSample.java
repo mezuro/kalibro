@@ -14,13 +14,9 @@ class ReflectorSample extends AbstractReflectorSample {
 	@Id
 	private int id;
 
-	protected ReflectorSample() {
-		this("");
-	}
-
 	protected ReflectorSample(String name) {
-		setId(counter);
-		setName(name);
+		super(name);
+		this.id = counter;
 		setDescription("");
 		counter++;
 	}
@@ -28,9 +24,5 @@ class ReflectorSample extends AbstractReflectorSample {
 	@Basic
 	public int getId() {
 		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
 	}
 }

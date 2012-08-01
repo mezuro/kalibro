@@ -35,7 +35,7 @@ public class MemberFilterFactoryTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateAnnotatedMemberFilter() {
-		MemberFilter filter = isAnnotatedWith(Before.class);
+		MemberFilter filter = hasAnnotation(Before.class);
 		assertTrue(filter.accept(setUp));
 		assertFalse(filter.accept(emmaCoverage));
 	}
@@ -49,14 +49,14 @@ public class MemberFilterFactoryTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateAndMemberFilter() {
-		MemberFilter filter = and(isStatic(), isAnnotatedWith(BeforeClass.class));
+		MemberFilter filter = and(isStatic(), hasAnnotation(BeforeClass.class));
 		assertFalse(filter.accept(setUp));
 		assertTrue(filter.accept(emmaCoverage));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateOrMemberFilter() {
-		MemberFilter filter = or(isAnnotatedWith(Before.class), isAnnotatedWith(BeforeClass.class));
+		MemberFilter filter = or(hasAnnotation(Before.class), hasAnnotation(BeforeClass.class));
 		assertTrue(filter.accept(setUp));
 		assertTrue(filter.accept(emmaCoverage));
 	}
