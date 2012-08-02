@@ -13,7 +13,7 @@ class EqualityEvaluator {
 	protected boolean isEquals(Object other) {
 		if (other == null)
 			return false;
-		if (other == reflector.getEntity())
+		if (other == reflector.getObject())
 			return true;
 		return sameType(other) && sameFieldValues((AbstractEntity<?>) other);
 	}

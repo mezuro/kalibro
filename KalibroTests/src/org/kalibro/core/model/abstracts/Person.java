@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @SortingMethods("getName")
-class Person extends AbstractEntity<Person> {
+public class Person extends AbstractEntity<Person> {
 
 	@IdentityField
 	private String identityNumber;
@@ -13,6 +13,10 @@ class Person extends AbstractEntity<Person> {
 	private String sex;
 
 	private Map<String, Person> relatives;
+
+	@Ignore
+	@SuppressWarnings("unused")
+	private double toIgnore = Math.random();
 
 	protected Person() {
 		this("", "", "");

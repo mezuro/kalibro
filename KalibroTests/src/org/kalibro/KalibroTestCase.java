@@ -31,6 +31,12 @@ public abstract class KalibroTestCase implements Timeouts {
 		notify();
 	}
 
+	protected void assertDifferent(Object... objects) {
+		for (int i = 0; i < objects.length - 1; i++)
+			for (int j = i + 1; j < objects.length; j++)
+				assertFalse("Not all different: " + Arrays.asList(objects), objects[i].equals(objects[j]));
+	}
+
 	protected <E extends Comparable<? super E>> void assertSorted(E... sortedElements) {
 		assertSorted(Arrays.asList(sortedElements));
 	}
@@ -103,7 +109,7 @@ public abstract class KalibroTestCase implements Timeouts {
 	}
 
 	protected void assertDeepEquals(AbstractEntity<?> expected, AbstractEntity<?> actual) {
-		if (! expected.deepEquals(actual)) {
+		if (!expected.deepEquals(actual)) {
 			String actualText = (actual == null) ? "null" : actual.deepPrint();
 			String expectedText = expected.deepPrint();
 			assertEquals(expectedText, actualText);

@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
 
@@ -9,15 +9,11 @@ import javax.persistence.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.mockito.InOrder;
-import org.powermock.api.mockito.PowerMockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.mockito.Mockito;
+import org.powermock.reflect.Whitebox;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(DatabaseManager.class)
 public class DatabaseManagerTest extends KalibroTestCase {
 
 	private EntityManager entityManager;
@@ -27,64 +23,63 @@ public class DatabaseManagerTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		entityManager = PowerMockito.mock(EntityManager.class);
-		transaction = PowerMockito.mock(EntityTransaction.class);
+		entityManager = mock(EntityManager.class);
+		transaction = mock(EntityTransaction.class);
 		databaseManager = new DatabaseManager(entityManager);
-		PowerMockito.when(entityManager.getTransaction()).thenReturn(transaction);
-		PowerMockito.when(entityManager.merge("unmerged")).thenReturn("merged");
+		when(entityManager.getTransaction()).thenReturn(transaction);
+		when(entityManager.merge("unmerged")).thenReturn("merged");
 		mockCache();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCreateQuery() throws Exception {
-		Query<String> query = PowerMockito.mock(Query.class);
-		TypedQuery<String> nativeQuery = PowerMockito.mock(TypedQuery.class);
-		PowerMockito.when(entityManager.createQuery("42", String.class)).thenReturn(nativeQuery);
-		PowerMockito.whenNew(Query.class).withArguments(nativeQuery).thenReturn(query);
+	public void shouldCreateQuery() {
+		TypedQuery<String> nativeQuery = mock(TypedQuery.class);
+		when(entityManager.createQuery("42", String.class)).thenReturn(nativeQuery);
 
-		assertSame(query, databaseManager.createQuery("42", String.class));
+		Query<String> query = databaseManager.createQuery("42", String.class);
+		assertSame(nativeQuery, Whitebox.getInternalState(query, TypedQuery.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldClearEntityManagerWhenCreatingTypedQuery() {
 		databaseManager.createQuery("42", String.class);
-		verify(entityManager).clear();
+		Mockito.verify(entityManager).clear();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforePersist() {
 		databaseManager.persist("unmerged");
-		verify(entityManager).persist("merged");
+		Mockito.verify(entityManager).persist("merged");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforeRemove() {
 		databaseManager.remove("unmerged");
-		verify(entityManager).remove("merged");
+		Mockito.verify(entityManager).remove("merged");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveSingleEntityAsUnitaryList() throws Exception {
-		databaseManager = PowerMockito.spy(databaseManager);
+		databaseManager = spy(databaseManager);
 		databaseManager.save("42");
-		PowerMockito.verifyPrivate(databaseManager).invoke("save", Arrays.asList("42"));
+		verifyPrivate(databaseManager).invoke("save", Arrays.asList("42"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveList() {
 		databaseManager.save(Arrays.asList("unmerged", "unmerged", "unmerged"));
 
-		InOrder order = inOrder(transaction, entityManager, transaction);
+		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
-		order.verify(entityManager, times(3)).persist("merged");
+		order.verify(entityManager, Mockito.times(3)).persist("merged");
 		order.verify(transaction).commit();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testDelete() {
+	public void shouldDelete() {
 		databaseManager.delete("unmerged");
 
-		InOrder order = inOrder(transaction, entityManager, transaction);
+		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
 		order.verify(entityManager).remove("merged");
 		order.verify(transaction).commit();
@@ -94,20 +89,20 @@ public class DatabaseManagerTest extends KalibroTestCase {
 	public void shouldEvictClassFromCache() {
 		Cache cache = mockCache();
 		databaseManager.evictFromCache(Object.class);
-		verify(cache).evict(Object.class);
+		Mockito.verify(cache).evict(Object.class);
 	}
 
 	private Cache mockCache() {
-		Cache cache = PowerMockito.mock(Cache.class);
-		EntityManagerFactory entityManagerFactory = PowerMockito.mock(EntityManagerFactory.class);
-		PowerMockito.when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
-		PowerMockito.when(entityManagerFactory.getCache()).thenReturn(cache);
+		Cache cache = mock(Cache.class);
+		EntityManagerFactory entityManagerFactory = mock(EntityManagerFactory.class);
+		when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
+		when(entityManagerFactory.getCache()).thenReturn(cache);
 		return cache;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
 		databaseManager.finalize();
-		verify(entityManager).close();
+		Mockito.verify(entityManager).close();
 	}
 }

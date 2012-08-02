@@ -1,21 +1,12 @@
 package org.kalibro.core.processing;
 
-import javax.script.Invocable;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+public interface ScriptEvaluator {
 
-public class ScriptEvaluator {
+	void addVariable(String name, Double value);
 
-	private String script;
+	void addFunction(String name, String body);
 
-	public ScriptEvaluator(String script) {
-		this.script = script;
-	}
+	void remove(String name);
 
-	public Double invokeFunction(String functionName) throws Exception {
-		ScriptEngine scriptEngine = new ScriptEngineManager().getEngineByName("JavaScript");
-		scriptEngine.eval(script);
-		Object returnValue = ((Invocable) scriptEngine).invokeFunction(functionName);
-		return ((Number) returnValue).doubleValue();
-	}
+	Double evaluate(String name);
 }

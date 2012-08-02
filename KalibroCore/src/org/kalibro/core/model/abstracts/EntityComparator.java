@@ -28,8 +28,8 @@ class EntityComparator<T extends Comparable<? super T>> {
 	}
 
 	private int doCompare(T other, Method method) throws Exception {
-		Object myValue = reflector.invoke(method);
-		Object otherValue = new EntityReflector((AbstractEntity<?>) other).invoke(method);
+		Object myValue = reflector.invoke(method.getName());
+		Object otherValue = new EntityReflector((AbstractEntity<?>) other).invoke(method.getName());
 		Method compareTo = myValue.getClass().getMethod("compareTo", Object.class);
 		return (Integer) compareTo.invoke(myValue, otherValue);
 	}

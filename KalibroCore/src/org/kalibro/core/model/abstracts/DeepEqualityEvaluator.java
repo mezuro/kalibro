@@ -10,12 +10,12 @@ class DeepEqualityEvaluator extends EqualityEvaluator {
 
 	@Override
 	protected boolean sameType(Object other) {
-		return reflector.getEntityClass() == other.getClass();
+		return reflector.getObjectClass() == other.getClass();
 	}
 
 	@Override
 	protected List<String> equalityFields() {
-		return reflector.listAllFields();
+		return reflector.listFields();
 	}
 
 	@Override
