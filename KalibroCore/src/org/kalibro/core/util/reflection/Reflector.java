@@ -5,7 +5,6 @@ import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -49,11 +48,9 @@ public class Reflector {
 			}
 	}
 
-	private boolean isRelevantField(Field field) {
+	protected boolean isRelevantField(Field field) {
 		String name = field.getName();
-		boolean serial = Modifier.isStatic(field.getModifiers()) && name.equals("serialVersionUID");
-		boolean dollar = name.startsWith("$");
-		return ! (serial || dollar);
+		return ! (name.equals("serialVersionUID") || name.startsWith("$"));
 	}
 
 	public Object getObject() {

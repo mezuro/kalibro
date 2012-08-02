@@ -27,17 +27,17 @@ public class EntityReflectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveEntity() {
-		assertSame(person, reflector.getEntity());
+		assertSame(person, reflector.getObject());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveEntityClass() {
-		assertEquals(Person.class, reflector.getEntityClass());
+		assertEquals(Person.class, reflector.getObjectClass());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllFields() {
-		assertDeepEquals(reflector.listAllFields(), "identityNumber", "name", "relatives", "sex");
+		assertDeepEquals(reflector.listFields(), "identityNumber", "name", "relatives", "sex");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -17,11 +17,11 @@ class EntityPrinter {
 	}
 
 	protected String deepPrint() {
-		return print(reflector.listAllFields(), new DeepFieldPrinter());
+		return print(reflector.listFields(), new DeepFieldPrinter());
 	}
 
 	private String print(List<String> fields, FieldPrinter fieldPrinter) {
-		String className = reflector.getEntityClass().getSimpleName();
+		String className = reflector.getObjectClass().getSimpleName();
 		String string = "$" + className + "(" + printField(fields.get(0), fieldPrinter);
 		for (String field : fields.subList(1, fields.size()))
 			string += ", " + printField(field, fieldPrinter);
