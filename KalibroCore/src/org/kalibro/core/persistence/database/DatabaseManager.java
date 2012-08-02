@@ -30,7 +30,7 @@ class DatabaseManager {
 	}
 
 	protected void persist(Object record) {
-		entityManager.persist(entityManager.merge(record));
+		entityManager.persist(merge(record));
 	}
 
 	protected void delete(Object record) {
@@ -40,7 +40,7 @@ class DatabaseManager {
 	}
 
 	protected void remove(Object record) {
-		entityManager.remove(entityManager.merge(record));
+		entityManager.remove(merge(record));
 	}
 
 	protected void beginTransaction() {
@@ -53,6 +53,10 @@ class DatabaseManager {
 
 	protected void evictFromCache(Class<?> classToEvitct) {
 		entityManager.getEntityManagerFactory().getCache().evict(classToEvitct);
+	}
+
+	private Object merge(Object record) {
+		return entityManager.merge(record);
 	}
 
 	@Override
