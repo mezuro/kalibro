@@ -4,16 +4,13 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.abstracts.PersonFixtures.*;
 import static org.kalibro.core.model.abstracts.ProgrammerFixtures.*;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
-import org.powermock.reflect.Whitebox;
 
 public class EntityReflectorTest extends KalibroTestCase {
 
@@ -70,30 +67,6 @@ public class EntityReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorOnInexistentField() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.get("inexistentField");
-			}
-		}, "Field org.kalibro.core.model.abstracts.Person.inexistentField does not exist");
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorOnBizarreInaccessibleField() {
-		Map<String, Field> fields = Whitebox.getInternalState(reflector, Map.class);
-		fields.get("name").setAccessible(false);
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.get("name");
-			}
-		}, "Field org.kalibro.core.model.abstracts.Person.name inaccessible", IllegalAccessException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListSortingMethods() {
 		verifySortingMethods(new NoIdentityEntity());
 		verifySortingMethods(person, "getName");
@@ -121,7 +94,7 @@ public class EntityReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvokeMethods() throws Exception {
+	public void shouldInvokeMethods() {
 		reflector = new EntityReflector(programmer);
 		assertEquals(programmer.getIdentityNumber(), invokeMethod("getIdentityNumber"));
 		assertEquals(programmer.getName(), invokeMethod("getName"));
@@ -129,46 +102,7 @@ public class EntityReflectorTest extends KalibroTestCase {
 		assertEquals(programmer.getUseMetrics(), invokeMethod("getUseMetrics"));
 	}
 
-	private Object invokeMethod(String methodName) throws Exception {
-		return reflector.invoke(reflector.getEntityClass().getMethod(methodName));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorInvokingInaccessibleMethod() throws Exception {
-		final Method method = Person.class.getDeclaredMethod("createRelatives");
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke(method);
-			}
-		}, "Method org.kalibro.core.model.abstracts.Person.createRelatives inaccessible", IllegalAccessException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowKalibroExceptionIfMethodThrowsKalibroException() throws Exception {
-		reflector = new EntityReflector(new ExceptionEntity());
-		final Method method = ExceptionEntity.class.getMethod("throwException");
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke(method);
-			}
-		}, "ExceptionEntity", NullPointerException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowKalibroExceptionForInvokationTargetException() throws Exception {
-		reflector = new EntityReflector(new ExceptionEntity());
-		final Method method = ExceptionEntity.class.getMethod("throwCause");
-		String message = "Method org.kalibro.core.model.abstracts.ExceptionEntity.throwCause threw exception";
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke(method);
-			}
-		}, message, NullPointerException.class);
+	private Object invokeMethod(String methodName) {
+		return reflector.invoke(methodName);
 	}
 }
