@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -16,6 +17,9 @@ import org.powermock.reflect.Whitebox;
 
 public class DatabaseManagerTest extends KalibroTestCase {
 
+	private static final String MERGED = "DatabaseManagerTest merged";
+	private static final String UNMERGED = "DatabaseManagerTest unmerged";
+
 	private EntityManager entityManager;
 	private EntityTransaction transaction;
 
@@ -27,7 +31,7 @@ public class DatabaseManagerTest extends KalibroTestCase {
 		transaction = mock(EntityTransaction.class);
 		databaseManager = new DatabaseManager(entityManager);
 		when(entityManager.getTransaction()).thenReturn(transaction);
-		when(entityManager.merge("unmerged")).thenReturn("merged");
+		when(entityManager.merge(UNMERGED)).thenReturn(MERGED);
 		mockCache();
 	}
 
@@ -47,15 +51,14 @@ public class DatabaseManagerTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldMergeBeforePersist() {
-		databaseManager.persist("unmerged");
-		Mockito.verify(entityManager).persist("merged");
+	public void shouldMergeOnPersist() {
+		assertEquals(MERGED, databaseManager.persist(UNMERGED));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforeRemove() {
-		databaseManager.remove("unmerged");
-		Mockito.verify(entityManager).remove("merged");
+		databaseManager.remove(UNMERGED);
+		Mockito.verify(entityManager).remove(MERGED);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -67,21 +70,22 @@ public class DatabaseManagerTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveList() {
-		databaseManager.save(Arrays.asList("unmerged", "unmerged", "unmerged"));
+		List<String> merged = databaseManager.save(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
+		assertEquals(Arrays.asList(MERGED, MERGED, MERGED), merged);
 
 		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
-		order.verify(entityManager, Mockito.times(3)).persist("merged");
+		order.verify(entityManager, Mockito.times(3)).persist(MERGED);
 		order.verify(transaction).commit();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDelete() {
-		databaseManager.delete("unmerged");
+		databaseManager.delete(UNMERGED);
 
 		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
-		order.verify(entityManager).remove("merged");
+		order.verify(entityManager).remove(MERGED);
 		order.verify(transaction).commit();
 	}
 
