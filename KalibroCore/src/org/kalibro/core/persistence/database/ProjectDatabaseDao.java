@@ -16,7 +16,9 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 
 	@Override
 	public void save(Project project) {
-		databaseManager.save(new ProjectRecord(project));
+		ProjectRecord record = new ProjectRecord(project);
+		record = databaseManager.save(record);
+		project.setId(record.convert().getId());
 	}
 
 	@Override

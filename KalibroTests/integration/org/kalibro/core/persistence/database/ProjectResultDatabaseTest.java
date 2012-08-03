@@ -28,6 +28,9 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		first = newHelloWorldResult(new Date(1));
 		second = newHelloWorldResult(new Date(2));
 		third = newHelloWorldResult(new Date(3));
+		first.setProject(project);
+		second.setProject(project);
+		third.setProject(project);
 		dao = daoFactory.getProjectResultDao();
 		daoFactory.getProjectDao().save(project);
 	}

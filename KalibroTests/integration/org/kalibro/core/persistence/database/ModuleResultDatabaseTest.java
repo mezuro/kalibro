@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.kalibro.core.model.ProjectResultFixtures.*;
 
 import java.util.Date;
@@ -22,38 +21,40 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
 	private Date date;
 	private Project project;
-	private ModuleResult result;
+	private ModuleResult moduleResult;
+	private ProjectResult projectResult;
 
 	@Before
 	public void setUp() {
 		date = new Date();
-		project = helloWorld();
-		result = newHelloWorldClassResult(date);
-		result.setConfiguration(kalibroConfiguration());
+		projectResult = newHelloWorldResult(date);
+		project = projectResult.getProject();
+		moduleResult = newHelloWorldClassResult(date);
+		moduleResult.setConfiguration(kalibroConfiguration());
 		dao = daoFactory.getModuleResultDao();
 		daoFactory.getProjectDao().save(project);
-		daoFactory.getProjectResultDao().save(newHelloWorldResult(date));
+		daoFactory.getProjectResultDao().save(projectResult);
 		save();
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testSave() {
-		result.getMetricResults().iterator().next().addDescendentResult(42.0);
-		assertFalse(result.deepEquals(getSavedResult()));
+		moduleResult.getMetricResults().iterator().next().addDescendentResult(42.0);
+		assertFalse(moduleResult.deepEquals(getSavedResult()));
 
 		save();
-		assertDeepEquals(result, getSavedResult());
+		assertDeepEquals(moduleResult, getSavedResult());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testSaveSpecialDoubleValues() {
-		MetricResult firstResult = result.getMetricResults().iterator().next();
+		MetricResult firstResult = moduleResult.getMetricResults().iterator().next();
 		firstResult.addDescendentResult(Double.NaN);
 		firstResult.addDescendentResult(Double.NEGATIVE_INFINITY);
 		firstResult.addDescendentResult(Double.POSITIVE_INFINITY);
 
 		save();
-		assertDeepEquals(result, getSavedResult());
+		assertDeepEquals(moduleResult, getSavedResult());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -65,8 +66,8 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		configuration.addMetricConfiguration(badCompoundMetric);
 		daoFactory.getConfigurationDao().save(configuration);
 
-		result = getSavedResult();
-		assertTrue(result.getCompoundMetricsWithError().contains(badCompoundMetric));
+		moduleResult = getSavedResult();
+		assertTrue(moduleResult.getCompoundMetricsWithError().contains(badCompoundMetric));
 	}
 
 	private MetricConfiguration newCompoundMetric(String code, String script) {
@@ -80,25 +81,25 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
 	private ModuleResult getSavedResult() {
 		String projectName = project.getName();
-		String moduleName = result.getModule().getName();
+		String moduleName = moduleResult.getModule().getName();
 		return dao.getModuleResult(projectName, moduleName, date);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testResultHistory() {
 		Metric loc = analizoMetric("loc");
-		result.getResultFor(loc).addDescendentResult(1.0);
+		moduleResult.getResultFor(loc).addDescendentResult(1.0);
 		save();
 
 		incrementDate();
-		result.getResultFor(loc).addDescendentResult(2.0);
-		dao.save(result, project.getName());
+		moduleResult.getResultFor(loc).addDescendentResult(2.0);
+		dao.save(moduleResult, project.getName());
 
 		incrementDate();
-		result.getResultFor(loc).addDescendentResult(3.0);
-		dao.save(result, project.getName());
+		moduleResult.getResultFor(loc).addDescendentResult(3.0);
+		dao.save(moduleResult, project.getName());
 
-		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), result.getModule().getName());
+		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), moduleResult.getModule().getName());
 		assertEquals(3, resultHistory.size());
 		assertDeepEquals(resultHistory.get(0).getResultFor(loc).getDescendentResults(), 1.0);
 		assertDeepEquals(resultHistory.get(1).getResultFor(loc).getDescendentResults(), 1.0, 2.0);
@@ -107,11 +108,12 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
 	private void incrementDate() {
 		date = new Date(date.getTime() + 1);
-		Whitebox.setInternalState(result, "date", date);
-		daoFactory.getProjectResultDao().save(newHelloWorldResult(date));
+		Whitebox.setInternalState(moduleResult, "date", date);
+		projectResult.setDate(date);
+		daoFactory.getProjectResultDao().save(projectResult);
 	}
 
 	private void save() {
-		dao.save(result, project.getName());
+		dao.save(moduleResult, project.getName());
 	}
 }

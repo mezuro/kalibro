@@ -22,6 +22,7 @@ public class ProjectTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkInitializationAttributes() {
 		project = new Project();
+		assertNull(project.getId());
 		assertEquals("", project.getName());
 		assertEquals("", project.getLicense());
 		assertEquals("", project.getDescription());

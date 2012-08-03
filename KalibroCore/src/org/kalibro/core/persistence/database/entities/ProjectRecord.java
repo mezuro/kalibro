@@ -13,7 +13,11 @@ import org.kalibro.core.util.DataTransferObject;
 public class ProjectRecord implements DataTransferObject<Project> {
 
 	@Id
-	@Column(name = "name", nullable = false)
+	@GeneratedValue
+	@Column(name = "id")
+	private Long id;
+
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
 	@Column(nullable = false)
@@ -40,6 +44,7 @@ public class ProjectRecord implements DataTransferObject<Project> {
 	}
 
 	public ProjectRecord(Project project) {
+		id = project.getId();
 		name = project.getName();
 		license = project.getLicense();
 		description = project.getDescription();
@@ -70,6 +75,7 @@ public class ProjectRecord implements DataTransferObject<Project> {
 	@Override
 	public Project convert() {
 		Project project = new Project();
+		project.setId(id);
 		project.setName(name);
 		project.setLicense(license);
 		project.setDescription(description);
