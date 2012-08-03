@@ -12,12 +12,11 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.*;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.powermock.reflect.Whitebox;
 
 public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
-	private ModuleResultDao dao;
+	private ModuleResultDatabaseDao dao;
 
 	private Date date;
 	private Project project;
@@ -93,11 +92,11 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
 		incrementDate();
 		moduleResult.getResultFor(loc).addDescendentResult(2.0);
-		dao.save(moduleResult, project.getName());
+		dao.save(moduleResult, projectResult);
 
 		incrementDate();
 		moduleResult.getResultFor(loc).addDescendentResult(3.0);
-		dao.save(moduleResult, project.getName());
+		dao.save(moduleResult, projectResult);
 
 		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), moduleResult.getModule().getName());
 		assertEquals(3, resultHistory.size());
@@ -114,6 +113,6 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 	}
 
 	private void save() {
-		dao.save(moduleResult, project.getName());
+		dao.save(moduleResult, projectResult);
 	}
 }

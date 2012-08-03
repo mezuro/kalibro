@@ -2,6 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
@@ -42,6 +43,7 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
+		when(databaseManager.save(any())).thenReturn(new ProjectRecord(project));
 		dao.save(project);
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);

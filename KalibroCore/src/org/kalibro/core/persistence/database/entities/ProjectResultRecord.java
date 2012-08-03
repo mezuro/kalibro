@@ -13,11 +13,11 @@ import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "ProjectResult")
-@PrimaryKey(columns = {@Column(name = "projectName"), @Column(name = "date")})
+@PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date")})
 public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "projectName", nullable = false, referencedColumnName = "name")
+	@JoinColumn(name = "project", nullable = false, referencedColumnName = "id")
 	private ProjectRecord project;
 
 	@Column(name = "date", nullable = false)

@@ -8,13 +8,19 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleNode;
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.core.model.*;
 
 public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
+
+	private ProjectResult projectResult;
+
+	@Before
+	public void setUp() {
+		projectResult = ProjectResultFixtures.helloWorldResult();
+	}
 
 	@Override
 	protected ModuleRecord newDtoUsingDefaultConstructor() {
@@ -28,7 +34,7 @@ public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
 
 	@Override
 	protected ModuleRecord createDto(ModuleNode moduleNode) {
-		return new ModuleRecord(moduleNode, "", new Date());
+		return new ModuleRecord(moduleNode, projectResult);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -39,10 +45,10 @@ public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConvertIntoModuleResult() {
-		Date date = new Date();
+		Date date = projectResult.getDate();
 		Module module = helloWorldClass();
 		ModuleNode moduleNode = new ModuleNode(module);
-		ModuleRecord record = new ModuleRecord(moduleNode, "", date);
+		ModuleRecord record = new ModuleRecord(moduleNode, projectResult);
 		assertDeepEquals(new ModuleResult(module, date), record.convertIntoModuleResult());
 	}
 }

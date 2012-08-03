@@ -7,15 +7,24 @@ import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Date;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
+import org.kalibro.core.model.ProjectResult;
+import org.kalibro.core.model.ProjectResultFixtures;
 
 public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResultRecord> {
+
+	private ProjectResult projectResult;
+
+	@Before
+	public void setUp() {
+		projectResult = ProjectResultFixtures.helloWorldResult();
+	}
 
 	@Override
 	protected MetricResultRecord newDtoUsingDefaultConstructor() {
@@ -31,13 +40,13 @@ public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResu
 
 	@Override
 	protected MetricResultRecord createDto(MetricResult metricResult) {
-		return new MetricResultRecord(metricResult, helloWorldClass(), "", new Date());
+		return new MetricResultRecord(metricResult, helloWorldClass(), projectResult);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConvertModuleResult() {
-		ModuleResult moduleResult = helloWorldClassResult();
-		List<MetricResultRecord> metricResults = MetricResultRecord.createRecords(moduleResult, "");
+		ModuleResult moduleResult = newHelloWorldClassResult(projectResult.getDate());
+		List<MetricResultRecord> metricResults = MetricResultRecord.createRecords(moduleResult, projectResult);
 		List<ModuleResult> converted = MetricResultRecord.convertIntoModuleResults(metricResults);
 
 		assertEquals(1, converted.size());

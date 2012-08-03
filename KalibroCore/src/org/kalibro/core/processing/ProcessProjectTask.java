@@ -10,7 +10,7 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
+import org.kalibro.core.persistence.database.ModuleResultDatabaseDao;
 
 public class ProcessProjectTask extends Task {
 
@@ -35,16 +35,16 @@ public class ProcessProjectTask extends Task {
 		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).execute();
 
 		Kalibro.getProjectResultDao().save(projectResult);
-		saveModuleResults(moduleResults);
+		saveModuleResults(moduleResults, projectResult);
 		project.setState(ProjectState.READY);
 		Kalibro.getProjectDao().save(project);
 		Kalibro.fireProjectStateChanged(project);
 	}
 
-	private void saveModuleResults(Collection<ModuleResult> moduleResults) {
-		ModuleResultDao moduleResultDao = Kalibro.getModuleResultDao();
+	private void saveModuleResults(Collection<ModuleResult> moduleResults, ProjectResult projectResult) {
+		ModuleResultDatabaseDao moduleResultDao = (ModuleResultDatabaseDao) Kalibro.getModuleResultDao();
 		for (ModuleResult moduleResult : moduleResults)
-			moduleResultDao.save(moduleResult, project.getName());
+			moduleResultDao.save(moduleResult, projectResult);
 	}
 
 	private void reportError(Throwable error) {
