@@ -1,23 +1,16 @@
 package org.kalibro.core.persistence.database;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
 
-import org.analizo.AnalizoMetricCollector;
-import org.checkstyle.CheckstyleMetricCollector;
-import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ConfigurationFixtures;
-import org.kalibro.core.persistence.database.entities.BaseToolRecord;
+import java.util.Arrays;
+
 import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public class SeedsFileGenerator {
 
-	public static void main(String[] args) throws Exception {
+	public static void main(String[] args) {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
 		Seeds seeds = new SeedsFileGenerator().getSeeds();
@@ -26,28 +19,9 @@ public class SeedsFileGenerator {
 		System.exit(0);
 	}
 
-	public Seeds getSeeds() throws Exception {
+	public Seeds getSeeds() {
 		Seeds seeds = new Seeds();
-		seeds.baseToolSeeds = baseToolSeeds();
-		seeds.configurationSeeds = configurationSeeds();
+		seeds.configurationSeeds = Arrays.asList(new ConfigurationRecord(kalibroConfiguration()));
 		return seeds;
-	}
-
-	private List<BaseToolRecord> baseToolSeeds() throws Exception {
-		List<BaseToolRecord> baseTools = new ArrayList<BaseToolRecord>();
-		baseTools.add(newBaseTool(AnalizoMetricCollector.class));
-		baseTools.add(newBaseTool(CheckstyleMetricCollector.class));
-		return baseTools;
-	}
-
-	private BaseToolRecord newBaseTool(Class<? extends MetricCollector> collectorClass) throws Exception {
-		BaseTool baseTool = collectorClass.newInstance().getBaseTool();
-		baseTool.setCollectorClass(collectorClass);
-		return new BaseToolRecord(baseTool);
-	}
-
-	private List<ConfigurationRecord> configurationSeeds() {
-		Configuration configuration = ConfigurationFixtures.kalibroConfiguration();
-		return Arrays.asList(new ConfigurationRecord(configuration));
 	}
 }

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.persistence.database.entities.BaseToolRecord;
 import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
 import org.kalibro.core.util.Directories;
 import org.yaml.snakeyaml.Yaml;
@@ -32,7 +31,6 @@ class Seeds {
 		yaml.setBeanAccess(BeanAccess.FIELD);
 		InputStream seedsStream = Seeds.class.getResourceAsStream("seeds.yml");
 		Seeds seeds = (Seeds) yaml.load(seedsStream);
-		databaseManager.save(seeds.baseToolSeeds);
 		databaseManager.save(seeds.configurationSeeds);
 	}
 
@@ -44,7 +42,6 @@ class Seeds {
 		}
 	}
 
-	protected List<BaseToolRecord> baseToolSeeds;
 	protected List<ConfigurationRecord> configurationSeeds;
 
 	protected Seeds() {

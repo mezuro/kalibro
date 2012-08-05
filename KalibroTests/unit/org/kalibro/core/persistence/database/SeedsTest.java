@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence.database;
 
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
-import org.powermock.api.mockito.PowerMockito;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -26,40 +26,39 @@ public class SeedsTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		seededFile = PowerMockito.mock(File.class);
+		seededFile = mock(File.class);
 		Whitebox.setInternalState(Seeds.class, seededFile);
-		databaseManager = PowerMockito.mock(DatabaseManager.class);
+		databaseManager = mock(DatabaseManager.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDoNothingIfSeededFileExists() {
-		PowerMockito.when(seededFile.exists()).thenReturn(true);
+		when(seededFile.exists()).thenReturn(true);
 		Seeds.saveSeedsIfFirstTime(databaseManager);
 
-		verify(seededFile).exists();
+		Mockito.verify(seededFile).exists();
 		verifyNoMoreInteractions(seededFile, databaseManager);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveSeedsIfFirstTime() {
-		PowerMockito.when(seededFile.exists()).thenReturn(false);
+		when(seededFile.exists()).thenReturn(false);
 		Seeds.saveSeedsIfFirstTime(databaseManager);
-
-		verify(databaseManager, times(2)).save(any(Collection.class));
+		Mockito.verify(databaseManager).save(any(Collection.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateSeededFileAfterSaving() throws IOException {
-		PowerMockito.when(seededFile.exists()).thenReturn(false);
+		when(seededFile.exists()).thenReturn(false);
 		Seeds.saveSeedsIfFirstTime(databaseManager);
 
-		verify(seededFile).createNewFile();
+		Mockito.verify(seededFile).createNewFile();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorCreatingSeededFile() throws IOException {
-		PowerMockito.when(seededFile.exists()).thenReturn(false);
-		PowerMockito.when(seededFile.createNewFile()).thenThrow(new IOException());
+		when(seededFile.exists()).thenReturn(false);
+		when(seededFile.createNewFile()).thenThrow(new IOException());
 		checkKalibroException(new Task() {
 
 			@Override
