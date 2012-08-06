@@ -20,7 +20,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DatabaseDaoFactory.class, Persistence.class, Seeds.class})
+@PrepareForTest({DatabaseDaoFactory.class, Persistence.class})
 public class DatabaseDaoFactoryTest extends KalibroTestCase {
 
 	private EntityManagerFactory managerFactory;
@@ -31,7 +31,6 @@ public class DatabaseDaoFactoryTest extends KalibroTestCase {
 	@Before
 	public void setUp() throws Exception {
 		mockPersistence();
-		mockStatic(Seeds.class);
 		baseToolDao = mock(BaseToolDatabaseDao.class);
 		whenNew(BaseToolDatabaseDao.class).withArguments(any()).thenReturn(baseToolDao);
 		daoFactory = new DatabaseDaoFactory();
@@ -60,12 +59,6 @@ public class DatabaseDaoFactoryTest extends KalibroTestCase {
 		assertClassEquals(ProjectDatabaseDao.class, daoFactory.getProjectDao());
 		assertClassEquals(ProjectResultDatabaseDao.class, daoFactory.getProjectResultDao());
 		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.getModuleResultDao());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAssertDatabaseIsSeeded() {
-		verifyStatic();
-		Seeds.saveSeedsIfFirstTime(any(DatabaseManager.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

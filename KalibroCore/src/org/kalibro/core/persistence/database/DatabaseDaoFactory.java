@@ -20,7 +20,6 @@ public class DatabaseDaoFactory implements DaoFactory {
 		Map<String, String> persistenceProperties = databaseSettings.toPersistenceProperties();
 		entityManagerFactory = Persistence.createEntityManagerFactory("Kalibro", persistenceProperties);
 		getBaseToolDao().saveBaseTools();
-		Seeds.saveSeedsIfFirstTime(createDatabaseManager());
 	}
 
 	@Override
