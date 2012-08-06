@@ -9,12 +9,12 @@ import org.kalibro.core.model.Range;
 import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "\"Range\"")
-@PrimaryKey(columns = {@Column(name = "configurationName"), @Column(name = "metricName"), @Column(name = "beginning")})
+@PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName"), @Column(name = "beginning")})
 public class RangeRecord implements DataTransferObject<Range> {
 
 	@ManyToOne(optional = false)
 	@JoinColumns({
-		@JoinColumn(name = "configurationName", nullable = false, referencedColumnName = "configurationName"),
+		@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "configuration"),
 		@JoinColumn(name = "metricName", nullable = false, referencedColumnName = "metricName")})
 	@SuppressWarnings("unused" /* used by JPA */)
 	private MetricConfigurationRecord metricConfiguration;

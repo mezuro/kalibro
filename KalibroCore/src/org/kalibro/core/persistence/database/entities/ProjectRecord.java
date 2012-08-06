@@ -36,27 +36,27 @@ public class ProjectRecord implements DataTransferObject<Project> {
 	private Throwable error;
 
 	@ManyToOne(optional = false)
-	@JoinColumn(nullable = false, referencedColumnName = "name")
+	@JoinColumn(nullable = false, referencedColumnName = "id")
 	private ConfigurationRecord configuration;
 
 	public ProjectRecord() {
 		super();
 	}
 
-	public ProjectRecord(Project project) {
+	public ProjectRecord(Project project, Long configurationId) {
 		id = project.getId();
 		name = project.getName();
 		license = project.getLicense();
 		description = project.getDescription();
 		repository = new RepositoryRecord(project.getRepository(), this);
-		initializeConfiguration(project);
+		initializeConfiguration(configurationId);
 		initializeState(project);
 		initializeError(project);
 	}
 
-	private void initializeConfiguration(Project project) {
+	private void initializeConfiguration(Long configurationId) {
 		Configuration entity = new Configuration();
-		entity.setName(project.getConfigurationName());
+		entity.setId(configurationId);
 		configuration = new ConfigurationRecord(entity);
 	}
 

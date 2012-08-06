@@ -12,6 +12,8 @@ import org.kalibro.core.processing.ScriptValidator;
 @SortingMethods("getName")
 public class Configuration extends AbstractEntity<Configuration> {
 
+	private Long id;
+
 	@IdentityField
 	private String name;
 
@@ -25,6 +27,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	private ScriptValidator validator;
 
 	public Configuration() {
+		setId(null);
 		setName("");
 		setDescription("");
 		compoundMetrics = new TreeSet<CompoundMetric>();
@@ -36,6 +39,14 @@ public class Configuration extends AbstractEntity<Configuration> {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

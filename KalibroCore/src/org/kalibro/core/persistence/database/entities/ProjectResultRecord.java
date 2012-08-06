@@ -40,7 +40,7 @@ public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
 	}
 
 	public ProjectResultRecord(ProjectResult projectResult) {
-		project = new ProjectRecord(projectResult.getProject());
+		project = new ProjectRecord(projectResult.getProject(), null);
 		date = projectResult.getDate().getTime();
 		if (projectResult.isProcessed()) {
 			loadTime = projectResult.getLoadTime();

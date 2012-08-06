@@ -32,6 +32,7 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultAttributes() {
 		configuration = new Configuration();
+		assertNull(configuration.getId());
 		assertEquals("", configuration.getName());
 		assertEquals("", configuration.getDescription());
 		assertTrue(configuration.getMetricConfigurations().isEmpty());
