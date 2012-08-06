@@ -5,7 +5,9 @@ import static org.kalibro.core.model.BaseToolFixtures.*;
 import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
@@ -26,6 +28,8 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(BaseToolDatabaseDao.class)
 public class BaseToolDatabaseDaoTest extends KalibroTestCase {
+
+	private static final List<String> BASE_TOOL_NAMES = Arrays.asList("Analizo", "Checkstyle");
 
 	private BaseTool baseTool;
 	private DatabaseManager databaseManager;
@@ -49,6 +53,7 @@ public class BaseToolDatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveBaseToolByClass() throws Exception {
+		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
 
 		ArgumentCaptor<BaseToolRecord> captor = ArgumentCaptor.forClass(BaseToolRecord.class);
@@ -58,19 +63,27 @@ public class BaseToolDatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSaveIfCannotInstantiateBaseTool() throws Exception {
+		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", MetricCollector.class);
 		Mockito.verify(databaseManager, Mockito.never()).save(any());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotSaveIfBaseToolAlreadyExists() throws Exception {
+		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
+		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
+		Mockito.verify(databaseManager, Mockito.never()).save(any());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllBaseToolNames() {
-		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepEquals(dao.getBaseToolNames(), "4", "2");
+		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
+		assertDeepEquals(BASE_TOOL_NAMES, dao.getBaseToolNames());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetBaseToolByName() {
-		doReturn(baseTool).when(dao).getByName("42");
-		assertSame(baseTool, dao.getBaseTool("42"));
+		doReturn(baseTool).when(dao).getByName("Analizo");
+		assertSame(baseTool, dao.getBaseTool("Analizo"));
 	}
 }

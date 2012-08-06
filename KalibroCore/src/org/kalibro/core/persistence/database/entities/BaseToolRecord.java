@@ -17,13 +17,13 @@ import org.kalibro.core.util.DataTransferObject;
 public class BaseToolRecord implements DataTransferObject<BaseTool> {
 
 	@Id
-	@Column(name = "name", nullable = false)
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
 	@Column
 	private String description;
 
-	@Column(nullable = false)
+	@Column(name = "collector_class", nullable = false, unique = true)
 	private String collectorClass;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "origin")
