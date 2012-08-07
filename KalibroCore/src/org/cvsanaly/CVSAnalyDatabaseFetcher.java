@@ -25,8 +25,7 @@ public class CVSAnalyDatabaseFetcher {
 		EntityManagerFactory factory = Persistence.createEntityManagerFactory("cvsanaly", getPersistenceProperties());
 		final EntityManager entityManager = factory.createEntityManager();
 
-		// TODO We should optimize this query to fetch only the metrics of the lastest revision
-		List<MetricResult> result = entityManager.createNamedQuery("getAllMetricResults").getResultList();
+		List<MetricResult> result = entityManager.createNamedQuery("getLastMetricResults").getResultList();
 
 		entityManager.close();
 		return result;

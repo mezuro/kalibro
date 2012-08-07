@@ -5,9 +5,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "metrics")
 @NamedQuery(
-	name = "getAllMetricResults",
-	query = "Select metric from MetricResult metric")
-
+	name = "getLastMetricResults",
+	query = "SELECT metric FROM MetricResult metric WHERE metric.commit.date = " +
+		"(SELECT max(metric2.commit.date) FROM MetricResult metric2 WHERE metric.file.id = metric2.file.id)")
 public class MetricResult {
 
 	@Id
@@ -37,75 +37,75 @@ public class MetricResult {
 	private double averageCyclomaticComplexity;
 	@Column(name = "halstead_vol")
 	private double halsteadVolume;
-	
+
 	public long getId() {
 		return id;
 	}
-	
+
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	public RepositoryFile getFile() {
 		return file;
 	}
-	
+
 	public void setFile(RepositoryFile file) {
 		this.file = file;
 	}
-	
+
 	public Commit getCommit() {
 		return commit;
 	}
-	
+
 	public void setCommit(Commit commit) {
 		this.commit = commit;
 	}
-	
+
 	public double getNumberOfSourceLinesOfCode() {
 		return numberOfSourceLinesOfCode;
 	}
-	
+
 	public void setNumberOfSourceLinesOfCode(double numberOfSourceLinesOfCode) {
 		this.numberOfSourceLinesOfCode = numberOfSourceLinesOfCode;
 	}
-	
+
 	public double getNumberOfLinesOfCode() {
 		return numberOfLinesOfCode;
 	}
-	
+
 	public void setNumberOfLinesOfCode(double numberOfLinesOfCode) {
 		this.numberOfLinesOfCode = numberOfLinesOfCode;
 	}
-	
+
 	public double getNumberOfComments() {
 		return numberOfComments;
 	}
-	
+
 	public void setNumberOfComments(double numberOfComments) {
 		this.numberOfComments = numberOfComments;
 	}
-	
+
 	public double getNumberOfCommentedLines() {
 		return numberOfCommentedLines;
 	}
-	
+
 	public void setNumberOfCommentedLines(double numberOfCommentedLines) {
 		this.numberOfCommentedLines = numberOfCommentedLines;
 	}
-	
+
 	public double getNumberOfBlankLines() {
 		return numberOfBlankLines;
 	}
-	
+
 	public void setNumberOfBlankLines(double numberOfBlankLines) {
 		this.numberOfBlankLines = numberOfBlankLines;
 	}
-	
+
 	public double getNumberOfFunctions() {
 		return numberOfFunctions;
 	}
-	
+
 	public void setNumberOfFunctions(double numberOfFunctions) {
 		this.numberOfFunctions = numberOfFunctions;
 	}
@@ -133,6 +133,5 @@ public class MetricResult {
 	public void setHalsteadVolume(double halsteadVolume) {
 		this.halsteadVolume = halsteadVolume;
 	}
-	
 
 }

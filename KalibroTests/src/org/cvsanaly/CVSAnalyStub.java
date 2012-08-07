@@ -78,6 +78,9 @@ public final class CVSAnalyStub {
 			new NativeMetric("Number of commented lines", Granularity.CLASS, Language.values()),
 			new NativeMetric("Number of blank lines", Granularity.CLASS, Language.values()),
 			new NativeMetric("Number of functions", Granularity.CLASS, Language.values()),
+			new NativeMetric("Maximum cyclomatic complexity", Granularity.CLASS, Language.values()),
+			new NativeMetric("Average cyclomatic complexity", Granularity.CLASS, Language.values()),
+			new NativeMetric("Halstead volume", Granularity.CLASS, Language.values()),
 		};
 		return new HashSet<NativeMetric>(Arrays.asList(metric));
 	}
@@ -91,8 +94,7 @@ public final class CVSAnalyStub {
 		RepositoryFile helloWorldFile = createRepositoryFile(0, "HelloWorld.java");
 		RepositoryFile byeWorldFile = createRepositoryFile(1, "ByeWorld.java");
 
-		entity.addAll(Arrays.asList(createMetricResult(0, firstCommit, helloWorldFile, 2, 2),
-			createMetricResult(1, head, helloWorldFile, 10, 13),
+		entity.addAll(Arrays.asList(createMetricResult(1, head, helloWorldFile, 10, 13),
 			createMetricResult(2, firstCommit, byeWorldFile, 6, 8)));
 
 		return entity;

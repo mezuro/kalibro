@@ -1,10 +1,11 @@
 package org.cvsanaly;
 
 import java.io.File;
-import java.util.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.cvsanaly.entities.MetricResult;
-import org.cvsanaly.entities.RepositoryFile;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.*;
@@ -39,12 +40,10 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 		return result;
 	}
 
-	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities) throws Exception {
+	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities) {
 		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
 		
-		List<MetricResult> filteredEntities = filterOlderRevisio1ns(entities);
-		
-		for (MetricResult entity: filteredEntities) {
+		for (MetricResult entity: entities) {
 			//TODO Modify CVSAnaly to get information about path
 			String filename = entity.getFile().getFilename();
 			Module module = new Module(Granularity.CLASS, filename);
@@ -56,20 +55,7 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 		return result;
 	}
 
-	private List<MetricResult> filterOlderRevisio1ns(List<MetricResult> entities) {
-		// TODO Optimize this
-		Map<RepositoryFile, MetricResult> result = new HashMap<RepositoryFile, MetricResult>();
-		
-		for (MetricResult entity: entities) {
-			RepositoryFile file = entity.getFile();
-			if (!result.containsKey(file) || 
-				result.get(file).getCommit().getDate().before(entity.getCommit().getDate()))
-			result.put(file, entity);
-		}
-		return new ArrayList<MetricResult>(result.values());
-	}
-
-	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult) throws Exception {
+	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult) {
 		for (CVSAnalyMetric metric : CVSAnalyMetric.values()) {
 			nativeModuleResult.addMetricResult(new NativeMetricResult(metric.getNativeMetric(), 
 				metric.getMetricValue(entity)));
