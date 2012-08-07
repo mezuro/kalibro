@@ -18,7 +18,7 @@ import org.kalibro.core.util.DataTransferObject;
 public class BaseToolRecord implements DataTransferObject<BaseTool> {
 
 	@Id
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "name", nullable = false)
 	private String name;
 
 	@Column
