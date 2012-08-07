@@ -26,30 +26,33 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 
 	@Override
 	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
-		//TODO Only collect the given metrics
+		// TODO Only collect the given metrics
 		File tempFile = File.createTempFile("kalibro-cvsanaly-db", ".sqlite");
-		CommandTask executor = new CommandTask(CVSANALY2_COMMAND_LINE + tempFile.getAbsolutePath(), codeDirectory);
-		executor.executeAndWait();
-		
-		CVSAnalyDatabaseFetcher databaseFetcher = new CVSAnalyDatabaseFetcher(tempFile);
-		List<MetricResult> entities = databaseFetcher.getMetricResults();
-	
-		Set<NativeModuleResult> result = convertEntityToNativeModuleResult(entities);
-		
-		tempFile.delete();
+		Set<NativeModuleResult> result;
+		try {
+			CommandTask executor = new CommandTask(CVSANALY2_COMMAND_LINE + tempFile.getAbsolutePath(), codeDirectory);
+			executor.executeAndWait();
+
+			CVSAnalyDatabaseFetcher databaseFetcher = new CVSAnalyDatabaseFetcher(tempFile);
+			List<MetricResult> entities = databaseFetcher.getMetricResults();
+
+			result = convertEntityToNativeModuleResult(entities);
+		} finally {
+			tempFile.delete();
+		}
 		return result;
 	}
 
 	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities) {
 		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
-		
-		for (MetricResult entity: entities) {
-			//TODO Modify CVSAnaly to get information about path
+
+		for (MetricResult entity : entities) {
+			// TODO Modify CVSAnaly to get information about path
 			String filename = entity.getFile().getFilename();
 			Module module = new Module(Granularity.CLASS, filename);
 			NativeModuleResult nativeModuleResult = new NativeModuleResult(module);
 			extractMetrics(entity, nativeModuleResult);
-			
+
 			result.add(nativeModuleResult);
 		}
 		return result;
@@ -57,9 +60,9 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 
 	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult) {
 		for (CVSAnalyMetric metric : CVSAnalyMetric.values()) {
-			nativeModuleResult.addMetricResult(new NativeMetricResult(metric.getNativeMetric(), 
+			nativeModuleResult.addMetricResult(new NativeMetricResult(metric.getNativeMetric(),
 				metric.getMetricValue(entity)));
 		}
 	}
-	
+
 }
