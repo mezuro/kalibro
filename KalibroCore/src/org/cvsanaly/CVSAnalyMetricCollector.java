@@ -26,7 +26,6 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 
 	@Override
 	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
-		// TODO Only collect the given metrics
 		File tempFile = File.createTempFile("kalibro-cvsanaly-db", ".sqlite");
 		Set<NativeModuleResult> result;
 		try {
@@ -36,14 +35,16 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 			CVSAnalyDatabaseFetcher databaseFetcher = new CVSAnalyDatabaseFetcher(tempFile);
 			List<MetricResult> entities = databaseFetcher.getMetricResults();
 
-			result = convertEntityToNativeModuleResult(entities);
+			result = convertEntityToNativeModuleResult(entities, metrics);
 		} finally {
 			tempFile.delete();
 		}
 		return result;
 	}
 
-	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities) {
+	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities,
+		Set<NativeMetric> wantedMetrics) {
+
 		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
 
 		for (MetricResult entity : entities) {
@@ -51,17 +52,19 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 			String filename = entity.getFile().getFilename();
 			Module module = new Module(Granularity.CLASS, filename);
 			NativeModuleResult nativeModuleResult = new NativeModuleResult(module);
-			extractMetrics(entity, nativeModuleResult);
+			extractMetrics(entity, nativeModuleResult, wantedMetrics);
 
 			result.add(nativeModuleResult);
 		}
 		return result;
 	}
 
-	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult) {
+	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult,
+		Set<NativeMetric> wantedMetrics) {
 		for (CVSAnalyMetric metric : CVSAnalyMetric.values()) {
-			nativeModuleResult.addMetricResult(new NativeMetricResult(metric.getNativeMetric(),
-				metric.getMetricValue(entity)));
+			NativeMetric nativeMetric = metric.getNativeMetric();
+			if (wantedMetrics.contains(nativeMetric))
+				nativeModuleResult.addMetricResult(new NativeMetricResult(nativeMetric, metric.getMetricValue(entity)));
 		}
 	}
 

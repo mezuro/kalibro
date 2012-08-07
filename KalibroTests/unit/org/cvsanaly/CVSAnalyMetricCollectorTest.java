@@ -1,8 +1,11 @@
 package org.cvsanaly;
 
 import static org.mockito.Matchers.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
@@ -38,6 +41,24 @@ public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldDeleteFileIfAnExceptionOccurs() throws Exception {
+		File codeDirectory = new File("/");
+		File databaseFileSpy = mockDatabaseFile();
+		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
+
+		mockCommandToThrowException();
+		mockFetcher();
+
+		try {
+			cvsanaly.collectMetrics(codeDirectory, metrics);
+		} catch (Exception e) { 
+			assertDifferent(e, null);
+		}
+		Mockito.verify(databaseFileSpy).delete();
+	}
+
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCollectAllMetrics() throws Exception {
 		File codeDirectory = new File("/");
 		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
@@ -50,6 +71,21 @@ public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 		assertDeepEquals(CVSAnalyStub.results(), actual);
 	}
 
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCollectWantedMetrics() throws Exception {
+		File codeDirectory = new File("/");
+		Set<NativeMetric> metrics = new HashSet<NativeMetric>();
+		metrics.add(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE.getNativeMetric());
+		metrics.add(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY.getNativeMetric());
+
+		mockCommand();
+		mockFetcher();
+
+		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
+		Mockito.verify(executor).executeAndWait();
+		assertDeepEquals(CVSAnalyStub.limitedResults(), actual);
+	}
+
 	private void mockFetcher() throws Exception {
 		PowerMockito.whenNew(CVSAnalyDatabaseFetcher.class).withArguments(any()).thenReturn(fetcher);
 		Mockito.when(fetcher.getMetricResults()).thenReturn(CVSAnalyStub.getExampleEntities());
@@ -58,5 +94,18 @@ public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 	private void mockCommand() throws Exception {
 		String executionCommand = "cvsanaly2 -q --extensions=Metrics --db-driver=sqlite -d";
 		PowerMockito.whenNew(CommandTask.class).withArguments(startsWith(executionCommand), any()).thenReturn(executor);
+	}
+
+	private void mockCommandToThrowException() throws Exception {
+		String executionCommand = "cvsanaly2 -q --extensions=Metrics --db-driver=sqlite -d";
+		PowerMockito.whenNew(CommandTask.class).withArguments(startsWith(executionCommand), any())
+			.thenThrow(new Exception());
+	}
+
+	private File mockDatabaseFile() throws IOException {
+		PowerMockito.mockStatic(File.class);
+		File databaseFileSpy = spy(new File("/tmp/aaa"));
+		PowerMockito.when(File.createTempFile("kalibro-cvsanaly-db", ".sqlite")).thenReturn(databaseFileSpy);
+		return databaseFileSpy;
 	}
 }
