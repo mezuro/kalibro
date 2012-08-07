@@ -36,7 +36,7 @@ public enum CVSAnalyMetric {
 		return Identifier.fromConstant(name()).asText();
 	}
 	
-	public double getMetricValue(MetricResult metricResult) throws ReflectiveOperationException {
+	public double getMetricValue(MetricResult metricResult) throws Exception {
 		return (Double) methodToGetMetricValue.invoke(metricResult);
 	}
 

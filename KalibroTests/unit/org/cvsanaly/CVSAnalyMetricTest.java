@@ -45,7 +45,7 @@ public class CVSAnalyMetricTest extends KalibroTestCase {
 	}
 	
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCallCorrectMethodToGetMetricValue() throws ReflectiveOperationException {
+	public void shouldCallCorrectMethodToGetMetricValue() throws Exception {
 		MetricResult mockResult = PowerMockito.mock(MetricResult.class);
 		CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getMetricValue(mockResult);
 		Mockito.verify(mockResult).getNumberOfSourceCodeLines();
