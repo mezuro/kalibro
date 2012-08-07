@@ -14,6 +14,7 @@ public class CVSAnalyTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
+		//TODO Quiet logging
 		cvsanaly = new CVSAnalyMetricCollector();
 	}
 

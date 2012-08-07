@@ -3,19 +3,14 @@ package org.cvsanaly;
 import static org.cvsanaly.CVSAnalyMetric.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
-import static org.powermock.api.mockito.PowerMockito.*;
-import static org.powermock.reflect.Whitebox.*;
 
 import org.cvsanaly.entities.MetricResult;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Language;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -45,25 +40,13 @@ public class CVSAnalyMetricTest extends KalibroTestCase {
 	}
 	
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCallCorrectMethodToGetMetricValue() throws Exception {
-		MetricResult mockResult = PowerMockito.mock(MetricResult.class);
-		CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getMetricValue(mockResult);
-		Mockito.verify(mockResult).getNumberOfSourceCodeLines();
+	public void shouldRetrieveCorrectField() {
+		MetricResult exampleResult = CVSAnalyStub.getExampleEntities().get(1);
+		double actual = CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getMetricValue(exampleResult);
+		assertDoubleEquals(exampleResult.getNumberOfSourceLinesOfCode(), actual);
 		
-		CVSAnalyMetric.NUMBER_OF_COMMENTS.getMetricValue(mockResult);
-		Mockito.verify(mockResult).getNumberOfComments();
+		actual = CVSAnalyMetric.NUMBER_OF_COMMENTS.getMetricValue(exampleResult);
+		assertDoubleEquals(exampleResult.getNumberOfComments(), actual);
 	}
 	
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowClassNotFoundExceptionIfMethodCouldNotBeFound() {
-		final CVSAnalyMetric type = spy(NUMBER_OF_LINES_OF_CODE);
-		checkException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				invokeMethod(type, "getMethodFromMethodName", "bla");
-			}
-		}, ExceptionInInitializerError.class);
-	}
-
 }

@@ -5,9 +5,9 @@ import javax.persistence.*;
 @Entity
 @Table(name = "metrics")
 @NamedQuery(
-	  name = "getAllMetricResults",
-	  query = "Select metric from MetricResult metric"
-	)
+	name = "getAllMetricResults",
+	query = "Select metric from MetricResult metric")
+
 public class MetricResult {
 
 	@Id
@@ -20,7 +20,7 @@ public class MetricResult {
 	private Commit commit;
 
 	@Column(name = "sloc")
-	private double numberOfSourceCodeLines;
+	private double numberOfSourceLinesOfCode;
 	@Column(name = "loc")
 	private double numberOfLinesOfCode;
 	@Column(name = "ncomment")
@@ -56,12 +56,12 @@ public class MetricResult {
 		this.commit = commit;
 	}
 	
-	public double getNumberOfSourceCodeLines() {
-		return numberOfSourceCodeLines;
+	public double getNumberOfSourceLinesOfCode() {
+		return numberOfSourceLinesOfCode;
 	}
 	
-	public void setNumberOfSourceCodeLines(double numberOfSourceCodeLines) {
-		this.numberOfSourceCodeLines = numberOfSourceCodeLines;
+	public void setNumberOfSourceLinesOfCode(double numberOfSourceLinesOfCode) {
+		this.numberOfSourceLinesOfCode = numberOfSourceLinesOfCode;
 	}
 	
 	public double getNumberOfLinesOfCode() {
@@ -104,4 +104,5 @@ public class MetricResult {
 		this.numberOfFunctions = numberOfFunctions;
 	}
 	
+
 }

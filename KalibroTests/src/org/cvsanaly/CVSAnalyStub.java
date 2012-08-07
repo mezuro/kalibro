@@ -111,7 +111,7 @@ public final class CVSAnalyStub {
 		newMetricResult.setId(id);
 		newMetricResult.setFile(repo);
 		newMetricResult.setCommit(commit);
-		newMetricResult.setNumberOfSourceCodeLines(sloc);
+		newMetricResult.setNumberOfSourceLinesOfCode(sloc);
 		newMetricResult.setNumberOfLinesOfCode(loc);
 		return newMetricResult;
 	}
