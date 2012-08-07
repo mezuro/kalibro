@@ -1,6 +1,7 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.kalibro.core.model.ProjectResultFixtures.*;
 
@@ -26,6 +27,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		helloWorld = projectResult.getProject();
 		helloWorld2 = newHelloWorld();
 		helloWorld2.setName("HelloWorld-2.0");
+		daoFactory.getConfigurationDao().save(kalibroConfiguration());
 		dao = daoFactory.getProjectDao();
 	}
 

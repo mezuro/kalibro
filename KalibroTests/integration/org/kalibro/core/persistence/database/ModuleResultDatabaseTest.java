@@ -31,6 +31,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		moduleResult = newHelloWorldClassResult(date);
 		moduleResult.setConfiguration(kalibroConfiguration());
 		dao = daoFactory.getModuleResultDao();
+		daoFactory.getConfigurationDao().save(kalibroConfiguration());
 		daoFactory.getProjectDao().save(project);
 		daoFactory.getProjectResultDao().save(projectResult);
 		save();
@@ -63,7 +64,10 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		MetricConfiguration badCompoundMetric = newCompoundMetric("bad", "return cbo > 0 ? 1.0 : null;");
 		Configuration configuration = newConfiguration("cbo");
 		configuration.addMetricConfiguration(badCompoundMetric);
-		daoFactory.getConfigurationDao().save(configuration);
+
+		ConfigurationDatabaseDao configurationDao = daoFactory.getConfigurationDao();
+		configuration.setId(configurationDao.getConfiguration(CONFIGURATION_NAME).getId());
+		configurationDao.save(configuration);
 
 		moduleResult = getSavedResult();
 		assertTrue(moduleResult.getCompoundMetricsWithError().contains(badCompoundMetric));
