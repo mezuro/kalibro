@@ -8,13 +8,15 @@ import org.kalibro.core.util.Identifier;
 import org.kalibro.core.util.reflection.Reflector;
 
 public enum CVSAnalyMetric {
-	// TODO Add more metrics
 	NUMBER_OF_SOURCE_LINES_OF_CODE,
 	NUMBER_OF_LINES_OF_CODE,
 	NUMBER_OF_COMMENTS,
 	NUMBER_OF_COMMENTED_LINES,
 	NUMBER_OF_BLANK_LINES,
-	NUMBER_OF_FUNCTIONS;
+	NUMBER_OF_FUNCTIONS,
+	MAXIMUM_CYCLOMATIC_COMPLEXITY,
+	AVERAGE_CYCLOMATIC_COMPLEXITY,
+	HALSTEAD_VOLUME;
 
 	@Override
 	public String toString() {

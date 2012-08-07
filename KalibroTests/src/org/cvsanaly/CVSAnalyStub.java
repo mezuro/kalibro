@@ -26,6 +26,9 @@ public final class CVSAnalyStub {
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 13.0);
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 10.0);
+		helloWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
+		helloWorldResultMap.put(CVSAnalyMetric.AVERAGE_CYCLOMATIC_COMPLEXITY, 0.0);
+		helloWorldResultMap.put(CVSAnalyMetric.HALSTEAD_VOLUME, 0.0);
 		return helloWorldResultMap;
 	}
 	
@@ -37,6 +40,9 @@ public final class CVSAnalyStub {
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 8.0);
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 6.0);
+		byeWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
+		byeWorldResultMap.put(CVSAnalyMetric.AVERAGE_CYCLOMATIC_COMPLEXITY, 0.0);
+		byeWorldResultMap.put(CVSAnalyMetric.HALSTEAD_VOLUME, 0.0);
 		return byeWorldResultMap;
 	}
 	

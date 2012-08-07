@@ -31,6 +31,12 @@ public class MetricResult {
 	private double numberOfBlankLines;
 	@Column(name = "nfunctions")
 	private double numberOfFunctions;
+	@Column(name = "mccabe_max")
+	private double maximumCyclomaticComplexity;
+	@Column(name = "mccabe_mean")
+	private double averageCyclomaticComplexity;
+	@Column(name = "halstead_vol")
+	private double halsteadVolume;
 	
 	public long getId() {
 		return id;
@@ -102,6 +108,30 @@ public class MetricResult {
 	
 	public void setNumberOfFunctions(double numberOfFunctions) {
 		this.numberOfFunctions = numberOfFunctions;
+	}
+
+	public double getMaximumCyclomaticComplexity() {
+		return maximumCyclomaticComplexity;
+	}
+
+	public void setMaximumCyclomaticComplexity(double maximumCyclomaticComplexity) {
+		this.maximumCyclomaticComplexity = maximumCyclomaticComplexity;
+	}
+
+	public double getAverageCyclomaticComplexity() {
+		return averageCyclomaticComplexity;
+	}
+
+	public void setAverageCyclomaticComplexity(double averageCyclomaticComplexity) {
+		this.averageCyclomaticComplexity = averageCyclomaticComplexity;
+	}
+
+	public double getHalsteadVolume() {
+		return halsteadVolume;
+	}
+
+	public void setHalsteadVolume(double halsteadVolume) {
+		this.halsteadVolume = halsteadVolume;
 	}
 	
 
