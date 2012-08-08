@@ -7,22 +7,19 @@ import static org.kalibro.core.model.enums.Language.*;
 import static org.mockito.Matchers.*;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.EnumerationTestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.core.util.Identifier;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class CheckstyleMetricTest extends KalibroTestCase {
+public class CheckstyleMetricTest extends EnumerationTestCase<CheckstyleMetric> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		CheckstyleMetric.values();
-		CheckstyleMetric.valueOf(FAN_OUT.name());
+	@Override
+	protected Class<CheckstyleMetric> enumerationClass() {
+		return CheckstyleMetric.class;
 	}
 
 	private CheckstyleConfiguration configuration;
@@ -31,12 +28,6 @@ public class CheckstyleMetricTest extends KalibroTestCase {
 	public void setUp() {
 		configuration = PowerMockito.mock(CheckstyleConfiguration.class);
 		PowerMockito.when(configuration.getChildByName(anyString())).thenReturn(configuration);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkToString() {
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			assertEquals(Identifier.fromConstant(metric.name()).asText(), "" + metric);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

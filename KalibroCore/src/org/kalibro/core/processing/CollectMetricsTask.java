@@ -54,7 +54,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	}
 
 	private void changeModuleNameIfRoot(Module module) {
-		if (module.getGranularity() == Granularity.APPLICATION)
+		if (module.getGranularity() == Granularity.SOFTWARE)
 			module.setName(project.getName());
 	}
 }

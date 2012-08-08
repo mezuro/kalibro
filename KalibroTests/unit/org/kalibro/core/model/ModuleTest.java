@@ -59,7 +59,7 @@ public class ModuleTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSortByGranularityThenName() {
-		assertSorted(newModule(APPLICATION, "G"), newModule(APPLICATION, "H"),
+		assertSorted(newModule(SOFTWARE, "G"), newModule(SOFTWARE, "H"),
 			newModule(PACKAGE, "E"), newModule(PACKAGE, "F"),
 			newModule(CLASS, "C"), newModule(CLASS, "D"),
 			newModule(METHOD, "A"), newModule(METHOD, "B"));

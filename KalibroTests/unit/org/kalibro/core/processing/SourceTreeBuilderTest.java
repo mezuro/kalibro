@@ -37,7 +37,7 @@ public class SourceTreeBuilderTest extends KalibroTestCase {
 			new Module(CLASS, "org.analizo.AnalizoOutputParser"));
 
 		String projectName = projectResult.getProject().getName();
-		assertDeepEquals(new Module(APPLICATION, projectName), sourceTree.getModule());
+		assertDeepEquals(new Module(SOFTWARE, projectName), sourceTree.getModule());
 		assertEquals(1, sourceTree.getChildren().size());
 		assertDeepEquals(analizoCheckstyleTree(), sourceTree.getChildren().iterator().next());
 	}

@@ -64,7 +64,7 @@ public class ModuleNodeTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSortByModule() {
-		assertSorted(newNode(APPLICATION, "G"), newNode(APPLICATION, "H"),
+		assertSorted(newNode(SOFTWARE, "G"), newNode(SOFTWARE, "H"),
 			newNode(PACKAGE, "E"), newNode(PACKAGE, "F"),
 			newNode(CLASS, "C"), newNode(CLASS, "D"),
 			newNode(METHOD, "A"), newNode(METHOD, "B"));

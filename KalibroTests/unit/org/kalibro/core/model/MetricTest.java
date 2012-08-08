@@ -27,7 +27,7 @@ public class MetricTest extends KalibroTestCase {
 		assertSorted(
 			new MyMetric(false, "G", CLASS), new MyMetric(false, "H", CLASS),
 			new MyMetric(false, "E", METHOD), new MyMetric(false, "F", METHOD),
-			new MyMetric(true, "C", APPLICATION), new MyMetric(true, "D", APPLICATION),
+			new MyMetric(true, "C", SOFTWARE), new MyMetric(true, "D", SOFTWARE),
 			new MyMetric(true, "A", PACKAGE), new MyMetric(true, "B", PACKAGE));
 	}
 

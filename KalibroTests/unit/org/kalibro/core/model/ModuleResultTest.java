@@ -84,7 +84,7 @@ public class ModuleResultTest extends KalibroTestCase {
 	public void shouldSortByDateThenModule() {
 		assertSorted(newResult(0, CLASS, "C"), newResult(0, CLASS, "D"),
 			newResult(0, METHOD, "A"), newResult(0, METHOD, "B"),
-			newResult(1, APPLICATION, "G"), newResult(1, APPLICATION, "H"),
+			newResult(1, SOFTWARE, "G"), newResult(1, SOFTWARE, "H"),
 			newResult(1, PACKAGE, "E"), newResult(1, PACKAGE, "F"));
 	}
 
