@@ -2,6 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
@@ -36,6 +37,7 @@ public class ConfigurationDatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
+		when(databaseManager.save(any())).thenReturn(new ConfigurationRecord(configuration));
 		dao.save(configuration);
 
 		ArgumentCaptor<ConfigurationRecord> captor = ArgumentCaptor.forClass(ConfigurationRecord.class);

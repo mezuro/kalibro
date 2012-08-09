@@ -14,6 +14,7 @@ import org.kalibro.core.util.DataTransferObject;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProjectXml implements DataTransferObject<Project> {
 
+	private Long id;
 	private String name;
 	private String license;
 	private String description;
@@ -29,6 +30,7 @@ public class ProjectXml implements DataTransferObject<Project> {
 	}
 
 	public ProjectXml(Project project) {
+		id = project.getId();
 		name = project.getName();
 		license = project.getLicense();
 		description = project.getDescription();
@@ -50,6 +52,7 @@ public class ProjectXml implements DataTransferObject<Project> {
 	@Override
 	public Project convert() {
 		Project project = new Project();
+		project.setId(id);
 		project.setName(name);
 		project.setLicense(license);
 		project.setDescription(description);

@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.client.EndpointPortFactory;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ModuleResultFixtures;
 import org.kalibro.service.ModuleResultEndpoint;
@@ -37,17 +36,6 @@ public class ModuleResultPortDaoTest extends KalibroTestCase {
 		port = PowerMockito.mock(ModuleResultEndpoint.class);
 		PowerMockito.mockStatic(EndpointPortFactory.class);
 		PowerMockito.when(EndpointPortFactory.getEndpointPort(ModuleResultEndpoint.class)).thenReturn(port);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotSaveResultRemotely() {
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				dao.save(null, null);
-			}
-		}, "Cannot save module result remotely");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

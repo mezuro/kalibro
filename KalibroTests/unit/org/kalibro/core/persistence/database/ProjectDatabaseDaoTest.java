@@ -2,6 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
 import org.kalibro.core.settings.KalibroSettings;
@@ -24,7 +26,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FileUtils.class, Kalibro.class})
+@PrepareForTest({FileUtils.class, Kalibro.class, ProjectDatabaseDao.class})
 public class ProjectDatabaseDaoTest extends KalibroTestCase {
 
 	private Project project;
@@ -33,19 +35,28 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	private ProjectDatabaseDao dao;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		project = helloWorld();
 		databaseManager = mock(DatabaseManager.class);
+		mockConfigurationDao();
 		dao = spy(new ProjectDatabaseDao(databaseManager));
+	}
+
+	private void mockConfigurationDao() throws Exception {
+		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
+		whenNew(ConfigurationDatabaseDao.class).withArguments(databaseManager).thenReturn(configurationDao);
+		when(configurationDao.getConfiguration(anyString())).thenReturn(new Configuration());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
+		when(databaseManager.save(any())).thenReturn(new ProjectRecord(project, null));
 		dao.save(project);
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
 		Mockito.verify(databaseManager).save(captor.capture());
+		project.setConfigurationName("");
 		assertDeepEquals(project, captor.getValue().convert());
 	}
 

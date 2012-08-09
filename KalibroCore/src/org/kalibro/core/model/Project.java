@@ -11,6 +11,8 @@ import org.kalibro.core.model.enums.ProjectState;
 @SortingMethods("getName")
 public class Project extends AbstractEntity<Project> {
 
+	private Long id;
+
 	@IdentityField
 	private String name;
 
@@ -23,6 +25,7 @@ public class Project extends AbstractEntity<Project> {
 	private ProjectState state;
 
 	public Project() {
+		setId(null);
 		setName("");
 		setLicense("");
 		setDescription("");
@@ -34,6 +37,14 @@ public class Project extends AbstractEntity<Project> {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {

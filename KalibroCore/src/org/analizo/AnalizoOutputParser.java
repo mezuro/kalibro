@@ -35,7 +35,7 @@ class AnalizoOutputParser {
 		int hyphenIndex = line.indexOf('-');
 		String code = line.substring(0, hyphenIndex).trim();
 		String name = line.substring(hyphenIndex + 1).trim();
-		Granularity scope = code.startsWith("total") ? APPLICATION : CLASS;
+		Granularity scope = code.startsWith("total") ? SOFTWARE : CLASS;
 		NativeMetric metric = new NativeMetric(name, scope, Language.values());
 		metric.setOrigin("Analizo");
 		supportedMetrics.put(code, metric);
@@ -64,7 +64,7 @@ class AnalizoOutputParser {
 
 	private NativeModuleResult createModuleResult(Map<?, ?> resultMap) {
 		String moduleName = "" + resultMap.get("_module");
-		Granularity granularity = moduleName.equals("null") ? APPLICATION : CLASS;
+		Granularity granularity = moduleName.equals("null") ? SOFTWARE : CLASS;
 		Module module = new Module(granularity, moduleName.split(":+"));
 		return new NativeModuleResult(module);
 	}

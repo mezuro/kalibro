@@ -13,7 +13,11 @@ import org.kalibro.core.util.DataTransferObject;
 public class ConfigurationRecord implements DataTransferObject<Configuration> {
 
 	@Id
-	@Column(name = "name", nullable = false)
+	@GeneratedValue
+	@Column(name = "id")
+	private Long id;
+
+	@Column(name = "name", nullable = false, unique = true)
 	private String name;
 
 	@Column
@@ -27,6 +31,7 @@ public class ConfigurationRecord implements DataTransferObject<Configuration> {
 	}
 
 	public ConfigurationRecord(Configuration configuration) {
+		id = configuration.getId();
 		name = configuration.getName();
 		description = configuration.getDescription();
 		initializeMetrics(configuration);
@@ -41,6 +46,7 @@ public class ConfigurationRecord implements DataTransferObject<Configuration> {
 	@Override
 	public Configuration convert() {
 		Configuration configuration = new Configuration();
+		configuration.setId(id);
 		configuration.setName(name);
 		configuration.setDescription(description);
 		convertMetrics(configuration);

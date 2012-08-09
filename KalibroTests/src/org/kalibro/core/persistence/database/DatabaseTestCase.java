@@ -1,11 +1,8 @@
 package org.kalibro.core.persistence.database;
 
-import java.io.File;
-
 import org.junit.After;
 import org.junit.Before;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.util.Directories;
 
 public abstract class DatabaseTestCase extends KalibroTestCase {
 
@@ -13,7 +10,6 @@ public abstract class DatabaseTestCase extends KalibroTestCase {
 
 	@Before
 	public void createDaoFactory() {
-		new File(Directories.kalibro(), ".seeded").delete();
 		daoFactory = new DatabaseDaoFactory(getTestSettings());
 	}
 

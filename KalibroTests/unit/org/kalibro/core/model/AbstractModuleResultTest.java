@@ -64,7 +64,7 @@ public class AbstractModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSortByModule() {
-		assertSorted(newResult(APPLICATION, "G"), newResult(APPLICATION, "H"),
+		assertSorted(newResult(SOFTWARE, "G"), newResult(SOFTWARE, "H"),
 			newResult(PACKAGE, "E"), newResult(PACKAGE, "F"),
 			newResult(CLASS, "C"), newResult(CLASS, "D"),
 			newResult(METHOD, "A"), newResult(METHOD, "B"));

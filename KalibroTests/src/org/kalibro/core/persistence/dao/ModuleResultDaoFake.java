@@ -8,7 +8,6 @@ public class ModuleResultDaoFake implements ModuleResultDao {
 
 	private SortedMap<ModuleResultKey, ModuleResult> moduleResults = new TreeMap<ModuleResultKey, ModuleResult>();
 
-	@Override
 	public void save(ModuleResult moduleResult, String projectName) {
 		String moduleName = moduleResult.getModule().getName();
 		Date date = moduleResult.getDate();

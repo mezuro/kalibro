@@ -6,10 +6,9 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import static org.powermock.reflect.Whitebox.*;
 
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.EnumerationTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.loaders.*;
 import org.mockito.Mockito;
@@ -18,12 +17,16 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RepositoryType.class)
-public class RepositoryTypeTest extends KalibroTestCase {
+public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		RepositoryType.values();
-		RepositoryType.valueOf("GIT");
+	@Override
+	protected Class<RepositoryType> enumerationClass() {
+		return RepositoryType.class;
+	}
+
+	@Override
+	protected String expectedText(RepositoryType type) {
+		return (type == CVS) ? "CVS" : super.expectedText(type);
 	}
 
 	@After
@@ -47,22 +50,7 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkToString() {
-		assertEquals("Local directory", "" + LOCAL_DIRECTORY);
-		assertEquals("Local tarball", "" + LOCAL_TARBALL);
-		assertEquals("Local zip", "" + LOCAL_ZIP);
-
-		assertEquals("Bazaar", "" + BAZAAR);
-		assertEquals("CVS", "" + CVS);
-		assertEquals("Git", "" + GIT);
-		assertEquals("Mercurial", "" + MERCURIAL);
-		assertEquals("Remote tarball", "" + REMOTE_TARBALL);
-		assertEquals("Remote zip", "" + REMOTE_ZIP);
-		assertEquals("Subversion", "" + SUBVERSION);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkLocal() {
+	public void shouldRetrieveIfIsLocal() {
 		assertTrue(LOCAL_DIRECTORY.isLocal());
 		assertTrue(LOCAL_TARBALL.isLocal());
 		assertTrue(LOCAL_ZIP.isLocal());
@@ -77,7 +65,7 @@ public class RepositoryTypeTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkProjectLoader() {
+	public void shouldProvideLoader() {
 		assertClassEquals(LocalDirectoryLoader.class, getLoader(LOCAL_DIRECTORY));
 		assertClassEquals(LocalTarballLoader.class, getLoader(LOCAL_TARBALL));
 		assertClassEquals(LocalZipLoader.class, getLoader(LOCAL_ZIP));

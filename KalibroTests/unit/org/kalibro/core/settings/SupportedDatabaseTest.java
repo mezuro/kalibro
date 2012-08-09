@@ -3,22 +3,19 @@ package org.kalibro.core.settings;
 import static org.junit.Assert.*;
 import static org.kalibro.core.settings.SupportedDatabase.*;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.EnumerationTestCase;
 
-public class SupportedDatabaseTest extends KalibroTestCase {
+public class SupportedDatabaseTest extends EnumerationTestCase<SupportedDatabase> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		SupportedDatabase.values();
-		SupportedDatabase.valueOf("MYSQL");
+	@Override
+	protected Class<SupportedDatabase> enumerationClass() {
+		return SupportedDatabase.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testToString() {
-		assertEquals("Apache Derby", "" + APACHE_DERBY);
-		assertEquals("Mysql", "" + MYSQL);
+	@Override
+	protected String expectedText(SupportedDatabase value) {
+		return (value == APACHE_DERBY) ? "Apache Derby" : super.expectedText(value);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

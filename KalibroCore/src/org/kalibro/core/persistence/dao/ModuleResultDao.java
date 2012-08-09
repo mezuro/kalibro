@@ -7,8 +7,6 @@ import org.kalibro.core.model.ModuleResult;
 
 public interface ModuleResultDao {
 
-	void save(ModuleResult moduleResult, String projectName);
-
 	ModuleResult getModuleResult(String projectName, String moduleName, Date date);
 
 	List<ModuleResult> getResultHistory(String projectName, String moduleName);

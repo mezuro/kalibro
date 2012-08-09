@@ -3,29 +3,19 @@ package org.kalibro.core.model.enums;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.*;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.EnumerationTestCase;
 
-public class GranularityTest extends KalibroTestCase {
+public class GranularityTest extends EnumerationTestCase<Granularity> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		Granularity.values();
-		Granularity.valueOf("APPLICATION");
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testToString() {
-		assertEquals("Application", "" + APPLICATION);
-		assertEquals("Package", "" + PACKAGE);
-		assertEquals("Class", "" + CLASS);
-		assertEquals("Method", "" + METHOD);
+	@Override
+	protected Class<Granularity> enumerationClass() {
+		return Granularity.class;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSorting() {
-		assertSorted(APPLICATION, PACKAGE, CLASS, METHOD);
+		assertSorted(SOFTWARE, PACKAGE, CLASS, METHOD);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -33,6 +23,6 @@ public class GranularityTest extends KalibroTestCase {
 		assertEquals(CLASS, METHOD.inferParentGranularity());
 		assertEquals(PACKAGE, CLASS.inferParentGranularity());
 		assertEquals(PACKAGE, PACKAGE.inferParentGranularity());
-		assertEquals(APPLICATION, APPLICATION.inferParentGranularity());
+		assertEquals(SOFTWARE, SOFTWARE.inferParentGranularity());
 	}
 }
