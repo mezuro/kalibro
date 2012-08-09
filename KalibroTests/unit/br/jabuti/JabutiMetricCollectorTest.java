@@ -50,7 +50,7 @@ public class JabutiMetricCollectorTest {
 		
 		parser = PowerMockito.mock(JabutiOutputParser.class);
 		PowerMockito.whenNew(JabutiOutputParser.class).withNoArguments().thenReturn(parser);
-		PowerMockito.when(parser.getSupportedMetrics(mockFile)).thenReturn(metrics);
+		PowerMockito.when(parser.getSupportedMetrics()).thenReturn(metrics);
 		
 		CommandTask commandTaskMock = PowerMockito.mock(CommandTask.class);
 		PowerMockito.whenNew(CommandTask.class).withArguments("jabuti --list").thenReturn(commandTaskMock);

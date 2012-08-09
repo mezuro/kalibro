@@ -28,7 +28,8 @@ public class JabutiMetricCollector implements MetricCollector {
 				metricListOutput = new CommandTask(COMMAND + " --list").executeAndGetOuput();
 				this.baseTool = new BaseTool("Jabuti");
 				this.baseTool.setCollectorClass(JabutiMetricCollector.class);
-				this.baseTool.setSupportedMetrics(outputParser.getSupportedMetrics(metricListOutput));
+				outputParser.setSupportedMetrics(metricListOutput);
+				this.baseTool.setSupportedMetrics(outputParser.getSupportedMetrics());
 			} catch (IOException e) {
 				throw new KalibroException(e.getMessage());
 			}			
