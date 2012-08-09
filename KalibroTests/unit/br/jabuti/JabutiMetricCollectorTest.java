@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashSet;
 
@@ -12,6 +14,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.command.CommandTaskTest;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
@@ -31,6 +34,8 @@ public class JabutiMetricCollectorTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		
+		InputStream mockFile = getClass().getResourceAsStream("Mock.file");
 
 		metrics = new HashSet<NativeMetric>();
 		metrics.add(new NativeMetric("All Nodes Exception Independent", Granularity.APPLICATION, Language.JAVA));
@@ -45,11 +50,21 @@ public class JabutiMetricCollectorTest {
 		
 		parser = PowerMockito.mock(JabutiOutputParser.class);
 		PowerMockito.whenNew(JabutiOutputParser.class).withNoArguments().thenReturn(parser);
-		PowerMockito.when(parser.getSupportedMetrics()).thenReturn(metrics);
+		PowerMockito.when(parser.getSupportedMetrics(mockFile)).thenReturn(metrics);
 		
+		CommandTask commandTaskMock = PowerMockito.mock(CommandTask.class);
+		PowerMockito.whenNew(CommandTask.class).withArguments("jabuti --list").thenReturn(commandTaskMock);
+		PowerMockito.when(commandTaskMock.executeAndGetOuput()).thenReturn(mockFile);
 		
-		jabuti = new JabutiMetricCollector();
+		jabuti = new JabutiMetricCollector();	
+	}
 	
+	@Test(expected=KalibroException.class)
+	public void baseToolFailsIfJabutiIsNotPresent() throws Exception {
+		CommandTask commandTaskMock = PowerMockito.mock(CommandTask.class);
+		PowerMockito.whenNew(CommandTask.class).withArguments("jabuti --list").thenReturn(commandTaskMock);
+		PowerMockito.when(commandTaskMock.executeAndGetOuput()).thenThrow(new IOException(""));
+		jabuti.getBaseTool().getSupportedMetrics();
 	}
 
 	@Test

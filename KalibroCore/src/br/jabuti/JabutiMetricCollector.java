@@ -23,11 +23,16 @@ public class JabutiMetricCollector implements MetricCollector {
 	@Override
 	public BaseTool getBaseTool() {
 		if (null == baseTool) {
-			this.baseTool = new BaseTool("Jabuti");
-			this.baseTool.setCollectorClass(JabutiMetricCollector.class);
-			this.baseTool.setSupportedMetrics(outputParser.getSupportedMetrics());
+			InputStream metricListOutput;
+			try {
+				metricListOutput = new CommandTask(COMMAND + " --list").executeAndGetOuput();
+				this.baseTool = new BaseTool("Jabuti");
+				this.baseTool.setCollectorClass(JabutiMetricCollector.class);
+				this.baseTool.setSupportedMetrics(outputParser.getSupportedMetrics(metricListOutput));
+			} catch (IOException e) {
+				throw new KalibroException(e.getMessage());
+			}			
 		}
-
 		return baseTool;
 	}
 
