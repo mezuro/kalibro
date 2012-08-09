@@ -1,0 +1,9 @@
+Global Metrics:
+All-Nodes-ei - All Nodes Exception Independent
+All-Nodes-ed - All Nodes Exception Dependent
+All-Edges-ei - All Edges Exception Independent
+All-Edges-ed - All Edges Exception Dependent
+All-Uses-ei - All Uses Exception Independent
+All-Uses-ed - All Uses Exception Dependent
+All-Pot-Uses-ei - All Pot Exception Independent
+All-Pot-Uses-ed - All Pot Exception Dependent
