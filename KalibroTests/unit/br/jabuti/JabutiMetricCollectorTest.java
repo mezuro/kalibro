@@ -3,15 +3,18 @@ package br.jabuti;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.KalibroException;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
+import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.powermock.api.mockito.PowerMockito;
@@ -44,6 +47,7 @@ public class JabutiMetricCollectorTest {
 		PowerMockito.whenNew(JabutiOutputParser.class).withNoArguments().thenReturn(parser);
 		PowerMockito.when(parser.getSupportedMetrics()).thenReturn(metrics);
 		
+		
 		jabuti = new JabutiMetricCollector();
 	
 	}
@@ -60,6 +64,30 @@ public class JabutiMetricCollectorTest {
 		BaseTool baseTool = jabuti.getBaseTool();
 		assertEquals(metrics.size(), baseTool.getSupportedMetrics().size());
 		assertEquals(metrics, baseTool.getSupportedMetrics());
+	}
+	
+	@Test
+	public void checkCollectedMetrics() throws Exception{
+		File project = new File(getClass().getResource("jabuti.conf").getFile()).getParentFile();
+		
+		CommandTask commandTaskMock = PowerMockito.mock(CommandTask.class);
+		InputStream jabutiOutputMock = getClass().getResourceAsStream("Jabuti-Output-Vending.txt");
+		HashSet<NativeModuleResult> result = new HashSet<NativeModuleResult>();
+		
+		PowerMockito.whenNew(CommandTask.class).withArguments("jabuti", project).thenReturn(commandTaskMock);
+		PowerMockito.when(commandTaskMock.executeAndGetOuput()).thenReturn(jabutiOutputMock);
+		PowerMockito.when(parser.parseResults(jabutiOutputMock, metrics)).thenReturn(result);
+		
+		assertEquals(result, jabuti.collectMetrics(project, metrics));
+	}
+	
+	@Test(expected=KalibroException.class)
+	public void checkFindWorkDirectory() throws Exception{
+		File project = new File("/tmp");
+		CommandTask commandTaskMock = PowerMockito.mock(CommandTask.class);
+		PowerMockito.whenNew(CommandTask.class).withArguments("jabuti", project).thenReturn(commandTaskMock);
+		jabuti.collectMetrics(project, metrics);
+		
 	}
 
 }
