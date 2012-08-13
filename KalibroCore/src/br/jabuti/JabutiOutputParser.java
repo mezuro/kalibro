@@ -25,26 +25,30 @@ public class JabutiOutputParser {
 
 	private Map<String, NativeMetric> supportedMetrics;
 
-	public void setSupportedMetrics(InputStream metricListOutput) throws IOException {
-		supportedMetrics = new LinkedHashMap<String, NativeMetric>(); 
+	protected JabutiOutputParser(InputStream metricListOutput) throws IOException {
+		parserSupportedMetrics(metricListOutput);
+	}
+
+	private void parserSupportedMetrics(InputStream metricListOutput) throws IOException {
+		supportedMetrics = new LinkedHashMap<String, NativeMetric>();
+		@SuppressWarnings("unchecked")
 		List<String> lines = IOUtils.readLines(metricListOutput);
 		for (String line : lines)
 			if (line.contains(" - "))
-				parseSupportedMetric(line);		
+				parseSupportedMetric(line);
 	}
-	
+
 	public Collection<NativeMetric> getSupportedMetrics() {
 		return supportedMetrics.values();
 	}
 
-	public Set<NativeModuleResult> parseResults(InputStream jabutiOutput,
-			Set<NativeMetric> metrics) {
+	public Set<NativeModuleResult> parseResults(InputStream jabutiOutput, Set<NativeMetric> metrics) {
 		Set<NativeModuleResult> results = new LinkedHashSet<NativeModuleResult>();
 		for (Object resultMap : new Yaml().loadAll(jabutiOutput))
-			results.add(parseResult((Map<?, ?>) resultMap, metrics));	
+			results.add(parseResult((Map<?, ?>) resultMap, metrics));
 		return results;
 	}
-	
+
 	private void parseSupportedMetric(String line) {
 		int hyphenIndex = line.indexOf(" - ");
 		String code = line.substring(0, hyphenIndex).trim();
@@ -54,8 +58,9 @@ public class JabutiOutputParser {
 		metric.setOrigin("Jabuti");
 		supportedMetrics.put(code, metric);
 	}
-	
-	private NativeModuleResult parseResult(Map<?, ?> resultMap, Set<NativeMetric> wantedMetrics) {
+
+	private NativeModuleResult parseResult(Map<?, ?> resultMap,
+			Set<NativeMetric> wantedMetrics) {
 		NativeModuleResult moduleResult = createModuleResult(resultMap);
 		for (Object metricCode : resultMap.keySet()) {
 			NativeMetric metric = supportedMetrics.get(metricCode);
@@ -64,7 +69,7 @@ public class JabutiOutputParser {
 		}
 		return moduleResult;
 	}
-	
+
 	private NativeModuleResult createModuleResult(Map<?, ?> resultMap) {
 		String moduleName = "" + resultMap.get("_module");
 		Granularity granularity = moduleName.equals("null") ? APPLICATION : CLASS;
@@ -72,11 +77,11 @@ public class JabutiOutputParser {
 		return new NativeModuleResult(module);
 	}
 
-	private void addMetricResult(NativeModuleResult moduleResult, NativeMetric metric, Object result) {		
+	private void addMetricResult(NativeModuleResult moduleResult, NativeMetric metric, Object result) {
 		Double value = 0.0;
 		if (null != result)
-			value = Double.parseDouble("" + result);		
+			value = Double.parseDouble("" + result);
 		moduleResult.addMetricResult(new NativeMetricResult(metric, value));
 	}
-	
+
 }

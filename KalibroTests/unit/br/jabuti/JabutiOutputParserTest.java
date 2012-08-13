@@ -33,7 +33,7 @@ public class JabutiOutputParserTest {
 	private NativeMetric allPotED;
 	
 	@Before
-	public void setUp() {
+	public void setUp() throws IOException {
 		
 		metrics = new LinkedHashSet<NativeMetric>();
 		allNodesEI = new NativeMetric("All Nodes Exception Independent", Granularity.APPLICATION, Language.JAVA);
@@ -53,28 +53,22 @@ public class JabutiOutputParserTest {
 		allPotED = new NativeMetric("All Pot Exception Dependent",     Granularity.APPLICATION, Language.JAVA);
 		metrics.add(allPotED);
 		
-		outputParser = new JabutiOutputParser();
+		InputStream metricListOutput = getClass().getResourceAsStream("Jabuti-Output-MetricList.txt");
+		outputParser = new JabutiOutputParser(metricListOutput);
 	}
 	
 	@Test
 	public void checkSupportedMetrics() throws IOException {
-		InputStream metricListOutput = getClass().getResourceAsStream("Jabuti-Output-MetricList.txt");
-		outputParser.setSupportedMetrics(metricListOutput);
 		assertArrayEquals(metrics.toArray(), outputParser.getSupportedMetrics().toArray());
 	}
 
 	@Test
 	public void checkParserResults() throws IOException {
-		InputStream metricListOutput = getClass().getResourceAsStream("Jabuti-Output-MetricList.txt");
-		outputParser.setSupportedMetrics(metricListOutput);
 		InputStream vendingOutput = getClass().getResourceAsStream("Jabuti-Output-Vending.txt");
 		Set<NativeModuleResult> results = outputParser.parseResults(vendingOutput, metrics);
 		assertNotNull(results);
 		assertFalse(results.isEmpty());
 
-		String line = null;
-		BufferedReader buffer = new BufferedReader(new InputStreamReader(vendingOutput));
-		
 		Map<Integer, Map<Integer, Double>> resultFile = this.outputJabutiMap();
 		// Test Run Global
 		for (int j =0; j < 5; j++) {

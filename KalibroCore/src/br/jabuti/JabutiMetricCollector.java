@@ -18,28 +18,30 @@ public class JabutiMetricCollector implements MetricCollector {
 
 	private BaseTool baseTool;
 	private final String COMMAND = "jabuti";
-	private final JabutiOutputParser outputParser = new JabutiOutputParser();
+	private JabutiOutputParser outputParser;
+	private InputStream metricListOutput;
 	
+	public JabutiMetricCollector() {
+		try {
+			metricListOutput = new CommandTask(COMMAND + " --list").executeAndGetOuput();
+			outputParser = new JabutiOutputParser(metricListOutput);
+		} catch (IOException e) {
+			throw new KalibroException(e.getMessage());
+		}			
+	}
+
 	@Override
 	public BaseTool getBaseTool() {
-		if (null == baseTool) {
-			InputStream metricListOutput;
-			try {
-				metricListOutput = new CommandTask(COMMAND + " --list").executeAndGetOuput();
-				this.baseTool = new BaseTool("Jabuti");
-				this.baseTool.setCollectorClass(JabutiMetricCollector.class);
-				outputParser.setSupportedMetrics(metricListOutput);
-				this.baseTool.setSupportedMetrics(outputParser.getSupportedMetrics());
-			} catch (IOException e) {
-				throw new KalibroException(e.getMessage());
-			}			
+		if (null == baseTool) {			
+			this.baseTool = new BaseTool("Jabuti");
+			this.baseTool.setCollectorClass(JabutiMetricCollector.class);
+			this.baseTool.setSupportedMetrics(outputParser.getSupportedMetrics());
 		}
 		return baseTool;
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory,
-			Set<NativeMetric> metrics) throws Exception {
+	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
 		InputStream jabutiOuput = new CommandTask(COMMAND, this.findWorkDirectory(codeDirectory)).executeAndGetOuput();
 		return outputParser.parseResults(jabutiOuput, metrics);
 	}
