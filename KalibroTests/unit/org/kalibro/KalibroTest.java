@@ -1,7 +1,8 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Set;
 
@@ -12,13 +13,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.client.KalibroClient;
 import org.kalibro.core.KalibroLocal;
-import org.kalibro.core.ProjectStateListener;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.*;
 import org.kalibro.core.settings.KalibroSettings;
-import org.powermock.api.mockito.PowerMockito;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -45,18 +44,18 @@ public class KalibroTest extends KalibroTestCase {
 	}
 
 	private void mockSettings() {
-		settings = PowerMockito.mock(KalibroSettings.class);
-		PowerMockito.mockStatic(KalibroSettings.class);
-		PowerMockito.when(KalibroSettings.load()).thenReturn(settings);
-		PowerMockito.when(settings.isClient()).thenReturn(false);
+		settings = mock(KalibroSettings.class);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(settings);
+		when(settings.isClient()).thenReturn(false);
 	}
 
 	private void mockFacade() throws Exception {
-		facade = PowerMockito.mock(KalibroLocal.class);
-		daoFactory = PowerMockito.mock(DaoFactory.class);
-		PowerMockito.when(facade.getDaoFactory()).thenReturn(daoFactory);
-		PowerMockito.whenNew(KalibroLocal.class).withNoArguments().thenReturn((KalibroLocal) facade);
-		PowerMockito.whenNew(KalibroClient.class).withNoArguments().thenReturn(PowerMockito.mock(KalibroClient.class));
+		facade = mock(KalibroLocal.class);
+		daoFactory = mock(DaoFactory.class);
+		when(facade.getDaoFactory()).thenReturn(daoFactory);
+		whenNew(KalibroLocal.class).withNoArguments().thenReturn((KalibroLocal) facade);
+		whenNew(KalibroClient.class).withNoArguments().thenReturn(mock(KalibroClient.class));
 	}
 
 	@After
@@ -67,10 +66,10 @@ public class KalibroTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSettingsFileExists() {
-		PowerMockito.when(KalibroSettings.settingsFileExists()).thenReturn(true);
+		when(KalibroSettings.settingsFileExists()).thenReturn(true);
 		assertTrue(Kalibro.settingsFileExists());
 
-		PowerMockito.when(KalibroSettings.settingsFileExists()).thenReturn(false);
+		when(KalibroSettings.settingsFileExists()).thenReturn(false);
 		assertFalse(Kalibro.settingsFileExists());
 	}
 
@@ -78,7 +77,7 @@ public class KalibroTest extends KalibroTestCase {
 	public void testCurrentSettings() {
 		assertSame(settings, Kalibro.currentSettings());
 		assertSame(settings, Kalibro.currentSettings());
-		PowerMockito.verifyStatic(times(1));
+		verifyStatic(times(1));
 		KalibroSettings.load();
 	}
 
@@ -93,18 +92,18 @@ public class KalibroTest extends KalibroTestCase {
 	}
 
 	private void testChangeSettings(boolean asClient, Class<? extends KalibroFacade> facadeClass) {
-		PowerMockito.when(settings.isClient()).thenReturn(asClient);
+		when(settings.isClient()).thenReturn(asClient);
 		Kalibro.changeSettings(settings);
 
 		assertSame(settings, Kalibro.currentSettings());
-		verify(settings).write();
-		PowerMockito.verifyNew(facadeClass);
+		Mockito.verify(settings).write();
+		verifyNew(facadeClass);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotWriteNewSettingsIfFacadeCreationThrowsException() throws Exception {
-		PowerMockito.when(settings.isClient()).thenReturn(false);
-		PowerMockito.whenNew(KalibroLocal.class).withNoArguments().thenThrow(new KalibroException("KalibroTest"));
+		when(settings.isClient()).thenReturn(false);
+		whenNew(KalibroLocal.class).withNoArguments().thenThrow(new KalibroException("KalibroTest"));
 
 		checkKalibroException(new Task() {
 
@@ -113,105 +112,83 @@ public class KalibroTest extends KalibroTestCase {
 				Kalibro.changeSettings(settings);
 			}
 		}, "KalibroTest");
-		verify(settings, never()).write();
+		Mockito.verify(settings, times(0)).write();
 
 		Kalibro.currentSettings();
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		KalibroSettings.load();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testBaseToolDao() {
-		BaseToolDao baseToolDao = PowerMockito.mock(BaseToolDao.class);
-		PowerMockito.when(daoFactory.getBaseToolDao()).thenReturn(baseToolDao);
+		BaseToolDao baseToolDao = mock(BaseToolDao.class);
+		when(daoFactory.getBaseToolDao()).thenReturn(baseToolDao);
 		assertSame(baseToolDao, Kalibro.getBaseToolDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testConfigurationDao() {
-		ConfigurationDao configurationDao = PowerMockito.mock(ConfigurationDao.class);
-		PowerMockito.when(daoFactory.getConfigurationDao()).thenReturn(configurationDao);
+		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
+		when(daoFactory.getConfigurationDao()).thenReturn(configurationDao);
 		assertSame(configurationDao, Kalibro.getConfigurationDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testMetricConfigurationDao() {
-		MetricConfigurationDao metricConfigurationDao = PowerMockito.mock(MetricConfigurationDao.class);
-		PowerMockito.when(daoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
+		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
+		when(daoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
 		assertSame(metricConfigurationDao, Kalibro.getMetricConfigurationDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProjectDao() {
-		ProjectDao projectDao = PowerMockito.mock(ProjectDao.class);
-		PowerMockito.when(daoFactory.getProjectDao()).thenReturn(projectDao);
+		ProjectDao projectDao = mock(ProjectDao.class);
+		when(daoFactory.getProjectDao()).thenReturn(projectDao);
 		assertSame(projectDao, Kalibro.getProjectDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProjectResultDao() {
-		ProjectResultDao projectResultDao = PowerMockito.mock(ProjectResultDao.class);
-		PowerMockito.when(daoFactory.getProjectResultDao()).thenReturn(projectResultDao);
+		ProjectResultDao projectResultDao = mock(ProjectResultDao.class);
+		when(daoFactory.getProjectResultDao()).thenReturn(projectResultDao);
 		assertSame(projectResultDao, Kalibro.getProjectResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testModuleResultDao() {
-		ModuleResultDao moduleResultDao = PowerMockito.mock(ModuleResultDao.class);
-		PowerMockito.when(daoFactory.getModuleResultDao()).thenReturn(moduleResultDao);
+		ModuleResultDao moduleResultDao = mock(ModuleResultDao.class);
+		when(daoFactory.getModuleResultDao()).thenReturn(moduleResultDao);
 		assertSame(moduleResultDao, Kalibro.getModuleResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSupportedRepositoryTypes() {
-		Set<RepositoryType> repositoryTypes = PowerMockito.mock(Set.class);
-		PowerMockito.when(facade.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
+		Set<RepositoryType> repositoryTypes = mock(Set.class);
+		when(facade.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
 		assertSame(repositoryTypes, Kalibro.getSupportedRepositoryTypes());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessProject() {
 		Kalibro.processProject(PROJECT_NAME);
-		verify(facade).processProject(PROJECT_NAME);
+		Mockito.verify(facade).processProject(PROJECT_NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessPeriodically() {
 		Kalibro.processPeriodically(PROJECT_NAME, 42);
-		verify(facade).processPeriodically(PROJECT_NAME, 42);
+		Mockito.verify(facade).processPeriodically(PROJECT_NAME, 42);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessPeriod() {
-		PowerMockito.when(facade.getProcessPeriod(PROJECT_NAME)).thenReturn(42);
+		when(facade.getProcessPeriod(PROJECT_NAME)).thenReturn(42);
 		assertEquals(42, Kalibro.getProcessPeriod(PROJECT_NAME).intValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testCancelPeriodicProcess() {
 		Kalibro.cancelPeriodicProcess(PROJECT_NAME);
-		verify(facade).cancelPeriodicProcess(PROJECT_NAME);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testAddProjectStateListener() {
-		Project project = PowerMockito.mock(Project.class);
-		ProjectStateListener listener = PowerMockito.mock(ProjectStateListener.class);
-		Kalibro.addProjectStateListener(project, listener);
-		verify(facade).addProjectStateListener(project, listener);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testRemoveProjectStateListener() {
-		ProjectStateListener listener = PowerMockito.mock(ProjectStateListener.class);
-		Kalibro.removeProjectStateListener(listener);
-		verify(facade).removeProjectStateListener(listener);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testFireProjectStateChanged() {
-		Project project = PowerMockito.mock(Project.class);
-		Kalibro.fireProjectStateChanged(project);
-		verify(facade).fireProjectStateChanged(project);
+		Mockito.verify(facade).cancelPeriodicProcess(PROJECT_NAME);
 	}
 }

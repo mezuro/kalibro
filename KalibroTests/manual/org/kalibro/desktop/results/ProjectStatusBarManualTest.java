@@ -8,8 +8,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import org.kalibro.Kalibro;
-import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
@@ -19,19 +17,19 @@ import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
 public final class ProjectStatusBarManualTest extends JPanel implements ActionListener {
 
-	private static final Project PROJECT = newHelloWorld();
-
 	public static void main(String[] args) {
 		new ComponentWrapperDialog("ProjectStatusBar", new ProjectStatusBarManualTest()).setVisible(true);
 		System.exit(0);
 	}
 
 	private ChoiceField<ProjectState> stateField;
-	private Button fireButton;
+	private ProjectStatusBar statusBar;
+	private Button changeButton;
 
 	private ProjectStatusBarManualTest() {
 		stateField = new ChoiceField<ProjectState>("", ProjectState.values());
-		fireButton = new Button("", "Fire", this);
+		statusBar = new ProjectStatusBar(helloWorld());
+		changeButton = new Button("", "Change", this);
 		buildPanel();
 		setMinimumSize(getPreferredSize());
 		setSize(getPreferredSize());
@@ -40,22 +38,17 @@ public final class ProjectStatusBarManualTest extends JPanel implements ActionLi
 	private void buildPanel() {
 		setLayout(new BorderLayout());
 		add(centerPanel(), BorderLayout.CENTER);
-		add(new ProjectStatusBar(PROJECT), BorderLayout.SOUTH);
+		add(statusBar, BorderLayout.SOUTH);
 	}
 
 	private JPanel centerPanel() {
 		GridBagPanelBuilder builder = new GridBagPanelBuilder();
-		builder.addSimpleLine(new Label("State:"), stateField, fireButton);
+		builder.addSimpleLine(new Label("Change state:"), stateField, changeButton);
 		return builder.getPanel();
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		ProjectState state = stateField.get();
-		if (state == ProjectState.ERROR)
-			PROJECT.setError(new Exception());
-		else
-			PROJECT.setState(state);
-		Kalibro.fireProjectStateChanged(PROJECT);
+		statusBar.setProjectState(stateField.get());
 	}
 }

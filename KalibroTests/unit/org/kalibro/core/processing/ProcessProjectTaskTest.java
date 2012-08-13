@@ -94,8 +94,6 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 		processTask.perform();
 		assertEquals(ProjectState.READY, project.getState());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -117,7 +115,5 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 		assertEquals(ProjectState.ERROR, project.getState());
 		assertSame(error, project.getError());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 }

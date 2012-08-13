@@ -19,7 +19,6 @@ abstract class ProcessProjectSubtask<T> extends TypedTask<T> {
 	protected T execute() {
 		project.setState(getTaskState());
 		Kalibro.getProjectDao().save(project);
-		Kalibro.fireProjectStateChanged(project);
 		return executeAndWaitResult();
 	}
 

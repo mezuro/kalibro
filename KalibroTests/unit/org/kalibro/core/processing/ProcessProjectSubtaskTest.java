@@ -60,8 +60,6 @@ public class ProcessProjectSubtaskTest extends KalibroTestCase {
 		subtask.execute();
 		Mockito.verify(project).setState(subtask.getTaskState());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

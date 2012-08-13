@@ -3,7 +3,6 @@ settings: SERVER # CLIENT for consuming a remote Kalibro Service; SERVER if Kali
 
 client:
     service_address: "http://localhost:8080/KalibroService/" # Address of the remote KalibroService
-    polling_interval: 5000 # Milliseconds between service requests for updating project state listeners
 
 server:
     load_directory: ~/.kalibro/projects # Projects will be loaded in this directory before analysis

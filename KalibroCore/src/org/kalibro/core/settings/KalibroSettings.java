@@ -66,10 +66,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		return clientSettings.getServiceAddress();
 	}
 
-	public long getPollingInterval() {
-		return clientSettings.getPollingInterval();
-	}
-
 	public ServerSettings getServerSettings() {
 		return serverSettings;
 	}

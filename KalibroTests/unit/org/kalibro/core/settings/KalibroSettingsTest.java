@@ -3,7 +3,8 @@ package org.kalibro.core.settings;
 import static org.junit.Assert.*;
 import static org.kalibro.core.settings.SettingsFixtures.*;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -19,7 +20,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Project;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -35,9 +35,9 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings();
-		settingsFile = PowerMockito.mock(File.class);
+		settingsFile = mock(File.class);
 		Whitebox.setInternalState(KalibroSettings.class, settingsFile);
-		PowerMockito.mockStatic(FileUtils.class);
+		mockStatic(FileUtils.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -63,16 +63,10 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testPollingInterval() {
-		settings.getClientSettings().setPollingInterval(42);
-		assertEquals(42L, settings.getPollingInterval());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void testLoadPathForProject() {
-		Project project = PowerMockito.mock(Project.class);
-		ServerSettings serverSettings = PowerMockito.mock(ServerSettings.class);
-		PowerMockito.when(serverSettings.getLoadDirectoryFor(project)).thenReturn(HELLO_WORLD_DIRECTORY);
+		Project project = mock(Project.class);
+		ServerSettings serverSettings = mock(ServerSettings.class);
+		when(serverSettings.getLoadDirectoryFor(project)).thenReturn(HELLO_WORLD_DIRECTORY);
 
 		settings.setServerSettings(serverSettings);
 		assertSame(HELLO_WORLD_DIRECTORY, settings.getLoadDirectoryFor(project));
@@ -85,10 +79,10 @@ public class KalibroSettingsTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSettingsFileExists() {
-		PowerMockito.when(settingsFile.exists()).thenReturn(true);
+		when(settingsFile.exists()).thenReturn(true);
 		assertTrue(KalibroSettings.settingsFileExists());
 
-		PowerMockito.when(settingsFile.exists()).thenReturn(false);
+		when(settingsFile.exists()).thenReturn(false);
 		assertFalse(KalibroSettings.settingsFileExists());
 	}
 
@@ -106,13 +100,13 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testWriteSettings() throws IOException {
 		settings.write();
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		FileUtils.writeStringToFile(settingsFile, settings.toString());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorWritingFile() throws Exception {
-		PowerMockito.doThrow(new IOException()).when(FileUtils.class);
+		doThrow(new IOException()).when(FileUtils.class);
 		FileUtils.writeStringToFile(settingsFile, settings.toString());
 		checkKalibroException(new Task() {
 
@@ -135,14 +129,14 @@ public class KalibroSettingsTest extends KalibroTestCase {
 		prepareForLoad(false);
 		assertDeepEquals(new KalibroSettings(), KalibroSettings.load());
 
-		PowerMockito.verifyStatic(never());
+		verifyStatic(times(0));
 		FileUtils.writeStringToFile(any(File.class), anyString());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testLoadError() throws Exception {
 		prepareForLoad(true);
-		PowerMockito.whenNew(FileInputStream.class).withArguments(settingsFile).thenThrow(new IOException());
+		whenNew(FileInputStream.class).withArguments(settingsFile).thenThrow(new IOException());
 		checkKalibroException(new Task() {
 
 			@Override
@@ -153,12 +147,12 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	}
 
 	private void prepareForLoad(boolean settingsFileExists) throws Exception {
-		PowerMockito.when(settingsFile.exists()).thenReturn(settingsFileExists);
+		when(settingsFile.exists()).thenReturn(settingsFileExists);
 
-		Yaml yaml = PowerMockito.mock(Yaml.class);
-		FileInputStream inputStream = PowerMockito.mock(FileInputStream.class);
-		PowerMockito.whenNew(Yaml.class).withNoArguments().thenReturn(yaml);
-		PowerMockito.whenNew(FileInputStream.class).withArguments(settingsFile).thenReturn(inputStream);
-		PowerMockito.when(yaml.load(inputStream)).thenReturn(SettingsFixtures.kalibroSettingsMap());
+		Yaml yaml = mock(Yaml.class);
+		FileInputStream inputStream = mock(FileInputStream.class);
+		whenNew(Yaml.class).withNoArguments().thenReturn(yaml);
+		whenNew(FileInputStream.class).withArguments(settingsFile).thenReturn(inputStream);
+		when(yaml.load(inputStream)).thenReturn(SettingsFixtures.kalibroSettingsMap());
 	}
 }

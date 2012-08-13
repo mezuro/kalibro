@@ -8,7 +8,6 @@ import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.settings.ClientSettings;
 import org.kalibro.desktop.ComponentFinder;
-import org.kalibro.desktop.swingextension.field.LongField;
 import org.kalibro.desktop.swingextension.field.StringField;
 
 public class ClientSettingsPanelTest extends KalibroTestCase {
@@ -28,7 +27,6 @@ public class ClientSettingsPanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGet() {
 		serviceAddressField().set(settings.getServiceAddress());
-		pollingIntervalField().set(settings.getPollingInterval());
 		assertDeepEquals(settings, panel.get());
 	}
 
@@ -36,14 +34,9 @@ public class ClientSettingsPanelTest extends KalibroTestCase {
 	public void shouldSet() {
 		panel.set(settings);
 		assertEquals(settings.getServiceAddress(), serviceAddressField().get());
-		assertEquals(settings.getPollingInterval(), pollingIntervalField().get().longValue());
 	}
 
 	private StringField serviceAddressField() {
 		return finder.find("serviceAddress", StringField.class);
-	}
-
-	private LongField pollingIntervalField() {
-		return finder.find("pollingInterval", LongField.class);
 	}
 }

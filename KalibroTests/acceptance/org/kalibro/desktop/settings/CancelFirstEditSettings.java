@@ -13,7 +13,6 @@ import org.kalibro.core.settings.DatabaseSettings;
 import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.core.settings.ServerSettings;
 import org.kalibro.desktop.KalibroDesktopTestCase;
-import org.kalibro.desktop.swingextension.field.LongField;
 
 /**
  * When opening for the first time, the dialog for editing the settings should open showing the default settings.<br/>
@@ -62,11 +61,6 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 	private void verifyDefaultClientSettings() {
 		ClientSettings settings = new ClientSettings();
 		fixture.textBox("serviceAddress").requireText(settings.getServiceAddress());
-		fixture.textBox("pollingInterval").requireText(format(settings.getPollingInterval()));
-	}
-
-	private String format(long pollingInterval) {
-		return new LongField("").getDecimalFormat().format(pollingInterval);
 	}
 
 	private void verifyErrorMessageForConnectionRefused() {

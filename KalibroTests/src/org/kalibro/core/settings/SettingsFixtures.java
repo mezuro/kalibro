@@ -16,7 +16,6 @@ public final class SettingsFixtures {
 	public static Map<?, ?> clientSettingsMap() {
 		Map<String, Object> map = new HashMap<String, Object>();
 		map.put("service_address", "file:///");
-		map.put("polling_interval", "42");
 		return map;
 	}
 

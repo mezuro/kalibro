@@ -2,20 +2,15 @@ package org.kalibro;
 
 import java.util.Set;
 
-import org.kalibro.core.ProjectStateChangeSupport;
-import org.kalibro.core.ProjectStateListener;
-import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.DaoFactory;
 
 public abstract class KalibroFacade {
 
 	protected DaoFactory daoFactory;
-	protected ProjectStateChangeSupport changeSupport;
 
 	protected KalibroFacade() {
 		daoFactory = createDaoFactory();
-		changeSupport = new ProjectStateChangeSupport();
 	}
 
 	protected DaoFactory getDaoFactory() {
@@ -33,16 +28,4 @@ public abstract class KalibroFacade {
 	protected abstract Integer getProcessPeriod(String projectName);
 
 	protected abstract void cancelPeriodicProcess(String projectName);
-
-	protected void addProjectStateListener(Project project, ProjectStateListener listener) {
-		changeSupport.addProjectStateListener(project.getName(), listener);
-	}
-
-	protected void removeProjectStateListener(ProjectStateListener listener) {
-		changeSupport.removeProjectStateListener(listener);
-	}
-
-	protected void fireProjectStateChanged(Project project) {
-		changeSupport.fireProjectStateChanged(project.getName(), project.getState());
-	}
 }

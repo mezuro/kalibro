@@ -16,7 +16,6 @@ public class ClientSettingsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultClientSettings() {
 		assertEquals("http://localhost:8080/KalibroService/", settings.getServiceAddress());
-		assertEquals(5000L, settings.getPollingInterval());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -24,7 +23,6 @@ public class ClientSettingsTest extends KalibroTestCase {
 		Map<?, ?> map = SettingsFixtures.clientSettingsMap();
 		settings = new ClientSettings(map);
 		assertEquals(map.get("service_address"), settings.getServiceAddress());
-		assertEquals(map.get("polling_interval"), "" + settings.getPollingInterval());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -4,8 +4,6 @@ import java.util.Set;
 
 import org.kalibro.client.KalibroClient;
 import org.kalibro.core.KalibroLocal;
-import org.kalibro.core.ProjectStateListener;
-import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.*;
 import org.kalibro.core.settings.KalibroSettings;
@@ -73,18 +71,6 @@ public final class Kalibro {
 
 	public static void cancelPeriodicProcess(String projectName) {
 		getFacade().cancelPeriodicProcess(projectName);
-	}
-
-	public static void addProjectStateListener(Project project, ProjectStateListener listener) {
-		getFacade().addProjectStateListener(project, listener);
-	}
-
-	public static void removeProjectStateListener(ProjectStateListener listener) {
-		getFacade().removeProjectStateListener(listener);
-	}
-
-	public static void fireProjectStateChanged(Project project) {
-		getFacade().fireProjectStateChanged(project);
 	}
 
 	private static KalibroFacade getFacade() {
