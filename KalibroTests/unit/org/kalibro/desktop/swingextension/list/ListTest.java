@@ -29,7 +29,7 @@ public class ListTest extends KalibroTestCase {
 	private SortedSet<Range> ranges;
 
 	private List<Range> list;
-	private JList innerList;
+	private JList<Range> innerList;
 
 	@Before
 	public void setUp() {

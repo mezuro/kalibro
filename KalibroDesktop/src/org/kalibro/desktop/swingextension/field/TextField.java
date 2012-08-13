@@ -4,7 +4,6 @@ import java.awt.Dimension;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTextPane;
-import javax.swing.border.Border;
 import javax.swing.border.TitledBorder;
 
 public class TextField extends JScrollPane implements Field<String> {
@@ -43,7 +42,7 @@ public class TextField extends JScrollPane implements Field<String> {
 	}
 
 	public void setShowHtml(boolean showHtml) {
-		textPane.setEditable(! showHtml);
+		textPane.setEditable(!showHtml);
 		textPane.setContentType(showHtml ? "text/html" : "text/plain");
 	}
 
@@ -56,10 +55,11 @@ public class TextField extends JScrollPane implements Field<String> {
 	}
 
 	private int getTitleFontSize() {
-		Border border = getBorder();
-		if (! (border instanceof TitledBorder))
+		try {
+			return ((TitledBorder) getBorder()).getTitleFont().getSize();
+		} catch (Exception exception) {
 			return 0;
-		return ((TitledBorder) border).getTitleFont().getSize();
+		}
 	}
 
 	private int getTextFontSize() {

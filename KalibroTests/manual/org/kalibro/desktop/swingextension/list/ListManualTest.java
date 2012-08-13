@@ -50,7 +50,7 @@ public final class ListManualTest extends JPanel implements ActionListener, List
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		JList jList = (JList) list.getViewport().getView();
+		JList<MetricConfiguration> jList = (JList<MetricConfiguration>) list.getViewport().getView();
 		jList.clearSelection();
 	}
 }
