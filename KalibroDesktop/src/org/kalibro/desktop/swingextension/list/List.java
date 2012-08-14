@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
 import java.awt.Dimension;
-import java.lang.reflect.Array;
 import java.util.Collection;
 
 import javax.swing.JList;
@@ -11,7 +10,7 @@ import javax.swing.ListSelectionModel;
 
 public class List<T> extends JScrollPane implements ListComponent<T> {
 
-	private JList<T> list;
+	private JList list;
 
 	public List(String name, Collection<T> data, int lines) {
 		super();
@@ -21,8 +20,7 @@ public class List<T> extends JScrollPane implements ListComponent<T> {
 	}
 
 	private void createList(Collection<T> data, String name) {
-		T[] array = (T[]) Array.newInstance(data.iterator().next().getClass(), 0);
-		list = new JList<T>(data.toArray(array));
+		list = new JList(data.toArray());
 		list.setName(name);
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		setViewportView(list);
@@ -43,7 +41,7 @@ public class List<T> extends JScrollPane implements ListComponent<T> {
 
 	@Override
 	public T getSelected() {
-		return list.getSelectedValue();
+		return (T) list.getSelectedValue();
 	}
 
 	public void addListListener(ListListener<T> listener) {

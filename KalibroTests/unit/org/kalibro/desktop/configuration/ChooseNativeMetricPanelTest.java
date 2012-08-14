@@ -62,7 +62,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowBaseToolNames() {
-		JList<BaseTool> baseToolList = baseToolList();
+		JList baseToolList = baseToolList();
 		assertEquals(1, baseToolList.getModel().getSize());
 		assertEquals("Analizo", baseToolList.getModel().getElementAt(0));
 	}
@@ -116,7 +116,7 @@ public class ChooseNativeMetricPanelTest extends KalibroTestCase {
 		Mockito.verify(table).addListListener(listener);
 	}
 
-	private JList<BaseTool> baseToolList() {
+	private JList baseToolList() {
 		return finder.find("baseTools", JList.class);
 	}
 
