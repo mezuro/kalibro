@@ -3,8 +3,9 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="unit"/>
 	<classpathentry kind="src" path="integration"/>
-	<classpathentry kind="src" path="acceptance"/>
-	<classpathentry kind="src" path="manual"/>
+	<classpathentry kind="src" path="desktop-unit"/>
+	<classpathentry kind="src" path="desktop-acceptance"/>
+	<classpathentry kind="src" path="desktop-manual"/>
 	
 	<classpathentry kind="src" path="/KalibroCore" combineaccessrules="false"/>
 	<classpathentry kind="src" path="/KalibroDesktop" combineaccessrules="false"/>
