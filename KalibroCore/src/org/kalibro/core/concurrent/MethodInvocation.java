@@ -2,6 +2,7 @@ package org.kalibro.core.concurrent;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Queue;
 
 class MethodInvocation {
 
@@ -36,5 +37,16 @@ class MethodInvocation {
 		if (error != null)
 			throw (error instanceof InvocationTargetException) ? error.getCause() : error;
 		return result;
+	}
+
+	protected synchronized void addToQueueAndWait(Queue<MethodInvocation> queue) throws Exception {
+		queue.add(this);
+		while (!done())
+			wait();
+	}
+
+	protected synchronized void invokeAndNotify() {
+		invoke();
+		notify();
 	}
 }

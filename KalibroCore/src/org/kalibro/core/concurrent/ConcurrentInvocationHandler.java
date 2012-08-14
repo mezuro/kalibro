@@ -26,23 +26,14 @@ public final class ConcurrentInvocationHandler extends Task implements Invocatio
 
 	@Override
 	protected void perform() throws Throwable {
-		while (running) {
-			MethodInvocation invocation = methodInvocations.take();
-			synchronized (invocation) {
-				invocation.invoke();
-				invocation.notify();
-			}
-		}
+		while (running)
+			methodInvocations.take().invokeAndNotify();
 	}
 
 	@Override
 	public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
 		MethodInvocation invocation = new MethodInvocation(object, method, args);
-		synchronized (invocation) {
-			methodInvocations.add(invocation);
-			while (!invocation.done())
-				invocation.wait();
-		}
+		invocation.addToQueueAndWait(methodInvocations);
 		return invocation.getResult();
 	}
 
