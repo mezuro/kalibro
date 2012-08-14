@@ -22,7 +22,6 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PowerMock 1.4.12"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Rhino"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Spago"/>
 	
 	<classpathentry kind="output" path="bin"/>
 </classpath>
