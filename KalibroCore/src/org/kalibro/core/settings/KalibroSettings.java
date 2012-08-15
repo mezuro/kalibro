@@ -6,28 +6,31 @@ import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.kalibro.Environment;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.util.Directories;
 import org.yaml.snakeyaml.Yaml;
 
 public class KalibroSettings extends AbstractEntity<KalibroSettings> {
-
-	private static final File SETTINGS_FILE = new File(Directories.kalibro(), "kalibro.settings");
 
 	public static KalibroSettings load() {
 		if (!settingsFileExists())
 			return new KalibroSettings();
 		try {
-			return new KalibroSettings((Map<?, ?>) new Yaml().load(new FileInputStream(SETTINGS_FILE)));
+			FileInputStream settingsInputStream = new FileInputStream(settingsFile());
+			return new KalibroSettings((Map<?, ?>) new Yaml().load(settingsInputStream));
 		} catch (IOException exception) {
-			throw new KalibroException("Could not load Kalibro settings from file: " + SETTINGS_FILE, exception);
+			throw new KalibroException("Could not load Kalibro settings from file: " + settingsFile(), exception);
 		}
 	}
 
 	public static boolean settingsFileExists() {
-		return SETTINGS_FILE.exists();
+		return settingsFile().exists();
+	}
+
+	private static File settingsFile() {
+		return new File(Environment.dotKalibro(), "kalibro.settings");
 	}
 
 	private boolean client;
@@ -84,9 +87,9 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	public void write() {
 		try {
-			FileUtils.writeStringToFile(SETTINGS_FILE, toString());
+			FileUtils.writeStringToFile(settingsFile(), toString());
 		} catch (IOException exception) {
-			throw new KalibroException("Could not write settings file: " + SETTINGS_FILE, exception);
+			throw new KalibroException("Could not write settings file: " + settingsFile(), exception);
 		}
 	}
 

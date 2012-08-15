@@ -7,11 +7,11 @@ import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.WindowFixture;
 import org.junit.After;
+import org.kalibro.Environment;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.settings.KalibroSettings;
-import org.kalibro.core.util.Directories;
 
 public class KalibroDesktopTestCase extends KalibroTestCase {
 
@@ -23,7 +23,7 @@ public class KalibroDesktopTestCase extends KalibroTestCase {
 	}
 
 	protected void startFromMain() throws Exception {
-		new File(Directories.kalibro(), "kalibro.settings").delete();
+		new File(Environment.dotKalibro(), "kalibro.settings").delete();
 		new Task() {
 
 			@Override

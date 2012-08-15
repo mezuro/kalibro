@@ -10,11 +10,11 @@ import java.util.Map;
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectFixtures;
-import org.kalibro.core.util.Directories;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -26,7 +26,7 @@ public class ServerSettingsTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultSettings() {
-		assertEquals(new File(Directories.kalibro(), "projects"), settings.getLoadDirectory());
+		assertEquals(new File(Environment.dotKalibro(), "projects"), settings.getLoadDirectory());
 		assertDeepEquals(new DatabaseSettings(), settings.getDatabaseSettings());
 	}
 

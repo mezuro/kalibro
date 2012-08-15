@@ -11,6 +11,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
@@ -58,18 +59,18 @@ public class DirectoryFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetAndGet() {
-		field.set(TESTS_DIRECTORY);
-		assertSame(TESTS_DIRECTORY, field.get());
+		field.set(Environment.dotKalibro());
+		assertSame(Environment.dotKalibro(), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptInexistentDirectory() {
-		shouldNotAccept(HELLO_WORLD_DIRECTORY);
+		shouldNotAccept(helloWorldDirectory());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptFile() {
-		File file = new File(TESTS_DIRECTORY, "HelloWorld.c");
+		File file = new File(Environment.dotKalibro(), "HelloWorld.c");
 		shouldNotAccept(file);
 	}
 
@@ -80,21 +81,21 @@ public class DirectoryFieldTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldUpdateDirectoryWhenPathChanges() {
-		pathField().setText(TESTS_DIRECTORY.getAbsolutePath());
+		pathField().setText(Environment.dotKalibro().getAbsolutePath());
 		simulateFocusLost(false, null);
-		assertEquals(TESTS_DIRECTORY, field.get());
+		assertEquals(Environment.dotKalibro(), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotUpdateDirectoryIfPathFieldLostFocusForBrowseButton() {
-		pathField().setText(TESTS_DIRECTORY.getAbsolutePath());
+		pathField().setText(Environment.dotKalibro().getAbsolutePath());
 		simulateFocusLost(false, browseButton());
 		assertNull(field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotUpdateDirectoryIfFocusEventIsTemporary() {
-		pathField().setText(TESTS_DIRECTORY.getAbsolutePath());
+		pathField().setText(Environment.dotKalibro().getAbsolutePath());
 		simulateFocusLost(true, null);
 		assertNull(field.get());
 	}
@@ -108,16 +109,16 @@ public class DirectoryFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldChooseFileWithFileChooserWhenBrowseButtonClicked() {
 		PowerMockito.when(chooser.chooseDirectoryToOpen()).thenReturn(true);
-		PowerMockito.when(chooser.getChosenFile()).thenReturn(TESTS_DIRECTORY);
+		PowerMockito.when(chooser.getChosenFile()).thenReturn(Environment.dotKalibro());
 		browseButton().doClick();
-		assertEquals(TESTS_DIRECTORY, field.get());
-		assertEquals(TESTS_DIRECTORY.getAbsolutePath(), pathField().get());
+		assertEquals(Environment.dotKalibro(), field.get());
+		assertEquals(Environment.dotKalibro().getAbsolutePath(), pathField().get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSetDirectoryIfNoDirectoryIsSelectedInFileChooser() {
 		PowerMockito.when(chooser.chooseDirectoryToOpen()).thenReturn(false);
-		PowerMockito.when(chooser.getChosenFile()).thenReturn(TESTS_DIRECTORY);
+		PowerMockito.when(chooser.getChosenFile()).thenReturn(Environment.dotKalibro());
 		browseButton().doClick();
 		assertNull(field.get());
 		assertEquals("", pathField().get());

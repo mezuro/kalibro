@@ -66,10 +66,10 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	public void testLoadPathForProject() {
 		Project project = mock(Project.class);
 		ServerSettings serverSettings = mock(ServerSettings.class);
-		when(serverSettings.getLoadDirectoryFor(project)).thenReturn(HELLO_WORLD_DIRECTORY);
+		when(serverSettings.getLoadDirectoryFor(project)).thenReturn(helloWorldDirectory());
 
 		settings.setServerSettings(serverSettings);
-		assertSame(HELLO_WORLD_DIRECTORY, settings.getLoadDirectoryFor(project));
+		assertSame(helloWorldDirectory(), settings.getLoadDirectoryFor(project));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

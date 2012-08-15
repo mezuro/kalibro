@@ -42,7 +42,7 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 
 	@After
 	public void tearDown() throws IOException {
-		FileUtils.cleanDirectory(PROJECTS_DIRECTORY);
+		FileUtils.cleanDirectory(projectsDirectory());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -58,8 +58,8 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 	}
 
 	protected File load() {
-		repository.load(HELLO_WORLD_DIRECTORY);
-		Iterator<File> files = FileUtils.iterateFiles(HELLO_WORLD_DIRECTORY, new String[]{"c"}, true);
+		repository.load(helloWorldDirectory());
+		Iterator<File> files = FileUtils.iterateFiles(helloWorldDirectory(), new String[]{"c"}, true);
 		File loaded = files.next();
 		assertEquals("HelloWorld.c", loaded.getName());
 		assertFalse(files.hasNext());

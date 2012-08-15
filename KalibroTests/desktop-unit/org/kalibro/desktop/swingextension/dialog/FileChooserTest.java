@@ -12,6 +12,7 @@ import javax.swing.filechooser.FileFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -54,8 +55,8 @@ public class FileChooserTest extends KalibroTestCase {
 		FileFilter filter = captureFileFilter();
 
 		assertEquals("Directories only", filter.getDescription());
-		assertTrue(filter.accept(TESTS_DIRECTORY));
-		assertFalse(filter.accept(new File(TESTS_DIRECTORY, "HelloWorld.c")));
+		assertTrue(filter.accept(Environment.dotKalibro()));
+		assertFalse(filter.accept(new File(Environment.dotKalibro(), "HelloWorld.c")));
 	}
 
 	private FileFilter captureFileFilter() {
@@ -99,16 +100,16 @@ public class FileChooserTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSelectSuggestionInsideCurrentDirectory() {
-		PowerMockito.when(nativeChooser.getCurrentDirectory()).thenReturn(TESTS_DIRECTORY);
+		PowerMockito.when(nativeChooser.getCurrentDirectory()).thenReturn(Environment.dotKalibro());
 
 		String suggestion = "MyFile.txt";
 		fileChooser.chooseFileToSave(suggestion);
-		Mockito.verify(nativeChooser).setSelectedFile(new File(TESTS_DIRECTORY, suggestion));
+		Mockito.verify(nativeChooser).setSelectedFile(new File(Environment.dotKalibro(), suggestion));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkChoosenFile() {
-		PowerMockito.when(nativeChooser.getSelectedFile()).thenReturn(TESTS_DIRECTORY);
-		assertSame(TESTS_DIRECTORY, fileChooser.getChosenFile());
+		PowerMockito.when(nativeChooser.getSelectedFile()).thenReturn(Environment.dotKalibro());
+		assertSame(Environment.dotKalibro(), fileChooser.getChosenFile());
 	}
 }

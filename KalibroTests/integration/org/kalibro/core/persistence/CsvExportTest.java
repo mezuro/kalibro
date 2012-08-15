@@ -13,31 +13,32 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.ModuleResult;
 
 public class CsvExportTest extends KalibroTestCase {
 
-	private static final File CSV_FILE = new File(TESTS_DIRECTORY, "HelloWorld.csv");
-
+	private File csvFile;
 	private ModuleResult moduleResult;
 
 	@Before
 	public void setUp() {
-		assertFalse(CSV_FILE.exists());
+		csvFile = new File(Environment.dotKalibro(), "HelloWorld.csv");
+		assertFalse(csvFile.exists());
 		moduleResult = newHelloWorldClassResult();
 		moduleResult.setConfiguration(newConfiguration("amloc", "cbo", "lcom4"));
 	}
 
 	@After
 	public void tearDown() {
-		CSV_FILE.delete();
+		csvFile.delete();
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void testExport() throws IOException {
 		InputStream expectedCsv = getClass().getResourceAsStream("HelloWorld.csv");
-		new ModuleResultCsvExporter(moduleResult).exportTo(CSV_FILE);
-		assertEquals(IOUtils.toString(expectedCsv), FileUtils.readFileToString(CSV_FILE));
+		new ModuleResultCsvExporter(moduleResult).exportTo(csvFile);
+		assertEquals(IOUtils.toString(expectedCsv), FileUtils.readFileToString(csvFile));
 	}
 }

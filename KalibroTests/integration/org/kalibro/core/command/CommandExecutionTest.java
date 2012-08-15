@@ -8,22 +8,28 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.util.Directories;
 
 public class CommandExecutionTest extends KalibroTestCase {
 
 	private static final long PIPE_TIMEOUT = 50;
-	private static final File LOGS = Directories.logs();
 
+	private File logs;
 	private CommandTask task;
+
+	@Before
+	public void setUp() {
+		logs = new File(Environment.dotKalibro(), "logs");
+		logs.mkdirs();
+	}
 
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(LOGS);
-		LOGS.mkdirs();
+		FileUtils.deleteQuietly(logs);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -99,7 +105,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 	}
 
 	private String getLog(String logFileExtension) throws IOException {
-		File logFile = (File) FileUtils.iterateFiles(LOGS, new String[]{logFileExtension}, false).next();
+		File logFile = (File) FileUtils.iterateFiles(logs, new String[]{logFileExtension}, false).next();
 		return FileUtils.readFileToString(logFile);
 	}
 

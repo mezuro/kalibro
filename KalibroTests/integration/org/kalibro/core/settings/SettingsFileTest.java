@@ -10,6 +10,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -25,7 +26,7 @@ public class SettingsFileTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings();
-		settingsFile = new File(TESTS_DIRECTORY, "kalibro.settings");
+		settingsFile = new File(Environment.dotKalibro(), "kalibro.settings");
 		Whitebox.setInternalState(KalibroSettings.class, settingsFile);
 	}
 

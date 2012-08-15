@@ -46,7 +46,7 @@ public class RepositoryTest extends KalibroTestCase {
 	public void shouldLoad() {
 		RepositoryType type = PowerMockito.mock(RepositoryType.class);
 		repository.setType(type);
-		repository.load(HELLO_WORLD_DIRECTORY);
-		Mockito.verify(type).load(repository, HELLO_WORLD_DIRECTORY);
+		repository.load(helloWorldDirectory());
+		Mockito.verify(type).load(repository, helloWorldDirectory());
 	}
 }

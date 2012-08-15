@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kalibro.KalibroTestCase;
+import org.kalibro.Environment;
 import org.kalibro.core.model.enums.RepositoryType;
 
 public final class RepositoryFixtures {
@@ -17,7 +17,7 @@ public final class RepositoryFixtures {
 	static {
 		addresses = new HashMap<RepositoryType, String>();
 		repositories = new HashMap<RepositoryType, Repository>();
-		File repositoriesDir = new File(KalibroTestCase.TESTS_DIRECTORY, "repositories");
+		File repositoriesDir = new File(Environment.dotKalibro(), "repositories");
 		String repositoriesPath = repositoriesDir.getAbsolutePath() + File.separator;
 		newAddress(LOCAL_DIRECTORY, repositoriesPath + "HelloWorldDirectory/");
 		newAddress(LOCAL_TARBALL, repositoriesPath + "HelloWorld.tar.gz");

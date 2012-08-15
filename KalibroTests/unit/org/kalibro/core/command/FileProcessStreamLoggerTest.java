@@ -13,9 +13,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.util.Directories;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -26,7 +26,7 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(FileProcessStreamLogger.class)
 public class FileProcessStreamLoggerTest extends KalibroTestCase {
 
-	private File logFile;
+	private File logs, logFile;
 	private Process process;
 	private InputStream inputStream;
 	private FileOutputStream outputStream;
@@ -35,6 +35,7 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
+		logs = new File(Environment.dotKalibro(), "logs");
 		logFile = PowerMockito.mock(File.class);
 		process = PowerMockito.mock(Process.class);
 		inputStream = PowerMockito.mock(InputStream.class);
@@ -43,7 +44,7 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 		PowerMockito.when(process.getInputStream()).thenReturn(inputStream);
 		PowerMockito.when(process.getErrorStream()).thenReturn(inputStream);
 		PowerMockito.whenNew(File.class).withParameterTypes(File.class, String.class)
-			.withArguments(eq(Directories.logs()), anyString()).thenReturn(logFile);
+			.withArguments(eq(logs), anyString()).thenReturn(logFile);
 		PowerMockito.whenNew(FileOutputStream.class).withArguments(logFile).thenReturn(outputStream);
 		PowerMockito.doNothing().when(logger, "pipe", inputStream, outputStream);
 	}
@@ -79,7 +80,7 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 
 		Date date = Whitebox.getInternalState(logger, Date.class);
 		String dateString = new SimpleDateFormat("yyyy-MM-dd_HH'h'mm'm'ss.SSS's'").format(date);
-		PowerMockito.verifyNew(File.class).withArguments(eq(Directories.logs()), eq("my." + dateString + ".out"));
+		PowerMockito.verifyNew(File.class).withArguments(eq(logs), eq("my." + dateString + ".out"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

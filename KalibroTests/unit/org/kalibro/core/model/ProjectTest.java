@@ -41,8 +41,8 @@ public class ProjectTest extends KalibroTestCase {
 	public void shouldLoadRepository() {
 		Repository repository = PowerMockito.mock(Repository.class);
 		project.setRepository(repository);
-		project.load(HELLO_WORLD_DIRECTORY);
-		Mockito.verify(repository).load(HELLO_WORLD_DIRECTORY);
+		project.load(helloWorldDirectory());
+		Mockito.verify(repository).load(helloWorldDirectory());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

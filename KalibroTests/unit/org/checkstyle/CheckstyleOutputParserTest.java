@@ -34,7 +34,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		Set<NativeMetric> wantedMetrics = new HashSet<NativeMetric>(Arrays.asList(NATIVE_METRIC));
-		parser = new CheckstyleOutputParser(PROJECTS_DIRECTORY, wantedMetrics);
+		parser = new CheckstyleOutputParser(projectsDirectory(), wantedMetrics);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -66,7 +66,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 
 		AuditEvent event = PowerMockito.mock(AuditEvent.class);
 		PowerMockito.when(event.getLocalizedMessage()).thenReturn(localizedMessage);
-		PowerMockito.when(event.getFileName()).thenReturn(PROJECTS_DIRECTORY + "/org/fibonacci/Fibonacci.java");
+		PowerMockito.when(event.getFileName()).thenReturn(projectsDirectory() + "/org/fibonacci/Fibonacci.java");
 		PowerMockito.when(event.getMessage()).thenReturn(message);
 		return event;
 	}

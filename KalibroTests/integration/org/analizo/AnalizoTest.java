@@ -57,7 +57,7 @@ public class AnalizoTest extends KalibroTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldCollectMetrics() throws IOException {
-		File codeDirectory = new File(SAMPLES_DIRECTORY, "analizo");
+		File codeDirectory = new File(samplesDirectory(), "analizo");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
 		assertDeepEquals(analizo.collectMetrics(codeDirectory, metrics),
 			helloWorldApplicationResult(), helloWorldClassResult());
