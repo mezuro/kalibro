@@ -17,12 +17,12 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Project;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 
 @RunWith(PowerMockRunner.class)
@@ -33,10 +33,10 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	private KalibroSettings settings;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		settings = new KalibroSettings();
 		settingsFile = mock(File.class);
-		Whitebox.setInternalState(KalibroSettings.class, settingsFile);
+		whenNew(File.class).withArguments(Environment.dotKalibro(), "kalibro.settings").thenReturn(settingsFile);
 		mockStatic(FileUtils.class);
 	}
 
@@ -66,10 +66,11 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	public void testLoadPathForProject() {
 		Project project = mock(Project.class);
 		ServerSettings serverSettings = mock(ServerSettings.class);
-		when(serverSettings.getLoadDirectoryFor(project)).thenReturn(helloWorldDirectory());
+		File directory = helloWorldDirectory();
+		when(serverSettings.getLoadDirectoryFor(project)).thenReturn(directory);
 
 		settings.setServerSettings(serverSettings);
-		assertSame(helloWorldDirectory(), settings.getLoadDirectoryFor(project));
+		assertSame(directory, settings.getLoadDirectoryFor(project));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -89,7 +90,7 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testToString() throws IOException {
 		InputStream resource = getClass().getResourceAsStream("default.settings");
-		String expected = IOUtils.toString(resource).replace("~", System.getProperty("user.home"));
+		String expected = IOUtils.toString(resource).replace("~/.kalibro", Environment.dotKalibro().getPath());
 		assertEquals(expected, settings.toString());
 
 		settings.setClient(true);

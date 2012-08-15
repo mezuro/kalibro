@@ -60,7 +60,7 @@ public class DirectoryFieldTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetAndGet() {
 		field.set(Environment.dotKalibro());
-		assertSame(Environment.dotKalibro(), field.get());
+		assertEquals(Environment.dotKalibro(), field.get());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

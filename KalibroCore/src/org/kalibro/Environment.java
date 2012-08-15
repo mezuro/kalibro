@@ -24,6 +24,12 @@ public enum Environment {
 		return dotKalibro;
 	}
 
+	public static File logsDirectory() {
+		File logs = new File(dotKalibro(), "logs");
+		logs.mkdirs();
+		return logs;
+	}
+
 	@Override
 	public String toString() {
 		return Identifier.fromConstant(name()).asText();

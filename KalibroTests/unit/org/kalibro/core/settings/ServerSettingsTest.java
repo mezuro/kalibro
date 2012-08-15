@@ -41,7 +41,7 @@ public class ServerSettingsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkToString() throws IOException {
 		String expected = IOUtils.toString(getClass().getResourceAsStream("server.settings"));
-		expected = expected.replace("~", System.getProperty("user.home"));
+		expected = expected.replace("~/.kalibro", Environment.dotKalibro().getPath());
 		assertEquals(expected, "" + settings);
 	}
 

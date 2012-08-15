@@ -1,6 +1,8 @@
 package org.kalibro.core.command;
 
+import static org.kalibro.Environment.*;
 import static org.mockito.Matchers.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -13,11 +15,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -26,7 +26,7 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(FileProcessStreamLogger.class)
 public class FileProcessStreamLoggerTest extends KalibroTestCase {
 
-	private File logs, logFile;
+	private File logFile;
 	private Process process;
 	private InputStream inputStream;
 	private FileOutputStream outputStream;
@@ -35,18 +35,17 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		logs = new File(Environment.dotKalibro(), "logs");
-		logFile = PowerMockito.mock(File.class);
-		process = PowerMockito.mock(Process.class);
-		inputStream = PowerMockito.mock(InputStream.class);
-		outputStream = PowerMockito.mock(FileOutputStream.class);
-		logger = PowerMockito.spy(new FileProcessStreamLogger());
-		PowerMockito.when(process.getInputStream()).thenReturn(inputStream);
-		PowerMockito.when(process.getErrorStream()).thenReturn(inputStream);
-		PowerMockito.whenNew(File.class).withParameterTypes(File.class, String.class)
-			.withArguments(eq(logs), anyString()).thenReturn(logFile);
-		PowerMockito.whenNew(FileOutputStream.class).withArguments(logFile).thenReturn(outputStream);
-		PowerMockito.doNothing().when(logger, "pipe", inputStream, outputStream);
+		logFile = mock(File.class);
+		process = mock(Process.class);
+		inputStream = mock(InputStream.class);
+		outputStream = mock(FileOutputStream.class);
+		logger = spy(new FileProcessStreamLogger());
+		when(process.getInputStream()).thenReturn(inputStream);
+		when(process.getErrorStream()).thenReturn(inputStream);
+		whenNew(File.class).withParameterTypes(File.class, String.class)
+			.withArguments(eq(logsDirectory()), anyString()).thenReturn(logFile);
+		whenNew(FileOutputStream.class).withArguments(logFile).thenReturn(outputStream);
+		doNothing().when(logger, "pipe", inputStream, outputStream);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -54,7 +53,7 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 		logger.logOutputStream(process, "my command");
 
 		Mockito.verify(process).getInputStream();
-		PowerMockito.verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
+		verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -62,15 +61,15 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 		logger.logErrorStream(process, "my command");
 
 		Mockito.verify(process).getErrorStream();
-		PowerMockito.verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
+		verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldWriteCommandOnFirstLine() throws Exception {
-		PowerMockito.mockStatic(IOUtils.class);
+		mockStatic(IOUtils.class);
 		logger.logOutputStream(process, "my command");
 
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		IOUtils.write("$ my command\n", outputStream);
 	}
 
@@ -80,12 +79,12 @@ public class FileProcessStreamLoggerTest extends KalibroTestCase {
 
 		Date date = Whitebox.getInternalState(logger, Date.class);
 		String dateString = new SimpleDateFormat("yyyy-MM-dd_HH'h'mm'm'ss.SSS's'").format(date);
-		PowerMockito.verifyNew(File.class).withArguments(eq(logs), eq("my." + dateString + ".out"));
+		verifyNew(File.class).withArguments(eq(logsDirectory()), eq("my." + dateString + ".out"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkErrorOnLog() throws Exception {
-		PowerMockito.whenNew(FileOutputStream.class).withArguments(logFile).thenThrow(new IOException());
+		whenNew(FileOutputStream.class).withArguments(logFile).thenThrow(new IOException());
 		checkKalibroException(new Task() {
 
 			@Override

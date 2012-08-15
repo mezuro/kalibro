@@ -35,13 +35,7 @@ public class FileProcessStreamLogger extends ProcessStreamLogger {
 		}
 		String firstCommandWord = command.split("\\s+")[0];
 		String dateString = new SimpleDateFormat("yyyy-MM-dd_HH'h'mm'm'ss.SSS's'").format(date);
-		return createFile(firstCommandWord + "." + dateString + "." + fileExtension);
-	}
-
-	private File createFile(String name) {
-		File logs = new File(Environment.dotKalibro(), "logs");
-		logs.mkdirs();
-		return new File(logs, name);
+		return new File(Environment.logsDirectory(), firstCommandWord + "." + dateString + "." + fileExtension);
 	}
 
 	private OutputStream createOuputStream(String command, File file) {

@@ -33,7 +33,14 @@ public class EnvironmentTest extends EnumerationTestCase<Environment> {
 			setEnvironment(environment);
 			String expected = (environment == PRODUCTION) ? KALIBRO_PATH : TESTS_PATH;
 			assertEquals(expected, dotKalibro().getPath());
+			assertTrue(dotKalibro().exists());
 		}
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveLogsDirectory() {
+		assertTrue(logsDirectory().exists());
+		assertEquals(TESTS_PATH + "/logs", logsDirectory().getPath());
 	}
 
 	private Environment getEnvironment() {

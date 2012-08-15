@@ -16,6 +16,7 @@ java\.lang\.Exception: StackTracePrinterTest message
 	at org\.junit\.runners\.ParentRunner\.runChildren\(ParentRunner\.java:\d+\)
 	at org\.junit\.runners\.ParentRunner\.access\$000\(ParentRunner\.java:\d+\)
 	at org\.junit\.runners\.ParentRunner\$2\.evaluate\(ParentRunner\.java:\d+\)
+	at org\.junit\.internal\.runners\.statements\.RunBefores\.evaluate\(RunBefores\.java:\d+\)
 	at org\.junit\.runners\.ParentRunner\.run\(ParentRunner\.java:\d+\)
 	at org\.eclipse\.jdt\.internal\.junit4\.runner\.JUnit4TestReference\.run\(JUnit4TestReference\.java:\d+\)
 	at org\.eclipse\.jdt\.internal\.junit\.runner\.TestExecution\.run\(TestExecution\.java:\d+\)

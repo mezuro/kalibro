@@ -110,6 +110,6 @@ public class FileChooserTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkChoosenFile() {
 		PowerMockito.when(nativeChooser.getSelectedFile()).thenReturn(Environment.dotKalibro());
-		assertSame(Environment.dotKalibro(), fileChooser.getChosenFile());
+		assertEquals(Environment.dotKalibro(), fileChooser.getChosenFile());
 	}
 }
