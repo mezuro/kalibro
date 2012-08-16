@@ -100,7 +100,7 @@ public class KalibroSettingsTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testWriteSettings() throws IOException {
-		settings.write();
+		settings.save();
 		verifyStatic();
 		FileUtils.writeStringToFile(settingsFile, settings.toString());
 	}
@@ -113,7 +113,7 @@ public class KalibroSettingsTest extends KalibroTestCase {
 
 			@Override
 			protected void perform() throws Throwable {
-				settings.write();
+				settings.save();
 			}
 		}, "Could not write settings file: " + settingsFile, IOException.class);
 	}

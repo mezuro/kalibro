@@ -96,7 +96,7 @@ public class KalibroTest extends KalibroTestCase {
 		Kalibro.changeSettings(settings);
 
 		assertSame(settings, Kalibro.currentSettings());
-		Mockito.verify(settings).write();
+		Mockito.verify(settings).save();
 		verifyNew(facadeClass);
 	}
 
@@ -112,7 +112,7 @@ public class KalibroTest extends KalibroTestCase {
 				Kalibro.changeSettings(settings);
 			}
 		}, "KalibroTest");
-		Mockito.verify(settings, times(0)).write();
+		Mockito.verify(settings, times(0)).save();
 
 		Kalibro.currentSettings();
 		verifyStatic();

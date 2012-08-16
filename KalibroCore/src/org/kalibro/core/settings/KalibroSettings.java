@@ -85,7 +85,7 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		return serverSettings.getDatabaseSettings();
 	}
 
-	public void write() {
+	public void save() {
 		try {
 			FileUtils.writeStringToFile(settingsFile(), toString());
 		} catch (IOException exception) {

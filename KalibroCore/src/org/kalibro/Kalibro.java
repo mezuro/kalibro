@@ -26,7 +26,7 @@ public final class Kalibro {
 	public static void changeSettings(KalibroSettings newSettings) {
 		settings = newSettings;
 		createFacade();
-		newSettings.write();
+		newSettings.save();
 	}
 
 	public static BaseToolDao getBaseToolDao() {
