@@ -1,7 +1,10 @@
 package org.kalibro;
 
+import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import static org.junit.Assert.*;
 import static org.kalibro.Environment.*;
+
+import java.io.File;
 
 import org.junit.After;
 import org.junit.Test;
@@ -9,8 +12,7 @@ import org.powermock.reflect.Whitebox;
 
 public class EnvironmentTest extends EnumerationTestCase<Environment> {
 
-	private static final String KALIBRO_PATH = System.getProperty("user.home") + "/.kalibro";
-	private static final String TESTS_PATH = KALIBRO_PATH + "/tests";
+	private static final File DOT_KALIBRO = new File(new File(System.getProperty("user.home")), ".kalibro");
 
 	@After
 	public void tearDown() {
@@ -23,24 +25,44 @@ public class EnvironmentTest extends EnumerationTestCase<Environment> {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testShouldRunInTestEnvironment() {
+	public void shouldBeInTestEnvironmentWhenTesting() {
 		assertSame(TEST, getEnvironment());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void dotKalibroShouldBeTestsDirectoryIfNotProductionEnvironment() {
-		for (Environment environment : Environment.values()) {
-			setEnvironment(environment);
-			String expected = (environment == PRODUCTION) ? KALIBRO_PATH : TESTS_PATH;
-			assertEquals(expected, dotKalibro().getPath());
-			assertTrue(dotKalibro().exists());
-		}
+	public void shouldCreateAndRetrieveDotKalibroDirectory() {
+		assertTrue(dotKalibro().exists());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveLogsDirectory() {
-		assertTrue(logsDirectory().exists());
-		assertEquals(TESTS_PATH + "/logs", logsDirectory().getPath());
+	public void dotKalibroShouldBeAtHomeOnProdution() {
+		setEnvironment(PRODUCTION);
+		assertEquals(DOT_KALIBRO, dotKalibro());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void dotKalibroShouldBeTestsDirectoryWhenTesting() {
+		assertEquals("tests", dotKalibro().getName());
+		assertEquals(DOT_KALIBRO, dotKalibro().getParentFile());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCreateAndRetrieveLogsDirectory() {
+		File logs = logsDirectory();
+		assertTrue(logs.exists());
+		assertEquals("logs", logs.getName());
+		assertEquals(dotKalibro(), logs.getParentFile());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldDropAndCreateDatabaseWhenTesting() {
+		assertEquals(DROP_AND_CREATE, ddlGeneration());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldOnlyCreateDatabaseWhenNotTesting() {
+		setEnvironment(PRODUCTION);
+		assertEquals(CREATE_ONLY, ddlGeneration());
 	}
 
 	private Environment getEnvironment() {

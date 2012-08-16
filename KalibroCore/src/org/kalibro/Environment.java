@@ -1,24 +1,26 @@
 package org.kalibro;
 
+import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
+
 import java.io.File;
 
 import org.kalibro.core.util.Identifier;
 
 /**
- * Responsible for providing information which depends on the environment: production, development or test.
+ * Responsible for providing information which depends on the environment: production or test.
  * 
  * @author Carlos Morais
  */
 public enum Environment {
 
-	TEST, DEVELOPMENT, PRODUCTION;
+	TEST, PRODUCTION;
 
 	private static Environment current = PRODUCTION;
 
 	public static File dotKalibro() {
 		File home = new File(System.getProperty("user.home"));
 		File dotKalibro = new File(home, ".kalibro");
-		if (current != PRODUCTION)
+		if (current == TEST)
 			dotKalibro = new File(dotKalibro, "tests");
 		dotKalibro.mkdirs();
 		return dotKalibro;
@@ -28,6 +30,10 @@ public enum Environment {
 		File logs = new File(dotKalibro(), "logs");
 		logs.mkdirs();
 		return logs;
+	}
+
+	public static String ddlGeneration() {
+		return current == TEST ? DROP_AND_CREATE : CREATE_ONLY;
 	}
 
 	@Override
