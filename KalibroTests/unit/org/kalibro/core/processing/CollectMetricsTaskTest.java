@@ -23,6 +23,7 @@ import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.core.settings.KalibroSettings;
+import org.kalibro.core.settings.ServerSettings;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -44,8 +45,10 @@ public class CollectMetricsTaskTest extends KalibroTestCase {
 	}
 
 	private void mockKalibro() {
+		KalibroSettings settings = mock(KalibroSettings.class);
 		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(mock(KalibroSettings.class));
+		when(Kalibro.currentSettings()).thenReturn(settings);
+		when(settings.getServerSettings()).thenReturn(mock(ServerSettings.class));
 		mockConfiguration();
 		mockBaseTool();
 	}

@@ -3,7 +3,6 @@ package org.kalibro.core.persistence.database;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.kalibro.Kalibro;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
@@ -51,7 +50,7 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 		delete("ProjectResult", "project.name", projectName);
 		databaseManager.remove(record);
 		databaseManager.commitTransaction();
-		FileUtils.deleteQuietly(Kalibro.currentSettings().getLoadDirectoryFor(project));
+		FileUtils.deleteQuietly(project.getDirectory());
 	}
 
 	private ProjectRecord createRecord(Project project) {

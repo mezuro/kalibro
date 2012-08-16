@@ -35,7 +35,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	}
 
 	private void collectMetrics(String baseToolName, Set<NativeMetric> metrics) throws Exception {
-		File codeDirectory = Kalibro.currentSettings().getLoadDirectoryFor(project);
+		File codeDirectory = project.getDirectory();
 		MetricCollector metricCollector = Kalibro.getBaseToolDao().getBaseTool(baseToolName).createMetricCollector();
 		Set<NativeModuleResult> nativeResults = metricCollector.collectMetrics(codeDirectory, metrics);
 		for (NativeModuleResult nativeResult : nativeResults) {

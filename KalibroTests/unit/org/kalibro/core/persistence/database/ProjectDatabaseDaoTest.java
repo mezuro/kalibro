@@ -18,7 +18,6 @@ import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
-import org.kalibro.core.settings.KalibroSettings;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -97,7 +96,7 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 		order.verify(databaseManager).remove(captor.capture());
 		order.verify(databaseManager).commitTransaction();
 
-		assertDeepEquals(project, captor.getValue().convert());
+		assertEquals(project.getName(), captor.getValue().convert().getName());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -124,11 +123,10 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	private File mockRemoveDirectory() {
-		KalibroSettings settings = mock(KalibroSettings.class);
 		File directory = mock(File.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(settings);
-		when(settings.getLoadDirectoryFor(project)).thenReturn(directory);
+		project = spy(project);
+		doReturn(project).when(dao).getByName("42");
+		doReturn(directory).when(project).getDirectory();
 		mockStatic(FileUtils.class);
 		return directory;
 	}

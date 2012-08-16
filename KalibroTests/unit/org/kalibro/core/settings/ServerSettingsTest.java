@@ -13,8 +13,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectFixtures;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -43,12 +41,5 @@ public class ServerSettingsTest extends KalibroTestCase {
 		String expected = IOUtils.toString(getClass().getResourceAsStream("server.settings"));
 		expected = expected.replace("~/.kalibro", Environment.dotKalibro().getPath());
 		assertEquals(expected, "" + settings);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testLoadPathForProject() {
-		Project project = ProjectFixtures.helloWorld();
-		settings.setLoadDirectory(new File("/"));
-		assertEquals(new File("/" + project.getName()), settings.getLoadDirectoryFor(project));
 	}
 }

@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.commons.io.FileUtils;
 import org.kalibro.Environment;
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.Project;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.yaml.snakeyaml.Yaml;
 
@@ -73,10 +72,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	public void setServerSettings(ServerSettings serverSettings) {
 		this.serverSettings = serverSettings;
-	}
-
-	public File getLoadDirectoryFor(Project project) {
-		return serverSettings.getLoadDirectoryFor(project);
 	}
 
 	public void save() {

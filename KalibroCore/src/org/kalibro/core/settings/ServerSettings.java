@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Map;
 
 import org.kalibro.Environment;
-import org.kalibro.core.model.Project;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 
 public class ServerSettings extends AbstractEntity<ServerSettings> {
@@ -20,10 +19,6 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 	public ServerSettings(Map<?, ?> settingsMap) {
 		setLoadDirectory(new File("" + settingsMap.get("load_directory")));
 		setDatabaseSettings(new DatabaseSettings((Map<?, ?>) settingsMap.get("database")));
-	}
-
-	public File getLoadDirectoryFor(Project project) {
-		return new File(loadDirectory, project.getName().replace(' ', '_'));
 	}
 
 	public File getLoadDirectory() {

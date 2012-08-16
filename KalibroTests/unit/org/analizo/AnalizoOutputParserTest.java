@@ -31,6 +31,7 @@ public class AnalizoOutputParserTest extends KalibroTestCase {
 	public void shouldParseResultsOutputToModuleResults() {
 		InputStream resultsOutput = getResource("Analizo-Output-HelloWorld.txt");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
+		// FIXME don't use deep equals
 		assertDeepEquals(parser.parseResults(resultsOutput, metrics),
 			helloWorldApplicationResult(), helloWorldClassResult());
 	}
