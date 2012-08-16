@@ -22,7 +22,7 @@ public class FirstEditSettings extends KalibroDesktopTestCase {
 		fixture.panel("loadDirectory").textBox("path").setText("/tmp");
 
 		fixture.button("ok").click();
-		assertTrue(KalibroSettings.settingsFileExists());
+		assertTrue(KalibroSettings.exists());
 
 		fixture.robot.waitForIdle();
 		fixture = new FrameFixture(fixture.robot, "kalibroFrame");

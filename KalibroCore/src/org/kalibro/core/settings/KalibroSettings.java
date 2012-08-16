@@ -2,6 +2,7 @@ package org.kalibro.core.settings;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.Map;
 
@@ -15,17 +16,17 @@ import org.yaml.snakeyaml.Yaml;
 public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	public static KalibroSettings load() {
-		if (!settingsFileExists())
-			return new KalibroSettings();
 		try {
 			FileInputStream settingsInputStream = new FileInputStream(settingsFile());
 			return new KalibroSettings((Map<?, ?>) new Yaml().load(settingsInputStream));
-		} catch (IOException exception) {
-			throw new KalibroException("Could not load Kalibro settings from file: " + settingsFile(), exception);
+		} catch (FileNotFoundException exception) {
+			throw new KalibroException("There is no settings to load.", exception);
+		} catch (Exception exception) {
+			throw new KalibroException("Could not load settings from file: " + settingsFile(), exception);
 		}
 	}
 
-	public static boolean settingsFileExists() {
+	public static boolean exists() {
 		return settingsFile().exists();
 	}
 

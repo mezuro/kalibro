@@ -40,7 +40,7 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 		verifyErrorMessageForConnectionRefused();
 
 		fixture.button("cancel").click();
-		assertFalse(KalibroSettings.settingsFileExists());
+		assertFalse(KalibroSettings.exists());
 		verifyFrameNotOpen();
 	}
 

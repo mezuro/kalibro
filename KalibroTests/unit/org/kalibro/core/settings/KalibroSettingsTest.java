@@ -81,10 +81,10 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSettingsFileExists() {
 		when(settingsFile.exists()).thenReturn(true);
-		assertTrue(KalibroSettings.settingsFileExists());
+		assertTrue(KalibroSettings.exists());
 
 		when(settingsFile.exists()).thenReturn(false);
-		assertFalse(KalibroSettings.settingsFileExists());
+		assertFalse(KalibroSettings.exists());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

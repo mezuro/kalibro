@@ -14,7 +14,7 @@ public final class Kalibro {
 	private static KalibroSettings settings;
 
 	public static boolean settingsFileExists() {
-		return KalibroSettings.settingsFileExists();
+		return KalibroSettings.exists();
 	}
 
 	public static KalibroSettings currentSettings() {
