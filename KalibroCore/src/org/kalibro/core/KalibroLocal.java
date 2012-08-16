@@ -26,7 +26,7 @@ public class KalibroLocal extends KalibroFacade {
 
 	@Override
 	protected DaoFactory createDaoFactory() {
-		return new DatabaseDaoFactory(currentSettings().getDatabaseSettings());
+		return new DatabaseDaoFactory(currentSettings().getServerSettings().getDatabaseSettings());
 	}
 
 	@Override

@@ -11,7 +11,16 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.yaml.snakeyaml.Yaml;
 
+/**
+ * Save and retrieve Kalibro settings from file.
+ * 
+ * @author Carlos Morais
+ */
 public class KalibroSettings extends AbstractEntity<KalibroSettings> {
+
+	public static boolean exists() {
+		return settingsFile().exists();
+	}
 
 	public static KalibroSettings load() {
 		try {
@@ -20,10 +29,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		} catch (Exception exception) {
 			throw new KalibroException("Could not load settings from file: " + settingsFile(), exception);
 		}
-	}
-
-	public static boolean exists() {
-		return settingsFile().exists();
 	}
 
 	private static File settingsFile() {
@@ -72,10 +77,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	public File getLoadDirectoryFor(Project project) {
 		return serverSettings.getLoadDirectoryFor(project);
-	}
-
-	public DatabaseSettings getDatabaseSettings() {
-		return serverSettings.getDatabaseSettings();
 	}
 
 	public void save() {

@@ -12,7 +12,7 @@ public abstract class AcceptanceTest extends KalibroTestCase {
 	@BeforeClass
 	public static void prepareSettings() {
 		KalibroSettings settings = new KalibroSettings();
-		settings.getDatabaseSettings().setJdbcUrl("jdbc:mysql://localhost:3306/kalibro_test");
+		settings.getServerSettings().getDatabaseSettings().setJdbcUrl("jdbc:mysql://localhost:3306/kalibro_test");
 		settings.save();
 
 		settingsFile = new File(Environment.dotKalibro(), "kalibro.settings");
