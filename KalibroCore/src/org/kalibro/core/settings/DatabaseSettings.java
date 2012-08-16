@@ -5,6 +5,7 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kalibro.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 
 public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
@@ -74,7 +75,7 @@ public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 
 	public Map<String, String> toPersistenceProperties() {
 		Map<String, String> persistenceProperties = new HashMap<String, String>();
-		persistenceProperties.put(DDL_GENERATION, CREATE_ONLY);
+		persistenceProperties.put(DDL_GENERATION, Environment.ddlGeneration());
 		persistenceProperties.put(JDBC_DRIVER, databaseType.getDriverClassName());
 		persistenceProperties.put(JDBC_URL, jdbcUrl);
 		persistenceProperties.put(JDBC_USER, username);

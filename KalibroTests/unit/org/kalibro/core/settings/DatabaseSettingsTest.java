@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
+import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
 
 public class DatabaseSettingsTest extends KalibroTestCase {
@@ -42,7 +43,7 @@ public class DatabaseSettingsTest extends KalibroTestCase {
 	public void checkToPersistenceProperties() {
 		Map<String, String> properties = settings.toPersistenceProperties();
 		assertEquals(5, properties.size());
-		assertEquals(CREATE_ONLY, properties.get(DDL_GENERATION));
+		assertEquals(Environment.ddlGeneration(), properties.get(DDL_GENERATION));
 		assertEquals(settings.getDatabaseType().getDriverClassName(), properties.get(JDBC_DRIVER));
 		assertEquals(settings.getJdbcUrl(), properties.get(JDBC_URL));
 		assertEquals(settings.getUsername(), properties.get(JDBC_USER));

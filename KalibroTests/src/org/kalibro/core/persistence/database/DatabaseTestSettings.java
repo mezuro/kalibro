@@ -11,7 +11,6 @@ public abstract class DatabaseTestSettings extends DatabaseSettings {
 	@Override
 	public Map<String, String> toPersistenceProperties() {
 		Map<String, String> persistenceProperties = super.toPersistenceProperties();
-		persistenceProperties.put(DDL_GENERATION, DROP_AND_CREATE);
 		persistenceProperties.put(LOGGING_LOGGER, NullPersistenceLogger.class.getName());
 		return persistenceProperties;
 	}
