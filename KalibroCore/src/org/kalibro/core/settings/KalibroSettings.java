@@ -2,8 +2,6 @@ package org.kalibro.core.settings;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -19,8 +17,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		try {
 			FileInputStream settingsInputStream = new FileInputStream(settingsFile());
 			return new KalibroSettings((Map<?, ?>) new Yaml().load(settingsInputStream));
-		} catch (FileNotFoundException exception) {
-			throw new KalibroException("There is no settings to load.", exception);
 		} catch (Exception exception) {
 			throw new KalibroException("Could not load settings from file: " + settingsFile(), exception);
 		}
@@ -89,8 +85,8 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 	public void save() {
 		try {
 			FileUtils.writeStringToFile(settingsFile(), toString());
-		} catch (IOException exception) {
-			throw new KalibroException("Could not write settings file: " + settingsFile(), exception);
+		} catch (Exception exception) {
+			throw new KalibroException("Could not save settings on file: " + settingsFile(), exception);
 		}
 	}
 

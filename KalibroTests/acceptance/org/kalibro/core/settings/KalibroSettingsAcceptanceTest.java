@@ -7,7 +7,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.AcceptanceTest;
@@ -22,11 +21,6 @@ public class KalibroSettingsAcceptanceTest extends AcceptanceTest {
 	public void setUp() {
 		settings = new KalibroSettings(kalibroSettingsMap());
 		settingsFile.delete();
-	}
-
-	@After
-	public void tearDown() {
-		prepareSettings();
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
@@ -67,25 +61,43 @@ public class KalibroSettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldThrowExceptionWhenTryingToLoadInexistentSettings() {
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				KalibroSettings.load();
-			}
-		}, "There is no settings to load.", FileNotFoundException.class);
+	public void shouldThrowExceptionWhenLoadingInexistentSettings() {
+		shouldLoadWithError(FileNotFoundException.class);
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldThrowExceptionWhenSettingsFileIsCorrupted() throws IOException {
+	public void shouldThrowExceptionWhenLoadingFromCorruptedSettingsFile() throws IOException {
 		settingsFile.createNewFile();
+		shouldLoadWithError(NullPointerException.class);
+	}
+
+	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	public void shouldThrowExceptionWhenLoadingFromNotReadableSettingsFile() {
+		settings.save();
+		settingsFile.setReadable(false);
+		shouldLoadWithError(FileNotFoundException.class);
+	}
+
+	private void shouldLoadWithError(Class<? extends Throwable> causeClass) {
 		checkKalibroException(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
 				KalibroSettings.load();
 			}
-		}, "Could not load settings from file: " + settingsFile, NullPointerException.class);
+		}, "Could not load settings from file: " + settingsFile, causeClass);
+	}
+
+	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	public void shouldThrowExceptionWhenSavingOnNotWritableFile() {
+		settings.save();
+		settingsFile.setWritable(false);
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				settings.save();
+			}
+		}, "Could not save settings on file: " + settingsFile, IOException.class);
 	}
 }

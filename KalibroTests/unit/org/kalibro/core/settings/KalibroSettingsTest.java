@@ -2,14 +2,9 @@ package org.kalibro.core.settings;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.settings.SettingsFixtures.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.internal.verification.VerificationModeFactory.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
@@ -126,18 +121,24 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void loadShouldReturnDefaultSettingsWhenFileDoesNotExist() throws Exception {
-		prepareForLoad(false);
-		assertDeepEquals(new KalibroSettings(), KalibroSettings.load());
+	public void shouldThrowExceptionWhenTryingToLoadInexistentSettings() throws Exception {
+		whenNew(FileInputStream.class).withArguments(settingsFile).thenThrow(new FileNotFoundException());
+		checkKalibroException(new Task() {
 
-		verifyStatic(times(0));
-		FileUtils.writeStringToFile(any(File.class), anyString());
+			@Override
+			protected void perform() throws Throwable {
+				KalibroSettings.load();
+			}
+		}, "There is no settings to load.", FileNotFoundException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testLoadError() throws Exception {
-		prepareForLoad(true);
-		whenNew(FileInputStream.class).withArguments(settingsFile).thenThrow(new IOException());
+	public void shouldThrowExceptionWhenSettingsFileIsCorrupted() throws Exception {
+		Yaml yaml = mock(Yaml.class);
+		FileInputStream inputStream = mock(FileInputStream.class);
+		whenNew(Yaml.class).withNoArguments().thenReturn(yaml);
+		whenNew(FileInputStream.class).withArguments(settingsFile).thenReturn(inputStream);
+		when(yaml.load(inputStream)).thenReturn(SettingsFixtures.kalibroSettingsMap());
 		checkKalibroException(new Task() {
 
 			@Override
