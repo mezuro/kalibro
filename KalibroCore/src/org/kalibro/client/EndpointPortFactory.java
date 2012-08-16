@@ -22,7 +22,7 @@ public final class EndpointPortFactory {
 	}
 
 	private static <T> URL getWsdlLocation(String endpointName) {
-		String serviceAddress = Kalibro.currentSettings().getServiceAddress();
+		String serviceAddress = Kalibro.currentSettings().getClientSettings().getServiceAddress();
 		try {
 			return new URL(serviceAddress + endpointName + "/?wsdl");
 		} catch (MalformedURLException exception) {

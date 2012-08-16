@@ -109,7 +109,8 @@ public class EndpointPortFactoryTest extends KalibroTestCase {
 
 		PowerMockito.verifyStatic();
 		Service.create(urlCaptor.capture(), qNameCaptor.capture());
-		assertEquals(settings.getServiceAddress() + endpointName + "/?wsdl", urlCaptor.getValue().toExternalForm());
+		String serviceAddress = settings.getClientSettings().getServiceAddress();
+		assertEquals(serviceAddress + endpointName + "/?wsdl", urlCaptor.getValue().toExternalForm());
 		assertEquals(endpointName + "ImplService", qNameCaptor.getValue().getLocalPart());
 
 		Mockito.verify(service).getPort(qNameCaptor.capture(), Matchers.eq(endpointClass));

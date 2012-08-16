@@ -62,10 +62,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		this.clientSettings = clientSettings;
 	}
 
-	public String getServiceAddress() {
-		return clientSettings.getServiceAddress();
-	}
-
 	public ServerSettings getServerSettings() {
 		return serverSettings;
 	}

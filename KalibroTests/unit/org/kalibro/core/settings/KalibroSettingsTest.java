@@ -52,12 +52,6 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testServiceAddress() {
-		settings.getClientSettings().setServiceAddress("42");
-		assertSame("42", settings.getServiceAddress());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void testLoadPathForProject() {
 		Project project = mock(Project.class);
 		ServerSettings serverSettings = mock(ServerSettings.class);
