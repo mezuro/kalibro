@@ -26,7 +26,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void checkDefaultSettings() {
-		assertFalse(settings.isClient());
+		assertFalse(settings.clientSide());
 		checkClientSettings();
 		checkServerSettings();
 	}

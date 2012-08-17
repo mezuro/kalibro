@@ -81,7 +81,7 @@ public final class Kalibro {
 
 	private static void createFacade() {
 		try {
-			facade = currentSettings().isClient() ? new KalibroClient() : new KalibroLocal();
+			facade = currentSettings().clientSide() ? new KalibroClient() : new KalibroLocal();
 		} catch (KalibroException exception) {
 			settings = null;
 			throw exception;

@@ -48,7 +48,7 @@ public class KalibroTest extends KalibroTestCase {
 		settings = mock(KalibroSettings.class);
 		mockStatic(KalibroSettings.class);
 		when(KalibroSettings.load()).thenReturn(settings);
-		when(settings.isClient()).thenReturn(false);
+		when(settings.clientSide()).thenReturn(false);
 	}
 
 	private void mockFacade() throws Exception {
@@ -93,7 +93,7 @@ public class KalibroTest extends KalibroTestCase {
 	}
 
 	private void testChangeSettings(boolean asClient, Class<? extends KalibroFacade> facadeClass) {
-		when(settings.isClient()).thenReturn(asClient);
+		when(settings.clientSide()).thenReturn(asClient);
 		Kalibro.changeSettings(settings);
 
 		assertSame(settings, Kalibro.currentSettings());
@@ -103,7 +103,7 @@ public class KalibroTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotWriteNewSettingsIfFacadeCreationThrowsException() throws Exception {
-		when(settings.isClient()).thenReturn(false);
+		when(settings.clientSide()).thenReturn(false);
 		whenNew(KalibroLocal.class).withNoArguments().thenThrow(new KalibroException("KalibroTest"));
 
 		checkKalibroException(new Task() {

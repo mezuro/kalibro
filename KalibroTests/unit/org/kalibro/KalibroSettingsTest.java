@@ -72,9 +72,16 @@ public class KalibroSettingsTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultSettings() {
-		assertFalse(settings.isClient());
+		assertFalse(settings.clientSide());
 		assertDeepEquals(new ClientSettings(), settings.getClientSettings());
 		assertDeepEquals(new ServerSettings(), settings.getServerSettings());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveSide() {
+		assertFalse(settings.clientSide());
+		settings.setServiceSide(ServiceSide.CLIENT);
+		assertTrue(settings.clientSide());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

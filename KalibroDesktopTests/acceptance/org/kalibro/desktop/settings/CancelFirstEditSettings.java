@@ -28,7 +28,7 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 		startFromMain();
 
 		KalibroSettings settings = new KalibroSettings();
-		assertFalse(settings.isClient());
+		assertFalse(settings.clientSide());
 		fixture.checkBox("client").requireNotSelected();
 		verifyDefaultServerSettings();
 

@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.kalibro.KalibroSettings;
+import org.kalibro.ServiceSide;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
@@ -51,7 +52,7 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	@Override
 	public KalibroSettings get() {
 		KalibroSettings settings = new KalibroSettings();
-		settings.setClient(clientField.isSelected());
+		settings.setServiceSide(clientField.isSelected() ? ServiceSide.CLIENT : ServiceSide.SERVER);
 		settings.setClientSettings(clientSettingsPanel.get());
 		settings.setServerSettings(serverSettingsPanel.get());
 		return settings;
@@ -61,7 +62,7 @@ public class KalibroSettingsPanel extends EditPanel<KalibroSettings> implements 
 	public void set(KalibroSettings settings) {
 		clientSettingsPanel.set(settings.getClientSettings());
 		serverSettingsPanel.set(settings.getServerSettings());
-		switchPanels(settings.isClient());
+		switchPanels(settings.clientSide());
 	}
 
 	@Override

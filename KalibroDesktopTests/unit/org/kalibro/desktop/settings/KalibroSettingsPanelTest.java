@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroSettings;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.ServiceSide;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 
@@ -25,7 +26,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGet() {
-		clientField().set(settings.isClient());
+		clientField().set(settings.clientSide());
 		clientSettingsPanel().set(settings.getClientSettings());
 		serverSettingsPanel().set(settings.getServerSettings());
 		assertDeepEquals(settings, panel.get());
@@ -34,7 +35,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSet() {
 		panel.set(settings);
-		assertEquals(settings.isClient(), clientField().get());
+		assertEquals(settings.clientSide(), clientField().get());
 		assertDeepEquals(settings.getClientSettings(), clientSettingsPanel().get());
 		assertDeepEquals(settings.getServerSettings(), serverSettingsPanel().get());
 	}
@@ -52,7 +53,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowOnlyClientPanelWhenShowingClientSettings() {
-		settings.setClient(true);
+		settings.setServiceSide(ServiceSide.CLIENT);
 		panel.set(settings);
 		assertTrue(clientSettingsPanel().isVisible());
 		assertFalse(serverSettingsPanel().isVisible());

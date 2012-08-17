@@ -39,17 +39,13 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 	private ServerSettings serverSettings;
 
 	public KalibroSettings() {
-		setClient(false);
+		setServiceSide(ServiceSide.SERVER);
 		setClientSettings(new ClientSettings());
 		setServerSettings(new ServerSettings());
 	}
 
-	public boolean isClient() {
+	public boolean clientSide() {
 		return serviceSide == ServiceSide.CLIENT;
-	}
-
-	public void setClient(boolean client) {
-		setServiceSide(client ? ServiceSide.CLIENT : ServiceSide.SERVER);
 	}
 
 	public void setServiceSide(ServiceSide serviceSide) {
