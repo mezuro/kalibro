@@ -1,5 +1,5 @@
 ---
-client: false # 'true' for consuming a remote Kalibro Service; 'false' if Kalibro Service is installed on this machine
+serviceSide: SERVER # CLIENT for consuming a remote Kalibro Service; SERVER if the service is installed on this machine
 
 clientSettings:
     serviceAddress: "http://localhost:8080/KalibroService/" # Address of the remote KalibroService

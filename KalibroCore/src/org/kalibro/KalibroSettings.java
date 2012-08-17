@@ -11,7 +11,7 @@ import org.kalibro.core.settings.ServerSettings;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * Save and retrieve Kalibro settings from file.
+ * Saves and loads Kalibro preferences.
  * 
  * @author Carlos Morais
  */
@@ -34,7 +34,7 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		return new File(Environment.dotKalibro(), "kalibro.settings");
 	}
 
-	private boolean client;
+	private ServiceSide serviceSide;
 	private ClientSettings clientSettings;
 	private ServerSettings serverSettings;
 
@@ -45,11 +45,15 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 	}
 
 	public boolean isClient() {
-		return client;
+		return serviceSide == ServiceSide.CLIENT;
 	}
 
 	public void setClient(boolean client) {
-		this.client = client;
+		setServiceSide(client ? ServiceSide.CLIENT : ServiceSide.SERVER);
+	}
+
+	public void setServiceSide(ServiceSide serviceSide) {
+		this.serviceSide = serviceSide;
 	}
 
 	public ClientSettings getClientSettings() {
@@ -78,8 +82,8 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	@Override
 	public String toString() {
-		return "---\nclient: " + client + " # " +
-			"'true' for consuming a remote Kalibro Service; 'false' if Kalibro Service is installed on this machine\n" +
+		return "---\nserviceSide: " + serviceSide + " # " +
+			"CLIENT for consuming a remote Kalibro Service; SERVER if the service is installed on this machine\n" +
 			clientSettings + serverSettings;
 	}
 }
