@@ -21,14 +21,8 @@ public class AbstractEntityTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testToString() {
-		assertEquals(new EntityPrinter(person).simplePrint(), "" + person);
-		assertEquals(new EntityPrinter(programmer).simplePrint(), "" + programmer);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testDeepPrint() {
-		assertEquals(new EntityPrinter(person).deepPrint(), person.deepPrint());
-		assertEquals(new EntityPrinter(programmer).deepPrint(), programmer.deepPrint());
+		assertEquals(new EntityPrinter(person).print(), "" + person);
+		assertEquals(new EntityPrinter(programmer).print(), "" + programmer);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

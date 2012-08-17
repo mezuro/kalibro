@@ -24,7 +24,7 @@ class EntityReflector extends Reflector {
 	}
 
 	protected List<String> listIdentityFields() {
-		List<String> identityFields = super.listFields(hasAnnotation(IdentityField.class));
+		List<String> identityFields = listFields(hasAnnotation(IdentityField.class));
 		return identityFields.isEmpty() ? listFields() : identityFields;
 	}
 

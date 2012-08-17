@@ -12,72 +12,47 @@ class EntityPrinter {
 		reflector = new EntityReflector(entity);
 	}
 
-	protected String simplePrint() {
-		return print(reflector.listIdentityFields(), new SimpleFieldPrinter());
+	protected String print() {
+		return print(reflector.listFields());
 	}
 
-	protected String deepPrint() {
-		return print(reflector.listFields(), new DeepFieldPrinter());
-	}
-
-	private String print(List<String> fields, FieldPrinter fieldPrinter) {
+	private String print(List<String> fields) {
 		String className = reflector.getObjectClass().getSimpleName();
-		String string = "$" + className + "(" + printField(fields.get(0), fieldPrinter);
+		String string = "$" + className + "(" + printField(fields.get(0));
 		for (String field : fields.subList(1, fields.size()))
-			string += ", " + printField(field, fieldPrinter);
+			string += ", " + printField(field);
 		return string + ")";
 	}
 
-	private String printField(String field, FieldPrinter fieldPrinter) {
-		return field + " = " + printValue(reflector.get(field), fieldPrinter);
+	private String printField(String field) {
+		return field + " = " + printValue(reflector.get(field));
 	}
 
-	protected String printValue(Object value, FieldPrinter fieldPrinter) {
+	protected String printValue(Object value) {
 		if (value instanceof AbstractEntity<?>)
-			return fieldPrinter.print((AbstractEntity<?>) value);
+			return new EntityPrinter((AbstractEntity<?>) value).print();
 		if (value instanceof Collection<?>)
-			return printCollection((Collection<?>) value, fieldPrinter);
+			return printCollection((Collection<?>) value);
 		if (value instanceof Map<?, ?>)
-			return printMap((Map<?, ?>) value, fieldPrinter);
+			return printMap((Map<?, ?>) value);
 		return "" + value;
 	}
 
-	private String printCollection(Collection<?> collection, FieldPrinter fieldPrinter) {
+	private String printCollection(Collection<?> collection) {
 		if (collection.isEmpty())
 			return "{}";
 		String string = "{";
 		for (Object element : collection)
-			string += printValue(element, fieldPrinter) + ", ";
+			string += printValue(element) + ", ";
 		return string.substring(0, string.length() - 2) + "}";
 	}
 
-	private String printMap(Map<?, ?> map, FieldPrinter fieldPrinter) {
+	private String printMap(Map<?, ?> map) {
 		if (map.isEmpty())
 			return "{}";
 		String string = "{";
 		for (Object key : map.keySet())
-			string += key + " = " + printValue(map.get(key), fieldPrinter) + ", ";
+			string += key + " = " + printValue(map.get(key)) + ", ";
 		return string.substring(0, string.length() - 2) + "}";
-	}
-
-	private interface FieldPrinter {
-
-		String print(AbstractEntity<?> fieldValue);
-	}
-
-	private class SimpleFieldPrinter implements FieldPrinter {
-
-		@Override
-		public String print(AbstractEntity<?> fieldValue) {
-			return new EntityPrinter(fieldValue).simplePrint();
-		}
-	}
-
-	private class DeepFieldPrinter implements FieldPrinter {
-
-		@Override
-		public String print(AbstractEntity<?> fieldValue) {
-			return new EntityPrinter(fieldValue).deepPrint();
-		}
 	}
 }

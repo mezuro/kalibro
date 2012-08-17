@@ -124,10 +124,8 @@ public abstract class KalibroTestCase implements Timeouts {
 
 	protected void assertDeepEquals(AbstractEntity<?> expected, AbstractEntity<?> actual) {
 		if (!expected.deepEquals(actual)) {
-			String actualText = (actual == null) ? "null" : actual.deepPrint();
-			String expectedText = expected.deepPrint();
-			assertEquals(expectedText, actualText);
-			fail("EXPECTED:\n" + expected.deepPrint() + "\nBUT WAS:\n" + actualText);
+			assertEquals(expected.toString(), "" + actual);
+			fail("EXPECTED:\n" + expected + "\nBUT WAS:\n" + actual);
 		}
 	}
 

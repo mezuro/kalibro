@@ -50,7 +50,7 @@ public class Reflector {
 
 	protected boolean isRelevantField(Field field) {
 		String name = field.getName();
-		return ! (name.equals("serialVersionUID") || name.startsWith("$"));
+		return ! (name.equals("serialVersionUID") || name.contains("$"));
 	}
 
 	public Object getObject() {
