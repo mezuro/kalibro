@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;

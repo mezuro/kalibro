@@ -6,8 +6,8 @@ import java.net.URL;
 import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
-import org.kalibro.Kalibro;
 import org.kalibro.KalibroException;
+import org.kalibro.core.Kalibro;
 
 public final class EndpointPortFactory {
 

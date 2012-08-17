@@ -1,4 +1,4 @@
-package org.kalibro;
+package org.kalibro.core;
 
 import java.util.Set;
 

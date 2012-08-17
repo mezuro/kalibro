@@ -9,7 +9,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;

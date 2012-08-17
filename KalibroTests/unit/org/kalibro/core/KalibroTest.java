@@ -1,4 +1,4 @@
-package org.kalibro;
+package org.kalibro.core;
 
 import static org.junit.Assert.*;
 import static org.mockito.internal.verification.VerificationModeFactory.*;
@@ -11,8 +11,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.KalibroException;
+import org.kalibro.KalibroTestCase;
 import org.kalibro.client.KalibroClient;
-import org.kalibro.core.KalibroLocal;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.*;

@@ -1,6 +1,6 @@
 package org.kalibro.desktop;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.desktop.settings.SettingsController;
 
 public final class KalibroDesktop {

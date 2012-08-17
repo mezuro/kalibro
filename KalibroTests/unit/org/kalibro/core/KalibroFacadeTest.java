@@ -1,9 +1,10 @@
-package org.kalibro;
+package org.kalibro.core;
 
 import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.KalibroTestCase;
 import org.kalibro.core.persistence.dao.DaoFactory;
 import org.powermock.api.mockito.PowerMockito;
 

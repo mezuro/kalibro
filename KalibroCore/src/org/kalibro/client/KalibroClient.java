@@ -2,8 +2,8 @@ package org.kalibro.client;
 
 import java.util.Set;
 
-import org.kalibro.KalibroFacade;
 import org.kalibro.client.dao.PortDaoFactory;
+import org.kalibro.core.KalibroFacade;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.service.KalibroEndpoint;

@@ -2,8 +2,8 @@ package org.kalibro.core.model;
 
 import java.io.File;
 
-import org.kalibro.Kalibro;
 import org.kalibro.KalibroException;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;

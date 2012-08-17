@@ -3,7 +3,7 @@ package org.kalibro.core.processing;
 import java.util.Collection;
 import java.util.Map;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;

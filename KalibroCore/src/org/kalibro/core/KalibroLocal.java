@@ -1,13 +1,12 @@
 package org.kalibro.core;
 
-import static org.kalibro.Kalibro.*;
+import static org.kalibro.core.Kalibro.*;
 import static org.kalibro.core.concurrent.Task.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.KalibroFacade;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.database.DatabaseDaoFactory;

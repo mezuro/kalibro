@@ -1,6 +1,6 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.concurrent.TypedTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
