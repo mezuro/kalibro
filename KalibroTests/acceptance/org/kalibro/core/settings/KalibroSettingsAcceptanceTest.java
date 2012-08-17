@@ -1,7 +1,6 @@
 package org.kalibro.core.settings;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.settings.SettingsFixtures.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -21,13 +20,12 @@ public class KalibroSettingsAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		settings = new KalibroSettings(kalibroSettingsMap());
+		settings = new KalibroSettings();
 		settingsFile.delete();
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void checkDefaultSettings() {
-		settings = new KalibroSettings();
 		assertFalse(settings.isClient());
 		checkClientSettings();
 		checkServerSettings();

@@ -24,16 +24,6 @@ public class DatabaseSettingsTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkMapConstructor() {
-		Map<?, ?> map = SettingsFixtures.databaseSettingsMap();
-		settings = new DatabaseSettings(map);
-		assertEquals(SupportedDatabase.APACHE_DERBY, settings.getDatabaseType());
-		assertEquals(map.get("jdbc_url"), settings.getJdbcUrl());
-		assertEquals(map.get("username"), settings.getUsername());
-		assertEquals(map.get("password"), settings.getPassword());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void checkToString() throws IOException {
 		String expected = IOUtils.toString(getClass().getResourceAsStream("database.settings"));
 		assertEquals(expected, "" + settings);

@@ -1,7 +1,6 @@
 package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.settings.SettingsFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class ClientSettingsPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		settings = new ClientSettings(clientSettingsMap());
+		settings = new ClientSettings();
 		panel = new ClientSettingsPanel();
 		finder = new ComponentFinder(panel);
 	}

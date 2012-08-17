@@ -1,7 +1,6 @@
 package org.kalibro.core.settings;
 
 import java.io.File;
-import java.util.Map;
 
 import org.kalibro.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
@@ -14,11 +13,6 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 	public ServerSettings() {
 		setLoadDirectory(new File(Environment.dotKalibro(), "projects"));
 		setDatabaseSettings(new DatabaseSettings());
-	}
-
-	public ServerSettings(Map<?, ?> settingsMap) {
-		setLoadDirectory(new File("" + settingsMap.get("load_directory")));
-		setDatabaseSettings(new DatabaseSettings((Map<?, ?>) settingsMap.get("database")));
 	}
 
 	public File getLoadDirectory() {

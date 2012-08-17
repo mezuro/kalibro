@@ -1,7 +1,6 @@
 package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.settings.SettingsFixtures.*;
 import static org.mockito.Mockito.*;
 
 import org.junit.Before;
@@ -49,7 +48,7 @@ public class SettingsControllerTest extends KalibroTestCase {
 	}
 
 	private void mockKalibro() {
-		settings = new KalibroSettings(kalibroSettingsMap());
+		settings = new KalibroSettings();
 		PowerMockito.mockStatic(Kalibro.class);
 		PowerMockito.when(Kalibro.currentSettings()).thenReturn(settings);
 	}

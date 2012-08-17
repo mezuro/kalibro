@@ -22,13 +22,6 @@ public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 		setPassword("kalibro");
 	}
 
-	public DatabaseSettings(Map<?, ?> settingsMap) {
-		setDatabaseType(SupportedDatabase.valueOf("" + settingsMap.get("type")));
-		setJdbcUrl("" + settingsMap.get("jdbc_url"));
-		setUsername("" + settingsMap.get("username"));
-		setPassword("" + settingsMap.get("password"));
-	}
-
 	public SupportedDatabase getDatabaseType() {
 		return databaseType;
 	}

@@ -2,7 +2,6 @@ package org.kalibro.core.settings;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.Environment;
@@ -42,12 +41,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		setClient(false);
 		setClientSettings(new ClientSettings());
 		setServerSettings(new ServerSettings());
-	}
-
-	public KalibroSettings(Map<?, ?> settingsMap) {
-		setClient(settingsMap.get("settings").equals("CLIENT"));
-		setClientSettings(new ClientSettings((Map<?, ?>) settingsMap.get("client")));
-		setServerSettings(new ServerSettings((Map<?, ?>) settingsMap.get("server")));
 	}
 
 	public boolean isClient() {

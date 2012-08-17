@@ -1,7 +1,5 @@
 package org.kalibro.core.settings;
 
-import java.util.Map;
-
 import org.kalibro.core.model.abstracts.AbstractEntity;
 
 public class ClientSettings extends AbstractEntity<ClientSettings> {
@@ -10,10 +8,6 @@ public class ClientSettings extends AbstractEntity<ClientSettings> {
 
 	public ClientSettings() {
 		setServiceAddress("http://localhost:8080/KalibroService/");
-	}
-
-	public ClientSettings(Map<?, ?> settingsMap) {
-		setServiceAddress("" + settingsMap.get("service_address"));
 	}
 
 	public String getServiceAddress() {

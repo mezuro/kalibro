@@ -2,7 +2,6 @@ package org.kalibro.core.settings;
 
 import static org.junit.Assert.*;
 import static org.kalibro.Environment.*;
-import static org.kalibro.core.settings.SettingsFixtures.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
@@ -75,14 +74,6 @@ public class KalibroSettingsTest extends KalibroTestCase {
 		assertFalse(settings.isClient());
 		assertDeepEquals(new ClientSettings(), settings.getClientSettings());
 		assertDeepEquals(new ServerSettings(), settings.getServerSettings());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkMapConstructor() {
-		settings = new KalibroSettings(kalibroSettingsMap());
-		assertTrue(settings.isClient());
-		assertDeepEquals(new ClientSettings(clientSettingsMap()), settings.getClientSettings());
-		assertDeepEquals(new ServerSettings(serverSettingsMap()), settings.getServerSettings());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

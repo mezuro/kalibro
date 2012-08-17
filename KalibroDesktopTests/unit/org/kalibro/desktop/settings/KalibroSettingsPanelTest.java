@@ -1,7 +1,6 @@
 package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.settings.SettingsFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,7 +18,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		settings = new KalibroSettings(kalibroSettingsMap());
+		settings = new KalibroSettings();
 		panel = new KalibroSettingsPanel();
 		finder = new ComponentFinder(panel);
 	}
@@ -53,6 +52,7 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowOnlyClientPanelWhenShowingClientSettings() {
+		settings.setClient(true);
 		panel.set(settings);
 		assertTrue(clientSettingsPanel().isVisible());
 		assertFalse(serverSettingsPanel().isVisible());
@@ -60,7 +60,6 @@ public class KalibroSettingsPanelTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldShowOnlyServerPanelWhenShowingServerSettings() {
-		settings.setClient(false);
 		panel.set(settings);
 		assertFalse(clientSettingsPanel().isVisible());
 		assertTrue(serverSettingsPanel().isVisible());
