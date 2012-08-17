@@ -4,8 +4,8 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import org.kalibro.KalibroException;
+import org.kalibro.KalibroSettings;
 import org.kalibro.core.Kalibro;
-import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.EditDialogListener;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;

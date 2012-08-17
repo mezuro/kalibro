@@ -3,7 +3,7 @@ package org.kalibro.desktop.settings;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import org.kalibro.core.settings.KalibroSettings;
+import org.kalibro.KalibroSettings;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class KalibroSettingsPanelManualTest extends ComponentWrapperDialog {

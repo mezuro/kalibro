@@ -4,7 +4,6 @@ import java.io.File;
 
 import org.junit.BeforeClass;
 import org.kalibro.core.Environment;
-import org.kalibro.core.settings.KalibroSettings;
 
 public abstract class AcceptanceTest extends KalibroTestCase {
 

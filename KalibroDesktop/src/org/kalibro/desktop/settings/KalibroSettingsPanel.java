@@ -4,7 +4,7 @@ import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.kalibro.core.settings.KalibroSettings;
+import org.kalibro.KalibroSettings;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;

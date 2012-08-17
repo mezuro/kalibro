@@ -7,10 +7,10 @@ import java.util.regex.Pattern;
 import org.fest.swing.exception.ComponentLookupException;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
+import org.kalibro.KalibroSettings;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.settings.ClientSettings;
 import org.kalibro.core.settings.DatabaseSettings;
-import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.core.settings.ServerSettings;
 import org.kalibro.desktop.KalibroDesktopTestCase;
 

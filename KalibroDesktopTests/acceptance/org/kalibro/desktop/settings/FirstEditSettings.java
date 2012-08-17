@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
-import org.kalibro.core.settings.KalibroSettings;
+import org.kalibro.KalibroSettings;
 import org.kalibro.desktop.KalibroDesktopTestCase;
 
 /**

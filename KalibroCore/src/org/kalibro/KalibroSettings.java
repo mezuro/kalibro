@@ -1,12 +1,13 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import java.io.File;
 import java.io.FileInputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.kalibro.KalibroException;
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
+import org.kalibro.core.settings.ClientSettings;
+import org.kalibro.core.settings.ServerSettings;
 import org.yaml.snakeyaml.Yaml;
 
 /**

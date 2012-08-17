@@ -3,10 +3,10 @@ package org.kalibro.core;
 import java.util.Set;
 
 import org.kalibro.KalibroException;
+import org.kalibro.KalibroSettings;
 import org.kalibro.client.KalibroClient;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.*;
-import org.kalibro.core.settings.KalibroSettings;
 
 public final class Kalibro {
 

@@ -1,4 +1,4 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.Environment.*;
@@ -14,8 +14,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
 import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.settings.ClientSettings;
+import org.kalibro.core.settings.ServerSettings;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.yaml.snakeyaml.Yaml;
