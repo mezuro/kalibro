@@ -13,8 +13,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.Environment;
 import org.kalibro.core.model.ModuleResult;
 
 public class CsvExportTest extends KalibroTestCase {

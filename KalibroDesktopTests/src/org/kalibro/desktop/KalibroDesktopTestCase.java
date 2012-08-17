@@ -7,9 +7,9 @@ import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.WindowFixture;
 import org.junit.After;
-import org.kalibro.Environment;
 import org.kalibro.Kalibro;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.settings.KalibroSettings;
 

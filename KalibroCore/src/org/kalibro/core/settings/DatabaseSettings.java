@@ -5,7 +5,7 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kalibro.Environment;
+import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 
 public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {

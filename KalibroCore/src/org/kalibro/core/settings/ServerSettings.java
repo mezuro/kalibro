@@ -2,7 +2,7 @@ package org.kalibro.core.settings;
 
 import java.io.File;
 
-import org.kalibro.Environment;
+import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 
 public class ServerSettings extends AbstractEntity<ServerSettings> {

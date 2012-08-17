@@ -7,6 +7,7 @@ import java.util.*;
 import java.util.regex.Pattern;
 
 import org.junit.BeforeClass;
+import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;

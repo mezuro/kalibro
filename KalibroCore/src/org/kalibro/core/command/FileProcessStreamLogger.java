@@ -5,8 +5,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
-import org.kalibro.Environment;
 import org.kalibro.KalibroException;
+import org.kalibro.core.Environment;
 
 public class FileProcessStreamLogger extends ProcessStreamLogger {
 

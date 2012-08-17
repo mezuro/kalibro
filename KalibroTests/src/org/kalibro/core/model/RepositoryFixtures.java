@@ -6,7 +6,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kalibro.Environment;
+import org.kalibro.core.Environment;
 import org.kalibro.core.model.enums.RepositoryType;
 
 public final class RepositoryFixtures {

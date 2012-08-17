@@ -8,8 +8,8 @@ import java.util.Map;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kalibro.Environment;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.Environment;
 
 public class DatabaseSettingsTest extends KalibroTestCase {
 

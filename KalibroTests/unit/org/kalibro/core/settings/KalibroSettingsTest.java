@@ -1,7 +1,7 @@
 package org.kalibro.core.settings;
 
 import static org.junit.Assert.*;
-import static org.kalibro.Environment.*;
+import static org.kalibro.core.Environment.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;

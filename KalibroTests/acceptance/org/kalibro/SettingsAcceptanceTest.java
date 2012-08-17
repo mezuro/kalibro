@@ -9,6 +9,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.settings.*;
 import org.yaml.snakeyaml.constructor.ConstructorException;
