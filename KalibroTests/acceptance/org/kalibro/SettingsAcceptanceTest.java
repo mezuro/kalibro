@@ -1,4 +1,4 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import static org.junit.Assert.*;
 
@@ -9,12 +9,11 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.AcceptanceTest;
-import org.kalibro.Environment;
 import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.settings.*;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
-public class KalibroSettingsAcceptanceTest extends AcceptanceTest {
+public class SettingsAcceptanceTest extends AcceptanceTest {
 
 	private KalibroSettings settings;
 
