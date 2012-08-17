@@ -9,7 +9,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -55,14 +54,13 @@ public class KalibroSettingsTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldLoadFromSettingsFile() {
-		Map<?, ?> settingsMap = kalibroSettingsMap();
-		when(yaml.load(inputStream)).thenReturn(settingsMap);
-		assertDeepEquals(new KalibroSettings(settingsMap), KalibroSettings.load());
+		when(yaml.loadAs(inputStream, KalibroSettings.class)).thenReturn(settings);
+		assertSame(settings, KalibroSettings.load());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowExceptionWhenCantLoadSettings() {
-		when(yaml.load(inputStream)).thenThrow(new NullPointerException());
+		when(yaml.loadAs(inputStream, KalibroSettings.class)).thenThrow(new NullPointerException());
 		checkKalibroException(new Task() {
 
 			@Override
@@ -98,10 +96,6 @@ public class KalibroSettingsTest extends KalibroTestCase {
 	public void shouldPrintAsYml() throws IOException {
 		InputStream resource = getClass().getResourceAsStream("default.settings");
 		String expected = IOUtils.toString(resource).replace("~/.kalibro", dotKalibro().getPath());
-		assertEquals(expected, settings.toString());
-
-		settings.setClient(true);
-		expected = expected.replace("settings: SERVER", "settings: CLIENT");
 		assertEquals(expected, settings.toString());
 	}
 

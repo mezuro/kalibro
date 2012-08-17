@@ -40,8 +40,8 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 
 	@Override
 	public String toString() {
-		return "\nserver:\n" +
-			"    load_directory: " + loadDirectory.getAbsolutePath() +
+		return "\nserverSettings:\n" +
+			"    loadDirectory: " + loadDirectory.getAbsolutePath() +
 			" # Projects will be loaded in this directory before analysis\n" +
 			databaseSettings;
 	}

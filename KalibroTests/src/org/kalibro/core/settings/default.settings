@@ -1,13 +1,13 @@
 ---
-settings: SERVER # CLIENT for consuming a remote Kalibro Service; SERVER if Kalibro Service is installed on this machine
+client: false # 'true' for consuming a remote Kalibro Service; 'false' if Kalibro Service is installed on this machine
 
-client:
-    service_address: "http://localhost:8080/KalibroService/" # Address of the remote KalibroService
+clientSettings:
+    serviceAddress: "http://localhost:8080/KalibroService/" # Address of the remote KalibroService
 
-server:
-    load_directory: ~/.kalibro/projects # Projects will be loaded in this directory before analysis
-    database:
-        type: MYSQL # Possibilities: APACHE_DERBY MYSQL
-        jdbc_url: "jdbc:mysql://localhost:3306/kalibro"
+serverSettings:
+    loadDirectory: ~/.kalibro/projects # Projects will be loaded in this directory before analysis
+    databaseSettings:
+        databaseType: MYSQL # Possibilities: APACHE_DERBY MYSQL
+        jdbcUrl: "jdbc:mysql://localhost:3306/kalibro"
         username: "kalibro"
         password: "kalibro"

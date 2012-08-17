@@ -24,7 +24,7 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 	public static KalibroSettings load() {
 		try {
 			FileInputStream settingsInputStream = new FileInputStream(settingsFile());
-			return new KalibroSettings((Map<?, ?>) new Yaml().load(settingsInputStream));
+			return new Yaml().loadAs(settingsInputStream, KalibroSettings.class);
 		} catch (Exception exception) {
 			throw new KalibroException("Could not load settings from file: " + settingsFile(), exception);
 		}
@@ -84,8 +84,8 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	@Override
 	public String toString() {
-		return "---\nsettings: " + (client ? "CLIENT" : "SERVER") + " # " +
-			"CLIENT for consuming a remote Kalibro Service; SERVER if Kalibro Service is installed on this machine\n" +
+		return "---\nclient: " + client + " # " +
+			"'true' for consuming a remote Kalibro Service; 'false' if Kalibro Service is installed on this machine\n" +
 			clientSettings + serverSettings;
 	}
 }

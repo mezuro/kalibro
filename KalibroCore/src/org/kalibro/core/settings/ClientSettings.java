@@ -26,7 +26,7 @@ public class ClientSettings extends AbstractEntity<ClientSettings> {
 
 	@Override
 	public String toString() {
-		return "\nclient:\n" +
-			"    service_address: \"" + serviceAddress + "\" # Address of the remote KalibroService\n";
+		return "\nclientSettings:\n" +
+			"    serviceAddress: \"" + serviceAddress + "\" # Address of the remote KalibroService\n";
 	}
 }

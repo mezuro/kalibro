@@ -63,12 +63,12 @@ public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 
 	@Override
 	public String toString() {
-		String string = "    database:\n" +
-			"        type: " + databaseType.name() + " # Possibilities:";
+		String string = "    databaseSettings:\n" +
+			"        databaseType: " + databaseType.name() + " # Possibilities:";
 		for (SupportedDatabase supportedDatabase : SupportedDatabase.values())
 			string += " " + supportedDatabase.name();
 		return string + "\n" +
-			"        jdbc_url: \"" + jdbcUrl + "\"\n" +
+			"        jdbcUrl: \"" + jdbcUrl + "\"\n" +
 			"        username: \"" + username + "\"\n" +
 			"        password: \"" + password + "\"\n";
 	}

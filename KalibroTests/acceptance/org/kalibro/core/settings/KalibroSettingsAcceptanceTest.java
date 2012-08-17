@@ -7,11 +7,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.AcceptanceTest;
 import org.kalibro.Environment;
 import org.kalibro.core.concurrent.Task;
+import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class KalibroSettingsAcceptanceTest extends AcceptanceTest {
 
@@ -67,8 +69,8 @@ public class KalibroSettingsAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void shouldThrowExceptionWhenLoadingFromCorruptedSettingsFile() throws IOException {
-		settingsFile.createNewFile();
-		shouldLoadWithError(NullPointerException.class);
+		FileUtils.writeStringToFile(settingsFile, "something weird");
+		shouldLoadWithError(ConstructorException.class);
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
