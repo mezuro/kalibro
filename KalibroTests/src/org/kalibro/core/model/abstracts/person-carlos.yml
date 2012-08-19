@@ -1,14 +1,14 @@
 ---
-identityNumber: CM
+identityNumber: CM # Don't really need to be a number
 name: Carlos Morais
 relatives: 
   mother: 
-    identityNumber: CN
+    identityNumber: CN # Don't really need to be a number
     name: Cristina Nascimento
     relatives: {}
     sex: Female
   sister: 
-    identityNumber: IN
+    identityNumber: IN # Don't really need to be a number
     name: Isis Nascimento
     relatives: {}
     sex: Female

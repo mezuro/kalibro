@@ -6,9 +6,9 @@ import static java.lang.annotation.RetentionPolicy.*;
 import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
-@Target(TYPE)
+@Target(FIELD)
 @Retention(RUNTIME)
-public @interface SortingMethods {
+public @interface PrintComment {
 
-	String[] value();
+	String value();
 }

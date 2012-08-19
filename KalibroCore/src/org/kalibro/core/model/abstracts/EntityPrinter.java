@@ -29,6 +29,9 @@ final class EntityPrinter {
 		printNewLine();
 		buffer.append(field + ": ");
 		printValue(reflector.get(field));
+		PrintComment comment = reflector.getFieldAnnotation(field, PrintComment.class);
+		if (comment != null)
+			buffer.append(" # " + comment.value());
 	}
 
 	private void printValue(Object value) {

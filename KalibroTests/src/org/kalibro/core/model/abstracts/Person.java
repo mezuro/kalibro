@@ -7,6 +7,7 @@ import java.util.TreeMap;
 public class Person extends AbstractEntity<Person> {
 
 	@IdentityField
+	@PrintComment("Don't really need to be a number")
 	private String identityNumber;
 
 	private String name;
