@@ -3,10 +3,7 @@ package org.kalibro.core.util.reflection;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
@@ -81,6 +78,12 @@ public class Reflector {
 			if (filter.accept(fields.get(fieldName)))
 				fieldNames.add(fieldName);
 		return fieldNames;
+	}
+
+	public List<String> sortFields(Comparator<String> comparator) {
+		List<String> sortedFields = listFields();
+		Collections.sort(sortedFields, comparator);
+		return sortedFields;
 	}
 
 	public Object get(String fieldName) {

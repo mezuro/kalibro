@@ -3,6 +3,8 @@ package org.kalibro.core.util.reflection;
 import static org.junit.Assert.*;
 import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
+import java.util.Comparator;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -68,13 +70,27 @@ public class ReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSortFields() {
+		Comparator<String> comparator = new Comparator<String>() {
+
+			@Override
+			public int compare(String fieldName1, String fieldName2) {
+				String reverse1 = new StringBuffer(fieldName1).reverse().toString();
+				String reverse2 = new StringBuffer(fieldName2).reverse().toString();
+				return reverse1.compareTo(reverse2);
+			}
+		};
+		assertDeepEquals(reflector.sortFields(comparator), "id", "name", "description", "counter");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetFieldAnnotation() {
 		assertEquals("name_column", reflector.getFieldAnnotation("name", Column.class).name());
 		assertEquals("description_column", reflector.getFieldAnnotation("description", Column.class).name());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveFields() {
+	public void shouldRetrieveFieldValues() {
 		assertEquals(ReflectorSample.count(), reflector.get("counter"));
 		assertEquals(sample.getId(), reflector.get("id"));
 	}
