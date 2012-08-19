@@ -7,15 +7,21 @@ import org.junit.Test;
 public class KalibroErrorTest extends KalibroTestCase {
 
 	private static final String MESSAGE = "KalibroErrorTest message";
+	private static final Throwable CAUSE = new Exception();
+
+	private KalibroError error;
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAddPrefixBeforeMessage() {
-		assertEquals("Please report this bug: " + MESSAGE, new KalibroError(MESSAGE).getMessage());
+	public void shouldContructWithMessage() {
+		error = new KalibroError(MESSAGE);
+		assertSame(MESSAGE, error.getMessage());
+		assertNull(error.getCause());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAllowConstructionWithCause() {
-		Throwable cause = new Exception();
-		assertSame(cause, new KalibroError(MESSAGE, cause).getCause());
+	public void shouldConstructWithMessageAndCause() {
+		error = new KalibroError(MESSAGE, CAUSE);
+		assertSame(MESSAGE, error.getMessage());
+		assertSame(CAUSE, error.getCause());
 	}
 }

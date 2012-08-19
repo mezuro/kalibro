@@ -81,7 +81,19 @@ public abstract class KalibroTestCase implements Timeouts {
 	}
 
 	protected void checkKalibroError(Task task, String message, Class<? extends Throwable> causeClass) {
-		checkKalibroException(task, KalibroError.MESSAGE_PREFIX + message, causeClass);
+		try {
+			task.executeAndWait();
+			fail("Did not throw expected error");
+		} catch (KalibroException exception) {
+			assertClassEquals(KalibroError.class, exception.getCause());
+			KalibroError error = (KalibroError) exception.getCause();
+			assertEquals(message, error.getMessage());
+			Throwable cause = error.getCause();
+			if (causeClass == null)
+				assertNull("Unexpected cause: " + cause, cause);
+			else
+				assertClassEquals(causeClass, cause);
+		}
 	}
 
 	protected void checkKalibroException(Task task, String message) {
@@ -91,12 +103,12 @@ public abstract class KalibroTestCase implements Timeouts {
 	protected void checkKalibroException(Task task, String message, Class<? extends Throwable> causeClass) {
 		try {
 			task.executeAndWait();
-			fail("Should throw KalibroException on executing task");
+			fail("Did not throw expected exception");
 		} catch (KalibroException exception) {
 			assertEquals(message, exception.getMessage());
 			Throwable cause = exception.getCause();
 			if (causeClass == null)
-				assertNull("Cause not expected: " + cause, cause);
+				assertNull("Unexpectd cause: " + cause, cause);
 			else
 				assertClassEquals(causeClass, cause);
 		}
