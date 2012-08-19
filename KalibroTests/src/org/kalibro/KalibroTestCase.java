@@ -3,15 +3,19 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Pattern;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.powermock.reflect.Whitebox;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public abstract class KalibroTestCase implements Timeouts {
 
@@ -43,6 +47,16 @@ public abstract class KalibroTestCase implements Timeouts {
 
 	protected File helloWorldDirectory() {
 		return new File(projectsDirectory(), "HelloWorld-1.0");
+	}
+
+	protected String loadResource(String name) throws IOException {
+		return IOUtils.toString(getClass().getResourceAsStream(name));
+	}
+
+	protected <T> T loadFixture(String name, Class<T> type) {
+		Yaml yaml = new Yaml();
+		yaml.setBeanAccess(BeanAccess.FIELD);
+		return yaml.loadAs(getClass().getResourceAsStream(name + ".yml"), type);
 	}
 
 	protected void assertDifferent(Object... objects) {

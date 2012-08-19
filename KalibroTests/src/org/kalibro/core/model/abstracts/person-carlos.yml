@@ -1,0 +1,15 @@
+---
+identityNumber: CM
+name: Carlos Morais
+relatives: 
+  mother: 
+    identityNumber: CN
+    name: Cristina Nascimento
+    relatives: {}
+    sex: Female
+  sister: 
+    identityNumber: IN
+    name: Isis Nascimento
+    relatives: {}
+    sex: Female
+sex: Male

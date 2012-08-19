@@ -6,7 +6,7 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 
 	@Override
 	public String toString() {
-		return new EntityPrinter(this).print();
+		return EntityPrinter.print(this);
 	}
 
 	@Override
