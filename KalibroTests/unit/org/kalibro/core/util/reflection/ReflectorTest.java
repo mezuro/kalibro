@@ -3,8 +3,6 @@ package org.kalibro.core.util.reflection;
 import static org.junit.Assert.*;
 import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
-import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
@@ -70,11 +68,9 @@ public class ReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldListFieldAnnotations() {
-		List<Column> columns = reflector.getFieldAnnotations(Column.class);
-		assertEquals(2, columns.size());
-		assertEquals("description_column", columns.get(0).name());
-		assertEquals("name_column", columns.get(1).name());
+	public void shouldGetFieldAnnotation() {
+		assertEquals("name_column", reflector.getFieldAnnotation("name", Column.class).name());
+		assertEquals("description_column", reflector.getFieldAnnotation("description", Column.class).name());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

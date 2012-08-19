@@ -1,7 +1,5 @@
 package org.kalibro.core.util.reflection;
 
-import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
-
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
@@ -103,11 +101,8 @@ public class Reflector {
 		}
 	}
 
-	public <T extends Annotation> List<T> getFieldAnnotations(Class<T> annotationClass) {
-		List<T> annotations = new ArrayList<T>();
-		for (String fieldName : listFields(hasAnnotation(annotationClass)))
-			annotations.add(fields.get(fieldName).getAnnotation(annotationClass));
-		return annotations;
+	public <T extends Annotation> T getFieldAnnotation(String field, Class<T> annotationClass) {
+		return fields.get(field).getAnnotation(annotationClass);
 	}
 
 	public List<String> listMethods() {
