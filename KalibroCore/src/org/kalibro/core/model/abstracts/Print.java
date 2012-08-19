@@ -8,7 +8,9 @@ import java.lang.annotation.Target;
 
 @Target(FIELD)
 @Retention(RUNTIME)
-public @interface PrintComment {
+public @interface Print {
 
-	String value();
+	int order();
+
+	String comment();
 }

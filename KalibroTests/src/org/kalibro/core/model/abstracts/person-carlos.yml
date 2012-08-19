@@ -1,15 +1,15 @@
 ---
-identityNumber: CM # Don't really need to be a number
-name: Carlos Morais
+name: Carlos Morais # name comes first
+identityNumber: CM
 relatives: 
   mother: 
-    identityNumber: CN # Don't really need to be a number
-    name: Cristina Nascimento
+    name: Cristina Nascimento # name comes first
+    identityNumber: CN
     relatives: {}
     sex: Female
   sister: 
-    identityNumber: IN # Don't really need to be a number
-    name: Isis Nascimento
+    name: Isis Nascimento # name comes first
+    identityNumber: IN
     relatives: {}
     sex: Female
 sex: Male

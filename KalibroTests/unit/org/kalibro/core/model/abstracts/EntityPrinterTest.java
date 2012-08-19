@@ -13,7 +13,7 @@ public class EntityPrinterTest extends KalibroTestCase {
 	private Person person;
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintAsYml() throws IOException {
+	public void shouldPrintAsYaml() throws IOException {
 		person = loadFixture("person-carlos", Person.class);
 		assertEquals(loadResource("person-carlos.yml"), print(person));
 	}

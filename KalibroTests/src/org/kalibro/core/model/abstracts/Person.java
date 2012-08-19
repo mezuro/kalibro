@@ -7,10 +7,11 @@ import java.util.TreeMap;
 public class Person extends AbstractEntity<Person> {
 
 	@IdentityField
-	@PrintComment("Don't really need to be a number")
 	private String identityNumber;
 
+	@Print(order = 1, comment = "name comes first")
 	private String name;
+
 	private String sex;
 
 	private Map<String, Person> relatives;
