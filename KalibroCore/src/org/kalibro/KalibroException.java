@@ -1,7 +1,10 @@
 package org.kalibro;
 
-import org.kalibro.core.util.StackTracePrinter;
-
+/**
+ * Designed to be the only exception thrown by Kalibro, wrapping checked exceptions (KalibroException is unchecked).
+ * 
+ * @author Carlos Morais
+ */
 public class KalibroException extends RuntimeException {
 
 	public KalibroException(String message) {
@@ -10,9 +13,5 @@ public class KalibroException extends RuntimeException {
 
 	public KalibroException(String message, Throwable cause) {
 		super(message, cause);
-	}
-
-	public String getPrintedStackTrace() {
-		return new StackTracePrinter().printStackTrace(this);
 	}
 }
