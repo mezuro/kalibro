@@ -27,8 +27,8 @@ public class AbstractEntityTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testHashCode() {
-		assertEquals(new HashCodeCalculator(person).calculate(), person.hashCode());
-		assertEquals(new HashCodeCalculator(programmer).calculate(), programmer.hashCode());
+		assertEquals(HashCodeCalculator.hash(person), person.hashCode());
+		assertEquals(HashCodeCalculator.hash(programmer), programmer.hashCode());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

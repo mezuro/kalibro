@@ -1,13 +1,19 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.abstractentity.HashCodeCalculator.hash;
 import static org.kalibro.core.abstractentity.PersonFixtures.*;
 import static org.kalibro.core.abstractentity.ProgrammerFixtures.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.UtilityClassTest;
 
-public class HashCodeCalculatorTest extends KalibroTestCase {
+public class HashCodeCalculatorTest extends UtilityClassTest {
+
+	@Override
+	protected Class<?> utilityClass() {
+		return HashCodeCalculator.class;
+	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void hashCodesShouldBeDistributed() {
@@ -25,9 +31,5 @@ public class HashCodeCalculatorTest extends KalibroTestCase {
 		Person fulano = new Person(null, "Fulano", "M");
 		Person cicrana = new Person(null, "Cicrana", "F");
 		assertEquals(hash(fulano), hash(cicrana));
-	}
-
-	private int hash(Person person) {
-		return new HashCodeCalculator(person).calculate();
 	}
 }

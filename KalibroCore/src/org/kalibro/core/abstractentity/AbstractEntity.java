@@ -11,7 +11,7 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 
 	@Override
 	public int hashCode() {
-		return new HashCodeCalculator(this).calculate();
+		return HashCodeCalculator.hash(this);
 	}
 
 	@Override
