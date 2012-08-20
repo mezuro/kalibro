@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
-public class MerberFilterAdapterTest extends KalibroTestCase {
+public class MemberFilterAdapterTest extends KalibroTestCase {
 
 	private MemberFilter filter;
 
