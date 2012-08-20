@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.client.dao.PortDaoFactory;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.service.KalibroEndpoint;
 import org.mockito.Mockito;
@@ -20,7 +19,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({EndpointPortFactory.class, Kalibro.class, KalibroClient.class})
+@PrepareForTest({EndpointPortFactory.class, KalibroSettings.class, KalibroClient.class})
 public class KalibroClientTest extends KalibroTestCase {
 
 	private static final String PROJECT_NAME = "KalibroClientTest project";
@@ -44,8 +43,8 @@ public class KalibroClientTest extends KalibroTestCase {
 
 	private void mockSettings() {
 		settings = new KalibroSettings();
-		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(settings);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(settings);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -10,7 +10,6 @@ import org.junit.After;
 import org.kalibro.KalibroSettings;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.Environment;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.concurrent.Task;
 
 public class KalibroDesktopTestCase extends KalibroTestCase {
@@ -36,7 +35,7 @@ public class KalibroDesktopTestCase extends KalibroTestCase {
 	}
 
 	protected void startKalibroFrame() {
-		Kalibro.changeSettings(new KalibroSettings());
+		new KalibroSettings().save();
 		KalibroFrame kalibroFrame = new KalibroFrame();
 		fixture = new FrameFixture(kalibroFrame);
 		((FrameFixture) fixture).show(kalibroFrame.getSize());

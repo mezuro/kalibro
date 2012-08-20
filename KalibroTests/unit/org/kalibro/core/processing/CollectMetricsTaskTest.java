@@ -28,7 +28,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
+@PrepareForTest({Kalibro.class, KalibroSettings.class})
 public class CollectMetricsTaskTest extends KalibroTestCase {
 
 	private BaseTool baseTool;
@@ -46,8 +46,8 @@ public class CollectMetricsTaskTest extends KalibroTestCase {
 
 	private void mockKalibro() {
 		KalibroSettings settings = mock(KalibroSettings.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(settings);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(settings);
 		when(settings.getServerSettings()).thenReturn(mock(ServerSettings.class));
 		mockConfiguration();
 		mockBaseTool();
@@ -59,6 +59,7 @@ public class CollectMetricsTaskTest extends KalibroTestCase {
 		Map<String, Set<NativeMetric>> metricsMap = new HashMap<String, Set<NativeMetric>>();
 		metricsMap.put("Analizo", baseTool.getSupportedMetrics());
 
+		mockStatic(Kalibro.class);
 		when(Kalibro.getConfigurationDao()).thenReturn(configurationDao);
 		when(configurationDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
 		when(configuration.getNativeMetrics()).thenReturn(metricsMap);

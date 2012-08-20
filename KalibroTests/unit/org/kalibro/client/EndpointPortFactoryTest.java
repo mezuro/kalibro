@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.service.*;
 import org.mockito.ArgumentCaptor;
@@ -27,7 +26,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, Service.class})
+@PrepareForTest({KalibroSettings.class, Service.class})
 public class EndpointPortFactoryTest extends KalibroTestCase {
 
 	@BeforeClass
@@ -48,8 +47,8 @@ public class EndpointPortFactoryTest extends KalibroTestCase {
 
 	private void mockSettings() {
 		settings = new KalibroSettings();
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.currentSettings()).thenReturn(settings);
+		PowerMockito.mockStatic(KalibroSettings.class);
+		PowerMockito.when(KalibroSettings.load()).thenReturn(settings);
 	}
 
 	private void mockService() {

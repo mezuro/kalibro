@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.ProjectState;
 import org.mockito.Mockito;
@@ -23,7 +22,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(KalibroSettings.class)
 public class ProjectTest extends KalibroTestCase {
 
 	private KalibroSettings settings;
@@ -32,8 +31,8 @@ public class ProjectTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings();
-		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(settings);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(settings);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

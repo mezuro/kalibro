@@ -1,22 +1,23 @@
 package org.kalibro.desktop;
 
-import static org.mockito.Mockito.*;
+import static org.mockito.internal.verification.VerificationModeFactory.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.KalibroSettings;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.desktop.settings.SettingsController;
+import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, KalibroDesktop.class, SettingsController.class})
+@PrepareForTest({KalibroSettings.class, KalibroDesktop.class, SettingsController.class})
 public class KalibroDesktopTest extends KalibroTestCase {
 
 	@BeforeClass
@@ -28,10 +29,10 @@ public class KalibroDesktopTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.mockStatic(SettingsController.class);
-		kalibroFrame = PowerMockito.mock(KalibroFrame.class);
-		PowerMockito.whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
+		mockStatic(KalibroSettings.class);
+		mockStatic(SettingsController.class);
+		kalibroFrame = mock(KalibroFrame.class);
+		whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -39,9 +40,9 @@ public class KalibroDesktopTest extends KalibroTestCase {
 		prepareScenario(false, false);
 		KalibroDesktop.main(null);
 
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		SettingsController.editSettings();
-		verify(kalibroFrame, never()).setVisible(true);
+		Mockito.verify(kalibroFrame, times(0)).setVisible(true);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -49,9 +50,9 @@ public class KalibroDesktopTest extends KalibroTestCase {
 		prepareScenario(false, true);
 		KalibroDesktop.main(null);
 
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		SettingsController.editSettings();
-		verify(kalibroFrame).setVisible(true);
+		Mockito.verify(kalibroFrame).setVisible(true);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -59,16 +60,16 @@ public class KalibroDesktopTest extends KalibroTestCase {
 		prepareScenario(true, false);
 		KalibroDesktop.main(null);
 
-		PowerMockito.verifyStatic(never());
+		verifyStatic(times(0));
 		SettingsController.editSettings();
-		verify(kalibroFrame).setVisible(true);
+		Mockito.verify(kalibroFrame).setVisible(true);
 	}
 
 	private void prepareScenario(boolean settingsFileExists, boolean userConfirmSettings) throws Exception {
 		EditSettingsAnswer answer = new EditSettingsAnswer();
 		answer.userConfirms = userConfirmSettings;
-		PowerMockito.when(Kalibro.settingsFileExists()).thenReturn(settingsFileExists);
-		PowerMockito.doAnswer(answer).when(SettingsController.class, "editSettings");
+		when(KalibroSettings.exists()).thenReturn(settingsFileExists);
+		doAnswer(answer).when(SettingsController.class, "editSettings");
 	}
 
 	private final class EditSettingsAnswer implements Answer<Object> {
@@ -77,7 +78,7 @@ public class KalibroDesktopTest extends KalibroTestCase {
 
 		@Override
 		public Object answer(InvocationOnMock invocation) throws Throwable {
-			PowerMockito.when(Kalibro.settingsFileExists()).thenReturn(userConfirms);
+			when(KalibroSettings.exists()).thenReturn(userConfirms);
 			return null;
 		}
 	}

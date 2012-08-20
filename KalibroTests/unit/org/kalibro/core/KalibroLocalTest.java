@@ -22,7 +22,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, KalibroLocal.class, RepositoryType.class})
+@PrepareForTest({KalibroSettings.class, KalibroLocal.class, RepositoryType.class})
 public class KalibroLocalTest extends KalibroTestCase {
 
 	private static final String PROJECT_NAME = "KalibroLocalTest project";
@@ -40,8 +40,8 @@ public class KalibroLocalTest extends KalibroTestCase {
 
 	private void mockSettings() {
 		KalibroSettings settings = mock(KalibroSettings.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(settings);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(settings);
 		when(settings.getServerSettings()).thenReturn(mock(ServerSettings.class));
 	}
 

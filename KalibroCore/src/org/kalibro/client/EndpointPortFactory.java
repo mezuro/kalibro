@@ -7,7 +7,7 @@ import javax.xml.namespace.QName;
 import javax.xml.ws.Service;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.Kalibro;
+import org.kalibro.KalibroSettings;
 
 public final class EndpointPortFactory {
 
@@ -22,7 +22,7 @@ public final class EndpointPortFactory {
 	}
 
 	private static <T> URL getWsdlLocation(String endpointName) {
-		String serviceAddress = Kalibro.currentSettings().getClientSettings().getServiceAddress();
+		String serviceAddress = KalibroSettings.load().getClientSettings().getServiceAddress();
 		try {
 			return new URL(serviceAddress + endpointName + "/?wsdl");
 		} catch (MalformedURLException exception) {

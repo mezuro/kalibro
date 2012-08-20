@@ -1,9 +1,10 @@
 package org.kalibro;
 
+import static org.kalibro.core.Environment.*;
+
 import java.io.File;
 
 import org.junit.BeforeClass;
-import org.kalibro.core.Environment;
 
 public abstract class AcceptanceTest extends KalibroTestCase {
 
@@ -15,7 +16,7 @@ public abstract class AcceptanceTest extends KalibroTestCase {
 		settings.getServerSettings().getDatabaseSettings().setJdbcUrl("jdbc:mysql://localhost:3306/kalibro_test");
 		settings.save();
 
-		settingsFile = new File(Environment.dotKalibro(), "kalibro.settings");
+		settingsFile = new File(dotKalibro(), "kalibro.settings");
 		settingsFile.deleteOnExit();
 	}
 }

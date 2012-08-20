@@ -1,6 +1,7 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.Environment.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,7 +10,6 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
@@ -37,7 +37,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 
 	private void checkServerSettings() {
 		ServerSettings serverSettings = settings.getServerSettings();
-		assertEquals(new File(Environment.dotKalibro(), "repositories"), serverSettings.getLoadDirectory());
+		assertEquals(new File(dotKalibro(), "repositories"), serverSettings.getLoadDirectory());
 
 		DatabaseSettings databaseSettings = serverSettings.getDatabaseSettings();
 		assertEquals(SupportedDatabase.MYSQL, databaseSettings.getDatabaseType());
@@ -63,7 +63,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	public void settingsFileShouldBeHumanReadable() throws IOException {
 		settings.save();
 		String expected = loadResource("default.settings");
-		expected = expected.replace("~/.kalibro", Environment.dotKalibro().getPath());
+		expected = expected.replace("~/.kalibro", dotKalibro().getPath());
 		assertEquals(expected, FileUtils.readFileToString(settingsFile));
 	}
 

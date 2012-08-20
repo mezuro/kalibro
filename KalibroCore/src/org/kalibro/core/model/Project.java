@@ -3,7 +3,7 @@ package org.kalibro.core.model;
 import java.io.File;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.Kalibro;
+import org.kalibro.KalibroSettings;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.IdentityField;
 import org.kalibro.core.model.abstracts.SortingMethods;
@@ -130,7 +130,7 @@ public class Project extends AbstractEntity<Project> {
 	}
 
 	public File getDirectory() {
-		File loadDirectory = Kalibro.currentSettings().getServerSettings().getLoadDirectory();
+		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
 		return new File(loadDirectory, id + "-" + Identifier.fromText(name).asVariable());
 	}
 }
