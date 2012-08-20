@@ -33,7 +33,7 @@ public class DatabaseDaoFactoryTest extends KalibroTestCase {
 		mockPersistence();
 		baseToolDao = mock(BaseToolDatabaseDao.class);
 		whenNew(BaseToolDatabaseDao.class).withArguments(any()).thenReturn(baseToolDao);
-		daoFactory = new DatabaseDaoFactory();
+		daoFactory = new DatabaseDaoFactory(new DatabaseSettings());
 	}
 
 	private void mockPersistence() {

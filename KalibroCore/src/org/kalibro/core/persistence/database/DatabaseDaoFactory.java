@@ -12,10 +12,6 @@ public class DatabaseDaoFactory implements DaoFactory {
 
 	private EntityManagerFactory entityManagerFactory;
 
-	public DatabaseDaoFactory() {
-		this(new DatabaseSettings());
-	}
-
 	public DatabaseDaoFactory(DatabaseSettings databaseSettings) {
 		Map<String, String> persistenceProperties = databaseSettings.toPersistenceProperties();
 		entityManagerFactory = Persistence.createEntityManagerFactory("Kalibro", persistenceProperties);
