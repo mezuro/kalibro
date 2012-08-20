@@ -1,12 +1,11 @@
 package org.kalibro.core;
 
-import static org.kalibro.core.concurrent.Task.*;
+import static org.kalibro.core.concurrent.Task.DAY;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.KalibroSettings;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.database.DatabaseDaoFactory;
@@ -25,7 +24,7 @@ public class KalibroLocal extends KalibroFacade {
 
 	@Override
 	protected DaoFactory createDaoFactory() {
-		return new DatabaseDaoFactory(KalibroSettings.load().getServerSettings().getDatabaseSettings());
+		return new DatabaseDaoFactory();
 	}
 
 	@Override

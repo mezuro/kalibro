@@ -2,9 +2,9 @@ package org.kalibro.core.persistence.database;
 
 import org.junit.After;
 import org.junit.Before;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.AcceptanceTest;
 
-public abstract class DatabaseTestCase extends KalibroTestCase {
+public abstract class DatabaseTestCase extends AcceptanceTest {
 
 	protected DatabaseDaoFactory daoFactory;
 
