@@ -1,5 +1,6 @@
 package org.kalibro.core.persistence.database;
 
+import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
@@ -14,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.Environment;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -25,15 +27,17 @@ public class DatabaseDaoFactoryTest extends KalibroTestCase {
 
 	private EntityManagerFactory managerFactory;
 	private BaseToolDatabaseDao baseToolDao;
+	private DatabaseSettings settings;
 
 	private DatabaseDaoFactory daoFactory;
 
 	@Before
 	public void setUp() throws Exception {
 		mockPersistence();
+		settings = new DatabaseSettings();
 		baseToolDao = mock(BaseToolDatabaseDao.class);
 		whenNew(BaseToolDatabaseDao.class).withArguments(any()).thenReturn(baseToolDao);
-		daoFactory = new DatabaseDaoFactory(new DatabaseSettings());
+		daoFactory = new DatabaseDaoFactory(settings);
 	}
 
 	private void mockPersistence() {
@@ -48,7 +52,13 @@ public class DatabaseDaoFactoryTest extends KalibroTestCase {
 		ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
 		verifyStatic();
 		Persistence.createEntityManagerFactory(eq("Kalibro"), captor.capture());
-		assertDeepEquals(new DatabaseSettings().toPersistenceProperties(), captor.getValue());
+		Map<String, String> properties = captor.getValue();
+
+		assertEquals(Environment.ddlGeneration(), properties.get(DDL_GENERATION));
+		assertEquals(settings.getDatabaseType().getDriverClassName(), properties.get(JDBC_DRIVER));
+		assertEquals(settings.getJdbcUrl(), properties.get(JDBC_URL));
+		assertEquals(settings.getUsername(), properties.get(JDBC_USER));
+		assertEquals(settings.getPassword(), properties.get(JDBC_PASSWORD));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

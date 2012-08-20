@@ -5,7 +5,7 @@ import org.kalibro.core.persistence.database.BaseToolDatabaseTest;
 public class BaseToolMysqlTest extends BaseToolDatabaseTest {
 
 	@Override
-	protected MysqlTestSettings getTestSettings() {
-		return new MysqlTestSettings();
+	protected MysqlDaoFactoryForTest getDaoFactoryForTest() {
+		return new MysqlDaoFactoryForTest();
 	}
 }

@@ -10,7 +10,7 @@ public abstract class DatabaseTestCase extends KalibroTestCase {
 
 	@Before
 	public void createDaoFactory() {
-		daoFactory = new DatabaseDaoFactory(getTestSettings());
+		daoFactory = getDaoFactoryForTest();
 	}
 
 	@After
@@ -18,5 +18,5 @@ public abstract class DatabaseTestCase extends KalibroTestCase {
 		daoFactory.finalize();
 	}
 
-	protected abstract DatabaseTestSettings getTestSettings();
+	protected abstract DatabaseDaoFactoryForTest getDaoFactoryForTest();
 }

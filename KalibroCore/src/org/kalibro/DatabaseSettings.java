@@ -1,11 +1,5 @@
 package org.kalibro;
 
-import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.Print;
 
@@ -65,15 +59,5 @@ public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public Map<String, String> toPersistenceProperties() {
-		Map<String, String> persistenceProperties = new HashMap<String, String>();
-		persistenceProperties.put(DDL_GENERATION, Environment.ddlGeneration());
-		persistenceProperties.put(JDBC_DRIVER, databaseType.getDriverClassName());
-		persistenceProperties.put(JDBC_URL, jdbcUrl);
-		persistenceProperties.put(JDBC_USER, username);
-		persistenceProperties.put(JDBC_PASSWORD, password);
-		return persistenceProperties;
 	}
 }
