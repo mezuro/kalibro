@@ -119,19 +119,8 @@ public class DeepEqualityEvaluatorTest extends KalibroTestCase {
 		assertDeepEquals(false, programmer, almostEquals);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAcceptEqualArrays() {
-		assertDeepEquals(true, new ArrayHolder(), new ArrayHolder());
-	}
-
 	private void assertDeepEquals(boolean deepEquals, AbstractEntity<?> entity1, AbstractEntity<?> entity2) {
 		assertEquals(deepEquals, new DeepEqualityEvaluator(entity1, entity2).areEqual());
 		assertEquals(deepEquals, new DeepEqualityEvaluator(entity2, entity1).areEqual());
-	}
-
-	private class ArrayHolder extends AbstractEntity<ArrayHolder> {
-
-		@SuppressWarnings("unused")
-		private String[] array = {"My", "string", "array"};
 	}
 }
