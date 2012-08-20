@@ -4,6 +4,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Determines equality of entities using all fields, and recursively on composed entities.
+ * 
+ * @author Carlos Morais
+ */
 class DeepEqualityEvaluator extends EqualityEvaluator {
 
 	protected DeepEqualityEvaluator(AbstractEntity<?> entity, Object other) {
