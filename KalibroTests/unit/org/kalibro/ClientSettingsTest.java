@@ -1,9 +1,8 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
 
 public class ClientSettingsTest extends KalibroTestCase {
 

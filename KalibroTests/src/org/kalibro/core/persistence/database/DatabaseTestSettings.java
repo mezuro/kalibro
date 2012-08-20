@@ -4,7 +4,7 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 
 import java.util.Map;
 
-import org.kalibro.core.settings.DatabaseSettings;
+import org.kalibro.DatabaseSettings;
 
 public abstract class DatabaseTestSettings extends DatabaseSettings {
 

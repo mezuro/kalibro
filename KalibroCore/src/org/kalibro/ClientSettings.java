@@ -1,8 +1,13 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.Print;
 
+/**
+ * Client side preferences.
+ * 
+ * @author Carlos Morais
+ */
 public class ClientSettings extends AbstractEntity<ClientSettings> {
 
 	@Print(comment = "Address of the remote Kalibro Service\n")

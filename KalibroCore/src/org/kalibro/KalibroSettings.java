@@ -7,12 +7,10 @@ import org.apache.commons.io.FileUtils;
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.Print;
-import org.kalibro.core.settings.ClientSettings;
-import org.kalibro.core.settings.ServerSettings;
 import org.yaml.snakeyaml.Yaml;
 
 /**
- * Saves and loads Kalibro preferences.
+ * Save and retrieve Kalibro preferences.
  * 
  * @author Carlos Morais
  */

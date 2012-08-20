@@ -1,4 +1,4 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 
@@ -9,6 +9,11 @@ import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.Print;
 
+/**
+ * Database preferences.
+ * 
+ * @author Carlos Morais
+ */
 public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 
 	@Print(order = 1, comment = "Possibilities: APACHE_DERBY, MYSQL")

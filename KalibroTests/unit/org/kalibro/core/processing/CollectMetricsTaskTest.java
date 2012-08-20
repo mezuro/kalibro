@@ -15,6 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.ServerSettings;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.Configuration;
@@ -23,7 +24,6 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
-import org.kalibro.core.settings.ServerSettings;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 

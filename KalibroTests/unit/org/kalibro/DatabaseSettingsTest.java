@@ -1,4 +1,4 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import static org.junit.Assert.*;
@@ -6,7 +6,6 @@ import static org.junit.Assert.*;
 import java.util.Map;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
 import org.kalibro.core.Environment;
 
 public class DatabaseSettingsTest extends KalibroTestCase {

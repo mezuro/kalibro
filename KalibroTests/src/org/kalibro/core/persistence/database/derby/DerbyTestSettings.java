@@ -5,8 +5,8 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import java.io.File;
 import java.util.Map;
 
+import org.kalibro.SupportedDatabase;
 import org.kalibro.core.persistence.database.DatabaseTestSettings;
-import org.kalibro.core.settings.SupportedDatabase;
 
 public class DerbyTestSettings extends DatabaseTestSettings {
 

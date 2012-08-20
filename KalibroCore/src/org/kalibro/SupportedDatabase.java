@@ -1,7 +1,12 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import java.sql.Driver;
 
+/**
+ * Database types supported by Kalibro.
+ * 
+ * @author Carlos Morais
+ */
 public enum SupportedDatabase {
 
 	APACHE_DERBY("Apache Derby", org.apache.derby.jdbc.EmbeddedDriver.class),

@@ -4,8 +4,8 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 
 import java.util.Map;
 
+import org.kalibro.SupportedDatabase;
 import org.kalibro.core.persistence.database.DatabaseTestSettings;
-import org.kalibro.core.settings.SupportedDatabase;
 
 class MysqlTestSettings extends DatabaseTestSettings {
 

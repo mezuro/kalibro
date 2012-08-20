@@ -11,10 +11,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.settings.ClientSettings;
-import org.kalibro.core.settings.DatabaseSettings;
-import org.kalibro.core.settings.ServerSettings;
-import org.kalibro.core.settings.SupportedDatabase;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class SettingsAcceptanceTest extends AcceptanceTest {

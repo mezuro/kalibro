@@ -1,6 +1,6 @@
 package org.kalibro.desktop.settings;
 
-import org.kalibro.core.settings.ServerSettings;
+import org.kalibro.ServerSettings;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class ServerSettingsPanelManualTest extends ServerSettingsPanel {

@@ -1,6 +1,6 @@
 package org.kalibro.desktop.settings;
 
-import org.kalibro.core.settings.DatabaseSettings;
+import org.kalibro.DatabaseSettings;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class DatabaseSettingsPanelManualTest extends DatabaseSettingsPanel {

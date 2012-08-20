@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.ClientSettings;
 import org.kalibro.KalibroTestCase;
-import org.kalibro.core.settings.ClientSettings;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.StringField;
 

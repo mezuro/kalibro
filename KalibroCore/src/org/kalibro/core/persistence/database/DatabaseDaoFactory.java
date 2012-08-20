@@ -5,8 +5,8 @@ import java.util.Map;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import org.kalibro.DatabaseSettings;
 import org.kalibro.core.persistence.dao.DaoFactory;
-import org.kalibro.core.settings.DatabaseSettings;
 
 public class DatabaseDaoFactory implements DaoFactory {
 

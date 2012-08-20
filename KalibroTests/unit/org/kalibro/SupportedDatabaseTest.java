@@ -1,10 +1,9 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.settings.SupportedDatabase.*;
+import static org.kalibro.SupportedDatabase.*;
 
 import org.junit.Test;
-import org.kalibro.EnumerationTestCase;
 
 public class SupportedDatabaseTest extends EnumerationTestCase<SupportedDatabase> {
 

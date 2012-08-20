@@ -1,4 +1,4 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import java.io.File;
 
@@ -6,6 +6,11 @@ import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
 import org.kalibro.core.model.abstracts.Print;
 
+/**
+ * Server side preferences.
+ * 
+ * @author Carlos Morais
+ */
 public class ServerSettings extends AbstractEntity<ServerSettings> {
 
 	@Print(order = 1, comment = "Source code will be loaded in this directory before analysis")

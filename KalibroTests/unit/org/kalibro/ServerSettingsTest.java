@@ -1,11 +1,10 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import static org.junit.Assert.*;
 
 import java.io.File;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
 import org.kalibro.core.Environment;
 
 public class ServerSettingsTest extends KalibroTestCase {

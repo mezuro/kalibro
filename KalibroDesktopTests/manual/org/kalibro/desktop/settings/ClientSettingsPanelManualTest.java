@@ -1,6 +1,6 @@
 package org.kalibro.desktop.settings;
 
-import org.kalibro.core.settings.ClientSettings;
+import org.kalibro.ClientSettings;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class ClientSettingsPanelManualTest extends ClientSettingsPanel {
