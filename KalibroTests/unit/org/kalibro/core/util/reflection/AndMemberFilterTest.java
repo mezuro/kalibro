@@ -12,15 +12,17 @@ import org.kalibro.KalibroTestCase;
 public class AndMemberFilterTest extends KalibroTestCase {
 
 	private Member member;
-	private MemberFilter trueFilter, falseFilter;
+	private MemberFilter trueFilter, falseFilter, errorFilter;
 
 	@Before
 	public void setUp() {
 		member = mock(Member.class);
 		trueFilter = mock(MemberFilter.class);
 		falseFilter = mock(MemberFilter.class);
+		errorFilter = mock(MemberFilter.class);
 		when(trueFilter.accept(member)).thenReturn(true);
 		when(falseFilter.accept(member)).thenReturn(false);
+		doThrow(new NullPointerException()).when(errorFilter).accept(member);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -32,8 +34,7 @@ public class AndMemberFilterTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNeedJustOneFalseToBeFalse() {
-		assertTrue(new AndMemberFilter(trueFilter, trueFilter, trueFilter, trueFilter, trueFilter).accept(member));
-		assertFalse(new AndMemberFilter(trueFilter, trueFilter, trueFilter, trueFilter, falseFilter).accept(member));
+	public void shouldReturnTrueOnFirstReject() {
+		assertTrue(new OrMemberFilter(trueFilter, falseFilter, errorFilter).accept(member));
 	}
 }
