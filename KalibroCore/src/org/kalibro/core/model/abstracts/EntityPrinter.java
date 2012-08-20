@@ -31,13 +31,15 @@ final class EntityPrinter {
 		buffer.append(field + ": ");
 		printValue(reflector.get(field));
 		Print print = reflector.getFieldAnnotation(field, Print.class);
-		if (print != null)
+		if (print != null && !print.comment().trim().isEmpty())
 			buffer.append(" # " + print.comment());
 	}
 
 	private void printValue(Object value) {
 		if (value instanceof AbstractEntity<?>)
 			printEntity((AbstractEntity<?>) value);
+		else if (value instanceof Enum<?>)
+			printEnumeration((Enum<?>) value);
 		else if (value instanceof Map<?, ?>)
 			printMap((Map<?, ?>) value);
 		else
@@ -46,6 +48,10 @@ final class EntityPrinter {
 
 	private void printEntity(AbstractEntity<?> entity) {
 		new EntityPrinter(entity, buffer, indentLevel + 1).print();
+	}
+
+	private void printEnumeration(Enum<?> enumeration) {
+		buffer.append(enumeration.name());
 	}
 
 	private void printMap(Map<?, ?> map) {

@@ -3,10 +3,8 @@ package org.kalibro.core.settings;
 import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import static org.junit.Assert.*;
 
-import java.io.IOException;
 import java.util.Map;
 
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 import org.kalibro.core.Environment;
@@ -21,12 +19,6 @@ public class DatabaseSettingsTest extends KalibroTestCase {
 		assertEquals("jdbc:mysql://localhost:3306/kalibro", settings.getJdbcUrl());
 		assertEquals("kalibro", settings.getUsername());
 		assertEquals("kalibro", settings.getPassword());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkToString() throws IOException {
-		String expected = IOUtils.toString(getClass().getResourceAsStream("database.settings"));
-		assertEquals(expected, "" + settings);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

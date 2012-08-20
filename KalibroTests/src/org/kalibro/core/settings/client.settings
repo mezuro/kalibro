@@ -1,3 +1,0 @@
-
-clientSettings:
-    serviceAddress: "http://localhost:8080/KalibroService/" # Address of the remote KalibroService

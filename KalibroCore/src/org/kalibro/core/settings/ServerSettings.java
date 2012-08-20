@@ -4,14 +4,17 @@ import java.io.File;
 
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
+import org.kalibro.core.model.abstracts.Print;
 
 public class ServerSettings extends AbstractEntity<ServerSettings> {
 
+	@Print(order = 1, comment = "Source code will be loaded in this directory before analysis")
 	private File loadDirectory;
+
 	private DatabaseSettings databaseSettings;
 
 	public ServerSettings() {
-		setLoadDirectory(new File(Environment.dotKalibro(), "projects"));
+		setLoadDirectory(new File(Environment.dotKalibro(), "repositories"));
 		setDatabaseSettings(new DatabaseSettings());
 	}
 
@@ -30,13 +33,5 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 
 	public void setDatabaseSettings(DatabaseSettings databaseSettings) {
 		this.databaseSettings = databaseSettings;
-	}
-
-	@Override
-	public String toString() {
-		return "\nserverSettings:\n" +
-			"    loadDirectory: " + loadDirectory.getAbsolutePath() +
-			" # Projects will be loaded in this directory before analysis\n" +
-			databaseSettings;
 	}
 }

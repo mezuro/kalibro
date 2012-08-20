@@ -10,7 +10,7 @@ import java.lang.annotation.Target;
 @Retention(RUNTIME)
 public @interface Print {
 
-	int order();
+	int order() default 0;
 
-	String comment();
+	String comment() default "";
 }

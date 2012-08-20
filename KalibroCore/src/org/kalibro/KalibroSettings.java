@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import org.apache.commons.io.FileUtils;
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
+import org.kalibro.core.model.abstracts.Print;
 import org.kalibro.core.settings.ClientSettings;
 import org.kalibro.core.settings.ServerSettings;
 import org.yaml.snakeyaml.Yaml;
@@ -34,7 +35,9 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		return new File(Environment.dotKalibro(), "kalibro.settings");
 	}
 
+	@Print(comment = "CLIENT to connect to Kalibro Service; SERVER if the service is running on this machine\n")
 	private ServiceSide serviceSide;
+
 	private ClientSettings clientSettings;
 	private ServerSettings serverSettings;
 
@@ -74,12 +77,5 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 		} catch (Exception exception) {
 			throw new KalibroException("Could not save settings on file: " + settingsFile(), exception);
 		}
-	}
-
-	@Override
-	public String toString() {
-		return "---\nserviceSide: " + serviceSide + " # " +
-			"CLIENT for consuming a remote Kalibro Service; SERVER if the service is installed on this machine\n" +
-			clientSettings + serverSettings;
 	}
 }

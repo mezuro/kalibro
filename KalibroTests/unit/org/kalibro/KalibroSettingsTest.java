@@ -7,10 +7,8 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -89,13 +87,6 @@ public class KalibroSettingsTest extends KalibroTestCase {
 		settings.save();
 		verifyStatic();
 		FileUtils.writeStringToFile(settingsFile, settings.toString());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintAsYml() throws IOException {
-		InputStream resource = getClass().getResourceAsStream("default.settings");
-		String expected = IOUtils.toString(resource).replace("~/.kalibro", dotKalibro().getPath());
-		assertEquals(expected, settings.toString());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

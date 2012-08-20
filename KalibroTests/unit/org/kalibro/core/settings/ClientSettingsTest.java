@@ -2,9 +2,6 @@ package org.kalibro.core.settings;
 
 import static org.junit.Assert.*;
 
-import java.io.IOException;
-
-import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
@@ -15,11 +12,5 @@ public class ClientSettingsTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultClientSettings() {
 		assertEquals("http://localhost:8080/KalibroService/", settings.getServiceAddress());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkToString() throws IOException {
-		String expected = IOUtils.toString(getClass().getResourceAsStream("client.settings"));
-		assertEquals(expected, "" + settings);
 	}
 }

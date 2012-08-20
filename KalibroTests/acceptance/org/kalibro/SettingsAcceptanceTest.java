@@ -11,7 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.settings.*;
+import org.kalibro.core.settings.ClientSettings;
+import org.kalibro.core.settings.DatabaseSettings;
+import org.kalibro.core.settings.ServerSettings;
+import org.kalibro.core.settings.SupportedDatabase;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class SettingsAcceptanceTest extends AcceptanceTest {
@@ -38,7 +41,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 
 	private void checkServerSettings() {
 		ServerSettings serverSettings = settings.getServerSettings();
-		assertEquals(new File(Environment.dotKalibro(), "projects"), serverSettings.getLoadDirectory());
+		assertEquals(new File(Environment.dotKalibro(), "repositories"), serverSettings.getLoadDirectory());
 
 		DatabaseSettings databaseSettings = serverSettings.getDatabaseSettings();
 		assertEquals(SupportedDatabase.MYSQL, databaseSettings.getDatabaseType());
@@ -58,6 +61,14 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	public void shouldSaveAndLoad() {
 		settings.save();
 		assertDeepEquals(settings, KalibroSettings.load());
+	}
+
+	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	public void settingsFileShouldBeHumanReadable() throws IOException {
+		settings.save();
+		String expected = loadResource("default.settings");
+		expected = expected.replace("~/.kalibro", Environment.dotKalibro().getPath());
+		assertEquals(expected, FileUtils.readFileToString(settingsFile));
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)

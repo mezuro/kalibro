@@ -7,12 +7,20 @@ import java.util.Map;
 
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.abstracts.AbstractEntity;
+import org.kalibro.core.model.abstracts.Print;
 
 public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 
+	@Print(order = 1, comment = "Possibilities: APACHE_DERBY, MYSQL")
 	private SupportedDatabase databaseType;
+
+	@Print(order = 2)
 	private String jdbcUrl;
+
+	@Print(order = 3)
 	private String username;
+
+	@Print(order = 4)
 	private String password;
 
 	public DatabaseSettings() {
@@ -52,18 +60,6 @@ public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		String string = "    databaseSettings:\n" +
-			"        databaseType: " + databaseType.name() + " # Possibilities:";
-		for (SupportedDatabase supportedDatabase : SupportedDatabase.values())
-			string += " " + supportedDatabase.name();
-		return string + "\n" +
-			"        jdbcUrl: \"" + jdbcUrl + "\"\n" +
-			"        username: \"" + username + "\"\n" +
-			"        password: \"" + password + "\"\n";
 	}
 
 	public Map<String, String> toPersistenceProperties() {
