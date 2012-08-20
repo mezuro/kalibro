@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SortingMethods({"getUseMetrics", "getName"})
-public class Programmer extends Person {
+class Programmer extends Person {
 
 	private Boolean useMetrics;
 

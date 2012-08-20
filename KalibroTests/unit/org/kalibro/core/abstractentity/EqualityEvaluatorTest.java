@@ -11,69 +11,78 @@ import org.kalibro.KalibroTestCase;
 public class EqualityEvaluatorTest extends KalibroTestCase {
 
 	private Person person;
-	private EqualityEvaluator evaluator;
 
 	@Before
 	public void setUp() {
 		person = carlos();
-		evaluator = new EqualityEvaluator(person);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptNull() {
-		assertFalse(evaluator.isEquals(null));
+		assertFalse(equalsTo(null));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptSelf() {
-		assertTrue(evaluator.isEquals(person));
+		assertTrue(equalsTo(person));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptIfNotAnEntity() {
-		assertFalse(evaluator.isEquals(""));
+		assertFalse(equalsTo(""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptIfIdentityFieldsAreDifferent() {
-		assertFalse(evaluator.isEquals(new NoIdentityEntity()));
+		assertFalse(equalsTo(new NoIdentityEntity()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptIfIdentityValuesAreDifferent() {
-		assertFalse(evaluator.isEquals(paulo()));
+		assertFalse(equalsTo(paulo()));
 
 		Person different = carlos();
 		different.setIdentityNumber("0");
-		assertFalse(evaluator.isEquals(different));
+		assertFalse(equalsTo(different));
 
 		different.setIdentityNumber(null);
-		assertFalse(evaluator.isEquals(different));
+		assertFalse(equalsTo(different));
+
+		different.setIdentityNumber(person.getIdentityNumber());
+		person.setIdentityNumber(null);
+		assertFalse(equalsTo(different));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptEqual() {
 		Person equalOther = carlos();
 		assertNotSame(equalOther, person);
-		assertTrue(evaluator.isEquals(equalOther));
+		assertTrue(equalsTo(equalOther));
 
 		equalOther.setName("Another Name");
-		assertTrue(evaluator.isEquals(equalOther));
+		assertTrue(equalsTo(equalOther));
+
+		equalOther.setIdentityNumber(null);
+		person.setIdentityNumber(null);
+		assertTrue(equalsTo(equalOther));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptEqualSubclass() {
-		assertTrue(evaluator.isEquals(programmerCarlos()));
+		assertTrue(equalsTo(programmerCarlos()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptEqualSuperclass() {
-		evaluator = new EqualityEvaluator(programmerCarlos());
-		assertTrue(evaluator.isEquals(person));
+		assertTrue(new EqualityEvaluator(programmerCarlos(), person).areEqual());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAcceptOtherTypeIfHasSameIdentityFields() {
-		assertTrue(evaluator.isEquals(new PersonImitation(person)));
+		assertTrue(equalsTo(new PersonImitation(person)));
+	}
+
+	private boolean equalsTo(Object other) {
+		return new EqualityEvaluator(person, other).areEqual();
 	}
 }

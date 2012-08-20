@@ -4,7 +4,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 @SortingMethods("getName")
-public class Person extends AbstractEntity<Person> {
+class Person extends AbstractEntity<Person> {
 
 	@IdentityField
 	private String identityNumber;

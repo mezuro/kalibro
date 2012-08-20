@@ -2,38 +2,37 @@ package org.kalibro.core.abstractentity;
 
 import java.util.List;
 
+/**
+ * Determines equality of entities using identity fields.
+ * 
+ * @author Carlos Morais
+ */
 class EqualityEvaluator {
 
-	protected EntityReflector reflector;
+	protected EntityReflector reflector, otherReflector;
 
-	protected EqualityEvaluator(AbstractEntity<?> entity) {
+	protected EqualityEvaluator(AbstractEntity<?> entity, Object other) {
 		reflector = new EntityReflector(entity);
+		if (other instanceof AbstractEntity)
+			otherReflector = new EntityReflector((AbstractEntity<?>) other);
 	}
 
-	protected boolean isEquals(Object other) {
-		if (other == null)
+	protected boolean areEqual() {
+		if (otherReflector == null)
 			return false;
-		if (other == reflector.getObject())
+		if (reflector.getObject() == otherReflector.getObject())
 			return true;
-		return sameType(other) && sameFieldValues((AbstractEntity<?>) other);
+		return sameType() && sameFieldValues();
 	}
 
-	protected boolean sameType(Object other) {
-		return (other instanceof AbstractEntity) && sameIdentityFields((AbstractEntity<?>) other);
+	protected boolean sameType() {
+		return reflector.listIdentityFields().equals(otherReflector.listIdentityFields());
 	}
 
-	private boolean sameIdentityFields(AbstractEntity<?> other) {
-		return new EntityReflector(other).listIdentityFields().equals(reflector.listIdentityFields());
-	}
-
-	private boolean sameFieldValues(AbstractEntity<?> other) {
-		EntityReflector otherReflector = new EntityReflector(other);
-		for (String field : equalityFields()) {
-			Object myValue = reflector.get(field);
-			Object otherValue = otherReflector.get(field);
-			if (!sameFieldValue(myValue, otherValue))
+	private boolean sameFieldValues() {
+		for (String field : equalityFields())
+			if (!sameFieldValues(field))
 				return false;
-		}
 		return true;
 	}
 
@@ -41,7 +40,17 @@ class EqualityEvaluator {
 		return reflector.listIdentityFields();
 	}
 
-	protected boolean sameFieldValue(Object myValue, Object otherValue) {
+	private boolean sameFieldValues(String field) {
+		return areEqual(reflector.get(field), otherReflector.get(field));
+	}
+
+	protected boolean areEqual(Object myValue, Object otherValue) {
+		if (myValue == null)
+			return otherValue == null;
+		return sameValue(myValue, otherValue);
+	}
+
+	protected boolean sameValue(Object myValue, Object otherValue) {
 		return myValue.equals(otherValue);
 	}
 }
