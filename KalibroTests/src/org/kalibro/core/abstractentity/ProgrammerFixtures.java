@@ -1,6 +1,6 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
-import static org.kalibro.core.model.abstracts.PersonFixtures.*;
+import static org.kalibro.core.abstractentity.PersonFixtures.*;
 
 final class ProgrammerFixtures {
 

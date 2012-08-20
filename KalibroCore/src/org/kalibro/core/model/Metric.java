@@ -1,8 +1,8 @@
 package org.kalibro.core.model;
 
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingMethods;
 import org.kalibro.core.model.enums.Granularity;
 
 @SortingMethods({"getCompound", "getScope", "getName"})

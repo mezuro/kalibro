@@ -4,9 +4,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingMethods;
 
 @SortingMethods("getModule")
 public class ModuleNode extends AbstractEntity<ModuleNode> {

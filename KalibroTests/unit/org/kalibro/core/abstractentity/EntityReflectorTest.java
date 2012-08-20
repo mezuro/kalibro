@@ -1,8 +1,8 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.abstracts.PersonFixtures.*;
-import static org.kalibro.core.model.abstracts.ProgrammerFixtures.*;
+import static org.kalibro.core.abstractentity.PersonFixtures.carlos;
+import static org.kalibro.core.abstractentity.ProgrammerFixtures.programmerCarlos;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -83,7 +83,7 @@ public class EntityReflectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowErrorOnInvalidSortingMethod() {
-		String message = "Sorting method not found: org.kalibro.core.model.abstracts.InvalidSorting.invalid";
+		String message = "Sorting method not found: org.kalibro.core.abstractentity.InvalidSorting.invalid";
 		checkKalibroError(new Task() {
 
 			@Override

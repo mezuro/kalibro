@@ -1,7 +1,7 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.abstracts.EntityPrinter.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.abstractentity.EntityPrinter.print;
 
 import java.io.IOException;
 

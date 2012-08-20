@@ -1,8 +1,8 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.abstracts.PersonFixtures.*;
-import static org.kalibro.core.model.abstracts.ProgrammerFixtures.*;
+import static org.kalibro.core.abstractentity.PersonFixtures.carlos;
+import static org.kalibro.core.abstractentity.ProgrammerFixtures.*;
 
 import java.util.Arrays;
 

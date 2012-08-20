@@ -5,8 +5,8 @@ import java.io.FileInputStream;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.core.Environment;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.Print;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Print;
 import org.yaml.snakeyaml.Yaml;
 
 /**

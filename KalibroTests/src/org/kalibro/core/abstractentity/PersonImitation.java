@@ -1,4 +1,4 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
 class PersonImitation extends AbstractEntity<PersonImitation> {
 

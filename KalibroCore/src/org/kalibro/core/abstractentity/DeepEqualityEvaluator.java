@@ -1,4 +1,4 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
 import java.util.*;
 

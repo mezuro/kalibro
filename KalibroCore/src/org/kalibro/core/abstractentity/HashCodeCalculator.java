@@ -1,4 +1,4 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
 /**
  * Calculates hash codes for entities, based on identity fields.<br/>

@@ -1,7 +1,7 @@
 package org.kalibro;
 
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.Print;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Print;
 
 /**
  * Client side preferences.

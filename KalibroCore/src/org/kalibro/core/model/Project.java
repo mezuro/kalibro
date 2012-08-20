@@ -4,9 +4,9 @@ import java.io.File;
 
 import org.kalibro.KalibroException;
 import org.kalibro.KalibroSettings;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingMethods;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.util.Identifier;
 

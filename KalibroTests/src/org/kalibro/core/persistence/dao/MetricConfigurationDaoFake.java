@@ -3,9 +3,9 @@ package org.kalibro.core.persistence.dao;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
 
 public class MetricConfigurationDaoFake implements MetricConfigurationDao {
 

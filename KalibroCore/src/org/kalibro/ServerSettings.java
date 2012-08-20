@@ -3,8 +3,8 @@ package org.kalibro;
 import java.io.File;
 
 import org.kalibro.core.Environment;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.Print;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Print;
 
 /**
  * Server side preferences.

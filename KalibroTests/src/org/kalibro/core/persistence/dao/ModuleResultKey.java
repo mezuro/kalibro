@@ -2,9 +2,9 @@ package org.kalibro.core.persistence.dao;
 
 import java.util.Date;
 
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingMethods;
 
 @SortingMethods({"getProjectName", "getModuleName", "getDate"})
 public class ModuleResultKey extends AbstractEntity<ModuleResultKey> {

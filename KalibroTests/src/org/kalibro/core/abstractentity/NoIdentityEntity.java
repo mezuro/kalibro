@@ -1,5 +1,4 @@
-package org.kalibro.core.model.abstracts;
-
+package org.kalibro.core.abstractentity;
 
 class NoIdentityEntity extends AbstractEntity<NoIdentityEntity> {
 

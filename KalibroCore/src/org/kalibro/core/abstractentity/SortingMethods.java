@@ -1,4 +1,4 @@
-package org.kalibro.core.model.abstracts;
+package org.kalibro.core.abstractentity;
 
 import static java.lang.annotation.ElementType.*;
 import static java.lang.annotation.RetentionPolicy.*;

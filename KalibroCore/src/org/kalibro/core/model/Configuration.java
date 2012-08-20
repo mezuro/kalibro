@@ -3,10 +3,10 @@ package org.kalibro.core.model;
 import java.util.*;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.Ignore;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Ignore;
+import org.kalibro.core.abstractentity.SortingMethods;
 import org.kalibro.core.processing.ScriptValidator;
 
 @SortingMethods("getName")
