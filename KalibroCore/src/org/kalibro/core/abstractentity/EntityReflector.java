@@ -1,10 +1,8 @@
 package org.kalibro.core.abstractentity;
 
-import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
+import static org.kalibro.core.util.reflection.MemberFilterFactory.hasAnnotation;
 
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,13 +12,7 @@ import org.kalibro.core.util.reflection.Reflector;
 class EntityReflector extends Reflector {
 
 	protected EntityReflector(AbstractEntity<?> entity) {
-		super(entity);
-	}
-
-	@Override
-	protected boolean isRelevantField(Field field) {
-		boolean isStatic = Modifier.isStatic(field.getModifiers());
-		return super.isRelevantField(field) && !isStatic && !field.isAnnotationPresent(Ignore.class);
+		super(entity, hasAnnotation(Ignore.class));
 	}
 
 	protected List<String> listIdentityFields() {
