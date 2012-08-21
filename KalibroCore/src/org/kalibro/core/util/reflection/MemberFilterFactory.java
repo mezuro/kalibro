@@ -6,7 +6,7 @@ import java.lang.reflect.Modifier;
 public final class MemberFilterFactory {
 
 	public static MemberFilter hasAnnotation(Class<? extends Annotation> annotationClass) {
-		return new AnnotatedMemberFilter(annotationClass);
+		return new AnnotationMemberFilter(annotationClass);
 	}
 
 	public static MemberFilter isStatic() {

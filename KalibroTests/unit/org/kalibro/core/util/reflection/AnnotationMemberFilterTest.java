@@ -9,15 +9,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
-public class AnnotatedMemberFilterTest extends KalibroTestCase {
+public class AnnotationMemberFilterTest extends KalibroTestCase {
 
 	private AccessibleObject member;
-	private AnnotatedMemberFilter filter;
+	private AnnotationMemberFilter filter;
 
 	@Before
 	public void setUp() {
 		member = mock(AccessibleObject.class);
-		filter = new AnnotatedMemberFilter(Before.class);
+		filter = new AnnotationMemberFilter(Before.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -8,11 +8,11 @@ import java.lang.reflect.AccessibleObject;
  * 
  * @author Carlos Morais
  */
-final class AnnotatedMemberFilter extends MemberFilterAdapter {
+final class AnnotationMemberFilter extends MemberFilterAdapter {
 
 	private Class<? extends Annotation> annotationClass;
 
-	protected AnnotatedMemberFilter(Class<? extends Annotation> annotationClass) {
+	protected AnnotationMemberFilter(Class<? extends Annotation> annotationClass) {
 		this.annotationClass = annotationClass;
 	}
 
