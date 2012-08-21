@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
-public class EqualityEvaluatorTest extends KalibroTestCase {
+public class EntityEqualityEvaluatorTest extends KalibroTestCase {
 
 	private Person carlos;
 
@@ -71,11 +71,11 @@ public class EqualityEvaluatorTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldBeEqualToEntityOfOtherClassWithEqualIdentityValues() {
 		assertTrue(equalTo(programmerCarlos()));
-		assertTrue(new EqualityEvaluator(programmerCarlos(), carlos).areEqual());
+		assertTrue(new EntityEqualityEvaluator(programmerCarlos(), carlos).areEqual());
 		assertTrue(equalTo(new PersonImitation(carlos)));
 	}
 
 	private boolean equalTo(Object other) {
-		return new EqualityEvaluator(carlos, other).areEqual();
+		return new EntityEqualityEvaluator(carlos, other).areEqual();
 	}
 }

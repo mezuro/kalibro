@@ -9,9 +9,9 @@ import java.util.Map;
  * 
  * @author Carlos Morais
  */
-class DeepEqualityEvaluator extends EqualityEvaluator {
+class DeepEntityEqualityEvaluator extends EntityEqualityEvaluator {
 
-	protected DeepEqualityEvaluator(AbstractEntity<?> entity, Object other) {
+	protected DeepEntityEqualityEvaluator(AbstractEntity<?> entity, Object other) {
 		super(entity, other);
 	}
 

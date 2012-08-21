@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
-public class DeepEqualityEvaluatorTest extends KalibroTestCase {
+public class DeepEntityEqualityEvaluatorTest extends KalibroTestCase {
 
 	private Person person;
 	private Programmer programmer;
@@ -38,8 +38,8 @@ public class DeepEqualityEvaluatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptNull() {
-		assertFalse(new DeepEqualityEvaluator(person, null).areEqual());
-		assertFalse(new DeepEqualityEvaluator(programmer, null).areEqual());
+		assertFalse(new DeepEntityEqualityEvaluator(person, null).areEqual());
+		assertFalse(new DeepEntityEqualityEvaluator(programmer, null).areEqual());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -120,7 +120,7 @@ public class DeepEqualityEvaluatorTest extends KalibroTestCase {
 	}
 
 	private void assertDeepEquals(boolean deepEquals, AbstractEntity<?> entity1, AbstractEntity<?> entity2) {
-		assertEquals(deepEquals, new DeepEqualityEvaluator(entity1, entity2).areEqual());
-		assertEquals(deepEquals, new DeepEqualityEvaluator(entity2, entity1).areEqual());
+		assertEquals(deepEquals, new DeepEntityEqualityEvaluator(entity1, entity2).areEqual());
+		assertEquals(deepEquals, new DeepEntityEqualityEvaluator(entity2, entity1).areEqual());
 	}
 }

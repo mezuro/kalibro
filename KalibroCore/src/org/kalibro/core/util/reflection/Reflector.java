@@ -5,6 +5,7 @@ import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.util.*;
 
 import org.kalibro.KalibroError;
@@ -27,7 +28,7 @@ public class Reflector {
 	}
 
 	private void initializeFields() {
-		fields = new HashMap<String, Field>();
+		fields = new TreeMap<String, Field>();
 		putAllFields(getObjectClass());
 	}
 
@@ -97,7 +98,9 @@ public class Reflector {
 	public Object invoke(String methodName) {
 		String completeName = getObjectClass().getName() + "." + methodName;
 		try {
-			return getObjectClass().getMethod(methodName).invoke(object);
+			Method method = getObjectClass().getMethod(methodName);
+			method.setAccessible(true);
+			return method.invoke(object);
 		} catch (Exception exception) {
 			throw new KalibroError("Error invoking method: " + completeName, exception);
 		}

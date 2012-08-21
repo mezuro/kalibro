@@ -37,13 +37,13 @@ public class ReflectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListFields() {
-		assertDeepEquals(reflector.listFields(), "waiting", "reflector");
+		assertDeepEquals(reflector.listFields(), "reflector", "waiting");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldFilterFields() {
 		assertDeepEquals(reflector.listFields(named("waiting")), "waiting");
-		assertDeepEquals(reflector.listFields(nameMatches(".*t.*")), "waiting", "reflector");
+		assertDeepEquals(reflector.listFields(nameMatches(".*t.*")), "reflector", "waiting");
 		assertDeepEquals(reflector.listFields(hasAnnotation(Column.class)), "reflector");
 		assertTrue(reflector.listFields(not(is(PRIVATE))).isEmpty());
 	}

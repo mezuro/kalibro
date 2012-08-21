@@ -22,7 +22,7 @@ class EntityComparator<T extends Comparable<? super T>> {
 	private int compare(T other, Method method) {
 		try {
 			return doCompare(other, method);
-		} catch (Exception exception) {
+		} catch (Throwable exception) {
 			return 0;
 		}
 	}

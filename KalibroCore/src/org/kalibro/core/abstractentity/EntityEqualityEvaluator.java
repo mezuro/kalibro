@@ -7,11 +7,11 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-class EqualityEvaluator {
+class EntityEqualityEvaluator {
 
 	protected EntityReflector reflector, otherReflector;
 
-	protected EqualityEvaluator(AbstractEntity<?> entity, Object other) {
+	protected EntityEqualityEvaluator(AbstractEntity<?> entity, Object other) {
 		reflector = new EntityReflector(entity);
 		if (other instanceof AbstractEntity)
 			otherReflector = new EntityReflector((AbstractEntity<?>) other);
