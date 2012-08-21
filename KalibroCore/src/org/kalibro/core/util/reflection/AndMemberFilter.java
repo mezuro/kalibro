@@ -11,7 +11,7 @@ final class AndMemberFilter implements MemberFilter {
 
 	private MemberFilter[] filters;
 
-	public AndMemberFilter(MemberFilter... filters) {
+	protected AndMemberFilter(MemberFilter... filters) {
 		this.filters = filters;
 	}
 

@@ -1,6 +1,7 @@
 package org.kalibro.core.util.reflection;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Modifier;
 
 public final class MemberFilterFactory {
 
@@ -9,7 +10,7 @@ public final class MemberFilterFactory {
 	}
 
 	public static MemberFilter isStatic() {
-		return new StaticMemberFilter();
+		return new ModifierMemberFilter(Modifier.STATIC);
 	}
 
 	public static MemberFilter not(MemberFilter filter) {

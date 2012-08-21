@@ -11,7 +11,7 @@ final class OrMemberFilter implements MemberFilter {
 
 	private MemberFilter[] filters;
 
-	public OrMemberFilter(MemberFilter... filters) {
+	protected OrMemberFilter(MemberFilter... filters) {
 		this.filters = filters;
 	}
 

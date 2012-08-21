@@ -30,7 +30,7 @@ public class MemberFilterFactoryTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateStaticMemberFilter() {
-		assertClassEquals(StaticMemberFilter.class, isStatic());
+		assertClassEquals(ModifierMemberFilter.class, isStatic());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
