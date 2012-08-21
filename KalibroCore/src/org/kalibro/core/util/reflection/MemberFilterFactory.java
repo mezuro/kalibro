@@ -1,6 +1,7 @@
 package org.kalibro.core.util.reflection;
 
 import java.lang.annotation.Annotation;
+import java.util.regex.Pattern;
 
 /**
  * Allows elegant creation of filters.
@@ -15,6 +16,14 @@ public final class MemberFilterFactory {
 
 	public static MemberFilter hasAnnotation(Class<? extends Annotation> annotationClass) {
 		return new AnnotationMemberFilter(annotationClass);
+	}
+
+	public static MemberFilter nameMatches(String regularExpression) {
+		return new NameMemberFilter(regularExpression);
+	}
+
+	public static MemberFilter named(String name) {
+		return new NameMemberFilter(Pattern.quote(name));
 	}
 
 	public static MemberFilter not(MemberFilter filter) {

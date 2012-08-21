@@ -55,6 +55,17 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCreateNameMemberFilter() {
+		filter = nameMatches("set.*");
+		assertTrue(filter.accept(setUp));
+		assertTrue(filter.accept(setTestEnvironment));
+
+		filter = named("setUp");
+		assertTrue(filter.accept(setUp));
+		assertFalse(filter.accept(setTestEnvironment));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateNotMemberFilter() {
 		filter = not(is(STATIC));
 		assertTrue(filter.accept(setUp));
