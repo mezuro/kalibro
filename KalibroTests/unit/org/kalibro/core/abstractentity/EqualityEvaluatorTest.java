@@ -68,18 +68,6 @@ public class EqualityEvaluatorTest extends KalibroTestCase {
 		assertClassEquals(EntityEqualityEvaluator.class, captor.getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldUseDeepEntityAsSpecialCaseOnDeepEquals() {
-		when(EqualityEvaluator.evaluate(any(), any(), any(EqualityEvaluator.class))).thenReturn(true);
-		EqualityEvaluator.areDeepEqual(null, null);
-
-		@SuppressWarnings("rawtypes")
-		ArgumentCaptor<EqualityEvaluator> captor = ArgumentCaptor.forClass(EqualityEvaluator.class);
-		verifyStatic();
-		EqualityEvaluator.evaluate(eq(null), eq(null), captor.capture());
-		assertClassEquals(DeepEntityEqualityEvaluator.class, captor.getValue());
-	}
-
 	private class FirstCharEvaluator extends EqualityEvaluator<String> {
 
 		@Override

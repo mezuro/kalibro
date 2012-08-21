@@ -12,7 +12,7 @@ class EqualityEvaluator<T> {
 	}
 
 	protected static boolean areDeepEqual(Object value, Object other) {
-		return evaluate(value, other, new DeepEntityEqualityEvaluator());
+		return evaluate(value, other, new DeepEntityEqualityEvaluator(), new StackTraceElementEqualityEvaluator());
 	}
 
 	protected static boolean evaluate(Object value, Object other, EqualityEvaluator<?>... specialCaseEvaluators) {
