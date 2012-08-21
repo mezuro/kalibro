@@ -1,7 +1,7 @@
 package org.kalibro;
 
 /**
- * Designed to be the only exception thrown by Kalibro, wrapping checked exceptions (KalibroException is unchecked).
+ * Exception thrown by Kalibro.
  * 
  * @author Carlos Morais
  */
