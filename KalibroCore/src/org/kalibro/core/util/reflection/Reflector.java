@@ -56,18 +56,6 @@ public class Reflector {
 		return object.getClass();
 	}
 
-	public boolean hasClassAnnotation(Class<? extends Annotation> annotationClass) {
-		return getObjectClass().isAnnotationPresent(annotationClass);
-	}
-
-	public <T extends Annotation> T getClassAnnotation(Class<T> annotationClass) {
-		return getObjectClass().getAnnotation(annotationClass);
-	}
-
-	public boolean hasField(String fieldName) {
-		return fields.containsKey(fieldName);
-	}
-
 	public List<String> listFields() {
 		return new ArrayList<String>(fields.keySet());
 	}

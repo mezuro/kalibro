@@ -1,16 +1,20 @@
 package org.kalibro.core.util.reflection;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Modifier;
 
+/**
+ * Allows elegant creation of filters.
+ * 
+ * @author Carlos Morais
+ */
 public final class MemberFilterFactory {
+
+	public static MemberFilter is(int modifier) {
+		return new ModifierMemberFilter(modifier);
+	}
 
 	public static MemberFilter hasAnnotation(Class<? extends Annotation> annotationClass) {
 		return new AnnotationMemberFilter(annotationClass);
-	}
-
-	public static MemberFilter isStatic() {
-		return new ModifierMemberFilter(Modifier.STATIC);
 	}
 
 	public static MemberFilter not(MemberFilter filter) {

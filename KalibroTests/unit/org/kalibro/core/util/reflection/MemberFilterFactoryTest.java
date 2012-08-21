@@ -1,63 +1,85 @@
 package org.kalibro.core.util.reflection;
 
+import static java.lang.reflect.Modifier.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Member;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.UtilityClassTest;
 
-public class MemberFilterFactoryTest extends KalibroTestCase {
+public class MemberFilterFactoryTest extends UtilityClassTest {
 
-	@BeforeClass
-	public static void emmaCoverage() throws Exception {
-		Constructor<MemberFilterFactory> constructor = MemberFilterFactory.class.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		constructor.newInstance();
-	}
+	private Member setTestEnvironment, setUp;
 
-	private Member emmaCoverage, setUp;
+	private MemberFilter filter;
 
 	@Before
 	public void setUp() throws Exception {
 		setUp = getClass().getMethod("setUp");
-		emmaCoverage = getClass().getMethod("emmaCoverage");
+		setTestEnvironment = getClass().getMethod("setTestEnvironment");
+	}
+
+	@Override
+	protected Class<?> utilityClass() {
+		return MemberFilterFactory.class;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCreateStaticMemberFilter() {
-		assertClassEquals(ModifierMemberFilter.class, isStatic());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCreateAnnotatedMemberFilter() {
-		MemberFilter filter = hasAnnotation(Before.class);
+	public void shouldCreateModifierMemberFilter() {
+		filter = is(PUBLIC);
 		assertTrue(filter.accept(setUp));
-		assertFalse(filter.accept(emmaCoverage));
+		assertTrue(filter.accept(setTestEnvironment));
+
+		filter = is(STATIC);
+		assertFalse(filter.accept(setUp));
+		assertTrue(filter.accept(setTestEnvironment));
+
+		filter = is(SYNCHRONIZED);
+		assertFalse(filter.accept(setUp));
+		assertFalse(filter.accept(setTestEnvironment));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCreateAnnotationMemberFilter() {
+		filter = hasAnnotation(Before.class);
+		assertTrue(filter.accept(setUp));
+		assertFalse(filter.accept(setTestEnvironment));
+
+		filter = hasAnnotation(BeforeClass.class);
+		assertFalse(filter.accept(setUp));
+		assertTrue(filter.accept(setTestEnvironment));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateNotMemberFilter() {
-		MemberFilter filter = not(isStatic());
+		filter = not(is(STATIC));
 		assertTrue(filter.accept(setUp));
-		assertFalse(filter.accept(emmaCoverage));
+		assertFalse(filter.accept(setTestEnvironment));
+
+		filter = not(is(PRIVATE));
+		assertTrue(filter.accept(setUp));
+		assertTrue(filter.accept(setTestEnvironment));
+
+		filter = not(is(PUBLIC));
+		assertFalse(filter.accept(setUp));
+		assertFalse(filter.accept(setTestEnvironment));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateAndMemberFilter() {
-		MemberFilter filter = and(isStatic(), hasAnnotation(BeforeClass.class));
+		filter = and(is(STATIC), hasAnnotation(BeforeClass.class));
 		assertFalse(filter.accept(setUp));
-		assertTrue(filter.accept(emmaCoverage));
+		assertTrue(filter.accept(setTestEnvironment));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateOrMemberFilter() {
-		MemberFilter filter = or(hasAnnotation(Before.class), hasAnnotation(BeforeClass.class));
+		filter = or(hasAnnotation(Before.class), not(is(STATIC)));
 		assertTrue(filter.accept(setUp));
-		assertTrue(filter.accept(emmaCoverage));
+		assertFalse(filter.accept(setTestEnvironment));
 	}
 }

@@ -1,5 +1,6 @@
 package org.kalibro.core.util.reflection;
 
+import static java.lang.reflect.Modifier.STATIC;
 import static org.junit.Assert.*;
 import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
@@ -8,7 +9,6 @@ import java.util.Comparator;
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Id;
-import javax.persistence.Table;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,31 +30,13 @@ public class ReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveObject() {
+	public void shouldGetObject() {
 		assertSame(sample, reflector.getObject());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveEntityClass() {
-		assertEquals(ReflectorSample.class, reflector.getObjectClass());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAskForClassAnnotation() {
-		assertTrue(reflector.hasClassAnnotation(Table.class));
-		assertFalse(reflector.hasClassAnnotation(Test.class));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveClassAnnotation() {
-		assertEquals("SAMPLE_TABLE", reflector.getClassAnnotation(Table.class).name());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAskForField() {
-		assertTrue(reflector.hasField("id"));
-		assertTrue(reflector.hasField("counter"));
-		assertFalse(reflector.hasField("inexistent"));
+	public void shouldGetObjectClass() {
+		assertEquals(sample.getClass(), reflector.getObjectClass());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -64,8 +46,8 @@ public class ReflectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldFilterFields() {
-		assertDeepEquals(reflector.listFields(isStatic()), "counter");
-		assertDeepEquals(reflector.listFields(not(isStatic())), "description", "id", "name");
+		assertDeepEquals(reflector.listFields(is(STATIC)), "counter");
+		assertDeepEquals(reflector.listFields(not(is(STATIC))), "description", "id", "name");
 		assertDeepEquals(reflector.listFields(hasAnnotation(Id.class)), "id");
 	}
 
@@ -136,7 +118,7 @@ public class ReflectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldFilterMethods() {
-		assertDeepEquals(reflector.listMethods(isStatic()), "count");
+		assertDeepEquals(reflector.listMethods(is(STATIC)), "count");
 		assertDeepEquals(reflector.listMethods(hasAnnotation(Basic.class)), "getId");
 	}
 
