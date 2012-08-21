@@ -18,21 +18,6 @@ public class EntityEqualityEvaluatorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotBeEqualToNull() {
-		assertFalse(equalTo(null));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldBeEqualToItself() {
-		assertTrue(equalTo(carlos));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotBeEqualToNonEntity() {
-		assertFalse(equalTo(""));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotBeEqualToEntityWithDifferentIdentityFields() {
 		assertFalse(equalTo(new NoIdentityEntity()));
 	}
@@ -71,11 +56,11 @@ public class EntityEqualityEvaluatorTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldBeEqualToEntityOfOtherClassWithEqualIdentityValues() {
 		assertTrue(equalTo(programmerCarlos()));
-		assertTrue(new EntityEqualityEvaluator(programmerCarlos(), carlos).areEqual());
+		assertTrue(new EntityEqualityEvaluator().equals(programmerCarlos(), carlos));
 		assertTrue(equalTo(new PersonImitation(carlos)));
 	}
 
-	private boolean equalTo(Object other) {
-		return new EntityEqualityEvaluator(carlos, other).areEqual();
+	private boolean equalTo(AbstractEntity<?> other) {
+		return new EntityEqualityEvaluator().equals(carlos, other);
 	}
 }

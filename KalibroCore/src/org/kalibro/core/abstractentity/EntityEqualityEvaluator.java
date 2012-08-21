@@ -7,21 +7,19 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-class EntityEqualityEvaluator {
+class EntityEqualityEvaluator extends EqualityEvaluator<AbstractEntity<?>> {
 
 	protected EntityReflector reflector, otherReflector;
 
-	protected EntityEqualityEvaluator(AbstractEntity<?> entity, Object other) {
-		reflector = new EntityReflector(entity);
-		if (other instanceof AbstractEntity)
-			otherReflector = new EntityReflector((AbstractEntity<?>) other);
+	@Override
+	protected boolean canEvaluate(Object value) {
+		return value instanceof AbstractEntity;
 	}
 
-	protected boolean areEqual() {
-		if (otherReflector == null)
-			return false;
-		if (reflector.getObject() == otherReflector.getObject())
-			return true;
+	@Override
+	protected boolean equals(AbstractEntity<?> entity, AbstractEntity<?> other) {
+		reflector = new EntityReflector(entity);
+		otherReflector = new EntityReflector(other);
 		return sameType() && sameFieldValues();
 	}
 
@@ -31,7 +29,7 @@ class EntityEqualityEvaluator {
 
 	private boolean sameFieldValues() {
 		for (String field : equalityFields())
-			if (!sameFieldValues(field))
+			if (!sameFieldValue(field))
 				return false;
 		return true;
 	}
@@ -40,17 +38,11 @@ class EntityEqualityEvaluator {
 		return reflector.listIdentityFields();
 	}
 
-	private boolean sameFieldValues(String field) {
-		return areEqual(reflector.get(field), otherReflector.get(field));
+	private boolean sameFieldValue(String field) {
+		return sameValue(reflector.get(field), otherReflector.get(field));
 	}
 
-	protected boolean areEqual(Object myValue, Object otherValue) {
-		if (myValue == null)
-			return otherValue == null;
-		return sameValue(myValue, otherValue);
-	}
-
-	protected boolean sameValue(Object myValue, Object otherValue) {
-		return myValue.equals(otherValue);
+	protected boolean sameValue(Object value, Object otherValue) {
+		return areEqual(value, otherValue);
 	}
 }

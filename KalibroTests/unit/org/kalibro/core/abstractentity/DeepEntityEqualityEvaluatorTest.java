@@ -1,6 +1,6 @@
 package org.kalibro.core.abstractentity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.abstractentity.PersonFixtures.carlos;
 import static org.kalibro.core.abstractentity.ProgrammerFixtures.programmerCarlos;
 
@@ -34,12 +34,6 @@ public class DeepEntityEqualityEvaluatorTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNeitherAcceptSubclassOrSuperclass() {
 		assertDeepEquals(false, person, programmer);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotAcceptNull() {
-		assertFalse(new DeepEntityEqualityEvaluator(person, null).areEqual());
-		assertFalse(new DeepEntityEqualityEvaluator(programmer, null).areEqual());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -120,7 +114,7 @@ public class DeepEntityEqualityEvaluatorTest extends KalibroTestCase {
 	}
 
 	private void assertDeepEquals(boolean deepEquals, AbstractEntity<?> entity1, AbstractEntity<?> entity2) {
-		assertEquals(deepEquals, new DeepEntityEqualityEvaluator(entity1, entity2).areEqual());
-		assertEquals(deepEquals, new DeepEntityEqualityEvaluator(entity2, entity1).areEqual());
+		assertEquals(deepEquals, new DeepEntityEqualityEvaluator().equals(entity1, entity2));
+		assertEquals(deepEquals, new DeepEntityEqualityEvaluator().equals(entity2, entity1));
 	}
 }

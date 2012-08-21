@@ -11,10 +11,6 @@ import java.util.Map;
  */
 class DeepEntityEqualityEvaluator extends EntityEqualityEvaluator {
 
-	protected DeepEntityEqualityEvaluator(AbstractEntity<?> entity, Object other) {
-		super(entity, other);
-	}
-
 	@Override
 	protected boolean sameType() {
 		return reflector.getObjectClass() == otherReflector.getObjectClass();
@@ -26,41 +22,45 @@ class DeepEntityEqualityEvaluator extends EntityEqualityEvaluator {
 	}
 
 	@Override
-	protected boolean sameValue(Object myValue, Object otherValue) {
-		if (myValue instanceof AbstractEntity<?>)
-			return ((AbstractEntity<?>) myValue).deepEquals(otherValue);
-		if (myValue instanceof Throwable)
-			return throwableEquals((Throwable) myValue, (Throwable) otherValue);
-		if (myValue instanceof StackTraceElement)
-			return stackTraceEquals((StackTraceElement) myValue, (StackTraceElement) otherValue);
-		if (myValue instanceof Map)
-			return mapEquals((Map<?, ?>) myValue, (Map<?, ?>) otherValue);
-		if (myValue instanceof Collection)
-			return collectionEquals((Collection<?>) myValue, (Collection<?>) otherValue);
-		if (myValue.getClass().isArray())
-			return arrayEquals((Object[]) myValue, (Object[]) otherValue);
-		return myValue.equals(otherValue);
+	protected boolean sameValue(Object value, Object otherValue) {
+		if (value == null)
+			return otherValue == null;
+		if (value == otherValue)
+			return true;
+		if (value instanceof AbstractEntity<?>)
+			return ((AbstractEntity<?>) value).deepEquals(otherValue);
+		if (value instanceof Throwable)
+			return throwableEquals((Throwable) value, (Throwable) otherValue);
+		if (value instanceof StackTraceElement)
+			return stackTraceEquals((StackTraceElement) value, (StackTraceElement) otherValue);
+		if (value instanceof Map)
+			return mapEquals((Map<?, ?>) value, (Map<?, ?>) otherValue);
+		if (value instanceof Collection)
+			return collectionEquals((Collection<?>) value, (Collection<?>) otherValue);
+		if (value.getClass().isArray())
+			return arrayEquals((Object[]) value, (Object[]) otherValue);
+		return value.equals(otherValue);
 	}
 
 	private boolean throwableEquals(Throwable myError, Throwable otherError) {
 		return myError.getClass() == otherError.getClass()
-			&& areEqual(myError.getMessage(), otherError.getMessage())
-			&& areEqual(myError.getStackTrace(), otherError.getStackTrace())
-			&& areEqual(myError.getCause(), otherError.getCause());
+			&& sameValue(myError.getMessage(), otherError.getMessage())
+			&& sameValue(myError.getStackTrace(), otherError.getStackTrace())
+			&& sameValue(myError.getCause(), otherError.getCause());
 	}
 
 	private boolean stackTraceEquals(StackTraceElement myValue, StackTraceElement otherValue) {
-		return areEqual(myValue.getClassName(), otherValue.getClassName())
-			&& areEqual(myValue.getMethodName(), otherValue.getMethodName())
-			&& areEqual(myValue.getFileName(), otherValue.getFileName())
-			&& areEqual(myValue.getLineNumber(), otherValue.getLineNumber());
+		return sameValue(myValue.getClassName(), otherValue.getClassName())
+			&& sameValue(myValue.getMethodName(), otherValue.getMethodName())
+			&& sameValue(myValue.getFileName(), otherValue.getFileName())
+			&& sameValue(myValue.getLineNumber(), otherValue.getLineNumber());
 	}
 
 	private boolean mapEquals(Map<?, ?> myMap, Map<?, ?> otherMap) {
 		if (!collectionEquals(myMap.keySet(), otherMap.keySet()))
 			return false;
 		for (Object key : myMap.keySet())
-			if (!areEqual(myMap.get(key), otherMap.get(key)))
+			if (!sameValue(myMap.get(key), otherMap.get(key)))
 				return false;
 		return true;
 	}
@@ -73,7 +73,7 @@ class DeepEntityEqualityEvaluator extends EntityEqualityEvaluator {
 		if (myArray.length != otherArray.length)
 			return false;
 		for (int i = 0; i < myArray.length; i++)
-			if (!areEqual(myArray[i], otherArray[i]))
+			if (!sameValue(myArray[i], otherArray[i]))
 				return false;
 		return true;
 	}
