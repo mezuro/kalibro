@@ -1,9 +1,13 @@
 package org.cvsanaly;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
@@ -12,11 +16,21 @@ import org.kalibro.core.model.NativeMetric;
 public class CVSAnalyTest extends KalibroTestCase {
 
 	private CVSAnalyMetricCollector cvsanaly;
+	private PrintStream originalSysout;
 
 	@Before
 	public void setUp() {
-		//TODO Quiet logging
+		originalSysout = System.out;
+		System.setOut(new PrintStream(new OutputStream() {
+			@Override
+			public void write(int arg0) throws IOException { /* Do nothing. This is to silence the console. */ }
+		}));
 		cvsanaly = new CVSAnalyMetricCollector();
+	}
+	
+	@After
+	public void tearDown() {
+		System.setOut(originalSysout);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
