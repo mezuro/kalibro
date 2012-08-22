@@ -6,13 +6,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
 
-public class DeepArrayEqualityEvaluatorTest extends KalibroTestCase {
+public class ArrayEqualityEvaluatorTest extends KalibroTestCase {
 
-	private DeepArrayEqualityEvaluator evaluator;
+	private ArrayEqualityEvaluator evaluator;
 
 	@Before
 	public void setUp() {
-		evaluator = new DeepArrayEqualityEvaluator();
+		evaluator = new ArrayEqualityEvaluator();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

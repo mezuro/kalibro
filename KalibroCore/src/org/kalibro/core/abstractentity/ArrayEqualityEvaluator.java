@@ -5,7 +5,7 @@ package org.kalibro.core.abstractentity;
  * 
  * @author Carlos Morais
  */
-class DeepArrayEqualityEvaluator extends EqualityEvaluator<Object[]> {
+class ArrayEqualityEvaluator extends EqualityEvaluator<Object[]> {
 
 	@Override
 	protected boolean canEvaluate(Object value) {
