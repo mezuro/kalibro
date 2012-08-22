@@ -27,17 +27,13 @@ class DeepEntityEqualityEvaluator extends EntityEqualityEvaluator {
 			return otherValue == null;
 		if (value == otherValue)
 			return true;
-		if (value instanceof AbstractEntity<?>)
-			return ((AbstractEntity<?>) value).deepEquals(otherValue);
 		if (value instanceof Throwable)
 			return throwableEquals((Throwable) value, (Throwable) otherValue);
 		if (value instanceof Map)
 			return mapEquals((Map<?, ?>) value, (Map<?, ?>) otherValue);
 		if (value instanceof Collection)
 			return collectionEquals((Collection<?>) value, (Collection<?>) otherValue);
-		if (value.getClass().isArray())
-			return arrayEquals((Object[]) value, (Object[]) otherValue);
-		return areEqual(value, otherValue);
+		return areDeepEqual(value, otherValue);
 	}
 
 	private boolean throwableEquals(Throwable myError, Throwable otherError) {
