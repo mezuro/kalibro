@@ -3,6 +3,7 @@ package org.kalibro.core.abstractentity;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Determines equality of entities using all fields, and recursively on composed entities.
@@ -23,23 +24,23 @@ class DeepEntityEqualityEvaluator extends EntityEqualityEvaluator {
 
 	@Override
 	protected boolean sameValue(Object value, Object otherValue) {
+		if (value instanceof Set)
+			return setEquals((Set<?>) value, (Set<?>) otherValue);
 		if (value instanceof Map)
 			return mapEquals((Map<?, ?>) value, (Map<?, ?>) otherValue);
-		if (value instanceof Collection)
-			return collectionEquals((Collection<?>) value, (Collection<?>) otherValue);
 		return areDeepEqual(value, otherValue);
 	}
 
-	private boolean mapEquals(Map<?, ?> myMap, Map<?, ?> otherMap) {
-		if (!areDeepEqual(myMap.keySet(), otherMap.keySet()))
+	private boolean mapEquals(Map<?, ?> map, Map<?, ?> other) {
+		if (!areDeepEqual(map.keySet(), other.keySet()))
 			return false;
-		for (Object key : myMap.keySet())
-			if (!areDeepEqual(myMap.get(key), otherMap.get(key)))
+		for (Object key : map.keySet())
+			if (!areDeepEqual(map.get(key), other.get(key)))
 				return false;
 		return true;
 	}
 
-	private boolean collectionEquals(Collection<?> myCollection, Collection<?> otherCollection) {
-		return areDeepEqual(myCollection.toArray(), otherCollection.toArray());
+	private boolean setEquals(Collection<?> set, Collection<?> other) {
+		return areDeepEqual(set.toArray(), other.toArray());
 	}
 }
