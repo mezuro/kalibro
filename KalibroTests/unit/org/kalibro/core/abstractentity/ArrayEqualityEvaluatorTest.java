@@ -21,6 +21,9 @@ public class ArrayEqualityEvaluatorTest extends KalibroTestCase {
 		assertTrue(evaluator.canEvaluate(new String[1]));
 		assertTrue(evaluator.canEvaluate(new Test[2]));
 		assertTrue(evaluator.canEvaluate(new Before[3]));
+
+		assertFalse(evaluator.canEvaluate(this));
+		assertFalse(evaluator.canEvaluate(evaluator));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

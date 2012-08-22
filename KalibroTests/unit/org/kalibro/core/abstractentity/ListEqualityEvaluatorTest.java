@@ -23,6 +23,9 @@ public class ListEqualityEvaluatorTest extends KalibroTestCase {
 	public void shouldEvaluateAnyTypeOfList() {
 		assertTrue(evaluator.canEvaluate(new ArrayList<Object>()));
 		assertTrue(evaluator.canEvaluate(new LinkedList<String>()));
+
+		assertFalse(evaluator.canEvaluate(this));
+		assertFalse(evaluator.canEvaluate(evaluator));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
