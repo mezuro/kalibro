@@ -1,7 +1,7 @@
 package org.analizo;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizo;
 import static org.kalibro.core.model.NativeModuleResultFixtures.*;
 
 import java.io.File;
@@ -59,7 +59,7 @@ public class AnalizoTest extends KalibroTestCase {
 	public void shouldCollectMetrics() throws IOException {
 		File codeDirectory = new File(samplesDirectory(), "analizo");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
-		assertDeepEquals(analizo.collectMetrics(codeDirectory, metrics),
+		assertDeepSet(analizo.collectMetrics(codeDirectory, metrics),
 			helloWorldApplicationResult(), helloWorldClassResult());
 	}
 }

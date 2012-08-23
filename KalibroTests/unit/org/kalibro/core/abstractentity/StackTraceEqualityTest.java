@@ -47,7 +47,7 @@ public class StackTraceEqualityTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void allFourShouldBeEqual() {
-		assertFalse(equality.equals(newElement("Set.contains(Set.java:42)"), newElement("Set.contains(Set.java:42)")));
+		assertTrue(equality.equals(newElement("Set.contains(Set.java:42)"), newElement("Set.contains(Set.java:42)")));
 	}
 
 	private StackTraceElement newElement(String shortPrint) {

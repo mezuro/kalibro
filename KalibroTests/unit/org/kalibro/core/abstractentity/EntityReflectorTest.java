@@ -35,18 +35,18 @@ public class EntityReflectorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllFields() {
-		assertDeepEquals(reflector.listFields(), "identityNumber", "name", "relatives", "sex");
+		assertDeepList(reflector.listFields(), "identityNumber", "name", "relatives", "sex");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListIdentityFields() {
-		assertDeepEquals(reflector.listIdentityFields(), "identityNumber");
+		assertDeepList(reflector.listIdentityFields(), "identityNumber");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllFieldsAsIdentityIfEntityHasNoIdentityFields() {
 		reflector = new EntityReflector(new NoIdentityEntity());
-		assertDeepEquals(reflector.listIdentityFields(), "field1", "field2");
+		assertDeepList(reflector.listIdentityFields(), "field1", "field2");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

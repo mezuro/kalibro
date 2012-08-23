@@ -5,21 +5,18 @@ package org.kalibro.core.abstractentity;
  * 
  * @author Carlos Morais
  */
-abstract class Equality<T> {
+public abstract class Equality<T> {
 
-	private static final Equality<?>[] NORMAL_CASES = new Equality[]{new EntityEquality()};
-	private static final Equality<?>[] DEEP_CASES = new Equality[]{new DeepEntityEquality(), new ArrayEquality(),
-		new ListEquality(), new MapEquality(), new SetEquality(), new StackTraceEquality(), new ThrowableEquality()};
-
-	protected static boolean areEqual(Object value, Object other) {
-		return evaluate(value, other, NORMAL_CASES);
+	public static boolean areEqual(Object value, Object other) {
+		return evaluate(value, other, new EntityEquality());
 	}
 
-	protected static boolean areDeepEqual(Object value, Object other) {
-		return evaluate(value, other, DEEP_CASES);
+	public static boolean areDeepEqual(Object value, Object other) {
+		return evaluate(value, other, new ArrayEquality(), new DeepEntityEquality(), new ListEquality(),
+			new MapEquality(), new SetEquality(), new StackTraceEquality(), new ThrowableEquality());
 	}
 
-	private static boolean evaluate(Object value, Object other, Equality<?>[] specialCases) {
+	private static boolean evaluate(Object value, Object other, Equality<?>... specialCases) {
 		if (value == null)
 			return other == null;
 		if (other == null)
@@ -29,7 +26,7 @@ abstract class Equality<T> {
 		return doEvaluate(value, other, specialCases);
 	}
 
-	private static boolean doEvaluate(Object value, Object other, Equality<?>[] specialCases) {
+	private static boolean doEvaluate(Object value, Object other, Equality<?>... specialCases) {
 		for (Equality<?> equality : specialCases)
 			if (equality.canEvaluate(value))
 				return specialCase(equality, value, other);

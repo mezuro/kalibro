@@ -1,9 +1,9 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 
 import javax.persistence.NoResultException;
 
@@ -39,7 +39,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(dao.getProjectNames(), helloWorld.getName());
 
 		dao.save(helloWorld2);
-		assertDeepEquals(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
+		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -54,7 +54,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 	public void shouldRemoveProjectByName() {
 		dao.save(helloWorld);
 		dao.save(helloWorld2);
-		assertDeepEquals(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
+		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
 
 		dao.removeProject(helloWorld.getName());
 		assertDeepEquals(dao.getProjectNames(), helloWorld2.getName());

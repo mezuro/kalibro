@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.database;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
@@ -64,7 +64,7 @@ public class QueryTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetResultList() {
 		PowerMockito.when(nativeQuery.getResultList()).thenReturn(Arrays.asList("4", "2"));
-		assertDeepEquals(query.getResultList(), "4", "2");
+		assertDeepList(query.getResultList(), "4", "2");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

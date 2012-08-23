@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.junit.Assert.assertTrue;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
 import java.net.MalformedURLException;
 
@@ -28,7 +28,7 @@ public class ProjectEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListProjectNames() {
-		assertDeepEquals(port.getProjectNames(), sample.getName());
+		assertDeepList(port.getProjectNames(), sample.getName());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -47,6 +47,6 @@ public class ProjectEndpointTest extends KalibroServiceTestCase {
 		Project newProject = newHelloWorld();
 		newProject.setName("ProjectEndpointTest project");
 		port.saveProject(new RawProjectXml(newProject));
-		assertDeepEquals(port.getProjectNames(), sample.getName(), newProject.getName());
+		assertDeepList(port.getProjectNames(), sample.getName(), newProject.getName());
 	}
 }

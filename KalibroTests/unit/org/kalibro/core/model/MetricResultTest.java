@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricResultFixtures.*;
 
 import java.util.Arrays;
@@ -48,15 +48,15 @@ public class MetricResultTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddSingleDescendentResult() {
 		result.addDescendentResult(0.0);
-		assertDeepEquals(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0);
+		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0);
 		result.addDescendentResult(14.0);
-		assertDeepEquals(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
+		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddMultipleDescendentResults() {
 		result.addDescendentResults(Arrays.asList(0.0, 14.0));
-		assertDeepEquals(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
+		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

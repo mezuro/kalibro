@@ -2,9 +2,9 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Date;
 import java.util.List;
@@ -105,8 +105,8 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), moduleResult.getModule().getName());
 		assertEquals(3, resultHistory.size());
 		assertDeepEquals(resultHistory.get(0).getResultFor(loc).getDescendentResults(), 1.0);
-		assertDeepEquals(resultHistory.get(1).getResultFor(loc).getDescendentResults(), 1.0, 2.0);
-		assertDeepEquals(resultHistory.get(2).getResultFor(loc).getDescendentResults(), 1.0, 2.0, 3.0);
+		assertDeepCollection(resultHistory.get(1).getResultFor(loc).getDescendentResults(), 1.0, 2.0);
+		assertDeepCollection(resultHistory.get(2).getResultFor(loc).getDescendentResults(), 1.0, 2.0, 3.0);
 	}
 
 	private void incrementDate() {

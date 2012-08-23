@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.helloWorld;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
@@ -62,7 +62,8 @@ public class ProjectEndpointImplTest extends KalibroTestCase {
 		assertFalse(endpoint.hasProject("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+//	(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetProject() {
 		when(dao.getProject("42")).thenReturn(project);
 		assertDeepEquals(project, endpoint.getProject("42").convert());

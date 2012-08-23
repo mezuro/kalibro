@@ -33,7 +33,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(dao.getConfigurationNames(), kalibroConfiguration.getName());
 
 		dao.save(simpleConfiguration);
-		assertDeepEquals(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
+		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -56,7 +56,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRemoveConfigurationByName() {
 		dao.save(simpleConfiguration);
-		assertDeepEquals(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
+		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
 
 		dao.removeConfiguration(kalibroConfiguration.getName());
 		assertDeepEquals(dao.getConfigurationNames(), simpleConfiguration.getName());

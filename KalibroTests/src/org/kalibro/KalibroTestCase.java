@@ -10,8 +10,7 @@ import java.util.regex.Pattern;
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
 import org.kalibro.core.Environment;
-import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Equality;
 import org.kalibro.core.concurrent.Task;
 import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
@@ -122,7 +121,7 @@ public abstract class KalibroTestCase implements Timeouts {
 			assertEquals(message, exception.getMessage());
 			Throwable cause = exception.getCause();
 			if (causeClass == null)
-				assertNull("Unexpectd cause: " + cause, cause);
+				assertNull("Unexpected cause: " + cause, cause);
 			else
 				assertClassEquals(causeClass, cause);
 		}
@@ -136,44 +135,26 @@ public abstract class KalibroTestCase implements Timeouts {
 		assertEquals(expected, actual, 1E-10);
 	}
 
-	protected <T> void assertDeepEquals(Collection<T> actual, T... expected) {
+	protected <T> void assertDeepCollection(Collection<T> actual, T... expected) {
+		List<T> expectedList = Arrays.asList(expected);
+		if (actual instanceof List)
+			assertDeepEquals(expectedList, actual);
+		else
+			assertDeepEquals(new HashSet<T>(expectedList), new HashSet<T>(actual));
+	}
+
+	protected <T> void assertDeepSet(Set<T> actual, T... expected) {
+		assertDeepEquals(new HashSet<T>(Arrays.asList(expected)), actual);
+	}
+
+	protected <T> void assertDeepList(List<T> actual, T... expected) {
 		assertDeepEquals(Arrays.asList(expected), actual);
 	}
 
-	protected <T> void assertDeepEquals(Collection<T> expected, Collection<T> actual) {
-		assertDeepEquals(new CollectionWrapper<T>(expected), new CollectionWrapper<T>(actual));
-	}
-
-	protected <K, V> void assertDeepEquals(Map<K, V> expected, Map<K, V> actual) {
-		assertDeepEquals(new MapWrapper<K, V>(expected), new MapWrapper<K, V>(actual));
-	}
-
-	protected void assertDeepEquals(AbstractEntity<?> expected, AbstractEntity<?> actual) {
-		if (!expected.deepEquals(actual)) {
-			assertEquals(expected.toString(), "" + actual);
+	protected <T> void assertDeepEquals(Object expected, Object actual) {
+		if (!Equality.areDeepEqual(expected, actual)) {
+			assertEquals(expected.toString(), actual.toString());
 			fail("EXPECTED:\n" + expected + "\nBUT WAS:\n" + actual);
-		}
-	}
-
-	private class CollectionWrapper<T> extends AbstractEntity<CollectionWrapper<T>> {
-
-		@IdentityField
-		@SuppressWarnings("unused" /* read by EntityReflector */)
-		private Collection<T> collection;
-
-		public CollectionWrapper(Collection<T> collection) {
-			this.collection = collection;
-		}
-	}
-
-	private class MapWrapper<K, V> extends AbstractEntity<MapWrapper<K, V>> {
-
-		@IdentityField
-		@SuppressWarnings("unused" /* read by EntityReflector */)
-		private Map<K, V> map;
-
-		public MapWrapper(Map<K, V> map) {
-			this.map = map;
 		}
 	}
 }

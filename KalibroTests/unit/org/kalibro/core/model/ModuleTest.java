@@ -51,10 +51,10 @@ public class ModuleTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInferAncestry() {
 		assertTrue(org.inferAncestry().isEmpty());
-		assertDeepEquals(kalibro.inferAncestry(), org);
-		assertDeepEquals(core.inferAncestry(), org, kalibro);
-		assertDeepEquals(model.inferAncestry(), org, kalibro, core);
-		assertDeepEquals(module.inferAncestry(), org, kalibro, core, model);
+		assertDeepList(kalibro.inferAncestry(), org);
+		assertDeepList(core.inferAncestry(), org, kalibro);
+		assertDeepList(model.inferAncestry(), org, kalibro, core);
+		assertDeepList(module.inferAncestry(), org, kalibro, core, model);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

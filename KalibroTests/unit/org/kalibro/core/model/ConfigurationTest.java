@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 
@@ -57,7 +57,7 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveCompoundMetrics() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-		assertDeepEquals(configuration.getCompoundMetrics(), sc);
+		assertDeepSet(configuration.getCompoundMetrics(), sc);
 
 		configuration.removeMetric(scName);
 		assertTrue(configuration.getCompoundMetrics().isEmpty());

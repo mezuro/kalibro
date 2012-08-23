@@ -62,7 +62,7 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllProjectNames() {
 		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepEquals(dao.getProjectNames(), "4", "2");
+		assertDeepList(dao.getProjectNames(), "4", "2");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

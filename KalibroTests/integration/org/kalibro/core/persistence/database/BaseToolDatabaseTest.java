@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.database;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.persistence.NoResultException;
 
@@ -21,7 +21,7 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListSavedBaseToolNames() {
-		assertDeepEquals(dao.getBaseToolNames(), "Analizo", "Checkstyle");
+		assertDeepList(dao.getBaseToolNames(), "Analizo", "Checkstyle");
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

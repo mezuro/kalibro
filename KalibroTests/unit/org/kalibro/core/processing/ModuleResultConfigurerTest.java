@@ -1,9 +1,9 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -97,7 +97,7 @@ public class ModuleResultConfigurerTest extends KalibroTestCase {
 	public void shouldAddCompoundMetricsWithError() {
 		addCompoundMetricWithError();
 		configurer.configure();
-		assertDeepEquals(result.getCompoundMetricsWithError(), invalid);
+		assertDeepSet(result.getCompoundMetricsWithError(), invalid);
 		assertClassEquals(NullPointerException.class, result.getErrorFor(invalid));
 	}
 

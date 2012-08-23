@@ -48,6 +48,6 @@ public class ModuleResultPortDaoTest extends KalibroTestCase {
 	public void testResultHistory() {
 		List<ModuleResultXml> resultHistory = Arrays.asList(new ModuleResultXml(moduleResult));
 		PowerMockito.when(port.getResultHistory("", "")).thenReturn(resultHistory);
-		assertDeepEquals(dao.getResultHistory("", ""), moduleResult);
+		assertDeepList(dao.getResultHistory("", ""), moduleResult);
 	}
 }

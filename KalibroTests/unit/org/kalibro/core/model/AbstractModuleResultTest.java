@@ -1,8 +1,8 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.ModuleFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.kalibro.core.model.ModuleFixtures.helloWorldClass;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
@@ -55,11 +55,11 @@ public class AbstractModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testAddMetricResult() {
-		assertDeepEquals(moduleResult.getMetricResults(), accResult, locResult);
+		assertDeepCollection(moduleResult.getMetricResults(), accResult, locResult);
 
 		NativeMetricResult ditResult = new NativeMetricResult(dit, 0.42);
 		moduleResult.addMetricResult(ditResult);
-		assertDeepEquals(moduleResult.getMetricResults(), accResult, ditResult, locResult);
+		assertDeepCollection(moduleResult.getMetricResults(), accResult, ditResult, locResult);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

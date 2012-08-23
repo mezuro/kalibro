@@ -40,7 +40,7 @@ public class RemoteFileLoaderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkValidationCommands() {
-		assertDeepEquals(remoteLoader.getValidationCommands(), "wget --version", LOCAL_VALIDATION_COMMAND);
+		assertDeepList(remoteLoader.getValidationCommands(), "wget --version", LOCAL_VALIDATION_COMMAND);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -50,7 +50,7 @@ public class RemoteFileLoaderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkLoadCommands() {
-		assertDeepEquals(remoteLoader.getLoadCommands(repository, false),
+		assertDeepList(remoteLoader.getLoadCommands(repository, false),
 			"wget -N --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
 			LOCAL_LOAD_COMMAND);
 	}

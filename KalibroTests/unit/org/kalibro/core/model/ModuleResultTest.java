@@ -1,10 +1,10 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
 import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.MetricResultFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.MetricResultFixtures.analizoResult;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
@@ -76,7 +76,7 @@ public class ModuleResultTest extends KalibroTestCase {
 
 		Exception error = new Exception();
 		result.addCompoundMetricWithError(sc, error);
-		assertDeepEquals(result.getCompoundMetricsWithError(), sc);
+		assertDeepSet(result.getCompoundMetricsWithError(), sc);
 		assertSame(error, result.getErrorFor(sc));
 	}
 

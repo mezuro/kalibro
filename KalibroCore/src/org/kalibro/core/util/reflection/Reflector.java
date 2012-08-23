@@ -23,7 +23,7 @@ public class Reflector {
 
 	public Reflector(Object object, MemberFilter... ignoreFieldFilters) {
 		this.object = object;
-		this.ignoreFieldFilter = or(is(STATIC), or(ignoreFieldFilters));
+		this.ignoreFieldFilter = or(is(STATIC), nameMatches(".*\\$.*"), or(ignoreFieldFilters));
 		initializeFields();
 	}
 

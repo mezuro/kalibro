@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.RepositoryType.*;
 
 import java.util.Arrays;
@@ -36,7 +36,7 @@ public class KalibroEndpointImplTest extends KalibroTestCase {
 		Set<RepositoryType> repositoryTypes = new HashSet<RepositoryType>();
 		repositoryTypes.addAll(Arrays.asList(LOCAL_ZIP, GIT, SUBVERSION));
 		PowerMockito.when(Kalibro.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
-		assertDeepEquals(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
+		assertDeepSet(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
