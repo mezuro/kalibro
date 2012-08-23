@@ -21,5 +21,6 @@
 		<class>org.cvsanaly.entities.MetricResult</class>
 		<class>org.cvsanaly.entities.Commit</class>
 		<class>org.cvsanaly.entities.RepositoryFile</class>
+		<class>org.cvsanaly.entities.FileLink</class>
 	</persistence-unit>
 </persistence>

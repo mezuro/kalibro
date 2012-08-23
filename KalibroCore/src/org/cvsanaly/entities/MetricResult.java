@@ -1,16 +1,23 @@
 package org.cvsanaly.entities;
 
+import java.lang.reflect.Field;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "metrics")
 @NamedQuery(
 	name = "getLastMetricResults",
-	query = "SELECT metric FROM MetricResult metric WHERE metric.commit.date = " +
-		"(SELECT max(metric2.commit.date) FROM MetricResult metric2 WHERE metric.file.id = metric2.file.id)")
+	query = "SELECT NEW org.cvsanaly.entities.MetricResult(metric, links) FROM MetricResult metric, " +
+			"IN(metric.file.fileLinks) links WHERE " +
+			"metric.commit.date = " +
+			"(SELECT max(metric2.commit.date) FROM MetricResult metric2 WHERE metric.file.id = metric2.file.id) AND " +
+			"(links.commit.date = " +
+			"(SELECT max(links2.commit.date) FROM FileLink links2 WHERE links2.file.id = metric.file.id))")
 public class MetricResult {
 
 	@Id
+	@Column(name = "id")
 	private long id;
 
 	@PrimaryKeyJoinColumn(name = "file_id")
@@ -37,6 +44,18 @@ public class MetricResult {
 	private double averageCyclomaticComplexity;
 	@Column(name = "halstead_vol")
 	private double halsteadVolume;
+	
+	@Transient
+	private String filePath;
+	
+	public MetricResult() {	}
+	
+	public MetricResult(MetricResult metricResult, FileLink fileLink) throws IllegalAccessException {
+		for (Field field : getClass().getDeclaredFields()) {
+			field.set(this, field.get(metricResult));
+		}
+		this.filePath = fileLink.getFilePath();
+	}
 
 	public long getId() {
 		return id;
@@ -132,6 +151,14 @@ public class MetricResult {
 
 	public void setHalsteadVolume(double halsteadVolume) {
 		this.halsteadVolume = halsteadVolume;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
 	}
 
 }

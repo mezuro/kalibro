@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 import org.cvsanaly.entities.MetricResult;
 import org.kalibro.core.MetricCollector;
@@ -47,12 +48,11 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 
 		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
 
-		for (MetricResult entity : entities) {
-			// TODO Modify CVSAnaly to get information about path
-			String filename = entity.getFile().getFilename();
-			Module module = new Module(Granularity.CLASS, filename);
+		for (MetricResult metric : entities) {
+			String filename = metric.getFilePath();
+			Module module = new Module(Granularity.CLASS, filename.split(Pattern.quote(File.separator)));
 			NativeModuleResult nativeModuleResult = new NativeModuleResult(module);
-			extractMetrics(entity, nativeModuleResult, wantedMetrics);
+			extractMetrics(metric, nativeModuleResult, wantedMetrics);
 
 			result.add(nativeModuleResult);
 		}

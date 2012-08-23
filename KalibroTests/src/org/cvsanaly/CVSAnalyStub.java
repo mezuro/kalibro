@@ -3,6 +3,7 @@ package org.cvsanaly;
 import java.util.*;
 
 import org.cvsanaly.entities.Commit;
+import org.cvsanaly.entities.FileLink;
 import org.cvsanaly.entities.MetricResult;
 import org.cvsanaly.entities.RepositoryFile;
 import org.kalibro.core.model.*;
@@ -21,7 +22,7 @@ public final class CVSAnalyStub {
 		helloWorldResultMap = new HashMap<CVSAnalyMetric, Double>(CVSAnalyMetric.values().length);
 		helloWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 13.0);
-		if (!limited) {
+		if (! limited) {
 			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
 			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
 			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
@@ -38,7 +39,7 @@ public final class CVSAnalyStub {
 		byeWorldResultMap = new HashMap<CVSAnalyMetric, Double>(CVSAnalyMetric.values().length);
 		byeWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 8.0);
-		if (!limited) {
+		if (! limited) {
 			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
 			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
 			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
@@ -55,7 +56,7 @@ public final class CVSAnalyStub {
 
 		NativeModuleResult helloWorldResult = createNativeModuleResult("HelloWorld.java",
 			generateHelloWorldResultMap(false));
-		NativeModuleResult byeWorldResult = createNativeModuleResult("ByeWorld.java", 
+		NativeModuleResult byeWorldResult = createNativeModuleResult("ByeWorld.java",
 			generateByeWorldResultMap(false));
 
 		generatedResult.addAll(Arrays.asList(helloWorldResult, byeWorldResult));
@@ -67,7 +68,7 @@ public final class CVSAnalyStub {
 
 		NativeModuleResult helloWorldResult = createNativeModuleResult("HelloWorld.java",
 			generateHelloWorldResultMap(true));
-		NativeModuleResult byeWorldResult = createNativeModuleResult("ByeWorld.java", 
+		NativeModuleResult byeWorldResult = createNativeModuleResult("ByeWorld.java",
 			generateByeWorldResultMap(true));
 
 		generatedResult.addAll(Arrays.asList(helloWorldResult, byeWorldResult));
@@ -75,7 +76,8 @@ public final class CVSAnalyStub {
 	}
 
 	private static NativeModuleResult createNativeModuleResult(String name, Map<CVSAnalyMetric, Double> metricValues) {
-		NativeModuleResult nativeModuleResult = new NativeModuleResult(new Module(Granularity.CLASS, name));
+		NativeModuleResult nativeModuleResult = new NativeModuleResult(new Module(Granularity.CLASS, 
+			"aaa", "bbb", name));
 		for (Map.Entry<CVSAnalyMetric, Double> entry : metricValues.entrySet())
 			nativeModuleResult.addMetricResult(
 				new NativeMetricResult(entry.getKey().getNativeMetric(), entry.getValue()));
@@ -114,8 +116,13 @@ public final class CVSAnalyStub {
 		RepositoryFile helloWorldFile = createRepositoryFile(0, "HelloWorld.java");
 		RepositoryFile byeWorldFile = createRepositoryFile(1, "ByeWorld.java");
 
-		entity.addAll(Arrays.asList(createMetricResult(1, head, helloWorldFile, 10, 13),
-			createMetricResult(2, firstCommit, byeWorldFile, 6, 8)));
+		FileLink helloWorldFileLink = createFileLink(1, firstCommit, helloWorldFile, "aaa/bbb/HelloWorld.java");
+		FileLink byeWorldFileLink = createFileLink(2, firstCommit, byeWorldFile, "aaa/bbb/ByeWorld.java");
+		helloWorldFile.setFileLinks(Arrays.asList(new FileLink[]{helloWorldFileLink}));
+		byeWorldFile.setFileLinks(Arrays.asList(new FileLink[]{byeWorldFileLink}));
+
+		entity.addAll(Arrays.asList(createMetricResult(1, head, helloWorldFile, 10, 13, "aaa/bbb/HelloWorld.java"),
+			createMetricResult(2, firstCommit, byeWorldFile, 6, 8, "aaa/bbb/ByeWorld.java")));
 
 		return entity;
 	}
@@ -134,14 +141,25 @@ public final class CVSAnalyStub {
 		return firstCommit;
 	}
 
-	private static MetricResult createMetricResult(int id, Commit commit, RepositoryFile repo, int sloc, int loc) {
+	private static MetricResult createMetricResult(int id, Commit commit, RepositoryFile repo, int sloc, int loc,
+		String filePath) {
 		MetricResult newMetricResult = new MetricResult();
 		newMetricResult.setId(id);
 		newMetricResult.setFile(repo);
 		newMetricResult.setCommit(commit);
 		newMetricResult.setNumberOfSourceLinesOfCode(sloc);
 		newMetricResult.setNumberOfLinesOfCode(loc);
+		newMetricResult.setFilePath(filePath);
 		return newMetricResult;
+	}
+
+	private static FileLink createFileLink(long id, Commit commit, RepositoryFile repositoryFile, String filePath) {
+		FileLink fileLink = new FileLink();
+		fileLink.setId(id);
+		fileLink.setCommit(commit);
+		fileLink.setFile(repositoryFile);
+		fileLink.setFilePath(filePath);
+		return fileLink;
 	}
 
 	public static Set<NativeModuleResult> results() {

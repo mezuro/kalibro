@@ -9,6 +9,7 @@ import javax.persistence.*;
 public class Commit {
 
 	@Id
+	@Column(name = "id")
 	private long id;
 
 	@Column(name = "date")
