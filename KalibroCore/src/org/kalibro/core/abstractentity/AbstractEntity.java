@@ -16,11 +16,11 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 
 	@Override
 	public boolean equals(Object other) {
-		return EqualityEvaluator.areEqual(this, other);
+		return Equality.areEqual(this, other);
 	}
 
 	public boolean deepEquals(Object other) {
-		return EqualityEvaluator.areDeepEqual(this, other);
+		return Equality.areDeepEqual(this, other);
 	}
 
 	@Override

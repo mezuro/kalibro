@@ -1,8 +1,6 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.abstractentity.PersonFixtures.carlos;
-import static org.kalibro.core.abstractentity.ProgrammerFixtures.programmerCarlos;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -20,8 +18,8 @@ public class EntityReflectorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		person = carlos();
-		programmer = programmerCarlos();
+		person = loadFixture("person-carlos", Person.class);
+		programmer = loadFixture("programmer-carlos", Programmer.class);
 		reflector = new EntityReflector(person);
 	}
 

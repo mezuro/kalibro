@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-class ListEqualityEvaluator extends EqualityEvaluator<List<?>> {
+class ListEquality extends Equality<List<?>> {
 
 	@Override
 	protected boolean canEvaluate(Object value) {

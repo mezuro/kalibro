@@ -17,8 +17,7 @@ class Person extends AbstractEntity<Person> {
 	private Map<String, Person> relatives;
 
 	@Ignore
-	@SuppressWarnings("unused")
-	private double toIgnore = Math.random();
+	private double random;
 
 	protected Person() {
 		this("", "", "");
@@ -29,6 +28,7 @@ class Person extends AbstractEntity<Person> {
 		setName(name);
 		setSex(sex);
 		createRelatives();
+		setRandom(Math.random());
 	}
 
 	private void createRelatives() {
@@ -69,5 +69,13 @@ class Person extends AbstractEntity<Person> {
 
 	public void setRelatives(Map<String, Person> relatives) {
 		this.relatives = relatives;
+	}
+
+	public double getRandom() {
+		return random;
+	}
+
+	public void setRandom(double random) {
+		this.random = random;
 	}
 }

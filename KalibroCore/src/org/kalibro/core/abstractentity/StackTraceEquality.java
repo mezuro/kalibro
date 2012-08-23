@@ -5,7 +5,7 @@ package org.kalibro.core.abstractentity;
  * 
  * @author Carlos Morais
  */
-class StackTraceElementEqualityEvaluator extends EqualityEvaluator<StackTraceElement> {
+class StackTraceEquality extends Equality<StackTraceElement> {
 
 	@Override
 	protected boolean canEvaluate(Object value) {

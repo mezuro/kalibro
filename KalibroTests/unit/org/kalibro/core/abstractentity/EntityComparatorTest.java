@@ -1,8 +1,6 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.abstractentity.PersonFixtures.carlos;
-import static org.kalibro.core.abstractentity.ProgrammerFixtures.*;
 
 import java.util.Arrays;
 
@@ -17,9 +15,9 @@ public class EntityComparatorTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() {
-		person = carlos();
-		carlos = programmerCarlos();
-		paulo = programmerPaulo();
+		person = loadFixture("person-carlos", Person.class);
+		carlos = loadFixture("programmer-carlos", Programmer.class);
+		paulo = loadFixture("programmer-paulo", Programmer.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -29,7 +27,7 @@ public class EntityComparatorTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testEquals() {
-		assertNoOrder(person, carlos());
+		assertNoOrder(person, carlos);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

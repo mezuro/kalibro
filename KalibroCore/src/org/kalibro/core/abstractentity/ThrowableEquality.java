@@ -5,7 +5,7 @@ package org.kalibro.core.abstractentity;
  * 
  * @author Carlos Morais
  */
-class ThrowableEqualityEvaluator extends EqualityEvaluator<Throwable> {
+class ThrowableEquality extends Equality<Throwable> {
 
 	@Override
 	protected boolean canEvaluate(Object value) {

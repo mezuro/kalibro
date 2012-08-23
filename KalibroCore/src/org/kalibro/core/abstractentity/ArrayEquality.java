@@ -5,11 +5,11 @@ package org.kalibro.core.abstractentity;
  * 
  * @author Carlos Morais
  */
-class ArrayEqualityEvaluator extends EqualityEvaluator<Object[]> {
+class ArrayEquality extends Equality<Object[]> {
 
 	@Override
 	protected boolean canEvaluate(Object value) {
-		return value.getClass().isArray();
+		return value instanceof Object[];
 	}
 
 	@Override

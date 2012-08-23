@@ -7,7 +7,7 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-class EntityEqualityEvaluator extends EqualityEvaluator<AbstractEntity<?>> {
+class EntityEquality extends Equality<AbstractEntity<?>> {
 
 	protected EntityReflector reflector, otherReflector;
 

@@ -10,6 +10,10 @@ class Programmer extends Person {
 
 	private List<Programmer> colleagues;
 
+	protected Programmer() {
+		this(new Person(), false);
+	}
+
 	protected Programmer(Person person, Boolean useMetrics) {
 		super(person.getIdentityNumber(), person.getName(), person.getSex());
 		this.useMetrics = useMetrics;

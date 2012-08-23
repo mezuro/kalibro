@@ -7,7 +7,7 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-class DeepEntityEqualityEvaluator extends EntityEqualityEvaluator {
+class DeepEntityEquality extends EntityEquality {
 
 	@Override
 	protected boolean sameType() {

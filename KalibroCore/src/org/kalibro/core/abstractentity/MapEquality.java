@@ -7,7 +7,7 @@ import java.util.Map;
  * 
  * @author Carlos Morais
  */
-class MapEqualityEvaluator extends EqualityEvaluator<Map<?, ?>> {
+class MapEquality extends Equality<Map<?, ?>> {
 
 	@Override
 	protected boolean canEvaluate(Object value) {

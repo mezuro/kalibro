@@ -7,7 +7,7 @@ import java.util.Set;
  * 
  * @author Carlos Morais
  */
-class SetEqualityEvaluator extends EqualityEvaluator<Set<?>> {
+class SetEquality extends Equality<Set<?>> {
 
 	@Override
 	protected boolean canEvaluate(Object value) {
@@ -18,8 +18,8 @@ class SetEqualityEvaluator extends EqualityEvaluator<Set<?>> {
 	protected boolean equals(Set<?> set, Set<?> other) {
 		if (set.size() != other.size())
 			return false;
-		for (Object element : other)
-			if (!contains(set, element))
+		for (Object element : set)
+			if (!contains(other, element))
 				return false;
 		return true;
 	}
