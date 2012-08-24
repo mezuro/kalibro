@@ -1,6 +1,6 @@
 package org.kalibro.core.abstractentity;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -38,8 +38,15 @@ public class EntityReflectorTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldListSortedPrintingFields() {
-		assertDeepList(reflector(person).listPrintingFields(), "name", "identityNumber", "relatives", "sex");
+	public void shouldListSortedPrintFields() {
+		assertDeepList(reflector(person).listPrintFields(), "name", "identityNumber", "relatives", "sex");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetPrintComment() {
+		assertEquals("", reflector(person).getPrintComment("identityNumber"));
+		assertEquals("name comes first", reflector(person).getPrintComment("name"));
+		assertEquals("", reflector(person).getPrintComment("relatives"));
 	}
 
 	private EntityReflector reflector(AbstractEntity<?> entity) {

@@ -37,8 +37,15 @@ class EntityReflector extends Reflector {
 		return findSortingFields(type.getSuperclass());
 	}
 
-	public List<String> listPrintingFields() {
+	protected List<String> listPrintFields() {
 		return sortFields(new PrintOrderComparator());
+	}
+
+	protected String getPrintComment(String field) {
+		Print print = getFieldAnnotation(field, Print.class);
+		if (print == null)
+			return "";
+		return print.comment();
 	}
 
 	private class PrintOrderComparator implements Comparator<String> {

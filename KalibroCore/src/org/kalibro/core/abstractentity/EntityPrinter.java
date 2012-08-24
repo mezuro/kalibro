@@ -21,7 +21,7 @@ final class EntityPrinter {
 	}
 
 	private void print() {
-		for (String field : reflector.listPrintingFields())
+		for (String field : reflector.listPrintFields())
 			printField(field);
 	}
 
@@ -29,9 +29,9 @@ final class EntityPrinter {
 		printNewLine();
 		buffer.append(field + ": ");
 		printValue(reflector.get(field));
-		Print print = reflector.getFieldAnnotation(field, Print.class);
-		if (print != null && !print.comment().trim().isEmpty())
-			buffer.append(" # " + print.comment());
+		String comment = reflector.getPrintComment(field);
+		if (!comment.isEmpty())
+			buffer.append(" # " + comment);
 	}
 
 	private void printValue(Object value) {
