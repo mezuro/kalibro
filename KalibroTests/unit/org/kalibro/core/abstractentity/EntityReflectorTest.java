@@ -37,6 +37,11 @@ public class EntityReflectorTest extends KalibroTestCase {
 		assertDeepList(reflector(programmer).listSortingFields(), "name");
 	}
 
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldListSortedPrintingFields() {
+		assertDeepList(reflector(person).listPrintingFields(), "name", "identityNumber", "relatives", "sex");
+	}
+
 	private EntityReflector reflector(AbstractEntity<?> entity) {
 		return new EntityReflector(entity);
 	}
