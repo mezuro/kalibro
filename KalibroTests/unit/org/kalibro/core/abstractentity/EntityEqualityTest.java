@@ -52,4 +52,15 @@ public class EntityEqualityTest extends KalibroTestCase {
 	private boolean equalTo(AbstractEntity<?> other) {
 		return equality.equals(carlos, other);
 	}
+
+	private class PersonImitation extends AbstractEntity<PersonImitation> {
+
+		@IdentityField
+		@SuppressWarnings("unused")
+		private String identityNumber;
+
+		protected PersonImitation(Person person) {
+			this.identityNumber = person.getIdentityNumber();
+		}
+	}
 }

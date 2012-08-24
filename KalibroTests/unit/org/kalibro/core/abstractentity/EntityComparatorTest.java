@@ -2,90 +2,73 @@ package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
+import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroTestCase;
+import org.kalibro.core.concurrent.Task;
 
 public class EntityComparatorTest extends KalibroTestCase {
 
-	private Person person;
+	private static final String ASSERT_MESSAGE = "Order not satisfied: carlos, paulo";
+	private static final String ERROR_MESSAGE = "Error comparing fields: org.kalibro.core.abstractentity.";
+
+	private Person carlosPerson;
 	private Programmer carlos, paulo;
+
+	private EntityComparator<Person> comparator;
 
 	@Before
 	public void setUp() {
-		person = loadFixture("person-carlos", Person.class);
+		carlosPerson = loadFixture("person-carlos", Person.class);
 		carlos = loadFixture("programmer-carlos", Programmer.class);
 		paulo = loadFixture("programmer-paulo", Programmer.class);
+		comparator = new EntityComparator<Person>();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testSame() {
-		assertNoOrder(person, person);
+	public void compareShouldBeZeroWhenEntitiesAreEqual() {
+		assertEquals(0, comparator.compare(carlos, carlos));
+		assertEquals(0, comparator.compare(carlos, carlosPerson));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testEquals() {
-		assertNoOrder(person, carlos);
+	public void compareShouldBeLessThanZeroWhenComparingToGreater() {
+		assertTrue(ASSERT_MESSAGE, comparator.compare(carlos, paulo) < 0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkSmaller() {
-		Person smaller = new Person("Z", "Ana Zélia", "Female");
-		assertOrdered(smaller, person);
+	public void compareShouldBeGreaterThanZeroWhenComparingToSmaller() {
+		assertTrue(ASSERT_MESSAGE, comparator.compare(paulo, carlos) > 0);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkGreater() {
-		Person greater = new Person("A", "Zulu André", "Male");
-		assertOrdered(person, greater);
+	public void shouldThrowErrorWhenSortingFieldIsNull() {
+		checkKalibroError(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				comparator.compare(carlos, new Person("", null, ""));
+			}
+		}, ERROR_MESSAGE + "Programmer.name", InvocationTargetException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkSubclassCriteriaNotAppliedWhenComparingToSuperclass() {
-		for (Boolean useMetrics : Arrays.asList(true, false)) {
-			carlos.setUseMetrics(useMetrics);
-			paulo.setUseMetrics(useMetrics);
-			assertNoOrder(person, carlos);
-			assertOrdered(person, paulo);
-		}
+	public void shouldThrowErrorWhenSortingFieldIsNotComparable() {
+		checkKalibroError(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				comparator.compare(new WeirdPerson(), new WeirdPerson());
+			}
+		}, ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field", NoSuchMethodException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkSubclassesSorting() {
-		assertOrdered(carlos, paulo);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkSubclassCanChangeSortingPriorities() {
-		paulo.setUseMetrics(false);
-		assertOrdered(paulo, carlos);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testEntityWithNotComparableSortingField() {
-		assertNoOrder(new SortingFieldNotComparable(), new SortingFieldNotComparable());
-	}
-
-	private <T extends Comparable<? super T>> void assertNoOrder(AbstractEntity<T> entity1, AbstractEntity<T> entity2) {
-		assertEquals(0, new EntityComparator<T>(entity1).compare((T) entity2));
-		assertEquals(0, new EntityComparator<T>(entity2).compare((T) entity1));
-	}
-
-	private <T extends Comparable<? super T>> void assertOrdered(AbstractEntity<T> first, AbstractEntity<T> second) {
-		EntityComparator<T> firstComparator = new EntityComparator<T>(first);
-		EntityComparator<T> secondComparator = new EntityComparator<T>(second);
-		assertTrue(first + " was expected to come before " + second, firstComparator.compare((T) second) < 0);
-		assertTrue(second + " was expected to come after " + first, secondComparator.compare((T) first) > 0);
-	}
-
-	@SortingMethods("getField")
-	private class SortingFieldNotComparable extends AbstractEntity<SortingFieldNotComparable> {
+	@SortingFields("field")
+	private class WeirdPerson extends Person {
 
 		@SuppressWarnings("unused")
-		public EntityComparatorTest getField() {
-			return new EntityComparatorTest();
-		}
+		private Object field = new String[0];
 	}
 }

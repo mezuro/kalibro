@@ -2,10 +2,10 @@ package org.kalibro.core.model;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingMethods;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.Granularity;
 
-@SortingMethods({"getCompound", "getScope", "getName"})
+@SortingFields({"scope", "name"})
 public abstract class Metric extends AbstractEntity<Metric> {
 
 	@IdentityField

@@ -54,8 +54,8 @@ public class AbstractEntityTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldUseEntityComparatorOnComparisons() throws Exception {
 		EntityComparator<Person> comparator = mock(EntityComparator.class);
-		whenNew(EntityComparator.class).withArguments(entity).thenReturn(comparator);
-		when(comparator.compare(entity)).thenReturn(42);
+		whenNew(EntityComparator.class).withNoArguments().thenReturn(comparator);
+		when(comparator.compare(entity, entity)).thenReturn(42);
 		assertEquals(42, entity.compareTo(entity));
 	}
 }

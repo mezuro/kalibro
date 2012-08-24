@@ -2,35 +2,42 @@ package org.kalibro.core.abstractentity;
 
 import java.lang.reflect.Method;
 
+import org.kalibro.KalibroError;
+import org.kalibro.core.util.reflection.Reflector;
+
+/**
+ * Compares entities based on fields specified at {@link SortingFields} annotation.
+ * 
+ * @author Carlos Morais
+ */
 class EntityComparator<T extends Comparable<? super T>> {
 
+	private int comparison;
+	private Reflector otherReflector;
 	private EntityReflector reflector;
 
-	protected EntityComparator(AbstractEntity<T> entity) {
+	protected int compare(AbstractEntity<T> entity, T other) {
+		comparison = 0;
 		reflector = new EntityReflector(entity);
+		otherReflector = new Reflector(other);
+		for (String field : reflector.listSortingFields())
+			if (compare(field))
+				return comparison;
+		return comparison;
 	}
 
-	protected int compare(T other) {
-		for (Method method : reflector.listSortingMethods()) {
-			int compare = compare(other, method);
-			if (compare != 0)
-				return compare;
-		}
-		return 0;
-	}
-
-	private int compare(T other, Method method) {
+	private boolean compare(String field) {
 		try {
-			return doCompare(other, method);
-		} catch (Throwable exception) {
-			return 0;
+			comparison = doCompare(reflector.get(field), otherReflector.get(field));
+			return comparison != 0;
+		} catch (Exception exception) {
+			String fieldName = reflector.getObjectClass().getName() + "." + field;
+			throw new KalibroError("Error comparing fields: " + fieldName, exception);
 		}
 	}
 
-	private int doCompare(T other, Method method) throws Exception {
-		Object myValue = reflector.invoke(method.getName());
-		Object otherValue = new EntityReflector((AbstractEntity<?>) other).invoke(method.getName());
-		Method compareTo = myValue.getClass().getMethod("compareTo", Object.class);
-		return (Integer) compareTo.invoke(myValue, otherValue);
+	private int doCompare(Object value, Object other) throws Exception {
+		Method compareTo = value.getClass().getMethod("compareTo", Object.class);
+		return (Integer) compareTo.invoke(value, other);
 	}
 }

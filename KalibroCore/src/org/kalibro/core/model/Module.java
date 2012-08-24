@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingMethods;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.Granularity;
 
 /**
@@ -13,7 +13,7 @@ import org.kalibro.core.model.enums.Granularity;
  * 
  * @author Carlos Morais
  */
-@SortingMethods({"getGranularity", "getName"})
+@SortingFields({"granularity", "name"})
 public class Module extends AbstractEntity<Module> {
 
 	@IdentityField

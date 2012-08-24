@@ -7,8 +7,9 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Marks the field to be used by {@link AbstractEntity} at {@code equals()} and {@code hashCode()}.
+ * Marks the field to be used by at {@code equals()} and {@code hashCode()}.
  * 
+ * @see AbstractEntity
  * @author Carlos Morais
  */
 @Target(FIELD)

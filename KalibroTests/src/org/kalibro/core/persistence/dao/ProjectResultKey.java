@@ -4,10 +4,10 @@ import java.util.Date;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingMethods;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.ProjectResult;
 
-@SortingMethods({"getProjectName", "getDate"})
+@SortingFields({"projectName", "date"})
 public class ProjectResultKey extends AbstractEntity<ProjectResultKey> {
 
 	@IdentityField

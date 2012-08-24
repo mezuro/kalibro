@@ -3,7 +3,7 @@ package org.kalibro.core.abstractentity;
 import java.util.Map;
 import java.util.TreeMap;
 
-@SortingMethods("getName")
+@SortingFields("name")
 class Person extends AbstractEntity<Person> {
 
 	@IdentityField

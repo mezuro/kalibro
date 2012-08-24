@@ -4,9 +4,9 @@ import java.util.Date;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingMethods;
+import org.kalibro.core.abstractentity.SortingFields;
 
-@SortingMethods({"getProjectName", "getModuleName", "getDate"})
+@SortingFields({"projectName", "moduleName", "date"})
 public class ModuleResultKey extends AbstractEntity<ModuleResultKey> {
 
 	@IdentityField

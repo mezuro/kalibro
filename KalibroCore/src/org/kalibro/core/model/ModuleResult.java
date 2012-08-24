@@ -3,10 +3,10 @@ package org.kalibro.core.model;
 import java.util.*;
 
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingMethods;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.processing.ModuleResultConfigurer;
 
-@SortingMethods({"getDate", "getModule"})
+@SortingFields({"date", "module"})
 public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	@IdentityField

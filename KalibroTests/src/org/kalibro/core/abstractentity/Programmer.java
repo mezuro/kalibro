@@ -3,7 +3,6 @@ package org.kalibro.core.abstractentity;
 import java.util.ArrayList;
 import java.util.List;
 
-@SortingMethods({"getUseMetrics", "getName"})
 class Programmer extends Person {
 
 	private Boolean useMetrics;

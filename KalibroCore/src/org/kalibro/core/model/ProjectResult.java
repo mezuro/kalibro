@@ -7,10 +7,10 @@ import java.util.Map;
 import org.kalibro.KalibroException;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingMethods;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.ProjectState;
 
-@SortingMethods({"getProject", "getDate"})
+@SortingFields({"project", "date"})
 public class ProjectResult extends AbstractEntity<ProjectResult> {
 
 	@IdentityField
