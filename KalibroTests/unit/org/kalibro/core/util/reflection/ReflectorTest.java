@@ -102,20 +102,4 @@ public class ReflectorTest extends KalibroTestCase {
 			}
 		}, "Error setting field: " + INEXISTENT, NullPointerException.class);
 	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvokePublicMethodWithoutArgumentsByName() {
-		assertEquals(hashCode(), reflector.invoke("hashCode"));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorWhenInvokingInexistentMethod() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke("inexistent");
-			}
-		}, "Error invoking method: " + INEXISTENT, NoSuchMethodException.class);
-	}
 }

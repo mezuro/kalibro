@@ -46,4 +46,15 @@ class EntityReflector extends Reflector {
 			throw new KalibroError("Sorting method not found: " + type.getName() + "." + methodName, exception);
 		}
 	}
+
+	public Object invoke(String methodName) {
+		String completeName = getObjectClass().getName() + "." + methodName;
+		try {
+			Method method = getObjectClass().getMethod(methodName);
+			method.setAccessible(true);
+			return method.invoke(getObject());
+		} catch (Exception exception) {
+			throw new KalibroError("Error invoking method: " + completeName, exception);
+		}
+	}
 }
