@@ -3,21 +3,37 @@ package org.kalibro.core.model;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.kalibro.core.model.enums.ProjectState.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.junit.runner.RunWith;
+import org.kalibro.KalibroSettings;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.ProjectState;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-public class ProjectTest extends KalibroTestCase {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(KalibroSettings.class)
+public class ProjectTest extends TestCase {
 
+	private KalibroSettings settings;
 	private Project project = newHelloWorld();
+
+	@Before
+	public void setUp() {
+		settings = new KalibroSettings();
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(settings);
+	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkInitializationAttributes() {
@@ -41,8 +57,8 @@ public class ProjectTest extends KalibroTestCase {
 	public void shouldLoadRepository() {
 		Repository repository = PowerMockito.mock(Repository.class);
 		project.setRepository(repository);
-		project.load(HELLO_WORLD_DIRECTORY);
-		Mockito.verify(repository).load(HELLO_WORLD_DIRECTORY);
+		project.load();
+		Mockito.verify(repository).load(project.getDirectory());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -116,6 +132,14 @@ public class ProjectTest extends KalibroTestCase {
 				project.getError();
 			}
 		}, "Project " + project + " has no error");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveProjectDirectory() {
+		project.setId(42L);
+		project.setName("Testing camel case++");
+		assertEquals("42-testingCamelCase", project.getDirectory().getName());
+		assertEquals(settings.getServerSettings().getLoadDirectory(), project.getDirectory().getParentFile());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

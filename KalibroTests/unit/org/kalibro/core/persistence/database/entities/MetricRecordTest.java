@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.database.entities;
 
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -51,13 +51,8 @@ public class MetricRecordTest extends DtoTestCase<MyMetric, MetricRecord<MyMetri
 	class MyMetric extends Metric {
 
 		protected MyMetric(String name, Granularity scope, String description) {
-			super(name, scope);
+			super(false, name, scope);
 			setDescription(description);
-		}
-
-		@Override
-		public boolean isCompound() {
-			return false;
 		}
 	}
 }

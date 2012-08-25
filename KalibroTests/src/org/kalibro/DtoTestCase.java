@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.kalibro.core.util.DataTransferObject;
 import org.powermock.reflect.Whitebox;
 
-public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends KalibroTestCase {
+public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void defaultConstructorShouldDoNothing() throws Exception {

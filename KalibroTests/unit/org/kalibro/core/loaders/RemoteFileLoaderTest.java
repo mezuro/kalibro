@@ -8,12 +8,12 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Repository;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-public class RemoteFileLoaderTest extends KalibroTestCase {
+public class RemoteFileLoaderTest extends TestCase {
 
 	private static final String ADDRESS = "RemoteFileLoaderTest address";
 	private static final String LOCAL_LOAD_COMMAND = "RemoteFileLoaderTest local load command";
@@ -40,7 +40,7 @@ public class RemoteFileLoaderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkValidationCommands() {
-		assertDeepEquals(remoteLoader.getValidationCommands(), "wget --version", LOCAL_VALIDATION_COMMAND);
+		assertDeepList(remoteLoader.getValidationCommands(), "wget --version", LOCAL_VALIDATION_COMMAND);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -50,7 +50,7 @@ public class RemoteFileLoaderTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkLoadCommands() {
-		assertDeepEquals(remoteLoader.getLoadCommands(repository, false),
+		assertDeepList(remoteLoader.getLoadCommands(repository, false),
 			"wget -N --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
 			LOCAL_LOAD_COMMAND);
 	}

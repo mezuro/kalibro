@@ -6,10 +6,10 @@ import java.lang.reflect.Constructor;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.reflect.Whitebox;
 
-public class ConcurrentInvocationHandlerTest extends KalibroTestCase {
+public class ConcurrentInvocationHandlerTest extends TestCase {
 
 	private long beforeId, testId, getterId;
 

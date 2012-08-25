@@ -3,12 +3,14 @@ package org.kalibro.core.model;
 import java.io.File;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.KalibroSettings;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.core.util.Identifier;
 
-@SortingMethods("getName")
+@SortingFields("name")
 public class Project extends AbstractEntity<Project> {
 
 	private Long id;
@@ -79,8 +81,8 @@ public class Project extends AbstractEntity<Project> {
 		this.configurationName = configurationName;
 	}
 
-	public void load(File loadDirectory) {
-		repository.load(loadDirectory);
+	public void load() {
+		repository.load(getDirectory());
 	}
 
 	public Repository getRepository() {
@@ -125,5 +127,10 @@ public class Project extends AbstractEntity<Project> {
 
 	public void setError(Throwable error) {
 		this.error = error;
+	}
+
+	public File getDirectory() {
+		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
+		return new File(loadDirectory, id + "-" + Identifier.fromText(name).asVariable());
 	}
 }

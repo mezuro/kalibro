@@ -40,7 +40,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		RepositoryType unsupported = mockType(false);
 		spy(RepositoryType.class);
 		when(RepositoryType.values()).thenReturn(new RepositoryType[]{supported, unsupported});
-		assertDeepEquals(RepositoryType.supportedTypes(), supported);
+		assertDeepSet(RepositoryType.supportedTypes(), supported);
 	}
 
 	private RepositoryType mockType(boolean supported) {
@@ -105,8 +105,8 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldLoadRepository() {
 		ProjectLoader loader = mockGitLoader();
-		GIT.load(null, HELLO_WORLD_DIRECTORY);
-		Mockito.verify(loader).load(null, HELLO_WORLD_DIRECTORY);
+		GIT.load(null, helloWorldDirectory());
+		Mockito.verify(loader).load(null, helloWorldDirectory());
 	}
 
 	private ProjectLoader mockGitLoader() {

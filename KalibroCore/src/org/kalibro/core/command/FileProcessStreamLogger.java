@@ -6,7 +6,7 @@ import java.util.Date;
 
 import org.apache.commons.io.IOUtils;
 import org.kalibro.KalibroException;
-import org.kalibro.core.util.Directories;
+import org.kalibro.core.Environment;
 
 public class FileProcessStreamLogger extends ProcessStreamLogger {
 
@@ -35,7 +35,7 @@ public class FileProcessStreamLogger extends ProcessStreamLogger {
 		}
 		String firstCommandWord = command.split("\\s+")[0];
 		String dateString = new SimpleDateFormat("yyyy-MM-dd_HH'h'mm'm'ss.SSS's'").format(date);
-		return new File(Directories.logs(), firstCommandWord + "." + dateString + "." + fileExtension);
+		return new File(Environment.logsDirectory(), firstCommandWord + "." + dateString + "." + fileExtension);
 	}
 
 	private OutputStream createOuputStream(String command, File file) {

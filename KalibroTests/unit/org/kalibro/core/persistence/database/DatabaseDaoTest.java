@@ -11,12 +11,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.core.persistence.database.entities.RangeRecord;
 import org.mockito.Mockito;
 
-public class DatabaseDaoTest extends KalibroTestCase {
+public class DatabaseDaoTest extends TestCase {
 
 	private DatabaseManager databaseManager;
 

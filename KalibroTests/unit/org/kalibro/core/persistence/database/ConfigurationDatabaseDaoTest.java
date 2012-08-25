@@ -2,7 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
@@ -10,7 +10,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ConfigurationDatabaseDao.class)
-public class ConfigurationDatabaseDaoTest extends KalibroTestCase {
+public class ConfigurationDatabaseDaoTest extends TestCase {
 
 	private Configuration configuration;
 	private DatabaseManager databaseManager;
@@ -48,7 +48,7 @@ public class ConfigurationDatabaseDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllConfigurationNames() {
 		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepEquals(dao.getConfigurationNames(), "4", "2");
+		assertDeepList(dao.getConfigurationNames(), "4", "2");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

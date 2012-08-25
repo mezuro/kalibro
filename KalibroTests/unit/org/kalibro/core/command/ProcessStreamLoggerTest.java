@@ -3,9 +3,9 @@ package org.kalibro.core.command;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class ProcessStreamLoggerTest extends KalibroTestCase {
+public class ProcessStreamLoggerTest extends TestCase {
 
 	private static final long PIPE_TIMEOUT = 50;
 

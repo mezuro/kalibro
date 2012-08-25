@@ -14,10 +14,9 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.KalibroSettings;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.settings.KalibroSettings;
 import org.kalibro.service.*;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Matchers;
@@ -27,8 +26,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, Service.class})
-public class EndpointPortFactoryTest extends KalibroTestCase {
+@PrepareForTest({KalibroSettings.class, Service.class})
+public class EndpointPortFactoryTest extends TestCase {
 
 	@BeforeClass
 	public static void emmaCoverage() throws Exception {
@@ -48,8 +47,8 @@ public class EndpointPortFactoryTest extends KalibroTestCase {
 
 	private void mockSettings() {
 		settings = new KalibroSettings();
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.currentSettings()).thenReturn(settings);
+		PowerMockito.mockStatic(KalibroSettings.class);
+		PowerMockito.when(KalibroSettings.load()).thenReturn(settings);
 	}
 
 	private void mockService() {
@@ -109,7 +108,8 @@ public class EndpointPortFactoryTest extends KalibroTestCase {
 
 		PowerMockito.verifyStatic();
 		Service.create(urlCaptor.capture(), qNameCaptor.capture());
-		assertEquals(settings.getServiceAddress() + endpointName + "/?wsdl", urlCaptor.getValue().toExternalForm());
+		String serviceAddress = settings.getClientSettings().getServiceAddress();
+		assertEquals(serviceAddress + endpointName + "/?wsdl", urlCaptor.getValue().toExternalForm());
 		assertEquals(endpointName + "ImplService", qNameCaptor.getValue().getLocalPart());
 
 		Mockito.verify(service).getPort(qNameCaptor.capture(), Matchers.eq(endpointClass));

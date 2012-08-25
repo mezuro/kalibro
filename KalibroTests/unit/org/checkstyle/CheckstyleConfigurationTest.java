@@ -6,10 +6,10 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 
-public class CheckstyleConfigurationTest extends KalibroTestCase {
+public class CheckstyleConfigurationTest extends TestCase {
 
 	private CheckstyleConfiguration configuration;
 

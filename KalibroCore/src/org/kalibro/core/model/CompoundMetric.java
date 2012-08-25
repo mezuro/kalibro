@@ -7,13 +7,8 @@ public class CompoundMetric extends Metric {
 	private String script;
 
 	public CompoundMetric() {
-		super("New metric", Granularity.CLASS);
+		super(true, "New metric", Granularity.CLASS);
 		setScript("return 1;");
-	}
-
-	@Override
-	public boolean isCompound() {
-		return true;
 	}
 
 	public String getScript() {

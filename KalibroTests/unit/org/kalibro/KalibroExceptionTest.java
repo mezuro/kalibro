@@ -2,36 +2,26 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.util.StackTracePrinter;
 
-public class KalibroExceptionTest extends KalibroTestCase {
+public class KalibroExceptionTest extends TestCase {
 
 	private static final String MESSAGE = "KalibroExceptionTest message";
+	private static final Throwable CAUSE = new Exception();
 
 	private KalibroException exception;
 
-	@Before
-	public void setUp() {
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldContructWithMessage() {
 		exception = new KalibroException(MESSAGE);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkMessageContructor() {
 		assertSame(MESSAGE, exception.getMessage());
+		assertNull(exception.getCause());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkMessageAndCauseContructor() {
-		Throwable cause = new NullPointerException();
-		exception = new KalibroException(MESSAGE, cause);
+	public void shouldConstructWithMessageAndCause() {
+		exception = new KalibroException(MESSAGE, CAUSE);
 		assertSame(MESSAGE, exception.getMessage());
-		assertSame(cause, exception.getCause());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintStackTraceToString() {
-		assertEquals(new StackTracePrinter().printStackTrace(exception), exception.getPrintedStackTrace());
+		assertSame(CAUSE, exception.getCause());
 	}
 }

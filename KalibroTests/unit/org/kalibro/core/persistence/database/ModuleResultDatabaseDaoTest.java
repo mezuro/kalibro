@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({MetricResultRecord.class, ModuleResultDatabaseDao.class})
-public class ModuleResultDatabaseDaoTest extends KalibroTestCase {
+public class ModuleResultDatabaseDaoTest extends TestCase {
 
 	private static final Date DATE = new Date();
 	private static final String MODULE_NAME = "ModuleResultDatabaseDaoTest module";

@@ -1,16 +1,20 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.ModuleNodeFixtures.helloWorldRoot;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.powermock.api.mockito.PowerMockito.mockStatic;
+
+import java.util.Collection;
+import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
+import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -18,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class AnalyzeResultsTaskTest extends KalibroTestCase {
+public class AnalyzeResultsTaskTest extends TestCase {
 
 	private ProjectResult projectResult;
 	private AnalyzeResultsTask analyzeTask;
@@ -48,6 +52,8 @@ public class AnalyzeResultsTaskTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldReturnResults() {
-		assertDeepEquals(newHelloWorldResults(projectResult.getDate()), analyzeTask.performAndGetResult());
+		Collection<ModuleResult> expected = newHelloWorldResults(projectResult.getDate());
+		Collection<ModuleResult> actual = analyzeTask.performAndGetResult();
+		assertDeepEquals(new HashSet<ModuleResult>(expected), new HashSet<ModuleResult>(actual));
 	}
 }

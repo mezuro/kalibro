@@ -6,7 +6,7 @@ import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 import javax.swing.event.MenuEvent;
 
-import org.kalibro.core.model.abstracts.AbstractEntity;
+import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.desktop.swingextension.menu.AbstractMenu;
 import org.kalibro.desktop.swingextension.menu.ReflectionMenuItem;
 

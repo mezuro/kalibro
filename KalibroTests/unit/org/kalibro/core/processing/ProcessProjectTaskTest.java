@@ -11,8 +11,8 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
@@ -28,7 +28,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Kalibro.class, ProcessProjectTask.class})
-public class ProcessProjectTaskTest extends KalibroTestCase {
+public class ProcessProjectTaskTest extends TestCase {
 
 	private Project project;
 	private ProjectResult projectResult;
@@ -94,8 +94,6 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 		processTask.perform();
 		assertEquals(ProjectState.READY, project.getState());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -117,7 +115,5 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 		assertEquals(ProjectState.ERROR, project.getState());
 		assertSame(error, project.getError());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 }

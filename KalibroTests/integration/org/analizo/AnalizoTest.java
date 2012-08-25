@@ -1,7 +1,7 @@
 package org.analizo;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizo;
 import static org.kalibro.core.model.NativeModuleResultFixtures.*;
 
 import java.io.File;
@@ -14,7 +14,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.NativeMetric;
@@ -24,7 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(FileProcessStreamLogger.class)
-public class AnalizoTest extends KalibroTestCase {
+public class AnalizoTest extends TestCase {
 
 	@BeforeClass
 	public static void checkAnalizoVersion() {
@@ -57,9 +57,9 @@ public class AnalizoTest extends KalibroTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldCollectMetrics() throws IOException {
-		File codeDirectory = new File(SAMPLES_DIRECTORY, "analizo");
+		File codeDirectory = new File(samplesDirectory(), "analizo");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
-		assertDeepEquals(analizo.collectMetrics(codeDirectory, metrics),
+		assertDeepSet(analizo.collectMetrics(codeDirectory, metrics),
 			helloWorldApplicationResult(), helloWorldClassResult());
 	}
 }

@@ -5,10 +5,10 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 
-public class ModuleTest extends KalibroTestCase {
+public class ModuleTest extends TestCase {
 
 	private Module org, kalibro, core, model, module;
 
@@ -51,10 +51,10 @@ public class ModuleTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInferAncestry() {
 		assertTrue(org.inferAncestry().isEmpty());
-		assertDeepEquals(kalibro.inferAncestry(), org);
-		assertDeepEquals(core.inferAncestry(), org, kalibro);
-		assertDeepEquals(model.inferAncestry(), org, kalibro, core);
-		assertDeepEquals(module.inferAncestry(), org, kalibro, core, model);
+		assertDeepList(kalibro.inferAncestry(), org);
+		assertDeepList(core.inferAncestry(), org, kalibro);
+		assertDeepList(model.inferAncestry(), org, kalibro, core);
+		assertDeepList(module.inferAncestry(), org, kalibro, core, model);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -7,7 +7,7 @@ import java.lang.reflect.Constructor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
@@ -17,7 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)
-public class JavascriptEvaluatorTest extends KalibroTestCase {
+public class JavascriptEvaluatorTest extends TestCase {
 
 	private ScriptEvaluator evaluator;
 

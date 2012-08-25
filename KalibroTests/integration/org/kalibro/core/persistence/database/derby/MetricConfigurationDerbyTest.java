@@ -5,7 +5,7 @@ import org.kalibro.core.persistence.database.MetricConfigurationDatabaseTest;
 public class MetricConfigurationDerbyTest extends MetricConfigurationDatabaseTest {
 
 	@Override
-	protected DerbyTestSettings getTestSettings() {
-		return new DerbyTestSettings();
+	protected DerbyDaoFactoryForTest getDaoFactoryForTest() {
+		return new DerbyDaoFactoryForTest();
 	}
 }

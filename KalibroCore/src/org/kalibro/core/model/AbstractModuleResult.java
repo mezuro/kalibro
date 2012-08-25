@@ -5,11 +5,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingFields;
 
-@SortingMethods("getModule")
+@SortingFields("module")
 public abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 	extends AbstractEntity<AbstractModuleResult<METRIC_RESULT>> {
 

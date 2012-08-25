@@ -1,6 +1,6 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.concurrent.TypedTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
@@ -19,7 +19,6 @@ abstract class ProcessProjectSubtask<T> extends TypedTask<T> {
 	protected T execute() {
 		project.setState(getTaskState());
 		Kalibro.getProjectDao().save(project);
-		Kalibro.fireProjectStateChanged(project);
 		return executeAndWaitResult();
 	}
 

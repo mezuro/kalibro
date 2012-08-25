@@ -1,8 +1,8 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.junit.Assert.assertTrue;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
 import java.net.MalformedURLException;
 
@@ -73,6 +73,6 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 	private void testSaveConfiguration(Configuration newConfiguration) {
 		newConfiguration.setName("ConfigurationEndpointTest configuration");
 		port.saveConfiguration(new ConfigurationXml(newConfiguration));
-		assertDeepEquals(port.getConfigurationNames(), newConfiguration.getName(), sample.getName());
+		assertDeepList(port.getConfigurationNames(), newConfiguration.getName(), sample.getName());
 	}
 }

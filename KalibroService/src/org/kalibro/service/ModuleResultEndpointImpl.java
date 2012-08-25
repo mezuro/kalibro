@@ -8,7 +8,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.service.entities.ModuleResultXml;

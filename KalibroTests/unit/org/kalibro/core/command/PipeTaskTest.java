@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import java.io.IOException;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class PipeTaskTest extends KalibroTestCase {
+public class PipeTaskTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldPipe() throws IOException {

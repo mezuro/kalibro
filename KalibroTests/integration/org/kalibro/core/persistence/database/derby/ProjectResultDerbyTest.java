@@ -5,7 +5,7 @@ import org.kalibro.core.persistence.database.ProjectResultDatabaseTest;
 public class ProjectResultDerbyTest extends ProjectResultDatabaseTest {
 
 	@Override
-	protected DerbyTestSettings getTestSettings() {
-		return new DerbyTestSettings();
+	protected DerbyDaoFactoryForTest getDaoFactoryForTest() {
+		return new DerbyDaoFactoryForTest();
 	}
 }

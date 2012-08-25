@@ -6,7 +6,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.client.EndpointPortFactory;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ModuleResultFixtures;
@@ -18,7 +18,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(EndpointPortFactory.class)
-public class ModuleResultPortDaoTest extends KalibroTestCase {
+public class ModuleResultPortDaoTest extends TestCase {
 
 	private ModuleResult moduleResult;
 
@@ -48,6 +48,6 @@ public class ModuleResultPortDaoTest extends KalibroTestCase {
 	public void testResultHistory() {
 		List<ModuleResultXml> resultHistory = Arrays.asList(new ModuleResultXml(moduleResult));
 		PowerMockito.when(port.getResultHistory("", "")).thenReturn(resultHistory);
-		assertDeepEquals(dao.getResultHistory("", ""), moduleResult);
+		assertDeepList(dao.getResultHistory("", ""), moduleResult);
 	}
 }

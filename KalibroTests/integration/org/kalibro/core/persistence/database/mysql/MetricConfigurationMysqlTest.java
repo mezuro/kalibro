@@ -5,7 +5,7 @@ import org.kalibro.core.persistence.database.MetricConfigurationDatabaseTest;
 public class MetricConfigurationMysqlTest extends MetricConfigurationDatabaseTest {
 
 	@Override
-	protected MysqlTestSettings getTestSettings() {
-		return new MysqlTestSettings();
+	protected MysqlDaoFactoryForTest getDaoFactoryForTest() {
+		return new MysqlDaoFactoryForTest();
 	}
 }

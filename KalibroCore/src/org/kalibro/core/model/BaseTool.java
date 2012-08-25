@@ -6,16 +6,16 @@ import java.util.TreeSet;
 
 import org.kalibro.KalibroException;
 import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingFields;
 
 /**
  * A base tool to provide metric results for Kalibro.
  * 
  * @author Carlos Morais
  */
-@SortingMethods("getName")
+@SortingFields("name")
 public class BaseTool extends AbstractEntity<BaseTool> {
 
 	@IdentityField

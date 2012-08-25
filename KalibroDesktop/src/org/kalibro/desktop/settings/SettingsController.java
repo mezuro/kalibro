@@ -3,9 +3,8 @@ package org.kalibro.desktop.settings;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
-import org.kalibro.Kalibro;
 import org.kalibro.KalibroException;
-import org.kalibro.core.settings.KalibroSettings;
+import org.kalibro.KalibroSettings;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.EditDialogListener;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
@@ -13,7 +12,7 @@ import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 public final class SettingsController extends ComponentAdapter implements EditDialogListener<KalibroSettings> {
 
 	public static void editSettings() {
-		new SettingsController().edit(Kalibro.currentSettings());
+		new SettingsController().edit(KalibroSettings.load());
 	}
 
 	private EditDialog<KalibroSettings> dialog;
@@ -39,7 +38,7 @@ public final class SettingsController extends ComponentAdapter implements EditDi
 	@Override
 	public boolean dialogConfirm(KalibroSettings settings) {
 		try {
-			Kalibro.changeSettings(settings);
+			settings.save();
 			return true;
 		} catch (KalibroException exception) {
 			new ErrorDialog(dialog).show(exception);

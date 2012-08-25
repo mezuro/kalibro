@@ -1,36 +1,34 @@
 package org.kalibro.core.util.reflection;
 
+import static java.lang.reflect.Modifier.STATIC;
 import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.kalibro.KalibroError;
-import org.kalibro.KalibroException;
 
+/**
+ * Performs reflective operations on the specified object in an easy way.
+ * 
+ * @author Carlos Morais
+ */
 public class Reflector {
 
 	private Object object;
 	private Map<String, Field> fields;
-	private Map<String, Method> methods;
+	private MemberFilter ignoreFieldFilter;
 
-	public Reflector(Object object) {
+	public Reflector(Object object, MemberFilter... ignoreFieldFilters) {
 		this.object = object;
-		initializeMembers();
+		this.ignoreFieldFilter = or(is(STATIC), nameMatches(".*\\$.*"), or(ignoreFieldFilters));
+		initializeFields();
 	}
 
-	private void initializeMembers() {
+	private void initializeFields() {
 		fields = new TreeMap<String, Field>();
-		methods = new TreeMap<String, Method>();
 		putAllFields(getObjectClass());
-		for (Method method : getObjectClass().getMethods())
-			if (!method.getDeclaringClass().equals(Object.class))
-				methods.put(method.getName(), method);
 	}
 
 	private void putAllFields(Class<?> type) {
@@ -42,15 +40,10 @@ public class Reflector {
 
 	private void putDeclaredFields(Class<?> type) {
 		for (Field field : type.getDeclaredFields())
-			if (isRelevantField(field)) {
+			if (!ignoreFieldFilter.accept(field)) {
 				field.setAccessible(true);
 				fields.put(field.getName(), field);
 			}
-	}
-
-	protected boolean isRelevantField(Field field) {
-		String name = field.getName();
-		return ! (name.equals("serialVersionUID") || name.startsWith("$"));
 	}
 
 	public Object getObject() {
@@ -59,18 +52,6 @@ public class Reflector {
 
 	public Class<?> getObjectClass() {
 		return object.getClass();
-	}
-
-	public boolean hasClassAnnotation(Class<? extends Annotation> annotationClass) {
-		return getObjectClass().isAnnotationPresent(annotationClass);
-	}
-
-	public <T extends Annotation> T getClassAnnotation(Class<T> annotationClass) {
-		return getObjectClass().getAnnotation(annotationClass);
-	}
-
-	public boolean hasField(String fieldName) {
-		return fields.containsKey(fieldName);
 	}
 
 	public List<String> listFields() {
@@ -83,6 +64,12 @@ public class Reflector {
 			if (filter.accept(fields.get(fieldName)))
 				fieldNames.add(fieldName);
 		return fieldNames;
+	}
+
+	public List<String> sortFields(Comparator<String> comparator) {
+		List<String> sortedFields = listFields();
+		Collections.sort(sortedFields, comparator);
+		return sortedFields;
 	}
 
 	public Object get(String fieldName) {
@@ -103,31 +90,7 @@ public class Reflector {
 		}
 	}
 
-	public <T extends Annotation> List<T> getFieldAnnotations(Class<T> annotationClass) {
-		List<T> annotations = new ArrayList<T>();
-		for (String fieldName : listFields(hasAnnotation(annotationClass)))
-			annotations.add(fields.get(fieldName).getAnnotation(annotationClass));
-		return annotations;
-	}
-
-	public List<String> listMethods() {
-		return new ArrayList<String>(methods.keySet());
-	}
-
-	public List<String> listMethods(MemberFilter filter) {
-		List<String> methodNames = new ArrayList<String>();
-		for (String methodName : methods.keySet())
-			if (filter.accept(methods.get(methodName)))
-				methodNames.add(methodName);
-		return methodNames;
-	}
-
-	public Object invoke(String methodName, Object... arguments) {
-		String completeName = getObjectClass().getName() + "." + methodName;
-		try {
-			return methods.get(methodName).invoke(object, arguments);
-		} catch (Exception exception) {
-			throw new KalibroException("Error invoking method: " + completeName, exception);
-		}
+	public <T extends Annotation> T getFieldAnnotation(String field, Class<T> annotationClass) {
+		return fields.get(field).getAnnotation(annotationClass);
 	}
 }

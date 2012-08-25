@@ -1,10 +1,17 @@
 package org.kalibro;
 
-public class KalibroError extends KalibroException {
+/**
+ * Indicates Kalibro has a bug to be fixed. Every instructions that throws it should be dead code.
+ * 
+ * @author Carlos Morais
+ */
+public class KalibroError extends Error {
 
-	public static final String MESSAGE_PREFIX = "Please report this bug: ";
+	public KalibroError(String message) {
+		super(message);
+	}
 
 	public KalibroError(String message, Throwable cause) {
-		super(MESSAGE_PREFIX + message, cause);
+		super(message, cause);
 	}
 }

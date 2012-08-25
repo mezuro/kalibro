@@ -1,6 +1,5 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
@@ -18,7 +17,7 @@ class LoadSourceTask extends ProcessProjectSubtask<ProjectResult> {
 
 	@Override
 	protected ProjectResult performAndGetResult() {
-		project.load(Kalibro.currentSettings().getLoadDirectoryFor(project));
+		project.load();
 		return projectResult;
 	}
 }

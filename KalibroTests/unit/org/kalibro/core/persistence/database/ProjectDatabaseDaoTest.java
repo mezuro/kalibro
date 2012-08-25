@@ -13,12 +13,11 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
-import org.kalibro.core.settings.KalibroSettings;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -27,7 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({FileUtils.class, Kalibro.class, ProjectDatabaseDao.class})
-public class ProjectDatabaseDaoTest extends KalibroTestCase {
+public class ProjectDatabaseDaoTest extends TestCase {
 
 	private Project project;
 	private DatabaseManager databaseManager;
@@ -63,7 +62,7 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllProjectNames() {
 		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepEquals(dao.getProjectNames(), "4", "2");
+		assertDeepList(dao.getProjectNames(), "4", "2");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -97,7 +96,7 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 		order.verify(databaseManager).remove(captor.capture());
 		order.verify(databaseManager).commitTransaction();
 
-		assertDeepEquals(project, captor.getValue().convert());
+		assertEquals(project.getName(), captor.getValue().convert().getName());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -124,11 +123,10 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	private File mockRemoveDirectory() {
-		KalibroSettings settings = mock(KalibroSettings.class);
 		File directory = mock(File.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(settings);
-		when(settings.getLoadDirectoryFor(project)).thenReturn(directory);
+		project = spy(project);
+		doReturn(project).when(dao).getByName("42");
+		doReturn(directory).when(project).getDirectory();
 		mockStatic(FileUtils.class);
 		return directory;
 	}

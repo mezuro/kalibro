@@ -10,7 +10,7 @@ import javax.swing.JInternalFrame;
 import javax.swing.event.InternalFrameAdapter;
 import javax.swing.event.InternalFrameEvent;
 
-import org.kalibro.core.model.abstracts.AbstractEntity;
+import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
 import org.kalibro.desktop.swingextension.dialog.InputDialog;
