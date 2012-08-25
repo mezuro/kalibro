@@ -19,9 +19,10 @@ public class PrinterTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkSpecialPrinters() throws Exception {
 		Printer<?>[] printers = Whitebox.invokeMethod(Printer.class, "specialPrinters");
-		assertEquals(2, printers.length);
-		assertClassEquals(EnumPrinter.class, printers[0]);
-		assertClassEquals(MapPrinter.class, printers[1]);
+		assertEquals(3, printers.length);
+		assertClassEquals(EntityPrinter.class, printers[0]);
+		assertClassEquals(EnumPrinter.class, printers[1]);
+		assertClassEquals(MapPrinter.class, printers[2]);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

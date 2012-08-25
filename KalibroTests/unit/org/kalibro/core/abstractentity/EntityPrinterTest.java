@@ -1,20 +1,28 @@
 package org.kalibro.core.abstractentity;
 
-import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.abstractentity.EntityPrinter.print;
-
-import java.io.IOException;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
 
-public class EntityPrinterTest extends KalibroTestCase {
+public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 
-	private Person person;
+	@Override
+	protected Printer<AbstractEntity<?>> createPrinter() {
+		return new EntityPrinter();
+	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintAsYaml() throws IOException {
-		person = loadFixture("person-carlos", Person.class);
-		assertEquals(loadResource("person-carlos.yml"), print(person));
+	public void shouldPrintEntities() {
+		assertTrue(printer.canPrint(new Person()));
+		assertTrue(printer.canPrint(new Programmer()));
+
+		assertFalse(printer.canPrint(this));
+		assertFalse(printer.canPrint(printer));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldPrintAsYaml() throws Exception {
+		Programmer programmer = loadFixture("programmer-carlos", Programmer.class);
+		assertEquals(loadResource("programmer-carlos.yml").replace("---", ""), print(programmer, ""));
 	}
 }

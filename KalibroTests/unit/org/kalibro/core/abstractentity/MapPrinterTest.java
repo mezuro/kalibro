@@ -25,7 +25,7 @@ public class MapPrinterTest extends PrinterTestCase<Map<?, ?>> {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintMap() throws Exception {
+	public void shouldPrintAsYaml() throws Exception {
 		Map<String, Object> map = new TreeMap<String, Object>();
 		map.put("empty", newMap());
 		map.put("pets", newMap("c->cat", "d->dog", "p->pig"));
