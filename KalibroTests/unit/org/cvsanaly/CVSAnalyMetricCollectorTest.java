@@ -1,7 +1,7 @@
 package org.cvsanaly;
 
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.powermock.api.mockito.PowerMockito.spy;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CVSAnalyMetricCollector.class)
-public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
+public class CVSAnalyMetricCollectorTest extends TestCase {
 
 	private CVSAnalyMetricCollector cvsanaly;
 	private CommandTask executor;
@@ -51,12 +51,11 @@ public class CVSAnalyMetricCollectorTest extends KalibroTestCase {
 
 		try {
 			cvsanaly.collectMetrics(codeDirectory, metrics);
-		} catch (Exception e) { 
+		} catch (Exception e) {
 			assertDifferent(e, null);
 		}
 		Mockito.verify(databaseFileSpy).delete();
 	}
-
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCollectAllMetrics() throws Exception {

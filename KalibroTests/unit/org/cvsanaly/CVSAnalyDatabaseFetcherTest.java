@@ -15,7 +15,7 @@ import javax.persistence.Query;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Persistence.class)
-public class CVSAnalyDatabaseFetcherTest extends KalibroTestCase {
+public class CVSAnalyDatabaseFetcherTest extends TestCase {
 
 	private static final File DATABASE_PATH = new File("/tmp/teste");
 
@@ -57,12 +57,12 @@ public class CVSAnalyDatabaseFetcherTest extends KalibroTestCase {
 		PowerMockito.mockStatic(Persistence.class);
 		PowerMockito.when(Persistence.createEntityManagerFactory(eq("cvsanaly"), any(Map.class)))
 			.thenReturn(managerFactory);
-		
+
 		Mockito.when(managerFactory.createEntityManager()).thenReturn(mockManager);
 		Mockito.when(mockManager.createNamedQuery(any(String.class))).thenReturn(mockQuery);
-		
+
 		fetcher.getMetricResults();
-		
+
 		Mockito.verify(mockQuery).getResultList();
 		Mockito.verify(mockManager).close();
 	}
