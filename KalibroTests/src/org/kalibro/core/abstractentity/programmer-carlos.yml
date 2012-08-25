@@ -1,13 +1,13 @@
 ---
 name: Carlos Morais # name comes first
 colleagues:
--
-  name: Paulo Meirelles # name comes first
-  colleagues: []
-  identityNumber: PM
-  relatives: {}
-  sex: Male
-  useMetrics: true
+  -
+    name: Paulo Meirelles # name comes first
+    colleagues: []
+    identityNumber: PM
+    relatives: {}
+    sex: Male
+    useMetrics: true
 identityNumber: CM
 relatives:
   mother:

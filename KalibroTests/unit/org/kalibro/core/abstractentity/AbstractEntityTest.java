@@ -11,7 +11,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AbstractEntity.class, EntityPrinter.class, Equality.class, HashCodeCalculator.class})
+@PrepareForTest({AbstractEntity.class, Equality.class, HashCodeCalculator.class, Printer.class})
 public class AbstractEntityTest extends KalibroTestCase {
 
 	private Person entity;
@@ -22,9 +22,9 @@ public class AbstractEntityTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintWithEntityPrinter() {
-		mockStatic(EntityPrinter.class);
-		when(EntityPrinter.print(entity)).thenReturn("42");
+	public void shouldPrintWithPrinter() {
+		mockStatic(Printer.class);
+		when(Printer.print(entity)).thenReturn("42");
 		assertEquals("42", entity.toString());
 	}
 
