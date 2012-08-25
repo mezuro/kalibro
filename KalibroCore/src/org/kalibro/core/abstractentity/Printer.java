@@ -23,7 +23,7 @@ abstract class Printer<T> {
 	}
 
 	private static Printer<?>[] specialPrinters() {
-		return new Printer[]{new EnumPrinter()};
+		return new Printer[]{new EnumPrinter(), new MapPrinter()};
 	}
 
 	private static <T> void print(Printer<T> printer, Object object, StringBuffer buffer, int indent, String comment) {
