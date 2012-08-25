@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -27,7 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareForTest(Kalibro.class)
-public class ProjectPanelTest extends KalibroTestCase {
+public class ProjectPanelTest extends TestCase {
 
 	private Project project;
 

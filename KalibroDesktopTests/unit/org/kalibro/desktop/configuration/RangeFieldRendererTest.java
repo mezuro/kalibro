@@ -7,10 +7,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 
-public class RangeFieldRendererTest extends KalibroTestCase {
+public class RangeFieldRendererTest extends TestCase {
 
 	private Set<Range> ranges;
 	private RangeFieldRenderer renderer;

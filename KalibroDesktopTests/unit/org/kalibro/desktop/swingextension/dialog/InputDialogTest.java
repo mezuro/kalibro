@@ -9,14 +9,14 @@ import javax.swing.JOptionPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JOptionPane.class)
-public class InputDialogTest extends KalibroTestCase {
+public class InputDialogTest extends TestCase {
 
 	private static final String TITLE = "InputDialogTest title";
 	private static final String MESSAGE = "InputDialogTest message";

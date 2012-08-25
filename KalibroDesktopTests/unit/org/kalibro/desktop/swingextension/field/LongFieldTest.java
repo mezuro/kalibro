@@ -6,11 +6,11 @@ import javax.swing.JFormattedTextField;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 
-public class LongFieldTest extends KalibroTestCase {
+public class LongFieldTest extends TestCase {
 
 	private LongField field;
 

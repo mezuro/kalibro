@@ -6,13 +6,13 @@ import javax.swing.JInternalFrame;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class IconTest extends KalibroTestCase {
+public class IconTest extends TestCase {
 
 	private static final int WIDTH = 42;
 	private static final int HEIGHT = 36;

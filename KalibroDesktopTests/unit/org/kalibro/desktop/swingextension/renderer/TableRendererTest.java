@@ -10,12 +10,12 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.list.TableModel;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class TableRendererTest extends KalibroTestCase {
+public class TableRendererTest extends TestCase {
 
 	private boolean isSelected;
 	private Component component, renderedComponent;

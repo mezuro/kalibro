@@ -7,9 +7,9 @@ import java.lang.reflect.Member;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class NameMemberFilterTest extends KalibroTestCase {
+public class NameMemberFilterTest extends TestCase {
 
 	private Member member;
 	private NameMemberFilter filter;

@@ -7,7 +7,7 @@ import java.io.File;
 import org.junit.Test;
 import org.kalibro.core.Environment;
 
-public class ServerSettingsTest extends KalibroTestCase {
+public class ServerSettingsTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultSettings() {

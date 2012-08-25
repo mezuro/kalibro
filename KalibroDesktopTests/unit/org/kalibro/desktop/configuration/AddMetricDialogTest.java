@@ -17,7 +17,7 @@ import javax.swing.ListSelectionModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.NativeMetric;
@@ -35,7 +35,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareForTest(Kalibro.class)
-public class AddMetricDialogTest extends KalibroTestCase {
+public class AddMetricDialogTest extends TestCase {
 
 	private AddMetricDialog dialog;
 	private ComponentFinder finder;

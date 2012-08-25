@@ -5,8 +5,10 @@ import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.Granularity;
 
-@SortingFields({"scope", "name"})
+@SortingFields({"compound", "scope", "name"})
 public abstract class Metric extends AbstractEntity<Metric> {
+
+	private final boolean compound;
 
 	@IdentityField
 	private String name;
@@ -14,14 +16,15 @@ public abstract class Metric extends AbstractEntity<Metric> {
 	private Granularity scope;
 	private String description;
 
-	public Metric(String name, Granularity scope) {
-		this(name, scope, "");
+	protected Metric(boolean compound, String name, Granularity scope) {
+		this(compound, name, scope, "");
 	}
 
-	public Metric(String name, Granularity scope, String description) {
+	protected Metric(boolean compound, String name, Granularity scope, String description) {
 		setName(name);
 		setScope(scope);
 		setDescription(description);
+		this.compound = compound;
 	}
 
 	@Override
@@ -29,11 +32,9 @@ public abstract class Metric extends AbstractEntity<Metric> {
 		return name;
 	}
 
-	public boolean getCompound() {
-		return isCompound();
+	public boolean isCompound() {
+		return compound;
 	}
-
-	public abstract boolean isCompound();
 
 	public String getName() {
 		return name;

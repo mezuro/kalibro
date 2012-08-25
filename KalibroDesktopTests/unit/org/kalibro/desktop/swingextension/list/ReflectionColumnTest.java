@@ -10,14 +10,14 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
 import org.powermock.reflect.Whitebox;
 
-public class ReflectionColumnTest extends KalibroTestCase {
+public class ReflectionColumnTest extends TestCase {
 
 	private ReflectionColumn column;
 

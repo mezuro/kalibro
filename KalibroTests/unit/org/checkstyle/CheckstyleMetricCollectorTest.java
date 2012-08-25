@@ -13,7 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 import org.mockito.InOrder;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Checker.class, CheckstyleConfiguration.class, CheckstyleMetricCollector.class, FileUtils.class})
-public class CheckstyleMetricCollectorTest extends KalibroTestCase {
+public class CheckstyleMetricCollectorTest extends TestCase {
 
 	private static final Set<NativeMetric> METRICS = CheckstyleStub.nativeMetrics();
 

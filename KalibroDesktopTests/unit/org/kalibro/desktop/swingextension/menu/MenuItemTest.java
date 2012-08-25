@@ -7,11 +7,11 @@ import java.awt.event.ActionListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class MenuItemTest extends KalibroTestCase {
+public class MenuItemTest extends TestCase {
 
 	private ActionListener listener;
 

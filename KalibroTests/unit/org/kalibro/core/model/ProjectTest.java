@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.ProjectState;
 import org.mockito.Mockito;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(KalibroSettings.class)
-public class ProjectTest extends KalibroTestCase {
+public class ProjectTest extends TestCase {
 
 	private KalibroSettings settings;
 	private Project project = newHelloWorld();

@@ -8,9 +8,9 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class PasswordFieldTest extends KalibroTestCase {
+public class PasswordFieldTest extends TestCase {
 
 	private static final String PASSWORD = "  PasswordFieldTest password  ";
 

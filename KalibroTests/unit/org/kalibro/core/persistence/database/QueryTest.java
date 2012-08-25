@@ -9,12 +9,12 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class QueryTest extends KalibroTestCase {
+public class QueryTest extends TestCase {
 
 	private TypedQuery<String> nativeQuery;
 	private Query<String> query;

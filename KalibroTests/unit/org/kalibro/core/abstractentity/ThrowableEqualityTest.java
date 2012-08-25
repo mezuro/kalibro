@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class ThrowableEqualityTest extends KalibroTestCase {
+public class ThrowableEqualityTest extends TestCase {
 
 	private ThrowableEquality equality;
 

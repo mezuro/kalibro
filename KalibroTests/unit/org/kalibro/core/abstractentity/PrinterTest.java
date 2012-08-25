@@ -7,14 +7,14 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Printer.class)
-public class PrinterTest extends KalibroTestCase {
+public class PrinterTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkSpecialPrinters() throws Exception {

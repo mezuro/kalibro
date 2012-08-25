@@ -12,7 +12,7 @@ import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class AnalyzeResultsTaskTest extends KalibroTestCase {
+public class AnalyzeResultsTaskTest extends TestCase {
 
 	private ProjectResult projectResult;
 	private AnalyzeResultsTask analyzeTask;

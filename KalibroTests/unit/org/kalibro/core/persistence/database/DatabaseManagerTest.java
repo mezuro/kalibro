@@ -10,12 +10,12 @@ import javax.persistence.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.reflect.Whitebox;
 
-public class DatabaseManagerTest extends KalibroTestCase {
+public class DatabaseManagerTest extends TestCase {
 
 	private static final String MERGED = "DatabaseManagerTest merged";
 	private static final String UNMERGED = "DatabaseManagerTest unmerged";

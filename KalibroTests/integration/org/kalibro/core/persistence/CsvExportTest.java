@@ -13,11 +13,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.ModuleResult;
 
-public class CsvExportTest extends KalibroTestCase {
+public class CsvExportTest extends TestCase {
 
 	private File csvFile;
 	private ModuleResult moduleResult;

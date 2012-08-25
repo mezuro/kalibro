@@ -7,11 +7,11 @@ import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Range;
 
-public class ReflectionTableModelTest extends KalibroTestCase {
+public class ReflectionTableModelTest extends TestCase {
 
 	private ReflectionTableModel<Range> model;
 

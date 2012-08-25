@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -13,7 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RepositoryType.class)
-public class RepositoryTest extends KalibroTestCase {
+public class RepositoryTest extends TestCase {
 
 	private Repository repository = new Repository();
 

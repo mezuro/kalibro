@@ -6,7 +6,7 @@ import static org.kalibro.core.model.RangeLabel.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ColorField;
@@ -14,7 +14,7 @@ import org.kalibro.desktop.swingextension.field.DoubleField;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
 
-public class RangePanelTest extends KalibroTestCase {
+public class RangePanelTest extends TestCase {
 
 	private Range range;
 

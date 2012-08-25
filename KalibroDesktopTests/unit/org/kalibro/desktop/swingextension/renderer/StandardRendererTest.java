@@ -2,11 +2,11 @@ package org.kalibro.desktop.swingextension.renderer;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class StandardRendererTest extends KalibroTestCase {
+public class StandardRendererTest extends TestCase {
 
 	private StandardRenderer renderer;
 

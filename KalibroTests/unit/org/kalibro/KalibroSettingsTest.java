@@ -19,7 +19,7 @@ import org.yaml.snakeyaml.Yaml;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({FileUtils.class, KalibroSettings.class})
-public class KalibroSettingsTest extends KalibroTestCase {
+public class KalibroSettingsTest extends TestCase {
 
 	private Yaml yaml;
 	private File settingsFile;

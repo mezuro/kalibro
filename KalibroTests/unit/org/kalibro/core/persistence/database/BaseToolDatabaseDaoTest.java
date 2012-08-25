@@ -15,7 +15,7 @@ import org.checkstyle.CheckstyleMetricCollector;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.database.entities.BaseToolRecord;
@@ -27,7 +27,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(BaseToolDatabaseDao.class)
-public class BaseToolDatabaseDaoTest extends KalibroTestCase {
+public class BaseToolDatabaseDaoTest extends TestCase {
 
 	private static final List<String> BASE_TOOL_NAMES = Arrays.asList("Analizo", "Checkstyle");
 

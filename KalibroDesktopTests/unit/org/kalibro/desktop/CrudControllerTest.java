@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
@@ -27,7 +27,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({CrudController.class, JOptionPane.class})
-public class CrudControllerTest extends KalibroTestCase {
+public class CrudControllerTest extends TestCase {
 
 	private static final String NAME = "CrudControllerTest name";
 	private static final List<String> NAMES = Arrays.asList(NAME);

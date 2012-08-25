@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class NativeMetricResultTest extends KalibroTestCase {
+public class NativeMetricResultTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkInitialization() {

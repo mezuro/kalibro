@@ -11,7 +11,7 @@ import javax.swing.JDesktopPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
@@ -22,7 +22,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ConfigurationController.class, Kalibro.class})
-public class ConfigurationControllerTest extends KalibroTestCase {
+public class ConfigurationControllerTest extends TestCase {
 
 	private static final String NAME = "ConfigurationControllerTest name";
 	private static final List<String> NAMES = Arrays.asList(NAME);

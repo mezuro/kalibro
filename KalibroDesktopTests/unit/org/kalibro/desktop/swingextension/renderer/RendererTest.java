@@ -11,10 +11,10 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.api.mockito.PowerMockito;
 
-public class RendererTest extends KalibroTestCase {
+public class RendererTest extends TestCase {
 
 	private Color color;
 	private Component component;

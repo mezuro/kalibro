@@ -13,7 +13,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AuditEvent.class, LocalizedMessage.class})
-public class CheckstyleOutputParserTest extends KalibroTestCase {
+public class CheckstyleOutputParserTest extends TestCase {
 
 	private static final CheckstyleMetric METRIC = CheckstyleMetric.FAN_OUT;
 	private static final NativeMetric NATIVE_METRIC = METRIC.getNativeMetric();

@@ -5,7 +5,7 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
 import org.kalibro.core.model.enums.Statistic;
@@ -19,7 +19,7 @@ import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class MetricConfigurationPanelTest extends KalibroTestCase {
+public class MetricConfigurationPanelTest extends TestCase {
 
 	private MetricConfiguration configuration;
 

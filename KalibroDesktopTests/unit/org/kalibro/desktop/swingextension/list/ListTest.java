@@ -13,7 +13,7 @@ import javax.swing.ListSelectionModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.ComponentFinder;
 import org.powermock.api.mockito.PowerMockito;
@@ -24,7 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(List.class)
-public class ListTest extends KalibroTestCase {
+public class ListTest extends TestCase {
 
 	private SortedSet<Range> ranges;
 

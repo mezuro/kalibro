@@ -8,9 +8,9 @@ import java.lang.reflect.Member;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class ModifierMemberFilterTest extends KalibroTestCase {
+public class ModifierMemberFilterTest extends TestCase {
 
 	private Member member;
 

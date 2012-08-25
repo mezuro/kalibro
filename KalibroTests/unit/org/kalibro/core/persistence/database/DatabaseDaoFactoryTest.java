@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -24,7 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DatabaseDaoFactory.class, KalibroSettings.class, Persistence.class})
-public class DatabaseDaoFactoryTest extends KalibroTestCase {
+public class DatabaseDaoFactoryTest extends TestCase {
 
 	private EntityManagerFactory managerFactory;
 	private BaseToolDatabaseDao baseToolDao;

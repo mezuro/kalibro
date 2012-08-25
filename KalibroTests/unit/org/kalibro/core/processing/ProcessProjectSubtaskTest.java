@@ -8,7 +8,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class ProcessProjectSubtaskTest extends KalibroTestCase {
+public class ProcessProjectSubtaskTest extends TestCase {
 
 	private static final String TASK_RESULT = "ProcessProjectSubtaskTest result";
 	private static final ProjectState TASK_STATE = COLLECTING;

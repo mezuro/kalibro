@@ -8,12 +8,12 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Repository;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-public class RemoteFileLoaderTest extends KalibroTestCase {
+public class RemoteFileLoaderTest extends TestCase {
 
 	private static final String ADDRESS = "RemoteFileLoaderTest address";
 	private static final String LOCAL_LOAD_COMMAND = "RemoteFileLoaderTest local load command";

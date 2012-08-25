@@ -6,9 +6,9 @@ import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class NativeMetricTest extends KalibroTestCase {
+public class NativeMetricTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkInitialization() {

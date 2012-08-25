@@ -9,11 +9,11 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 
-public class AnalizoOutputParserTest extends KalibroTestCase {
+public class AnalizoOutputParserTest extends TestCase {
 
 	private AnalizoOutputParser parser;
 

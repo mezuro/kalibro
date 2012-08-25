@@ -8,12 +8,12 @@ import java.util.Queue;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-public class MethodInvocationTest extends KalibroTestCase {
+public class MethodInvocationTest extends TestCase {
 
 	private static final String STRING = "My string";
 

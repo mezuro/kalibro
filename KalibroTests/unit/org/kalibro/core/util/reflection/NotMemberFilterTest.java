@@ -6,9 +6,9 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import java.lang.reflect.Member;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class NotMemberFilterTest extends KalibroTestCase {
+public class NotMemberFilterTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNegateFilter() {

@@ -6,7 +6,7 @@ import java.io.File;
 
 import org.junit.BeforeClass;
 
-public abstract class AcceptanceTest extends KalibroTestCase {
+public abstract class AcceptanceTest extends TestCase {
 
 	protected static File settingsFile;
 

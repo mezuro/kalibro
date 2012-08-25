@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RangeController.class)
-public class RangeControllerTest extends KalibroTestCase {
+public class RangeControllerTest extends TestCase {
 
 	private RangePanel panel;
 	private ErrorDialog errorDialog;

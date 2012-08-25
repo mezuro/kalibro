@@ -11,11 +11,11 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ButtonTest extends KalibroTestCase {
+public class ButtonTest extends TestCase {
 
 	private ActionListener listener;
 

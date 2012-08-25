@@ -7,7 +7,7 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest({Kalibro.class, ProjectFrame.class})
-public class ProjectFrameTest extends KalibroTestCase {
+public class ProjectFrameTest extends TestCase {
 
 	private Project project;
 	private ProjectPanel panel;

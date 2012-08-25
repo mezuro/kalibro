@@ -11,7 +11,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
@@ -26,7 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(DirectoryField.class)
-public class DirectoryFieldTest extends KalibroTestCase {
+public class DirectoryFieldTest extends TestCase {
 
 	private FileChooser chooser;
 	private ErrorDialog errorDialog;

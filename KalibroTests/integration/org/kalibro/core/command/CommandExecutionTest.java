@@ -10,10 +10,10 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 
-public class CommandExecutionTest extends KalibroTestCase {
+public class CommandExecutionTest extends TestCase {
 
 	private static final long PIPE_TIMEOUT = 50;
 

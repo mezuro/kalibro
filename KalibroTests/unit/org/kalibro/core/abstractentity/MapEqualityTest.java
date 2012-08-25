@@ -11,13 +11,13 @@ import java.util.TreeMap;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class MapEqualityTest extends KalibroTestCase {
+public class MapEqualityTest extends TestCase {
 
 	private MapEquality equality;
 

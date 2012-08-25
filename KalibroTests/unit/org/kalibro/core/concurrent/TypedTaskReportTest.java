@@ -3,9 +3,9 @@ package org.kalibro.core.concurrent;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class TypedTaskReportTest extends KalibroTestCase {
+public class TypedTaskReportTest extends TestCase {
 
 	private TypedTaskReport<String> report;
 

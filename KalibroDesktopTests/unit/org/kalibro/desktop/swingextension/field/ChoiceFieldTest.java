@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 
-public class ChoiceFieldTest extends KalibroTestCase {
+public class ChoiceFieldTest extends TestCase {
 
 	private ChoiceField<Granularity> field;
 

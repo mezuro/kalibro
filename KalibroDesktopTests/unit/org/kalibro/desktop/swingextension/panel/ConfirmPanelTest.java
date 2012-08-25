@@ -8,14 +8,14 @@ import java.awt.event.ActionListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ConfirmPanelTest extends KalibroTestCase {
+public class ConfirmPanelTest extends TestCase {
 
 	private ActionListener listener;
 

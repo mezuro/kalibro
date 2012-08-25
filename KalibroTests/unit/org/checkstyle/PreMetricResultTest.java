@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.enums.Granularity;
@@ -17,7 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CheckstyleMetric.class)
-public class PreMetricResultTest extends KalibroTestCase {
+public class PreMetricResultTest extends TestCase {
 
 	private CheckstyleMetric metric;
 	private NativeMetric nativeMetric;

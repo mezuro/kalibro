@@ -6,13 +6,13 @@ import static org.kalibro.core.model.MetricFixtures.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroException;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.MetricConfiguration;
 import org.mozilla.javascript.EcmaError;
 
-public class ScriptValidatorTest extends KalibroTestCase {
+public class ScriptValidatorTest extends TestCase {
 
 	private MetricConfiguration configuration;
 	private ScriptValidator validator;

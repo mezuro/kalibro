@@ -10,10 +10,10 @@ import javax.persistence.Column;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 
-public class ReflectorTest extends KalibroTestCase {
+public class ReflectorTest extends TestCase {
 
 	private static final String INEXISTENT = "org.kalibro.core.util.reflection.ReflectorTest.inexistent";
 

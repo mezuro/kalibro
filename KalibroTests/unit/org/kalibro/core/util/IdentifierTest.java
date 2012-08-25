@@ -3,9 +3,9 @@ package org.kalibro.core.util;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class IdentifierTest extends KalibroTestCase {
+public class IdentifierTest extends TestCase {
 
 	private static final String CLASS_NAME = "MyIdentifier4Testing";
 	private static final String CONSTANT = "MY_IDENTIFIER_4_TESTING";

@@ -9,9 +9,9 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class CollectionRendererTest extends KalibroTestCase {
+public class CollectionRendererTest extends TestCase {
 
 	private CollectionRenderer renderer;
 

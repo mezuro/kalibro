@@ -7,7 +7,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.client.EndpointPortFactory;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ProjectResult;
@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(EndpointPortFactory.class)
-public class ProjectResultPortDaoTest extends KalibroTestCase {
+public class ProjectResultPortDaoTest extends TestCase {
 
 	private boolean flag;
 	private ProjectResult projectResult;

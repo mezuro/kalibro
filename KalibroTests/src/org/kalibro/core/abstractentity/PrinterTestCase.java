@@ -1,14 +1,14 @@
 package org.kalibro.core.abstractentity;
 
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Printer.class)
-abstract class PrinterTestCase<T> extends KalibroTestCase {
+abstract class PrinterTestCase<T> extends TestCase {
 
 	protected Printer<T> printer = createPrinter();
 

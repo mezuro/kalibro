@@ -8,10 +8,10 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 
-public class BooleanRendererTest extends KalibroTestCase {
+public class BooleanRendererTest extends TestCase {
 
 	private BooleanRenderer renderer;
 

@@ -7,11 +7,11 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.Granularity;
 
-public class AbstractModuleResultTest extends KalibroTestCase {
+public class AbstractModuleResultTest extends TestCase {
 
 	private NativeMetric acc, dit, loc;
 	private NativeMetricResult accResult, locResult;

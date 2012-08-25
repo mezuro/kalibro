@@ -5,7 +5,7 @@ import javax.swing.JMenuItem;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.settings.SettingsController;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -15,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest({KalibroMenu.class, SettingsController.class})
-public class KalibroMenuTest extends KalibroTestCase {
+public class KalibroMenuTest extends TestCase {
 
 	private KalibroMenu menu;
 

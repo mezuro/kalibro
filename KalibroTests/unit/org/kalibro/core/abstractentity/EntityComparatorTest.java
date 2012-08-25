@@ -6,10 +6,10 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 
-public class EntityComparatorTest extends KalibroTestCase {
+public class EntityComparatorTest extends TestCase {
 
 	private static final String ASSERT_MESSAGE = "Order not satisfied: carlos, paulo";
 	private static final String ERROR_MESSAGE = "Error comparing fields: org.kalibro.core.abstractentity.";

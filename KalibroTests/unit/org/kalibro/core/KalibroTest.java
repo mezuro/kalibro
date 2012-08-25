@@ -10,7 +10,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.client.KalibroClient;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.*;
@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Kalibro.class, KalibroSettings.class})
-public class KalibroTest extends KalibroTestCase {
+public class KalibroTest extends TestCase {
 
 	private static final String PROJECT_NAME = "KalibroTest project";
 

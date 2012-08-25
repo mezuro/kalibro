@@ -15,13 +15,13 @@ import javax.swing.table.TableColumnModel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.mockito.ArgumentCaptor;
 import org.powermock.api.mockito.PowerMockito;
 
-public class TableModelTest extends KalibroTestCase {
+public class TableModelTest extends TestCase {
 
 	private List<Range> data;
 	private TableModel<Range> model;

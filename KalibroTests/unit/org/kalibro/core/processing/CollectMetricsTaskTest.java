@@ -1,8 +1,8 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResultMap;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
@@ -14,8 +14,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
-import org.kalibro.KalibroTestCase;
 import org.kalibro.ServerSettings;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.Configuration;
@@ -29,7 +29,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Kalibro.class, KalibroSettings.class})
-public class CollectMetricsTaskTest extends KalibroTestCase {
+public class CollectMetricsTaskTest extends TestCase {
 
 	private BaseTool baseTool;
 	private ProjectResult projectResult;

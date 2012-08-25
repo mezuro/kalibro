@@ -6,7 +6,7 @@ import java.lang.reflect.Constructor;
 
 import org.junit.Test;
 
-public abstract class UtilityClassTest extends KalibroTestCase {
+public abstract class UtilityClassTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldHavePrivateConstructor() throws Exception {

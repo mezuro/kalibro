@@ -8,9 +8,9 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class LabelTest extends KalibroTestCase {
+public class LabelTest extends TestCase {
 
 	private Label label;
 

@@ -5,10 +5,10 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 
-public class ModuleTest extends KalibroTestCase {
+public class ModuleTest extends TestCase {
 
 	private Module org, kalibro, core, model, module;
 

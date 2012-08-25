@@ -11,7 +11,7 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
@@ -28,7 +28,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Kalibro.class, ProcessProjectTask.class})
-public class ProcessProjectTaskTest extends KalibroTestCase {
+public class ProcessProjectTaskTest extends TestCase {
 
 	private Project project;
 	private ProjectResult projectResult;

@@ -15,7 +15,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -24,7 +24,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(FileProcessStreamLogger.class)
-public class FileProcessStreamLoggerTest extends KalibroTestCase {
+public class FileProcessStreamLoggerTest extends TestCase {
 
 	private File logFile;
 	private Process process;

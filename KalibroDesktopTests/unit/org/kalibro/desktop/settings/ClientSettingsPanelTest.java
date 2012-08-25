@@ -5,11 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.ClientSettings;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.StringField;
 
-public class ClientSettingsPanelTest extends KalibroTestCase {
+public class ClientSettingsPanelTest extends TestCase {
 
 	private ClientSettings settings;
 

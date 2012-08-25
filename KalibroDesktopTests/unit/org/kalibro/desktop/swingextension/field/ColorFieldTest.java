@@ -9,7 +9,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.dialog.ColorChooser;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(ColorField.class)
-public class ColorFieldTest extends KalibroTestCase {
+public class ColorFieldTest extends TestCase {
 
 	private static final Color COLOR = new Color(new Random(System.currentTimeMillis()).nextInt());
 

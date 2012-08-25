@@ -6,13 +6,13 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, Equality.class, HashCodeCalculator.class, Printer.class})
-public class AbstractEntityTest extends KalibroTestCase {
+public class AbstractEntityTest extends TestCase {
 
 	private Person entity;
 

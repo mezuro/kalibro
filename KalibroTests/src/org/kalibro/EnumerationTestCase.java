@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.kalibro.core.util.Identifier;
 
-public abstract class EnumerationTestCase<ENUM extends Enum<ENUM>> extends KalibroTestCase {
+public abstract class EnumerationTestCase<ENUM extends Enum<ENUM>> extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldConvertFromString() throws Exception {

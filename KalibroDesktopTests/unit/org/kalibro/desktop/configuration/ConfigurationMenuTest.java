@@ -9,7 +9,7 @@ import javax.swing.JInternalFrame;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.project.ProjectFrame;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(ConfigurationMenu.class)
-public class ConfigurationMenuTest extends KalibroTestCase {
+public class ConfigurationMenuTest extends TestCase {
 
 	private JDesktopPane desktopPane;
 	private ConfigurationController controller;

@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentFinder;
 
-public class MaybeEditableFieldTest extends KalibroTestCase {
+public class MaybeEditableFieldTest extends TestCase {
 
 	private MaybeEditableField<String> field;
 

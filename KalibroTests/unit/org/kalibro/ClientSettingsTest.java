@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class ClientSettingsTest extends KalibroTestCase {
+public class ClientSettingsTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultClientSettings() {

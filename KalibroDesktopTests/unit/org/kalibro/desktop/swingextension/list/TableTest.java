@@ -15,7 +15,7 @@ import javax.swing.ListSelectionModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.ComponentFinder;
 import org.powermock.api.mockito.PowerMockito;
@@ -26,7 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(Table.class)
-public class TableTest extends KalibroTestCase {
+public class TableTest extends TestCase {
 
 	private List<Range> data;
 	private TableModel<Range> model;

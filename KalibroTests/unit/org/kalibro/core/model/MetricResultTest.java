@@ -8,11 +8,11 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.Statistic;
 
-public class MetricResultTest extends KalibroTestCase {
+public class MetricResultTest extends TestCase {
 
 	private MetricResult result;
 	private MetricConfiguration configuration;

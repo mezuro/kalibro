@@ -3,9 +3,9 @@ package org.kalibro.core.model;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class NativeModuleResultTest extends KalibroTestCase {
+public class NativeModuleResultTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkInitialization() {

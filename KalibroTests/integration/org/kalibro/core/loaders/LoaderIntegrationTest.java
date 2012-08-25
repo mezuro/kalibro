@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(FileProcessStreamLogger.class)
-public abstract class LoaderIntegrationTest extends KalibroTestCase {
+public abstract class LoaderIntegrationTest extends TestCase {
 
 	protected RepositoryType repositoryType;
 	protected Repository repository;

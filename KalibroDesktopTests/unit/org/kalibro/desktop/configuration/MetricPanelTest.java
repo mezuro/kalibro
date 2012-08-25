@@ -7,7 +7,7 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
@@ -17,7 +17,7 @@ import org.kalibro.desktop.swingextension.field.MaybeEditableField;
 import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.field.UneditableField;
 
-public class MetricPanelTest extends KalibroTestCase {
+public class MetricPanelTest extends TestCase {
 
 	private NativeMetric nativeMetric;
 	private CompoundMetric compoundMetric;

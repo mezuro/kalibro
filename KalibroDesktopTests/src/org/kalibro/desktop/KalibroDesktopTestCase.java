@@ -8,11 +8,11 @@ import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.WindowFixture;
 import org.junit.After;
 import org.kalibro.KalibroSettings;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
 
-public class KalibroDesktopTestCase extends KalibroTestCase {
+public class KalibroDesktopTestCase extends TestCase {
 
 	protected WindowFixture<?> fixture;
 

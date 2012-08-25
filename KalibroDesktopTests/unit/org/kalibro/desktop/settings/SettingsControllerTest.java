@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
 import org.kalibro.KalibroSettings;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.mockito.ArgumentCaptor;
@@ -18,7 +18,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({KalibroSettings.class, SettingsController.class})
-public class SettingsControllerTest extends KalibroTestCase {
+public class SettingsControllerTest extends TestCase {
 
 	private EditDialog<KalibroSettings> dialog;
 	private KalibroSettingsPanel panel;

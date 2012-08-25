@@ -6,14 +6,14 @@ import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class EqualityTest extends KalibroTestCase {
+public class EqualityTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldUseNormalCasesOnNormalEquals() throws Exception {

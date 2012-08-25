@@ -16,7 +16,7 @@ import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
-public abstract class KalibroTestCase implements Timeouts {
+public abstract class TestCase implements Timeouts {
 
 	@BeforeClass
 	public static void setTestEnvironment() {

@@ -11,7 +11,7 @@ import javax.swing.JTable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
@@ -30,7 +30,7 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareForTest(Kalibro.class)
-public class ChooseNativeMetricPanelTest extends KalibroTestCase {
+public class ChooseNativeMetricPanelTest extends TestCase {
 
 	private BaseTool analizo;
 

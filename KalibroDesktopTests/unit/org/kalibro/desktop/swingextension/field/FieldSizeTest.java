@@ -10,11 +10,11 @@ import javax.swing.JComponent;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class FieldSizeTest extends KalibroTestCase {
+public class FieldSizeTest extends TestCase {
 
 	private static final Random RANDOM = new Random(System.currentTimeMillis());
 	private static final int WIDTH = RANDOM.nextInt();

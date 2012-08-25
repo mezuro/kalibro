@@ -6,7 +6,7 @@ import static org.mockito.Matchers.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.field.PalindromeField;
@@ -20,7 +20,7 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(EditDialog.class)
-public class EditDialogTest extends KalibroTestCase {
+public class EditDialogTest extends TestCase {
 
 	private EditDialogListener<String> listener;
 	private PalindromeField editPanel;

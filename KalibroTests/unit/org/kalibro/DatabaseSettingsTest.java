@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class DatabaseSettingsTest extends KalibroTestCase {
+public class DatabaseSettingsTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultSettings() {

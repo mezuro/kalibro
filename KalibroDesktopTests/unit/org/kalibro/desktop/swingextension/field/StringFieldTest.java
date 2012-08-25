@@ -8,9 +8,9 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class StringFieldTest extends KalibroTestCase {
+public class StringFieldTest extends TestCase {
 
 	private StringField field;
 

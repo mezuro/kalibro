@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
-public class KalibroExceptionTest extends KalibroTestCase {
+public class KalibroExceptionTest extends TestCase {
 
 	private static final String MESSAGE = "KalibroExceptionTest message";
 	private static final Throwable CAUSE = new Exception();

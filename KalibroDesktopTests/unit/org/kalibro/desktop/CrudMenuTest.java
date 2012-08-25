@@ -9,12 +9,12 @@ import javax.swing.JMenuItem;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.mockito.Mockito;
 
-public class CrudMenuTest extends KalibroTestCase {
+public class CrudMenuTest extends TestCase {
 
 	private static final int NEW = 0;
 	private static final int OPEN = 1;

@@ -10,12 +10,12 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 
-public class DefaultRendererTest extends KalibroTestCase {
+public class DefaultRendererTest extends TestCase {
 
 	private DefaultRenderer renderer;
 

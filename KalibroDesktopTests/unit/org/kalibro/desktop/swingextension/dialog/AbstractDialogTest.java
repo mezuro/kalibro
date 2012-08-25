@@ -10,11 +10,11 @@ import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.icon.Icon;
 import org.powermock.reflect.Whitebox;
 
-public class AbstractDialogTest extends KalibroTestCase {
+public class AbstractDialogTest extends TestCase {
 
 	private static final String TITLE = "AbstractDialogTest";
 	private static final JPanel PANEL = new JPanel();

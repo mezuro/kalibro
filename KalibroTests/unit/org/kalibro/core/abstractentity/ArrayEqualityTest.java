@@ -9,13 +9,13 @@ import java.util.ArrayList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class ArrayEqualityTest extends KalibroTestCase {
+public class ArrayEqualityTest extends TestCase {
 
 	private ArrayEquality equality;
 

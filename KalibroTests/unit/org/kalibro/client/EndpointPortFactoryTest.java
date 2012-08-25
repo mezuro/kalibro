@@ -15,7 +15,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.service.*;
 import org.mockito.ArgumentCaptor;
@@ -27,7 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({KalibroSettings.class, Service.class})
-public class EndpointPortFactoryTest extends KalibroTestCase {
+public class EndpointPortFactoryTest extends TestCase {
 
 	@BeforeClass
 	public static void emmaCoverage() throws Exception {

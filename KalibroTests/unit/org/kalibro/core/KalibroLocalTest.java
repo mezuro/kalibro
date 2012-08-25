@@ -8,7 +8,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.database.DatabaseDaoFactory;
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({KalibroLocal.class, RepositoryType.class})
-public class KalibroLocalTest extends KalibroTestCase {
+public class KalibroLocalTest extends TestCase {
 
 	private static final String PROJECT_NAME = "KalibroLocalTest project";
 

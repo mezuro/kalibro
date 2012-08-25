@@ -5,7 +5,7 @@ import static org.kalibro.core.model.ConfigurationFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
@@ -17,7 +17,7 @@ import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ConfigurationPanelTest extends KalibroTestCase {
+public class ConfigurationPanelTest extends TestCase {
 
 	private Configuration configuration;
 

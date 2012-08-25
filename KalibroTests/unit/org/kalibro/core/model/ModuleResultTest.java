@@ -14,7 +14,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.processing.ModuleResultConfigurer;
 import org.mockito.Mockito;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ModuleResult.class)
-public class ModuleResultTest extends KalibroTestCase {
+public class ModuleResultTest extends TestCase {
 
 	private ModuleResult result;
 	private CompoundMetric sc;

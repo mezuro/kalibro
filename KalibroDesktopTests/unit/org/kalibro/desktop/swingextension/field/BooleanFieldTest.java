@@ -8,9 +8,9 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class BooleanFieldTest extends KalibroTestCase {
+public class BooleanFieldTest extends TestCase {
 
 	private static final Boolean[] VALUES = new Boolean[]{true, false};
 

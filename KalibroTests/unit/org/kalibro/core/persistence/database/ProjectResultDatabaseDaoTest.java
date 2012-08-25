@@ -7,14 +7,14 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.database.entities.ProjectResultRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ProjectResultDatabaseDaoTest extends KalibroTestCase {
+public class ProjectResultDatabaseDaoTest extends TestCase {
 
 	private static final String COUNT_QUERY = "SELECT count(result) FROM ProjectResult result " +
 		"WHERE result.project.name = :projectName";

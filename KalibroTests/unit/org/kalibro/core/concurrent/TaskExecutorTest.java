@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.kalibro.KalibroException;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class TaskExecutorTest extends KalibroTestCase implements TaskListener {
+public class TaskExecutorTest extends TestCase implements TaskListener {
 
 	private static final long TIMEOUT = UNIT_TIMEOUT / 5;
 

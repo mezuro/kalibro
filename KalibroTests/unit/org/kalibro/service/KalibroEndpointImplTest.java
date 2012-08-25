@@ -10,7 +10,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.powermock.api.mockito.PowerMockito;
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class KalibroEndpointImplTest extends KalibroTestCase {
+public class KalibroEndpointImplTest extends TestCase {
 
 	private static final String PROJECT_NAME = "KalibroEndpointImplTest project";
 

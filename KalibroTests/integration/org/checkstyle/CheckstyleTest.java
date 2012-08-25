@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 
-public class CheckstyleTest extends KalibroTestCase {
+public class CheckstyleTest extends TestCase {
 
 	private CheckstyleMetricCollector checkstyle;
 

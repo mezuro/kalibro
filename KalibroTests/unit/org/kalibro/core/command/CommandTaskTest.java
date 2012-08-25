@@ -10,7 +10,7 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -18,7 +18,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CommandTask.class)
-public class CommandTaskTest extends KalibroTestCase {
+public class CommandTaskTest extends TestCase {
 
 	private static final String COMMAND = "CommandTaskTest command";
 	private static final String ERROR_MESSAGE = "Error while executing command: " + COMMAND;

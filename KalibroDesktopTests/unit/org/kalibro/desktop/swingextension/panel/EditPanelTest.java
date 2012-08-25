@@ -1,10 +1,10 @@
 package org.kalibro.desktop.swingextension.panel;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Language;
 
-public class EditPanelTest extends KalibroTestCase {
+public class EditPanelTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSet() {
