@@ -15,7 +15,7 @@ abstract class Printer<T> {
 	}
 
 	private static Printer<?>[] knownPrinters() {
-		return new Printer[0];
+		return new Printer[]{new ObjectPrinter()};
 	}
 
 	private static <T> void print(Printer<T> printer, Object object, StringBuffer buffer, int indent, String comment) {
