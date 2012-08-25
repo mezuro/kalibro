@@ -1,7 +1,7 @@
 package org.kalibro.core.abstractentity;
 
 /**
- * Uses {@code toString()} to print objects.
+ * The default printer. Uses {@code toString()} to print objects.
  * 
  * @author Carlos Morais
  */
