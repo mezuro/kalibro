@@ -1,5 +1,10 @@
 package org.kalibro.core.abstractentity;
 
+/**
+ * Generic printer.
+ * 
+ * @author Carlos Morais
+ */
 abstract class Printer<T> {
 
 	protected static String print(Object object) {
@@ -9,13 +14,16 @@ abstract class Printer<T> {
 	}
 
 	protected static void print(Object object, StringBuffer buffer, int indent, String comment) {
-		for (Printer<?> printer : knownPrinters())
-			if (printer.canPrint(object))
+		for (Printer<?> printer : specialPrinters())
+			if (printer.canPrint(object)) {
 				print(printer, object, buffer, indent, comment);
+				return;
+			}
+		print(new ObjectPrinter(), object, buffer, indent, comment);
 	}
 
-	private static Printer<?>[] knownPrinters() {
-		return new Printer[]{new ObjectPrinter()};
+	private static Printer<?>[] specialPrinters() {
+		return new Printer[]{};
 	}
 
 	private static <T> void print(Printer<T> printer, Object object, StringBuffer buffer, int indent, String comment) {

@@ -17,16 +17,15 @@ import org.powermock.reflect.Whitebox;
 public class PrinterTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkKnownPrinters() throws Exception {
-		Printer<?>[] printers = Whitebox.invokeMethod(Printer.class, "knownPrinters");
-		assertEquals(1, printers.length);
-		assertClassEquals(ObjectPrinter.class, printers[0]);
+	public void checkSpecialPrinters() throws Exception {
+		Printer<?>[] printers = Whitebox.invokeMethod(Printer.class, "specialPrinters");
+		assertEquals(0, printers.length);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkPrint() throws Exception {
 		spy(Printer.class);
-		doReturn(new Printer[]{new CascadePrinter()}).when(Printer.class, "knownPrinters");
+		doReturn(new Printer[]{new CascadePrinter()}).when(Printer.class, "specialPrinters");
 		String expected = loadResource("printer.test");
 		assertEquals(expected, Printer.print("Carlos Morais de Oliveira Filho".split("\\s+")));
 	}
@@ -41,7 +40,7 @@ public class PrinterTest extends KalibroTestCase {
 		@Override
 		protected void doPrint(String[] array, String comment) {
 			if (array.length == 0) {
-				printComment("FIM");
+				printSubItem("", "FIM");
 				return;
 			}
 			newLine();
