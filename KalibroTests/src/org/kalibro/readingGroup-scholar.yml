@@ -1,0 +1,40 @@
+---
+name: "Scholar"
+description: "This group imitates school grades and attributes generic labels from 'Terrible' (grade 0) to 'Excellent' (grade 10).\nThe colors vary in wave length with the grades, ranging from red to green (between them are tones of orange and yellow)."
+readings:
+  -
+    label: Terrible
+    grade: 0.0
+    color: ffff0000
+  -
+    label: Bad
+    grade: 1.25
+    color: ffff4000
+  -
+    label: Worrying
+    grade: 2.5
+    color: ffff8000
+  -
+    label: Unsatisfactory
+    grade: 3.75
+    color: ffffc000
+  -
+    label: Regular
+    grade: 5.0
+    color: ffffff00
+  -
+    label: Satisfactory
+    grade: 6.25
+    color: ffc0ff00
+  -
+    label: Good
+    grade: 7.5
+    color: ff80ff00
+  -
+    label: Very good
+    grade: 8.75
+    color: ff40ff00
+  -
+    label: Excellent
+    grade: 10.0
+    color: ff00ff00

@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.kalibro.core.Environment.*;
+import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 

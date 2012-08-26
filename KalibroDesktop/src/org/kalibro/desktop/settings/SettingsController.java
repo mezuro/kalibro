@@ -12,7 +12,8 @@ import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 public final class SettingsController extends ComponentAdapter implements EditDialogListener<KalibroSettings> {
 
 	public static void editSettings() {
-		new SettingsController().edit(KalibroSettings.load());
+		KalibroSettings settings = KalibroSettings.exists() ? KalibroSettings.load() : new KalibroSettings();
+		new SettingsController().edit(settings);
 	}
 
 	private EditDialog<KalibroSettings> dialog;
