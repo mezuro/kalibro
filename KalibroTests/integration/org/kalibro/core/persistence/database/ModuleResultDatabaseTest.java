@@ -104,7 +104,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
 		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), moduleResult.getModule().getName());
 		assertEquals(3, resultHistory.size());
-		assertDeepEquals(resultHistory.get(0).getResultFor(loc).getDescendentResults(), 1.0);
+		assertDeepCollection(resultHistory.get(0).getResultFor(loc).getDescendentResults(), 1.0);
 		assertDeepCollection(resultHistory.get(1).getResultFor(loc).getDescendentResults(), 1.0, 2.0);
 		assertDeepCollection(resultHistory.get(2).getResultFor(loc).getDescendentResults(), 1.0, 2.0, 3.0);
 	}

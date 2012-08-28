@@ -30,7 +30,7 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListConfigurationNames() {
-		assertDeepEquals(port.getConfigurationNames(), sample.getName());
+		assertDeepList(port.getConfigurationNames(), sample.getName());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

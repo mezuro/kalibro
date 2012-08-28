@@ -36,7 +36,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertTrue(dao.getProjectNames().isEmpty());
 
 		dao.save(helloWorld);
-		assertDeepEquals(dao.getProjectNames(), helloWorld.getName());
+		assertDeepList(dao.getProjectNames(), helloWorld.getName());
 
 		dao.save(helloWorld2);
 		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
@@ -57,7 +57,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
 
 		dao.removeProject(helloWorld.getName());
-		assertDeepEquals(dao.getProjectNames(), helloWorld2.getName());
+		assertDeepList(dao.getProjectNames(), helloWorld2.getName());
 
 		dao.removeProject(helloWorld2.getName());
 		assertTrue(dao.getProjectNames().isEmpty());

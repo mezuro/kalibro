@@ -21,7 +21,7 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListSavedBaseToolNames() {
-		assertDeepList(dao.getBaseToolNames(), "Analizo", "Checkstyle");
+		assertDeepList(dao.getBaseToolNames(), "Analizo", "Checkstyle", "CVSAnaly");
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
