@@ -4,13 +4,20 @@ import java.awt.Color;
 
 public class Reading {
 
+	private String label;
+	private Double grade;
+	private Color color;
+
+	public Reading() {
+		this("", 0.0, Color.WHITE);
+	}
+
 	public Reading(String label, Double grade, Color color) {
 		// TODO Auto-generated constructor stub
 	}
 
 	public String getLabel() {
-		// TODO Auto-generated method stub
-		return null;
+		return label;
 	}
 
 	public void setLabel(String label) {
@@ -20,6 +27,11 @@ public class Reading {
 	public Double getGrade() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public Color getColor() {
+		// TODO Auto-generated method stub
+		return color;
 	}
 
 	public void save() {

@@ -66,7 +66,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void nameShouldBeUnique() throws Exception {
+	public void nameShouldBeUnique() {
 		group.save();
 		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
 		checkKalibroException(new Task() {

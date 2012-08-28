@@ -5,36 +5,36 @@ readings:
   -
     label: Terrible
     grade: 0.0
-    color: ffff0000
+    color: 0xff0000
   -
     label: Bad
     grade: 1.25
-    color: ffff4000
+    color: 0xff4000
   -
     label: Worrying
     grade: 2.5
-    color: ffff8000
+    color: 0xff8000
   -
     label: Unsatisfactory
     grade: 3.75
-    color: ffffc000
+    color: 0xffc000
   -
     label: Regular
     grade: 5.0
-    color: ffffff00
+    color: 0xffff00
   -
     label: Satisfactory
     grade: 6.25
-    color: ffc0ff00
+    color: 0xc0ff00
   -
     label: Good
     grade: 7.5
-    color: ff80ff00
+    color: 0x80ff00
   -
     label: Very good
     grade: 8.75
-    color: ff40ff00
+    color: 0x40ff00
   -
     label: Excellent
     grade: 10.0
-    color: ff00ff00
+    color: 0x00ff00
