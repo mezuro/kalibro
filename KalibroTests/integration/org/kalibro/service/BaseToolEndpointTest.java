@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.newAnalizoStub;
 
 import java.net.MalformedURLException;
 
@@ -25,7 +25,7 @@ public class BaseToolEndpointTest extends KalibroServiceTestCase {
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListBaseToolNames() {
-		assertDeepEquals(port.getBaseToolNames(), analizo.getName());
+		assertDeepList(port.getBaseToolNames(), analizo.getName());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
