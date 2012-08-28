@@ -52,6 +52,8 @@ public class MetricResult {
 	
 	public MetricResult(MetricResult metricResult, FileLink fileLink) throws IllegalAccessException {
 		for (Field field : getClass().getDeclaredFields()) {
+			if (field.getAnnotations().length == 0)
+				continue;
 			field.set(this, field.get(metricResult));
 		}
 		this.filePath = fileLink.getFilePath();
