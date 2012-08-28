@@ -6,20 +6,31 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.yaml.snakeyaml.Yaml;
 
 public class MapPrinterTest extends PrinterTestCase<Map<?, ?>> {
+
+	private Map<String, Object> sample;
 
 	@Override
 	protected MapPrinter createPrinter() {
 		return new MapPrinter();
 	}
 
+	@Before
+	public void setUp() {
+		sample = new TreeMap<String, Object>();
+		sample.put("empty", newMap());
+		sample.put("pets", newMap("c->cat", "d->dog", "p->pig"));
+		sample.put("vehicles", newMap("b->bus", "c->car"));
+	}
+
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldPrintMaps() {
-		assertTrue(printer.canPrint(new HashMap<String, Object>()));
-		assertTrue(printer.canPrint(new TreeMap<MapPrinter, MapPrinterTest>()));
+		assertTrue(printer.canPrint(sample));
+		assertTrue(printer.canPrint(new HashMap<MapPrinter, MapPrinterTest>()));
 
 		assertFalse(printer.canPrint(this));
 		assertFalse(printer.canPrint(printer));
@@ -27,15 +38,13 @@ public class MapPrinterTest extends PrinterTestCase<Map<?, ?>> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldPrintAsYaml() throws Exception {
-		Map<String, Object> map = new TreeMap<String, Object>();
-		map.put("empty", newMap());
-		map.put("pets", newMap("c->cat", "d->dog", "p->pig"));
-		map.put("vehicles", newMap("b->bus", "c->car"));
-
 		assertEquals(" {} # empty map", print(newMap(), "empty map"));
-		assertEquals(loadResource("map.printer.test"), print(map, "strange map"));
+		assertEquals(loadResource("map.printer.test"), print(sample, "strange map"));
+	}
 
-		assertEquals(map, new Yaml().load(print(map, "")));
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldBeLoadableAsYaml() throws Exception {
+		assertEquals(sample, new Yaml().load(print(sample, "")));
 	}
 
 	private Map<String, String> newMap(String... mappings) {

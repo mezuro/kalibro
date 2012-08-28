@@ -1,7 +1,7 @@
 ---
-name: Paulo Meirelles # name comes first
+name: "Paulo Meirelles" # name comes first
 colleagues: []
-identityNumber: PM
+identityNumber: "PM"
 relatives: {}
-sex: Male
+sex: "Male"
 useMetrics: true

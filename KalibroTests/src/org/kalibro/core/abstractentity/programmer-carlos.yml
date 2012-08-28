@@ -1,24 +1,24 @@
 ---
-name: Carlos Morais # name comes first
+name: "Carlos Morais" # name comes first
 colleagues:
   -
-    name: Paulo Meirelles # name comes first
+    name: "Paulo Meirelles" # name comes first
     colleagues: []
-    identityNumber: PM
+    identityNumber: "PM"
     relatives: {}
-    sex: Male
+    sex: "Male"
     useMetrics: true
-identityNumber: CM
+identityNumber: "CM"
 relatives:
   mother:
-    name: Cristina Nascimento # name comes first
-    identityNumber: CN
+    name: "Cristina Nascimento" # name comes first
+    identityNumber: "CN"
     relatives: {}
-    sex: Female
+    sex: "Female"
   sister:
-    name: Isis Nascimento # name comes first
-    identityNumber: IN
+    name: "Isis Nascimento" # name comes first
+    identityNumber: "IN"
     relatives: {}
-    sex: Female
-sex: Male
+    sex: "Female"
+sex: "Male"
 useMetrics: true

@@ -1,5 +1,5 @@
 ---
-name: Cristina Nascimento # name comes first
-identityNumber: CN
+name: "Cristina Nascimento" # name comes first
+identityNumber: "CN"
 relatives: {}
-sex: Female
+sex: "Female"

@@ -7,6 +7,8 @@ import org.yaml.snakeyaml.Yaml;
 
 public class StringPrinterTest extends PrinterTestCase<String> {
 
+	private static final String STRING = "\tMy\n\"special\"\nstring";
+
 	@Override
 	protected StringPrinter createPrinter() {
 		return new StringPrinter();
@@ -22,12 +24,12 @@ public class StringPrinterTest extends PrinterTestCase<String> {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldPrintAsYaml() throws Exception {
-		String simpleString = "My string";
-		String specialString = "\tMy\n\"special\"\nstring";
-		assertEquals(" \"My string\" # simple string", print(simpleString, "simple string"));
-		assertEquals(" \"\\tMy\\n\\\"special\\\"\\nstring\"", print(specialString, ""));
+	public void shouldExcapeSpecialCharacters() throws Exception {
+		assertEquals(" \"\\tMy\\n\\\"special\\\"\\nstring\" # special string", print(STRING, "special string"));
+	}
 
-		assertEquals(specialString, new Yaml().load(print(specialString, "")));
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldBeLoadableAsYaml() throws Exception {
+		assertEquals(STRING, new Yaml().load(print(STRING, "")));
 	}
 }

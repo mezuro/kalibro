@@ -1,6 +1,6 @@
  # strange collection
 - []
 -
-  - cat
-  - dog
-  - pig
+  - "cat"
+  - "dog"
+  - "pig"
