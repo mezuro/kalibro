@@ -3,7 +3,7 @@ package org.checkstyle;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 
-abstract class AuditAdapter implements AuditListener {
+public abstract class AuditAdapter implements AuditListener {
 
 	@Override
 	public void auditStarted(AuditEvent event) {
