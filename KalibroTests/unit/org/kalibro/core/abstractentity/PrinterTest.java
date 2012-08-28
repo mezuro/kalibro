@@ -19,11 +19,12 @@ public class PrinterTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkSpecialPrinters() throws Exception {
 		Printer<?>[] printers = Whitebox.invokeMethod(Printer.class, "specialPrinters");
-		assertEquals(4, printers.length);
+		assertEquals(5, printers.length);
 		assertClassEquals(CollectionPrinter.class, printers[0]);
 		assertClassEquals(EntityPrinter.class, printers[1]);
 		assertClassEquals(EnumPrinter.class, printers[2]);
 		assertClassEquals(MapPrinter.class, printers[3]);
+		assertClassEquals(StringPrinter.class, printers[4]);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
