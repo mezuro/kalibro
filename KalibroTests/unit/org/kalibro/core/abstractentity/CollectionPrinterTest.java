@@ -8,6 +8,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
 
 public class CollectionPrinterTest extends PrinterTestCase<Collection<?>> {
 
@@ -27,11 +28,14 @@ public class CollectionPrinterTest extends PrinterTestCase<Collection<?>> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldPrintAsYaml() throws Exception {
+		assertEquals(" [] # empty collection", print(new ArrayList<String>(), "empty collection"));
+
 		Collection<Object> collection = new ArrayList<Object>();
 		collection.add(new ArrayList<String>());
 		collection.add(Arrays.asList("cat", "dog", "pig"));
+		String printed = print(collection, "strange collection");
+		assertEquals(loadResource("collection.printer.test"), printed);
 
-		assertEquals(" [] # empty collection", print(new ArrayList<String>(), "empty collection"));
-		assertEquals(loadResource("collection.printer.test"), print(collection, "strange collection"));
+		assertEquals(collection, new Yaml().load(printed));
 	}
 }

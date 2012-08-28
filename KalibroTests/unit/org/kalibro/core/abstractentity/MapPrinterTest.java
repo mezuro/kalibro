@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
 
 public class MapPrinterTest extends PrinterTestCase<Map<?, ?>> {
 
@@ -33,6 +34,8 @@ public class MapPrinterTest extends PrinterTestCase<Map<?, ?>> {
 
 		assertEquals(" {} # empty map", print(newMap(), "empty map"));
 		assertEquals(loadResource("map.printer.test"), print(map, "strange map"));
+
+		assertEquals(map, new Yaml().load(print(map, "")));
 	}
 
 	private Map<String, String> newMap(String... mappings) {

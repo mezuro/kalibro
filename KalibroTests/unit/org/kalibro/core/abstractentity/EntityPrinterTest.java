@@ -3,6 +3,8 @@ package org.kalibro.core.abstractentity;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 
@@ -24,5 +26,12 @@ public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 	public void shouldPrintAsYaml() throws Exception {
 		Programmer programmer = loadFixture("programmer-carlos", Programmer.class);
 		assertEquals(loadResource("programmer-carlos.yml").replace("---", ""), print(programmer, ""));
+		assertDeepEquals(programmer, loadFromPrint(programmer));
+	}
+
+	private Programmer loadFromPrint(Programmer programmer) throws Exception {
+		Yaml yaml = new Yaml();
+		yaml.setBeanAccess(BeanAccess.FIELD);
+		return yaml.loadAs(print(programmer, ""), Programmer.class);
 	}
 }
