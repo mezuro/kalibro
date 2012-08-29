@@ -48,6 +48,10 @@ public abstract class TestCase implements Timeouts {
 		return new File(projectsDirectory(), "HelloWorld-1.0");
 	}
 
+	protected File getResource(String name) throws Exception {
+		return new File(getClass().getResource(name).toURI());
+	}
+
 	protected String loadResource(String name) throws IOException {
 		return IOUtils.toString(getClass().getResourceAsStream(name));
 	}

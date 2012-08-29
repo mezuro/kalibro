@@ -1,42 +1,33 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.Environment.*;
+import static org.kalibro.core.Environment.dotKalibro;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.abstractentity.AbstractEntity;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.yaml.snakeyaml.Yaml;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FileUtils.class, KalibroSettings.class})
+@PrepareForTest({AbstractEntity.class, KalibroSettings.class})
 public class KalibroSettingsTest extends TestCase {
 
-	private Yaml yaml;
 	private File settingsFile;
-	private FileInputStream inputStream;
 
 	private KalibroSettings settings;
 
 	@Before
 	public void setUp() throws Exception {
-		yaml = mock(Yaml.class);
 		settingsFile = mock(File.class);
-		inputStream = mock(FileInputStream.class);
-		whenNew(Yaml.class).withNoArguments().thenReturn(yaml);
-		whenNew(FileInputStream.class).withArguments(settingsFile).thenReturn(inputStream);
 		whenNew(File.class).withArguments(dotKalibro(), "kalibro.settings").thenReturn(settingsFile);
-		mockStatic(FileUtils.class);
-		settings = new KalibroSettings();
+		mockStatic(AbstractEntity.class);
+		settings = spy(new KalibroSettings());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -49,21 +40,9 @@ public class KalibroSettingsTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldLoadFromSettingsFile() {
-		when(yaml.loadAs(inputStream, KalibroSettings.class)).thenReturn(settings);
+	public void shouldLoadFromSettingsFile() throws Exception {
+		when(AbstractEntity.class, "importFrom", settingsFile, KalibroSettings.class).thenReturn(settings);
 		assertSame(settings, KalibroSettings.load());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionWhenCantLoadSettings() {
-		when(yaml.loadAs(inputStream, KalibroSettings.class)).thenThrow(new NullPointerException());
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				KalibroSettings.load();
-			}
-		}, "Could not load settings from file: " + settingsFile, NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -81,22 +60,9 @@ public class KalibroSettingsTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveSettingsToFile() throws IOException {
+	public void shouldSaveSettingsToFile() {
+		doNothing().when(settings).exportTo(settingsFile);
 		settings.save();
-		verifyStatic();
-		FileUtils.writeStringToFile(settingsFile, settings.toString());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkErrorWritingFile() throws Exception {
-		doThrow(new IOException()).when(FileUtils.class);
-		FileUtils.writeStringToFile(settingsFile, settings.toString());
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				settings.save();
-			}
-		}, "Could not save settings on file: " + settingsFile, IOException.class);
+		verify(settings).exportTo(settingsFile);
 	}
 }

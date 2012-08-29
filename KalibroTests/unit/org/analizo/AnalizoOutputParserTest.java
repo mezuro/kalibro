@@ -19,7 +19,7 @@ public class AnalizoOutputParserTest extends TestCase {
 
 	@Before
 	public void setUp() throws IOException {
-		InputStream metricListOutput = getResource("Analizo-Output-MetricList.txt");
+		InputStream metricListOutput = getStream("Analizo-Output-MetricList.txt");
 		parser = new AnalizoOutputParser(metricListOutput);
 	}
 
@@ -30,7 +30,7 @@ public class AnalizoOutputParserTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldParseResultsOutputToModuleResults() {
-		InputStream resultsOutput = getResource("Analizo-Output-HelloWorld.txt");
+		InputStream resultsOutput = getStream("Analizo-Output-HelloWorld.txt");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
 		Set<NativeModuleResult> results = parser.parseResults(resultsOutput, metrics);
 		NativeModuleResult classResult = results.iterator().next();
@@ -39,7 +39,7 @@ public class AnalizoOutputParserTest extends TestCase {
 		assertDoubleEquals(2.0, classResult.getResultFor(analizoMetric("anpm")).getValue());
 	}
 
-	private InputStream getResource(String resourceName) {
+	private InputStream getStream(String resourceName) {
 		return getClass().getResourceAsStream(resourceName);
 	}
 }

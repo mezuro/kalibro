@@ -1,7 +1,7 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.Environment.*;
+import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -92,7 +92,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 			protected void perform() throws Throwable {
 				KalibroSettings.load();
 			}
-		}, "Could not load settings from file: " + settingsFile, causeClass);
+		}, "Could not import kalibro settings from file: " + settingsFile, causeClass);
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
@@ -105,6 +105,6 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 			protected void perform() throws Throwable {
 				settings.save();
 			}
-		}, "Could not save settings on file: " + settingsFile, IOException.class);
+		}, "Could not export kalibro settings to file: " + settingsFile, IOException.class);
 	}
 }

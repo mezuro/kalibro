@@ -1,13 +1,10 @@
 package org.kalibro;
 
 import java.io.File;
-import java.io.FileInputStream;
 
-import org.apache.commons.io.FileUtils;
 import org.kalibro.core.Environment;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.Print;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * Save and retrieve Kalibro preferences.
@@ -21,12 +18,7 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 	}
 
 	public static KalibroSettings load() {
-		try {
-			FileInputStream settingsInputStream = new FileInputStream(settingsFile());
-			return new Yaml().loadAs(settingsInputStream, KalibroSettings.class);
-		} catch (Exception exception) {
-			throw new KalibroException("Could not load settings from file: " + settingsFile(), exception);
-		}
+		return importFrom(settingsFile(), KalibroSettings.class);
 	}
 
 	private static File settingsFile() {
@@ -70,10 +62,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 	}
 
 	public void save() {
-		try {
-			FileUtils.writeStringToFile(settingsFile(), toString());
-		} catch (Exception exception) {
-			throw new KalibroException("Could not save settings on file: " + settingsFile(), exception);
-		}
+		exportTo(settingsFile());
 	}
 }
