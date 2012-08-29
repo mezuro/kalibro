@@ -5,7 +5,10 @@ import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.kalibro.KalibroError;
 
@@ -64,12 +67,6 @@ public class Reflector {
 			if (filter.accept(fields.get(fieldName)))
 				fieldNames.add(fieldName);
 		return fieldNames;
-	}
-
-	public List<String> sortFields(Comparator<String> comparator) {
-		List<String> sortedFields = listFields();
-		Collections.sort(sortedFields, comparator);
-		return sortedFields;
 	}
 
 	public Object get(String fieldName) {

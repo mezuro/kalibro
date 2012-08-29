@@ -7,8 +7,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.Target;
 
 /**
- * Allows subclasses of {@link AbstractEntity} to specify comments and printing order for the fields at
- * {@code toString()}, making the printing more readable.
+ * Allows subclasses of {@link AbstractEntity} to specify comments, printing order and skip printing for the fields,
+ * making the printing more readable.
  * 
  * @author Carlos Morais
  */
@@ -19,4 +19,6 @@ public @interface Print {
 	int order() default 0;
 
 	String comment() default "";
+
+	boolean skip() default false;
 }

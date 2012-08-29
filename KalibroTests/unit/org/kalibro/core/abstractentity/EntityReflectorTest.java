@@ -40,6 +40,7 @@ public class EntityReflectorTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListSortedPrintFields() {
 		assertDeepList(reflector(person).listPrintFields(), "name", "identityNumber", "relatives", "sex");
+		assertDeepList(reflector(new NoIdentityEntity()).listPrintFields(), "field1");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -4,8 +4,6 @@ import static java.lang.reflect.Modifier.PRIVATE;
 import static org.junit.Assert.*;
 import static org.kalibro.core.util.reflection.MemberFilterFactory.*;
 
-import java.util.Comparator;
-
 import javax.persistence.Column;
 
 import org.junit.Before;
@@ -46,22 +44,6 @@ public class ReflectorTest extends TestCase {
 		assertDeepList(reflector.listFields(nameMatches(".*t.*")), "reflector", "waiting");
 		assertDeepList(reflector.listFields(hasAnnotation(Column.class)), "reflector");
 		assertTrue(reflector.listFields(not(is(PRIVATE))).isEmpty());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSortFields() {
-		assertDeepList(reflector.sortFields(thidLetterComparator()), "reflector", "waiting");
-	}
-
-	private Comparator<String> thidLetterComparator() {
-		return new Comparator<String>() {
-
-			@Override
-			public int compare(String string1, String string2) {
-				Character thirdLetter = new Character(string1.charAt(2));
-				return thirdLetter.compareTo(string2.charAt(2));
-			}
-		};
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

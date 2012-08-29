@@ -2,11 +2,10 @@ package org.kalibro.core.abstractentity;
 
 import static org.kalibro.core.util.reflection.MemberFilterFactory.hasAnnotation;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.lang.reflect.AccessibleObject;
+import java.util.*;
 
+import org.kalibro.core.util.reflection.MemberFilterAdapter;
 import org.kalibro.core.util.reflection.Reflector;
 
 /**
@@ -38,7 +37,10 @@ class EntityReflector extends Reflector {
 	}
 
 	protected List<String> listPrintFields() {
-		return sortFields(new PrintOrderComparator());
+		PrintSelector selector = new PrintSelector();
+		List<String> fields = listFields(selector);
+		Collections.sort(fields, selector);
+		return fields;
 	}
 
 	protected String getPrintComment(String field) {
@@ -48,7 +50,13 @@ class EntityReflector extends Reflector {
 		return print.comment();
 	}
 
-	private class PrintOrderComparator implements Comparator<String> {
+	private class PrintSelector extends MemberFilterAdapter implements Comparator<String> {
+
+		@Override
+		protected boolean accept(AccessibleObject member) {
+			Print print = member.getAnnotation(Print.class);
+			return print == null || !print.skip();
+		}
 
 		@Override
 		public int compare(String field1, String field2) {
