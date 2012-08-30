@@ -8,10 +8,10 @@ import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 
-public class RangeTest extends KalibroTestCase {
+public class RangeTest extends TestCase {
 
 	private Range excellent, good, regular, warning, bad;
 

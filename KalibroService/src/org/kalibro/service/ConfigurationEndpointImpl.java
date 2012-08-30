@@ -6,7 +6,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.service.entities.ConfigurationXml;
 
@@ -36,7 +36,7 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
 	@Override
 	@WebResult(name = "hasConfiguration")
-	public boolean hasConfiguration(String configurationName) {
+	public boolean hasConfiguration(@WebParam(name = "configurationName") String configurationName) {
 		return dao.hasConfiguration(configurationName);
 	}
 

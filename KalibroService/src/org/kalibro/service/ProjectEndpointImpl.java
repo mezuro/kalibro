@@ -6,7 +6,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.service.entities.ProjectXml;
 import org.kalibro.service.entities.RawProjectXml;
@@ -37,7 +37,7 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 
 	@Override
 	@WebResult(name = "hasProject")
-	public boolean hasProject(String projectName) {
+	public boolean hasProject(@WebParam(name = "projectName") String projectName) {
 		return dao.hasProject(projectName);
 	}
 

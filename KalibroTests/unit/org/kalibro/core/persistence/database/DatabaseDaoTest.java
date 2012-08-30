@@ -1,8 +1,8 @@
 package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.*;
-import static org.kalibro.core.model.RangeLabel.*;
+import static org.kalibro.core.model.RangeFixtures.newRange;
+import static org.kalibro.core.model.RangeLabel.BAD;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
@@ -11,12 +11,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.core.persistence.database.entities.RangeRecord;
 import org.mockito.Mockito;
 
-public class DatabaseDaoTest extends KalibroTestCase {
+public class DatabaseDaoTest extends TestCase {
 
 	private DatabaseManager databaseManager;
 
@@ -30,7 +30,7 @@ public class DatabaseDaoTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetAllNames() {
-		String queryText = "SELECT x.name FROM \"Range\" x ORDER BY x.name";
+		String queryText = "SELECT x.name FROM \"Range\" x ORDER BY lower(x.name)";
 		Query<String> query = mock(Query.class);
 		List<String> names = Arrays.asList("4", "2");
 		when(databaseManager.createQuery(queryText, String.class)).thenReturn(query);

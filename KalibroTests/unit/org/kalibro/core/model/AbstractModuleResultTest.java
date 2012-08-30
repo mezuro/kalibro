@@ -1,17 +1,17 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.ModuleFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.kalibro.core.model.ModuleFixtures.helloWorldClass;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.Granularity;
 
-public class AbstractModuleResultTest extends KalibroTestCase {
+public class AbstractModuleResultTest extends TestCase {
 
 	private NativeMetric acc, dit, loc;
 	private NativeMetricResult accResult, locResult;
@@ -55,16 +55,16 @@ public class AbstractModuleResultTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testAddMetricResult() {
-		assertDeepEquals(moduleResult.getMetricResults(), accResult, locResult);
+		assertDeepCollection(moduleResult.getMetricResults(), accResult, locResult);
 
 		NativeMetricResult ditResult = new NativeMetricResult(dit, 0.42);
 		moduleResult.addMetricResult(ditResult);
-		assertDeepEquals(moduleResult.getMetricResults(), accResult, ditResult, locResult);
+		assertDeepCollection(moduleResult.getMetricResults(), accResult, ditResult, locResult);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSortByModule() {
-		assertSorted(newResult(APPLICATION, "G"), newResult(APPLICATION, "H"),
+		assertSorted(newResult(SOFTWARE, "G"), newResult(SOFTWARE, "H"),
 			newResult(PACKAGE, "E"), newResult(PACKAGE, "F"),
 			newResult(CLASS, "C"), newResult(CLASS, "D"),
 			newResult(METHOD, "A"), newResult(METHOD, "B"));

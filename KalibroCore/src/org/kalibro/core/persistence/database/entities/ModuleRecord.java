@@ -2,22 +2,24 @@ package org.kalibro.core.persistence.database.entities;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Date;
 
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.*;
+import org.kalibro.core.model.Module;
+import org.kalibro.core.model.ModuleNode;
+import org.kalibro.core.model.ModuleResult;
+import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "Module")
-@PrimaryKey(columns = {@Column(name = "projectName"), @Column(name = "date"), @Column(name = "name")})
+@PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date"), @Column(name = "name")})
 public class ModuleRecord implements DataTransferObject<ModuleNode> {
 
 	@ManyToOne(optional = false)
 	@JoinColumns({
-		@JoinColumn(name = "projectName", nullable = false, referencedColumnName = "projectName"),
+		@JoinColumn(name = "project", nullable = false, referencedColumnName = "project"),
 		@JoinColumn(name = "date", nullable = false, referencedColumnName = "date")})
 	private ProjectResultRecord projectResult;
 
@@ -29,7 +31,7 @@ public class ModuleRecord implements DataTransferObject<ModuleNode> {
 
 	@ManyToOne(optional = true)
 	@JoinColumns({
-		@JoinColumn(insertable = false, name = "projectName", referencedColumnName = "projectName", updatable = false),
+		@JoinColumn(insertable = false, name = "project", referencedColumnName = "project", updatable = false),
 		@JoinColumn(insertable = false, name = "date", referencedColumnName = "date", updatable = false),
 		@JoinColumn(name = "parent", referencedColumnName = "name")})
 	private ModuleRecord parent;
@@ -41,20 +43,12 @@ public class ModuleRecord implements DataTransferObject<ModuleNode> {
 		super();
 	}
 
+	public ModuleRecord(ModuleNode moduleNode, ProjectResult projectResult) {
+		initialize(moduleNode, new ProjectResultRecord(projectResult), null);
+	}
+
 	public ModuleRecord(ModuleNode moduleNode, ProjectResultRecord projectResult, ModuleRecord parent) {
 		initialize(moduleNode, projectResult, parent);
-	}
-
-	public ModuleRecord(ModuleNode moduleNode, String projectName, Date date) {
-		initialize(moduleNode, createProjectResult(projectName, date), null);
-	}
-
-	private ProjectResultRecord createProjectResult(String projectName, Date date) {
-		Project project = new Project();
-		project.setName(projectName);
-		ProjectResult entity = new ProjectResult(project);
-		entity.setDate(date);
-		return new ProjectResultRecord(entity);
 	}
 
 	private void initialize(ModuleNode moduleNode, ProjectResultRecord result, ModuleRecord parentModule) {

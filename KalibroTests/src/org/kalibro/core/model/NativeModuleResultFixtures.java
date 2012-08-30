@@ -16,7 +16,7 @@ public final class NativeModuleResultFixtures {
 	}
 
 	public static NativeModuleResult newHelloWorldApplicationResult() {
-		return newNativeResult("null", APPLICATION);
+		return newNativeResult("null", SOFTWARE);
 	}
 
 	public static NativeModuleResult helloWorldClassResult() {
@@ -37,7 +37,7 @@ public final class NativeModuleResultFixtures {
 
 	private static boolean isCompatible(String code, Granularity scope) {
 		boolean startsWithTotal = code.startsWith("total");
-		return (scope == APPLICATION && startsWithTotal) || (scope == CLASS && !startsWithTotal);
+		return (scope == SOFTWARE && startsWithTotal) || (scope == CLASS && !startsWithTotal);
 	}
 
 	private NativeModuleResultFixtures() {

@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.RepositoryType.*;
 
 import java.util.Arrays;
@@ -10,8 +10,8 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class KalibroEndpointImplTest extends KalibroTestCase {
+public class KalibroEndpointImplTest extends TestCase {
 
 	private static final String PROJECT_NAME = "KalibroEndpointImplTest project";
 
@@ -36,7 +36,7 @@ public class KalibroEndpointImplTest extends KalibroTestCase {
 		Set<RepositoryType> repositoryTypes = new HashSet<RepositoryType>();
 		repositoryTypes.addAll(Arrays.asList(LOCAL_ZIP, GIT, SUBVERSION));
 		PowerMockito.when(Kalibro.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
-		assertDeepEquals(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
+		assertDeepSet(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

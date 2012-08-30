@@ -3,13 +3,16 @@ package org.kalibro.core.model;
 import java.util.*;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Ignore;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.processing.ScriptValidator;
 
-@SortingMethods("getName")
+@SortingFields("name")
 public class Configuration extends AbstractEntity<Configuration> {
+
+	private Long id;
 
 	@IdentityField
 	private String name;
@@ -20,17 +23,30 @@ public class Configuration extends AbstractEntity<Configuration> {
 	private Map<String, Set<NativeMetric>> nativeMetrics;
 	private Map<String, MetricConfiguration> metricConfigurations;
 
+	@Ignore
+	private ScriptValidator validator;
+
 	public Configuration() {
+		setId(null);
 		setName("");
 		setDescription("");
 		compoundMetrics = new TreeSet<CompoundMetric>();
 		nativeMetrics = new TreeMap<String, Set<NativeMetric>>();
 		metricConfigurations = new TreeMap<String, MetricConfiguration>();
+		validator = new ScriptValidator();
 	}
 
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -66,7 +82,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public MetricConfiguration getConfigurationFor(String metricName) {
-		if (! containsMetric(metricName))
+		if (!containsMetric(metricName))
 			throw new KalibroException("No configuration found for metric: " + metricName);
 		return metricConfigurations.get(metricName);
 	}
@@ -74,7 +90,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	public void addMetricConfiguration(MetricConfiguration metricConfiguration) {
 		for (MetricConfiguration configuration : metricConfigurations.values())
 			configuration.assertNoConflictWith(metricConfiguration);
-		new ScriptValidator(this).validateScriptOf(metricConfiguration);
+		validator.add(metricConfiguration);
 		Metric metric = metricConfiguration.getMetric();
 		addMetric(metric);
 		metricConfigurations.put(metric.getName(), metricConfiguration);
@@ -89,7 +105,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	private void addNativeMetric(NativeMetric metric) {
 		String origin = metric.getOrigin();
-		if (! nativeMetrics.containsKey(origin))
+		if (!nativeMetrics.containsKey(origin))
 			nativeMetrics.put(origin, new TreeSet<NativeMetric>());
 		nativeMetrics.get(origin).add(metric);
 	}
@@ -106,7 +122,9 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public void removeMetric(String metricName) {
-		removeMetric(getConfigurationFor(metricName).getMetric());
+		MetricConfiguration metricConfiguration = getConfigurationFor(metricName);
+		validator.remove(metricConfiguration);
+		removeMetric(metricConfiguration.getMetric());
 		metricConfigurations.remove(metricName);
 	}
 

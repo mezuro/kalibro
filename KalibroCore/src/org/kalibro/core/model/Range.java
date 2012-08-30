@@ -3,11 +3,11 @@ package org.kalibro.core.model;
 import java.awt.Color;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingFields;
 
-@SortingMethods("getBeginning")
+@SortingFields("beginning")
 public class Range extends AbstractEntity<Range> {
 
 	@IdentityField
@@ -73,7 +73,7 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	private void validate(Double leftPoint, Double rightPoint) {
-		if (! (leftPoint < rightPoint))
+		if (!(leftPoint < rightPoint))
 			throw new KalibroException("[" + leftPoint + ", " + rightPoint + "[ is not a valid range");
 	}
 

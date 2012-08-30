@@ -1,6 +1,9 @@
 package org.kalibro.core.persistence.database;
 
+import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
+import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Map;
 
@@ -10,47 +13,64 @@ import javax.persistence.Persistence;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
-import org.kalibro.core.settings.DatabaseSettings;
+import org.kalibro.DatabaseSettings;
+import org.kalibro.KalibroSettings;
+import org.kalibro.TestCase;
+import org.kalibro.core.Environment;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Persistence.class, Seeds.class})
-public class DatabaseDaoFactoryTest extends KalibroTestCase {
+@PrepareForTest({DatabaseDaoFactory.class, KalibroSettings.class, Persistence.class})
+public class DatabaseDaoFactoryTest extends TestCase {
+
+	private EntityManagerFactory managerFactory;
+	private BaseToolDatabaseDao baseToolDao;
+	private DatabaseSettings settings;
 
 	private DatabaseDaoFactory daoFactory;
-	private EntityManagerFactory managerFactory;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		mockPersistence();
-		PowerMockito.mockStatic(Seeds.class);
+		mockSettings();
+		baseToolDao = mock(BaseToolDatabaseDao.class);
+		whenNew(BaseToolDatabaseDao.class).withArguments(any()).thenReturn(baseToolDao);
 		daoFactory = new DatabaseDaoFactory();
 	}
 
 	private void mockPersistence() {
-		managerFactory = PowerMockito.mock(EntityManagerFactory.class);
-		PowerMockito.mockStatic(Persistence.class);
-		PowerMockito.when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class)))
-			.thenReturn(managerFactory);
+		managerFactory = mock(EntityManagerFactory.class);
+		mockStatic(Persistence.class);
+		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(managerFactory);
+	}
+
+	private void mockSettings() {
+		settings = new DatabaseSettings();
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(new KalibroSettings());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultProperties() {
 		@SuppressWarnings("rawtypes")
 		ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		Persistence.createEntityManagerFactory(eq("Kalibro"), captor.capture());
-		assertDeepEquals(new DatabaseSettings().toPersistenceProperties(), captor.getValue());
+		Map<String, String> properties = captor.getValue();
+
+		assertEquals(Environment.ddlGeneration(), properties.get(DDL_GENERATION));
+		assertEquals(settings.getDatabaseType().getDriverClassName(), properties.get(JDBC_DRIVER));
+		assertEquals(settings.getJdbcUrl(), properties.get(JDBC_URL));
+		assertEquals(settings.getUsername(), properties.get(JDBC_USER));
+		assertEquals(settings.getPassword(), properties.get(JDBC_PASSWORD));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDaoCreation() {
-		assertClassEquals(BaseToolDatabaseDao.class, daoFactory.getBaseToolDao());
+		assertSame(baseToolDao, daoFactory.getBaseToolDao());
 		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.getConfigurationDao());
 		assertClassEquals(MetricConfigurationDatabaseDao.class, daoFactory.getMetricConfigurationDao());
 		assertClassEquals(ProjectDatabaseDao.class, daoFactory.getProjectDao());
@@ -59,9 +79,8 @@ public class DatabaseDaoFactoryTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAssertDatabaseIsSeeded() {
-		PowerMockito.verifyStatic();
-		Seeds.saveSeedsIfFirstTime(any(DatabaseManager.class));
+	public void shouldSaveBaseTools() {
+		Mockito.verify(baseToolDao).saveBaseTools();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

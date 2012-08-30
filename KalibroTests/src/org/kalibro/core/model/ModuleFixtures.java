@@ -22,7 +22,7 @@ public final class ModuleFixtures {
 	}
 
 	public static Module newHelloWorldApplication() {
-		return new Module(Granularity.APPLICATION, PROJECT_NAME);
+		return new Module(Granularity.SOFTWARE, PROJECT_NAME);
 	}
 
 	private ModuleFixtures() {

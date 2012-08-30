@@ -9,7 +9,7 @@ import org.kalibro.core.util.Identifier;
  */
 public enum Granularity {
 
-	APPLICATION, PACKAGE, CLASS, METHOD;
+	SOFTWARE, PACKAGE, CLASS, METHOD;
 
 	@Override
 	public String toString() {

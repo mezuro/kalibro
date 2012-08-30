@@ -14,6 +14,7 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "BaseTool")
+@Table(name = "BASE_TOOL")
 public class BaseToolRecord implements DataTransferObject<BaseTool> {
 
 	@Id
@@ -23,7 +24,7 @@ public class BaseToolRecord implements DataTransferObject<BaseTool> {
 	@Column
 	private String description;
 
-	@Column(nullable = false)
+	@Column(name = "collector_class", nullable = false, unique = true)
 	private String collectorClass;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "origin")

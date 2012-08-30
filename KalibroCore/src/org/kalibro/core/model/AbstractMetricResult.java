@@ -1,10 +1,10 @@
 package org.kalibro.core.model;
 
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingFields;
 
-@SortingMethods("getMetric")
+@SortingFields("metric")
 public abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult> {
 
 	@IdentityField

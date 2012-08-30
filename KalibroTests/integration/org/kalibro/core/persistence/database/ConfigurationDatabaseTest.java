@@ -25,14 +25,15 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		simpleConfiguration.setName("Simple");
 		simpleConfiguration.addMetricConfiguration(new MetricConfiguration(sc()));
 		dao = daoFactory.getConfigurationDao();
+		dao.save(kalibroConfiguration);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldListSavedConfigurationNames() {
-		assertDeepEquals(dao.getConfigurationNames(), kalibroConfiguration.getName());
+		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName());
 
 		dao.save(simpleConfiguration);
-		assertDeepEquals(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
+		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -47,16 +48,18 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 	public void shouldRetrieveConfigurationForProject() {
 		Project project = ProjectFixtures.helloWorld();
 		daoFactory.getProjectDao().save(project);
-		assertDeepEquals(kalibroConfiguration, dao.getConfigurationFor(project.getName()));
+		Configuration retrieved = dao.getConfigurationFor(project.getName());
+		kalibroConfiguration.setId(retrieved.getId());
+		assertDeepEquals(kalibroConfiguration, retrieved);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRemoveConfigurationByName() {
 		dao.save(simpleConfiguration);
-		assertDeepEquals(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
+		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
 
 		dao.removeConfiguration(kalibroConfiguration.getName());
-		assertDeepEquals(dao.getConfigurationNames(), simpleConfiguration.getName());
+		assertDeepList(dao.getConfigurationNames(), simpleConfiguration.getName());
 
 		dao.removeConfiguration(simpleConfiguration.getName());
 		assertTrue(dao.getConfigurationNames().isEmpty());
@@ -78,7 +81,8 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		NativeMetric loc = analizoMetric("loc");
 		String locName = loc.getName();
 		assertTrue(kalibroConfiguration.containsMetric(locName));
-		assertTrue(retrieve(kalibroConfiguration).containsMetric(locName));
+		kalibroConfiguration = retrieve(kalibroConfiguration);
+		assertTrue(kalibroConfiguration.containsMetric(locName));
 
 		kalibroConfiguration.getConfigurationFor(locName).setWeight(42.0);
 		dao.save(kalibroConfiguration);

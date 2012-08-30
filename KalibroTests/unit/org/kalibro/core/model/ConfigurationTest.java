@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 
@@ -10,10 +10,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 
-public class ConfigurationTest extends KalibroTestCase {
+public class ConfigurationTest extends TestCase {
 
 	private CompoundMetric sc;
 	private Configuration configuration;
@@ -32,6 +32,7 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultAttributes() {
 		configuration = new Configuration();
+		assertNull(configuration.getId());
 		assertEquals("", configuration.getName());
 		assertEquals("", configuration.getDescription());
 		assertTrue(configuration.getMetricConfigurations().isEmpty());
@@ -56,7 +57,7 @@ public class ConfigurationTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveCompoundMetrics() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-		assertDeepEquals(configuration.getCompoundMetrics(), sc);
+		assertDeepSet(configuration.getCompoundMetrics(), sc);
 
 		configuration.removeMetric(scName);
 		assertTrue(configuration.getCompoundMetrics().isEmpty());
@@ -150,7 +151,7 @@ public class ConfigurationTest extends KalibroTestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateInvalidCompoundMetric() {
+	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
 		checkKalibroException(new Task() {
 

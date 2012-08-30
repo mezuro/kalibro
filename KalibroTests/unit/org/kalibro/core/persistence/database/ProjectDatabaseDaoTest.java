@@ -2,6 +2,7 @@ package org.kalibro.core.persistence.database;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
@@ -12,11 +13,11 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
+import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.database.entities.ProjectRecord;
-import org.kalibro.core.settings.KalibroSettings;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -24,8 +25,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FileUtils.class, Kalibro.class})
-public class ProjectDatabaseDaoTest extends KalibroTestCase {
+@PrepareForTest({FileUtils.class, Kalibro.class, ProjectDatabaseDao.class})
+public class ProjectDatabaseDaoTest extends TestCase {
 
 	private Project project;
 	private DatabaseManager databaseManager;
@@ -33,26 +34,35 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	private ProjectDatabaseDao dao;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		project = helloWorld();
 		databaseManager = mock(DatabaseManager.class);
+		mockConfigurationDao();
 		dao = spy(new ProjectDatabaseDao(databaseManager));
+	}
+
+	private void mockConfigurationDao() throws Exception {
+		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
+		whenNew(ConfigurationDatabaseDao.class).withArguments(databaseManager).thenReturn(configurationDao);
+		when(configurationDao.getConfiguration(anyString())).thenReturn(new Configuration());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
+		when(databaseManager.save(any())).thenReturn(new ProjectRecord(project, null));
 		dao.save(project);
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
 		Mockito.verify(databaseManager).save(captor.capture());
+		project.setConfigurationName("");
 		assertDeepEquals(project, captor.getValue().convert());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListAllProjectNames() {
 		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepEquals(dao.getProjectNames(), "4", "2");
+		assertDeepList(dao.getProjectNames(), "4", "2");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -86,7 +96,7 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 		order.verify(databaseManager).remove(captor.capture());
 		order.verify(databaseManager).commitTransaction();
 
-		assertDeepEquals(project, captor.getValue().convert());
+		assertEquals(project.getName(), captor.getValue().convert().getName());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -113,11 +123,10 @@ public class ProjectDatabaseDaoTest extends KalibroTestCase {
 	}
 
 	private File mockRemoveDirectory() {
-		KalibroSettings settings = mock(KalibroSettings.class);
 		File directory = mock(File.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.currentSettings()).thenReturn(settings);
-		when(settings.getLoadDirectoryFor(project)).thenReturn(directory);
+		project = spy(project);
+		doReturn(project).when(dao).getByName("42");
+		doReturn(directory).when(project).getDirectory();
 		mockStatic(FileUtils.class);
 		return directory;
 	}

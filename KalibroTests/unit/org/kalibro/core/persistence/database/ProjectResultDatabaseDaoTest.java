@@ -7,20 +7,20 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.database.entities.ProjectResultRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ProjectResultDatabaseDaoTest extends KalibroTestCase {
+public class ProjectResultDatabaseDaoTest extends TestCase {
 
 	private static final String COUNT_QUERY = "SELECT count(result) FROM ProjectResult result " +
 		"WHERE result.project.name = :projectName";
 	private static final String LAST_QUERY = "SELECT r FROM ProjectResult r " +
 		"WHERE r.project.name = :projectName AND r.date = " +
-			"(SELECT max(result.date) FROM ProjectResult result WHERE result.project.name = :projectName AND ";
+		"(SELECT max(result.date) FROM ProjectResult result WHERE result.project.name = :projectName AND ";
 	private static final String FIRST_QUERY = LAST_QUERY.replace("SELECT max", "SELECT min");
 
 	private DatabaseManager databaseManager;
@@ -45,9 +45,7 @@ public class ProjectResultDatabaseDaoTest extends KalibroTestCase {
 
 		ArgumentCaptor<ProjectResultRecord> captor = ArgumentCaptor.forClass(ProjectResultRecord.class);
 		Mockito.verify(databaseManager).save(captor.capture());
-		ProjectResult actual = captor.getValue().convert();
-		actual.setSourceTree(projectResult.getSourceTree());
-		assertDeepEquals(projectResult, actual);
+		assertExpected(captor.getValue().convert());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -103,21 +101,21 @@ public class ProjectResultDatabaseDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testFirstResult() {
 		Query<ProjectResultRecord> query = prepareResultQuery(FIRST_QUERY + "1 = 1)");
-		assertDeepEquals(projectResult, dao.getFirstResultOf(projectName));
+		assertExpected(dao.getFirstResultOf(projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testLastResult() {
 		Query<ProjectResultRecord> query = prepareResultQuery(LAST_QUERY + "1 = 1)");
-		assertDeepEquals(projectResult, dao.getLastResultOf(projectName));
+		assertExpected(dao.getLastResultOf(projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testFirstResultAfter() {
 		Query<ProjectResultRecord> query = prepareResultQuery(FIRST_QUERY + "result.date > :date)");
-		assertDeepEquals(projectResult, dao.getFirstResultAfter(date, projectName));
+		assertExpected(dao.getFirstResultAfter(date, projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 		Mockito.verify(query).setParameter("date", date.getTime());
 	}
@@ -125,9 +123,15 @@ public class ProjectResultDatabaseDaoTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testLastResultBefore() {
 		Query<ProjectResultRecord> query = prepareResultQuery(LAST_QUERY + "result.date < :date)");
-		assertDeepEquals(projectResult, dao.getLastResultBefore(date, projectName));
+		assertExpected(dao.getLastResultBefore(date, projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 		Mockito.verify(query).setParameter("date", date.getTime());
+	}
+
+	private void assertExpected(ProjectResult actual) {
+		actual.setSourceTree(projectResult.getSourceTree());
+		actual.getProject().setConfigurationName(projectResult.getProject().getConfigurationName());
+		assertDeepEquals(projectResult, actual);
 	}
 
 	private Query<ProjectResultRecord> prepareResultQuery(String queryText) {

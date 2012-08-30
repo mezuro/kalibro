@@ -1,29 +1,25 @@
 package org.kalibro.core;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.database.DatabaseDaoFactory;
 import org.kalibro.core.processing.ProcessProjectTask;
-import org.kalibro.core.settings.DatabaseSettings;
-import org.kalibro.core.settings.KalibroSettings;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, KalibroLocal.class, RepositoryType.class})
-public class KalibroLocalTest extends KalibroTestCase {
+@PrepareForTest({KalibroLocal.class, RepositoryType.class})
+public class KalibroLocalTest extends TestCase {
 
 	private static final String PROJECT_NAME = "KalibroLocalTest project";
 
@@ -33,21 +29,13 @@ public class KalibroLocalTest extends KalibroTestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		mockSettings();
 		mockDaoFactory();
 		kalibroLocal = new KalibroLocal();
 	}
 
-	private void mockSettings() {
-		KalibroSettings settings = PowerMockito.mock(KalibroSettings.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.currentSettings()).thenReturn(settings);
-	}
-
 	private void mockDaoFactory() throws Exception {
-		daoFactory = PowerMockito.mock(DatabaseDaoFactory.class);
-		PowerMockito.whenNew(DatabaseDaoFactory.class).withParameterTypes(DatabaseSettings.class)
-			.withArguments(any(DatabaseSettings.class)).thenReturn(daoFactory);
+		daoFactory = mock(DatabaseDaoFactory.class);
+		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -57,9 +45,9 @@ public class KalibroLocalTest extends KalibroTestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRetrieveSupportedRepositoryTypes() {
-		Set<RepositoryType> supportedTypes = PowerMockito.mock(Set.class);
-		PowerMockito.mockStatic(RepositoryType.class);
-		PowerMockito.when(RepositoryType.supportedTypes()).thenReturn(supportedTypes);
+		Set<RepositoryType> supportedTypes = mock(Set.class);
+		mockStatic(RepositoryType.class);
+		when(RepositoryType.supportedTypes()).thenReturn(supportedTypes);
 		assertSame(supportedTypes, kalibroLocal.getSupportedRepositoryTypes());
 	}
 
@@ -112,8 +100,8 @@ public class KalibroLocalTest extends KalibroTestCase {
 	}
 
 	private ProcessProjectTask mockProcessProjectTask(String projectName) throws Exception {
-		ProcessProjectTask task = PowerMockito.mock(ProcessProjectTask.class);
-		PowerMockito.whenNew(ProcessProjectTask.class).withArguments(projectName).thenReturn(task);
+		ProcessProjectTask task = mock(ProcessProjectTask.class);
+		whenNew(ProcessProjectTask.class).withArguments(projectName).thenReturn(task);
 		return task;
 	}
 }

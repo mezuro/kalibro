@@ -9,8 +9,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.service.entities.BaseToolXmlTest;
@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class BaseToolEndpointImplTest extends KalibroTestCase {
+public class BaseToolEndpointImplTest extends TestCase {
 
 	private BaseToolDao dao;
 	private BaseTool baseTool;

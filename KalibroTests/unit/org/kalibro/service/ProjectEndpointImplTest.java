@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.helloWorld;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
@@ -10,8 +10,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.service.entities.RawProjectXml;
@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class ProjectEndpointImplTest extends KalibroTestCase {
+public class ProjectEndpointImplTest extends TestCase {
 
 	private ProjectDao dao;
 	private Project project;
@@ -62,7 +62,8 @@ public class ProjectEndpointImplTest extends KalibroTestCase {
 		assertFalse(endpoint.hasProject("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+//	(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetProject() {
 		when(dao.getProject("42")).thenReturn(project);
 		assertDeepEquals(project, endpoint.getProject("42").convert());

@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JDesktopPane;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.desktop.CrudController;

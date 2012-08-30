@@ -1,13 +1,13 @@
 package org.kalibro.core.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 
-public class MetricTest extends KalibroTestCase {
+public class MetricTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void defaultDescriptionShouldBeEmpty() {
@@ -27,13 +27,11 @@ public class MetricTest extends KalibroTestCase {
 		assertSorted(
 			new MyMetric(false, "G", CLASS), new MyMetric(false, "H", CLASS),
 			new MyMetric(false, "E", METHOD), new MyMetric(false, "F", METHOD),
-			new MyMetric(true, "C", APPLICATION), new MyMetric(true, "D", APPLICATION),
+			new MyMetric(true, "C", SOFTWARE), new MyMetric(true, "D", SOFTWARE),
 			new MyMetric(true, "A", PACKAGE), new MyMetric(true, "B", PACKAGE));
 	}
 
 	private class MyMetric extends Metric {
-
-		private boolean compound;
 
 		private MyMetric() {
 			this("");
@@ -44,13 +42,7 @@ public class MetricTest extends KalibroTestCase {
 		}
 
 		public MyMetric(boolean compound, String name, Granularity scope) {
-			super(name, scope);
-			this.compound = compound;
-		}
-
-		@Override
-		public boolean isCompound() {
-			return compound;
+			super(compound, name, scope);
 		}
 	}
 }

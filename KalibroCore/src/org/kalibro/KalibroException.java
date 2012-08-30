@@ -1,7 +1,10 @@
 package org.kalibro;
 
-import org.kalibro.core.util.StackTracePrinter;
-
+/**
+ * Exception thrown by Kalibro.
+ * 
+ * @author Carlos Morais
+ */
 public class KalibroException extends RuntimeException {
 
 	public KalibroException(String message) {
@@ -10,9 +13,5 @@ public class KalibroException extends RuntimeException {
 
 	public KalibroException(String message, Throwable cause) {
 		super(message, cause);
-	}
-
-	public String getPrintedStackTrace() {
-		return new StackTracePrinter().printStackTrace(this);
 	}
 }

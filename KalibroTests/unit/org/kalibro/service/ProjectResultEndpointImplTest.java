@@ -8,8 +8,8 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.powermock.api.mockito.PowerMockito;
@@ -18,7 +18,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Kalibro.class)
-public class ProjectResultEndpointImplTest extends KalibroTestCase {
+public class ProjectResultEndpointImplTest extends TestCase {
 
 	private boolean flag;
 	private ProjectResultDao dao;

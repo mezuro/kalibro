@@ -1,14 +1,17 @@
 package org.kalibro;
 
-public class KalibroError extends KalibroException {
-
-	public static final String MESSAGE_PREFIX = "Please report this bug: ";
+/**
+ * Indicates Kalibro has a bug to be fixed. Every instructions that throws it should be dead code.
+ * 
+ * @author Carlos Morais
+ */
+public class KalibroError extends Error {
 
 	public KalibroError(String message) {
-		super(MESSAGE_PREFIX + message);
+		super(message);
 	}
 
 	public KalibroError(String message, Throwable cause) {
-		super(MESSAGE_PREFIX + message, cause);
+		super(message, cause);
 	}
 }

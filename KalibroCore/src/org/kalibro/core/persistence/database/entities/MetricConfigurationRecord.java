@@ -11,11 +11,11 @@ import org.kalibro.core.model.enums.Statistic;
 import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "MetricConfiguration")
-@PrimaryKey(columns = {@Column(name = "configurationName"), @Column(name = "metricName")})
+@PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName")})
 public class MetricConfigurationRecord implements DataTransferObject<MetricConfiguration> {
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "configurationName", nullable = false, referencedColumnName = "name")
+	@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "id")
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ConfigurationRecord configuration;
 
@@ -32,7 +32,7 @@ public class MetricConfigurationRecord implements DataTransferObject<MetricConfi
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "metricConfiguration", orphanRemoval = true)
 	@JoinColumns({
 		@JoinColumn(insertable = false, name = "metricName", referencedColumnName = "name", updatable = false),
-		@JoinColumn(name = "configurationName", referencedColumnName = "configurationName")})
+		@JoinColumn(name = "configuration", referencedColumnName = "configuration")})
 	private CompoundMetricRecord compoundMetric;
 
 	@Column(nullable = false)

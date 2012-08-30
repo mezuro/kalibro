@@ -13,7 +13,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AuditEvent.class, LocalizedMessage.class})
-public class CheckstyleOutputParserTest extends KalibroTestCase {
+public class CheckstyleOutputParserTest extends TestCase {
 
 	private static final CheckstyleMetric METRIC = CheckstyleMetric.FAN_OUT;
 	private static final NativeMetric NATIVE_METRIC = METRIC.getNativeMetric();
@@ -34,7 +34,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 	@Before
 	public void setUp() {
 		Set<NativeMetric> wantedMetrics = new HashSet<NativeMetric>(Arrays.asList(NATIVE_METRIC));
-		parser = new CheckstyleOutputParser(PROJECTS_DIRECTORY, wantedMetrics);
+		parser = new CheckstyleOutputParser(repositoriesDirectory(), wantedMetrics);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -66,7 +66,7 @@ public class CheckstyleOutputParserTest extends KalibroTestCase {
 
 		AuditEvent event = PowerMockito.mock(AuditEvent.class);
 		PowerMockito.when(event.getLocalizedMessage()).thenReturn(localizedMessage);
-		PowerMockito.when(event.getFileName()).thenReturn(PROJECTS_DIRECTORY + "/org/fibonacci/Fibonacci.java");
+		PowerMockito.when(event.getFileName()).thenReturn(repositoriesDirectory() + "/org/fibonacci/Fibonacci.java");
 		PowerMockito.when(event.getMessage()).thenReturn(message);
 		return event;
 	}

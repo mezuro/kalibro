@@ -16,4 +16,11 @@
 		<class>org.kalibro.core.persistence.database.entities.RangeRecord</class>
 		<class>org.kalibro.core.persistence.database.entities.RepositoryRecord</class>
 	</persistence-unit>
+	
+	<persistence-unit name="cvsanaly" transaction-type="RESOURCE_LOCAL">
+		<class>org.cvsanaly.entities.MetricResult</class>
+		<class>org.cvsanaly.entities.Commit</class>
+		<class>org.cvsanaly.entities.RepositoryFile</class>
+		<class>org.cvsanaly.entities.FileLink</class>
+	</persistence-unit>
 </persistence>

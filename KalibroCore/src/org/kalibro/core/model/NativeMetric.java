@@ -37,7 +37,7 @@ public final class NativeMetric extends Metric {
 	 * @param languages Programming languages to which this metric applies.
 	 */
 	public NativeMetric(String name, Granularity scope, Collection<Language> languages) {
-		super(name, scope, "");
+		super(false, name, scope, "");
 		this.languages = new ArrayList<Language>(languages);
 	}
 

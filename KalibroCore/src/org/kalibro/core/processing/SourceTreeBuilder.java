@@ -19,14 +19,14 @@ class SourceTreeBuilder {
 
 	protected void buildSourceTree(Collection<Module> modules) {
 		String projectName = projectResult.getProject().getName();
-		sourceRoot = new ModuleNode(new Module(APPLICATION, projectName));
+		sourceRoot = new ModuleNode(new Module(SOFTWARE, projectName));
 		for (Module module : modules)
 			addModule(module);
 		projectResult.setSourceTree(sourceRoot);
 	}
 
 	private void addModule(Module module) {
-		if (module.getGranularity() != APPLICATION) {
+		if (module.getGranularity() != SOFTWARE) {
 			ModuleNode parent = addInferredAncestry(module);
 			if (parent.hasChildFor(module))
 				parent.getChildFor(module).setModule(module);

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="unit"/>
+	<classpathentry kind="src" path="acceptance"/>
+	<classpathentry kind="src" path="manual"/>
+	
+	<classpathentry kind="src" path="/KalibroCore" combineaccessrules="false"/>
+	<classpathentry kind="src" path="/KalibroDesktop" combineaccessrules="false"/>
+	<classpathentry kind="src" path="/KalibroTests" combineaccessrules="false"/>
+
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4"/>
+	
+	<!-- test libraries -->
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/FEST Swing"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit 4.8.2"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito 1.8.5"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PowerMock 1.4.12"/>
+
+	<classpathentry kind="output" path="bin"/>
+</classpath>

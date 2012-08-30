@@ -1,24 +1,18 @@
 package org.kalibro.core.model.enums;
 
-import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Language.*;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.EnumerationTestCase;
 
-public class LanguageTest extends KalibroTestCase {
+public class LanguageTest extends EnumerationTestCase<Language> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		Language.values();
-		Language.valueOf("C");
+	@Override
+	protected Class<Language> enumerationClass() {
+		return Language.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testToString() {
-		assertEquals("C", "" + C);
-		assertEquals("C++", "" + CPP);
-		assertEquals("Java", "" + JAVA);
+	@Override
+	protected String expectedText(Language language) {
+		return (language == CPP) ? "C++" : super.expectedText(language);
 	}
 }

@@ -1,10 +1,9 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
+import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
@@ -12,7 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -22,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(FileProcessStreamLogger.class)
-public abstract class LoaderIntegrationTest extends KalibroTestCase {
+public abstract class LoaderIntegrationTest extends TestCase {
 
 	protected RepositoryType repositoryType;
 	protected Repository repository;
@@ -41,8 +40,8 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 	protected abstract RepositoryType getRepositoryType();
 
 	@After
-	public void tearDown() throws IOException {
-		FileUtils.cleanDirectory(PROJECTS_DIRECTORY);
+	public void tearDown() {
+		FileUtils.deleteQuietly(repositoriesDirectory());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -58,8 +57,8 @@ public abstract class LoaderIntegrationTest extends KalibroTestCase {
 	}
 
 	protected File load() {
-		repository.load(HELLO_WORLD_DIRECTORY);
-		Iterator<File> files = FileUtils.iterateFiles(HELLO_WORLD_DIRECTORY, new String[]{"c"}, true);
+		repository.load(helloWorldDirectory());
+		Iterator<File> files = FileUtils.iterateFiles(helloWorldDirectory(), new String[]{"c"}, true);
 		File loaded = files.next();
 		assertEquals("HelloWorld.c", loaded.getName());
 		assertFalse(files.hasNext());

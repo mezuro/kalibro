@@ -1,7 +1,9 @@
 package org.kalibro.core.persistence.database;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -18,19 +20,23 @@ class DatabaseManager {
 		return new Query<T>(entityManager.createQuery(queryText, resultClass));
 	}
 
-	protected void save(Object record) {
-		save(Arrays.asList(record));
+	protected <T> T save(T record) {
+		return save(Arrays.asList(record)).get(0);
 	}
 
-	protected void save(Collection<?> records) {
+	protected <T> List<T> save(Collection<T> records) {
+		List<T> merged = new ArrayList<T>();
 		beginTransaction();
-		for (Object record : records)
-			persist(record);
+		for (T record : records)
+			merged.add(persist(record));
 		commitTransaction();
+		return merged;
 	}
 
-	protected void persist(Object record) {
-		entityManager.persist(entityManager.merge(record));
+	protected <T> T persist(T record) {
+		T merged = merge(record);
+		entityManager.persist(merged);
+		return merged;
 	}
 
 	protected void delete(Object record) {
@@ -40,7 +46,7 @@ class DatabaseManager {
 	}
 
 	protected void remove(Object record) {
-		entityManager.remove(entityManager.merge(record));
+		entityManager.remove(merge(record));
 	}
 
 	protected void beginTransaction() {
@@ -53,6 +59,10 @@ class DatabaseManager {
 
 	protected void evictFromCache(Class<?> classToEvitct) {
 		entityManager.getEntityManagerFactory().getCache().evict(classToEvitct);
+	}
+
+	private <T> T merge(T record) {
+		return entityManager.merge(record);
 	}
 
 	@Override

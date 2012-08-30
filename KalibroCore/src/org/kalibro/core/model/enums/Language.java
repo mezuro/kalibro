@@ -9,7 +9,7 @@ import org.kalibro.core.util.Identifier;
  */
 public enum Language {
 
-	C, CPP("C++"), JAVA;
+	C, CPP("C++"), JAVA, PYTHON;
 
 	private String name;
 

@@ -9,7 +9,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.client.EndpointPortFactory;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectFixtures;
@@ -24,7 +24,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(EndpointPortFactory.class)
-public class ProjectPortDaoTest extends KalibroTestCase {
+public class ProjectPortDaoTest extends TestCase {
 
 	private Project project;
 

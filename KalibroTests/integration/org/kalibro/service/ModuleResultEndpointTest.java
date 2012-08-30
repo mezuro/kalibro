@@ -11,7 +11,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.core.persistence.dao.ModuleResultDaoFake;
 import org.kalibro.service.entities.ModuleResultXml;
 
@@ -22,7 +21,7 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 	private static final Date DATE_1 = new Date(1);
 	private static final Date DATE_2 = new Date(2);
 
-	private ModuleResultDao daoFake;
+	private ModuleResultDaoFake daoFake;
 	private ModuleResultEndpoint port;
 
 	@Before

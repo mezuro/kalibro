@@ -26,6 +26,12 @@ public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectR
 	}
 
 	@Override
+	protected void assertCorrectConversion(ProjectResult original, ProjectResult converted) {
+		original.getProject().setConfigurationName("");
+		super.assertCorrectConversion(original, converted);
+	}
+
+	@Override
 	protected ProjectResultRecord createDto(ProjectResult projectResult) {
 		return new ProjectResultRecord(projectResult);
 	}

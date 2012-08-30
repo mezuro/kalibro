@@ -1,6 +1,7 @@
 package org.checkstyle;
 
 import static org.junit.Assert.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import com.puppycrawl.tools.checkstyle.Checker;
 
@@ -12,20 +13,18 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Checker.class, CheckstyleConfiguration.class, CheckstyleMetricCollector.class, FileUtils.class})
-public class CheckstyleMetricCollectorTest extends KalibroTestCase {
+public class CheckstyleMetricCollectorTest extends TestCase {
 
-	private static final File DIRECTORY = PROJECTS_DIRECTORY;
 	private static final Set<NativeMetric> METRICS = CheckstyleStub.nativeMetrics();
 
 	private CheckstyleConfiguration configuration;
@@ -45,25 +44,25 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 	}
 
 	private void mockConfiguration() {
-		configuration = PowerMockito.mock(CheckstyleConfiguration.class);
-		PowerMockito.mockStatic(CheckstyleConfiguration.class);
-		PowerMockito.when(CheckstyleConfiguration.checkerConfiguration(METRICS)).thenReturn(configuration);
+		configuration = mock(CheckstyleConfiguration.class);
+		mockStatic(CheckstyleConfiguration.class);
+		when(CheckstyleConfiguration.checkerConfiguration(METRICS)).thenReturn(configuration);
 	}
 
 	private void mockParser() throws Exception {
-		parser = PowerMockito.mock(CheckstyleOutputParser.class);
-		PowerMockito.whenNew(CheckstyleOutputParser.class).withArguments(DIRECTORY, METRICS).thenReturn(parser);
+		parser = mock(CheckstyleOutputParser.class);
+		whenNew(CheckstyleOutputParser.class).withArguments(repositoriesDirectory(), METRICS).thenReturn(parser);
 	}
 
 	private void mockFiles() {
-		files = PowerMockito.mock(List.class);
-		PowerMockito.mockStatic(FileUtils.class);
-		PowerMockito.when(FileUtils.listFiles(DIRECTORY, new String[]{"java"}, true)).thenReturn(files);
+		files = mock(List.class);
+		mockStatic(FileUtils.class);
+		when(FileUtils.listFiles(repositoriesDirectory(), new String[]{"java"}, true)).thenReturn(files);
 	}
 
 	private void mockChecker() throws Exception {
-		checker = PowerMockito.mock(Checker.class);
-		PowerMockito.whenNew(Checker.class).withNoArguments().thenReturn(checker);
+		checker = mock(Checker.class);
+		whenNew(Checker.class).withNoArguments().thenReturn(checker);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -74,9 +73,9 @@ public class CheckstyleMetricCollectorTest extends KalibroTestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCollectMetrics() throws Exception {
 		Set<NativeModuleResult> results = CheckstyleStub.results();
-		PowerMockito.when(parser.getResults()).thenReturn(results);
+		when(parser.getResults()).thenReturn(results);
 
-		assertSame(results, collector.collectMetrics(PROJECTS_DIRECTORY, METRICS));
+		assertSame(results, collector.collectMetrics(repositoriesDirectory(), METRICS));
 		InOrder order = Mockito.inOrder(checker, parser);
 		order.verify(checker).setModuleClassLoader(Checker.class.getClassLoader());
 		order.verify(checker).addListener(parser);

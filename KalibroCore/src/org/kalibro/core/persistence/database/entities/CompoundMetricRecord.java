@@ -7,12 +7,12 @@ import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.enums.Granularity;
 
 @Entity(name = "CompoundMetric")
-@PrimaryKey(columns = {@Column(name = "name"), @Column(name = "configurationName")})
+@PrimaryKey(columns = {@Column(name = "name"), @Column(name = "configuration")})
 public class CompoundMetricRecord extends MetricRecord<CompoundMetric> {
 
 	@ManyToOne(optional = false)
 	@JoinColumns({
-		@JoinColumn(name = "configurationName", nullable = false, referencedColumnName = "configurationName"),
+		@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "configuration"),
 		@JoinColumn(insertable = false, name = "name", referencedColumnName = "metricName", updatable = false)})
 	@SuppressWarnings("all" /* used by JPA */)
 	private MetricConfigurationRecord metricConfiguration;

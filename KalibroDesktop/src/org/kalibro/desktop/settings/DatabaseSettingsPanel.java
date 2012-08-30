@@ -4,8 +4,8 @@ import java.awt.Component;
 
 import javax.swing.border.TitledBorder;
 
-import org.kalibro.core.settings.DatabaseSettings;
-import org.kalibro.core.settings.SupportedDatabase;
+import org.kalibro.DatabaseSettings;
+import org.kalibro.SupportedDatabase;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.PasswordField;

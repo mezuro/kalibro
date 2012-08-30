@@ -7,12 +7,12 @@ import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 
-public class PreModuleResultTest extends KalibroTestCase {
+public class PreModuleResultTest extends TestCase {
 
 	private static final CheckstyleMetric METRIC = CheckstyleMetric.FAN_OUT;
 	private static final NativeMetric NATIVE_METRIC = METRIC.getNativeMetric();

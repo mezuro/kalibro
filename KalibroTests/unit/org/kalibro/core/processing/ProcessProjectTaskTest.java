@@ -11,16 +11,16 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
+import org.kalibro.core.persistence.database.ModuleResultDatabaseDao;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -28,14 +28,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Kalibro.class, ProcessProjectTask.class})
-public class ProcessProjectTaskTest extends KalibroTestCase {
+public class ProcessProjectTaskTest extends TestCase {
 
 	private Project project;
 	private ProjectResult projectResult;
 	private Collection<ModuleResult> moduleResults;
 
 	private ProjectDao projectDao;
-	private ModuleResultDao moduleResultDao;
+	private ModuleResultDatabaseDao moduleResultDao;
 	private ProjectResultDao projectResultDao;
 
 	private LoadSourceTask loadTask;
@@ -56,7 +56,7 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 
 	private void mockKalibro() {
 		projectDao = mock(ProjectDao.class);
-		moduleResultDao = mock(ModuleResultDao.class);
+		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		projectResultDao = mock(ProjectResultDao.class);
 		mockStatic(Kalibro.class);
 		when(Kalibro.getProjectDao()).thenReturn(projectDao);
@@ -94,19 +94,16 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 		processTask.perform();
 		assertEquals(ProjectState.READY, project.getState());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveResults() {
 		processTask.perform();
-		String projectName = project.getName();
 
 		InOrder order = Mockito.inOrder(projectResultDao, moduleResultDao);
 		order.verify(projectResultDao).save(projectResult);
 		for (ModuleResult moduleResult : moduleResults)
-			order.verify(moduleResultDao).save(moduleResult, projectName);
+			order.verify(moduleResultDao).save(moduleResult, projectResult);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -118,7 +115,5 @@ public class ProcessProjectTaskTest extends KalibroTestCase {
 		assertEquals(ProjectState.ERROR, project.getState());
 		assertSame(error, project.getError());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 }

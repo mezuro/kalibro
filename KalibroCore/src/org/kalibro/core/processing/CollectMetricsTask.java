@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
@@ -35,7 +35,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	}
 
 	private void collectMetrics(String baseToolName, Set<NativeMetric> metrics) throws Exception {
-		File codeDirectory = Kalibro.currentSettings().getLoadDirectoryFor(project);
+		File codeDirectory = project.getDirectory();
 		MetricCollector metricCollector = Kalibro.getBaseToolDao().getBaseTool(baseToolName).createMetricCollector();
 		Set<NativeModuleResult> nativeResults = metricCollector.collectMetrics(codeDirectory, metrics);
 		for (NativeModuleResult nativeResult : nativeResults) {
@@ -54,7 +54,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	}
 
 	private void changeModuleNameIfRoot(Module module) {
-		if (module.getGranularity() == Granularity.APPLICATION)
+		if (module.getGranularity() == Granularity.SOFTWARE)
 			module.setName(project.getName());
 	}
 }

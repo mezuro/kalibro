@@ -4,7 +4,7 @@ import java.awt.Component;
 
 import javax.swing.border.TitledBorder;
 
-import org.kalibro.Kalibro;
+import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.desktop.swingextension.field.TextField;

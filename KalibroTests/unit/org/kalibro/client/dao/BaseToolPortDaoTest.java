@@ -9,9 +9,8 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.client.EndpointPortFactory;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.service.BaseToolEndpoint;
 import org.kalibro.service.entities.BaseToolXml;
@@ -21,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(EndpointPortFactory.class)
-public class BaseToolPortDaoTest extends KalibroTestCase {
+public class BaseToolPortDaoTest extends TestCase {
 
 	private BaseTool baseTool;
 
@@ -39,17 +38,6 @@ public class BaseToolPortDaoTest extends KalibroTestCase {
 		port = PowerMockito.mock(BaseToolEndpoint.class);
 		PowerMockito.mockStatic(EndpointPortFactory.class);
 		PowerMockito.when(EndpointPortFactory.getEndpointPort(BaseToolEndpoint.class)).thenReturn(port);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testSave() {
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				dao.save(baseTool);
-			}
-		}, "Cannot save base tool remotely");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

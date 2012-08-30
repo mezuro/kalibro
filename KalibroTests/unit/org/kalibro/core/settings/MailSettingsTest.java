@@ -11,13 +11,13 @@ import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(MailSettings.class)
-public class MailSettingsTest extends KalibroTestCase {
+public class MailSettingsTest extends TestCase {
 
 	private MailSettings settings = new MailSettings();
 
