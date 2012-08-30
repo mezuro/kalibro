@@ -2,8 +2,11 @@ package org.kalibro.core.model.enums;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.RepositoryType.*;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 import static org.powermock.reflect.Whitebox.*;
+
+import java.io.File;
 
 import org.junit.After;
 import org.junit.Test;
@@ -11,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.EnumerationTestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.loaders.*;
-import org.mockito.Mockito;
+import org.kalibro.core.model.Repository;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -104,9 +107,12 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldLoadRepository() {
+		File directory = mock(File.class);
+		Repository repository = mock(Repository.class);
 		ProjectLoader loader = mockGitLoader();
-		GIT.load(null, helloWorldDirectory());
-		Mockito.verify(loader).load(null, helloWorldDirectory());
+
+		GIT.load(repository, directory);
+		verify(loader).load(repository, directory);
 	}
 
 	private ProjectLoader mockGitLoader() {

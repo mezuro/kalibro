@@ -17,7 +17,8 @@ public final class RepositoryFixtures {
 	static {
 		addresses = new HashMap<RepositoryType, String>();
 		repositories = new HashMap<RepositoryType, Repository>();
-		File repositoriesDir = new File(Environment.dotKalibro(), "repositories");
+		File samplesDir = new File(Environment.dotKalibro(), "samples");
+		File repositoriesDir = new File(samplesDir, "repositories");
 		String repositoriesPath = repositoriesDir.getAbsolutePath() + File.separator;
 		newAddress(LOCAL_DIRECTORY, repositoriesPath + "HelloWorldDirectory/");
 		newAddress(LOCAL_TARBALL, repositoriesPath + "HelloWorld.tar.gz");

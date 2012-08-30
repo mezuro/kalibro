@@ -51,13 +51,13 @@ public class CheckstyleMetricCollectorTest extends TestCase {
 
 	private void mockParser() throws Exception {
 		parser = mock(CheckstyleOutputParser.class);
-		whenNew(CheckstyleOutputParser.class).withArguments(projectsDirectory(), METRICS).thenReturn(parser);
+		whenNew(CheckstyleOutputParser.class).withArguments(repositoriesDirectory(), METRICS).thenReturn(parser);
 	}
 
 	private void mockFiles() {
 		files = mock(List.class);
 		mockStatic(FileUtils.class);
-		when(FileUtils.listFiles(projectsDirectory(), new String[]{"java"}, true)).thenReturn(files);
+		when(FileUtils.listFiles(repositoriesDirectory(), new String[]{"java"}, true)).thenReturn(files);
 	}
 
 	private void mockChecker() throws Exception {
@@ -75,7 +75,7 @@ public class CheckstyleMetricCollectorTest extends TestCase {
 		Set<NativeModuleResult> results = CheckstyleStub.results();
 		when(parser.getResults()).thenReturn(results);
 
-		assertSame(results, collector.collectMetrics(projectsDirectory(), METRICS));
+		assertSame(results, collector.collectMetrics(repositoriesDirectory(), METRICS));
 		InOrder order = Mockito.inOrder(checker, parser);
 		order.verify(checker).setModuleClassLoader(Checker.class.getClassLoader());
 		order.verify(checker).addListener(parser);

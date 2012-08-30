@@ -34,14 +34,14 @@ public class CVSAnalyTest extends TestCase {
 		System.setOut(originalSysout);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test(timeout = 2 * INTEGRATION_TIMEOUT /* TODO optimize */)
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = new File(samplesDirectory(), "cvsanaly");
 		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
 		assertDeepEquals(CVSAnalyStub.results(), cvsanaly.collectMetrics(codeDirectory, metrics));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test(timeout = 2 * INTEGRATION_TIMEOUT /* TODO optimize */)
 	public void shouldCollectSomeMetrics() throws Exception {
 		File codeDirectory = new File(samplesDirectory(), "cvsanaly");
 		Set<NativeMetric> metrics = new HashSet<NativeMetric>();

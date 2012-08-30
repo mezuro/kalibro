@@ -1,10 +1,9 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
+import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
@@ -41,8 +40,8 @@ public abstract class LoaderIntegrationTest extends TestCase {
 	protected abstract RepositoryType getRepositoryType();
 
 	@After
-	public void tearDown() throws IOException {
-		FileUtils.cleanDirectory(projectsDirectory());
+	public void tearDown() {
+		FileUtils.deleteQuietly(repositoriesDirectory());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

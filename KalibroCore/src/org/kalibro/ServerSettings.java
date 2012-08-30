@@ -29,7 +29,6 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 
 	public void setLoadDirectory(File loadDirectory) {
 		this.loadDirectory = loadDirectory;
-		loadDirectory.mkdirs();
 	}
 
 	public DatabaseSettings getDatabaseSettings() {
