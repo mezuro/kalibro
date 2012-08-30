@@ -3,10 +3,6 @@ package org.kalibro.core.settings;
 import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
-import java.io.IOException;
-import java.util.Map;
-
-import org.apache.commons.io.IOUtils;
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
 import org.junit.Test;
@@ -27,22 +23,6 @@ public class MailSettingsTest extends TestCase {
 		assertEquals(465, settings.getSmtpPort().intValue());
 		assertEquals("example@gmail.com", settings.getSenderMail());
 		assertEquals("", settings.getPassword());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkMapConstructor() {
-		Map<?, ?> map = SettingsFixtures.mailSettingsMap();
-		settings = new MailSettings(map);
-		assertEquals(map.get("smtp_host"), settings.getSmtpHost());
-		assertEquals(map.get("smtp_port"), settings.getSmtpPort());
-		assertEquals(map.get("sender_mail"), settings.getSenderMail());
-		assertEquals(map.get("password"), settings.getPassword());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkToString() throws IOException {
-		String expected = IOUtils.toString(getClass().getResourceAsStream("mail.settings"));
-		assertEquals(expected, "" + settings);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

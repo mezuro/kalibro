@@ -1,11 +1,16 @@
 package org.kalibro.core.settings;
 
-import java.util.Map;
-
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
+import org.kalibro.core.abstractentity.AbstractEntity;
 
-public class MailSettings {
+/**
+ * SMTP settings for the service to send notifications (SSL).
+ * 
+ * @author Carlos Morais
+ * @author Eduardo Morais
+ */
+public class MailSettings extends AbstractEntity<MailSettings> {
 
 	private String smtpHost;
 	private Integer smtpPort;
@@ -17,13 +22,6 @@ public class MailSettings {
 		setSmtpPort(465);
 		setSenderMail("example@gmail.com");
 		setPassword("");
-	}
-
-	public MailSettings(Map<?, ?> settingsMap) {
-		setSmtpHost("" + settingsMap.get("smtp_host"));
-		setSmtpPort((Integer) settingsMap.get("smtp_port"));
-		setSenderMail("" + settingsMap.get("sender_mail"));
-		setPassword("" + settingsMap.get("password"));
 	}
 
 	public String getSmtpHost() {
@@ -56,15 +54,6 @@ public class MailSettings {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	@Override
-	public String toString() {
-		return "    mail: # SMTP settings for the service to send notifications (SSL)\n" +
-			"        smtp_host: \"" + smtpHost + "\"\n" +
-			"        smtp_port: " + smtpPort + "\n" +
-			"        sender_mail: \"" + senderMail + "\"\n" +
-			"        password: \"" + password + "\"\n";
 	}
 
 	public Mailer createMailer() {
