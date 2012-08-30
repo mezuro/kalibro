@@ -18,7 +18,7 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	protected List<String> getAllNames() {
-		String queryText = "SELECT x.name FROM " + getEntityName() + " x ORDER BY x.name";
+		String queryText = "SELECT x.name FROM " + getEntityName() + " x ORDER BY lower(x.name)";
 		return databaseManager.createQuery(queryText, String.class).getResultList();
 	}
 
@@ -26,7 +26,7 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		String queryText = "SELECT 1 FROM " + getEntityName() + " x WHERE x.name = :name";
 		Query<String> query = databaseManager.createQuery(queryText, String.class);
 		query.setParameter("name", name);
-		return ! query.getResultList().isEmpty();
+		return !query.getResultList().isEmpty();
 	}
 
 	protected ENTITY getByName(String name) {

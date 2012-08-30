@@ -62,6 +62,7 @@ public enum RepositoryType {
 	}
 
 	public void load(Repository repository, File loadDirectory) {
+		loadDirectory.mkdirs();
 		loader.load(repository, loadDirectory);
 	}
 }

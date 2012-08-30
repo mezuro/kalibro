@@ -40,12 +40,12 @@ public abstract class TestCase implements Timeouts {
 		return new File(Environment.dotKalibro(), "samples");
 	}
 
-	protected File projectsDirectory() {
-		return new File(Environment.dotKalibro(), "projects");
+	protected File repositoriesDirectory() {
+		return new File(Environment.dotKalibro(), "repositories");
 	}
 
 	protected File helloWorldDirectory() {
-		return new File(projectsDirectory(), "HelloWorld-1.0");
+		return new File(repositoriesDirectory(), "HelloWorld-1.0");
 	}
 
 	protected String loadResource(String name) throws IOException {

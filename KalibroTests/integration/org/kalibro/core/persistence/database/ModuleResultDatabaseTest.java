@@ -70,7 +70,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		configurationDao.save(configuration);
 
 		moduleResult = getSavedResult();
-		assertTrue(moduleResult.getCompoundMetricsWithError().contains(badCompoundMetric));
+		assertTrue(moduleResult.getCompoundMetricsWithError().contains(badCompoundMetric.getMetric()));
 	}
 
 	private MetricConfiguration newCompoundMetric(String code, String script) {
