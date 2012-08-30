@@ -1,25 +1,32 @@
 package org.kalibro;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Print;
 
 public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
+	private static Long nextId = 1L;
+	private static Map<Long, ReadingGroup> groups = new HashMap<Long, ReadingGroup>();
+
 	public static List<ReadingGroup> all() {
-		return new ArrayList<ReadingGroup>();
+		return new ArrayList<ReadingGroup>(groups.values());
 	}
 
 	public static ReadingGroup importFrom(File file) {
 		return importFrom(file, ReadingGroup.class);
 	}
 
-	private String name;
-	private String description;
-	private Collection<Reading> readings;
+	@IdentityField
+	@Print(skip = true)
+	private Long id;
+
+	private String name = "";
+	private String description = "";
+	private Collection<Reading> readings = new ArrayList<Reading>();
 
 	public String getName() {
 		return name;
@@ -42,18 +49,21 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public void add(Reading reading) {
+		for (Reading each : readings)
+			each.assertNoConflictWith(reading);
 		readings.add(reading);
 	}
 
 	public void save() {
-		return;
+		id = nextId++;
+		groups.put(id, this);
 	}
 
 	public boolean isSaved() {
-		return false;
+		return id != null && groups.containsKey(id) && groups.get(id).deepEquals(this);
 	}
 
 	public void delete() {
-		return;
+		groups.remove(id);
 	}
 }

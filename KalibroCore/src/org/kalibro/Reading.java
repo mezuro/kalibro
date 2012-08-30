@@ -50,7 +50,7 @@ public class Reading extends AbstractEntity<Reading> {
 		if (getLabel().equals(other.getLabel()))
 			throw new KalibroException("Reading with label '" + getLabel() + "' already exists in the group.");
 		if (getGrade().equals(other.getGrade()))
-			throw new KalibroException("Reading with grade '" + getGrade() + "' already exists in the group.");
+			throw new KalibroException("Reading with grade " + getGrade() + " already exists in the group.");
 	}
 
 	public void save() {
