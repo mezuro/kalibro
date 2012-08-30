@@ -112,7 +112,6 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		ProjectLoader loader = mockGitLoader();
 
 		GIT.load(repository, directory);
-		verify(directory).mkdirs();
 		verify(loader).load(repository, directory);
 	}
 
