@@ -2,7 +2,11 @@ package org.kalibro;
 
 import java.awt.Color;
 
-public class Reading {
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.SortingFields;
+
+@SortingFields("grade")
+public class Reading extends AbstractEntity<Reading> {
 
 	private String label;
 	private Double grade;
@@ -13,7 +17,9 @@ public class Reading {
 	}
 
 	public Reading(String label, Double grade, Color color) {
-		// TODO Auto-generated constructor stub
+		setLabel(label);
+		setGrade(grade);
+		setColor(color);
 	}
 
 	public String getLabel() {
@@ -21,17 +27,30 @@ public class Reading {
 	}
 
 	public void setLabel(String label) {
-		// TODO Auto-generated method stub
+		this.label = label;
 	}
 
 	public Double getGrade() {
-		// TODO Auto-generated method stub
-		return null;
+		return grade;
+	}
+
+	private void setGrade(Double grade) {
+		this.grade = grade;
 	}
 
 	public Color getColor() {
-		// TODO Auto-generated method stub
 		return color;
+	}
+
+	private void setColor(Color color) {
+		this.color = color;
+	}
+
+	protected void assertNoConflictWith(Reading other) {
+		if (getLabel().equals(other.getLabel()))
+			throw new KalibroException("Reading with label '" + getLabel() + "' already exists in the group.");
+		if (getGrade().equals(other.getGrade()))
+			throw new KalibroException("Reading with grade '" + getGrade() + "' already exists in the group.");
 	}
 
 	public void save() {

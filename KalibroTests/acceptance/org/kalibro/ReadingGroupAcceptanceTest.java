@@ -91,6 +91,28 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	public void shouldNotAcceptReadingsWithSameLabel() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				group.add(new Reading("Good", 42.0, Color.WHITE));
+			}
+		}, "Reading with label 'Good' already exists in the group.");
+	}
+
+	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	public void shouldNotHaveDuplicateGradesInGroup() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				group.add(new Reading("label", 0.0, Color.WHITE));
+			}
+		}, "Reading with grade 0.0 already exists in the group.");
+	}
+
+	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void shouldImportAndExportAsYaml() throws Exception {
 		group.exportTo(file);
 		String expectedYaml = loadResource("readingGroup-scholar.yml");

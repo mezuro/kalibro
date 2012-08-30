@@ -62,7 +62,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void settingsFileShouldBeHumanReadable() throws IOException {
 		settings.save();
-		String expected = loadResource("default.settings");
+		String expected = loadResource("kalibroSettings-default.yml");
 		expected = expected.replace("~/.kalibro", dotKalibro().getPath());
 		assertEquals(expected, FileUtils.readFileToString(settingsFile));
 	}
