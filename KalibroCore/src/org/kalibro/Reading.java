@@ -54,10 +54,10 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public void save() {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	public void delete() {
-		// TODO Auto-generated method stub
+		return;
 	}
 }

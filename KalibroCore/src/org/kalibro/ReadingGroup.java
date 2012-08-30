@@ -10,50 +10,50 @@ import org.kalibro.core.abstractentity.AbstractEntity;
 public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	public static List<ReadingGroup> all() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<ReadingGroup>();
 	}
 
 	public static ReadingGroup importFrom(File file) {
-		// TODO Auto-generated method stub
-		return null;
+		return importFrom(file, ReadingGroup.class);
 	}
 
 	private String name;
 	private String description;
 	private Collection<Reading> readings;
 
+	public String getName() {
+		return name;
+	}
+
 	public void setName(String name) {
-		// TODO Auto-generated method stub
+		this.name = name;
+	}
+
+	public String getDescription() {
+		return description;
 	}
 
 	public void setDescription(String description) {
-		// TODO Auto-generated method stub
+		this.description = description;
 	}
 
 	public List<Reading> getReadings() {
-		// TODO Auto-generated method stub
 		return new ArrayList<Reading>(readings);
 	}
 
 	public void add(Reading reading) {
-		// TODO Auto-generated method stub
+		readings.add(reading);
 	}
 
 	public void save() {
-		// TODO Auto-generated method stub
+		return;
 	}
 
 	public boolean isSaved() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 
 	public void delete() {
-		// TODO Auto-generated method stub
-	}
-
-	public void exportTo(File file) {
-		// TODO Auto-generated method stub
+		return;
 	}
 }
