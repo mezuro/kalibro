@@ -12,16 +12,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ConfigurationController.class, Kalibro.class})
+@PrepareForTest({ConfigurationController.class, DaoFactory.class})
 public class ConfigurationControllerTest extends TestCase {
 
 	private static final String NAME = "ConfigurationControllerTest name";
@@ -43,8 +43,8 @@ public class ConfigurationControllerTest extends TestCase {
 
 	private void mockConfigurationDao() {
 		configurationDao = mock(ConfigurationDao.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.getConfigurationDao()).thenReturn(configurationDao);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

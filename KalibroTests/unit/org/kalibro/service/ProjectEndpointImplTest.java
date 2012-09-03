@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.service.entities.RawProjectXml;
 import org.mockito.Mockito;
@@ -20,7 +20,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class ProjectEndpointImplTest extends TestCase {
 
 	private ProjectDao dao;
@@ -36,8 +36,8 @@ public class ProjectEndpointImplTest extends TestCase {
 
 	private void mockDao() {
 		dao = mock(ProjectDao.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.getProjectDao()).thenReturn(dao);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(dao);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -62,8 +62,7 @@ public class ProjectEndpointImplTest extends TestCase {
 		assertFalse(endpoint.hasProject("42"));
 	}
 
-//	(timeout = UNIT_TIMEOUT)
-	@Test
+	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetProject() {
 		when(dao.getProject("42")).thenReturn(project);
 		assertDeepEquals(project, endpoint.getProject("42").convert());

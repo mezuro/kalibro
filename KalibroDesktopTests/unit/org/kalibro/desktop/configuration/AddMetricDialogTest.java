@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
-import static org.mockito.Matchers.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.mockito.Matchers.any;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +18,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.persistence.dao.BaseToolDao;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.RadioButton;
@@ -34,7 +34,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class AddMetricDialogTest extends TestCase {
 
 	private AddMetricDialog dialog;
@@ -42,15 +42,15 @@ public class AddMetricDialogTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		mockKalibro();
+		mockDaoFactory();
 		dialog = new AddMetricDialog();
 		finder = new ComponentFinder(dialog);
 	}
 
-	private void mockKalibro() {
+	private void mockDaoFactory() {
 		BaseToolDao dao = PowerMockito.mock(BaseToolDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getBaseToolDao()).thenReturn(dao);
+		PowerMockito.mockStatic(DaoFactory.class);
+		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
 		PowerMockito.when(dao.getBaseToolNames()).thenReturn(Arrays.asList("Analizo"));
 		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(analizoStub());
 	}

@@ -5,33 +5,8 @@ import java.util.Set;
 import org.kalibro.KalibroSettings;
 import org.kalibro.client.KalibroClient;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.persistence.dao.*;
 
 public final class Kalibro {
-
-	public static BaseToolDao getBaseToolDao() {
-		return getFacade().getDaoFactory().createBaseToolDao();
-	}
-
-	public static ConfigurationDao getConfigurationDao() {
-		return getFacade().getDaoFactory().createConfigurationDao();
-	}
-
-	public static MetricConfigurationDao getMetricConfigurationDao() {
-		return getFacade().getDaoFactory().createMetricConfigurationDao();
-	}
-
-	public static ProjectDao getProjectDao() {
-		return getFacade().getDaoFactory().createProjectDao();
-	}
-
-	public static ProjectResultDao getProjectResultDao() {
-		return getFacade().getDaoFactory().createProjectResultDao();
-	}
-
-	public static ModuleResultDao getModuleResultDao() {
-		return getFacade().getDaoFactory().createModuleResultDao();
-	}
 
 	public static Set<RepositoryType> getSupportedRepositoryTypes() {
 		return getFacade().getSupportedRepositoryTypes();

@@ -6,31 +6,23 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import java.util.Set;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
-import org.kalibro.TestCase;
+import org.kalibro.UtilityClassTest;
 import org.kalibro.client.KalibroClient;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.persistence.dao.*;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({Kalibro.class, KalibroSettings.class})
-public class KalibroTest extends TestCase {
+public class KalibroTest extends UtilityClassTest {
 
 	private static final String PROJECT_NAME = "KalibroTest project";
 
-	@BeforeClass
-	public static void emmaCoverage() throws Exception {
-		Kalibro.class.getDeclaredConstructor().newInstance();
-	}
-
 	private KalibroSettings settings;
-	private DaoFactory daoFactory;
 	private KalibroLocal localFacade;
 	private KalibroClient clientFacade;
 
@@ -47,13 +39,15 @@ public class KalibroTest extends TestCase {
 	}
 
 	private void mockFacade() throws Exception {
-		daoFactory = mock(DaoFactory.class);
 		localFacade = mock(KalibroLocal.class);
 		clientFacade = mock(KalibroClient.class);
-		when(localFacade.getDaoFactory()).thenReturn(daoFactory);
-		when(clientFacade.getDaoFactory()).thenReturn(daoFactory);
 		whenNew(KalibroLocal.class).withNoArguments().thenReturn(localFacade);
 		whenNew(KalibroClient.class).withNoArguments().thenReturn(clientFacade);
+	}
+
+	@Override
+	protected Class<?> utilityClass() {
+		return Kalibro.class;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -64,52 +58,10 @@ public class KalibroTest extends TestCase {
 
 	private void verifyServiceSideFacade(boolean clientSide) throws Exception {
 		when(settings.clientSide()).thenReturn(clientSide);
-		Kalibro.getProjectDao();
+		Kalibro.cancelPeriodicProcess(PROJECT_NAME);
 
 		Class<?> facadeClass = clientSide ? KalibroClient.class : KalibroLocal.class;
 		verifyNew(facadeClass).withNoArguments();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetBaseToolDao() {
-		BaseToolDao baseToolDao = mock(BaseToolDao.class);
-		when(daoFactory.createBaseToolDao()).thenReturn(baseToolDao);
-		assertSame(baseToolDao, Kalibro.getBaseToolDao());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetConfigurationDao() {
-		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
-		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
-		assertSame(configurationDao, Kalibro.getConfigurationDao());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetMetricConfigurationDao() {
-		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
-		when(daoFactory.createMetricConfigurationDao()).thenReturn(metricConfigurationDao);
-		assertSame(metricConfigurationDao, Kalibro.getMetricConfigurationDao());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testProjectDao() {
-		ProjectDao projectDao = mock(ProjectDao.class);
-		when(daoFactory.createProjectDao()).thenReturn(projectDao);
-		assertSame(projectDao, Kalibro.getProjectDao());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetProjectResultDao() {
-		ProjectResultDao projectResultDao = mock(ProjectResultDao.class);
-		when(daoFactory.createProjectResultDao()).thenReturn(projectResultDao);
-		assertSame(projectResultDao, Kalibro.getProjectResultDao());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetModuleResultDao() {
-		ModuleResultDao moduleResultDao = mock(ModuleResultDao.class);
-		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
-		assertSame(moduleResultDao, Kalibro.getModuleResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
