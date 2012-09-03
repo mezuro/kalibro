@@ -32,9 +32,9 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		first.setProject(project);
 		second.setProject(project);
 		third.setProject(project);
-		dao = daoFactory.getProjectResultDao();
-		daoFactory.getConfigurationDao().save(kalibroConfiguration());
-		daoFactory.getProjectDao().save(project);
+		dao = daoFactory.createProjectResultDao();
+		daoFactory.createConfigurationDao().save(kalibroConfiguration());
+		daoFactory.createProjectDao().save(project);
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

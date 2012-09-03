@@ -20,8 +20,8 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 	@Before
 	public void setUp() {
 		configuration = newConfiguration("cbo");
-		configurationDao = daoFactory.getConfigurationDao();
-		dao = daoFactory.getMetricConfigurationDao();
+		configurationDao = daoFactory.createConfigurationDao();
+		dao = daoFactory.createMetricConfigurationDao();
 		configurationDao.save(configuration);
 	}
 

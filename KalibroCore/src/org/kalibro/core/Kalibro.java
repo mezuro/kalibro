@@ -10,27 +10,27 @@ import org.kalibro.core.persistence.dao.*;
 public final class Kalibro {
 
 	public static BaseToolDao getBaseToolDao() {
-		return getFacade().getDaoFactory().getBaseToolDao();
+		return getFacade().getDaoFactory().createBaseToolDao();
 	}
 
 	public static ConfigurationDao getConfigurationDao() {
-		return getFacade().getDaoFactory().getConfigurationDao();
+		return getFacade().getDaoFactory().createConfigurationDao();
 	}
 
 	public static MetricConfigurationDao getMetricConfigurationDao() {
-		return getFacade().getDaoFactory().getMetricConfigurationDao();
+		return getFacade().getDaoFactory().createMetricConfigurationDao();
 	}
 
 	public static ProjectDao getProjectDao() {
-		return getFacade().getDaoFactory().getProjectDao();
+		return getFacade().getDaoFactory().createProjectDao();
 	}
 
 	public static ProjectResultDao getProjectResultDao() {
-		return getFacade().getDaoFactory().getProjectResultDao();
+		return getFacade().getDaoFactory().createProjectResultDao();
 	}
 
 	public static ModuleResultDao getModuleResultDao() {
-		return getFacade().getDaoFactory().getModuleResultDao();
+		return getFacade().getDaoFactory().createModuleResultDao();
 	}
 
 	public static Set<RepositoryType> getSupportedRepositoryTypes() {

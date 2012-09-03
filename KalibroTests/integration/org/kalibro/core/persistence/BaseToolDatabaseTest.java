@@ -16,7 +16,7 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Before
 	public void setUp() {
-		dao = daoFactory.getBaseToolDao();
+		dao = daoFactory.createBaseToolDao();
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)

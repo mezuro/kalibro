@@ -19,7 +19,7 @@ public class DatabaseDaoFactory implements DaoFactory {
 
 	public DatabaseDaoFactory() {
 		entityManagerFactory = Persistence.createEntityManagerFactory("Kalibro", getPersistenceProperties());
-		getBaseToolDao().saveBaseTools();
+		createBaseToolDao().saveBaseTools();
 	}
 
 	protected Map<String, String> getPersistenceProperties() {
@@ -34,32 +34,32 @@ public class DatabaseDaoFactory implements DaoFactory {
 	}
 
 	@Override
-	public BaseToolDatabaseDao getBaseToolDao() {
+	public BaseToolDatabaseDao createBaseToolDao() {
 		return new BaseToolDatabaseDao(createDatabaseManager());
 	}
 
 	@Override
-	public ConfigurationDatabaseDao getConfigurationDao() {
+	public ConfigurationDatabaseDao createConfigurationDao() {
 		return new ConfigurationDatabaseDao(createDatabaseManager());
 	}
 
 	@Override
-	public MetricConfigurationDatabaseDao getMetricConfigurationDao() {
+	public MetricConfigurationDatabaseDao createMetricConfigurationDao() {
 		return new MetricConfigurationDatabaseDao(createDatabaseManager());
 	}
 
 	@Override
-	public ProjectDatabaseDao getProjectDao() {
+	public ProjectDatabaseDao createProjectDao() {
 		return new ProjectDatabaseDao(createDatabaseManager());
 	}
 
 	@Override
-	public ProjectResultDatabaseDao getProjectResultDao() {
+	public ProjectResultDatabaseDao createProjectResultDao() {
 		return new ProjectResultDatabaseDao(createDatabaseManager());
 	}
 
 	@Override
-	public ModuleResultDatabaseDao getModuleResultDao() {
+	public ModuleResultDatabaseDao createModuleResultDao() {
 		return new ModuleResultDatabaseDao(createDatabaseManager());
 	}
 

@@ -24,7 +24,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		simpleConfiguration = newConfiguration("cbo", "lcom4");
 		simpleConfiguration.setName("Simple");
 		simpleConfiguration.addMetricConfiguration(new MetricConfiguration(sc()));
-		dao = daoFactory.getConfigurationDao();
+		dao = daoFactory.createConfigurationDao();
 		dao.save(kalibroConfiguration);
 	}
 
@@ -47,7 +47,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldRetrieveConfigurationForProject() {
 		Project project = ProjectFixtures.helloWorld();
-		daoFactory.getProjectDao().save(project);
+		daoFactory.createProjectDao().save(project);
 		Configuration retrieved = dao.getConfigurationFor(project.getName());
 		kalibroConfiguration.setId(retrieved.getId());
 		assertDeepEquals(kalibroConfiguration, retrieved);

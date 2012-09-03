@@ -73,42 +73,42 @@ public class KalibroTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetBaseToolDao() {
 		BaseToolDao baseToolDao = mock(BaseToolDao.class);
-		when(daoFactory.getBaseToolDao()).thenReturn(baseToolDao);
+		when(daoFactory.createBaseToolDao()).thenReturn(baseToolDao);
 		assertSame(baseToolDao, Kalibro.getBaseToolDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetConfigurationDao() {
 		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
-		when(daoFactory.getConfigurationDao()).thenReturn(configurationDao);
+		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
 		assertSame(configurationDao, Kalibro.getConfigurationDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetMetricConfigurationDao() {
 		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
-		when(daoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
+		when(daoFactory.createMetricConfigurationDao()).thenReturn(metricConfigurationDao);
 		assertSame(metricConfigurationDao, Kalibro.getMetricConfigurationDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProjectDao() {
 		ProjectDao projectDao = mock(ProjectDao.class);
-		when(daoFactory.getProjectDao()).thenReturn(projectDao);
+		when(daoFactory.createProjectDao()).thenReturn(projectDao);
 		assertSame(projectDao, Kalibro.getProjectDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetProjectResultDao() {
 		ProjectResultDao projectResultDao = mock(ProjectResultDao.class);
-		when(daoFactory.getProjectResultDao()).thenReturn(projectResultDao);
+		when(daoFactory.createProjectResultDao()).thenReturn(projectResultDao);
 		assertSame(projectResultDao, Kalibro.getProjectResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetModuleResultDao() {
 		ModuleResultDao moduleResultDao = mock(ModuleResultDao.class);
-		when(daoFactory.getModuleResultDao()).thenReturn(moduleResultDao);
+		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
 		assertSame(moduleResultDao, Kalibro.getModuleResultDao());
 	}
 

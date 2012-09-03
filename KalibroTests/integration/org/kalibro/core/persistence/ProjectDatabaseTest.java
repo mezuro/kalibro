@@ -27,8 +27,8 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		helloWorld = projectResult.getProject();
 		helloWorld2 = newHelloWorld();
 		helloWorld2.setName("HelloWorld-2.0");
-		daoFactory.getConfigurationDao().save(kalibroConfiguration());
-		dao = daoFactory.getProjectDao();
+		daoFactory.createConfigurationDao().save(kalibroConfiguration());
+		dao = daoFactory.createProjectDao();
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
@@ -66,7 +66,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void projectRemovalShouldCascadeToResults() {
 		String projectName = helloWorld.getName();
-		ProjectResultDatabaseDao projectResultDao = daoFactory.getProjectResultDao();
+		ProjectResultDatabaseDao projectResultDao = daoFactory.createProjectResultDao();
 
 		dao.save(helloWorld);
 		projectResultDao.save(projectResult);

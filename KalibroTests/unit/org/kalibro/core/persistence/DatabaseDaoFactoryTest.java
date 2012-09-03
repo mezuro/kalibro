@@ -70,12 +70,12 @@ public class DatabaseDaoFactoryTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDaoCreation() {
-		assertSame(baseToolDao, daoFactory.getBaseToolDao());
-		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.getConfigurationDao());
-		assertClassEquals(MetricConfigurationDatabaseDao.class, daoFactory.getMetricConfigurationDao());
-		assertClassEquals(ProjectDatabaseDao.class, daoFactory.getProjectDao());
-		assertClassEquals(ProjectResultDatabaseDao.class, daoFactory.getProjectResultDao());
-		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.getModuleResultDao());
+		assertSame(baseToolDao, daoFactory.createBaseToolDao());
+		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.createConfigurationDao());
+		assertClassEquals(MetricConfigurationDatabaseDao.class, daoFactory.createMetricConfigurationDao());
+		assertClassEquals(ProjectDatabaseDao.class, daoFactory.createProjectDao());
+		assertClassEquals(ProjectResultDatabaseDao.class, daoFactory.createProjectResultDao());
+		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.createModuleResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -30,10 +30,10 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		project = projectResult.getProject();
 		moduleResult = newHelloWorldClassResult(date);
 		moduleResult.setConfiguration(kalibroConfiguration());
-		dao = daoFactory.getModuleResultDao();
-		daoFactory.getConfigurationDao().save(kalibroConfiguration());
-		daoFactory.getProjectDao().save(project);
-		daoFactory.getProjectResultDao().save(projectResult);
+		dao = daoFactory.createModuleResultDao();
+		daoFactory.createConfigurationDao().save(kalibroConfiguration());
+		daoFactory.createProjectDao().save(project);
+		daoFactory.createProjectResultDao().save(projectResult);
 		save();
 	}
 
@@ -65,7 +65,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		Configuration configuration = newConfiguration("cbo");
 		configuration.addMetricConfiguration(badCompoundMetric);
 
-		ConfigurationDatabaseDao configurationDao = daoFactory.getConfigurationDao();
+		ConfigurationDatabaseDao configurationDao = daoFactory.createConfigurationDao();
 		configuration.setId(configurationDao.getConfiguration(CONFIGURATION_NAME).getId());
 		configurationDao.save(configuration);
 
@@ -113,7 +113,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		date = new Date(date.getTime() + 1);
 		Whitebox.setInternalState(moduleResult, "date", date);
 		projectResult.setDate(date);
-		daoFactory.getProjectResultDao().save(projectResult);
+		daoFactory.createProjectResultDao().save(projectResult);
 	}
 
 	private void save() {

@@ -25,21 +25,21 @@ public class PortDaoFactoryTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDaoClasses() {
-		assertClassEquals(BaseToolPortDao.class, factory.getBaseToolDao());
-		assertClassEquals(ConfigurationPortDao.class, factory.getConfigurationDao());
-		assertClassEquals(MetricConfigurationPortDao.class, factory.getMetricConfigurationDao());
-		assertClassEquals(ProjectPortDao.class, factory.getProjectDao());
-		assertClassEquals(ProjectResultPortDao.class, factory.getProjectResultDao());
-		assertClassEquals(ModuleResultPortDao.class, factory.getModuleResultDao());
+		assertClassEquals(BaseToolPortDao.class, factory.createBaseToolDao());
+		assertClassEquals(ConfigurationPortDao.class, factory.createConfigurationDao());
+		assertClassEquals(MetricConfigurationPortDao.class, factory.createMetricConfigurationDao());
+		assertClassEquals(ProjectPortDao.class, factory.createProjectDao());
+		assertClassEquals(ProjectResultPortDao.class, factory.createProjectResultDao());
+		assertClassEquals(ModuleResultPortDao.class, factory.createModuleResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInitializeOnlyOnce() {
-		assertSame(factory.getBaseToolDao(), factory.getBaseToolDao());
-		assertSame(factory.getConfigurationDao(), factory.getConfigurationDao());
-		assertSame(factory.getMetricConfigurationDao(), factory.getMetricConfigurationDao());
-		assertSame(factory.getProjectDao(), factory.getProjectDao());
-		assertSame(factory.getProjectResultDao(), factory.getProjectResultDao());
-		assertSame(factory.getModuleResultDao(), factory.getModuleResultDao());
+		assertSame(factory.createBaseToolDao(), factory.createBaseToolDao());
+		assertSame(factory.createConfigurationDao(), factory.createConfigurationDao());
+		assertSame(factory.createMetricConfigurationDao(), factory.createMetricConfigurationDao());
+		assertSame(factory.createProjectDao(), factory.createProjectDao());
+		assertSame(factory.createProjectResultDao(), factory.createProjectResultDao());
+		assertSame(factory.createModuleResultDao(), factory.createModuleResultDao());
 	}
 }
