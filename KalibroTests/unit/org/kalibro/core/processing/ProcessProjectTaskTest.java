@@ -1,7 +1,7 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResults;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
@@ -12,22 +12,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.core.persistence.ModuleResultDatabaseDao;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
-import org.kalibro.core.persistence.database.ModuleResultDatabaseDao;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, ProcessProjectTask.class})
+@PrepareForTest({DaoFactory.class, ProcessProjectTask.class})
 public class ProcessProjectTaskTest extends TestCase {
 
 	private Project project;
@@ -58,10 +58,10 @@ public class ProcessProjectTaskTest extends TestCase {
 		projectDao = mock(ProjectDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		projectResultDao = mock(ProjectResultDao.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.getProjectDao()).thenReturn(projectDao);
-		when(Kalibro.getModuleResultDao()).thenReturn(moduleResultDao);
-		when(Kalibro.getProjectResultDao()).thenReturn(projectResultDao);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
+		when(DaoFactory.getModuleResultDao()).thenReturn(moduleResultDao);
+		when(DaoFactory.getProjectResultDao()).thenReturn(projectResultDao);
 		when(projectDao.getProject(PROJECT_NAME)).thenReturn(project);
 	}
 

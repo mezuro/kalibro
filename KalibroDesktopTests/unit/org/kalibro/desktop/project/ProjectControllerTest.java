@@ -12,8 +12,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ProjectController.class, Kalibro.class})
+@PrepareForTest({ProjectController.class, DaoFactory.class})
 public class ProjectControllerTest extends TestCase {
 
 	private static final String NAME = "ProjectControllerTest name";
@@ -43,8 +43,8 @@ public class ProjectControllerTest extends TestCase {
 
 	private void mockProjectDao() {
 		projectDao = mock(ProjectDao.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.getProjectDao()).thenReturn(projectDao);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

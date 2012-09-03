@@ -36,8 +36,20 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 		return Identifier.fromVariable(className).asText().toLowerCase();
 	}
 
+	public void exportTo(File file) {
+		try {
+			FileUtils.writeStringToFile(file, print());
+		} catch (Exception exception) {
+			throw new KalibroException("Could not export " + entityName(getClass()) + " to file: " + file, exception);
+		}
+	}
+
 	@Override
 	public String toString() {
+		return print();
+	}
+
+	private String print() {
 		return Printer.print(this);
 	}
 
@@ -58,13 +70,5 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 	@Override
 	public int compareTo(T other) {
 		return new EntityComparator<T>().compare(this, other);
-	}
-
-	public void exportTo(File file) {
-		try {
-			FileUtils.writeStringToFile(file, Printer.print(this));
-		} catch (Exception exception) {
-			throw new KalibroException("Could not export " + entityName(getClass()) + " to file: " + file, exception);
-		}
 	}
 }

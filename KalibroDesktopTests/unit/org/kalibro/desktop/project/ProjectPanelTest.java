@@ -1,7 +1,7 @@
 package org.kalibro.desktop.project;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.ProjectFixtures.helloWorld;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
@@ -15,6 +15,7 @@ import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.StringField;
@@ -26,7 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareForTest(Kalibro.class)
+@PrepareForTest({DaoFactory.class, Kalibro.class})
 public class ProjectPanelTest extends TestCase {
 
 	private Project project;
@@ -38,18 +39,22 @@ public class ProjectPanelTest extends TestCase {
 	public void setUp() {
 		project = helloWorld();
 		mockKalibro();
+		mockDaoFactory();
 		panel = new ProjectPanel();
 		finder = new ComponentFinder(panel);
 	}
 
 	private void mockKalibro() {
-		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
 		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
-
 		mockStatic(Kalibro.class);
-		when(Kalibro.getConfigurationDao()).thenReturn(configurationDao);
-		when(configurationDao.getConfigurationNames()).thenReturn(Arrays.asList(project.getConfigurationName()));
 		when(Kalibro.getSupportedRepositoryTypes()).thenReturn(types);
+	}
+
+	private void mockDaoFactory() {
+		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
+		when(configurationDao.getConfigurationNames()).thenReturn(Arrays.asList(project.getConfigurationName()));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

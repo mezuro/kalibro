@@ -16,7 +16,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServerSettings;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.NativeMetric;
@@ -24,11 +23,12 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.core.persistence.dao.ConfigurationDao;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Kalibro.class, KalibroSettings.class})
+@PrepareForTest({DaoFactory.class, KalibroSettings.class})
 public class CollectMetricsTaskTest extends TestCase {
 
 	private BaseTool baseTool;
@@ -59,15 +59,15 @@ public class CollectMetricsTaskTest extends TestCase {
 		Map<String, Set<NativeMetric>> metricsMap = new HashMap<String, Set<NativeMetric>>();
 		metricsMap.put("Analizo", baseTool.getSupportedMetrics());
 
-		mockStatic(Kalibro.class);
-		when(Kalibro.getConfigurationDao()).thenReturn(configurationDao);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 		when(configurationDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
 		when(configuration.getNativeMetrics()).thenReturn(metricsMap);
 	}
 
 	private void mockBaseTool() {
 		BaseToolDao baseToolDao = mock(BaseToolDao.class);
-		when(Kalibro.getBaseToolDao()).thenReturn(baseToolDao);
+		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
 		when(baseToolDao.getBaseTool(baseTool.getName())).thenReturn(baseTool);
 	}
 

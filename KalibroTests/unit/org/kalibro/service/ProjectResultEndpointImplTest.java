@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.ProjectResultFixtures.helloWorldResult;
 
 import java.util.Random;
 
@@ -9,15 +9,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class ProjectResultEndpointImplTest extends TestCase {
 
 	private boolean flag;
@@ -35,8 +35,8 @@ public class ProjectResultEndpointImplTest extends TestCase {
 
 	private void mockDao() {
 		dao = PowerMockito.mock(ProjectResultDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getProjectResultDao()).thenReturn(dao);
+		PowerMockito.mockStatic(DaoFactory.class);
+		PowerMockito.when(DaoFactory.getProjectResultDao()).thenReturn(dao);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

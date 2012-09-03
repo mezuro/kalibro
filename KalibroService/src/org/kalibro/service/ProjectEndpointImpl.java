@@ -6,7 +6,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.Kalibro;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.service.entities.ProjectXml;
 import org.kalibro.service.entities.RawProjectXml;
@@ -17,7 +17,7 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 	private ProjectDao dao;
 
 	public ProjectEndpointImpl() {
-		this(Kalibro.getProjectDao());
+		this(DaoFactory.getProjectDao());
 	}
 
 	protected ProjectEndpointImpl(ProjectDao projectDao) {

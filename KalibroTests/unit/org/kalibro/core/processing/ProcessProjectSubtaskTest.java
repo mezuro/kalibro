@@ -1,7 +1,7 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.enums.ProjectState.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.enums.ProjectState.COLLECTING;
 import static org.mockito.Matchers.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
@@ -9,17 +9,17 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.dao.ProjectDao;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class ProcessProjectSubtaskTest extends TestCase {
 
 	private static final String TASK_RESULT = "ProcessProjectSubtaskTest result";
@@ -33,15 +33,15 @@ public class ProcessProjectSubtaskTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		mockKalibro();
+		mockDaoFactory();
 		mockProjectResult();
 		subtask = new FakeSubtask(projectResult);
 	}
 
-	private void mockKalibro() {
+	private void mockDaoFactory() {
 		projectDao = mock(ProjectDao.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.getProjectDao()).thenReturn(projectDao);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 	}
 
 	private void mockProjectResult() {

@@ -1,16 +1,49 @@
 package org.kalibro.core.persistence.dao;
 
-public interface DaoFactory {
+import org.kalibro.KalibroSettings;
+import org.kalibro.client.dao.PortDaoFactory;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
 
-	BaseToolDao getBaseToolDao();
+public abstract class DaoFactory {
 
-	ConfigurationDao getConfigurationDao();
+	public static BaseToolDao getBaseToolDao() {
+		return getFactory().createBaseToolDao();
+	}
 
-	MetricConfigurationDao getMetricConfigurationDao();
+	public static ConfigurationDao getConfigurationDao() {
+		return getFactory().createConfigurationDao();
+	}
 
-	ProjectDao getProjectDao();
+	public static MetricConfigurationDao getMetricConfigurationDao() {
+		return getFactory().createMetricConfigurationDao();
+	}
 
-	ProjectResultDao getProjectResultDao();
+	public static ModuleResultDao getModuleResultDao() {
+		return getFactory().createModuleResultDao();
+	}
 
-	ModuleResultDao getModuleResultDao();
+	public static ProjectDao getProjectDao() {
+		return getFactory().createProjectDao();
+	}
+
+	public static ProjectResultDao getProjectResultDao() {
+		return getFactory().createProjectResultDao();
+	}
+
+	private static DaoFactory getFactory() {
+		KalibroSettings settings = KalibroSettings.load();
+		return settings.clientSide() ? new PortDaoFactory() : new DatabaseDaoFactory();
+	}
+
+	protected abstract BaseToolDao createBaseToolDao();
+
+	protected abstract ConfigurationDao createConfigurationDao();
+
+	protected abstract MetricConfigurationDao createMetricConfigurationDao();
+
+	protected abstract ModuleResultDao createModuleResultDao();
+
+	protected abstract ProjectDao createProjectDao();
+
+	protected abstract ProjectResultDao createProjectResultDao();
 }

@@ -2,7 +2,7 @@ package org.kalibro.client.dao;
 
 import org.kalibro.core.persistence.dao.*;
 
-public class PortDaoFactory implements DaoFactory {
+public class PortDaoFactory extends DaoFactory {
 
 	private BaseToolDao baseToolDao;
 	private ConfigurationDao configurationDao;
@@ -21,32 +21,32 @@ public class PortDaoFactory implements DaoFactory {
 	}
 
 	@Override
-	public BaseToolDao getBaseToolDao() {
+	public BaseToolDao createBaseToolDao() {
 		return baseToolDao;
 	}
 
 	@Override
-	public ConfigurationDao getConfigurationDao() {
+	public ConfigurationDao createConfigurationDao() {
 		return configurationDao;
 	}
 
 	@Override
-	public MetricConfigurationDao getMetricConfigurationDao() {
+	public MetricConfigurationDao createMetricConfigurationDao() {
 		return metricConfigurationDao;
 	}
 
 	@Override
-	public ProjectDao getProjectDao() {
+	public ProjectDao createProjectDao() {
 		return projectDao;
 	}
 
 	@Override
-	public ProjectResultDao getProjectResultDao() {
+	public ProjectResultDao createProjectResultDao() {
 		return projectResultDao;
 	}
 
 	@Override
-	public ModuleResultDao getModuleResultDao() {
+	public ModuleResultDao createModuleResultDao() {
 		return moduleResultDao;
 	}
 }
