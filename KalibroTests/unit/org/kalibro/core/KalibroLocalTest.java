@@ -11,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.processing.ProcessProjectTask;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -23,24 +22,11 @@ public class KalibroLocalTest extends TestCase {
 
 	private static final String PROJECT_NAME = "KalibroLocalTest project";
 
-	private DatabaseDaoFactory daoFactory;
-
 	private KalibroLocal kalibroLocal;
 
 	@Before
-	public void setUp() throws Exception {
-		mockDaoFactory();
+	public void setUp() {
 		kalibroLocal = new KalibroLocal();
-	}
-
-	private void mockDaoFactory() throws Exception {
-		daoFactory = mock(DatabaseDaoFactory.class);
-		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCreateDaoFactory() {
-		assertSame(daoFactory, kalibroLocal.createDaoFactory());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

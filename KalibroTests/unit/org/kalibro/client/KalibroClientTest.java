@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.TestCase;
-import org.kalibro.client.dao.PortDaoFactory;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.service.KalibroEndpoint;
 import org.mockito.Mockito;
@@ -45,11 +44,6 @@ public class KalibroClientTest extends TestCase {
 		settings = new KalibroSettings();
 		mockStatic(KalibroSettings.class);
 		when(KalibroSettings.load()).thenReturn(settings);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkDaoFactory() {
-		assertClassEquals(PortDaoFactory.class, client.createDaoFactory());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

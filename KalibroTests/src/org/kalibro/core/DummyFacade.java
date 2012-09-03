@@ -3,18 +3,8 @@ package org.kalibro.core;
 import java.util.Set;
 
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.persistence.dao.DaoFactory;
 
-class FacadeStub extends KalibroFacade {
-
-	protected FacadeStub(DaoFactory daoFactory) {
-		this.daoFactory = daoFactory;
-	}
-
-	@Override
-	protected DaoFactory createDaoFactory() {
-		return daoFactory;
-	}
+class DummyFacade extends KalibroFacade {
 
 	@Override
 	protected Set<RepositoryType> getSupportedRepositoryTypes() {
@@ -33,7 +23,7 @@ class FacadeStub extends KalibroFacade {
 
 	@Override
 	protected Integer getProcessPeriod(String projectName) {
-		return 0;
+		return null;
 	}
 
 	@Override
