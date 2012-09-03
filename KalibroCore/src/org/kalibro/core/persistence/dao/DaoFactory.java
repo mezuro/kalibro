@@ -1,16 +1,16 @@
 package org.kalibro.core.persistence.dao;
 
-public interface DaoFactory {
+public abstract class DaoFactory {
 
-	BaseToolDao createBaseToolDao();
+	public abstract BaseToolDao createBaseToolDao();
 
-	ConfigurationDao createConfigurationDao();
+	public abstract ConfigurationDao createConfigurationDao();
 
-	MetricConfigurationDao createMetricConfigurationDao();
+	public abstract MetricConfigurationDao createMetricConfigurationDao();
 
-	ModuleResultDao createModuleResultDao();
+	public abstract ModuleResultDao createModuleResultDao();
 
-	ProjectDao createProjectDao();
+	public abstract ProjectDao createProjectDao();
 
-	ProjectResultDao createProjectResultDao();
+	public abstract ProjectResultDao createProjectResultDao();
 }
