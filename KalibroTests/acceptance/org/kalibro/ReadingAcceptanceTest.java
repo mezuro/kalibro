@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,6 +32,9 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 		reading.delete();
 		assertFalse(readingGroup.getReadings().contains(reading));
+
+		reading.save();
+		assertTrue(readingGroup.getReadings().contains(reading));
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
