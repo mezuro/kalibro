@@ -10,7 +10,7 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.persistence.database.ModuleResultDatabaseDao;
+import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
 public class ProcessProjectTask extends Task {
 

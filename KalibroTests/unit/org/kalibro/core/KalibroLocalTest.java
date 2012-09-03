@@ -11,7 +11,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.persistence.database.DatabaseDaoFactory;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.processing.ProcessProjectTask;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
