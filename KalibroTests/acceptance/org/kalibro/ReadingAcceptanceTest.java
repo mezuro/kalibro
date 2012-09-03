@@ -26,7 +26,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void shouldSaveAndDeleteIndividually() {
-		reading.setLabel("label");
+		reading.setLabel("new label");
 		reading.save();
 		assertDeepList(ReadingGroup.all(), readingGroup);
 

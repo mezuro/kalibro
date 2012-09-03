@@ -83,7 +83,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		group.save();
 		assertTrue(group.isSaved());
 
-		group.add(new Reading("Label", 42.0, Color.MAGENTA));
+		group.add(new Reading("new label", 42.0, Color.MAGENTA));
 		assertFalse(group.isSaved());
 
 		group.save();
@@ -91,7 +91,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldNotAcceptReadingsWithSameLabel() {
+	public void shouldNotHaveDuplicateLabelsInGroup() {
 		checkKalibroException(new Task() {
 
 			@Override
@@ -107,7 +107,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 			@Override
 			protected void perform() throws Throwable {
-				group.add(new Reading("label", 0.0, Color.WHITE));
+				group.add(new Reading("new label", 0.0, Color.WHITE));
 			}
 		}, "Reading with grade 0.0 already exists in the group.");
 	}

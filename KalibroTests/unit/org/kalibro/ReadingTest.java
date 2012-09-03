@@ -19,7 +19,7 @@ public class ReadingTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSortByGrade() {
-		assertSorted(reading(-1.0), reading(0.0), reading(42.0), reading(Double.POSITIVE_INFINITY));
+		assertSorted(reading(-42.0), reading(0.0), reading(42.0), reading(Double.POSITIVE_INFINITY));
 	}
 
 	private Reading reading(Double grade) {
