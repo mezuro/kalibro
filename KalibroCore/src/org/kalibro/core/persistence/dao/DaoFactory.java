@@ -30,6 +30,16 @@ public abstract class DaoFactory {
 		return getFactory().createProjectResultDao();
 	}
 
+	public static ReadingDao getReadingDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public static ReadingGroupDao getReadingGroupDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private static DaoFactory getFactory() {
 		KalibroSettings settings = KalibroSettings.load();
 		return settings.clientSide() ? new PortDaoFactory() : new DatabaseDaoFactory();

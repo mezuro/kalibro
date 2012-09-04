@@ -34,15 +34,12 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void shouldSaveRetrieveAndDelete() {
-		assertFalse(group.isSaved());
 		assertTrue(ReadingGroup.all().isEmpty());
 
 		group.save();
-		assertTrue(group.isSaved());
 		assertDeepList(ReadingGroup.all(), group);
 
 		group.delete();
-		assertFalse(group.isSaved());
 		assertTrue(ReadingGroup.all().isEmpty());
 	}
 
@@ -62,7 +59,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	public void descriptionShouldNotBeRequired() {
 		group.setDescription("");
 		group.save();
-		assertTrue(group.isSaved());
+		assertDeepList(ReadingGroup.all(), group);
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
@@ -81,10 +78,9 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void shouldAddReadings() {
 		group.save();
-		assertTrue(group.isSaved());
 
 		group.add(new Reading("new label", 42.0, Color.MAGENTA));
-		assertFalse(group.isSaved());
+		assertFalse(ReadingGroup.all().get(0).deepEquals(group));
 
 		group.save();
 		assertDeepList(ReadingGroup.all(), group);

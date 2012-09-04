@@ -3,10 +3,15 @@ package org.kalibro;
 import java.awt.Color;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.persistence.dao.DaoFactory;
 
 @SortingFields("grade")
 public class Reading extends AbstractEntity<Reading> {
+
+	@Print(skip = true)
+	private Long id;
 
 	private String label;
 	private Double grade;
@@ -20,6 +25,14 @@ public class Reading extends AbstractEntity<Reading> {
 		setLabel(label);
 		setGrade(grade);
 		setColor(color);
+	}
+
+	protected Long getId() {
+		return id;
+	}
+
+	protected void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getLabel() {
@@ -54,10 +67,10 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public void save() {
-		return;
+		DaoFactory.getReadingDao().save(this);
 	}
 
 	public void delete() {
-		return;
+		DaoFactory.getReadingDao().delete(this);
 	}
 }

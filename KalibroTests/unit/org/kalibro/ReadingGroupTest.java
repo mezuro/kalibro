@@ -1,19 +1,24 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
+import java.awt.Color;
 import java.io.File;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.persistence.dao.DaoFactory;
+import org.kalibro.core.persistence.dao.ReadingGroupDao;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(AbstractEntity.class)
+@PrepareForTest({AbstractEntity.class, DaoFactory.class})
 public class ReadingGroupTest extends TestCase {
 
 	private File file;
@@ -28,8 +33,10 @@ public class ReadingGroupTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetAllReadings() {
-		ReadingGroup.all();
-		fail("mock database access for testing");
+		ReadingGroupDao dao = mockReadingGroupDao();
+		List<ReadingGroup> list = mock(List.class);
+		when(dao.all()).thenReturn(list);
+		assertSame(list, ReadingGroup.all());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -48,20 +55,30 @@ public class ReadingGroupTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCheckIfIsSaved() {
-		group.save();
-		fail("mock database access for testing");
+	public void shouldAddReading() {
+		Reading reading = new Reading("label", 42.0, Color.magenta);
+		group.add(reading);
+		assertTrue(group.getReadings().contains(reading));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
-		group.isSaved();
-		fail("mock database access for testing");
+		ReadingGroupDao dao = mockReadingGroupDao();
+		group.save();
+		verify(dao).save(group);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDelete() {
+		ReadingGroupDao dao = mockReadingGroupDao();
 		group.delete();
-		fail("mock database access for testing");
+		verify(dao).delete(group);
+	}
+
+	private ReadingGroupDao mockReadingGroupDao() {
+		ReadingGroupDao readingGroupDao = mock(ReadingGroupDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getReadingGroupDao()).thenReturn(readingGroupDao);
+		return readingGroupDao;
 	}
 }

@@ -1,19 +1,19 @@
 package org.kalibro;
 
 import java.io.File;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.Print;
+import org.kalibro.core.persistence.dao.DaoFactory;
 
 public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
-	private static Long nextId = 1L;
-	private static Map<Long, ReadingGroup> groups = new HashMap<Long, ReadingGroup>();
-
 	public static List<ReadingGroup> all() {
-		return new ArrayList<ReadingGroup>(groups.values());
+		return DaoFactory.getReadingGroupDao().all();
 	}
 
 	public static ReadingGroup importFrom(File file) {
@@ -24,9 +24,15 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	@Print(skip = true)
 	private Long id;
 
-	private String name = "";
-	private String description = "";
-	private Collection<Reading> readings = new ArrayList<Reading>();
+	private String name;
+	private String description;
+	private Collection<Reading> readings;
+
+	public ReadingGroup() {
+		setName("");
+		setDescription("");
+		readings = new ArrayList<Reading>();
+	}
 
 	public String getName() {
 		return name;
@@ -55,15 +61,10 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public void save() {
-		id = nextId++;
-		groups.put(id, this);
-	}
-
-	public boolean isSaved() {
-		return id != null && groups.containsKey(id) && groups.get(id).deepEquals(this);
+		DaoFactory.getReadingGroupDao().save(this);
 	}
 
 	public void delete() {
-		groups.remove(id);
+		DaoFactory.getReadingGroupDao().delete(this);
 	}
 }

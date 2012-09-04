@@ -39,12 +39,11 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void shouldRequireToBeInGroup() {
-		reading.delete();
 		checkKalibroException(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
-				reading.save();
+				new Reading().save();
 			}
 		}, "Reading is not in any group.");
 	}
