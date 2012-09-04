@@ -9,7 +9,6 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.kalibro.DatabaseSettings;
-import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
 import org.kalibro.core.persistence.dao.DaoFactory;
 
@@ -17,13 +16,12 @@ public class DatabaseDaoFactory extends DaoFactory {
 
 	private EntityManagerFactory entityManagerFactory;
 
-	public DatabaseDaoFactory() {
-		entityManagerFactory = Persistence.createEntityManagerFactory("Kalibro", getPersistenceProperties());
+	public DatabaseDaoFactory(DatabaseSettings settings) {
+		entityManagerFactory = Persistence.createEntityManagerFactory("Kalibro", toPersistenceProperties(settings));
 		createBaseToolDao().saveBaseTools();
 	}
 
-	protected Map<String, String> getPersistenceProperties() {
-		DatabaseSettings settings = KalibroSettings.load().getServerSettings().getDatabaseSettings();
+	protected Map<String, String> toPersistenceProperties(DatabaseSettings settings) {
 		Map<String, String> persistenceProperties = new HashMap<String, String>();
 		persistenceProperties.put(DDL_GENERATION, Environment.ddlGeneration());
 		persistenceProperties.put(JDBC_DRIVER, settings.getDatabaseType().getDriverClassName());

@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
-import org.kalibro.KalibroSettings;
 import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
 import org.mockito.ArgumentCaptor;
@@ -23,7 +22,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DatabaseDaoFactory.class, KalibroSettings.class, Persistence.class})
+@PrepareForTest({DatabaseDaoFactory.class, Persistence.class})
 public class DatabaseDaoFactoryTest extends TestCase {
 
 	private EntityManagerFactory managerFactory;
@@ -35,22 +34,16 @@ public class DatabaseDaoFactoryTest extends TestCase {
 	@Before
 	public void setUp() throws Exception {
 		mockPersistence();
-		mockSettings();
 		baseToolDao = mock(BaseToolDatabaseDao.class);
 		whenNew(BaseToolDatabaseDao.class).withArguments(any()).thenReturn(baseToolDao);
-		daoFactory = new DatabaseDaoFactory();
+		settings = new DatabaseSettings();
+		daoFactory = new DatabaseDaoFactory(settings);
 	}
 
 	private void mockPersistence() {
 		managerFactory = mock(EntityManagerFactory.class);
 		mockStatic(Persistence.class);
 		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(managerFactory);
-	}
-
-	private void mockSettings() {
-		settings = new DatabaseSettings();
-		mockStatic(KalibroSettings.class);
-		when(KalibroSettings.load()).thenReturn(new KalibroSettings());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

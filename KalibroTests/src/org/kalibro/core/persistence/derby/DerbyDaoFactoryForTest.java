@@ -8,14 +8,17 @@ import org.kalibro.core.persistence.DatabaseDaoFactoryForTest;
 
 class DerbyDaoFactoryForTest extends DatabaseDaoFactoryForTest {
 
-	@Override
-	protected DatabaseSettings getSettings() {
-		new File(System.getProperty("user.dir") + "/derby.log").deleteOnExit();
+	private static DatabaseSettings derbyTestSettings() {
 		DatabaseSettings settings = new DatabaseSettings();
 		settings.setDatabaseType(SupportedDatabase.APACHE_DERBY);
 		settings.setJdbcUrl("jdbc:derby:memory:kalibro_test;create=true");
 		settings.setUsername("");
 		settings.setPassword("");
 		return settings;
+	}
+
+	protected DerbyDaoFactoryForTest() {
+		super(derbyTestSettings());
+		new File(System.getProperty("user.dir") + "/derby.log").deleteOnExit();
 	}
 }

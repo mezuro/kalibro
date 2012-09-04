@@ -6,7 +6,7 @@ import org.kalibro.core.persistence.dao.MetricConfigurationDao;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
-public class MetricConfigurationPortDao implements MetricConfigurationDao {
+class MetricConfigurationPortDao implements MetricConfigurationDao {
 
 	private MetricConfigurationEndpoint port;
 
