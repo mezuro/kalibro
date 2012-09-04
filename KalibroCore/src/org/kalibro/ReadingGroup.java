@@ -6,8 +6,6 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.persistence.dao.DaoFactory;
 
 public class ReadingGroup extends AbstractEntity<ReadingGroup> {
@@ -19,10 +17,6 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	public static ReadingGroup importFrom(File file) {
 		return importFrom(file, ReadingGroup.class);
 	}
-
-	@IdentityField
-	@Print(skip = true)
-	private Long id;
 
 	private String name;
 	private String description;
@@ -57,7 +51,12 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	public void add(Reading reading) {
 		for (Reading each : readings)
 			each.assertNoConflictWith(reading);
+		reading.setGroup(this);
 		readings.add(reading);
+	}
+
+	protected void removeReading(Reading reading) {
+		readings.remove(reading);
 	}
 
 	public void save() {

@@ -3,19 +3,19 @@ package org.kalibro;
 import java.awt.Color;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.Print;
+import org.kalibro.core.abstractentity.Ignore;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.persistence.dao.DaoFactory;
 
 @SortingFields("grade")
 public class Reading extends AbstractEntity<Reading> {
 
-	@Print(skip = true)
-	private Long id;
-
 	private String label;
 	private Double grade;
 	private Color color;
+
+	@Ignore
+	private ReadingGroup group;
 
 	public Reading() {
 		this("", 0.0, Color.WHITE);
@@ -25,14 +25,6 @@ public class Reading extends AbstractEntity<Reading> {
 		setLabel(label);
 		setGrade(grade);
 		setColor(color);
-	}
-
-	protected Long getId() {
-		return id;
-	}
-
-	protected void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getLabel() {
@@ -59,6 +51,10 @@ public class Reading extends AbstractEntity<Reading> {
 		this.color = color;
 	}
 
+	protected void setGroup(ReadingGroup group) {
+		this.group = group;
+	}
+
 	protected void assertNoConflictWith(Reading other) {
 		if (getLabel().equals(other.getLabel()))
 			throw new KalibroException("Reading with label '" + getLabel() + "' already exists in the group.");
@@ -67,10 +63,13 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public void save() {
+		if (group == null)
+			throw new KalibroException("Reading is not in any group.");
 		DaoFactory.getReadingDao().save(this);
 	}
 
 	public void delete() {
 		DaoFactory.getReadingDao().delete(this);
+		group.removeReading(this);
 	}
 }

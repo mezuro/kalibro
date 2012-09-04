@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.core.persistence.dao.ReadingGroupDao;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -59,6 +60,35 @@ public class ReadingGroupTest extends TestCase {
 		Reading reading = new Reading("label", 42.0, Color.magenta);
 		group.add(reading);
 		assertTrue(group.getReadings().contains(reading));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotHaveDuplicateLabelsInGroup() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				group.add(new Reading("Good", 42.0, Color.WHITE));
+			}
+		}, "Reading with label 'Good' already exists in the group.");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotHaveDuplicateGradesInGroup() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				group.add(new Reading("new label", 0.0, Color.WHITE));
+			}
+		}, "Reading with grade 0.0 already exists in the group.");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRemoveReading() {
+		Reading reading = group.getReadings().get(0);
+		group.removeReading(reading);
+		assertFalse(group.getReadings().contains(reading));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

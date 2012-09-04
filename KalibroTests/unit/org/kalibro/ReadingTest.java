@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
@@ -20,10 +20,12 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ReadingTest extends TestCase {
 
 	private Reading reading;
+	private ReadingGroup group;
 
 	@Before
 	public void setUp() {
 		reading = loadFixture("reading-excellent", Reading.class);
+		group = new ReadingGroup();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -71,8 +73,21 @@ public class ReadingTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRequireToBeInGroup() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.save();
+			}
+		}, "Reading is not in any group.");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
 		ReadingDao dao = mockReadingDao();
+		group.add(reading);
+
 		reading.save();
 		verify(dao).save(reading);
 	}
@@ -80,8 +95,11 @@ public class ReadingTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDelete() {
 		ReadingDao dao = mockReadingDao();
+		group.add(reading);
+
 		reading.delete();
 		verify(dao).delete(reading);
+		assertFalse(group.getReadings().contains(reading));
 	}
 
 	private ReadingDao mockReadingDao() {
