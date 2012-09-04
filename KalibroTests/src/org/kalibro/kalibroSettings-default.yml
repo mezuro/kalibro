@@ -4,6 +4,12 @@ serviceSide: SERVER # CLIENT to connect to Kalibro Service; SERVER if the servic
 clientSettings:
   serviceAddress: "http://localhost:8080/KalibroService/" # Address of the remote Kalibro Service
 
+mailSettings:
+  smtpHost: "smtp.gmail.com"
+  smtpPort: 465
+  senderMail: "example@gmail.com"
+  password: "securepassword" # This password shall be stored securely in the future
+
 serverSettings:
   loadDirectory: ~/.kalibro/repositories # Source code will be loaded in this directory before analysis
   databaseSettings:

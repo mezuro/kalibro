@@ -28,6 +28,15 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		assertFalse(settings.clientSide());
 		checkClientSettings();
 		checkServerSettings();
+		checkMailSettings();
+	}
+
+	private void checkMailSettings() {
+		MailSettings mailSettings = settings.getMailSettings();
+		assertEquals("smtp.gmail.com", mailSettings.getSmtpHost());
+		assertEquals(465, mailSettings.getSmtpPort().intValue());
+		assertEquals("example@gmail.com", mailSettings.getSenderMail());
+		assertEquals("securepassword", mailSettings.getPassword());
 	}
 
 	private void checkClientSettings() {

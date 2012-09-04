@@ -1,8 +1,9 @@
-package org.kalibro.core.settings;
+package org.kalibro;
 
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Print;
 
 /**
  * SMTP settings for the service to send notifications (SSL).
@@ -12,16 +13,20 @@ import org.kalibro.core.abstractentity.AbstractEntity;
  */
 public class MailSettings extends AbstractEntity<MailSettings> {
 
+	@Print (order = 1)
 	private String smtpHost;
+	@Print (order = 2)
 	private Integer smtpPort;
+	@Print (order = 3)
 	private String senderMail;
+	@Print (order = 4, comment = "This password shall be stored securely in the future\n")
 	private String password;
 
 	public MailSettings() {
 		setSmtpHost("smtp.gmail.com");
 		setSmtpPort(465);
 		setSenderMail("example@gmail.com");
-		setPassword("");
+		setPassword("securepassword");
 	}
 
 	public String getSmtpHost() {
