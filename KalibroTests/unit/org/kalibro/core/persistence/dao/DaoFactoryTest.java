@@ -6,7 +6,9 @@ import static org.powermock.api.mockito.PowerMockito.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
+import org.kalibro.ServiceSide;
 import org.kalibro.TestCase;
 import org.kalibro.client.dao.PortDaoFactory;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
@@ -71,24 +73,30 @@ public class DaoFactoryTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreatePortDaoFactoryOnClientSide() throws Exception {
-		verifyFactory(true, PortDaoFactory.class);
+		mockSettings(ServiceSide.CLIENT);
+		daoFactory = mock(PortDaoFactory.class);
+		whenNew(PortDaoFactory.class).withNoArguments().thenReturn((PortDaoFactory) daoFactory);
+		verifyFactory();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateDatabaseDaoFactoryOnServerSide() throws Exception {
-		verifyFactory(false, DatabaseDaoFactory.class);
+		DatabaseSettings settings = mockSettings(ServiceSide.SERVER).getServerSettings().getDatabaseSettings();
+		daoFactory = mock(DatabaseDaoFactory.class);
+		whenNew(DatabaseDaoFactory.class).withArguments(settings).thenReturn((DatabaseDaoFactory) daoFactory);
+		verifyFactory();
 	}
 
-	private <T extends DaoFactory> void verifyFactory(boolean clientSide, Class<T> factoryClass) throws Exception {
-		KalibroSettings settings = mock(KalibroSettings.class);
-		when(settings.clientSide()).thenReturn(clientSide);
+	private KalibroSettings mockSettings(ServiceSide serviceSide) {
+		KalibroSettings settings = new KalibroSettings();
+		settings.setServiceSide(serviceSide);
 
 		mockStatic(KalibroSettings.class);
 		when(KalibroSettings.load()).thenReturn(settings);
+		return settings;
+	}
 
-		daoFactory = mock(factoryClass);
-		whenNew(factoryClass).withNoArguments().thenReturn((T) daoFactory);
-
+	private void verifyFactory() throws Exception {
 		doCallRealMethod().when(DaoFactory.class, "getFactory");
 		assertSame(daoFactory, Whitebox.invokeMethod(DaoFactory.class, "getFactory"));
 	}
