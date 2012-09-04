@@ -58,7 +58,7 @@ public class ReadingGroupTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddReading() {
 		Reading reading = new Reading("label", 42.0, Color.magenta);
-		group.add(reading);
+		group.addReading(reading);
 		assertTrue(group.getReadings().contains(reading));
 	}
 
@@ -68,7 +68,7 @@ public class ReadingGroupTest extends TestCase {
 
 			@Override
 			protected void perform() throws Throwable {
-				group.add(new Reading("Good", 42.0, Color.WHITE));
+				group.addReading(new Reading("Good", 42.0, Color.WHITE));
 			}
 		}, "Reading with label 'Good' already exists in the group.");
 	}
@@ -79,7 +79,7 @@ public class ReadingGroupTest extends TestCase {
 
 			@Override
 			protected void perform() throws Throwable {
-				group.add(new Reading("new label", 0.0, Color.WHITE));
+				group.addReading(new Reading("new label", 0.0, Color.WHITE));
 			}
 		}, "Reading with grade 0.0 already exists in the group.");
 	}

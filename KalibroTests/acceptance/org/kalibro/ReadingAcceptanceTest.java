@@ -10,35 +10,51 @@ import org.kalibro.core.concurrent.Task;
 public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	private Reading reading;
-	private ReadingGroup readingGroup;
+	private ReadingGroup group;
 
 	@Before
 	public void setUp() {
-		readingGroup = loadFixture("readingGroup-scholar", ReadingGroup.class);
-		reading = readingGroup.getReadings().get(0);
-		readingGroup.save();
+		group = new ReadingGroup("ReadingAcceptanceTest name");
+		reading = loadFixture("reading-excellent", Reading.class);
+		group.addReading(reading);
+		group.save();
 	}
 
 	@After
 	public void tearDown() {
-		readingGroup.delete();
+		group.delete();
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldSaveAndDeleteIndividually() {
-		reading.setLabel("new label");
-		reading.save();
-		assertDeepList(ReadingGroup.all(), readingGroup);
+	public void testCrud() {
+		assertSaved();
+
+		reading.setLabel("ReadingAcceptanceTest label");
+		assertDifferentFromSaved();
 
 		reading.delete();
-		assertFalse(readingGroup.getReadings().contains(reading));
+		assertNotSaved();
+	}
 
-		reading.save();
-		assertTrue(readingGroup.getReadings().contains(reading));
+	private void assertSaved() {
+		assertNotNull(reading.getId());
+		group = ReadingGroup.all().get(0);
+		assertDeepEquals(reading, group.getReadings().get(0));
+	}
+
+	private void assertDifferentFromSaved() {
+		Reading saved = ReadingGroup.all().get(0).getReadings().get(0);
+		assertFalse(reading.deepEquals(saved));
+	}
+
+	private void assertNotSaved() {
+		assertNull(reading.getId());
+		group = ReadingGroup.all().get(0);
+		assertTrue(group.getReadings().isEmpty());
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldRequireToBeInGroup() {
+	public void readingIsRequiredToBeInGroup() {
 		checkKalibroException(new Task() {
 
 			@Override

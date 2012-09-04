@@ -23,7 +23,11 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	private Collection<Reading> readings;
 
 	public ReadingGroup() {
-		setName("");
+		this("");
+	}
+
+	public ReadingGroup(String name) {
+		setName(name);
 		setDescription("");
 		readings = new ArrayList<Reading>();
 	}
@@ -48,7 +52,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		return new ArrayList<Reading>(readings);
 	}
 
-	public void add(Reading reading) {
+	public void addReading(Reading reading) {
 		for (Reading each : readings)
 			each.assertNoConflictWith(reading);
 		reading.setGroup(this);
@@ -65,5 +69,10 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	public void delete() {
 		DaoFactory.getReadingGroupDao().delete(this);
+	}
+
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

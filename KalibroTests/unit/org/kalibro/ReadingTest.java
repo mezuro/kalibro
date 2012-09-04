@@ -86,7 +86,7 @@ public class ReadingTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
 		ReadingDao dao = mockReadingDao();
-		group.add(reading);
+		group.addReading(reading);
 
 		reading.save();
 		verify(dao).save(reading);
@@ -95,7 +95,7 @@ public class ReadingTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDelete() {
 		ReadingDao dao = mockReadingDao();
-		group.add(reading);
+		group.addReading(reading);
 
 		reading.delete();
 		verify(dao).delete(reading);

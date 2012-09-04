@@ -39,7 +39,7 @@ public class Reading extends AbstractEntity<Reading> {
 		return grade;
 	}
 
-	private void setGrade(Double grade) {
+	public void setGrade(Double grade) {
 		this.grade = grade;
 	}
 
@@ -47,8 +47,19 @@ public class Reading extends AbstractEntity<Reading> {
 		return color;
 	}
 
-	private void setColor(Color color) {
+	public void setColor(Color color) {
 		this.color = color;
+	}
+
+	public void save() {
+		if (group == null)
+			throw new KalibroException("Reading is not in any group.");
+		DaoFactory.getReadingDao().save(this);
+	}
+
+	public void delete() {
+		DaoFactory.getReadingDao().delete(this);
+		group.removeReading(this);
 	}
 
 	protected void setGroup(ReadingGroup group) {
@@ -62,14 +73,8 @@ public class Reading extends AbstractEntity<Reading> {
 			throw new KalibroException("Reading with grade " + getGrade() + " already exists in the group.");
 	}
 
-	public void save() {
-		if (group == null)
-			throw new KalibroException("Reading is not in any group.");
-		DaoFactory.getReadingDao().save(this);
-	}
-
-	public void delete() {
-		DaoFactory.getReadingDao().delete(this);
-		group.removeReading(this);
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

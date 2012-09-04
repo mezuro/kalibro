@@ -33,79 +33,86 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldSaveRetrieveAndDelete() {
-		assertTrue(ReadingGroup.all().isEmpty());
+	public void testCrud() {
+		assertNotSaved();
 
 		group.save();
-		assertDeepList(ReadingGroup.all(), group);
+		assertSaved();
+
+		group.addReading(newReading());
+		assertDifferentFromSaved();
+
+		group.save();
+		assertSaved();
 
 		group.delete();
+		assertNotSaved();
+	}
+
+	private void assertNotSaved() {
+		assertNull(group.getId());
 		assertTrue(ReadingGroup.all().isEmpty());
 	}
 
+	private void assertSaved() {
+		assertNotNull(group.getId());
+		assertDeepList(ReadingGroup.all(), group);
+	}
+
+	private void assertDifferentFromSaved() {
+		ReadingGroup saved = ReadingGroup.all().get(0);
+		assertFalse(saved.deepEquals(group));
+	}
+
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void nameShouldBeRequired() {
+	public void nameShouldBeRequiredAndUnique() {
 		group.setName("");
+		checkExceptionOnSave("Reading group requires name.", RollbackException.class);
+
+		group.setName("Scholar");
+		group.save();
+
+		group = new ReadingGroup("Scholar");
+		checkExceptionOnSave("Reading group named \"Scholar\" already exists.", RollbackException.class);
+	}
+
+	private void checkExceptionOnSave(String exceptionMessage, Class<? extends Throwable> expectedCause) {
 		checkKalibroException(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
 				group.save();
 			}
-		}, "Reading group requires name.", RollbackException.class);
+		}, exceptionMessage, expectedCause);
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void descriptionShouldNotBeRequired() {
-		group.setDescription("");
-		group.save();
-		assertDeepList(ReadingGroup.all(), group);
+	public void readingsInSameGroupShouldNotHaveDuplicateLabelsOrGrade() {
+		Reading reading, existent = group.getReadings().get(0);
+		String label = existent.getLabel();
+		Double grade = existent.getGrade();
+
+		reading = newReading();
+		reading.setLabel(label);
+		checkExceptionOnAddReading(reading, "Reading with label \"" + label + "\" already exists in the group.");
+
+		reading = newReading();
+		reading.setGrade(grade);
+		checkExceptionOnAddReading(reading, "Reading with grade " + grade + " already exists in the group.");
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void nameShouldBeUnique() {
-		group.save();
-		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
+	private Reading newReading() {
+		return new Reading("ReadingGroupAcceptanceTest label", 42.0, Color.MAGENTA);
+	}
+
+	private void checkExceptionOnAddReading(final Reading reading, String message) {
 		checkKalibroException(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
-				group.save();
+				group.addReading(reading);
 			}
-		}, "Reading group named \"Scholar\" already exists.", RollbackException.class);
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldAddReadings() {
-		group.save();
-
-		group.add(new Reading("new label", 42.0, Color.MAGENTA));
-		assertFalse(ReadingGroup.all().get(0).deepEquals(group));
-
-		group.save();
-		assertDeepList(ReadingGroup.all(), group);
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldNotHaveDuplicateLabelsInGroup() {
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				group.add(new Reading("Good", 42.0, Color.WHITE));
-			}
-		}, "Reading with label 'Good' already exists in the group.");
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldNotHaveDuplicateGradesInGroup() {
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				group.add(new Reading("new label", 0.0, Color.WHITE));
-			}
-		}, "Reading with grade 0.0 already exists in the group.");
+		}, message);
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
