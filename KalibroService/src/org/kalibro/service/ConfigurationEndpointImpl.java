@@ -6,8 +6,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.persistence.dao.ConfigurationDao;
-import org.kalibro.core.persistence.dao.DaoFactory;
+import org.kalibro.core.dao.ConfigurationDao;
+import org.kalibro.core.dao.DaoFactory;
 import org.kalibro.service.entities.ConfigurationXml;
 
 @WebService

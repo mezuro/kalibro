@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.swing.JDesktopPane;
 
+import org.kalibro.core.dao.ConfigurationDao;
+import org.kalibro.core.dao.DaoFactory;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.persistence.dao.ConfigurationDao;
-import org.kalibro.core.persistence.dao.DaoFactory;
 import org.kalibro.desktop.CrudController;
 
 public class ConfigurationController extends CrudController<Configuration> {

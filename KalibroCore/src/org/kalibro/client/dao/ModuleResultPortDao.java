@@ -5,8 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.dao.ModuleResultDao;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.entities.ModuleResultXml;
 

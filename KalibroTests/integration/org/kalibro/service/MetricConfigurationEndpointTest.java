@@ -7,9 +7,9 @@ import java.net.MalformedURLException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.core.dao.MetricConfigurationDao;
+import org.kalibro.core.dao.MetricConfigurationDaoFake;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.persistence.dao.MetricConfigurationDao;
-import org.kalibro.core.persistence.dao.MetricConfigurationDaoFake;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
 public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {

@@ -3,8 +3,8 @@ package org.kalibro.client.dao;
 import java.util.List;
 
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.dao.BaseToolDao;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.persistence.dao.BaseToolDao;
 import org.kalibro.service.BaseToolEndpoint;
 
 class BaseToolPortDao implements BaseToolDao {

@@ -3,8 +3,8 @@ package org.kalibro.client.dao;
 import java.util.List;
 
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.RawProjectXml;
 

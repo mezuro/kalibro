@@ -1,6 +1,6 @@
 package org.kalibro.client.dao;
 
-import org.kalibro.core.persistence.dao.*;
+import org.kalibro.core.dao.*;
 
 public class PortDaoFactory extends DaoFactory {
 

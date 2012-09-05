@@ -1,4 +1,4 @@
-package org.kalibro.core.persistence.dao;
+package org.kalibro.core.dao;
 
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;

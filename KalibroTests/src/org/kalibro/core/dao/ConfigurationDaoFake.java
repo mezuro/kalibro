@@ -1,4 +1,4 @@
-package org.kalibro.core.persistence.dao;
+package org.kalibro.core.dao;
 
 import java.util.ArrayList;
 import java.util.HashMap;

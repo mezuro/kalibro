@@ -1,4 +1,4 @@
-package org.kalibro.core.persistence.dao;
+package org.kalibro.core.dao;
 
 import static org.junit.Assert.assertSame;
 import static org.powermock.api.mockito.PowerMockito.*;

@@ -3,10 +3,10 @@ package org.kalibro.core.persistence;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.kalibro.core.dao.ConfigurationDao;
+import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.dao.ConfigurationDao;
-import org.kalibro.core.persistence.dao.ProjectDao;
 import org.kalibro.core.persistence.entities.ProjectRecord;
 
 class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {

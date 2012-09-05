@@ -2,9 +2,9 @@ package org.kalibro.core.persistence;
 
 import java.util.List;
 
+import org.kalibro.core.dao.ConfigurationDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.core.persistence.entities.ConfigurationRecord;
 
 class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements ConfigurationDao {

@@ -2,8 +2,8 @@ package org.kalibro.core.persistence;
 
 import java.util.Date;
 
+import org.kalibro.core.dao.ProjectResultDao;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.kalibro.core.persistence.entities.ProjectResultRecord;
 
 class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultRecord> implements ProjectResultDao {

@@ -4,8 +4,8 @@ import java.util.Date;
 
 import org.kalibro.KalibroException;
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.dao.ProjectResultDao;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.dao.ProjectResultDao;
 import org.kalibro.service.ProjectResultEndpoint;
 
 class ProjectResultPortDao implements ProjectResultDao {

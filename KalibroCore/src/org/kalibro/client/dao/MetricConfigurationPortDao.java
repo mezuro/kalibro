@@ -1,8 +1,8 @@
 package org.kalibro.client.dao;
 
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.dao.MetricConfigurationDao;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.persistence.dao.MetricConfigurationDao;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.entities.MetricConfigurationXml;
 

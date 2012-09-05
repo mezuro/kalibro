@@ -6,10 +6,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.core.MetricCollector;
+import org.kalibro.core.dao.DaoFactory;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.persistence.dao.DaoFactory;
 
 public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, ModuleResult>> {
 

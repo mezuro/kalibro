@@ -3,11 +3,11 @@ package org.kalibro.core.persistence;
 import java.util.Date;
 import java.util.List;
 
+import org.kalibro.core.dao.ModuleResultDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
 import org.kalibro.core.persistence.entities.MetricResultRecord;
 
 public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements ModuleResultDao {

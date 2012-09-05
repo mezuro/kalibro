@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.kalibro.KalibroException;
 import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.core.dao.ConfigurationDao;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.persistence.dao.ConfigurationDao;
 import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;
 

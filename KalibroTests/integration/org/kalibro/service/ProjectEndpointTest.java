@@ -8,8 +8,8 @@ import java.net.MalformedURLException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroException;
+import org.kalibro.core.dao.ProjectDaoFake;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.dao.ProjectDaoFake;
 import org.kalibro.service.entities.RawProjectXml;
 
 public class ProjectEndpointTest extends KalibroServiceTestCase {
