@@ -32,13 +32,11 @@ public abstract class DaoFactory {
 	}
 
 	public static ReadingDao getReadingDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return getFactory().createReadingDao();
 	}
 
 	public static ReadingGroupDao getReadingGroupDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return getFactory().createReadingGroupDao();
 	}
 
 	private static DaoFactory getFactory() {
@@ -58,4 +56,14 @@ public abstract class DaoFactory {
 	protected abstract ProjectDao createProjectDao();
 
 	protected abstract ProjectResultDao createProjectResultDao();
+
+	protected ReadingDao createReadingDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	protected ReadingGroupDao createReadingGroupDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

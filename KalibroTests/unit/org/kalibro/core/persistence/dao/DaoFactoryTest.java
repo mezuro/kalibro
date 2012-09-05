@@ -72,6 +72,20 @@ public class DaoFactoryTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetReadingDao() {
+		ReadingDao readingDao = mock(ReadingDao.class);
+		when(daoFactory.createReadingDao()).thenReturn(readingDao);
+		assertSame(readingDao, DaoFactory.getReadingDao());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetReadingGroupDao() {
+		ReadingGroupDao readingGroupDao = mock(ReadingGroupDao.class);
+		when(daoFactory.createReadingGroupDao()).thenReturn(readingGroupDao);
+		assertSame(readingGroupDao, DaoFactory.getReadingGroupDao());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreatePortDaoFactoryOnClientSide() throws Exception {
 		mockSettings(ServiceSide.CLIENT);
 		daoFactory = mock(PortDaoFactory.class);
