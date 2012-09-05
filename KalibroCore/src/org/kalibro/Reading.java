@@ -4,11 +4,21 @@ import java.awt.Color;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.Ignore;
+import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.persistence.dao.DaoFactory;
+import org.kalibro.core.persistence.dao.ReadingDao;
 
+/**
+ * Interpretation of a metric result.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("grade")
 public class Reading extends AbstractEntity<Reading> {
+
+	@Print(skip = true)
+	private Long id;
 
 	private String label;
 	private Double grade;
@@ -22,9 +32,18 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public Reading(String label, Double grade, Color color) {
+		setId(null);
 		setLabel(label);
 		setGrade(grade);
 		setColor(color);
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getLabel() {
@@ -51,21 +70,6 @@ public class Reading extends AbstractEntity<Reading> {
 		this.color = color;
 	}
 
-	public void save() {
-		if (group == null)
-			throw new KalibroException("Reading is not in any group.");
-		DaoFactory.getReadingDao().save(this);
-	}
-
-	public void delete() {
-		DaoFactory.getReadingDao().delete(this);
-		group.removeReading(this);
-	}
-
-	protected void setGroup(ReadingGroup group) {
-		this.group = group;
-	}
-
 	protected void assertNoConflictWith(Reading other) {
 		if (getLabel().equals(other.getLabel()))
 			throw new KalibroException("Reading with label '" + getLabel() + "' already exists in the group.");
@@ -73,8 +77,24 @@ public class Reading extends AbstractEntity<Reading> {
 			throw new KalibroException("Reading with grade " + getGrade() + " already exists in the group.");
 	}
 
-	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+	protected void setGroup(ReadingGroup group) {
+		this.group = group;
+	}
+
+	public void save() {
+		if (group == null)
+			throw new KalibroException("Reading is not in any group.");
+		dao().save(this);
+	}
+
+	public void delete() {
+		if (id != null)
+			dao().delete(this);
+		if (group != null)
+			group.removeReading(this);
+	}
+
+	private ReadingDao dao() {
+		return DaoFactory.getReadingDao();
 	}
 }

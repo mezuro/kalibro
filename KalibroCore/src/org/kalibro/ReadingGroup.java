@@ -6,17 +6,34 @@ import java.util.Collection;
 import java.util.List;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Print;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.persistence.dao.DaoFactory;
+import org.kalibro.core.persistence.dao.ReadingGroupDao;
 
+/**
+ * Interpretations should, naturally, be grouped (see {@link Reading}). ReadingGroup adds name and description to an
+ * interpretation group.
+ * 
+ * @author Carlos Morais
+ */
+@SortingFields("name")
 public class ReadingGroup extends AbstractEntity<ReadingGroup> {
-
-	public static List<ReadingGroup> all() {
-		return DaoFactory.getReadingGroupDao().all();
-	}
 
 	public static ReadingGroup importFrom(File file) {
 		return importFrom(file, ReadingGroup.class);
 	}
+
+	public static List<ReadingGroup> all() {
+		return dao().all();
+	}
+
+	private static ReadingGroupDao dao() {
+		return DaoFactory.getReadingGroupDao();
+	}
+
+	@Print(skip = true)
+	private Long id;
 
 	private String name;
 	private String description;
@@ -27,9 +44,18 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public ReadingGroup(String name) {
+		setId(null);
 		setName(name);
 		setDescription("");
-		readings = new ArrayList<Reading>();
+		setReadings(new ArrayList<Reading>());
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -52,27 +78,28 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		return new ArrayList<Reading>(readings);
 	}
 
+	protected void setReadings(List<Reading> readings) {
+		this.readings = readings;
+	}
+
 	public void addReading(Reading reading) {
 		for (Reading each : readings)
-			each.assertNoConflictWith(reading);
+			reading.assertNoConflictWith(each);
 		reading.setGroup(this);
 		readings.add(reading);
 	}
 
 	protected void removeReading(Reading reading) {
 		readings.remove(reading);
+		reading.setGroup(null);
 	}
 
 	public void save() {
-		DaoFactory.getReadingGroupDao().save(this);
+		dao().save(this);
 	}
 
 	public void delete() {
-		DaoFactory.getReadingGroupDao().delete(this);
-	}
-
-	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+		if (id != null)
+			dao().delete(this);
 	}
 }
