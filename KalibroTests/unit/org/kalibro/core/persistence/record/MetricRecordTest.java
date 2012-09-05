@@ -1,4 +1,4 @@
-package org.kalibro.core.persistence.entities;
+package org.kalibro.core.persistence.record;
 
 import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 
@@ -10,7 +10,7 @@ import org.kalibro.DtoTestCase;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.persistence.entities.MetricRecordTest.MyMetric;
+import org.kalibro.core.persistence.record.MetricRecordTest.MyMetric;
 
 public class MetricRecordTest extends DtoTestCase<MyMetric, MetricRecord<MyMetric>> {
 

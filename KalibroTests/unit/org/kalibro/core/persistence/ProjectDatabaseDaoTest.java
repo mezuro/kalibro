@@ -17,7 +17,7 @@ import org.kalibro.TestCase;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.entities.ProjectRecord;
+import org.kalibro.core.persistence.record.ProjectRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;

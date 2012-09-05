@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.entities.ProjectResultRecord;
+import org.kalibro.core.persistence.record.ProjectResultRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;

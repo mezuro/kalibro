@@ -4,7 +4,7 @@ import java.util.Date;
 
 import org.kalibro.core.dao.ProjectResultDao;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.entities.ProjectResultRecord;
+import org.kalibro.core.persistence.record.ProjectResultRecord;
 
 class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultRecord> implements ProjectResultDao {
 

@@ -16,7 +16,7 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.ProjectResultFixtures;
-import org.kalibro.core.persistence.entities.MetricResultRecord;
+import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

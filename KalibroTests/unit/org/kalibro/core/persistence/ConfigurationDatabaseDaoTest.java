@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.entities.ConfigurationRecord;
+import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;

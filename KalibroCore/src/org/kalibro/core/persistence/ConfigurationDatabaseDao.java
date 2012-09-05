@@ -5,7 +5,7 @@ import java.util.List;
 import org.kalibro.core.dao.ConfigurationDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.entities.ConfigurationRecord;
+import org.kalibro.core.persistence.record.ConfigurationRecord;
 
 class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements ConfigurationDao {
 

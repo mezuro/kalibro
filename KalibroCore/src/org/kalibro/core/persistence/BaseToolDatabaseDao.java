@@ -8,7 +8,7 @@ import org.cvsanaly.CVSAnalyMetricCollector;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.dao.BaseToolDao;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.persistence.entities.BaseToolRecord;
+import org.kalibro.core.persistence.record.BaseToolRecord;
 
 class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implements BaseToolDao {
 

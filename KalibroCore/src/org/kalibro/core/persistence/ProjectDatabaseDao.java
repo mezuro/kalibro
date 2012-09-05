@@ -7,7 +7,7 @@ import org.kalibro.core.dao.ConfigurationDao;
 import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
-import org.kalibro.core.persistence.entities.ProjectRecord;
+import org.kalibro.core.persistence.record.ProjectRecord;
 
 class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
 

@@ -1,4 +1,4 @@
-package org.kalibro.core.persistence.entities;
+package org.kalibro.core.persistence.record;
 
 import javax.persistence.*;
 

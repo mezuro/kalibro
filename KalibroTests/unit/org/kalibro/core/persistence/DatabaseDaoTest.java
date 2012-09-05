@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.persistence.entities.RangeRecord;
+import org.kalibro.core.persistence.record.RangeRecord;
 import org.mockito.Mockito;
 
 public class DatabaseDaoTest extends TestCase {

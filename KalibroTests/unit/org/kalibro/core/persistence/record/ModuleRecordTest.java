@@ -1,4 +1,4 @@
-package org.kalibro.core.persistence.entities;
+package org.kalibro.core.persistence.record;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ModuleFixtures.helloWorldClass;

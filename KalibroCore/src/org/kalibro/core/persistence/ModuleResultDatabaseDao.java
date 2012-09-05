@@ -8,7 +8,7 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.entities.MetricResultRecord;
+import org.kalibro.core.persistence.record.MetricResultRecord;
 
 public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements ModuleResultDao {
 

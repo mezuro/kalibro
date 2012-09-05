@@ -3,8 +3,8 @@ package org.kalibro.core.persistence;
 import org.kalibro.core.dao.MetricConfigurationDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.persistence.entities.MetricConfigurationRecord;
-import org.kalibro.core.persistence.entities.RangeRecord;
+import org.kalibro.core.persistence.record.MetricConfigurationRecord;
+import org.kalibro.core.persistence.record.RangeRecord;
 
 class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord> implements
 	MetricConfigurationDao {

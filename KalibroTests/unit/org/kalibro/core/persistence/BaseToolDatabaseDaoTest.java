@@ -18,7 +18,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.persistence.entities.BaseToolRecord;
+import org.kalibro.core.persistence.record.BaseToolRecord;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
