@@ -1,6 +1,5 @@
 package org.kalibro.desktop;
 
-import static org.mockito.internal.verification.VerificationModeFactory.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;
@@ -42,7 +41,7 @@ public class KalibroDesktopTest extends TestCase {
 
 		verifyStatic();
 		SettingsController.editSettings();
-		Mockito.verify(kalibroFrame, times(0)).setVisible(true);
+		Mockito.verify(kalibroFrame, never()).setVisible(true);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -60,7 +59,7 @@ public class KalibroDesktopTest extends TestCase {
 		prepareScenario(true, false);
 		KalibroDesktop.main(null);
 
-		verifyStatic(times(0));
+		verifyStatic(never());
 		SettingsController.editSettings();
 		Mockito.verify(kalibroFrame).setVisible(true);
 	}

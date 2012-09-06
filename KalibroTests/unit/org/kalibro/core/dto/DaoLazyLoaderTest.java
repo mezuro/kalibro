@@ -2,8 +2,6 @@ package org.kalibro.core.dto;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.List;
@@ -37,9 +35,9 @@ public class DaoLazyLoaderTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldLoadOnFirstInvocation() {
-		verifyStatic(times(0));
+		verifyStatic(never());
 		DaoFactory.getReadingDao();
-		verify(dao, times(0)).readingsOf(any(Long.class));
+		verify(dao, never()).readingsOf(any(Long.class));
 
 		proxy.size();
 		verifyStatic();
@@ -52,7 +50,7 @@ public class DaoLazyLoaderTest extends TestCase {
 		proxy.size();
 		proxy.toArray();
 		proxy.toString();
-		verify(dao, times(1)).readingsOf(any(Long.class));
+		verify(dao, once()).readingsOf(any(Long.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

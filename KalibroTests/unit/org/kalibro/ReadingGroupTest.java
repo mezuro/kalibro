@@ -1,7 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
@@ -97,7 +96,7 @@ public class ReadingGroupTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDeleteIfExists() {
 		group.delete();
-		verify(dao, Mockito.never()).delete(group);
+		verify(dao, never()).delete(group);
 
 		group.setId(42L);
 		group.delete();

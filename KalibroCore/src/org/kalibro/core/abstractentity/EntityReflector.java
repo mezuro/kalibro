@@ -5,8 +5,8 @@ import static org.kalibro.core.util.reflection.MemberFilterFactory.hasAnnotation
 import java.lang.reflect.AccessibleObject;
 import java.util.*;
 
-import org.kalibro.core.util.reflection.MemberFilterAdapter;
 import org.kalibro.core.util.reflection.FieldReflector;
+import org.kalibro.core.util.reflection.MemberFilterAdapter;
 
 /**
  * Specialized {@link FieldReflector} for entities.

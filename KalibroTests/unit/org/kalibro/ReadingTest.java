@@ -1,7 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.awt.Color;
@@ -12,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.dao.DaoFactory;
 import org.kalibro.core.dao.ReadingDao;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -101,7 +99,7 @@ public class ReadingTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDeleteIfExists() {
 		reading.delete();
-		verify(dao, Mockito.never()).delete(reading);
+		verify(dao, never()).delete(reading);
 
 		reading.setId(42L);
 		reading.delete();
