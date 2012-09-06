@@ -3,7 +3,7 @@ package org.kalibro.core.abstractentity;
 import java.lang.reflect.Method;
 
 import org.kalibro.KalibroError;
-import org.kalibro.core.util.reflection.Reflector;
+import org.kalibro.core.util.reflection.FieldReflector;
 
 /**
  * Compares entities based on fields specified at {@link SortingFields} annotation.
@@ -13,13 +13,13 @@ import org.kalibro.core.util.reflection.Reflector;
 class EntityComparator<T extends Comparable<? super T>> {
 
 	private int comparison;
-	private Reflector otherReflector;
+	private FieldReflector otherReflector;
 	private EntityReflector reflector;
 
 	protected int compare(AbstractEntity<T> entity, T other) {
 		comparison = 0;
 		reflector = new EntityReflector(entity);
-		otherReflector = new Reflector(other);
+		otherReflector = new FieldReflector(other);
 		for (String field : reflector.listSortingFields())
 			if (compare(field))
 				return comparison;

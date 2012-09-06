@@ -6,14 +6,14 @@ import java.lang.reflect.AccessibleObject;
 import java.util.*;
 
 import org.kalibro.core.util.reflection.MemberFilterAdapter;
-import org.kalibro.core.util.reflection.Reflector;
+import org.kalibro.core.util.reflection.FieldReflector;
 
 /**
- * Specialized {@link Reflector} for entities.
+ * Specialized {@link FieldReflector} for entities.
  * 
  * @author Carlos Morais
  */
-class EntityReflector extends Reflector {
+class EntityReflector extends FieldReflector {
 
 	protected EntityReflector(AbstractEntity<?> entity) {
 		super(entity, hasAnnotation(Ignore.class));

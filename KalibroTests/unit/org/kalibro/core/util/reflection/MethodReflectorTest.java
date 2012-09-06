@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 
-public class ClassReflectorTest extends TestCase {
+public class MethodReflectorTest extends TestCase {
 
 	private static double max(Double a, Double b) {
 		return Math.max(a, b);
@@ -19,11 +19,11 @@ public class ClassReflectorTest extends TestCase {
 		throw throwable;
 	}
 
-	private ClassReflector reflector;
+	private MethodReflector reflector;
 
 	@Before
 	public void setUp() {
-		reflector = new ClassReflector(ClassReflectorTest.class);
+		reflector = new MethodReflector(MethodReflectorTest.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -47,7 +47,7 @@ public class ClassReflectorTest extends TestCase {
 			public void perform() {
 				reflector.invoke("setUp");
 			}
-		}, "Method " + getClass().getName() + ".setUp is not static", NullPointerException.class);
+		}, expectedMessage("invoking", "setUp"), NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

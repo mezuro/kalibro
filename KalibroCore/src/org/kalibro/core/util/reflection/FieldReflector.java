@@ -17,13 +17,13 @@ import org.kalibro.KalibroError;
  * 
  * @author Carlos Morais
  */
-public class Reflector {
+public class FieldReflector {
 
 	private Object object;
 	private Map<String, Field> fields;
 	private MemberFilter ignoreFieldFilter;
 
-	public Reflector(Object object, MemberFilter... ignoreFieldFilters) {
+	public FieldReflector(Object object, MemberFilter... ignoreFieldFilters) {
 		this.object = object;
 		this.ignoreFieldFilter = or(is(STATIC), nameMatches(".*\\$.*"), or(ignoreFieldFilters));
 		initializeFields();

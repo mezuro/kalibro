@@ -7,15 +7,15 @@ import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 
 /**
- * Performs reflective static calls on the specified class in an easy way.
+ * Performs reflective calls on the method of the specified class in an easy way.
  * 
  * @author Carlos Morais
  */
-public class ClassReflector {
+public class MethodReflector {
 
 	private Class<?> theClass;
 
-	public ClassReflector(Class<?> theClass) {
+	public MethodReflector(Class<?> theClass) {
 		this.theClass = theClass;
 	}
 
@@ -24,17 +24,21 @@ public class ClassReflector {
 	}
 
 	public Object invoke(String methodName, Object... arguments) {
+		return invoke(null, methodName, arguments);
+	}
+
+	public Object invoke(Object object, String methodName, Object... arguments) {
 		try {
 			Method method = findMethod(methodName, arguments);
 			method.setAccessible(true);
-			return method.invoke(null, arguments);
+			return method.invoke(object, arguments);
 		} catch (InvocationTargetException exception) {
 			Throwable cause = exception.getCause();
 			if (cause instanceof RuntimeException)
 				throw (RuntimeException) cause;
 			throw new KalibroException(errorMessage("invoking", methodName), cause);
 		} catch (Exception exception) {
-			throw new KalibroError("Method " + theClass.getName() + "." + methodName + " is not static", exception);
+			throw new KalibroError(errorMessage("invoking", methodName), exception);
 		}
 	}
 

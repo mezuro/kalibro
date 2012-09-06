@@ -5,7 +5,7 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.util.Identifier;
-import org.kalibro.core.util.reflection.Reflector;
+import org.kalibro.core.util.reflection.FieldReflector;
 
 public enum CVSAnalyMetric {
 	NUMBER_OF_SOURCE_LINES_OF_CODE,
@@ -24,9 +24,9 @@ public enum CVSAnalyMetric {
 	}
 
 	public double getMetricValue(MetricResult metricResult) {
-		Reflector reflector = new Reflector(metricResult);
+		FieldReflector fieldReflector = new FieldReflector(metricResult);
 		String fieldName = Identifier.fromConstant(name()).asVariable();
-		return (Double) reflector.get(fieldName);
+		return (Double) fieldReflector.get(fieldName);
 	}
 
 	protected NativeMetric getNativeMetric() {
