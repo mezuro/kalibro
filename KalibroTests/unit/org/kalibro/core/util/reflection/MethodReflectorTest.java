@@ -27,7 +27,12 @@ public class MethodReflectorTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetReturnType() {
+	public void shouldGetSimpleClassName() {
+		assertEquals("MethodReflectorTest", reflector.getClassName());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetReturnTypeOfMethods() {
 		assertEquals(double.class, reflector.getReturnType("max", 42.0, 42.0));
 		assertEquals(void.class, reflector.getReturnType("throwThis", new Exception()));
 	}

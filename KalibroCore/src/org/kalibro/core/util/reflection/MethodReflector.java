@@ -19,6 +19,10 @@ public class MethodReflector {
 		this.theClass = theClass;
 	}
 
+	public String getClassName() {
+		return theClass.getSimpleName();
+	}
+
 	public Class<?> getReturnType(String methodName, Object... arguments) {
 		return findMethod(methodName, arguments).getReturnType();
 	}
