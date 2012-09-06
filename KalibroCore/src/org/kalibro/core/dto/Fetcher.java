@@ -4,11 +4,17 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
-public abstract class Fetcher<T> implements InvocationHandler {
+/**
+ * Abstract class which creates a proxy for an target object that is to be fetched only on first use. Implementors
+ * should define how to fetch the target.
+ * 
+ * @author Carlos Morais
+ */
+abstract class Fetcher<T> implements InvocationHandler {
 
 	private T target;
 
-	public T createProxy(Class<T> interfaceClass) {
+	protected T createProxy(Class<T> interfaceClass) {
 		return (T) Proxy.newProxyInstance(interfaceClass.getClassLoader(), new Class[]{interfaceClass}, this);
 	}
 
