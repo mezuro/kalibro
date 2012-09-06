@@ -91,7 +91,7 @@ public class CrudControllerTest extends TestCase {
 	public void shouldNotOpenIfUserDoesNotChooseEntity() throws Exception {
 		prepareChoiceDialog("Open base tool", false);
 		controller.open();
-		verifyNever(mock).getEntity(NAME);
+		verify(mock, never()).getEntity(NAME);
 		verifyFrameNerverAdded();
 	}
 
@@ -107,7 +107,7 @@ public class CrudControllerTest extends TestCase {
 	public void shouldNotRemoveIfUserDoesNotChooseEntity() throws Exception {
 		prepareChoiceDialog("Delete base tool", false);
 		controller.delete();
-		verifyNever(mock).removeEntity(NAME);
+		verify(mock, never()).removeEntity(NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -130,7 +130,7 @@ public class CrudControllerTest extends TestCase {
 
 		controller.delete();
 		verify(messageDialog).show("No base tool found");
-		verifyNever(mock).removeEntity(NAME);
+		verify(mock, never()).removeEntity(NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -143,8 +143,8 @@ public class CrudControllerTest extends TestCase {
 	public void shouldNotSaveWithOtherNameIfUserDoesNotTypeNewName() throws Exception {
 		prepareInputDialog("Save base tool as...", false);
 		controller.saveAs();
-		verifyNever(mock).setEntityName(entity, NAME);
-		verifyNever(mock).save(entity);
+		verify(mock, never()).setEntityName(entity, NAME);
+		verify(mock, never()).save(entity);
 		verifyFrameNerverAdded();
 	}
 
@@ -175,7 +175,7 @@ public class CrudControllerTest extends TestCase {
 	public void shouldJustCloseFrameIfUnmodified() {
 		when(entity.deepEquals(entity)).thenReturn(true);
 		controller.close();
-		verifyNever(mock).save(entity);
+		verify(mock, never()).save(entity);
 		verify(frame).dispose();
 	}
 
@@ -184,8 +184,8 @@ public class CrudControllerTest extends TestCase {
 		when(entity.deepEquals(entity)).thenReturn(false);
 		prepareConfirmDialog(JOptionPane.CANCEL_OPTION);
 		controller.close();
-		verifyNever(mock).save(entity);
-		verifyNever(frame).dispose();
+		verify(mock, never()).save(entity);
+		verify(frame, never()).dispose();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -202,7 +202,7 @@ public class CrudControllerTest extends TestCase {
 		when(entity.deepEquals(entity)).thenReturn(false);
 		prepareConfirmDialog(JOptionPane.NO_OPTION);
 		controller.close();
-		verifyNever(mock).save(entity);
+		verify(mock, never()).save(entity);
 		verify(frame).dispose();
 	}
 
@@ -243,20 +243,12 @@ public class CrudControllerTest extends TestCase {
 	}
 
 	private void verifyFrameNerverAdded() {
-		verifyNever(mock).createFrameFor(entity);
-		verifyNever(desktopPane).add(frame);
+		verify(mock, never()).createFrameFor(entity);
+		verify(desktopPane, never()).add(frame);
 	}
 
 	private void verifyFrameAdded() {
 		verify(mock).createFrameFor(entity);
 		verify(desktopPane).add(frame);
-	}
-
-	private <T> T verify(T aMock) {
-		return Mockito.verify(aMock);
-	}
-
-	private <T> T verifyNever(T aMock) {
-		return Mockito.verify(aMock, Mockito.never());
 	}
 }

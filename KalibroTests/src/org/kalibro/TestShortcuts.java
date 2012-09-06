@@ -6,6 +6,8 @@ import java.util.*;
 
 import org.kalibro.core.abstractentity.Equality;
 import org.kalibro.core.abstractentity.Printer;
+import org.mockito.Mockito;
+import org.mockito.verification.VerificationMode;
 
 abstract class TestShortcuts {
 
@@ -50,5 +52,21 @@ abstract class TestShortcuts {
 			assertEquals(Printer.print(expected), Printer.print(actual));
 			fail("Print is the same but they are not deep equal");
 		}
+	}
+
+	protected VerificationMode never() {
+		return Mockito.never();
+	}
+
+	protected VerificationMode once() {
+		return Mockito.times(1);
+	}
+
+	protected <T> T verify(T mock) {
+		return Mockito.verify(mock);
+	}
+
+	protected <T> T verify(T mock, VerificationMode mode) {
+		return Mockito.verify(mock, mode);
 	}
 }

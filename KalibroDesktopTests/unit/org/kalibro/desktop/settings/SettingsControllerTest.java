@@ -1,7 +1,6 @@
 package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;

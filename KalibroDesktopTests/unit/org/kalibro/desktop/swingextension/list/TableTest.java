@@ -1,8 +1,8 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.mockito.Mockito.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,7 +18,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.ComponentFinder;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -46,7 +45,7 @@ public class TableTest extends TestCase {
 	private void createModel() {
 		model = new MyModel();
 		model.addColumn(new Column("Label", String.class, 42));
-		model = PowerMockito.spy(model);
+		model = spy(model);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -82,7 +81,7 @@ public class TableTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetDataFromModel() {
-		PowerMockito.when(model.getData()).thenReturn(null);
+		when(model.getData()).thenReturn(null);
 		assertNull(table.getData());
 	}
 
@@ -120,9 +119,9 @@ public class TableTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldAddListListener() throws Exception {
-		ListListener<Range> listener = PowerMockito.mock(ListListener.class);
-		ListComponentAdapter<Range> adapter = PowerMockito.mock(ListComponentAdapter.class);
-		PowerMockito.whenNew(ListComponentAdapter.class).withArguments(listener, table).thenReturn(adapter);
+		ListListener<Range> listener = mock(ListListener.class);
+		ListComponentAdapter<Range> adapter = mock(ListComponentAdapter.class);
+		whenNew(ListComponentAdapter.class).withArguments(listener, table).thenReturn(adapter);
 
 		table.addListListener(listener);
 		assertTrue(Arrays.asList(innerTable.getMouseListeners()).contains(adapter));
