@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -61,6 +62,15 @@ public class ReadingGroupTest extends TestCase {
 		assertEquals("", group.getName());
 		assertEquals("", group.getDescription());
 		assertTrue(group.getReadings().isEmpty());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSetReadings() {
+		Reading reading = mock(Reading.class);
+		group.setReadings(Arrays.asList(reading));
+
+		assertDeepList(group.getReadings(), reading);
+		verify(reading).setGroup(group);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
