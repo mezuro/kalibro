@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.renderer;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -12,7 +12,6 @@ import javax.swing.JTable;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.powermock.api.mockito.PowerMockito;
 
 public class RendererTest extends TestCase {
 
@@ -24,8 +23,8 @@ public class RendererTest extends TestCase {
 	@Before
 	public void setUp() {
 		color = new Color(new Random(System.currentTimeMillis()).nextInt());
-		component = PowerMockito.mock(Component.class);
-		PowerMockito.when(component.getBackground()).thenReturn(color);
+		component = mock(Component.class);
+		when(component.getBackground()).thenReturn(color);
 		renderer = new MyRenderer();
 	}
 
@@ -43,7 +42,7 @@ public class RendererTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldChangeWhiteBackground() {
-		PowerMockito.when(component.getBackground()).thenReturn(Color.WHITE);
+		when(component.getBackground()).thenReturn(Color.WHITE);
 		renderer.changeBackgroundIfSelected(component, true);
 		verify(component).setBackground(new JTable().getSelectionBackground());
 	}

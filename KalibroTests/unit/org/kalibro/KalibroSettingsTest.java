@@ -2,7 +2,6 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.Environment.dotKalibro;
-import static org.mockito.Mockito.verify;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;

@@ -1,10 +1,10 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.core.model.RangeFixtures.newRange;
 import static org.kalibro.core.model.RangeLabel.*;
-import static org.mockito.Mockito.*;
+import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,6 @@ import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.mockito.ArgumentCaptor;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -39,12 +38,12 @@ public class RangeControllerTest extends TestCase {
 	}
 
 	private void mockComponents() throws Exception {
-		panel = PowerMockito.mock(RangePanel.class);
-		rangeDialog = PowerMockito.mock(EditDialog.class);
-		errorDialog = PowerMockito.mock(ErrorDialog.class);
-		PowerMockito.whenNew(RangePanel.class).withNoArguments().thenReturn(panel);
-		PowerMockito.whenNew(EditDialog.class).withArguments("Range", panel).thenReturn(rangeDialog);
-		PowerMockito.whenNew(ErrorDialog.class).withArguments(rangeDialog).thenReturn(errorDialog);
+		panel = mock(RangePanel.class);
+		rangeDialog = mock(EditDialog.class);
+		errorDialog = mock(ErrorDialog.class);
+		whenNew(RangePanel.class).withNoArguments().thenReturn(panel);
+		whenNew(EditDialog.class).withArguments("Range", panel).thenReturn(rangeDialog);
+		whenNew(ErrorDialog.class).withArguments(rangeDialog).thenReturn(errorDialog);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

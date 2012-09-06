@@ -65,14 +65,14 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 	public void shouldNotSaveIfCannotInstantiateBaseTool() throws Exception {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", MetricCollector.class);
-		Mockito.verify(databaseManager, Mockito.never()).save(any());
+		Mockito.verify(databaseManager, never()).save(any());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSaveIfBaseToolAlreadyExists() throws Exception {
 		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
-		Mockito.verify(databaseManager, Mockito.never()).save(any());
+		Mockito.verify(databaseManager, never()).save(any());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -5,9 +5,9 @@ package org.kalibro.core.abstractentity;
  * 
  * @author Carlos Morais
  */
-abstract class Printer<T> {
+public abstract class Printer<T> {
 
-	protected static String print(Object object) {
+	public static String print(Object object) {
 		StringBuffer buffer = new StringBuffer("---");
 		print(object, buffer, 0, "");
 		return buffer.toString();
