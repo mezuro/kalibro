@@ -2,7 +2,6 @@ package org.kalibro;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
@@ -37,7 +36,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	private String name;
 	private String description;
-	private Collection<Reading> readings;
+	private List<Reading> readings;
 
 	public ReadingGroup() {
 		this("");
@@ -78,7 +77,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		return new ArrayList<Reading>(readings);
 	}
 
-	protected void setReadings(List<Reading> readings) {
+	public void setReadings(List<Reading> readings) {
 		this.readings = readings;
 	}
 
