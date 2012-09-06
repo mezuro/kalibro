@@ -2,11 +2,11 @@ package org.kalibro.core.dto;
 
 import org.kalibro.ReadingGroup;
 
-class DummyReadingGroupDto extends ReadingGroupDto {
+class ReadingGroupDtoStub extends ReadingGroupDto {
 
 	private ReadingGroup group;
 
-	DummyReadingGroupDto(ReadingGroup group) {
+	ReadingGroupDtoStub(ReadingGroup group) {
 		this.group = group;
 	}
 

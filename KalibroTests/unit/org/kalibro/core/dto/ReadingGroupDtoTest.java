@@ -21,7 +21,7 @@ public class ReadingGroupDtoTest extends TestCase {
 	@Before
 	public void setUp() {
 		group = loadFixture("/org/kalibro/readingGroup-scholar", ReadingGroup.class);
-		dto = new DummyReadingGroupDto(group);
+		dto = new ReadingGroupDtoStub(group);
 		mockStatic(DaoLazyLoader.class);
 		when(DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", group.getId())).thenReturn(group.getReadings());
 	}
