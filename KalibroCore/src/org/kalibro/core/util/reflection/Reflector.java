@@ -13,7 +13,7 @@ import java.util.TreeMap;
 import org.kalibro.KalibroError;
 
 /**
- * Performs reflective operations on the specified object in an easy way.
+ * Performs reflective operations on the specified object fields in an easy way.
  * 
  * @author Carlos Morais
  */

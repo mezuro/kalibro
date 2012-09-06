@@ -6,6 +6,11 @@ import java.lang.reflect.Method;
 import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 
+/**
+ * Performs reflective static calls on the specified class in an easy way.
+ * 
+ * @author Carlos Morais
+ */
 public class ClassReflector {
 
 	private Class<?> theClass;
@@ -14,8 +19,11 @@ public class ClassReflector {
 		this.theClass = theClass;
 	}
 
+	public Class<?> getReturnType(String methodName, Object... arguments) {
+		return findMethod(methodName, arguments).getReturnType();
+	}
+
 	public Object invoke(String methodName, Object... arguments) {
-		String completeMethodName = theClass.getName() + "." + methodName;
 		try {
 			Method method = findMethod(methodName, arguments);
 			method.setAccessible(true);
@@ -24,17 +32,17 @@ public class ClassReflector {
 			Throwable cause = exception.getCause();
 			if (cause instanceof RuntimeException)
 				throw (RuntimeException) cause;
-			throw new KalibroException("Error invoking method: " + completeMethodName, cause);
+			throw new KalibroException(errorMessage("invoking", methodName), cause);
 		} catch (Exception exception) {
-			throw new KalibroError("Error invoking method: " + completeMethodName, exception);
+			throw new KalibroError("Method " + theClass.getName() + "." + methodName + " is not static", exception);
 		}
 	}
 
-	private Method findMethod(String methodName, Object[] arguments) throws NoSuchMethodException {
+	private Method findMethod(String methodName, Object[] arguments) {
 		for (Method method : theClass.getDeclaredMethods())
 			if (isCompatible(method, methodName, arguments))
 				return method;
-		throw new NoSuchMethodException(methodName);
+		throw new KalibroError(errorMessage("finding", methodName));
 	}
 
 	private boolean isCompatible(Method method, String methodName, Object[] arguments) {
@@ -48,5 +56,9 @@ public class ClassReflector {
 			if (!types[i].isAssignableFrom(arguments[i].getClass()))
 				return false;
 		return true;
+	}
+
+	private String errorMessage(String verb, String methodName) {
+		return "Error " + verb + " method: " + theClass.getName() + "." + methodName;
 	}
 }

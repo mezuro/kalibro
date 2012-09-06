@@ -27,6 +27,12 @@ public class ClassReflectorTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetReturnType() {
+		assertEquals(double.class, reflector.getReturnType("max", 42.0, 42.0));
+		assertEquals(void.class, reflector.getReturnType("throwThis", new Exception()));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldInvokeMethods() {
 		double a = Math.random();
 		double b = Math.random();
@@ -34,36 +40,47 @@ public class ClassReflectorTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorWhenInvokingInexistentMethod() {
+	public void shouldThrowErrorWhenInvokingNonstaticMethod() {
+		checkKalibroError(new Task() {
+
+			@Override
+			public void perform() {
+				reflector.invoke("setUp");
+			}
+		}, "Method " + getClass().getName() + ".setUp is not static", NullPointerException.class);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowErrorWhenFindingInexistentMethod() {
 		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {
 				reflector.invoke("inexistent");
 			}
-		}, "Error invoking method: " + getClass().getName() + ".inexistent", NoSuchMethodException.class);
+		}, expectedMessage("finding", "inexistent"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorWhenInvokingMethodWithDifferentNumberOfArguments() {
+	public void shouldThrowErrorWhenFindingMethodWithDifferentNumberOfArguments() {
 		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {
 				reflector.invoke("max", 42.0);
 			}
-		}, "Error invoking method: " + getClass().getName() + ".max", NoSuchMethodException.class);
+		}, expectedMessage("finding", "max"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowErrorWhenInvokingMethodWithIncompatibleArguments() {
+	public void shouldThrowErrorWhenFindingMethodWithIncompatibleArguments() {
 		checkKalibroError(new Task() {
 
 			@Override
 			public void perform() {
 				reflector.invoke("throwThis", 42.0);
 			}
-		}, "Error invoking method: " + getClass().getName() + ".throwThis", NoSuchMethodException.class);
+		}, expectedMessage("finding", "throwThis"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -85,6 +102,10 @@ public class ClassReflectorTest extends TestCase {
 			public void perform() {
 				reflector.invoke("throwThis", new FileNotFoundException());
 			}
-		}, "Error invoking method: " + getClass().getName() + ".throwThis", FileNotFoundException.class);
+		}, expectedMessage("invoking", "throwThis"), FileNotFoundException.class);
+	}
+
+	private String expectedMessage(String verb, String methodName) {
+		return "Error " + verb + " method: " + getClass().getName() + "." + methodName;
 	}
 }
