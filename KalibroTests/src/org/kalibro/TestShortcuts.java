@@ -54,19 +54,19 @@ abstract class TestShortcuts {
 		}
 	}
 
-	protected VerificationMode never() {
-		return Mockito.never();
-	}
-
-	protected VerificationMode once() {
-		return Mockito.times(1);
-	}
-
 	protected <T> T verify(T mock) {
 		return Mockito.verify(mock);
 	}
 
 	protected <T> T verify(T mock, VerificationMode mode) {
 		return Mockito.verify(mock, mode);
+	}
+
+	protected VerificationMode never() {
+		return Mockito.never();
+	}
+
+	protected VerificationMode once() {
+		return Mockito.times(1);
 	}
 }

@@ -74,13 +74,13 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public List<Reading> getReadings() {
+		for (Reading reading : readings)
+			reading.setGroup(this);
 		return new ArrayList<Reading>(readings);
 	}
 
 	public void setReadings(List<Reading> readings) {
 		this.readings = readings;
-		for (Reading reading : readings)
-			reading.setGroup(this);
 	}
 
 	public void addReading(Reading reading) {

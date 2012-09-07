@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -65,9 +66,13 @@ public class ReadingGroupTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetReadings() {
+	public void shouldSetReadingsWithoutTouchingThem() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(Arrays.asList(reading));
+		List<Reading> readings = spy(new ArrayList<Reading>(Arrays.asList(reading)));
+
+		group.setReadings(readings);
+		verifyZeroInteractions(reading);
+		verifyZeroInteractions(readings);
 
 		assertDeepList(group.getReadings(), reading);
 		verify(reading).setGroup(group);
@@ -77,14 +82,14 @@ public class ReadingGroupTest extends TestCase {
 	public void shouldAddReadingIfItDoesNotConflictWithExistentOnes() {
 		Reading reading = mock(Reading.class);
 		List<Reading> existents = group.getReadings();
-
 		group.addReading(reading);
-		assertTrue(group.getReadings().contains(reading));
 
 		InOrder order = Mockito.inOrder(reading);
 		for (Reading existent : existents)
 			order.verify(reading).assertNoConflictWith(existent);
 		order.verify(reading).setGroup(group);
+
+		assertTrue(group.getReadings().contains(reading));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
