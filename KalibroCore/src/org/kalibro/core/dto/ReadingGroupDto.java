@@ -6,6 +6,11 @@ import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
 import org.kalibro.core.dao.ReadingDao;
 
+/**
+ * Data Transfer Object for {@link ReadingGroup}.
+ * 
+ * @author Carlos Morais
+ */
 public abstract class ReadingGroupDto implements DataTransferObject<ReadingGroup> {
 
 	@Override

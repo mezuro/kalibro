@@ -1,40 +1,20 @@
 package org.kalibro.core.dto;
 
-import static org.powermock.api.mockito.PowerMockito.*;
+import java.util.Arrays;
+import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.ReadingGroup;
-import org.kalibro.TestCase;
 import org.kalibro.core.dao.ReadingDao;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoLazyLoader.class)
-public class ReadingGroupDtoTest extends TestCase {
+public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup, ReadingGroupDto> {
 
-	private ReadingGroup group;
-	private ReadingGroupDto dto;
-
-	@Before
-	public void setUp() {
-		group = loadFixture("/org/kalibro/readingGroup-scholar", ReadingGroup.class);
-		dto = new ReadingGroupDtoStub(group);
-		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", group.getId())).thenReturn(group.getReadings());
+	@Override
+	protected ReadingGroup loadFixture() {
+		return loadFixture("/org/kalibro/readingGroup-scholar", ReadingGroup.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldConvert() {
-		assertDeepEquals(group, dto.convert());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldLazyLoadReadings() {
-		dto.convert();
-		verifyStatic();
-		DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", group.getId());
+	@Override
+	protected List<LazyLoadExpectation> lazyLoadExpectations() {
+		return Arrays.asList(expectLazy(entity.getReadings(), ReadingDao.class, "readingsOf", entity.getId()));
 	}
 }

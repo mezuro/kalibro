@@ -4,6 +4,11 @@ import java.awt.Color;
 
 import org.kalibro.Reading;
 
+/**
+ * Data Transfer Object for {@link Reading}.
+ * 
+ * @author Carlos Morais
+ */
 public abstract class ReadingDto implements DataTransferObject<Reading> {
 
 	@Override
