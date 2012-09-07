@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.KalibroError;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.core.dto.DataTransferObject;
 
 @XmlRootElement(name = "Error")
 @XmlAccessorType(XmlAccessType.FIELD)

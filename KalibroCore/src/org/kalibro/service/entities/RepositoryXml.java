@@ -5,9 +5,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.util.DataTransferObject;
 
 @XmlRootElement(name = "Repository")
 @XmlAccessorType(XmlAccessType.FIELD)

@@ -8,7 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.core.dto.DataTransferObject;
 import org.powermock.reflect.Whitebox;
 
 public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends TestCase {

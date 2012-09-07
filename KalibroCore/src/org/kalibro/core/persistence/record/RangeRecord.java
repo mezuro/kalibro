@@ -5,8 +5,8 @@ import java.awt.Color;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
+import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "\"Range\"")
 @PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName"), @Column(name = "beginning")})

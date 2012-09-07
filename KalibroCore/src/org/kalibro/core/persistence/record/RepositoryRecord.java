@@ -2,9 +2,9 @@ package org.kalibro.core.persistence.record;
 
 import javax.persistence.*;
 
+import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "Repository")
 public class RepositoryRecord implements DataTransferObject<Repository> {

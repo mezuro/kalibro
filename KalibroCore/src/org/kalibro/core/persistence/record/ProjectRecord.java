@@ -4,10 +4,10 @@ import static org.kalibro.core.model.enums.ProjectState.*;
 
 import javax.persistence.*;
 
+import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "Project")
 public class ProjectRecord implements DataTransferObject<Project> {

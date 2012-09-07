@@ -5,9 +5,9 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.util.DataTransferObject;
 
 @Entity(name = "Configuration")
 public class ConfigurationRecord implements DataTransferObject<Configuration> {

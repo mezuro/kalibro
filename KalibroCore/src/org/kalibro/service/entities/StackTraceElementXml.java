@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.core.dto.DataTransferObject;
 
 @XmlRootElement(name = "StackTraceElement")
 @XmlAccessorType(XmlAccessType.FIELD)

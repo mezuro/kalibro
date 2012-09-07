@@ -5,7 +5,6 @@ import java.util.List;
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
 import org.kalibro.core.dao.ReadingDao;
-import org.kalibro.core.util.DataTransferObject;
 
 public abstract class ReadingGroupDto implements DataTransferObject<ReadingGroup> {
 

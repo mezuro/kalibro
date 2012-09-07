@@ -3,7 +3,6 @@ package org.kalibro.core.dto;
 import java.awt.Color;
 
 import org.kalibro.Reading;
-import org.kalibro.core.util.DataTransferObject;
 
 public abstract class ReadingDto implements DataTransferObject<Reading> {
 
