@@ -69,6 +69,14 @@ public class FieldReflector {
 		return fieldNames;
 	}
 
+	public Class<?> getFieldType(String field) {
+		return fields.get(field).getType();
+	}
+
+	public <T extends Annotation> T getFieldAnnotation(String field, Class<T> annotationClass) {
+		return fields.get(field).getAnnotation(annotationClass);
+	}
+
 	public Object get(String fieldName) {
 		String completeFieldName = getObjectClass().getName() + "." + fieldName;
 		try {
@@ -85,9 +93,5 @@ public class FieldReflector {
 		} catch (Exception exception) {
 			throw new KalibroError("Error setting field: " + completeFieldName, exception);
 		}
-	}
-
-	public <T extends Annotation> T getFieldAnnotation(String field, Class<T> annotationClass) {
-		return fields.get(field).getAnnotation(annotationClass);
 	}
 }

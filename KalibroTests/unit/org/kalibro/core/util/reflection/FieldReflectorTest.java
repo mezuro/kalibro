@@ -15,52 +15,58 @@ public class FieldReflectorTest extends TestCase {
 
 	private static final String INEXISTENT = "org.kalibro.core.util.reflection.FieldReflectorTest.inexistent";
 
-	@Column(name = "self-fieldReflector")
-	private FieldReflector fieldReflector;
+	@Column(name = "self-reflector")
+	private FieldReflector reflector;
 
 	@Before
 	public void setUp() {
-		fieldReflector = new FieldReflector(this);
+		reflector = new FieldReflector(this);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetObject() {
-		assertSame(this, fieldReflector.getObject());
+		assertSame(this, reflector.getObject());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetObjectClass() {
-		assertEquals(getClass(), fieldReflector.getObjectClass());
+		assertEquals(getClass(), reflector.getObjectClass());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldListFields() {
-		assertDeepList(fieldReflector.listFields(), "fieldReflector", "waiting");
+		assertDeepList(reflector.listFields(), "reflector", "waiting");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldFilterFields() {
-		assertDeepList(fieldReflector.listFields(named("waiting")), "waiting");
-		assertDeepList(fieldReflector.listFields(nameMatches(".*t.*")), "fieldReflector", "waiting");
-		assertDeepList(fieldReflector.listFields(hasAnnotation(Column.class)), "fieldReflector");
-		assertTrue(fieldReflector.listFields(not(is(PRIVATE))).isEmpty());
+		assertDeepList(reflector.listFields(named("waiting")), "waiting");
+		assertDeepList(reflector.listFields(nameMatches(".*t.*")), "reflector", "waiting");
+		assertDeepList(reflector.listFields(hasAnnotation(Column.class)), "reflector");
+		assertTrue(reflector.listFields(not(is(PRIVATE))).isEmpty());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetFieldType() {
+		assertEquals(boolean.class, reflector.getFieldType("waiting"));
+		assertEquals(FieldReflector.class, reflector.getFieldType("reflector"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetFieldAnnotation() {
-		assertEquals("self-fieldReflector", fieldReflector.getFieldAnnotation("fieldReflector", Column.class).name());
+		assertEquals("self-reflector", reflector.getFieldAnnotation("reflector", Column.class).name());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetFieldValues() {
-		assertSame(fieldReflector, fieldReflector.get("fieldReflector"));
+	public void shouldGetFieldValue() {
+		assertSame(reflector, reflector.get("reflector"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetFields() {
-		assertFalse((Boolean) fieldReflector.get("waiting"));
-		fieldReflector.set("waiting", true);
-		assertTrue((Boolean) fieldReflector.get("waiting"));
+	public void shouldSetField() {
+		assertFalse((Boolean) reflector.get("waiting"));
+		reflector.set("waiting", true);
+		assertTrue((Boolean) reflector.get("waiting"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -69,7 +75,7 @@ public class FieldReflectorTest extends TestCase {
 
 			@Override
 			public void perform() {
-				fieldReflector.get("inexistent");
+				reflector.get("inexistent");
 			}
 		}, "Error retrieving field: " + INEXISTENT, NullPointerException.class);
 	}
@@ -80,7 +86,7 @@ public class FieldReflectorTest extends TestCase {
 
 			@Override
 			public void perform() {
-				fieldReflector.set("inexistent", "anything");
+				reflector.set("inexistent", "anything");
 			}
 		}, "Error setting field: " + INEXISTENT, NullPointerException.class);
 	}
