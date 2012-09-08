@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.dao.DaoFactory;
 import org.kalibro.core.dao.ReadingGroupDao;
 import org.mockito.InOrder;
@@ -107,6 +108,18 @@ public class ReadingGroupTest extends TestCase {
 	public void shouldSave() {
 		group.save();
 		verify(dao).save(group);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRequiredNameToSave() {
+		group.setName(" ");
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				group.save();
+			}
+		}, "Reading group requires name.");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
