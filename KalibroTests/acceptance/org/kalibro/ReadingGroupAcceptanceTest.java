@@ -66,8 +66,8 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void nameShouldBeRequiredAndUnique() {
-		group.setName("");
-		checkExceptionOnSave("Reading group requires name.", RollbackException.class);
+		group.setName(" ");
+		checkExceptionOnSave("Reading group requires name.", null);
 
 		group.setName("Scholar");
 		group.save();
