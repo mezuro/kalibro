@@ -66,9 +66,10 @@ public class DatabaseDaoFactoryTest extends TestCase {
 		assertSame(baseToolDao, daoFactory.createBaseToolDao());
 		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.createConfigurationDao());
 		assertClassEquals(MetricConfigurationDatabaseDao.class, daoFactory.createMetricConfigurationDao());
+		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.createModuleResultDao());
 		assertClassEquals(ProjectDatabaseDao.class, daoFactory.createProjectDao());
 		assertClassEquals(ProjectResultDatabaseDao.class, daoFactory.createProjectResultDao());
-		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.createModuleResultDao());
+		assertClassEquals(ReadingDatabaseDao.class, daoFactory.createReadingDao());
 		assertClassEquals(ReadingGroupDatabaseDao.class, daoFactory.createReadingGroupDao());
 	}
 

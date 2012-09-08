@@ -62,6 +62,11 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
+	public ReadingDatabaseDao createReadingDao() {
+		return new ReadingDatabaseDao(createDatabaseManager());
+	}
+
+	@Override
 	public ReadingGroupDatabaseDao createReadingGroupDao() {
 		return new ReadingGroupDatabaseDao(createDatabaseManager());
 	}
