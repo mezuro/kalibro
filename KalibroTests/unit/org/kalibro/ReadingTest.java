@@ -47,7 +47,7 @@ public class ReadingTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void readingsWithSameLabelShouldConflict() {
 		String label = reading.getLabel();
-		shouldConflictWith(reading(label), "Reading with label '" + label + "' already exists in the group.");
+		shouldConflictWith(reading(label), "Reading with label \"" + label + "\" already exists in the group.");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
