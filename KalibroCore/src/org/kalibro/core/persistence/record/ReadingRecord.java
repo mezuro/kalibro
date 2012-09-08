@@ -13,26 +13,26 @@ import org.kalibro.core.dto.ReadingDto;
  * @author Carlos Morais
  */
 @Entity(name = "Reading")
-@Table(name = "READING")
+@Table(name = "\"READING\"")
 public class ReadingRecord extends ReadingDto {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "id", nullable = false)
+	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@Column(name = "label", nullable = false)
+	@Column(name = "\"label\"", nullable = false)
 	private String label;
 
-	@Column(name = "grade", nullable = false)
+	@Column(name = "\"grade\"", nullable = false)
 	private Long grade;
 
-	@Column(name = "color", nullable = false)
+	@Column(name = "\"color\"", nullable = false)
 	private Integer color;
 
 	@SuppressWarnings("unused" /* JPA */)
 	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "group", nullable = false, referencedColumnName = "id")
+	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
 	private ReadingGroupRecord group;
 
 	public ReadingRecord() {

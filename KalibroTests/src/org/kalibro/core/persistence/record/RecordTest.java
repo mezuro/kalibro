@@ -33,7 +33,11 @@ public abstract class RecordTest<ENTITY, RECORD extends DataTransferObject<ENTIT
 
 		Table table = dto.getClass().getAnnotation(Table.class);
 		assertNotNull(table);
-		assertEquals(Identifier.fromVariable(entityName).asConstant(), table.name());
+		assertEquals(tableName(entityName), table.name());
+	}
+
+	private String tableName(String entityName) {
+		return "\"" + Identifier.fromVariable(entityName).asConstant() + "\"";
 	}
 
 	protected void assertId() {
@@ -46,7 +50,7 @@ public abstract class RecordTest<ENTITY, RECORD extends DataTransferObject<ENTIT
 		assertEquals(type, reflector.getFieldType(field));
 		Column column = reflector.getFieldAnnotation(field, Column.class);
 		assertNotNull(column);
-		assertEquals(Identifier.fromVariable(field).asConstant().toLowerCase(), column.name());
+		assertEquals(columnName(field), column.name());
 		assertEquals(nullable, column.nullable());
 		assertEquals(unique, column.unique());
 	}
@@ -73,8 +77,12 @@ public abstract class RecordTest<ENTITY, RECORD extends DataTransferObject<ENTIT
 
 		JoinColumn column = reflector.getFieldAnnotation(field, JoinColumn.class);
 		assertNotNull(column);
-		assertEquals(Identifier.fromVariable(field).asConstant().toLowerCase(), column.name());
+		assertEquals(columnName(field), column.name());
 		assertEquals(optional, column.nullable());
-		assertEquals("id", column.referencedColumnName());
+		assertEquals("\"id\"", column.referencedColumnName());
+	}
+
+	private String columnName(String field) {
+		return "\"" + Identifier.fromVariable(field).asConstant().toLowerCase() + "\"";
 	}
 }

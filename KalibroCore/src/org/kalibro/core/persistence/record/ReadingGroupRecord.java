@@ -15,18 +15,18 @@ import org.kalibro.core.dto.ReadingGroupDto;
  * @author Carlos Morais
  */
 @Entity(name = "ReadingGroup")
-@Table(name = "READING_GROUP")
+@Table(name = "\"READING_GROUP\"")
 public class ReadingGroupRecord extends ReadingGroupDto {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "id", nullable = false)
+	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "\"name\"", nullable = false, unique = true)
 	private String name;
 
-	@Column(name = "description")
+	@Column(name = "\"description\"")
 	private String description;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group", orphanRemoval = true)
