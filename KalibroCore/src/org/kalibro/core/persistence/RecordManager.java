@@ -64,8 +64,8 @@ class RecordManager {
 		entityManager.getTransaction().commit();
 	}
 
-	protected void evictFromCache(Class<?> classToEvitct) {
-		entityManager.getEntityManagerFactory().getCache().evict(classToEvitct);
+	protected void evictFromCache(Class<?> classToEvict) {
+		entityManager.getEntityManagerFactory().getCache().evict(classToEvict);
 	}
 
 	@Override

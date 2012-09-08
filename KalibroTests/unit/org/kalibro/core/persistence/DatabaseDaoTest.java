@@ -1,77 +1,59 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.newRange;
-import static org.kalibro.core.model.RangeLabel.BAD;
 import static org.powermock.api.mockito.PowerMockito.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.model.Range;
-import org.kalibro.core.persistence.record.RangeRecord;
+import org.kalibro.core.persistence.PersonDatabaseDao.Person;
+import org.kalibro.core.persistence.PersonDatabaseDao.PersonRecord;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 
 public class DatabaseDaoTest extends TestCase {
 
 	private RecordManager recordManager;
 
-	private RangeDatabaseDao dao;
+	private PersonDatabaseDao dao;
 
 	@Before
 	public void setUp() {
 		recordManager = mock(RecordManager.class);
-		dao = new RangeDatabaseDao(recordManager);
+		dao = new PersonDatabaseDao(recordManager);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testGetAllNames() {
-		String queryText = "SELECT x.name FROM \"Range\" x ORDER BY lower(x.name)";
-		TypedQuery<String> query = mock(TypedQuery.class);
-		List<String> names = Arrays.asList("4", "2");
-		when(recordManager.createQuery(queryText, String.class)).thenReturn(query);
-		when(query.getResultList()).thenReturn(names);
+	public void shouldGetAllOrderedByName() {
+		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
+		String queryString = "SELECT person FROM Person person ORDER BY lower(person.name)";
+		when(recordManager.createQuery(queryString, PersonRecord.class)).thenReturn(query);
 
-		assertSame(names, dao.getAllNames());
+		Person person = mock(Person.class);
+		PersonRecord record = mock(PersonRecord.class);
+		List<PersonRecord> records = Arrays.asList(record);
+		when(query.getResultList()).thenReturn(records);
+		when(record.convert()).thenReturn(person);
+
+		assertDeepList(dao.allOrderedByName(), person);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testConfirmEntity() {
-		String queryText = "SELECT 1 FROM \"Range\" x WHERE x.name = :name";
-		TypedQuery<String> query = mock(TypedQuery.class);
-		when(recordManager.createQuery(queryText, String.class)).thenReturn(query);
+	public void shouldDeleteById() {
+		Query query = mock(Query.class);
+		String queryString = "DELETE FROM Person WHERE id = :id";
+		when(recordManager.createQuery(queryString)).thenReturn(query);
 
-		when(query.getResultList()).thenReturn(Arrays.asList("1"));
-		assertTrue(dao.hasEntity("42"));
-		Mockito.verify(query).setParameter("name", "42");
-
-		when(query.getResultList()).thenReturn(new ArrayList<String>());
-		assertFalse(dao.hasEntity("x"));
-		Mockito.verify(query).setParameter("name", "x");
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testGetByName() {
-		String queryText = "SELECT x FROM \"Range\" x WHERE x.name = :name";
-		TypedQuery<RangeRecord> query = mock(TypedQuery.class);
-		Range range = newRange("amloc", BAD);
-		when(recordManager.createQuery(queryText, RangeRecord.class)).thenReturn(query);
-		when(query.getSingleResult()).thenReturn(new RangeRecord(range, null));
-
-		assertDeepEquals(range, dao.getByName("42"));
-		Mockito.verify(query).setParameter("name", "42");
-	}
-
-	private class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> {
-
-		public RangeDatabaseDao(RecordManager recordManager) {
-			super(recordManager, RangeRecord.class);
-		}
+		dao.deleteById(42L);
+		verify(query).setParameter("id", 42L);
+		InOrder order = Mockito.inOrder(recordManager, query, recordManager);
+		order.verify(recordManager).beginTransaction();
+		order.verify(query).executeUpdate();
+		order.verify(recordManager).commitTransaction();
 	}
 }
