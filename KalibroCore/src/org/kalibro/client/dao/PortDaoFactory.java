@@ -4,49 +4,51 @@ import org.kalibro.core.dao.*;
 
 public class PortDaoFactory extends DaoFactory {
 
-	private BaseToolDao baseToolDao;
-	private ConfigurationDao configurationDao;
-	private MetricConfigurationDao metricConfigurationDao;
-	private ProjectDao projectDao;
-	private ProjectResultDao projectResultDao;
-	private ModuleResultDao moduleResultDao;
+	private String serviceAddress;
 
-	public PortDaoFactory() {
-		baseToolDao = new BaseToolPortDao();
-		configurationDao = new ConfigurationPortDao();
-		metricConfigurationDao = new MetricConfigurationPortDao();
-		projectDao = new ProjectPortDao();
-		projectResultDao = new ProjectResultPortDao();
-		moduleResultDao = new ModuleResultPortDao();
+	public PortDaoFactory(String serviceAddress) {
+		this.serviceAddress = serviceAddress;
 	}
 
 	@Override
 	public BaseToolDao createBaseToolDao() {
-		return baseToolDao;
+		return new BaseToolPortDao();
 	}
 
 	@Override
 	public ConfigurationDao createConfigurationDao() {
-		return configurationDao;
+		return new ConfigurationPortDao();
 	}
 
 	@Override
 	public MetricConfigurationDao createMetricConfigurationDao() {
-		return metricConfigurationDao;
-	}
-
-	@Override
-	public ProjectDao createProjectDao() {
-		return projectDao;
-	}
-
-	@Override
-	public ProjectResultDao createProjectResultDao() {
-		return projectResultDao;
+		return new MetricConfigurationPortDao();
 	}
 
 	@Override
 	public ModuleResultDao createModuleResultDao() {
-		return moduleResultDao;
+		return new ModuleResultPortDao();
+	}
+
+	@Override
+	public ProjectDao createProjectDao() {
+		return new ProjectPortDao();
+	}
+
+	@Override
+	public ProjectResultDao createProjectResultDao() {
+		return new ProjectResultPortDao();
+	}
+
+	@Override
+	protected ReadingDao createReadingDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	protected ReadingGroupDao createReadingGroupDao() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

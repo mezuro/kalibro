@@ -31,4 +31,14 @@ public class DummyDaoFactory extends DaoFactory {
 	protected ProjectResultDao createProjectResultDao() {
 		return null;
 	}
+
+	@Override
+	protected ReadingDao createReadingDao() {
+		return null;
+	}
+
+	@Override
+	protected ReadingGroupDao createReadingGroupDao() {
+		return null;
+	}
 }

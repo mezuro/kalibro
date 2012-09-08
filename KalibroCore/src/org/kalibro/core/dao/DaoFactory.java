@@ -41,8 +41,9 @@ public abstract class DaoFactory {
 
 	private static DaoFactory getFactory() {
 		KalibroSettings settings = KalibroSettings.load();
+		String serviceAddress = settings.getClientSettings().getServiceAddress();
 		DatabaseSettings databaseSettings = settings.getServerSettings().getDatabaseSettings();
-		return settings.clientSide() ? new PortDaoFactory() : new DatabaseDaoFactory(databaseSettings);
+		return settings.clientSide() ? new PortDaoFactory(serviceAddress) : new DatabaseDaoFactory(databaseSettings);
 	}
 
 	protected abstract BaseToolDao createBaseToolDao();
@@ -57,13 +58,7 @@ public abstract class DaoFactory {
 
 	protected abstract ProjectResultDao createProjectResultDao();
 
-	protected ReadingDao createReadingDao() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	protected abstract ReadingDao createReadingDao();
 
-	protected ReadingGroupDao createReadingGroupDao() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	protected abstract ReadingGroupDao createReadingGroupDao();
 }

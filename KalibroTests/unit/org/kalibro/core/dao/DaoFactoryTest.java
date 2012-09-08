@@ -87,9 +87,9 @@ public class DaoFactoryTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreatePortDaoFactoryOnClientSide() throws Exception {
-		mockSettings(ServiceSide.CLIENT);
+		String serviceAddress = mockSettings(ServiceSide.CLIENT).getClientSettings().getServiceAddress();
 		daoFactory = mock(PortDaoFactory.class);
-		whenNew(PortDaoFactory.class).withNoArguments().thenReturn((PortDaoFactory) daoFactory);
+		whenNew(PortDaoFactory.class).withArguments(serviceAddress).thenReturn((PortDaoFactory) daoFactory);
 		verifyFactory();
 	}
 
