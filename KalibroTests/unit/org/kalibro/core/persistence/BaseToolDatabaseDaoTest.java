@@ -32,15 +32,15 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 	private static final List<String> BASE_TOOL_NAMES = Arrays.asList("Analizo", "Checkstyle");
 
 	private BaseTool baseTool;
-	private DatabaseManager databaseManager;
+	private RecordManager recordManager;
 
 	private BaseToolDatabaseDao dao;
 
 	@Before
 	public void setUp() {
 		baseTool = analizoStub();
-		databaseManager = mock(DatabaseManager.class);
-		dao = spy(new BaseToolDatabaseDao(databaseManager));
+		recordManager = mock(RecordManager.class);
+		dao = spy(new BaseToolDatabaseDao(recordManager));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -57,7 +57,7 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
 
 		ArgumentCaptor<BaseToolRecord> captor = ArgumentCaptor.forClass(BaseToolRecord.class);
-		Mockito.verify(databaseManager).save(captor.capture());
+		Mockito.verify(recordManager).save(captor.capture());
 		assertDeepEquals(baseTool, captor.getValue().convert());
 	}
 
@@ -65,14 +65,14 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 	public void shouldNotSaveIfCannotInstantiateBaseTool() throws Exception {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", MetricCollector.class);
-		Mockito.verify(databaseManager, never()).save(any());
+		Mockito.verify(recordManager, never()).save(any());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSaveIfBaseToolAlreadyExists() throws Exception {
 		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
-		Mockito.verify(databaseManager, never()).save(any());
+		Mockito.verify(recordManager, never()).save(any());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

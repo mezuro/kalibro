@@ -3,6 +3,8 @@ package org.kalibro.core.persistence;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import org.kalibro.core.dao.ModuleResultDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricResult;
@@ -15,17 +17,18 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	private static final String QUERY = "SELECT result FROM MetricResult result " +
 		"WHERE result.module.projectResult.project.name = :projectName AND result.module.name = :moduleName";
 
-	protected ModuleResultDatabaseDao(DatabaseManager databaseManager) {
-		super(databaseManager, MetricResultRecord.class);
+	protected ModuleResultDatabaseDao(RecordManager recordManager) {
+		super(recordManager, MetricResultRecord.class);
 	}
 
 	public void save(ModuleResult moduleResult, ProjectResult projectResult) {
-		databaseManager.save(MetricResultRecord.createRecords(moduleResult, projectResult));
+		recordManager.save(MetricResultRecord.createRecords(moduleResult, projectResult));
 	}
 
 	@Override
 	public ModuleResult getModuleResult(String projectName, String moduleName, Date date) {
-		Query<MetricResultRecord> query = createRecordQuery(QUERY + " AND result.module.projectResult.date = :date");
+		TypedQuery<MetricResultRecord> query =
+			createRecordQuery(QUERY + " AND result.module.projectResult.date = :date");
 		query.setParameter("projectName", projectName);
 		query.setParameter("moduleName", moduleName);
 		query.setParameter("date", date.getTime());
@@ -36,7 +39,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 
 	@Override
 	public List<ModuleResult> getResultHistory(String projectName, String moduleName) {
-		Query<MetricResultRecord> query = createRecordQuery(QUERY + " ORDER BY result.module.projectResult.date");
+		TypedQuery<MetricResultRecord> query = createRecordQuery(QUERY + " ORDER BY result.module.projectResult.date");
 		query.setParameter("projectName", projectName);
 		query.setParameter("moduleName", moduleName);
 		List<ModuleResult> resultHistory = MetricResultRecord.convertIntoModuleResults(query.getResultList());
@@ -47,6 +50,6 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	private Configuration getConfigurationFor(String projectName) {
-		return new ConfigurationDatabaseDao(databaseManager).getConfigurationFor(projectName);
+		return new ConfigurationDatabaseDao(recordManager).getConfigurationFor(projectName);
 	}
 }

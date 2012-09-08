@@ -9,14 +9,14 @@ import org.kalibro.core.persistence.record.ConfigurationRecord;
 
 class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements ConfigurationDao {
 
-	protected ConfigurationDatabaseDao(DatabaseManager databaseManager) {
-		super(databaseManager, ConfigurationRecord.class);
+	protected ConfigurationDatabaseDao(RecordManager recordManager) {
+		super(recordManager, ConfigurationRecord.class);
 	}
 
 	@Override
 	public void save(Configuration configuration) {
 		ConfigurationRecord record = new ConfigurationRecord(configuration);
-		record = databaseManager.save(record);
+		record = recordManager.save(record);
 		configuration.setId(record.convert().getId());
 	}
 
@@ -37,13 +37,13 @@ class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationR
 
 	@Override
 	public Configuration getConfigurationFor(String projectName) {
-		Project project = new ProjectDatabaseDao(databaseManager).getProject(projectName);
+		Project project = new ProjectDatabaseDao(recordManager).getProject(projectName);
 		return getByName(project.getConfigurationName());
 	}
 
 	@Override
 	public void removeConfiguration(String configurationName) {
 		ConfigurationRecord record = new ConfigurationRecord(getByName(configurationName));
-		databaseManager.delete(record);
+		recordManager.delete(record);
 	}
 }

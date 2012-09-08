@@ -13,23 +13,22 @@ import org.junit.Test;
 import org.kalibro.TestCase;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-import org.powermock.reflect.Whitebox;
 
-public class DatabaseManagerTest extends TestCase {
+public class RecordManagerTest extends TestCase {
 
-	private static final String MERGED = "DatabaseManagerTest merged";
-	private static final String UNMERGED = "DatabaseManagerTest unmerged";
+	private static final String MERGED = "RecordManagerTest merged";
+	private static final String UNMERGED = "RecordManagerTest unmerged";
 
 	private EntityManager entityManager;
 	private EntityTransaction transaction;
 
-	private DatabaseManager databaseManager;
+	private RecordManager recordManager;
 
 	@Before
 	public void setUp() {
 		entityManager = mock(EntityManager.class);
 		transaction = mock(EntityTransaction.class);
-		databaseManager = new DatabaseManager(entityManager);
+		recordManager = new RecordManager(entityManager);
 		when(entityManager.getTransaction()).thenReturn(transaction);
 		when(entityManager.merge(UNMERGED)).thenReturn(MERGED);
 		mockCache();
@@ -37,40 +36,38 @@ public class DatabaseManagerTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateQuery() {
-		TypedQuery<String> nativeQuery = mock(TypedQuery.class);
-		when(entityManager.createQuery("42", String.class)).thenReturn(nativeQuery);
-
-		Query<String> query = databaseManager.createQuery("42", String.class);
-		assertSame(nativeQuery, Whitebox.getInternalState(query, TypedQuery.class));
+		TypedQuery<String> query = mock(TypedQuery.class);
+		when(entityManager.createQuery("42", String.class)).thenReturn(query);
+		assertSame(query, recordManager.createQuery("42", String.class));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldClearEntityManagerWhenCreatingTypedQuery() {
-		databaseManager.createQuery("42", String.class);
+		recordManager.createQuery("42", String.class);
 		Mockito.verify(entityManager).clear();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeOnPersist() {
-		assertEquals(MERGED, databaseManager.persist(UNMERGED));
+		assertEquals(MERGED, recordManager.persist(UNMERGED));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforeRemove() {
-		databaseManager.remove(UNMERGED);
+		recordManager.remove(UNMERGED);
 		Mockito.verify(entityManager).remove(MERGED);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveSingleEntityAsUnitaryList() throws Exception {
-		databaseManager = spy(databaseManager);
-		databaseManager.save("42");
-		verifyPrivate(databaseManager).invoke("save", Arrays.asList("42"));
+		recordManager = spy(recordManager);
+		recordManager.save("42");
+		verifyPrivate(recordManager).invoke("save", Arrays.asList("42"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveList() {
-		List<String> merged = databaseManager.save(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
+		List<String> merged = recordManager.save(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
 		assertEquals(Arrays.asList(MERGED, MERGED, MERGED), merged);
 
 		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
@@ -81,7 +78,7 @@ public class DatabaseManagerTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDelete() {
-		databaseManager.delete(UNMERGED);
+		recordManager.delete(UNMERGED);
 
 		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
@@ -92,7 +89,7 @@ public class DatabaseManagerTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldEvictClassFromCache() {
 		Cache cache = mockCache();
-		databaseManager.evictFromCache(Object.class);
+		recordManager.evictFromCache(Object.class);
 		Mockito.verify(cache).evict(Object.class);
 	}
 
@@ -106,7 +103,7 @@ public class DatabaseManagerTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
-		databaseManager.finalize();
+		recordManager.finalize();
 		Mockito.verify(entityManager).close();
 	}
 }

@@ -24,24 +24,24 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ConfigurationDatabaseDaoTest extends TestCase {
 
 	private Configuration configuration;
-	private DatabaseManager databaseManager;
+	private RecordManager recordManager;
 
 	private ConfigurationDatabaseDao dao;
 
 	@Before
 	public void setUp() {
 		configuration = newConfiguration("cbo", "lcom4");
-		databaseManager = mock(DatabaseManager.class);
-		dao = spy(new ConfigurationDatabaseDao(databaseManager));
+		recordManager = mock(RecordManager.class);
+		dao = spy(new ConfigurationDatabaseDao(recordManager));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
-		when(databaseManager.save(any())).thenReturn(new ConfigurationRecord(configuration));
+		when(recordManager.save(any())).thenReturn(new ConfigurationRecord(configuration));
 		dao.save(configuration);
 
 		ArgumentCaptor<ConfigurationRecord> captor = ArgumentCaptor.forClass(ConfigurationRecord.class);
-		Mockito.verify(databaseManager).save(captor.capture());
+		Mockito.verify(recordManager).save(captor.capture());
 		assertDeepEquals(configuration, captor.getValue().convert());
 	}
 
@@ -72,7 +72,7 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 		dao.removeConfiguration("42");
 
 		ArgumentCaptor<ConfigurationRecord> captor = ArgumentCaptor.forClass(ConfigurationRecord.class);
-		Mockito.verify(databaseManager).delete(captor.capture());
+		Mockito.verify(recordManager).delete(captor.capture());
 		assertDeepEquals(configuration, captor.getValue().convert());
 	}
 
@@ -80,7 +80,7 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 	public void shouldGetConfigurationByProjectName() throws Exception {
 		Project project = mock(Project.class);
 		ProjectDatabaseDao projectDao = mock(ProjectDatabaseDao.class);
-		whenNew(ProjectDatabaseDao.class).withArguments(databaseManager).thenReturn(projectDao);
+		whenNew(ProjectDatabaseDao.class).withArguments(recordManager).thenReturn(projectDao);
 		when(projectDao.getProject("42")).thenReturn(project);
 		when(project.getConfigurationName()).thenReturn("4242");
 		doReturn(configuration).when(dao).getByName("4242");

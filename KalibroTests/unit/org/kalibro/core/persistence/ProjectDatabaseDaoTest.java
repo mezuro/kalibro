@@ -9,6 +9,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import javax.persistence.TypedQuery;
+
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -29,32 +31,32 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ProjectDatabaseDaoTest extends TestCase {
 
 	private Project project;
-	private DatabaseManager databaseManager;
+	private RecordManager recordManager;
 
 	private ProjectDatabaseDao dao;
 
 	@Before
 	public void setUp() throws Exception {
 		project = helloWorld();
-		databaseManager = mock(DatabaseManager.class);
+		recordManager = mock(RecordManager.class);
 		mockConfigurationDao();
-		dao = spy(new ProjectDatabaseDao(databaseManager));
+		dao = spy(new ProjectDatabaseDao(recordManager));
 	}
 
 	private void mockConfigurationDao() throws Exception {
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
-		whenNew(ConfigurationDatabaseDao.class).withArguments(databaseManager).thenReturn(configurationDao);
+		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configurationDao);
 		when(configurationDao.getConfiguration(anyString())).thenReturn(new Configuration());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
-		when(databaseManager.save(any())).thenReturn(new ProjectRecord(project, null));
+		when(recordManager.save(any())).thenReturn(new ProjectRecord(project, null));
 		dao.save(project);
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
-		Mockito.verify(databaseManager).save(captor.capture());
+		Mockito.verify(recordManager).save(captor.capture());
 		project.setConfigurationName("");
 		assertDeepEquals(project, captor.getValue().convert());
 	}
@@ -82,19 +84,19 @@ public class ProjectDatabaseDaoTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveProjectByNameAndDependentEntities() {
-		Query<?> query = mockRemoveQueries("42");
+		TypedQuery<?> query = mockRemoveQueries("42");
 		mockRemoveDirectory();
 		dao.removeProject("42");
 
 		ArgumentCaptor<ProjectRecord> captor = ArgumentCaptor.forClass(ProjectRecord.class);
-		InOrder order = Mockito.inOrder(databaseManager, query, databaseManager);
-		order.verify(databaseManager).beginTransaction();
+		InOrder order = Mockito.inOrder(recordManager, query, recordManager);
+		order.verify(recordManager).beginTransaction();
 		for (int i = 0; i < 3; i++) {
 			order.verify(query).setParameter("projectName", "42");
 			order.verify(query).executeUpdate();
 		}
-		order.verify(databaseManager).remove(captor.capture());
-		order.verify(databaseManager).commitTransaction();
+		order.verify(recordManager).remove(captor.capture());
+		order.verify(recordManager).commitTransaction();
 
 		assertEquals(project.getName(), captor.getValue().convert().getName());
 	}
@@ -108,16 +110,16 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		FileUtils.deleteQuietly(directory);
 	}
 
-	private Query<?> mockRemoveQueries(String projectName) {
+	private TypedQuery<?> mockRemoveQueries(String projectName) {
 		doReturn(project).when(dao).getByName(projectName);
-		Query<?> query = mock(Query.class);
+		TypedQuery<?> query = mock(TypedQuery.class);
 		mockQuery("MetricResult", "module.projectResult.project.name", query);
 		mockQuery("Module", "projectResult.project.name", query);
 		mockQuery("ProjectResult", "project.name", query);
 		return query;
 	}
 
-	private void mockQuery(String table, String projectNameField, Query<?> query) {
+	private void mockQuery(String table, String projectNameField, TypedQuery<?> query) {
 		String queryText = "DELETE FROM " + table + " t WHERE t." + projectNameField + " = :projectName";
 		doReturn(query).when(dao).createRecordQuery(queryText);
 	}

@@ -8,6 +8,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.TypedQuery;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -36,8 +38,8 @@ public class ModuleResultDatabaseDaoTest extends TestCase {
 	private Configuration configuration;
 	private List<MetricResultRecord> records;
 
-	private DatabaseManager databaseManager;
-	private Query<MetricResultRecord> query;
+	private RecordManager recordManager;
+	private TypedQuery<MetricResultRecord> query;
 
 	private ModuleResultDatabaseDao dao;
 
@@ -46,8 +48,8 @@ public class ModuleResultDatabaseDaoTest extends TestCase {
 		projectResult = ProjectResultFixtures.newHelloWorldResult(DATE);
 		projectResult.getProject().setName(PROJECT_NAME);
 		mockRecords();
-		databaseManager = mock(DatabaseManager.class);
-		dao = spy(new ModuleResultDatabaseDao(databaseManager));
+		recordManager = mock(RecordManager.class);
+		dao = spy(new ModuleResultDatabaseDao(recordManager));
 		mockQueries();
 	}
 
@@ -61,19 +63,19 @@ public class ModuleResultDatabaseDaoTest extends TestCase {
 	}
 
 	private void mockQueries() throws Exception {
-		query = mock(Query.class);
+		query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createRecordQuery(anyString());
 		when(query.getResultList()).thenReturn(records);
 
 		ConfigurationDatabaseDao configDao = mock(ConfigurationDatabaseDao.class);
-		whenNew(ConfigurationDatabaseDao.class).withArguments(databaseManager).thenReturn(configDao);
+		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configDao);
 		when(configDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSave() {
 		dao.save(moduleResult, projectResult);
-		Mockito.verify(databaseManager).save(records);
+		Mockito.verify(recordManager).save(records);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

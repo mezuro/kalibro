@@ -11,9 +11,9 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 
 	private ConfigurationDatabaseDao configurationDao;
 
-	protected MetricConfigurationDatabaseDao(DatabaseManager databaseManager) {
-		super(databaseManager, MetricConfigurationRecord.class);
-		configurationDao = new ConfigurationDatabaseDao(databaseManager);
+	protected MetricConfigurationDatabaseDao(RecordManager recordManager) {
+		super(recordManager, MetricConfigurationRecord.class);
+		configurationDao = new ConfigurationDatabaseDao(recordManager);
 	}
 
 	@Override
@@ -24,7 +24,7 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 			configuration.replaceMetricConfiguration(metricName, metricConfiguration);
 		else
 			configuration.addMetricConfiguration(metricConfiguration);
-		databaseManager.evictFromCache(RangeRecord.class);
+		recordManager.evictFromCache(RangeRecord.class);
 		configurationDao.save(configuration);
 	}
 

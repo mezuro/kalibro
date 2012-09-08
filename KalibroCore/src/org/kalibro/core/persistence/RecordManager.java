@@ -6,18 +6,24 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.TypedQuery;
 
-class DatabaseManager {
+/**
+ * Facilitates interaction with {@link EntityManager}, from the Java Persistence API.
+ * 
+ * @author Carlos Morais
+ */
+class RecordManager {
 
 	private EntityManager entityManager;
 
-	protected DatabaseManager(EntityManager entityManager) {
+	RecordManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
 	}
 
-	protected <T> Query<T> createQuery(String queryText, Class<T> resultClass) {
+	protected <T> TypedQuery<T> createQuery(String queryText, Class<T> resultClass) {
 		entityManager.clear();
-		return new Query<T>(entityManager.createQuery(queryText, resultClass));
+		return entityManager.createQuery(queryText, resultClass);
 	}
 
 	protected <T> T save(T record) {

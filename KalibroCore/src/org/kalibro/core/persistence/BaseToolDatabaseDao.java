@@ -12,8 +12,8 @@ import org.kalibro.core.persistence.record.BaseToolRecord;
 
 class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implements BaseToolDao {
 
-	protected BaseToolDatabaseDao(DatabaseManager databaseManager) {
-		super(databaseManager, BaseToolRecord.class);
+	protected BaseToolDatabaseDao(RecordManager recordManager) {
+		super(recordManager, BaseToolRecord.class);
 	}
 
 	public void saveBaseTools() {
@@ -34,7 +34,7 @@ class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implemen
 		BaseTool baseTool = collectorClass.newInstance().getBaseTool();
 		baseTool.setCollectorClass(collectorClass);
 		if (!getBaseToolNames().contains(baseTool.getName()))
-			databaseManager.save(new BaseToolRecord(baseTool));
+			recordManager.save(new BaseToolRecord(baseTool));
 	}
 
 	@Override

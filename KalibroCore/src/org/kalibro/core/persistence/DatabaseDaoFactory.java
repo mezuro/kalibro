@@ -61,8 +61,8 @@ public class DatabaseDaoFactory extends DaoFactory {
 		return new ModuleResultDatabaseDao(createDatabaseManager());
 	}
 
-	private DatabaseManager createDatabaseManager() {
-		return new DatabaseManager(entityManagerFactory.createEntityManager());
+	private RecordManager createDatabaseManager() {
+		return new RecordManager(entityManagerFactory.createEntityManager());
 	}
 
 	@Override

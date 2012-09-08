@@ -23,7 +23,7 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 	private Configuration configuration;
 	private MetricConfiguration cboConfiguration, locConfiguration;
 
-	private DatabaseManager databaseManager;
+	private RecordManager recordManager;
 	private ConfigurationDatabaseDao configurationDao;
 
 	private MetricConfigurationDatabaseDao dao;
@@ -33,12 +33,12 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 		configuration = newConfiguration("cbo");
 		cboConfiguration = metricConfiguration("cbo");
 		locConfiguration = metricConfiguration("loc");
-		databaseManager = PowerMockito.mock(DatabaseManager.class);
+		recordManager = PowerMockito.mock(RecordManager.class);
 		configurationDao = PowerMockito.mock(ConfigurationDatabaseDao.class);
 		PowerMockito.when(configurationDao.getConfiguration(configuration.getName())).thenReturn(configuration);
-		PowerMockito.whenNew(ConfigurationDatabaseDao.class).withArguments(databaseManager).
+		PowerMockito.whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).
 			thenReturn(configurationDao);
-		dao = PowerMockito.spy(new MetricConfigurationDatabaseDao(databaseManager));
+		dao = PowerMockito.spy(new MetricConfigurationDatabaseDao(recordManager));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
