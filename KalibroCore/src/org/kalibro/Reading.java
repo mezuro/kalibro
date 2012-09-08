@@ -96,6 +96,7 @@ public class Reading extends AbstractEntity<Reading> {
 			dao().delete(id);
 		if (group != null)
 			group.removeReading(this);
+		id = null;
 	}
 
 	private ReadingDao dao() {

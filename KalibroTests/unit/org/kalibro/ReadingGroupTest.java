@@ -130,5 +130,6 @@ public class ReadingGroupTest extends TestCase {
 		group.setId(42L);
 		group.delete();
 		verify(dao).delete(42L);
+		assertNull(group.getId());
 	}
 }

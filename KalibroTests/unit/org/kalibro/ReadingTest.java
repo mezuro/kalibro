@@ -106,6 +106,7 @@ public class ReadingTest extends TestCase {
 		reading.setId(42L);
 		reading.delete();
 		verify(dao).delete(42L);
+		assertNull(reading.getId());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
