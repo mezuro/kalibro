@@ -61,6 +61,11 @@ public class DatabaseDaoFactory extends DaoFactory {
 		return new ModuleResultDatabaseDao(createDatabaseManager());
 	}
 
+	@Override
+	public ReadingGroupDatabaseDao createReadingGroupDao() {
+		return new ReadingGroupDatabaseDao(createDatabaseManager());
+	}
+
 	private RecordManager createDatabaseManager() {
 		return new RecordManager(entityManagerFactory.createEntityManager());
 	}

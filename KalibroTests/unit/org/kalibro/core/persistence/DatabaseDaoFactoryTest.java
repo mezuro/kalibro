@@ -47,7 +47,7 @@ public class DatabaseDaoFactoryTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkDefaultProperties() {
+	public void shouldSetPersistencePropertiesAccordingToDatabaseSettings() {
 		@SuppressWarnings("rawtypes")
 		ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
 		verifyStatic();
@@ -62,13 +62,14 @@ public class DatabaseDaoFactoryTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void checkDaoCreation() {
+	public void shouldCreateDatabaseDaos() {
 		assertSame(baseToolDao, daoFactory.createBaseToolDao());
 		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.createConfigurationDao());
 		assertClassEquals(MetricConfigurationDatabaseDao.class, daoFactory.createMetricConfigurationDao());
 		assertClassEquals(ProjectDatabaseDao.class, daoFactory.createProjectDao());
 		assertClassEquals(ProjectResultDatabaseDao.class, daoFactory.createProjectResultDao());
 		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.createModuleResultDao());
+		assertClassEquals(ReadingGroupDatabaseDao.class, daoFactory.createReadingGroupDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
