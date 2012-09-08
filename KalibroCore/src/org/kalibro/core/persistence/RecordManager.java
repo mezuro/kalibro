@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 /**
@@ -19,6 +20,11 @@ class RecordManager {
 
 	RecordManager(EntityManager entityManager) {
 		this.entityManager = entityManager;
+	}
+
+	protected Query createQuery(String queryText) {
+		entityManager.clear();
+		return entityManager.createQuery(queryText);
 	}
 
 	protected <T> TypedQuery<T> createQuery(String queryText, Class<T> resultClass) {
@@ -43,12 +49,6 @@ class RecordManager {
 		T merged = merge(record);
 		entityManager.persist(merged);
 		return merged;
-	}
-
-	protected void delete(Object record) {
-		beginTransaction();
-		remove(record);
-		commitTransaction();
 	}
 
 	protected void remove(Object record) {

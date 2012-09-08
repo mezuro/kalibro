@@ -36,6 +36,19 @@ public class RecordManagerTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateQuery() {
+		Query query = mock(Query.class);
+		when(entityManager.createQuery("42")).thenReturn(query);
+		assertSame(query, recordManager.createQuery("42"));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldClearEntityManagerWhenCreatingQuery() {
+		recordManager.createQuery("42");
+		verify(entityManager).clear();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCreateTypedQuery() {
 		TypedQuery<String> query = mock(TypedQuery.class);
 		when(entityManager.createQuery("42", String.class)).thenReturn(query);
 		assertSame(query, recordManager.createQuery("42", String.class));
@@ -44,7 +57,7 @@ public class RecordManagerTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldClearEntityManagerWhenCreatingTypedQuery() {
 		recordManager.createQuery("42", String.class);
-		Mockito.verify(entityManager).clear();
+		verify(entityManager).clear();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -55,7 +68,7 @@ public class RecordManagerTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeBeforeRemove() {
 		recordManager.remove(UNMERGED);
-		Mockito.verify(entityManager).remove(MERGED);
+		verify(entityManager).remove(MERGED);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -72,25 +85,21 @@ public class RecordManagerTest extends TestCase {
 
 		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
-		order.verify(entityManager, Mockito.times(3)).persist(MERGED);
+		order.verify(entityManager, times(3)).persist(MERGED);
 		order.verify(transaction).commit();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldDelete() {
-		recordManager.delete(UNMERGED);
-
-		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
-		order.verify(transaction).begin();
-		order.verify(entityManager).remove(MERGED);
-		order.verify(transaction).commit();
+	public void shouldRemove() {
+		recordManager.remove(UNMERGED);
+		verify(entityManager).remove(MERGED);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldEvictClassFromCache() {
 		Cache cache = mockCache();
 		recordManager.evictFromCache(Object.class);
-		Mockito.verify(cache).evict(Object.class);
+		verify(cache).evict(Object.class);
 	}
 
 	private Cache mockCache() {
@@ -104,6 +113,6 @@ public class RecordManagerTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
 		recordManager.finalize();
-		Mockito.verify(entityManager).close();
+		verify(entityManager).close();
 	}
 }

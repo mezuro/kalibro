@@ -69,4 +69,8 @@ abstract class TestShortcuts {
 	protected VerificationMode once() {
 		return Mockito.times(1);
 	}
+
+	protected VerificationMode times(int times) {
+		return Mockito.times(times);
+	}
 }

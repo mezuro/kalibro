@@ -72,7 +72,7 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 		dao.removeConfiguration("42");
 
 		ArgumentCaptor<ConfigurationRecord> captor = ArgumentCaptor.forClass(ConfigurationRecord.class);
-		Mockito.verify(recordManager).delete(captor.capture());
+		verify(recordManager).remove(captor.capture());
 		assertDeepEquals(configuration, captor.getValue().convert());
 	}
 
