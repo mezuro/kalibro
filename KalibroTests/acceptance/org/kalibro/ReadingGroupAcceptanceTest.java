@@ -67,23 +67,23 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void nameShouldBeRequiredAndUnique() {
 		group.setName(" ");
-		checkExceptionOnSave("Reading group requires name.", null);
+		checkKalibroException(saveTask(), "Reading group requires name.");
 
 		group.setName("Scholar");
 		group.save();
 
 		group = new ReadingGroup("Scholar");
-		checkExceptionOnSave("Reading group named \"Scholar\" already exists.", RollbackException.class);
+		checkException(saveTask(), RollbackException.class);
 	}
 
-	private void checkExceptionOnSave(String exceptionMessage, Class<? extends Throwable> expectedCause) {
-		checkKalibroException(new Task() {
+	private Task saveTask() {
+		return new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
 				group.save();
 			}
-		}, exceptionMessage, expectedCause);
+		};
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)

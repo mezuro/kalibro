@@ -14,10 +14,9 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		group = new ReadingGroup("ReadingAcceptanceTest name");
-		reading = loadFixture("reading-excellent", Reading.class);
-		group.addReading(reading);
+		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
 		group.save();
+		reading = group.getReadings().get(0);
 	}
 
 	@After
@@ -50,7 +49,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 	private void assertNotSaved() {
 		assertNull(reading.getId());
 		group = ReadingGroup.all().get(0);
-		assertTrue(group.getReadings().isEmpty());
+		assertFalse(group.getReadings().contains(reading));
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)

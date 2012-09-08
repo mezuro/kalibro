@@ -1,15 +1,15 @@
 package org.kalibro;
 
-import static org.kalibro.SupportedDatabase.MYSQL;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 
+import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
 public abstract class AcceptanceTest extends TestCase {
 
-	private static final SupportedDatabase DATABASE = MYSQL;
+	private static final SupportedDatabase DATABASE = SupportedDatabase.APACHE_DERBY;
 
 	protected static File settingsFile;
 
@@ -20,12 +20,17 @@ public abstract class AcceptanceTest extends TestCase {
 		settings.save();
 
 		settingsFile = new File(dotKalibro(), "kalibro.settings");
-		settingsFile.deleteOnExit();
+	}
+
+	@AfterClass
+	public static void deleteSettings() {
+		settingsFile.delete();
 	}
 
 	private static DatabaseSettings getTestSetttings() {
 		switch (DATABASE) {
 			case APACHE_DERBY:
+				new File(System.getProperty("user.dir") + "/derby.log").deleteOnExit();
 				return newSettings("jdbc:derby:memory:kalibro_test;create=true", false);
 			case MYSQL:
 				return newSettings("jdbc:mysql://localhost:3306/kalibro_test", true);
