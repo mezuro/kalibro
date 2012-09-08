@@ -76,10 +76,4 @@ public class DatabaseDaoFactoryTest extends TestCase {
 	public void shouldSaveBaseTools() {
 		Mockito.verify(baseToolDao).saveBaseTools();
 	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCloseManagerFactoryWhenFinalize() throws Throwable {
-		daoFactory.finalize();
-		Mockito.verify(managerFactory).close();
-	}
 }

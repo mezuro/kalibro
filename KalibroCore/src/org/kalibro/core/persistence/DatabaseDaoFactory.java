@@ -69,10 +69,4 @@ public class DatabaseDaoFactory extends DaoFactory {
 	private RecordManager createDatabaseManager() {
 		return new RecordManager(entityManagerFactory.createEntityManager());
 	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		entityManagerFactory.close();
-		super.finalize();
-	}
 }
