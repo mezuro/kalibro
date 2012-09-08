@@ -1,6 +1,7 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.mockito.Matchers.any;
 import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.awt.Color;
@@ -99,11 +100,11 @@ public class ReadingTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDeleteIfExists() {
 		reading.delete();
-		verify(dao, never()).delete(reading);
+		verify(dao, never()).delete(any(Long.class));
 
 		reading.setId(42L);
 		reading.delete();
-		verify(dao).delete(reading);
+		verify(dao).delete(42L);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

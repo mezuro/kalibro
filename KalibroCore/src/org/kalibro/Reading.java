@@ -89,7 +89,7 @@ public class Reading extends AbstractEntity<Reading> {
 
 	public void delete() {
 		if (id != null)
-			dao().delete(this);
+			dao().delete(id);
 		if (group != null)
 			group.removeReading(this);
 	}

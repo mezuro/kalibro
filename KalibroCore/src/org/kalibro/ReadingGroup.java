@@ -101,6 +101,6 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	public void delete() {
 		if (id != null)
-			dao().delete(this);
+			dao().delete(id);
 	}
 }

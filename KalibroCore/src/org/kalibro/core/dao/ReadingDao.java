@@ -15,5 +15,5 @@ public interface ReadingDao {
 
 	void save(Reading reading);
 
-	void delete(Reading reading);
+	void delete(Long readingId);
 }
