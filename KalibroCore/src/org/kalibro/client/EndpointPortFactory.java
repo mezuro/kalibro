@@ -13,16 +13,20 @@ public final class EndpointPortFactory {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 
+	@Deprecated
 	public static <T> T getEndpointPort(Class<T> endpointClass) {
+		return getEndpointPort(KalibroSettings.load().getClientSettings().getServiceAddress(), endpointClass);
+	}
+
+	public static <T> T getEndpointPort(String serviceAddress, Class<T> endpointClass) {
 		String endpointName = endpointClass.getSimpleName();
-		URL wsdlLocation = getWsdlLocation(endpointName);
+		URL wsdlLocation = getWsdlLocation(endpointName, serviceAddress);
 		QName serviceName = new QName(NAMESPACE, endpointName + "ImplService");
 		QName portName = new QName(NAMESPACE, endpointName + "ImplPort");
 		return Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
 	}
 
-	private static <T> URL getWsdlLocation(String endpointName) {
-		String serviceAddress = KalibroSettings.load().getClientSettings().getServiceAddress();
+	private static <T> URL getWsdlLocation(String endpointName, String serviceAddress) {
 		try {
 			return new URL(serviceAddress + endpointName + "/?wsdl");
 		} catch (MalformedURLException exception) {
