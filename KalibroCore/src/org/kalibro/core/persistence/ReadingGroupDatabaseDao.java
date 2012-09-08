@@ -24,8 +24,9 @@ public class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGr
 
 	@Override
 	public void save(ReadingGroup group) {
-		ReadingGroupRecord merged = recordManager.save(new ReadingGroupRecord(group));
-		group.setId(merged.convert().getId());
+		ReadingGroup merged = recordManager.save(new ReadingGroupRecord(group)).convert();
+		group.setId(merged.getId());
+		group.setReadings(merged.getReadings());
 	}
 
 	@Override
