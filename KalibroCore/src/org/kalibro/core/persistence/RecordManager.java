@@ -46,13 +46,14 @@ class RecordManager {
 	}
 
 	protected <T> T persist(T record) {
-		T merged = merge(record);
+		T merged = entityManager.merge(record);
 		entityManager.persist(merged);
 		return merged;
 	}
 
+	@Deprecated
 	protected void remove(Object record) {
-		entityManager.remove(merge(record));
+		entityManager.remove(entityManager.merge(record));
 	}
 
 	protected void beginTransaction() {
@@ -65,10 +66,6 @@ class RecordManager {
 
 	protected void evictFromCache(Class<?> classToEvitct) {
 		entityManager.getEntityManagerFactory().getCache().evict(classToEvitct);
-	}
-
-	private <T> T merge(T record) {
-		return entityManager.merge(record);
 	}
 
 	@Override
