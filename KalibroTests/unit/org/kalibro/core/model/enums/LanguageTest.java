@@ -1,6 +1,6 @@
 package org.kalibro.core.model.enums;
 
-import static org.kalibro.core.model.enums.Language.*;
+import static org.kalibro.core.model.enums.Language.CPP;
 
 import org.kalibro.EnumerationTestCase;
 

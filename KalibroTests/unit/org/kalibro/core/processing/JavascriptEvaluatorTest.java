@@ -1,7 +1,5 @@
 package org.kalibro.core.processing;
 
-import static org.powermock.api.mockito.PowerMockito.*;
-
 import java.lang.reflect.Constructor;
 
 import org.junit.Before;

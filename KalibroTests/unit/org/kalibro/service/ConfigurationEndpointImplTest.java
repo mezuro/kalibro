@@ -2,7 +2,6 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.List;

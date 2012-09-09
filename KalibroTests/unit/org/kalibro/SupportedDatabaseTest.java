@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.SupportedDatabase.*;
 
 import org.junit.Test;

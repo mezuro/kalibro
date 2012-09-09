@@ -2,7 +2,6 @@ package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

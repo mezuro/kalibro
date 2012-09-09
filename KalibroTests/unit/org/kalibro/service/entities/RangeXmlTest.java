@@ -1,9 +1,9 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.RangeFixtures.*;
-import static org.kalibro.core.model.RangeLabel.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.core.model.RangeFixtures.newRange;
+import static org.kalibro.core.model.RangeLabel.GOOD;
 
 import java.awt.Color;
 import java.util.ArrayList;

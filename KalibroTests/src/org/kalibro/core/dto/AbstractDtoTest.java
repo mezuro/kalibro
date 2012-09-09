@@ -1,7 +1,6 @@
 package org.kalibro.core.dto;
 
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.List;

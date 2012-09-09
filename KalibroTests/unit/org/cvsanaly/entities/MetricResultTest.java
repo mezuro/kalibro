@@ -1,6 +1,6 @@
 package org.cvsanaly.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.cvsanaly.DataObjectTest;
 import org.junit.Test;

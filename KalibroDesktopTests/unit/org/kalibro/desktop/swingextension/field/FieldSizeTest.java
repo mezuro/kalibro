@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Dimension;
 import java.awt.Font;

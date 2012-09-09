@@ -1,8 +1,8 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
 import java.util.Collection;
 

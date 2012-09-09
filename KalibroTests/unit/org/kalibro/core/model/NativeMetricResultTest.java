@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.junit.Assert.assertSame;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
 import org.junit.Test;
 import org.kalibro.TestCase;

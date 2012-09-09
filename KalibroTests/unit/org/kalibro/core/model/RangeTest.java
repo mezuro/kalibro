@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.RangeFixtures.newRange;
 import static org.kalibro.core.model.RangeLabel.*;
 
 import java.awt.Color;

@@ -3,7 +3,6 @@ package org.kalibro.core.persistence;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.util.ArrayList;

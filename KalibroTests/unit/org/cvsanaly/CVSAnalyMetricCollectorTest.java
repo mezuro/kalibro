@@ -1,7 +1,6 @@
 package org.cvsanaly;
 
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.spy;
 
 import java.io.File;
 import java.io.IOException;

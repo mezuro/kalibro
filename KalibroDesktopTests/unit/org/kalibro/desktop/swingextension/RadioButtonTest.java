@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;

@@ -1,7 +1,6 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.io.FileInputStream;

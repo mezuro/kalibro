@@ -1,9 +1,8 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
+import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 import static org.kalibro.core.model.enums.RepositoryType.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
 import java.util.TreeSet;

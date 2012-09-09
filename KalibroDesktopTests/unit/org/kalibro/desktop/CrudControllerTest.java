@@ -1,7 +1,5 @@
 package org.kalibro.desktop;
 
-import static org.powermock.api.mockito.PowerMockito.*;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Arrays;

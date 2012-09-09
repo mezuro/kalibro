@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.renderer;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Color;
 import java.util.Random;

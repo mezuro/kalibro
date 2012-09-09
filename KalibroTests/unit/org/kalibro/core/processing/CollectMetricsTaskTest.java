@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResultMap;
 import static org.kalibro.core.model.ProjectFixtures.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.HashMap;
 import java.util.Map;

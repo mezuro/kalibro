@@ -1,7 +1,6 @@
 package org.kalibro.core.util.reflection;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.lang.reflect.AccessibleObject;
 

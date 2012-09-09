@@ -2,7 +2,6 @@ package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
 

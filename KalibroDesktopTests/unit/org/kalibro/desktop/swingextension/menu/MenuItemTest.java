@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.menu;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

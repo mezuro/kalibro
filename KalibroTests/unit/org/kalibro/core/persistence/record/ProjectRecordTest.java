@@ -2,7 +2,6 @@ package org.kalibro.core.persistence.record;
 
 import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
 import static org.kalibro.core.model.ProjectFixtures.*;
-import static org.powermock.api.mockito.PowerMockito.whenNew;
 
 import java.util.Arrays;
 import java.util.Collection;

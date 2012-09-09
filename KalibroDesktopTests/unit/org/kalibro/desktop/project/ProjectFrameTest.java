@@ -2,7 +2,6 @@ package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.helloWorld;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;
 import org.junit.Test;

@@ -6,7 +6,6 @@ import static org.kalibro.core.model.MetricFixtures.*;
 import static org.kalibro.core.model.MetricResultFixtures.analizoResult;
 import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 import static org.kalibro.core.model.enums.Granularity.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
 import java.util.Date;

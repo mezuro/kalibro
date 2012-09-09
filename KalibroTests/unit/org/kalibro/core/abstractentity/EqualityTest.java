@@ -2,7 +2,6 @@ package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

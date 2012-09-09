@@ -1,9 +1,8 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 import static org.kalibro.core.model.enums.ProjectState.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;

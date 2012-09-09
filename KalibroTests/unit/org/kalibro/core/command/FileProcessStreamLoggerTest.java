@@ -1,8 +1,7 @@
 package org.kalibro.core.command;
 
-import static org.kalibro.core.Environment.*;
+import static org.kalibro.core.Environment.logsDirectory;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.io.FileOutputStream;

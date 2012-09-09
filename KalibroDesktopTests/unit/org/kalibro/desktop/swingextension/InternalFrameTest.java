@@ -1,8 +1,8 @@
 package org.kalibro.desktop.swingextension;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.*;
-import static org.kalibro.core.model.RangeLabel.*;
+import static org.kalibro.core.model.RangeFixtures.newRange;
+import static org.kalibro.core.model.RangeLabel.REGULAR;
 
 import java.beans.PropertyVetoException;
 

@@ -1,7 +1,7 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.core.model.MetricFixtures.sc;
 
 import org.junit.Before;
 import org.junit.Test;

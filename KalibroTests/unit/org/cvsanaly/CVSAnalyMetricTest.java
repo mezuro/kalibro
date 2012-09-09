@@ -1,6 +1,6 @@
 package org.cvsanaly;
 
-import static org.kalibro.core.model.enums.Granularity.*;
+import static org.kalibro.core.model.enums.Granularity.CLASS;
 
 import org.cvsanaly.entities.MetricResult;
 import org.junit.Test;

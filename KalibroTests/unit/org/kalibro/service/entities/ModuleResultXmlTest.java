@@ -1,6 +1,6 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.util.Arrays;

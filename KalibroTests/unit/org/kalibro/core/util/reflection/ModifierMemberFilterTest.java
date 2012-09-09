@@ -2,7 +2,6 @@ package org.kalibro.core.util.reflection;
 
 import static java.lang.reflect.Modifier.*;
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.lang.reflect.Member;
 

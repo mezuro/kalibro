@@ -1,6 +1,6 @@
 package org.kalibro.core.model.enums;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Test;

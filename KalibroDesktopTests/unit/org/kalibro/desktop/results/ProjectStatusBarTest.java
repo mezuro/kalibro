@@ -1,6 +1,6 @@
 package org.kalibro.desktop.results;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.ProjectFixtures.*;
 
 import org.junit.Before;

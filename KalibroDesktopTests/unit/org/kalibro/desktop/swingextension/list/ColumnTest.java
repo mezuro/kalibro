@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.swing.table.TableColumn;
 

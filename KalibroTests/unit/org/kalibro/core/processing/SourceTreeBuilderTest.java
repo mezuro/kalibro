@@ -3,7 +3,7 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import java.util.Arrays;

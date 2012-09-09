@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension.renderer;
 
 import static org.mockito.Matchers.any;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.awt.Color;
 import java.awt.Component;

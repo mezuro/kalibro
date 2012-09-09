@@ -1,8 +1,8 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.junit.Assert.assertTrue;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 
 import java.util.Collection;
 import java.util.HashSet;

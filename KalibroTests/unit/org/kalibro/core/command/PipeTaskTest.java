@@ -1,6 +1,6 @@
 package org.kalibro.core.command;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.IOException;
 

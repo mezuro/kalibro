@@ -1,7 +1,6 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;

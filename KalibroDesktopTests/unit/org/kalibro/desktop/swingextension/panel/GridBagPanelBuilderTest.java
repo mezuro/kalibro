@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.panel;
 
 import static java.awt.GridBagConstraints.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

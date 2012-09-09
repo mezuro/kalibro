@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.dialog;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 
 import org.junit.Before;
 import org.junit.Test;

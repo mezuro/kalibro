@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension.dialog;
 
-import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
+import static org.junit.Assert.assertSame;
 
 import java.awt.Color;
 import java.awt.Component;

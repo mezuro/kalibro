@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.icon;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.swing.JInternalFrame;
 

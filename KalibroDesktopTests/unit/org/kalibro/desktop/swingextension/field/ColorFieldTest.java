@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.field;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 import java.awt.Color;
 import java.util.Random;

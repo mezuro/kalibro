@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.panel;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.CardLayout;
 import java.awt.Dimension;

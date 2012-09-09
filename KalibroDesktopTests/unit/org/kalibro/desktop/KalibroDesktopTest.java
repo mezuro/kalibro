@@ -1,7 +1,5 @@
 package org.kalibro.desktop;
 
-import static org.powermock.api.mockito.PowerMockito.*;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;

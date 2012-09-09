@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.*;
-import static org.kalibro.core.model.RangeLabel.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.RangeFixtures.newRange;
+import static org.kalibro.core.model.RangeLabel.BAD;
 
 import org.junit.Before;
 import org.junit.Test;

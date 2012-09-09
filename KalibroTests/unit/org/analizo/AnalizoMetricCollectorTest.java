@@ -1,7 +1,6 @@
 package org.analizo;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.io.InputStream;

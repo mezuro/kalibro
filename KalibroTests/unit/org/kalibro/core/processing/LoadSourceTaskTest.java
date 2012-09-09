@@ -1,7 +1,6 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;
 import org.junit.Test;

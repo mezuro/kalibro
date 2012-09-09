@@ -1,7 +1,6 @@
 package org.kalibro.desktop.configuration;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;

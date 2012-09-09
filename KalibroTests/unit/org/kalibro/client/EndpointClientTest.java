@@ -2,7 +2,6 @@ package org.kalibro.client;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
