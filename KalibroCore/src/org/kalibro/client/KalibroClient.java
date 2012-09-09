@@ -2,41 +2,39 @@ package org.kalibro.client;
 
 import java.util.Set;
 
+import org.kalibro.KalibroSettings;
 import org.kalibro.core.KalibroFacade;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.service.KalibroEndpoint;
 
-public class KalibroClient extends KalibroFacade {
-
-	private KalibroEndpoint port;
+public class KalibroClient extends EndpointClient<KalibroEndpoint> implements KalibroFacade {
 
 	public KalibroClient() {
-		super();
-		port = EndpointPortFactory.getEndpointPort(KalibroEndpoint.class);
+		super(KalibroSettings.load().getClientSettings().getServiceAddress(), KalibroEndpoint.class);
 	}
 
 	@Override
-	protected Set<RepositoryType> getSupportedRepositoryTypes() {
+	public Set<RepositoryType> getSupportedRepositoryTypes() {
 		return port.getSupportedRepositoryTypes();
 	}
 
 	@Override
-	protected void processProject(String projectName) {
+	public void processProject(String projectName) {
 		port.processProject(projectName);
 	}
 
 	@Override
-	protected void processPeriodically(String projectName, Integer periodInDays) {
+	public void processPeriodically(String projectName, Integer periodInDays) {
 		port.processPeriodically(projectName, periodInDays);
 	}
 
 	@Override
-	protected Integer getProcessPeriod(String projectName) {
+	public Integer getProcessPeriod(String projectName) {
 		return port.getProcessPeriod(projectName);
 	}
 
 	@Override
-	protected void cancelPeriodicProcess(String projectName) {
+	public void cancelPeriodicProcess(String projectName) {
 		port.cancelPeriodicProcess(projectName);
 	}
 }

@@ -4,18 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.ModuleResultDao;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.entities.ModuleResultXml;
 
-class ModuleResultPortDao implements ModuleResultDao {
+class ModuleResultPortDao extends EndpointClient<ModuleResultEndpoint> implements ModuleResultDao {
 
-	private ModuleResultEndpoint port;
-
-	protected ModuleResultPortDao() {
-		port = EndpointPortFactory.getEndpointPort(ModuleResultEndpoint.class);
+	protected ModuleResultPortDao(String serviceAddress) {
+		super(serviceAddress, ModuleResultEndpoint.class);
 	}
 
 	@Override

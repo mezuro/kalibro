@@ -3,17 +3,15 @@ package org.kalibro.client.dao;
 import java.util.Date;
 
 import org.kalibro.KalibroException;
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.ProjectResultDao;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.service.ProjectResultEndpoint;
 
-class ProjectResultPortDao implements ProjectResultDao {
+class ProjectResultPortDao extends EndpointClient<ProjectResultEndpoint> implements ProjectResultDao {
 
-	private ProjectResultEndpoint port;
-
-	protected ProjectResultPortDao() {
-		port = EndpointPortFactory.getEndpointPort(ProjectResultEndpoint.class);
+	protected ProjectResultPortDao(String serviceAddress) {
+		super(serviceAddress, ProjectResultEndpoint.class);
 	}
 
 	@Override

@@ -1,53 +1,62 @@
 package org.kalibro.client.dao;
 
+import static org.junit.Assert.assertSame;
+
 import java.util.Arrays;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ModuleResultFixtures;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.entities.ModuleResultXml;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(EndpointPortFactory.class)
+@PrepareForTest({ModuleResultPortDao.class, EndpointClient.class})
 public class ModuleResultPortDaoTest extends TestCase {
 
 	private ModuleResult moduleResult;
+	private ModuleResultXml moduleResultXml;
 
 	private ModuleResultPortDao dao;
 	private ModuleResultEndpoint port;
 
 	@Before
-	public void setUp() {
-		mockPort();
-		dao = new ModuleResultPortDao();
-		moduleResult = ModuleResultFixtures.helloWorldClassResult();
+	public void setUp() throws Exception {
+		mockModuleResult();
+		createSupressedDao();
 	}
 
-	private void mockPort() {
-		port = PowerMockito.mock(ModuleResultEndpoint.class);
-		PowerMockito.mockStatic(EndpointPortFactory.class);
-		PowerMockito.when(EndpointPortFactory.getEndpointPort(ModuleResultEndpoint.class)).thenReturn(port);
+	private void mockModuleResult() throws Exception {
+		moduleResult = mock(ModuleResult.class);
+		moduleResultXml = mock(ModuleResultXml.class);
+		whenNew(ModuleResultXml.class).withArguments(moduleResult).thenReturn(moduleResultXml);
+		when(moduleResultXml.convert()).thenReturn(moduleResult);
+	}
+
+	private void createSupressedDao() {
+		suppress(constructor(EndpointClient.class, String.class, Class.class));
+		dao = new ModuleResultPortDao("");
+
+		port = mock(ModuleResultEndpoint.class);
+		Whitebox.setInternalState(dao, "port", port);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetModuleResult() {
-		PowerMockito.when(port.getModuleResult("", "", null)).thenReturn(new ModuleResultXml(moduleResult));
-		assertDeepEquals(moduleResult, dao.getModuleResult("", "", null));
+		when(port.getModuleResult("", "", null)).thenReturn(moduleResultXml);
+		assertSame(moduleResult, dao.getModuleResult("", "", null));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testResultHistory() {
-		List<ModuleResultXml> resultHistory = Arrays.asList(new ModuleResultXml(moduleResult));
-		PowerMockito.when(port.getResultHistory("", "")).thenReturn(resultHistory);
+		PowerMockito.when(port.getResultHistory("", "")).thenReturn(Arrays.asList(moduleResultXml));
 		assertDeepList(dao.getResultHistory("", ""), moduleResult);
 	}
 }

@@ -2,18 +2,16 @@ package org.kalibro.client.dao;
 
 import java.util.List;
 
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Project;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.RawProjectXml;
 
-class ProjectPortDao implements ProjectDao {
+class ProjectPortDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
 
-	private ProjectEndpoint port;
-
-	protected ProjectPortDao() {
-		port = EndpointPortFactory.getEndpointPort(ProjectEndpoint.class);
+	protected ProjectPortDao(String serviceAddress) {
+		super(serviceAddress, ProjectEndpoint.class);
 	}
 
 	@Override

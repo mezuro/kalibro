@@ -8,38 +8,47 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.ProjectResultFixtures;
 import org.kalibro.service.ProjectResultEndpoint;
 import org.kalibro.service.entities.ProjectResultXml;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(EndpointPortFactory.class)
+@PrepareForTest({ProjectResultPortDao.class, EndpointClient.class})
 public class ProjectResultPortDaoTest extends TestCase {
 
 	private boolean flag;
 	private ProjectResult projectResult;
+	private ProjectResultXml projectResultXml;
 
 	private ProjectResultPortDao dao;
 	private ProjectResultEndpoint port;
 
 	@Before
-	public void setUp() {
-		mockPort();
-		dao = new ProjectResultPortDao();
+	public void setUp() throws Exception {
 		flag = new Random(System.currentTimeMillis()).nextBoolean();
-		projectResult = ProjectResultFixtures.helloWorldResult();
+		mockProjectResult();
+		createSupressedDao();
 	}
 
-	private void mockPort() {
-		port = PowerMockito.mock(ProjectResultEndpoint.class);
-		PowerMockito.mockStatic(EndpointPortFactory.class);
-		PowerMockito.when(EndpointPortFactory.getEndpointPort(ProjectResultEndpoint.class)).thenReturn(port);
+	private void mockProjectResult() throws Exception {
+		projectResult = mock(ProjectResult.class);
+		projectResultXml = mock(ProjectResultXml.class);
+		whenNew(ProjectResultXml.class).withArguments(projectResult).thenReturn(projectResultXml);
+		when(projectResultXml.convert()).thenReturn(projectResult);
+	}
+
+	private void createSupressedDao() {
+		suppress(constructor(EndpointClient.class, String.class, Class.class));
+		dao = new ProjectResultPortDao("");
+
+		port = mock(ProjectResultEndpoint.class);
+		Whitebox.setInternalState(dao, "port", port);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -55,43 +64,43 @@ public class ProjectResultPortDaoTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testHasResultsFor() {
-		PowerMockito.when(port.hasResultsFor("")).thenReturn(flag);
+		when(port.hasResultsFor("")).thenReturn(flag);
 		assertEquals(flag, dao.hasResultsFor(""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testHasResultsBefore() {
-		PowerMockito.when(port.hasResultsBefore(null, "")).thenReturn(flag);
+		when(port.hasResultsBefore(null, "")).thenReturn(flag);
 		assertEquals(flag, dao.hasResultsBefore(null, ""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testHasResultsAfter() {
-		PowerMockito.when(port.hasResultsAfter(null, "")).thenReturn(flag);
+		when(port.hasResultsAfter(null, "")).thenReturn(flag);
 		assertEquals(flag, dao.hasResultsAfter(null, ""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetFirstResultOf() {
-		PowerMockito.when(port.getFirstResultOf("")).thenReturn(new ProjectResultXml(projectResult));
-		assertDeepEquals(projectResult, dao.getFirstResultOf(""));
+		when(port.getFirstResultOf("")).thenReturn(projectResultXml);
+		assertSame(projectResult, dao.getFirstResultOf(""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetLastResultOf() {
-		PowerMockito.when(port.getLastResultOf("")).thenReturn(new ProjectResultXml(projectResult));
-		assertDeepEquals(projectResult, dao.getLastResultOf(""));
+		PowerMockito.when(port.getLastResultOf("")).thenReturn(projectResultXml);
+		assertSame(projectResult, dao.getLastResultOf(""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetLastResultBefore() {
-		PowerMockito.when(port.getLastResultBefore(null, "")).thenReturn(new ProjectResultXml(projectResult));
-		assertDeepEquals(projectResult, dao.getLastResultBefore(null, ""));
+		PowerMockito.when(port.getLastResultBefore(null, "")).thenReturn(projectResultXml);
+		assertSame(projectResult, dao.getLastResultBefore(null, ""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetFirstResultAfter() {
-		PowerMockito.when(port.getFirstResultAfter(null, "")).thenReturn(new ProjectResultXml(projectResult));
-		assertDeepEquals(projectResult, dao.getFirstResultAfter(null, ""));
+		PowerMockito.when(port.getFirstResultAfter(null, "")).thenReturn(projectResultXml);
+		assertSame(projectResult, dao.getFirstResultAfter(null, ""));
 	}
 }

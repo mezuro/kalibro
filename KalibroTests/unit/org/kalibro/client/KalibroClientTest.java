@@ -1,7 +1,6 @@
 package org.kalibro.client;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -13,37 +12,36 @@ import org.kalibro.KalibroSettings;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.service.KalibroEndpoint;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({EndpointPortFactory.class, KalibroSettings.class, KalibroClient.class})
+@PrepareForTest({KalibroClient.class, EndpointClient.class, KalibroSettings.class})
 public class KalibroClientTest extends TestCase {
 
 	private static final String PROJECT_NAME = "KalibroClientTest project";
 
 	private KalibroClient client;
 	private KalibroEndpoint port;
-	private KalibroSettings settings;
 
 	@Before
 	public void setUp() {
-		mockPort();
 		mockSettings();
-		client = new KalibroClient();
-	}
-
-	private void mockPort() {
-		port = mock(KalibroEndpoint.class);
-		mockStatic(EndpointPortFactory.class);
-		when(EndpointPortFactory.getEndpointPort(KalibroEndpoint.class)).thenReturn(port);
+		createSupressedClient();
 	}
 
 	private void mockSettings() {
-		settings = new KalibroSettings();
 		mockStatic(KalibroSettings.class);
-		when(KalibroSettings.load()).thenReturn(settings);
+		when(KalibroSettings.load()).thenReturn(new KalibroSettings());
+	}
+
+	private void createSupressedClient() {
+		suppress(constructor(EndpointClient.class, String.class, Class.class));
+		client = new KalibroClient();
+
+		port = mock(KalibroEndpoint.class);
+		Whitebox.setInternalState(client, "port", port);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -56,13 +54,13 @@ public class KalibroClientTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessProject() {
 		client.processProject(PROJECT_NAME);
-		Mockito.verify(port).processProject(PROJECT_NAME);
+		verify(port).processProject(PROJECT_NAME);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testProcessPeriodically() {
 		client.processPeriodically(PROJECT_NAME, 42);
-		Mockito.verify(port).processPeriodically(PROJECT_NAME, 42);
+		verify(port).processPeriodically(PROJECT_NAME, 42);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -74,6 +72,6 @@ public class KalibroClientTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testCancelPeriodicProcess() {
 		client.cancelPeriodicProcess(PROJECT_NAME);
-		Mockito.verify(port).cancelPeriodicProcess(PROJECT_NAME);
+		verify(port).cancelPeriodicProcess(PROJECT_NAME);
 	}
 }

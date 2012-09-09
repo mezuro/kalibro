@@ -1,60 +1,62 @@
 package org.kalibro.client.dao;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ConfigurationFixtures;
 import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(EndpointPortFactory.class)
+@PrepareForTest({ConfigurationPortDao.class, EndpointClient.class})
 public class ConfigurationPortDaoTest extends TestCase {
 
 	private Configuration configuration;
+	private ConfigurationXml configurationXml;
 
 	private ConfigurationPortDao dao;
 	private ConfigurationEndpoint port;
 
 	@Before
-	public void setUp() {
-		mockPort();
-		dao = new ConfigurationPortDao();
-		configuration = ConfigurationFixtures.newConfiguration();
+	public void setUp() throws Exception {
+		mockConfiguration();
+		createSupressedDao();
 	}
 
-	private void mockPort() {
+	private void mockConfiguration() throws Exception {
+		configuration = mock(Configuration.class);
+		configurationXml = mock(ConfigurationXml.class);
+		whenNew(ConfigurationXml.class).withArguments(configuration).thenReturn(configurationXml);
+		when(configurationXml.convert()).thenReturn(configuration);
+	}
+
+	private void createSupressedDao() {
+		suppress(constructor(EndpointClient.class, String.class, Class.class));
+		dao = new ConfigurationPortDao("");
+
 		port = mock(ConfigurationEndpoint.class);
-		mockStatic(EndpointPortFactory.class);
-		when(EndpointPortFactory.getEndpointPort(ConfigurationEndpoint.class)).thenReturn(port);
+		Whitebox.setInternalState(dao, "port", port);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSave() {
 		dao.save(configuration);
-
-		ArgumentCaptor<ConfigurationXml> captor = ArgumentCaptor.forClass(ConfigurationXml.class);
-		Mockito.verify(port).saveConfiguration(captor.capture());
-		assertDeepEquals(configuration, captor.getValue().convert());
+		verify(port).saveConfiguration(configurationXml);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetConfigurationNames() {
-		List<String> names = new ArrayList<String>();
+		List<String> names = mock(List.class);
 		when(port.getConfigurationNames()).thenReturn(names);
 		assertSame(names, dao.getConfigurationNames());
 	}
@@ -70,8 +72,8 @@ public class ConfigurationPortDaoTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testGetConfiguration() {
-		when(port.getConfiguration("")).thenReturn(new ConfigurationXml(configuration));
-		assertDeepEquals(configuration, dao.getConfiguration(""));
+		when(port.getConfiguration("")).thenReturn(configurationXml);
+		assertSame(configuration, dao.getConfiguration(""));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -88,6 +90,6 @@ public class ConfigurationPortDaoTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testRemoveConfiguration() {
 		dao.removeConfiguration("");
-		Mockito.verify(port).removeConfiguration("");
+		verify(port).removeConfiguration("");
 	}
 }

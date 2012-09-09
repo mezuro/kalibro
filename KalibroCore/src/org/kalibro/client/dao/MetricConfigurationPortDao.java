@@ -1,17 +1,15 @@
 package org.kalibro.client.dao;
 
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.MetricConfigurationDao;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
-class MetricConfigurationPortDao implements MetricConfigurationDao {
+class MetricConfigurationPortDao extends EndpointClient<MetricConfigurationEndpoint> implements MetricConfigurationDao {
 
-	private MetricConfigurationEndpoint port;
-
-	protected MetricConfigurationPortDao() {
-		port = EndpointPortFactory.getEndpointPort(MetricConfigurationEndpoint.class);
+	protected MetricConfigurationPortDao(String serviceAddress) {
+		super(serviceAddress, MetricConfigurationEndpoint.class);
 	}
 
 	@Override

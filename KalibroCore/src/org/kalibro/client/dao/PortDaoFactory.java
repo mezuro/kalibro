@@ -12,32 +12,32 @@ public class PortDaoFactory extends DaoFactory {
 
 	@Override
 	public BaseToolDao createBaseToolDao() {
-		return new BaseToolPortDao();
+		return new BaseToolPortDao(serviceAddress);
 	}
 
 	@Override
 	public ConfigurationDao createConfigurationDao() {
-		return new ConfigurationPortDao();
+		return new ConfigurationPortDao(serviceAddress);
 	}
 
 	@Override
 	public MetricConfigurationDao createMetricConfigurationDao() {
-		return new MetricConfigurationPortDao();
+		return new MetricConfigurationPortDao(serviceAddress);
 	}
 
 	@Override
 	public ModuleResultDao createModuleResultDao() {
-		return new ModuleResultPortDao();
+		return new ModuleResultPortDao(serviceAddress);
 	}
 
 	@Override
 	public ProjectDao createProjectDao() {
-		return new ProjectPortDao();
+		return new ProjectPortDao(serviceAddress);
 	}
 
 	@Override
 	public ProjectResultDao createProjectResultDao() {
-		return new ProjectResultPortDao();
+		return new ProjectResultPortDao(serviceAddress);
 	}
 
 	@Override

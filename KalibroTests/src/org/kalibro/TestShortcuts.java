@@ -8,8 +8,9 @@ import org.kalibro.core.abstractentity.Equality;
 import org.kalibro.core.abstractentity.Printer;
 import org.mockito.Mockito;
 import org.mockito.verification.VerificationMode;
+import org.powermock.api.mockito.PowerMockito;
 
-abstract class TestShortcuts {
+abstract class TestShortcuts extends PowerMockito {
 
 	protected void assertClassEquals(Class<?> expectedClass, Object object) {
 		assertEquals(expectedClass, object.getClass());

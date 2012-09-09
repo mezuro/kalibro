@@ -4,15 +4,15 @@ import java.util.Set;
 
 import org.kalibro.core.model.enums.RepositoryType;
 
-public abstract class KalibroFacade {
+public interface KalibroFacade {
 
-	protected abstract Set<RepositoryType> getSupportedRepositoryTypes();
+	Set<RepositoryType> getSupportedRepositoryTypes();
 
-	protected abstract void processProject(String projectName);
+	void processProject(String projectName);
 
-	protected abstract void processPeriodically(String projectName, Integer periodInDays);
+	void processPeriodically(String projectName, Integer periodInDays);
 
-	protected abstract Integer getProcessPeriod(String projectName);
+	Integer getProcessPeriod(String projectName);
 
-	protected abstract void cancelPeriodicProcess(String projectName);
+	void cancelPeriodicProcess(String projectName);
 }

@@ -2,17 +2,15 @@ package org.kalibro.client.dao;
 
 import java.util.List;
 
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.BaseToolDao;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.service.BaseToolEndpoint;
 
-class BaseToolPortDao implements BaseToolDao {
+class BaseToolPortDao extends EndpointClient<BaseToolEndpoint> implements BaseToolDao {
 
-	private BaseToolEndpoint port;
-
-	protected BaseToolPortDao() {
-		port = EndpointPortFactory.getEndpointPort(BaseToolEndpoint.class);
+	protected BaseToolPortDao(String serviceAddress) {
+		super(serviceAddress, BaseToolEndpoint.class);
 	}
 
 	@Override

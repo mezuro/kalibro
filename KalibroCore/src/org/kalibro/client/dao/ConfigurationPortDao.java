@@ -3,18 +3,16 @@ package org.kalibro.client.dao;
 import java.util.List;
 
 import org.kalibro.KalibroException;
-import org.kalibro.client.EndpointPortFactory;
+import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.ConfigurationDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;
 
-class ConfigurationPortDao implements ConfigurationDao {
+class ConfigurationPortDao extends EndpointClient<ConfigurationEndpoint> implements ConfigurationDao {
 
-	private ConfigurationEndpoint port;
-
-	protected ConfigurationPortDao() {
-		port = EndpointPortFactory.getEndpointPort(ConfigurationEndpoint.class);
+	protected ConfigurationPortDao(String serviceAddress) {
+		super(serviceAddress, ConfigurationEndpoint.class);
 	}
 
 	@Override
