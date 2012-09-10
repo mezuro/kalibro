@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence;
 
+import static org.junit.Assert.assertSame;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -39,6 +41,16 @@ public class DatabaseDaoTest extends TestCase {
 		when(record.convert()).thenReturn(person);
 
 		assertDeepList(dao.allOrderedByName(), person);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetById() {
+		Person person = mock(Person.class);
+		PersonRecord record = mock(PersonRecord.class);
+		when(recordManager.getById(42L, PersonRecord.class)).thenReturn(record);
+		when(record.convert()).thenReturn(person);
+
+		assertSame(person, dao.getById(42L));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

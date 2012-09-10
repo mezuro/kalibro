@@ -32,6 +32,10 @@ class RecordManager {
 		return entityManager.createQuery(queryText, resultClass);
 	}
 
+	public <T> T getById(Long id, Class<T> recordClass) {
+		return entityManager.find(recordClass, id);
+	}
+
 	protected <T> T save(T record) {
 		return save(Arrays.asList(record)).get(0);
 	}

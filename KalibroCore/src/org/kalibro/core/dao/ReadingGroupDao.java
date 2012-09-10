@@ -13,6 +13,8 @@ public interface ReadingGroupDao {
 
 	List<ReadingGroup> all();
 
+	ReadingGroup get(Long groupId);
+
 	void save(ReadingGroup group);
 
 	void delete(Long groupId);

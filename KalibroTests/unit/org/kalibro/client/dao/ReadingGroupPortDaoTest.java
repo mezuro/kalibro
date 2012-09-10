@@ -1,5 +1,7 @@
 package org.kalibro.client.dao;
 
+import static org.junit.Assert.assertSame;
+
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -52,6 +54,12 @@ public class ReadingGroupPortDaoTest extends TestCase {
 	public void shouldGetAllReadingGroups() {
 		when(port.all()).thenReturn(Arrays.asList(groupResponse));
 		assertDeepList(dao.all(), group);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetById() {
+		when(port.get(42L)).thenReturn(groupResponse);
+		assertSame(group, dao.get(42L));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

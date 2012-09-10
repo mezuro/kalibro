@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Arrays;
 
@@ -52,6 +52,12 @@ public class ReadingGroupEndpointImplTest extends TestCase {
 	public void shouldGetAllReadingGroups() {
 		when(dao.all()).thenReturn(Arrays.asList(group));
 		assertDeepList(endpoint.all(), groupResponse);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetById() {
+		when(dao.get(42L)).thenReturn(group);
+		assertSame(groupResponse, endpoint.get(42L));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

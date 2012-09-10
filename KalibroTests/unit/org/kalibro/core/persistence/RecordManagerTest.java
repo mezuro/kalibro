@@ -60,6 +60,12 @@ public class RecordManagerTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetById() {
+		when(entityManager.find(Integer.class, 28L)).thenReturn(42);
+		assertEquals(42, recordManager.getById(28L, Integer.class).intValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldMergeOnPersist() {
 		assertEquals(MERGED, recordManager.persist(UNMERGED));
 	}

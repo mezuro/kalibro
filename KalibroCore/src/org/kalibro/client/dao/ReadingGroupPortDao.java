@@ -29,4 +29,9 @@ public class ReadingGroupPortDao extends EndpointClient<ReadingGroupEndpoint> im
 	public void delete(Long groupId) {
 		port.delete(groupId);
 	}
+
+	@Override
+	public ReadingGroup get(Long groupId) {
+		return port.get(groupId).convert();
+	}
 }

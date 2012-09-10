@@ -36,6 +36,12 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 	}
 
 	@Override
+	@WebResult(name = "readingGroup")
+	public ReadingGroupXmlResponse get(@WebParam(name = "groupId") Long groupId) {
+		return new ReadingGroupXmlResponse(dao.get(groupId));
+	}
+
+	@Override
 	@WebResult(name = "readingGroupId")
 	public Long save(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group) {
 		ReadingGroup converted = group.convert();

@@ -35,6 +35,13 @@ public class ReadingGroupDatabaseDaoTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetById() {
+		ReadingGroup group = mock(ReadingGroup.class);
+		doReturn(group).when(dao).getById(42L);
+		assertSame(group, dao.getById(42L));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveAndMerge() throws Exception {
 		List<Reading> readings = mock(List.class);
 		ReadingGroup group = mock(ReadingGroup.class);
