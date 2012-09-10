@@ -53,6 +53,10 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		return id;
 	}
 
+	public boolean hasId() {
+		return id != null;
+	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}

@@ -15,7 +15,6 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 	@Before
 	public void setUp() {
 		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
-		group.save();
 		reading = group.getReadings().get(0);
 	}
 
@@ -26,30 +25,29 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void testCrud() {
+		assertTrue(ReadingGroup.all().isEmpty());
+
+		reading.save();
 		assertSaved();
 
 		reading.setLabel("ReadingAcceptanceTest label");
 		assertDifferentFromSaved();
 
+		reading.save();
+		assertSaved();
+
 		reading.delete();
-		assertNotSaved();
+		assertFalse(group.getReadings().contains(reading));
+		assertFalse(ReadingGroup.all().get(0).getReadings().contains(reading));
 	}
 
 	private void assertSaved() {
-		assertNotNull(reading.getId());
-		group = ReadingGroup.all().get(0);
-		assertDeepEquals(reading, group.getReadings().get(0));
+		assertDeepEquals(reading, ReadingGroup.all().get(0).getReadings().get(0));
 	}
 
 	private void assertDifferentFromSaved() {
 		Reading saved = ReadingGroup.all().get(0).getReadings().get(0);
 		assertFalse(reading.deepEquals(saved));
-	}
-
-	private void assertNotSaved() {
-		assertNull(reading.getId());
-		group = ReadingGroup.all().get(0);
-		assertFalse(group.getReadings().contains(reading));
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)

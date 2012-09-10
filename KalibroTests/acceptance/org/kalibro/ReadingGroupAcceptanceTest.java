@@ -40,7 +40,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		assertSaved();
 
 		group.addReading(newReading());
-		assertDifferentFromSaved();
+		assertFalse(ReadingGroup.all().get(0).deepEquals(group));
 
 		group.save();
 		assertSaved();
@@ -50,18 +50,11 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertNotSaved() {
-		assertNull(group.getId());
 		assertTrue(ReadingGroup.all().isEmpty());
 	}
 
 	private void assertSaved() {
-		assertNotNull(group.getId());
 		assertDeepList(ReadingGroup.all(), group);
-	}
-
-	private void assertDifferentFromSaved() {
-		ReadingGroup saved = ReadingGroup.all().get(0);
-		assertFalse(saved.deepEquals(group));
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
