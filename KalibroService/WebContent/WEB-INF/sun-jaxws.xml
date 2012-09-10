@@ -1,27 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<endpoints version="2.0" xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime
-						http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd">
-	<endpoint						  name="KalibroEndpoint"
-							  url-pattern="/KalibroEndpoint/"
-		implementation="org.kalibro.service.KalibroEndpointImpl"/>
-	<endpoint						  name="BaseToolEndpoint"
-							  url-pattern="/BaseToolEndpoint/"
-		implementation="org.kalibro.service.BaseToolEndpointImpl"/>
-	<endpoint						  name="ConfigurationEndpoint"
-							  url-pattern="/ConfigurationEndpoint/"
-		implementation="org.kalibro.service.ConfigurationEndpointImpl"/>
-	<endpoint						  name="MetricConfigurationEndpoint"
-							  url-pattern="/MetricConfigurationEndpoint/"
-		implementation="org.kalibro.service.MetricConfigurationEndpointImpl"/>
-	<endpoint						  name="ProjectEndpoint"
-							  url-pattern="/ProjectEndpoint/"
-		implementation="org.kalibro.service.ProjectEndpointImpl"/>
-	<endpoint						  name="ProjectResultEndpoint"
-							  url-pattern="/ProjectResultEndpoint/"
-		implementation="org.kalibro.service.ProjectResultEndpointImpl"/>
-	<endpoint						  name="ModuleResultEndpoint"
-							  url-pattern="/ModuleResultEndpoint/"
-		implementation="org.kalibro.service.ModuleResultEndpointImpl"/>
+<endpoints xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns="http://java.sun.com/xml/ns/jax-ws/ri/runtime" version="2.0" xsi:schemaLocation="
+           http://java.sun.com/xml/ns/jax-ws/ri/runtime http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd">
+	<endpoint name="BaseToolEndpoint"            url-pattern="/BaseToolEndpoint/"            implementation="org.kalibro.service.BaseToolEndpointImpl"/>
+	<endpoint name="ConfigurationEndpoint"       url-pattern="/ConfigurationEndpoint/"       implementation="org.kalibro.service.ConfigurationEndpointImpl"/>
+	<endpoint name="KalibroEndpoint"             url-pattern="/KalibroEndpoint/"             implementation="org.kalibro.service.KalibroEndpointImpl"/>
+	<endpoint name="MetricConfigurationEndpoint" url-pattern="/MetricConfigurationEndpoint/" implementation="org.kalibro.service.MetricConfigurationEndpointImpl"/>
+	<endpoint name="ModuleResultEndpoint"        url-pattern="/ModuleResultEndpoint/"        implementation="org.kalibro.service.ModuleResultEndpointImpl"/>
+	<endpoint name="ProjectEndpoint"             url-pattern="/ProjectEndpoint/"             implementation="org.kalibro.service.ProjectEndpointImpl"/>
+	<endpoint name="ProjectResultEndpoint"       url-pattern="/ProjectResultEndpoint/"       implementation="org.kalibro.service.ProjectResultEndpointImpl"/>
+	<endpoint name="ReadingEndpoint"             url-pattern="/ReadingEndpoint/"             implementation="org.kalibro.service.ReadingEndpointImpl"/>
+	<endpoint name="ReadingGroupEndpoint"        url-pattern="/ReadingGroupEndpoint/"        implementation="org.kalibro.service.ReadingEndpointImpl"/>
 </endpoints>
