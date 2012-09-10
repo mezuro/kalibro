@@ -1,4 +1,4 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import static org.junit.Assert.assertSame;
 import static org.mockito.Matchers.*;
@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.client.EndpointClient;
-import org.kalibro.client.MetricConfigurationPortDao;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.entities.MetricConfigurationXml;
@@ -17,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({MetricConfigurationPortDao.class, EndpointClient.class})
+@PrepareForTest({MetricConfigurationClientDao.class, EndpointClient.class})
 public class MetricConfigurationPortDaoTest extends TestCase {
 
 	private static final String CONFIGURATION_NAME = "MetricConfigurationPortDaoTest";
@@ -25,7 +23,7 @@ public class MetricConfigurationPortDaoTest extends TestCase {
 	private MetricConfiguration configuration;
 	private MetricConfigurationXml configurationXml;
 
-	private MetricConfigurationPortDao dao;
+	private MetricConfigurationClientDao dao;
 	private MetricConfigurationEndpoint port;
 
 	@Before
@@ -43,7 +41,7 @@ public class MetricConfigurationPortDaoTest extends TestCase {
 
 	private void createSupressedDao() {
 		suppress(constructor(EndpointClient.class, String.class, Class.class));
-		dao = new MetricConfigurationPortDao("");
+		dao = new MetricConfigurationClientDao("");
 
 		port = mock(MetricConfigurationEndpoint.class);
 		Whitebox.setInternalState(dao, "port", port);

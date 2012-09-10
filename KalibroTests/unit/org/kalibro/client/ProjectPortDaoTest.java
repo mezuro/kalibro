@@ -1,4 +1,4 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.client.EndpointClient;
-import org.kalibro.client.ProjectPortDao;
 import org.kalibro.core.model.Project;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.ProjectXml;
@@ -19,14 +17,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ProjectPortDao.class, EndpointClient.class})
+@PrepareForTest({ProjectClientDao.class, EndpointClient.class})
 public class ProjectPortDaoTest extends TestCase {
 
 	private Project project;
 	private ProjectXml projectXml;
 	private RawProjectXml rawProjectXml;
 
-	private ProjectPortDao dao;
+	private ProjectClientDao dao;
 	private ProjectEndpoint port;
 
 	@Before
@@ -45,7 +43,7 @@ public class ProjectPortDaoTest extends TestCase {
 
 	private void createSupressedDao() {
 		suppress(constructor(EndpointClient.class, String.class, Class.class));
-		dao = new ProjectPortDao("");
+		dao = new ProjectClientDao("");
 
 		port = mock(ProjectEndpoint.class);
 		Whitebox.setInternalState(dao, "port", port);

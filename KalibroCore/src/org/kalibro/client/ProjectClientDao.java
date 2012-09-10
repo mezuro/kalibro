@@ -7,9 +7,9 @@ import org.kalibro.core.model.Project;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.RawProjectXml;
 
-class ProjectPortDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
+class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
 
-	protected ProjectPortDao(String serviceAddress) {
+	protected ProjectClientDao(String serviceAddress) {
 		super(serviceAddress, ProjectEndpoint.class);
 	}
 

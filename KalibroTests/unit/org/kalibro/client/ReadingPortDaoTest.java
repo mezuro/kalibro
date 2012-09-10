@@ -1,4 +1,4 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import java.util.Arrays;
 
@@ -7,8 +7,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Reading;
 import org.kalibro.TestCase;
-import org.kalibro.client.EndpointClient;
-import org.kalibro.client.ReadingPortDao;
 import org.kalibro.service.ReadingEndpoint;
 import org.kalibro.service.xml.ReadingXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -16,13 +14,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ReadingPortDao.class, EndpointClient.class})
+@PrepareForTest({ReadingClientDao.class, EndpointClient.class})
 public class ReadingPortDaoTest extends TestCase {
 
 	private Reading reading;
 	private ReadingXml readingXml;
 
-	private ReadingPortDao dao;
+	private ReadingClientDao dao;
 	private ReadingEndpoint port;
 
 	@Before
@@ -40,7 +38,7 @@ public class ReadingPortDaoTest extends TestCase {
 
 	private void createSupressedDao() {
 		suppress(constructor(EndpointClient.class, String.class, Class.class));
-		dao = new ReadingPortDao("");
+		dao = new ReadingClientDao("");
 
 		port = mock(ReadingEndpoint.class);
 		Whitebox.setInternalState(dao, "port", port);

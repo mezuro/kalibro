@@ -9,9 +9,9 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.entities.ModuleResultXml;
 
-class ModuleResultPortDao extends EndpointClient<ModuleResultEndpoint> implements ModuleResultDao {
+class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> implements ModuleResultDao {
 
-	protected ModuleResultPortDao(String serviceAddress) {
+	protected ModuleResultClientDao(String serviceAddress) {
 		super(serviceAddress, ModuleResultEndpoint.class);
 	}
 

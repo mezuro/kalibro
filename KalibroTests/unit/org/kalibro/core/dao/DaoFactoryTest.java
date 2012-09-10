@@ -9,7 +9,7 @@ import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServiceSide;
 import org.kalibro.TestCase;
-import org.kalibro.client.PortDaoFactory;
+import org.kalibro.client.ClientDaoFactory;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -87,8 +87,8 @@ public class DaoFactoryTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreatePortDaoFactoryOnClientSide() throws Exception {
 		String serviceAddress = mockSettings(ServiceSide.CLIENT).getClientSettings().getServiceAddress();
-		daoFactory = mock(PortDaoFactory.class);
-		whenNew(PortDaoFactory.class).withArguments(serviceAddress).thenReturn((PortDaoFactory) daoFactory);
+		daoFactory = mock(ClientDaoFactory.class);
+		whenNew(ClientDaoFactory.class).withArguments(serviceAddress).thenReturn((ClientDaoFactory) daoFactory);
 		verifyFactory();
 	}
 

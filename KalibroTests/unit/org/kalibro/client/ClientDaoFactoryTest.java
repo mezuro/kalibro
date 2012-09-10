@@ -1,4 +1,4 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import static org.junit.Assert.assertSame;
 
@@ -6,61 +6,60 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.client.*;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(PortDaoFactory.class)
-public class PortDaoFactoryTest extends TestCase {
+@PrepareForTest(ClientDaoFactory.class)
+public class ClientDaoFactoryTest extends TestCase {
 
-	private static final String SERVICE_ADDRESS = "PortDaoFactoryTest service address";
+	private static final String SERVICE_ADDRESS = "ClientDaoFactoryTest service address";
 
-	private PortDaoFactory factory;
+	private ClientDaoFactory factory;
 
 	@Before
 	public void setUp() {
-		factory = new PortDaoFactory(SERVICE_ADDRESS);
+		factory = new ClientDaoFactory(SERVICE_ADDRESS);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateBaseToolPortDao() throws Exception {
-		assertSame(prepareDao(BaseToolPortDao.class), factory.createBaseToolDao());
+		assertSame(prepareDao(BaseToolClientDao.class), factory.createBaseToolDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateConfigurationPortDao() throws Exception {
-		assertSame(prepareDao(ConfigurationPortDao.class), factory.createConfigurationDao());
+		assertSame(prepareDao(ConfigurationClientDao.class), factory.createConfigurationDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateMetricConfigurationPortDao() throws Exception {
-		assertSame(prepareDao(MetricConfigurationPortDao.class), factory.createMetricConfigurationDao());
+		assertSame(prepareDao(MetricConfigurationClientDao.class), factory.createMetricConfigurationDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateModuleResultPortDao() throws Exception {
-		assertSame(prepareDao(ModuleResultPortDao.class), factory.createModuleResultDao());
+		assertSame(prepareDao(ModuleResultClientDao.class), factory.createModuleResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateProjectPortDao() throws Exception {
-		assertSame(prepareDao(ProjectPortDao.class), factory.createProjectDao());
+		assertSame(prepareDao(ProjectClientDao.class), factory.createProjectDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateProjectResultPortDao() throws Exception {
-		assertSame(prepareDao(ProjectResultPortDao.class), factory.createProjectResultDao());
+		assertSame(prepareDao(ProjectResultClientDao.class), factory.createProjectResultDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateReadingPortDao() throws Exception {
-		assertSame(prepareDao(ReadingPortDao.class), factory.createReadingDao());
+		assertSame(prepareDao(ReadingClientDao.class), factory.createReadingDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateReadingGroupPortDao() throws Exception {
-		assertSame(prepareDao(ReadingGroupPortDao.class), factory.createReadingGroupDao());
+		assertSame(prepareDao(ReadingGroupClientDao.class), factory.createReadingGroupDao());
 	}
 
 	private <T> T prepareDao(Class<T> daoClass) throws Exception {

@@ -5,9 +5,9 @@ import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
-class MetricConfigurationPortDao extends EndpointClient<MetricConfigurationEndpoint> implements MetricConfigurationDao {
+class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEndpoint> implements MetricConfigurationDao {
 
-	protected MetricConfigurationPortDao(String serviceAddress) {
+	protected MetricConfigurationClientDao(String serviceAddress) {
 		super(serviceAddress, MetricConfigurationEndpoint.class);
 	}
 

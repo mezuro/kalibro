@@ -1,4 +1,4 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import static org.junit.Assert.*;
 
@@ -8,8 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.client.ConfigurationPortDao;
-import org.kalibro.client.EndpointClient;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.service.ConfigurationEndpoint;
@@ -19,13 +17,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ConfigurationPortDao.class, EndpointClient.class})
+@PrepareForTest({ConfigurationClientDao.class, EndpointClient.class})
 public class ConfigurationPortDaoTest extends TestCase {
 
 	private Configuration configuration;
 	private ConfigurationXml configurationXml;
 
-	private ConfigurationPortDao dao;
+	private ConfigurationClientDao dao;
 	private ConfigurationEndpoint port;
 
 	@Before
@@ -43,7 +41,7 @@ public class ConfigurationPortDaoTest extends TestCase {
 
 	private void createSupressedDao() {
 		suppress(constructor(EndpointClient.class, String.class, Class.class));
-		dao = new ConfigurationPortDao("");
+		dao = new ConfigurationClientDao("");
 
 		port = mock(ConfigurationEndpoint.class);
 		Whitebox.setInternalState(dao, "port", port);

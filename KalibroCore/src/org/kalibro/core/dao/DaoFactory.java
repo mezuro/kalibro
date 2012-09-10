@@ -2,7 +2,7 @@ package org.kalibro.core.dao;
 
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
-import org.kalibro.client.PortDaoFactory;
+import org.kalibro.client.ClientDaoFactory;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 
 public abstract class DaoFactory {
@@ -43,7 +43,7 @@ public abstract class DaoFactory {
 		KalibroSettings settings = KalibroSettings.load();
 		String serviceAddress = settings.getClientSettings().getServiceAddress();
 		DatabaseSettings databaseSettings = settings.getServerSettings().getDatabaseSettings();
-		return settings.clientSide() ? new PortDaoFactory(serviceAddress) : new DatabaseDaoFactory(databaseSettings);
+		return settings.clientSide() ? new ClientDaoFactory(serviceAddress) : new DatabaseDaoFactory(databaseSettings);
 	}
 
 	protected abstract BaseToolDao createBaseToolDao();

@@ -8,9 +8,9 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;
 
-class ConfigurationPortDao extends EndpointClient<ConfigurationEndpoint> implements ConfigurationDao {
+class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> implements ConfigurationDao {
 
-	protected ConfigurationPortDao(String serviceAddress) {
+	protected ConfigurationClientDao(String serviceAddress) {
 		super(serviceAddress, ConfigurationEndpoint.class);
 	}
 

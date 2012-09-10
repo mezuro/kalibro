@@ -8,9 +8,9 @@ import org.kalibro.core.dto.ReadingDto;
 import org.kalibro.service.ReadingEndpoint;
 import org.kalibro.service.xml.ReadingXml;
 
-public class ReadingPortDao extends EndpointClient<ReadingEndpoint> implements ReadingDao {
+public class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements ReadingDao {
 
-	public ReadingPortDao(String serviceAddress) {
+	public ReadingClientDao(String serviceAddress) {
 		super(serviceAddress, ReadingEndpoint.class);
 	}
 

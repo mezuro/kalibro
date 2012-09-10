@@ -1,4 +1,4 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import static org.junit.Assert.assertSame;
 
@@ -9,8 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.ReadingGroup;
 import org.kalibro.TestCase;
-import org.kalibro.client.EndpointClient;
-import org.kalibro.client.ReadingGroupPortDao;
 import org.kalibro.service.ReadingGroupEndpoint;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
@@ -19,14 +17,14 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ReadingGroupPortDao.class, EndpointClient.class})
+@PrepareForTest({ReadingGroupClientDao.class, EndpointClient.class})
 public class ReadingGroupPortDaoTest extends TestCase {
 
 	private ReadingGroup group;
 	private ReadingGroupXmlRequest groupRequest;
 	private ReadingGroupXmlResponse groupResponse;
 
-	private ReadingGroupPortDao dao;
+	private ReadingGroupClientDao dao;
 	private ReadingGroupEndpoint port;
 
 	@Before
@@ -45,7 +43,7 @@ public class ReadingGroupPortDaoTest extends TestCase {
 
 	private void createSupressedDao() {
 		suppress(constructor(EndpointClient.class, String.class, Class.class));
-		dao = new ReadingGroupPortDao("");
+		dao = new ReadingGroupClientDao("");
 
 		port = mock(ReadingGroupEndpoint.class);
 		Whitebox.setInternalState(dao, "port", port);
