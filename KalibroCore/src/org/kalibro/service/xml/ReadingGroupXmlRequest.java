@@ -15,7 +15,7 @@ import org.kalibro.core.dto.ReadingGroupDto;
 
 @XmlRootElement(name = "readingGroup")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadingGroupXml extends ReadingGroupDto {
+public class ReadingGroupXmlRequest extends ReadingGroupDto {
 
 	@XmlElement
 	private Long id;
@@ -29,11 +29,11 @@ public class ReadingGroupXml extends ReadingGroupDto {
 	@XmlElement(name = "reading")
 	private Collection<ReadingXml> readings;
 
-	public ReadingGroupXml() {
+	public ReadingGroupXmlRequest() {
 		super();
 	}
 
-	public ReadingGroupXml(ReadingGroup group) {
+	public ReadingGroupXmlRequest(ReadingGroup group) {
 		id = group.getId();
 		name = group.getName();
 		description = group.getDescription();

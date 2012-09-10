@@ -3,7 +3,7 @@ package org.kalibro.service.xml;
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
 
-public class ReadingGroupXmlTest extends XmlTest<ReadingGroup, ReadingGroupXml> {
+public class ReadingGroupXmlRequestTest extends XmlTest<ReadingGroup, ReadingGroupXmlRequest> {
 
 	@Override
 	protected ReadingGroup loadFixture() {
@@ -11,8 +11,8 @@ public class ReadingGroupXmlTest extends XmlTest<ReadingGroup, ReadingGroupXml> 
 	}
 
 	@Override
-	protected Class<ReadingGroupXml> dtoClass() {
-		return ReadingGroupXml.class;
+	protected Class<ReadingGroupXmlRequest> dtoClass() {
+		return ReadingGroupXmlRequest.class;
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
