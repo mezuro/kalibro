@@ -8,6 +8,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.client.EndpointClient;
+import org.kalibro.client.MetricConfigurationPortDao;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.entities.MetricConfigurationXml;

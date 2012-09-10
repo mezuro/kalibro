@@ -48,17 +48,25 @@ public class EndpointClientTest extends TestCase {
 		when(service.getPort(any(QName.class), eq(TestEndpoint.class))).thenReturn(port);
 
 		TestEndpointClient client = new TestEndpointClient("http://localhost:8080/KalibroService/");
+		assertSame(port, client.port);
 
+		verifyCreatedService("http://localhost:8080/KalibroService/TestEndpoint/?wsdl", "TestEndpointImplService");
+		verifyCreatedPort("TestEndpointImplPort");
+	}
+
+	private void verifyCreatedService(String wsdlLocation, String qName) {
 		ArgumentCaptor<URL> urlCaptor = ArgumentCaptor.forClass(URL.class);
 		ArgumentCaptor<QName> qNameCaptor = ArgumentCaptor.forClass(QName.class);
 		verifyStatic();
 		Service.create(urlCaptor.capture(), qNameCaptor.capture());
-		assertEquals("http://localhost:8080/KalibroService/TestEndpoint/?wsdl", urlCaptor.getValue().toExternalForm());
-		assertQName("TestEndpointImplService", qNameCaptor.getValue());
+		assertEquals(wsdlLocation, urlCaptor.getValue().toExternalForm());
+		assertQName(qName, qNameCaptor.getValue());
+	}
 
+	private void verifyCreatedPort(String qName) {
+		ArgumentCaptor<QName> qNameCaptor = ArgumentCaptor.forClass(QName.class);
 		verify(service).getPort(qNameCaptor.capture(), eq(TestEndpoint.class));
-		assertQName("TestEndpointImplPort", qNameCaptor.getValue());
-		assertSame(port, client.port);
+		assertQName(qName, qNameCaptor.getValue());
 	}
 
 	private void assertQName(String localPart, QName qName) {

@@ -1,9 +1,8 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import java.util.List;
 
 import org.kalibro.Reading;
-import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.ReadingDao;
 import org.kalibro.core.dto.ReadingDto;
 import org.kalibro.service.ReadingEndpoint;

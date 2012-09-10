@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.client.EndpointClient;
+import org.kalibro.client.ProjectPortDao;
 import org.kalibro.core.model.Project;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.ProjectXml;

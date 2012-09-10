@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.client.EndpointClient;
+import org.kalibro.client.ProjectResultPortDao;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.service.ProjectResultEndpoint;

@@ -10,6 +10,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.ReadingGroup;
 import org.kalibro.TestCase;
 import org.kalibro.client.EndpointClient;
+import org.kalibro.client.ReadingGroupPortDao;
 import org.kalibro.service.ReadingGroupEndpoint;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;

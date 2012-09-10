@@ -9,7 +9,7 @@ import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServiceSide;
 import org.kalibro.TestCase;
-import org.kalibro.client.dao.PortDaoFactory;
+import org.kalibro.client.PortDaoFactory;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

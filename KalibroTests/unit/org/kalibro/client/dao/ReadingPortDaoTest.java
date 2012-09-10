@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.Reading;
 import org.kalibro.TestCase;
 import org.kalibro.client.EndpointClient;
+import org.kalibro.client.ReadingPortDao;
 import org.kalibro.service.ReadingEndpoint;
 import org.kalibro.service.xml.ReadingXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;

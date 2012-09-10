@@ -8,7 +8,12 @@ import javax.xml.ws.Service;
 
 import org.kalibro.KalibroException;
 
-public abstract class EndpointClient<PORT> {
+/**
+ * Abstract client for Kalibro Service end points.
+ * 
+ * @author Carlos Morais
+ */
+abstract class EndpointClient<PORT> {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 

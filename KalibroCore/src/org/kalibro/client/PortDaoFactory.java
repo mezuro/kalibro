@@ -1,4 +1,4 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import org.kalibro.core.dao.*;
 

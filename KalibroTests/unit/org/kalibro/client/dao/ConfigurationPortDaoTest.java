@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
+import org.kalibro.client.ConfigurationPortDao;
 import org.kalibro.client.EndpointClient;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;

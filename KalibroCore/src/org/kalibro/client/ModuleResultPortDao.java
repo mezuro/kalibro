@@ -1,10 +1,9 @@
-package org.kalibro.client.dao;
+package org.kalibro.client;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.kalibro.client.EndpointClient;
 import org.kalibro.core.dao.ModuleResultDao;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;

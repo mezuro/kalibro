@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.client.EndpointClient;
+import org.kalibro.client.ModuleResultPortDao;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.entities.ModuleResultXml;

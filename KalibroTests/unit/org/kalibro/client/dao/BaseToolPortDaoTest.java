@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
+import org.kalibro.client.BaseToolPortDao;
 import org.kalibro.client.EndpointClient;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.service.BaseToolEndpoint;

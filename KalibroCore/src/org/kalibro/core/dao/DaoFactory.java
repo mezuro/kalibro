@@ -2,7 +2,7 @@ package org.kalibro.core.dao;
 
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
-import org.kalibro.client.dao.PortDaoFactory;
+import org.kalibro.client.PortDaoFactory;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 
 public abstract class DaoFactory {
