@@ -1,5 +1,7 @@
 package org.kalibro.service;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -51,7 +53,8 @@ public class ReadingEndpointImplTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveReading() {
-		endpoint.save(readingXml);
+		when(reading.getId()).thenReturn(42L);
+		assertEquals(42L, endpoint.save(readingXml).longValue());
 		verify(dao).save(reading);
 	}
 

@@ -1,5 +1,7 @@
 package org.kalibro.service;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
 import org.junit.Before;
@@ -54,7 +56,8 @@ public class ReadingGroupEndpointImplTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveReadingGroup() {
-		endpoint.save(groupRequest);
+		when(group.getId()).thenReturn(42L);
+		assertEquals(42L, endpoint.save(groupRequest).longValue());
 		verify(dao).save(group);
 	}
 

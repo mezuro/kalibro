@@ -18,7 +18,8 @@ public interface ReadingGroupEndpoint {
 	List<ReadingGroupXmlResponse> all();
 
 	@WebMethod
-	void save(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group);
+	@WebResult(name = "readingGroupId")
+	Long save(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group);
 
 	@WebMethod
 	void delete(@WebParam(name = "groupId") Long groupId);

@@ -36,7 +36,7 @@ public class ReadingDatabaseDaoTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetReadingsOfAGroup() {
+	public void shouldGetReadingsOfGroup() {
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
 		String queryString = "SELECT reading FROM Reading reading WHERE reading.group.id = :groupId";
 		doReturn(query).when(dao).createRecordQuery(queryString);
