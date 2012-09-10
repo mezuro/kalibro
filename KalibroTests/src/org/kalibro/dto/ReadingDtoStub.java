@@ -13,22 +13,22 @@ class ReadingDtoStub extends ReadingDto {
 	}
 
 	@Override
-	protected Long id() {
+	public Long id() {
 		return reading.getId();
 	}
 
 	@Override
-	protected String label() {
+	public String label() {
 		return reading.getLabel();
 	}
 
 	@Override
-	protected Double grade() {
+	public Double grade() {
 		return reading.getGrade();
 	}
 
 	@Override
-	protected Color color() {
+	public Color color() {
 		return reading.getColor();
 	}
 }

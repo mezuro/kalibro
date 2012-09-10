@@ -18,11 +18,11 @@ public abstract class ReadingDto extends DataTransferObject<Reading> {
 		return reading;
 	}
 
-	protected abstract Long id();
+	public abstract Long id();
 
-	protected abstract String label();
+	public abstract String label();
 
-	protected abstract Double grade();
+	public abstract Double grade();
 
-	protected abstract Color color();
+	public abstract Color color();
 }

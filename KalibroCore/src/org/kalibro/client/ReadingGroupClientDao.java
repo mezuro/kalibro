@@ -25,8 +25,8 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 	}
 
 	@Override
-	public void save(ReadingGroup group) {
-		group.setId(port.save(new ReadingGroupXmlRequest(group)));
+	public Long save(ReadingGroup group) {
+		return port.save(new ReadingGroupXmlRequest(group));
 	}
 
 	@Override

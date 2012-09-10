@@ -23,13 +23,13 @@ public abstract class ReadingGroupDto extends DataTransferObject<ReadingGroup> {
 		return group;
 	}
 
-	protected abstract Long id();
+	public abstract Long id();
 
-	protected abstract String name();
+	public abstract String name();
 
-	protected abstract String description();
+	public abstract String description();
 
-	protected List<Reading> readings() {
+	public List<Reading> readings() {
 		return (List<Reading>) DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", id());
 	}
 }

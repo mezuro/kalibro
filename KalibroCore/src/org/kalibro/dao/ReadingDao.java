@@ -13,7 +13,7 @@ public interface ReadingDao {
 
 	List<Reading> readingsOf(Long groupId);
 
-	void save(Reading reading);
+	Long save(Reading reading);
 
 	void delete(Long readingId);
 }

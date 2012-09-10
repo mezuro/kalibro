@@ -54,17 +54,17 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	}
 
 	@Override
-	protected Long id() {
+	public Long id() {
 		return id;
 	}
 
 	@Override
-	protected String name() {
+	public String name() {
 		return name;
 	}
 
 	@Override
-	protected String description() {
+	public String description() {
 		return description;
 	}
 }

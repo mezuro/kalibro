@@ -56,22 +56,22 @@ public class ReadingRecord extends ReadingDto {
 	}
 
 	@Override
-	protected Long id() {
+	public Long id() {
 		return id;
 	}
 
 	@Override
-	protected String label() {
+	public String label() {
 		return label;
 	}
 
 	@Override
-	protected Double grade() {
+	public Double grade() {
 		return Double.longBitsToDouble(grade);
 	}
 
 	@Override
-	protected Color color() {
+	public Color color() {
 		return new Color(color);
 	}
 }

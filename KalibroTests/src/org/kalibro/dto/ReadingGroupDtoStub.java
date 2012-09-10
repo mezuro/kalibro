@@ -11,17 +11,17 @@ class ReadingGroupDtoStub extends ReadingGroupDto {
 	}
 
 	@Override
-	protected Long id() {
+	public Long id() {
 		return group.getId();
 	}
 
 	@Override
-	protected String name() {
+	public String name() {
 		return group.getName();
 	}
 
 	@Override
-	protected String description() {
+	public String description() {
 		return group.getDescription();
 	}
 }

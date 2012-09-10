@@ -4,11 +4,16 @@ import java.util.List;
 
 import org.kalibro.Reading;
 import org.kalibro.dao.ReadingDao;
-import org.kalibro.dto.ReadingDto;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ReadingEndpoint;
 import org.kalibro.service.xml.ReadingXml;
 
-public class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements ReadingDao {
+/**
+ * {@link ReadingEndpoint} client implementation of {@link ReadingDao}.
+ * 
+ * @author Carlos Morais
+ */
+class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements ReadingDao {
 
 	public ReadingClientDao(String serviceAddress) {
 		super(serviceAddress, ReadingEndpoint.class);
@@ -16,12 +21,12 @@ public class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements
 
 	@Override
 	public List<Reading> readingsOf(Long groupId) {
-		return ReadingDto.convert(port.readingsOf(groupId));
+		return DataTransferObject.convert(port.readingsOf(groupId));
 	}
 
 	@Override
-	public void save(Reading reading) {
-		reading.setId(port.save(new ReadingXml(reading)));
+	public Long save(Reading reading) {
+		return port.save(new ReadingXml(reading));
 	}
 
 	@Override

@@ -29,10 +29,9 @@ public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> impl
 	}
 
 	@Override
-	public void save(Reading reading) {
+	public Long save(Reading reading) {
 		ReadingRecord record = new ReadingRecord(reading, reading.getGroupId());
-		Reading merged = recordManager.save(record).convert();
-		reading.setId(merged.getId());
+		return recordManager.save(record).id();
 	}
 
 	@Override

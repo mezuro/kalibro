@@ -15,7 +15,7 @@ public interface ReadingGroupDao {
 
 	ReadingGroup get(Long groupId);
 
-	void save(ReadingGroup group);
+	Long save(ReadingGroup group);
 
 	void delete(Long groupId);
 }
