@@ -6,8 +6,8 @@ import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.Ignore;
 import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
-import org.kalibro.core.dao.DaoFactory;
-import org.kalibro.core.dao.ReadingDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ReadingDao;
 
 /**
  * Interpretation of a metric result.

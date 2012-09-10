@@ -10,9 +10,9 @@ import javax.persistence.NoResultException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.dao.ProjectDao;
 
 public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 

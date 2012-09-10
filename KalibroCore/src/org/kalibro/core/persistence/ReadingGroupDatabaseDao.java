@@ -3,8 +3,8 @@ package org.kalibro.core.persistence;
 import java.util.List;
 
 import org.kalibro.ReadingGroup;
-import org.kalibro.core.dao.ReadingGroupDao;
 import org.kalibro.core.persistence.record.ReadingGroupRecord;
+import org.kalibro.dao.ReadingGroupDao;
 
 /**
  * Database access implementation for {@link ReadingGroupDao}.

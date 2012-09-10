@@ -11,8 +11,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
-import org.kalibro.core.dto.ReadingDto;
-import org.kalibro.core.dto.ReadingGroupDto;
+import org.kalibro.dto.ReadingDto;
+import org.kalibro.dto.ReadingGroupDto;
 
 @XmlRootElement(name = "readingGroup")
 @XmlAccessorType(XmlAccessType.FIELD)

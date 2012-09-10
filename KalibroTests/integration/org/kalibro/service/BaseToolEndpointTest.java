@@ -6,8 +6,8 @@ import java.net.MalformedURLException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.dao.BaseToolDaoFake;
 import org.kalibro.core.model.BaseTool;
+import org.kalibro.dao.BaseToolDaoFake;
 
 public class BaseToolEndpointTest extends KalibroServiceTestCase {
 

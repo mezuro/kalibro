@@ -4,9 +4,9 @@ import java.util.Date;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.dao.ProjectResultDao;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.record.ProjectResultRecord;
+import org.kalibro.dao.ProjectResultDao;
 
 class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultRecord> implements ProjectResultDao {
 

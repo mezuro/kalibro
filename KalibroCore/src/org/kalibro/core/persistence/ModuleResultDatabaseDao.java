@@ -5,12 +5,12 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.dao.ModuleResultDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.persistence.record.MetricResultRecord;
+import org.kalibro.dao.ModuleResultDao;
 
 public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements ModuleResultDao {
 

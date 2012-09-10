@@ -8,8 +8,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.ReadingGroup;
-import org.kalibro.core.dao.DaoFactory;
-import org.kalibro.core.dao.ReadingGroupDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
 

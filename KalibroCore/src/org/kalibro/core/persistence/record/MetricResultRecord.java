@@ -6,8 +6,8 @@ import java.util.List;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.*;
+import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "MetricResult")
 @PrimaryKey(columns = {

@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.persistence.*;
 
 import org.kalibro.Reading;
-import org.kalibro.core.dto.ReadingDto;
+import org.kalibro.dto.ReadingDto;
 
 /**
  * Java Persistence API entity for {@link Reading}.

@@ -10,7 +10,7 @@ import javax.persistence.Persistence;
 
 import org.kalibro.DatabaseSettings;
 import org.kalibro.core.Environment;
-import org.kalibro.core.dao.DaoFactory;
+import org.kalibro.dao.DaoFactory;
 
 public class DatabaseDaoFactory extends DaoFactory {
 

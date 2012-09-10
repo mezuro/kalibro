@@ -5,9 +5,9 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import org.kalibro.Reading;
-import org.kalibro.core.dao.ReadingDao;
-import org.kalibro.core.dto.ReadingDto;
 import org.kalibro.core.persistence.record.ReadingRecord;
+import org.kalibro.dao.ReadingDao;
+import org.kalibro.dto.ReadingDto;
 
 /**
  * Database access implementation for {@link ReadingDao}.

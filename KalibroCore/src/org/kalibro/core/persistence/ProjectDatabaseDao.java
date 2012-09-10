@@ -5,11 +5,11 @@ import java.util.List;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.io.FileUtils;
-import org.kalibro.core.dao.ConfigurationDao;
-import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.record.ProjectRecord;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.ProjectDao;
 
 class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
 

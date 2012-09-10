@@ -8,11 +8,11 @@ import java.net.MalformedURLException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.dao.ConfigurationDaoFake;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.dao.ConfigurationDaoFake;
 import org.kalibro.service.entities.ConfigurationXml;
 
 public class ConfigurationEndpointTest extends KalibroServiceTestCase {

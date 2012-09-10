@@ -1,6 +1,6 @@
 package org.kalibro.client;
 
-import org.kalibro.core.dao.*;
+import org.kalibro.dao.*;
 
 /**
  * Factory which creates data access objects that work as clients to Kalibro Service end points.

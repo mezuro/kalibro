@@ -3,8 +3,8 @@ package org.kalibro.client;
 import java.util.List;
 
 import org.kalibro.Reading;
-import org.kalibro.core.dao.ReadingDao;
-import org.kalibro.core.dto.ReadingDto;
+import org.kalibro.dao.ReadingDao;
+import org.kalibro.dto.ReadingDto;
 import org.kalibro.service.ReadingEndpoint;
 import org.kalibro.service.xml.ReadingXml;
 

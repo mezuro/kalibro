@@ -8,9 +8,9 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.dao.ProjectResultDao;
-import org.kalibro.core.dao.ProjectResultDaoFake;
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProjectResultDaoFake;
 
 public class ProjectResultEndpointTest extends KalibroServiceTestCase {
 

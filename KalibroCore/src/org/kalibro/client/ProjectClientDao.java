@@ -2,8 +2,8 @@ package org.kalibro.client;
 
 import java.util.List;
 
-import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Project;
+import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.RawProjectXml;
 

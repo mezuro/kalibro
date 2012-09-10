@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Reading;
-import org.kalibro.core.dto.ReadingDto;
+import org.kalibro.dto.ReadingDto;
 
 @XmlRootElement(name = "reading")
 @XmlAccessorType(XmlAccessType.FIELD)

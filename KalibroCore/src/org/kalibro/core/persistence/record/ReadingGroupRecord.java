@@ -7,7 +7,7 @@ import javax.persistence.*;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
-import org.kalibro.core.dto.ReadingGroupDto;
+import org.kalibro.dto.ReadingGroupDto;
 
 /**
  * Java Persistence API entity for {@link ReadingGroup}.

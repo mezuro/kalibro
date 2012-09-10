@@ -8,9 +8,9 @@ import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.KalibroException;
-import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "ProjectResult")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date")})

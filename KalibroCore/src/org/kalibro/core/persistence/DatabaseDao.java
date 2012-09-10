@@ -7,8 +7,8 @@ import javax.persistence.Entity;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.util.Identifier;
+import org.kalibro.dto.DataTransferObject;
 
 abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 

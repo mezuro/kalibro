@@ -6,12 +6,12 @@ import java.util.Collection;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleNode;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Module")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date"), @Column(name = "name")})

@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.NativeMetric;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "MetricResult")
 @XmlAccessorType(XmlAccessType.FIELD)

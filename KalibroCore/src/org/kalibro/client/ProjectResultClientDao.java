@@ -3,8 +3,8 @@ package org.kalibro.client;
 import java.util.Date;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.dao.ProjectResultDao;
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.service.ProjectResultEndpoint;
 
 class ProjectResultClientDao extends EndpointClient<ProjectResultEndpoint> implements ProjectResultDao {

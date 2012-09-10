@@ -3,8 +3,8 @@ package org.kalibro.core.persistence.record;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Metric;
+import org.kalibro.dto.DataTransferObject;
 
 @MappedSuperclass
 public abstract class MetricRecord<METRIC extends Metric> extends DataTransferObject<METRIC> {

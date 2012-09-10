@@ -3,8 +3,8 @@ package org.kalibro.client;
 import java.util.List;
 
 import org.kalibro.ReadingGroup;
-import org.kalibro.core.dao.ReadingGroupDao;
-import org.kalibro.core.dto.ReadingGroupDto;
+import org.kalibro.dao.ReadingGroupDao;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ReadingGroupEndpoint;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 
@@ -21,7 +21,7 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 
 	@Override
 	public List<ReadingGroup> all() {
-		return ReadingGroupDto.convert(port.all());
+		return DataTransferObject.convert(port.all());
 	}
 
 	@Override

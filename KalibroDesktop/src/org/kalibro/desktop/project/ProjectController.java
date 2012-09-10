@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.swing.JDesktopPane;
 
-import org.kalibro.core.dao.DaoFactory;
-import org.kalibro.core.dao.ProjectDao;
 import org.kalibro.core.model.Project;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProjectDao;
 import org.kalibro.desktop.CrudController;
 
 public class ProjectController extends CrudController<Project> {

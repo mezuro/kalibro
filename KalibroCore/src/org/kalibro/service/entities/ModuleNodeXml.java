@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.ModuleNode;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "ModuleNode")
 @XmlAccessorType(XmlAccessType.FIELD)
