@@ -7,7 +7,7 @@ import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
 
 @Entity(name = "Repository")
-public class RepositoryRecord implements DataTransferObject<Repository> {
+public class RepositoryRecord extends DataTransferObject<Repository> {
 
 	@Id
 	@OneToOne(optional = false)

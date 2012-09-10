@@ -8,7 +8,12 @@ import org.kalibro.core.dto.ReadingGroupDto;
 import org.kalibro.service.ReadingGroupEndpoint;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 
-public class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> implements ReadingGroupDao {
+/**
+ * {@link ReadingGroupEndpoint} client implementation of {@link ReadingGroupDao}.
+ * 
+ * @author Carlos Morais
+ */
+class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> implements ReadingGroupDao {
 
 	public ReadingGroupClientDao(String serviceAddress) {
 		super(serviceAddress, ReadingGroupEndpoint.class);

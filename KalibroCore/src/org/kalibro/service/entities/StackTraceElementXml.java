@@ -8,7 +8,7 @@ import org.kalibro.core.dto.DataTransferObject;
 
 @XmlRootElement(name = "StackTraceElement")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StackTraceElementXml implements DataTransferObject<StackTraceElement> {
+public class StackTraceElementXml extends DataTransferObject<StackTraceElement> {
 
 	private String declaringClass;
 	private String methodName;

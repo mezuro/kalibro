@@ -14,7 +14,7 @@ import org.kalibro.core.model.enums.Statistic;
 
 @XmlRootElement(name = "MetricConfiguration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricConfigurationXml implements DataTransferObject<MetricConfiguration> {
+public class MetricConfigurationXml extends DataTransferObject<MetricConfiguration> {
 
 	@XmlElement(required = true)
 	private MetricXml<?> metric;

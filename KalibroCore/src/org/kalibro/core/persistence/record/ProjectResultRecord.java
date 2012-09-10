@@ -14,7 +14,7 @@ import org.kalibro.core.model.enums.ProjectState;
 
 @Entity(name = "ProjectResult")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date")})
-public class ProjectResultRecord implements DataTransferObject<ProjectResult> {
+public class ProjectResultRecord extends DataTransferObject<ProjectResult> {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "project", nullable = false, referencedColumnName = "id")

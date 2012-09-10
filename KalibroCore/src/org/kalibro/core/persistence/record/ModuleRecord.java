@@ -15,7 +15,7 @@ import org.kalibro.core.model.enums.Granularity;
 
 @Entity(name = "Module")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date"), @Column(name = "name")})
-public class ModuleRecord implements DataTransferObject<ModuleNode> {
+public class ModuleRecord extends DataTransferObject<ModuleNode> {
 
 	@ManyToOne(optional = false)
 	@JoinColumns({

@@ -10,7 +10,7 @@ import org.kalibro.core.model.Project;
 
 @XmlRootElement(name = "Project")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RawProjectXml implements DataTransferObject<Project> {
+public class RawProjectXml extends DataTransferObject<Project> {
 
 	@XmlElement(required = true)
 	private String name;

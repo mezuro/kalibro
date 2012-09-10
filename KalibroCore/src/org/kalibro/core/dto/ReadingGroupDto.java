@@ -1,7 +1,5 @@
 package org.kalibro.core.dto;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import org.kalibro.Reading;
@@ -13,14 +11,7 @@ import org.kalibro.core.dao.ReadingDao;
  * 
  * @author Carlos Morais
  */
-public abstract class ReadingGroupDto implements DataTransferObject<ReadingGroup> {
-
-	public static List<ReadingGroup> convert(Collection<? extends ReadingGroupDto> groups) {
-		List<ReadingGroup> converted = new ArrayList<ReadingGroup>();
-		for (ReadingGroupDto group : groups)
-			converted.add(group.convert());
-		return converted;
-	}
+public abstract class ReadingGroupDto extends DataTransferObject<ReadingGroup> {
 
 	@Override
 	public ReadingGroup convert() {

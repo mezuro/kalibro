@@ -10,7 +10,7 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 
 @Entity(name = "Project")
-public class ProjectRecord implements DataTransferObject<Project> {
+public class ProjectRecord extends DataTransferObject<Project> {
 
 	@Id
 	@GeneratedValue

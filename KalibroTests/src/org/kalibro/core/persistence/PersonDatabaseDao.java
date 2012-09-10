@@ -13,7 +13,7 @@ class PersonDatabaseDao extends DatabaseDao<Person, PersonRecord> {
 	}
 
 	@Entity(name = "Person")
-	class PersonRecord implements DataTransferObject<Person> {
+	class PersonRecord extends DataTransferObject<Person> {
 
 		@Override
 		public Person convert() {

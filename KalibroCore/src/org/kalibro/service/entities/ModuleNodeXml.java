@@ -13,7 +13,7 @@ import org.kalibro.core.model.ModuleNode;
 
 @XmlRootElement(name = "ModuleNode")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModuleNodeXml implements DataTransferObject<ModuleNode> {
+public class ModuleNodeXml extends DataTransferObject<ModuleNode> {
 
 	private ModuleXml module;
 

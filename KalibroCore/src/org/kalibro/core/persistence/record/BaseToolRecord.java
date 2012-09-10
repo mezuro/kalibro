@@ -15,7 +15,7 @@ import org.kalibro.core.model.NativeMetric;
 
 @Entity(name = "BaseTool")
 @Table(name = "BASE_TOOL")
-public class BaseToolRecord implements DataTransferObject<BaseTool> {
+public class BaseToolRecord extends DataTransferObject<BaseTool> {
 
 	@Id
 	@Column(name = "name", nullable = false)

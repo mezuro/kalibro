@@ -10,7 +10,7 @@ import org.kalibro.core.model.enums.Granularity;
 
 @XmlRootElement(name = "Module")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModuleXml implements DataTransferObject<Module> {
+public class ModuleXml extends DataTransferObject<Module> {
 
 	private String name;
 	private Granularity granularity;

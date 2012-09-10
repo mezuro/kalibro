@@ -7,7 +7,7 @@ import org.kalibro.core.dto.DataTransferObject;
 import org.kalibro.core.model.Metric;
 
 @MappedSuperclass
-public abstract class MetricRecord<METRIC extends Metric> implements DataTransferObject<METRIC> {
+public abstract class MetricRecord<METRIC extends Metric> extends DataTransferObject<METRIC> {
 
 	@Column(name = "name", nullable = false)
 	protected String name;

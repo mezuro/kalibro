@@ -15,7 +15,7 @@ import org.kalibro.core.model.*;
 	@Column(name = "date"),
 	@Column(name = "moduleName"),
 	@Column(name = "metricName")})
-public class MetricResultRecord implements DataTransferObject<MetricResult> {
+public class MetricResultRecord extends DataTransferObject<MetricResult> {
 
 	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, ProjectResult projectResult) {
 		List<MetricResultRecord> records = new ArrayList<MetricResultRecord>();

@@ -12,7 +12,7 @@ import org.kalibro.core.model.enums.Statistic;
 
 @Entity(name = "MetricConfiguration")
 @PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName")})
-public class MetricConfigurationRecord implements DataTransferObject<MetricConfiguration> {
+public class MetricConfigurationRecord extends DataTransferObject<MetricConfiguration> {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "id")

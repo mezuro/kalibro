@@ -12,7 +12,7 @@ import org.kalibro.core.model.enums.ProjectState;
 
 @XmlRootElement(name = "ProjectResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectResultXml implements DataTransferObject<ProjectResult> {
+public class ProjectResultXml extends DataTransferObject<ProjectResult> {
 
 	private ProjectXml project;
 	private Date date;

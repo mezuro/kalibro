@@ -10,7 +10,7 @@ import org.kalibro.core.model.Range;
 
 @Entity(name = "\"Range\"")
 @PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName"), @Column(name = "beginning")})
-public class RangeRecord implements DataTransferObject<Range> {
+public class RangeRecord extends DataTransferObject<Range> {
 
 	@ManyToOne(optional = false)
 	@JoinColumns({

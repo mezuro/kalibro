@@ -12,7 +12,7 @@ import org.kalibro.core.model.Range;
 
 @XmlRootElement(name = "Range")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RangeXml implements DataTransferObject<Range> {
+public class RangeXml extends DataTransferObject<Range> {
 
 	@XmlElement(required = true)
 	private Double beginning;

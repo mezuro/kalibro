@@ -16,7 +16,7 @@ import org.kalibro.core.model.NativeMetric;
 
 @XmlRootElement(name = "BaseTool")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseToolXml implements DataTransferObject<BaseTool> {
+public class BaseToolXml extends DataTransferObject<BaseTool> {
 
 	private String name;
 	private String description;

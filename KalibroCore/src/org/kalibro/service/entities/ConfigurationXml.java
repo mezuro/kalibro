@@ -14,7 +14,7 @@ import org.kalibro.core.model.MetricConfiguration;
 
 @XmlRootElement(name = "Configuration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConfigurationXml implements DataTransferObject<Configuration> {
+public class ConfigurationXml extends DataTransferObject<Configuration> {
 
 	private Long id;
 

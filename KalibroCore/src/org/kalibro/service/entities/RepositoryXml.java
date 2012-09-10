@@ -11,7 +11,7 @@ import org.kalibro.core.model.enums.RepositoryType;
 
 @XmlRootElement(name = "Repository")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RepositoryXml implements DataTransferObject<Repository> {
+public class RepositoryXml extends DataTransferObject<Repository> {
 
 	@XmlElement(required = true)
 	private RepositoryType type;

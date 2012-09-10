@@ -13,7 +13,7 @@ import org.kalibro.core.dto.DataTransferObject;
 
 @XmlRootElement(name = "Error")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorXml implements DataTransferObject<Throwable> {
+public class ErrorXml extends DataTransferObject<Throwable> {
 
 	private String errorClass;
 

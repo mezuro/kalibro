@@ -11,7 +11,7 @@ import org.kalibro.core.model.enums.Granularity;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({CompoundMetricXml.class, NativeMetricXml.class})
-public abstract class MetricXml<METRIC extends Metric> implements DataTransferObject<METRIC> {
+public abstract class MetricXml<METRIC extends Metric> extends DataTransferObject<METRIC> {
 
 	@XmlElement(required = true)
 	protected String name;

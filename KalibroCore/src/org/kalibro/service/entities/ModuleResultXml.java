@@ -16,7 +16,7 @@ import org.kalibro.core.model.ModuleResult;
 
 @XmlRootElement(name = "ModuleResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModuleResultXml implements DataTransferObject<ModuleResult> {
+public class ModuleResultXml extends DataTransferObject<ModuleResult> {
 
 	private ModuleXml module;
 	private Date date;
