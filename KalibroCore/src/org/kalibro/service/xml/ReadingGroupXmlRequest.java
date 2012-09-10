@@ -11,6 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
+import org.kalibro.core.dto.ReadingDto;
 import org.kalibro.core.dto.ReadingGroupDto;
 
 @XmlRootElement(name = "readingGroup")
@@ -63,9 +64,6 @@ public class ReadingGroupXmlRequest extends ReadingGroupDto {
 
 	@Override
 	protected List<Reading> readings() {
-		List<Reading> converted = new ArrayList<Reading>();
-		for (ReadingXml reading : readings)
-			converted.add(reading.convert());
-		return converted;
+		return ReadingDto.convert(readings);
 	}
 }

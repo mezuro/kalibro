@@ -1,12 +1,12 @@
 package org.kalibro.core.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.TypedQuery;
 
 import org.kalibro.Reading;
 import org.kalibro.core.dao.ReadingDao;
+import org.kalibro.core.dto.ReadingDto;
 import org.kalibro.core.persistence.record.ReadingGroupRecord;
 import org.kalibro.core.persistence.record.ReadingRecord;
 
@@ -26,11 +26,7 @@ public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> impl
 		String queryString = "SELECT reading FROM Reading reading WHERE reading.group.id = :groupId";
 		TypedQuery<ReadingRecord> query = createRecordQuery(queryString);
 		query.setParameter("groupId", groupId);
-
-		List<Reading> readings = new ArrayList<Reading>();
-		for (ReadingRecord record : query.getResultList())
-			readings.add(record.convert());
-		return readings;
+		return ReadingDto.convert(query.getResultList());
 	}
 
 	@Override
