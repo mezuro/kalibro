@@ -36,6 +36,10 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 		super();
 	}
 
+	public ReadingGroupRecord(Long id) {
+		this.id = id;
+	}
+
 	public ReadingGroupRecord(ReadingGroup readingGroup) {
 		id = readingGroup.getId();
 		name = readingGroup.getName();

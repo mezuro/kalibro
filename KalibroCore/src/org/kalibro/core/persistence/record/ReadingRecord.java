@@ -40,7 +40,11 @@ public class ReadingRecord extends ReadingDto {
 	}
 
 	public ReadingRecord(Reading reading) {
-		this(reading, null);
+		this(reading, (Long) null);
+	}
+
+	public ReadingRecord(Reading reading, Long groupId) {
+		this(reading, new ReadingGroupRecord(groupId));
 	}
 
 	public ReadingRecord(Reading reading, ReadingGroupRecord group) {

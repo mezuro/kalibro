@@ -8,9 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Reading;
-import org.kalibro.ReadingGroup;
 import org.kalibro.TestCase;
-import org.kalibro.core.persistence.record.ReadingGroupRecord;
 import org.kalibro.core.persistence.record.ReadingRecord;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -48,11 +46,8 @@ public class ReadingDatabaseDaoTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveAndMerge() throws Exception {
-		ReadingGroup group = mock(ReadingGroup.class);
-		ReadingGroupRecord groupRecord = mock(ReadingGroupRecord.class);
-		when(reading.getGroup()).thenReturn(group);
-		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(groupRecord);
-		whenNew(ReadingRecord.class).withArguments(reading, groupRecord).thenReturn(record);
+		when(reading.getGroupId()).thenReturn(28L);
+		whenNew(ReadingRecord.class).withArguments(reading, 28L).thenReturn(record);
 		when(recordManager.save(record)).thenReturn(record);
 		when(reading.getId()).thenReturn(42L);
 

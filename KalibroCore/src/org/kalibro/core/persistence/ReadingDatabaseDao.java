@@ -7,7 +7,6 @@ import javax.persistence.TypedQuery;
 import org.kalibro.Reading;
 import org.kalibro.core.dao.ReadingDao;
 import org.kalibro.core.dto.ReadingDto;
-import org.kalibro.core.persistence.record.ReadingGroupRecord;
 import org.kalibro.core.persistence.record.ReadingRecord;
 
 /**
@@ -31,7 +30,7 @@ public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> impl
 
 	@Override
 	public void save(Reading reading) {
-		ReadingRecord record = new ReadingRecord(reading, new ReadingGroupRecord(reading.getGroup()));
+		ReadingRecord record = new ReadingRecord(reading, reading.getGroupId());
 		Reading merged = recordManager.save(record).convert();
 		reading.setId(merged.getId());
 	}

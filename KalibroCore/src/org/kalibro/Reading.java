@@ -77,8 +77,8 @@ public class Reading extends AbstractEntity<Reading> {
 			throw new KalibroException("Reading with grade " + getGrade() + " already exists in the group.");
 	}
 
-	public ReadingGroup getGroup() {
-		return group;
+	public Long getGroupId() {
+		return group.getId();
 	}
 
 	protected void setGroup(ReadingGroup group) {

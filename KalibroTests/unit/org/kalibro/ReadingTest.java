@@ -41,7 +41,6 @@ public class ReadingTest extends TestCase {
 		assertEquals("", reading.getLabel());
 		assertDoubleEquals(0.0, reading.getGrade());
 		assertEquals(Color.WHITE, reading.getColor());
-		assertNull(reading.getGroup());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
