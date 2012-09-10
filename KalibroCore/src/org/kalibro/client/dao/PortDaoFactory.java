@@ -42,13 +42,11 @@ public class PortDaoFactory extends DaoFactory {
 
 	@Override
 	protected ReadingDao createReadingDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ReadingPortDao(serviceAddress);
 	}
 
 	@Override
 	protected ReadingGroupDao createReadingGroupDao() {
-		// TODO Auto-generated method stub
-		return null;
+		return new ReadingGroupPortDao(serviceAddress);
 	}
 }

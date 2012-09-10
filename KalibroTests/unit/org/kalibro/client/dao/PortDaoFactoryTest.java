@@ -54,12 +54,12 @@ public class PortDaoFactoryTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateReadingPortDao() throws Exception {
-//		TODO assertSame(prepareDao(ReadingPortDao.class), factory.createReadingDao());
+		assertSame(prepareDao(ReadingPortDao.class), factory.createReadingDao());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateReadingGroupPortDao() throws Exception {
-//		TODO assertSame(prepareDao(ReadingGroupPortDao.class), factory.createReadingGroupDao());
+		assertSame(prepareDao(ReadingGroupPortDao.class), factory.createReadingGroupDao());
 	}
 
 	private <T> T prepareDao(Class<T> daoClass) throws Exception {
