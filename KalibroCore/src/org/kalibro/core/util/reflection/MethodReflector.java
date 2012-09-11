@@ -7,7 +7,7 @@ import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 
 /**
- * Performs reflective calls on the method of the specified class in an easy way.
+ * Performs reflective calls on the methods of the specified class in an easy way.
  * 
  * @author Carlos Morais
  */

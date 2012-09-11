@@ -7,44 +7,47 @@ import org.kalibro.TestCase;
 
 public class IdentifierTest extends TestCase {
 
-	private static final String CLASS_NAME = "MyIdentifier4Testing";
-	private static final String CONSTANT = "MY_IDENTIFIER_4_TESTING";
-	private static final String VARIABLE = "myIdentifier4Testing";
-	private static final String TEXT = "My identifier 4 testing";
+	private static final String CLASS_NAME = "MyIdentifier44Testing";
+	private static final String VARIABLE = "myIdentifier44Testing";
+	private static final String TEXT = "My identifier 44 testing";
+	private static final String CONSTANT = "MY_IDENTIFIER_44_TESTING";
+
+	private Identifier identifier;
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testFromConstant() {
-		assertEquals(CLASS_NAME, Identifier.fromConstant(CONSTANT).asClassName());
-		assertEquals(CONSTANT, Identifier.fromConstant(CONSTANT).asConstant());
-		assertEquals(TEXT, Identifier.fromConstant(CONSTANT).asText());
-		assertEquals(VARIABLE, Identifier.fromConstant(CONSTANT).asVariable());
+	public void shouldCreateFromClassName() {
+		identifier = Identifier.fromClassName(CLASS_NAME);
+		shouldConvert();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testFromText() {
-		assertEquals(CLASS_NAME, Identifier.fromText(TEXT).asClassName());
-		assertEquals(CONSTANT, Identifier.fromText(TEXT).asConstant());
-		assertEquals(TEXT, Identifier.fromText(TEXT).asText());
-		assertEquals(VARIABLE, Identifier.fromText(TEXT).asVariable());
-
-		String complexText = "My identifier (4 - testing)";
-		assertEquals(CLASS_NAME, Identifier.fromText(complexText).asClassName());
-		assertEquals(CONSTANT, Identifier.fromText(complexText).asConstant());
-		assertEquals(TEXT, Identifier.fromText(complexText).asText());
-		assertEquals(VARIABLE, Identifier.fromText(complexText).asVariable());
+	public void shouldCreateFromVariable() {
+		identifier = Identifier.fromVariable(VARIABLE);
+		shouldConvert();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testFromVariable() {
-		assertEquals(CLASS_NAME, Identifier.fromVariable(VARIABLE).asClassName());
-		assertEquals(CONSTANT, Identifier.fromVariable(VARIABLE).asConstant());
-		assertEquals(TEXT, Identifier.fromVariable(VARIABLE).asText());
-		assertEquals(VARIABLE, Identifier.fromVariable(VARIABLE).asVariable());
+	public void shouldCreateFromText() {
+		identifier = Identifier.fromText(TEXT);
+		shouldConvert();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void testNumbers() {
-		assertEquals("MY_42", Identifier.fromConstant("MY_42").asConstant());
-		assertEquals("MY_42", Identifier.fromVariable("my42").asConstant());
+	public void shouldCreateFromComplexText() {
+		identifier = Identifier.fromText("_My identifier (44 - testing) àéü_");
+		shouldConvert();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCreateFromConstant() {
+		identifier = Identifier.fromConstant(CONSTANT);
+		shouldConvert();
+	}
+
+	private void shouldConvert() {
+		assertEquals(CLASS_NAME, identifier.asClassName());
+		assertEquals(VARIABLE, identifier.asVariable());
+		assertEquals(CONSTANT, identifier.asConstant());
+		assertEquals(TEXT, identifier.asText());
 	}
 }

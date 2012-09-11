@@ -3,7 +3,7 @@ package org.kalibro.core.util.reflection;
 import java.lang.reflect.Member;
 
 /**
- * This filter produces a logical AND of the filters specified.
+ * This filter produces a logical AND of the specified filters.
  * 
  * @author Carlos Morais
  */

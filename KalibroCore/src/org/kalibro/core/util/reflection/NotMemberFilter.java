@@ -3,7 +3,7 @@ package org.kalibro.core.util.reflection;
 import java.lang.reflect.Member;
 
 /**
- * This filter produces a logical NOT of the filter specified.
+ * This filter produces a logical NOT of the specified filter.
  * 
  * @author Carlos Morais
  */

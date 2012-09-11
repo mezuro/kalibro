@@ -35,5 +35,6 @@ public class OrMemberFilterTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldReturnTrueOnFirstAccept() {
 		assertTrue(new OrMemberFilter(falseFilter, trueFilter, errorFilter).accept(member));
+		verifyZeroInteractions(errorFilter);
 	}
 }

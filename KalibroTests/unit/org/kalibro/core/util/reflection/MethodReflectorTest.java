@@ -46,46 +46,22 @@ public class MethodReflectorTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowErrorWhenInvokingNonstaticMethod() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke("setUp");
-			}
-		}, expectedMessage("invoking", "setUp"), NullPointerException.class);
+		checkKalibroError(invokeTask("setUp"), expectedMessage("invoking", "setUp"), NullPointerException.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowErrorWhenFindingInexistentMethod() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke("inexistent");
-			}
-		}, expectedMessage("finding", "inexistent"));
+		checkKalibroError(invokeTask("inexistent"), expectedMessage("finding", "inexistent"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowErrorWhenFindingMethodWithDifferentNumberOfArguments() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke("max", 42.0);
-			}
-		}, expectedMessage("finding", "max"));
+		checkKalibroError(invokeTask("max", 42.0), expectedMessage("finding", "max"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowErrorWhenFindingMethodWithIncompatibleArguments() {
-		checkKalibroError(new Task() {
-
-			@Override
-			public void perform() {
-				reflector.invoke("throwThis", 42.0);
-			}
-		}, expectedMessage("finding", "throwThis"));
+		checkKalibroError(invokeTask("throwThis", 42.0), expectedMessage("finding", "throwThis"));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -101,13 +77,18 @@ public class MethodReflectorTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldThrowKalibroExceptionWrappingCheckedExceptionThrownByInvokedMethod() {
-		checkKalibroException(new Task() {
+		checkKalibroException(invokeTask("throwThis", new FileNotFoundException()),
+			expectedMessage("invoking", "throwThis"), FileNotFoundException.class);
+	}
+
+	private Task invokeTask(final String method, final Object... parameters) {
+		return new Task() {
 
 			@Override
 			public void perform() {
-				reflector.invoke("throwThis", new FileNotFoundException());
+				reflector.invoke(method, parameters);
 			}
-		}, expectedMessage("invoking", "throwThis"), FileNotFoundException.class);
+		};
 	}
 
 	private String expectedMessage(String verb, String methodName) {

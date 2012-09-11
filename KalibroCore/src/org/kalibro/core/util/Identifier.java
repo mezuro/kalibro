@@ -1,22 +1,34 @@
 package org.kalibro.core.util;
 
+import java.util.Arrays;
+
+/**
+ * Converts strings across different formats: variable and class name (camel case); constant (upper case separated by
+ * underscore); text (separated by spaces with first word capitalized).
+ * 
+ * @author Carlos Morais
+ */
 public final class Identifier {
 
-	public static Identifier fromConstant(String constant) {
-		return new Identifier(constant);
-	}
-
-	public static Identifier fromText(String text) {
-		String constant = text.replaceAll("\\s+", "\\_").replaceAll("[^A-Za-z0-9_]", "").replaceAll("\\_+", "_");
-		return new Identifier(constant.toUpperCase());
+	public static Identifier fromClassName(String className) {
+		return fromVariable(className);
 	}
 
 	public static Identifier fromVariable(String variable) {
-		String[] separations = {"([a-z])([A-Z])", "([a-z])([0-9])", "([0-9])([a-zA-Z])"};
-		String constant = variable;
-		for (String separation : separations)
-			constant = constant.replaceAll(separation, "$1_$2");
-		return new Identifier(constant.toUpperCase());
+		String transformed = variable;
+		for (String separation : Arrays.asList("([a-z])([A-Z])", "([a-zA-Z])([0-9])", "([0-9])([a-zA-Z])"))
+			transformed = transformed.replaceAll(separation, "$1_$2");
+		return fromConstant(transformed.toUpperCase());
+	}
+
+	public static Identifier fromText(String text) {
+		return fromConstant(text
+			.replace('_', ' ').replaceAll("[^A-Za-z0-9\\s]", "").trim()
+			.replaceAll("\\s+", " ").replace(' ', '_').toUpperCase());
+	}
+
+	public static Identifier fromConstant(String constant) {
+		return new Identifier(constant);
 	}
 
 	private String constant;
@@ -27,14 +39,10 @@ public final class Identifier {
 
 	public String asClassName() {
 		String[] words = constant.toLowerCase().split("_");
-		String variable = "";
+		String className = "";
 		for (String word : words)
-			variable += Character.toUpperCase(word.charAt(0)) + word.substring(1);
-		return variable;
-	}
-
-	public String asConstant() {
-		return constant;
+			className += Character.toUpperCase(word.charAt(0)) + word.substring(1);
+		return className;
 	}
 
 	public String asVariable() {
@@ -44,5 +52,9 @@ public final class Identifier {
 
 	public String asText() {
 		return constant.charAt(0) + constant.substring(1).toLowerCase().replace('_', ' ');
+	}
+
+	public String asConstant() {
+		return constant;
 	}
 }
