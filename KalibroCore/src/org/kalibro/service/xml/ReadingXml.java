@@ -10,6 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.Reading;
 import org.kalibro.dto.ReadingDto;
 
+/**
+ * XML element for {@link Reading}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "reading")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReadingXml extends ReadingDto {

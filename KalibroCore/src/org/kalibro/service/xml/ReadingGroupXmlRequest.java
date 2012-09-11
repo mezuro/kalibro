@@ -11,9 +11,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
-import org.kalibro.dto.ReadingDto;
 import org.kalibro.dto.ReadingGroupDto;
 
+/**
+ * XML element for {@link ReadingGroup} requests.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "readingGroup")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReadingGroupXmlRequest extends ReadingGroupDto {
@@ -64,6 +68,6 @@ public class ReadingGroupXmlRequest extends ReadingGroupDto {
 
 	@Override
 	public List<Reading> readings() {
-		return ReadingDto.convert(readings);
+		return convert(readings);
 	}
 }

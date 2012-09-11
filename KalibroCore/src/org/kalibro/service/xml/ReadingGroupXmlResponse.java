@@ -8,6 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
+/**
+ * XML element for {@link ReadingGroup} responses.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "readingGroup")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ReadingGroupXmlResponse extends ReadingGroupDto {
