@@ -17,6 +17,8 @@ import org.kalibro.dto.DataTransferObject;
 abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	private Class<RECORD> recordClass;
+
+	@Deprecated
 	protected RecordManager recordManager;
 
 	protected DatabaseDao(RecordManager recordManager, Class<RECORD> recordClass) {
@@ -24,19 +26,23 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		this.recordManager = recordManager;
 	}
 
+	protected ENTITY getById(Long recordId) {
+		return recordManager.getById(recordId, recordClass).convert();
+	}
+
 	protected List<ENTITY> allOrderedByName() {
 		TypedQuery<RECORD> query = createRecordQuery("ORDER BY lower(" + alias() + ".name)");
 		return DataTransferObject.convert(query.getResultList());
-	}
-
-	protected ENTITY getById(Long recordId) {
-		return recordManager.getById(recordId, recordClass).convert();
 	}
 
 	protected void deleteById(Long recordId) {
 		Query query = recordManager.createQuery("DELETE FROM " + entityName() + " WHERE id = :id");
 		query.setParameter("id", recordId);
 		recordManager.executeUpdate(query);
+	}
+
+	protected RECORD save(RECORD record) {
+		return recordManager.save(record);
 	}
 
 	@Deprecated

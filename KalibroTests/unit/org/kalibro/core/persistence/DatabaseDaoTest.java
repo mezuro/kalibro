@@ -32,6 +32,12 @@ public class DatabaseDaoTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetById() {
+		when(recordManager.getById(42L, PersonRecord.class)).thenReturn(record);
+		assertSame(person, dao.getById(42L));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetAllOrderedByName() {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
 		String queryString = "SELECT person FROM Person person ORDER BY lower(person.name)";
@@ -42,9 +48,9 @@ public class DatabaseDaoTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetById() {
-		when(recordManager.getById(42L, PersonRecord.class)).thenReturn(record);
-		assertSame(person, dao.getById(42L));
+	public void shouldSave() {
+		when(recordManager.save(record)).thenReturn(record);
+		assertSame(record, dao.save(record));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
