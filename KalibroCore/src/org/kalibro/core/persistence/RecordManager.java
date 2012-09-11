@@ -1,9 +1,6 @@
 package org.kalibro.core.persistence;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
@@ -41,16 +38,17 @@ class RecordManager {
 	}
 
 	protected <T> T save(T record) {
-		return save(Arrays.asList(record)).get(0);
-	}
-
-	protected <T> List<T> save(Collection<T> records) {
-		List<T> merged = new ArrayList<T>();
 		beginTransaction();
-		for (T record : records)
-			merged.add(persist(record));
+		T merged = persist(record);
 		commitTransaction();
 		return merged;
+	}
+
+	protected void saveAll(Collection<?> records) {
+		beginTransaction();
+		for (Object record : records)
+			persist(record);
+		commitTransaction();
 	}
 
 	private <T> T persist(T record) {

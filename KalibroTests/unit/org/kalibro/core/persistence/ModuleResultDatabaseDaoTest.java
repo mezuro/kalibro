@@ -74,7 +74,7 @@ public class ModuleResultDatabaseDaoTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void testSave() {
 		dao.save(moduleResult, projectResult);
-		Mockito.verify(recordManager).save(records);
+		Mockito.verify(recordManager).saveAll(records);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

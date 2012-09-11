@@ -22,7 +22,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	public void save(ModuleResult moduleResult, ProjectResult projectResult) {
-		recordManager.save(MetricResultRecord.createRecords(moduleResult, projectResult));
+		recordManager.saveAll(MetricResultRecord.createRecords(moduleResult, projectResult));
 	}
 
 	@Override
