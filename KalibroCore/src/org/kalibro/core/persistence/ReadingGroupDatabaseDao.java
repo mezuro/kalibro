@@ -29,7 +29,7 @@ public class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGr
 
 	@Override
 	public Long save(ReadingGroup group) {
-		return recordManager.save(new ReadingGroupRecord(group)).id();
+		return save(new ReadingGroupRecord(group)).id();
 	}
 
 	@Override

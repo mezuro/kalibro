@@ -1,13 +1,12 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
 import org.kalibro.TestCase;
 import org.kalibro.core.persistence.record.ReadingGroupRecord;
@@ -18,13 +17,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ReadingGroupDatabaseDao.class)
 public class ReadingGroupDatabaseDaoTest extends TestCase {
 
-	private RecordManager recordManager;
 	private ReadingGroupDatabaseDao dao;
 
 	@Before
 	public void setUp() {
-		recordManager = mock(RecordManager.class);
-		dao = spy(new ReadingGroupDatabaseDao(recordManager));
+		dao = spy(new ReadingGroupDatabaseDao(null));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -38,23 +35,19 @@ public class ReadingGroupDatabaseDaoTest extends TestCase {
 	public void shouldGetById() {
 		ReadingGroup group = mock(ReadingGroup.class);
 		doReturn(group).when(dao).getById(42L);
-		assertSame(group, dao.getById(42L));
+		assertSame(group, dao.get(42L));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveAndMerge() throws Exception {
-		List<Reading> readings = mock(List.class);
+	public void shouldSave() throws Exception {
 		ReadingGroup group = mock(ReadingGroup.class);
 		ReadingGroupRecord record = mock(ReadingGroupRecord.class);
 		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
-		when(recordManager.save(record)).thenReturn(record);
-		when(record.convert()).thenReturn(group);
-		when(group.getId()).thenReturn(42L);
-		when(group.getReadings()).thenReturn(readings);
+		doReturn(record).when(dao).save(record);
+		when(record.id()).thenReturn(42L);
 
-		dao.save(group);
-		verify(group).setId(42L);
-		verify(group).setReadings(readings);
+		assertEquals(42L, dao.save(group).longValue());
+		verify(dao).save(record);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
