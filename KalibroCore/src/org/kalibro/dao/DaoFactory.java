@@ -5,6 +5,12 @@ import org.kalibro.KalibroSettings;
 import org.kalibro.client.ClientDaoFactory;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 
+/**
+ * Abstract factory of data access objects (DAOs). Statically creates DAOs using the correct factory according to
+ * current settings (see {@link KalibroSettings}).
+ * 
+ * @author Carlos Morais
+ */
 public abstract class DaoFactory {
 
 	public static BaseToolDao getBaseToolDao() {

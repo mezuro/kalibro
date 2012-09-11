@@ -1,6 +1,5 @@
 package org.kalibro.dao;
 
-
 public class DummyDaoFactory extends DaoFactory {
 
 	@Override

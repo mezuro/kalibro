@@ -5,7 +5,7 @@ import java.util.List;
 import org.kalibro.ReadingGroup;
 
 /**
- * Data Access Object for {@link ReadingGroup}.
+ * Data access object for {@link ReadingGroup}.
  * 
  * @author Carlos Morais
  */
