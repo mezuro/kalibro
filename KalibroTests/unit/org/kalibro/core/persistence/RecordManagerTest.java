@@ -15,6 +15,8 @@ import org.junit.Test;
 import org.kalibro.TestCase;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
+import org.mockito.verification.VerificationMode;
+import org.powermock.reflect.Whitebox;
 
 public class RecordManagerTest extends TestCase {
 
@@ -56,31 +58,35 @@ public class RecordManagerTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldMergeOnSave() {
-		assertEquals(MERGED, recordManager.save(UNMERGED));
+	public void shouldExecuteUpdateQuery() throws Exception {
+		Query updateQuery = mock(Query.class);
+		recordManager.executeUpdate(updateQuery);
+		verifyWithinTransaction(updateQuery, "executeUpdate");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldMergeOnSaveList() {
+	public void shouldMergeAndSave() throws Exception {
+		assertEquals(MERGED, recordManager.save(UNMERGED));
+		verifyWithinTransaction(entityManager, "persist", MERGED);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldMergeAndSaveList() throws Exception {
 		List<String> merged = recordManager.save(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
 		assertEquals(Arrays.asList(MERGED, MERGED, MERGED), merged);
+		verifyWithinTransaction(entityManager, times(3), "persist", MERGED);
+	}
 
-		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
+	private void verifyWithinTransaction(Object mock, String method, Object... arguments) throws Exception {
+		verifyWithinTransaction(mock, once(), method, arguments);
+	}
+
+	private void verifyWithinTransaction(Object mock, VerificationMode mode, String method, Object... arguments)
+		throws Exception {
+		InOrder order = Mockito.inOrder(transaction, mock, transaction);
 		order.verify(transaction).begin();
-		order.verify(entityManager, times(3)).persist(MERGED);
+		Whitebox.invokeMethod(order.verify(mock, mode), method, arguments);
 		order.verify(transaction).commit();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldBeginTransaction() {
-		recordManager.beginTransaction();
-		verify(transaction).begin();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldCommitTransaction() {
-		recordManager.commitTransaction();
-		verify(transaction).commit();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

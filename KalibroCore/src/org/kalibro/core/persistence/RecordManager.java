@@ -26,12 +26,18 @@ class RecordManager {
 		return entityManager.find(recordClass, id);
 	}
 
-	protected Query createQuery(String queryText) {
-		return entityManager.createQuery(queryText);
+	protected Query createQuery(String queryString) {
+		return entityManager.createQuery(queryString);
 	}
 
-	protected <T> TypedQuery<T> createQuery(String queryText, Class<T> resultClass) {
-		return entityManager.createQuery(queryText, resultClass);
+	protected <T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
+		return entityManager.createQuery(queryString, resultClass);
+	}
+
+	protected void executeUpdate(Query updateQuery) {
+		beginTransaction();
+		updateQuery.executeUpdate();
+		commitTransaction();
 	}
 
 	protected <T> T save(T record) {
@@ -58,10 +64,12 @@ class RecordManager {
 		entityManager.remove(entityManager.merge(record));
 	}
 
+	@Deprecated
 	protected void beginTransaction() {
 		entityManager.getTransaction().begin();
 	}
 
+	@Deprecated
 	protected void commitTransaction() {
 		entityManager.getTransaction().commit();
 	}

@@ -1,6 +1,5 @@
 package org.kalibro.core.persistence;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
@@ -10,9 +9,14 @@ import javax.persistence.TypedQuery;
 import org.kalibro.core.util.Identifier;
 import org.kalibro.dto.DataTransferObject;
 
+/**
+ * Abstract database access implementation for data access objects.
+ * 
+ * @author Carlos Morais
+ */
 abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
-	protected Class<RECORD> recordClass;
+	private Class<RECORD> recordClass;
 	protected RecordManager recordManager;
 
 	protected DatabaseDao(RecordManager recordManager, Class<RECORD> recordClass) {
@@ -21,12 +25,8 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	protected List<ENTITY> allOrderedByName() {
-		String queryString = "SELECT $x FROM " + getEntityName() + " $x ORDER BY lower($x.name)";
-		queryString = queryString.replace("$x", getVariableName());
-		List<ENTITY> all = new ArrayList<ENTITY>();
-		for (RECORD record : createRecordQuery(queryString).getResultList())
-			all.add(record.convert());
-		return all;
+		TypedQuery<RECORD> query = createRecordQuery("ORDER BY lower(" + alias() + ".name)");
+		return DataTransferObject.convert(query.getResultList());
 	}
 
 	protected ENTITY getById(Long recordId) {
@@ -34,22 +34,20 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	protected void deleteById(Long recordId) {
-		recordManager.beginTransaction();
-		Query query = recordManager.createQuery("DELETE FROM " + getEntityName() + " WHERE id = :id");
+		Query query = recordManager.createQuery("DELETE FROM " + entityName() + " WHERE id = :id");
 		query.setParameter("id", recordId);
-		query.executeUpdate();
-		recordManager.commitTransaction();
+		recordManager.executeUpdate(query);
 	}
 
 	@Deprecated
 	protected List<String> getAllNames() {
-		String queryText = "SELECT x.name FROM " + getEntityName() + " x ORDER BY lower(x.name)";
+		String queryText = "SELECT x.name FROM " + entityName() + " x ORDER BY lower(x.name)";
 		return recordManager.createQuery(queryText, String.class).getResultList();
 	}
 
 	@Deprecated
 	protected boolean hasEntity(String name) {
-		String queryText = "SELECT 1 FROM " + getEntityName() + " x WHERE x.name = :name";
+		String queryText = "SELECT 1 FROM " + entityName() + " x WHERE x.name = :name";
 		TypedQuery<String> query = recordManager.createQuery(queryText, String.class);
 		query.setParameter("name", name);
 		return !query.getResultList().isEmpty();
@@ -57,21 +55,21 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	@Deprecated
 	protected ENTITY getByName(String name) {
-		String queryText = "SELECT x FROM " + getEntityName() + " x WHERE x.name = :name";
-		TypedQuery<RECORD> query = createRecordQuery(queryText);
+		TypedQuery<RECORD> query = createRecordQuery("WHERE " + alias() + ".name = :name");
 		query.setParameter("name", name);
 		return query.getSingleResult().convert();
 	}
 
-	private String getVariableName() {
-		return Identifier.fromVariable(getEntityName()).asVariable();
-	}
-
-	private String getEntityName() {
-		return recordClass.getAnnotation(Entity.class).name();
-	}
-
-	protected TypedQuery<RECORD> createRecordQuery(String queryString) {
+	protected TypedQuery<RECORD> createRecordQuery(String clauses) {
+		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias() + " " + clauses;
 		return recordManager.createQuery(queryString, recordClass);
+	}
+
+	private String alias() {
+		return Identifier.fromVariable(entityName()).asVariable();
+	}
+
+	private String entityName() {
+		return recordClass.getAnnotation(Entity.class).name();
 	}
 }

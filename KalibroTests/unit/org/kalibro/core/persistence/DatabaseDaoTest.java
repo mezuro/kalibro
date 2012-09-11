@@ -3,7 +3,6 @@ package org.kalibro.core.persistence;
 import static org.junit.Assert.assertSame;
 
 import java.util.Arrays;
-import java.util.List;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -13,18 +12,22 @@ import org.junit.Test;
 import org.kalibro.TestCase;
 import org.kalibro.core.persistence.PersonDatabaseDao.Person;
 import org.kalibro.core.persistence.PersonDatabaseDao.PersonRecord;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
 
 public class DatabaseDaoTest extends TestCase {
 
+	private Person person;
+	private PersonRecord record;
 	private RecordManager recordManager;
 
 	private PersonDatabaseDao dao;
 
 	@Before
 	public void setUp() {
+		person = mock(Person.class);
+		record = mock(PersonRecord.class);
 		recordManager = mock(RecordManager.class);
+		when(record.convert()).thenReturn(person);
+
 		dao = new PersonDatabaseDao(recordManager);
 	}
 
@@ -33,23 +36,14 @@ public class DatabaseDaoTest extends TestCase {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
 		String queryString = "SELECT person FROM Person person ORDER BY lower(person.name)";
 		when(recordManager.createQuery(queryString, PersonRecord.class)).thenReturn(query);
-
-		Person person = mock(Person.class);
-		PersonRecord record = mock(PersonRecord.class);
-		List<PersonRecord> records = Arrays.asList(record);
-		when(query.getResultList()).thenReturn(records);
-		when(record.convert()).thenReturn(person);
+		when(query.getResultList()).thenReturn(Arrays.asList(record));
 
 		assertDeepList(dao.allOrderedByName(), person);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetById() {
-		Person person = mock(Person.class);
-		PersonRecord record = mock(PersonRecord.class);
 		when(recordManager.getById(42L, PersonRecord.class)).thenReturn(record);
-		when(record.convert()).thenReturn(person);
-
 		assertSame(person, dao.getById(42L));
 	}
 
@@ -60,10 +54,6 @@ public class DatabaseDaoTest extends TestCase {
 		when(recordManager.createQuery(queryString)).thenReturn(query);
 
 		dao.deleteById(42L);
-		verify(query).setParameter("id", 42L);
-		InOrder order = Mockito.inOrder(recordManager, query, recordManager);
-		order.verify(recordManager).beginTransaction();
-		order.verify(query).executeUpdate();
-		order.verify(recordManager).commitTransaction();
+		verify(recordManager).executeUpdate(query);
 	}
 }
