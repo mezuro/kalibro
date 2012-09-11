@@ -22,7 +22,8 @@ public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> impl
 
 	@Override
 	public List<Reading> readingsOf(Long groupId) {
-		String queryString = "SELECT reading FROM Reading reading WHERE reading.group.id = :groupId";
+		String queryString =
+			"SELECT reading FROM Reading reading WHERE reading.group.id = :groupId ORDER BY reading.grade";
 		TypedQuery<ReadingRecord> query = createRecordQuery(queryString);
 		query.setParameter("groupId", groupId);
 		return ReadingDto.convert(query.getResultList());

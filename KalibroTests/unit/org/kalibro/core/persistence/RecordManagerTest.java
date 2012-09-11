@@ -5,7 +5,10 @@ import static org.junit.Assert.*;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -30,7 +33,12 @@ public class RecordManagerTest extends TestCase {
 		recordManager = new RecordManager(entityManager);
 		when(entityManager.getTransaction()).thenReturn(transaction);
 		when(entityManager.merge(UNMERGED)).thenReturn(MERGED);
-		mockCache();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetById() {
+		when(entityManager.find(Integer.class, 28L)).thenReturn(42);
+		assertEquals(42, recordManager.getById(28L, Integer.class).intValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -41,12 +49,6 @@ public class RecordManagerTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldClearEntityManagerWhenCreatingQuery() {
-		recordManager.createQuery("42");
-		verify(entityManager).clear();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldCreateTypedQuery() {
 		TypedQuery<String> query = mock(TypedQuery.class);
 		when(entityManager.createQuery("42", String.class)).thenReturn(query);
@@ -54,37 +56,12 @@ public class RecordManagerTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldClearEntityManagerWhenCreatingTypedQuery() {
-		recordManager.createQuery("42", String.class);
-		verify(entityManager).clear();
+	public void shouldMergeOnSave() {
+		assertEquals(MERGED, recordManager.save(UNMERGED));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetById() {
-		when(entityManager.find(Integer.class, 28L)).thenReturn(42);
-		assertEquals(42, recordManager.getById(28L, Integer.class).intValue());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldMergeOnPersist() {
-		assertEquals(MERGED, recordManager.persist(UNMERGED));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldMergeBeforeRemove() {
-		recordManager.remove(UNMERGED);
-		verify(entityManager).remove(MERGED);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveSingleEntityAsUnitaryList() throws Exception {
-		recordManager = spy(recordManager);
-		recordManager.save("42");
-		verifyPrivate(recordManager).invoke("save", Arrays.asList("42"));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveList() {
+	public void shouldMergeOnSaveList() {
 		List<String> merged = recordManager.save(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
 		assertEquals(Arrays.asList(MERGED, MERGED, MERGED), merged);
 
@@ -95,24 +72,15 @@ public class RecordManagerTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRemove() {
-		recordManager.remove(UNMERGED);
-		verify(entityManager).remove(MERGED);
+	public void shouldBeginTransaction() {
+		recordManager.beginTransaction();
+		verify(transaction).begin();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldEvictClassFromCache() {
-		Cache cache = mockCache();
-		recordManager.evictFromCache(Object.class);
-		verify(cache).evict(Object.class);
-	}
-
-	private Cache mockCache() {
-		Cache cache = mock(Cache.class);
-		EntityManagerFactory entityManagerFactory = mock(EntityManagerFactory.class);
-		when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
-		when(entityManagerFactory.getCache()).thenReturn(cache);
-		return cache;
+	public void shouldCommitTransaction() {
+		recordManager.commitTransaction();
+		verify(transaction).commit();
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

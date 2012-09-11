@@ -22,18 +22,16 @@ class RecordManager {
 		this.entityManager = entityManager;
 	}
 
+	protected <T> T getById(Long id, Class<T> recordClass) {
+		return entityManager.find(recordClass, id);
+	}
+
 	protected Query createQuery(String queryText) {
-		entityManager.clear();
 		return entityManager.createQuery(queryText);
 	}
 
 	protected <T> TypedQuery<T> createQuery(String queryText, Class<T> resultClass) {
-		entityManager.clear();
 		return entityManager.createQuery(queryText, resultClass);
-	}
-
-	public <T> T getById(Long id, Class<T> recordClass) {
-		return entityManager.find(recordClass, id);
 	}
 
 	protected <T> T save(T record) {
@@ -49,7 +47,7 @@ class RecordManager {
 		return merged;
 	}
 
-	protected <T> T persist(T record) {
+	private <T> T persist(T record) {
 		T merged = entityManager.merge(record);
 		entityManager.persist(merged);
 		return merged;
@@ -68,6 +66,7 @@ class RecordManager {
 		entityManager.getTransaction().commit();
 	}
 
+	@Deprecated
 	protected void evictFromCache(Class<?> classToEvict) {
 		entityManager.getEntityManagerFactory().getCache().evict(classToEvict);
 	}
