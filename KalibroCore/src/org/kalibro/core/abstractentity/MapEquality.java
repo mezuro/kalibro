@@ -3,7 +3,8 @@ package org.kalibro.core.abstractentity;
 import java.util.Map;
 
 /**
- * Determines equality of maps deeply for each mapping.
+ * Determines equality of maps deeply for each mapping. Two maps are equals if they have the same key set, and each key
+ * maps to the same elements.
  * 
  * @author Carlos Morais
  */

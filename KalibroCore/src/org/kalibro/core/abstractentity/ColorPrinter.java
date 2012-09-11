@@ -2,6 +2,11 @@ package org.kalibro.core.abstractentity;
 
 import java.awt.Color;
 
+/**
+ * Printer for {@link Color}.
+ * 
+ * @author Carlos Morais
+ */
 class ColorPrinter extends Printer<Color> {
 
 	@Override

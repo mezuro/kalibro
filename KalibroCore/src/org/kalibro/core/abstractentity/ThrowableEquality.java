@@ -1,7 +1,7 @@
 package org.kalibro.core.abstractentity;
 
 /**
- * Determines equality of throwable, deeply for stack trace and causes.
+ * Determines equality of {@link Throwable}, deeply for stack trace and causes.
  * 
  * @author Carlos Morais
  */

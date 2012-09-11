@@ -14,8 +14,8 @@ import org.yaml.snakeyaml.introspector.BeanAccess;
  * This abstract class provides common methods to minimize the effort required to create an entity.<br/>
  * - Overrides {@code hashCode()} and {@code equals()} based on identity fields (see {@link IdentityField}).<br/>
  * - Implements {@code Comparable.compareTo()} based on sorting fields (see {@link SortingFields}).<br/>
- * - Overrides {@code toString()}, printing the entity in YAML format.<br/>
- * - Based on the YAML print, provides methods to import and export entities to files.
+ * - Provides methods to import and export entities to files, printing them in YAML format.<br/>
+ * - Overrides the default {@code toString()} with the YAML print.
  * 
  * @author Carlos Morais
  */

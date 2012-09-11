@@ -30,6 +30,43 @@ public class AbstractEntityTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldImportFromFile() throws Exception {
+		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("person-carlos.yml"), Person.class));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowExceptionWhenCannotImport() throws Exception {
+		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
+		checkKalibroException(new Task() {
+
+			@Override
+			public void perform() {
+				AbstractEntity.importFrom(file, Person.class);
+			}
+		}, "Could not import person from file: " + file, NullPointerException.class);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldExportToFile() throws Exception {
+		entity.exportTo(file);
+		verifyStatic();
+		FileUtils.writeStringToFile(file, Printer.print(entity));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowExceptionWhenCannotExport() throws Exception {
+		doThrow(new IOException()).when(FileUtils.class);
+		FileUtils.writeStringToFile(file, Printer.print(entity));
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				entity.exportTo(file);
+			}
+		}, "Could not export person to file: " + file, IOException.class);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldPrintWithPrinter() {
 		mockStatic(Printer.class);
 		when(Printer.print(entity)).thenReturn("42");
@@ -65,42 +102,5 @@ public class AbstractEntityTest extends TestCase {
 		whenNew(EntityComparator.class).withNoArguments().thenReturn(comparator);
 		when(comparator.compare(entity, entity)).thenReturn(42);
 		assertEquals(42, entity.compareTo(entity));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldImportFromFile() throws Exception {
-		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("person-carlos.yml"), Person.class));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionWhenCantImport() throws Exception {
-		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				AbstractEntity.importFrom(file, Person.class);
-			}
-		}, "Could not import person from file: " + file, NullPointerException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldExportToFile() throws Exception {
-		entity.exportTo(file);
-		verifyStatic();
-		FileUtils.writeStringToFile(file, Printer.print(entity));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionWhenCantExport() throws Exception {
-		doThrow(new IOException()).when(FileUtils.class);
-		FileUtils.writeStringToFile(file, Printer.print(entity));
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				entity.exportTo(file);
-			}
-		}, "Could not export person to file: " + file, IOException.class);
 	}
 }

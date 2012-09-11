@@ -1,6 +1,10 @@
 package org.kalibro.core.abstractentity;
 
-
+/**
+ * Printer for strings. Quotes the string before printing.
+ * 
+ * @author Carlos Morais
+ */
 class StringPrinter extends Printer<String> {
 
 	@Override

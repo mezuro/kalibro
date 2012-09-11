@@ -48,7 +48,7 @@ public class ThrowableEqualityTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void stackTraceAndCauseShouldBeDeepEqual() {
+	public void allFourShouldBeDeepEqual() {
 		assertTrue(equality.equals(new Exception(), new Exception()));
 	}
 }

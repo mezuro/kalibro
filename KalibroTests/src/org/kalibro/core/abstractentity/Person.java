@@ -17,6 +17,7 @@ class Person extends AbstractEntity<Person> {
 	private Map<String, Person> relatives;
 
 	@Ignore
+	@SuppressWarnings("unused")
 	private double random;
 
 	protected Person() {
@@ -24,31 +25,19 @@ class Person extends AbstractEntity<Person> {
 	}
 
 	protected Person(String identityNumber, String name, String sex) {
-		setIdentityNumber(identityNumber);
-		setName(name);
+		this.identityNumber = identityNumber;
+		this.name = name;
 		setSex(sex);
-		createRelatives();
-		setRandom(Math.random());
-	}
-
-	private void createRelatives() {
-		setRelatives(new TreeMap<String, Person>());
+		relatives = new TreeMap<String, Person>();
+		random = Math.random();
 	}
 
 	public String getIdentityNumber() {
 		return identityNumber;
 	}
 
-	public void setIdentityNumber(String identityNumber) {
-		this.identityNumber = identityNumber;
-	}
-
 	public String getName() {
 		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getSex() {
@@ -61,21 +50,5 @@ class Person extends AbstractEntity<Person> {
 
 	public Map<String, Person> getRelatives() {
 		return relatives;
-	}
-
-	public void addRelative(String relation, Person relative) {
-		relatives.put(relation, relative);
-	}
-
-	public void setRelatives(Map<String, Person> relatives) {
-		this.relatives = relatives;
-	}
-
-	public double getRandom() {
-		return random;
-	}
-
-	public void setRandom(double random) {
-		this.random = random;
 	}
 }

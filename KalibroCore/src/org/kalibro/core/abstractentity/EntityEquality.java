@@ -3,7 +3,7 @@ package org.kalibro.core.abstractentity;
 import java.util.List;
 
 /**
- * Determines equality of entities using identity fields.
+ * Determines equality of entities based on fields annotated with {@link IdentityField}.
  * 
  * @author Carlos Morais
  */

@@ -20,7 +20,6 @@ public class HashCodeCalculatorTest extends UtilityClassTest {
 		paulo = loadFixture("person-paulo", Person.class);
 		programmerCarlos = loadFixture("programmer-carlos", Programmer.class);
 		programmerPaulo = loadFixture("programmer-paulo", Programmer.class);
-		programmerCarlos.addColleague(programmerPaulo);
 	}
 
 	@Override

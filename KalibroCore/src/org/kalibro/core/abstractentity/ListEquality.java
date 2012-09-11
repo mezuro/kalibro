@@ -4,7 +4,8 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Determines equality of lists deeply for each element.
+ * Determines equality of lists deeply for each element. Two lists are equal when they contain the same elements in the
+ * same order.
  * 
  * @author Carlos Morais
  */

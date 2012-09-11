@@ -5,8 +5,10 @@ import java.util.List;
 
 class Programmer extends Person {
 
+	@SuppressWarnings("unused")
 	private Boolean useMetrics;
 
+	@SuppressWarnings("unused")
 	private List<Programmer> colleagues;
 
 	protected Programmer() {
@@ -17,21 +19,5 @@ class Programmer extends Person {
 		super(person.getIdentityNumber(), person.getName(), person.getSex());
 		this.useMetrics = useMetrics;
 		colleagues = new ArrayList<Programmer>();
-	}
-
-	public Boolean getUseMetrics() {
-		return useMetrics;
-	}
-
-	public void setUseMetrics(Boolean useMetrics) {
-		this.useMetrics = useMetrics;
-	}
-
-	public List<Programmer> getColleagues() {
-		return colleagues;
-	}
-
-	public void addColleague(Programmer colleague) {
-		colleagues.add(colleague);
 	}
 }
