@@ -10,13 +10,14 @@ import org.kalibro.service.ReadingGroupEndpoint;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
 
-public class ReadingGroupClientDaoTest extends ClientTest<ReadingGroupEndpoint, ReadingGroupClientDao, ReadingGroup,
-	ReadingGroupXmlRequest, ReadingGroupXmlResponse> {
+public class ReadingGroupClientDaoTest extends ClientTest<// @formatter:off
+	ReadingGroup, ReadingGroupXmlRequest, ReadingGroupXmlResponse,
+	ReadingGroupEndpoint, ReadingGroupClientDao> {// @formatter:on
 
 	@Override
 	protected Class<?>[] parameterClasses() {
-		return new Class<?>[]{ReadingGroupEndpoint.class, ReadingGroupClientDao.class, ReadingGroup.class,
-			ReadingGroupXmlRequest.class, ReadingGroupXmlResponse.class};
+		return new Class<?>[]{ReadingGroup.class, ReadingGroupXmlRequest.class, ReadingGroupXmlResponse.class,
+			ReadingGroupEndpoint.class, ReadingGroupClientDao.class};
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

@@ -10,12 +10,12 @@ import org.kalibro.service.ReadingEndpoint;
 import org.kalibro.service.xml.ReadingXml;
 
 public class ReadingClientDaoTest extends
-	ClientTest<ReadingEndpoint, ReadingClientDao, Reading, ReadingXml, ReadingXml> {
+	ClientTest<Reading, ReadingXml, ReadingXml, ReadingEndpoint, ReadingClientDao> {
 
 	@Override
 	protected Class<?>[] parameterClasses() {
-		return new Class<?>[]{
-			ReadingEndpoint.class, ReadingClientDao.class, Reading.class, ReadingXml.class, ReadingXml.class};
+		return new Class<?>[]{Reading.class, ReadingXml.class, ReadingXml.class,
+			ReadingEndpoint.class, ReadingClientDao.class};
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

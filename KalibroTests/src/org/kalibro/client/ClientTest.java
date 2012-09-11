@@ -10,9 +10,13 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareOnlyThisForTest({ReadingClientDao.class, ReadingGroupClientDao.class, EndpointClient.class})
-public abstract class ClientTest<PORT, CLIENT extends EndpointClient<PORT>,
-// DTO parameters
-ENTITY, REQUEST extends DataTransferObject<ENTITY>, RESPONSE extends DataTransferObject<ENTITY>> extends TestCase {
+public abstract class ClientTest<// @formatter:off
+	ENTITY,
+	REQUEST extends DataTransferObject<ENTITY>,
+	RESPONSE extends DataTransferObject<ENTITY>,
+	ENDPOINT,
+	CLIENT extends EndpointClient<ENDPOINT>>// @formatter:on
+	extends TestCase {
 
 	private Class<?>[] classes;
 
@@ -20,7 +24,7 @@ ENTITY, REQUEST extends DataTransferObject<ENTITY>, RESPONSE extends DataTransfe
 	protected REQUEST request;
 	protected RESPONSE response;
 
-	protected PORT port;
+	protected ENDPOINT port;
 	protected CLIENT client;
 
 	@Before
@@ -31,20 +35,40 @@ ENTITY, REQUEST extends DataTransferObject<ENTITY>, RESPONSE extends DataTransfe
 	}
 
 	private void mockEntity() throws Exception {
-		entity = mock((Class<ENTITY>) classes[2]);
-		request = mock((Class<REQUEST>) classes[3]);
-		response = mock((Class<RESPONSE>) classes[4]);
+		entity = mock(entityClass());
+		request = mock(requestClass());
+		response = mock(responseClass());
 		when(response.convert()).thenReturn(entity);
-		whenNew((Class<REQUEST>) classes[3]).withArguments(entity).thenReturn(request);
+		whenNew(requestClass()).withArguments(entity).thenReturn(request);
 	}
 
 	private void createSupressedClient() throws Exception {
 		suppress(constructor(EndpointClient.class, String.class, Class.class));
-		client = constructor((Class<CLIENT>) classes[1], String.class).newInstance("");
+		client = constructor(clientClass(), String.class).newInstance("");
 
-		port = mock((Class<PORT>) classes[0]);
+		port = mock(endpointClass());
 		Whitebox.setInternalState(client, "port", port);
 	}
 
 	protected abstract Class<?>[] parameterClasses();
+
+	private Class<ENTITY> entityClass() {
+		return (Class<ENTITY>) classes[0];
+	}
+
+	private Class<REQUEST> requestClass() {
+		return (Class<REQUEST>) classes[1];
+	}
+
+	private Class<RESPONSE> responseClass() {
+		return (Class<RESPONSE>) classes[2];
+	}
+
+	private Class<ENDPOINT> endpointClass() {
+		return (Class<ENDPOINT>) classes[3];
+	}
+
+	private Class<CLIENT> clientClass() {
+		return (Class<CLIENT>) classes[4];
+	}
 }
