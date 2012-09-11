@@ -12,6 +12,11 @@ import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
 
+/**
+ * Implementation of {@link ReadingEndpoint}.
+ * 
+ * @author Carlos Morais
+ */
 @WebService
 public class ReadingEndpointImpl implements ReadingEndpoint {
 
@@ -37,9 +42,7 @@ public class ReadingEndpointImpl implements ReadingEndpoint {
 	@Override
 	@WebResult(name = "readingId")
 	public Long save(@WebParam(name = "reading") ReadingXml reading) {
-		Reading converted = reading.convert();
-		dao.save(converted);
-		return converted.getId();
+		return dao.save(reading.convert());
 	}
 
 	@Override

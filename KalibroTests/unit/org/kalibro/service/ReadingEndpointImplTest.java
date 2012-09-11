@@ -4,58 +4,30 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.Reading;
-import org.kalibro.TestCase;
-import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({DaoFactory.class, ReadingEndpointImpl.class})
-public class ReadingEndpointImplTest extends TestCase {
+public class ReadingEndpointImplTest extends
+	EndpointImplementationTest<Reading, ReadingXml, ReadingXml, ReadingDao, ReadingEndpointImpl> {
 
-	private Reading reading;
-	private ReadingXml readingXml;
-
-	private ReadingDao dao;
-	private ReadingEndpointImpl endpoint;
-
-	@Before
-	public void setUp() throws Exception {
-		mockReading();
-		mockReadingDao();
-		endpoint = new ReadingEndpointImpl();
-	}
-
-	private void mockReading() throws Exception {
-		reading = mock(Reading.class);
-		readingXml = mock(ReadingXml.class);
-		when(readingXml.convert()).thenReturn(reading);
-		whenNew(ReadingXml.class).withArguments(reading).thenReturn(readingXml);
-	}
-
-	private void mockReadingDao() {
-		dao = mock(ReadingDao.class);
-		mockStatic(DaoFactory.class);
-		when(DaoFactory.getReadingDao()).thenReturn(dao);
+	@Override
+	protected Class<?>[] parameterClasses() {
+		return new Class<?>[]{
+			Reading.class, ReadingXml.class, ReadingXml.class, ReadingDao.class, ReadingEndpointImpl.class};
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(reading));
-		assertDeepList(endpoint.readingsOf(42L), readingXml);
+		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(entity));
+		assertDeepList(endpoint.readingsOf(42L), response);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveReading() {
-		when(reading.getId()).thenReturn(42L);
-		assertEquals(42L, endpoint.save(readingXml).longValue());
-		verify(dao).save(reading);
+	public void shouldSave() {
+		when(dao.save(entity)).thenReturn(42L);
+		assertEquals(42L, endpoint.save(request).longValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

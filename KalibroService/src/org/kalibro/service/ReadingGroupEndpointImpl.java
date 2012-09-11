@@ -13,6 +13,11 @@ import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
 
+/**
+ * Implementation of {@link ReadingGroupEndpoint}.
+ * 
+ * @author Carlos Morais
+ */
 @WebService
 public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 
@@ -44,9 +49,7 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 	@Override
 	@WebResult(name = "readingGroupId")
 	public Long save(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group) {
-		ReadingGroup converted = group.convert();
-		dao.save(converted);
-		return converted.getId();
+		return dao.save(group.convert());
 	}
 
 	@Override

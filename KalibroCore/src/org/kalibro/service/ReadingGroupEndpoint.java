@@ -7,9 +7,15 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
+import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
 
+/**
+ * End point to make {@link ReadingGroupDao} interface available as Web service.
+ * 
+ * @author Carlos Morais
+ */
 @WebService
 public interface ReadingGroupEndpoint {
 
