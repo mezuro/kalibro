@@ -1,4 +1,4 @@
-package org.kalibro.core.util;
+package org.kalibro.util;
 
 import java.util.Arrays;
 

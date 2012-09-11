@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.KalibroException;
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 

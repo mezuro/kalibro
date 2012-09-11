@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 
 public enum Statistic {
 

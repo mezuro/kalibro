@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 
 public class MetricConfigurationTest extends TestCase {
 

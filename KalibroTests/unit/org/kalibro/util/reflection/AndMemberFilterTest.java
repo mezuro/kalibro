@@ -1,4 +1,4 @@
-package org.kalibro.core.util.reflection;
+package org.kalibro.util.reflection;
 
 import static org.junit.Assert.*;
 
@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
 
-public class OrMemberFilterTest extends TestCase {
+public class AndMemberFilterTest extends TestCase {
 
 	private Member member;
 	private MemberFilter trueFilter, falseFilter, errorFilter;
@@ -26,15 +26,15 @@ public class OrMemberFilterTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkTrueTableForTwo() {
-		assertFalse(new OrMemberFilter(falseFilter, falseFilter).accept(member));
-		assertTrue(new OrMemberFilter(falseFilter, trueFilter).accept(member));
-		assertTrue(new OrMemberFilter(trueFilter, falseFilter).accept(member));
-		assertTrue(new OrMemberFilter(trueFilter, trueFilter).accept(member));
+		assertFalse(new AndMemberFilter(falseFilter, falseFilter).accept(member));
+		assertFalse(new AndMemberFilter(falseFilter, trueFilter).accept(member));
+		assertFalse(new AndMemberFilter(trueFilter, falseFilter).accept(member));
+		assertTrue(new AndMemberFilter(trueFilter, trueFilter).accept(member));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldReturnTrueOnFirstAccept() {
-		assertTrue(new OrMemberFilter(falseFilter, trueFilter, errorFilter).accept(member));
+	public void shouldReturnTrueOnFirstReject() {
+		assertTrue(new OrMemberFilter(trueFilter, falseFilter, errorFilter).accept(member));
 		verifyZeroInteractions(errorFilter);
 	}
 }

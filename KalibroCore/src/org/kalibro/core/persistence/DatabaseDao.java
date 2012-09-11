@@ -6,8 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.util.Identifier;
 import org.kalibro.dto.DataTransferObject;
+import org.kalibro.util.Identifier;
 
 /**
  * Abstract database access implementation for data access objects.

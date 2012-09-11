@@ -4,8 +4,8 @@ import org.cvsanaly.entities.MetricResult;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
-import org.kalibro.core.util.Identifier;
-import org.kalibro.core.util.reflection.FieldReflector;
+import org.kalibro.util.Identifier;
+import org.kalibro.util.reflection.FieldReflector;
 
 public enum CVSAnalyMetric {
 	NUMBER_OF_SOURCE_LINES_OF_CODE,

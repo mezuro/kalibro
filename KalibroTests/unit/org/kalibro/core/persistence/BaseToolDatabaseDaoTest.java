@@ -44,7 +44,7 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSaveKnownBaseTools() throws Exception {
-		doNothing().when(dao, "save", any());
+		doReturn(null).when(dao, "save", any(MetricCollector.class));
 		dao.saveBaseTools();
 		verifyPrivate(dao).invoke("save", AnalizoMetricCollector.class);
 		verifyPrivate(dao).invoke("save", CheckstyleMetricCollector.class);

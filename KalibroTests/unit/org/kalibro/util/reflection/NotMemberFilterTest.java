@@ -1,4 +1,4 @@
-package org.kalibro.core.util.reflection;
+package org.kalibro.util.reflection;
 
 import static org.junit.Assert.*;
 

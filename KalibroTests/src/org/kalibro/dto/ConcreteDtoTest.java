@@ -9,7 +9,7 @@ import java.lang.reflect.Modifier;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.util.reflection.FieldReflector;
+import org.kalibro.util.reflection.FieldReflector;
 
 public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends TestCase {
 

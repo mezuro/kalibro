@@ -1,4 +1,4 @@
-package org.kalibro.core.util.reflection;
+package org.kalibro.util.reflection;
 
 import java.lang.reflect.AccessibleObject;
 import java.lang.reflect.Member;
