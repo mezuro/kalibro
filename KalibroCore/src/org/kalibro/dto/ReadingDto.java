@@ -5,7 +5,7 @@ import java.awt.Color;
 import org.kalibro.Reading;
 
 /**
- * Data Transfer Object for {@link Reading}.
+ * Data transfer object for {@link Reading}.
  * 
  * @author Carlos Morais
  */

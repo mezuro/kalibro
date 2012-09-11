@@ -7,7 +7,7 @@ import org.kalibro.dao.DaoFactory;
 import org.kalibro.util.reflection.MethodReflector;
 
 /**
- * Creates lazy load proxies that call {@link DaoFactory} methods to load.
+ * Creates lazy load proxies that call {@link DaoFactory} methods to load the target.
  * 
  * @author Carlos Morais
  */

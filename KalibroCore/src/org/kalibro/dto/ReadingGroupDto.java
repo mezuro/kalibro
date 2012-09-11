@@ -7,7 +7,7 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingDao;
 
 /**
- * Data Transfer Object for {@link ReadingGroup}.
+ * Data transfer object for {@link ReadingGroup}.
  * 
  * @author Carlos Morais
  */
