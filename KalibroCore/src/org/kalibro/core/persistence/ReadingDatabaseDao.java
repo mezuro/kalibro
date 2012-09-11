@@ -7,7 +7,7 @@ import javax.persistence.TypedQuery;
 import org.kalibro.Reading;
 import org.kalibro.core.persistence.record.ReadingRecord;
 import org.kalibro.dao.ReadingDao;
-import org.kalibro.dto.ReadingDto;
+import org.kalibro.dto.DataTransferObject;
 
 /**
  * Database access implementation for {@link ReadingDao}.
@@ -22,17 +22,15 @@ public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> impl
 
 	@Override
 	public List<Reading> readingsOf(Long groupId) {
-		String queryString =
-			"SELECT reading FROM Reading reading WHERE reading.group.id = :groupId ORDER BY reading.grade";
-		TypedQuery<ReadingRecord> query = createRecordQuery(queryString);
+		TypedQuery<ReadingRecord> query = createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
 		query.setParameter("groupId", groupId);
-		return ReadingDto.convert(query.getResultList());
+		return DataTransferObject.convert(query.getResultList());
 	}
 
 	@Override
 	public Long save(Reading reading) {
 		ReadingRecord record = new ReadingRecord(reading, reading.getGroupId());
-		return recordManager.save(record).id();
+		return save(record).id();
 	}
 
 	@Override

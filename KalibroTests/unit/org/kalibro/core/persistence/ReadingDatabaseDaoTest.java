@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.Arrays;
 
 import javax.persistence.TypedQuery;
@@ -20,24 +22,20 @@ public class ReadingDatabaseDaoTest extends TestCase {
 	private Reading reading;
 	private ReadingRecord record;
 
-	private RecordManager recordManager;
 	private ReadingDatabaseDao dao;
 
 	@Before
 	public void setUp() {
-		recordManager = mock(RecordManager.class);
-		dao = spy(new ReadingDatabaseDao(recordManager));
-
 		reading = mock(Reading.class);
 		record = mock(ReadingRecord.class);
 		when(record.convert()).thenReturn(reading);
+		dao = spy(new ReadingDatabaseDao(null));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetReadingsOfGroup() {
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
-		String queryString = "SELECT reading FROM Reading reading WHERE reading.group.id = :groupId";
-		doReturn(query).when(dao).createRecordQuery(queryString);
+		doReturn(query).when(dao).createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
 		when(query.getResultList()).thenReturn(Arrays.asList(record));
 
 		assertDeepList(dao.readingsOf(42L), reading);
@@ -45,14 +43,14 @@ public class ReadingDatabaseDaoTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveAndMerge() throws Exception {
+	public void shouldSave() throws Exception {
 		when(reading.getGroupId()).thenReturn(28L);
 		whenNew(ReadingRecord.class).withArguments(reading, 28L).thenReturn(record);
-		when(recordManager.save(record)).thenReturn(record);
-		when(reading.getId()).thenReturn(42L);
+		doReturn(record).when(dao).save(record);
+		when(record.id()).thenReturn(42L);
 
-		dao.save(reading);
-		verify(reading).setId(42L);
+		assertEquals(42L, dao.save(reading).longValue());
+		verify(dao).save(record);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
