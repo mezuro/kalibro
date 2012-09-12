@@ -1,7 +1,7 @@
 package org.kalibro;
 
 /**
- * Indicates Kalibro has a bug to be fixed. Every instructions that throws it should be dead code.
+ * Indicates Kalibro has a bug to be fixed. Every instruction that throws it should be dead code.
  * 
  * @author Carlos Morais
  */

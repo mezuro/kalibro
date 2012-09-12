@@ -47,15 +47,11 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldRetrieveIfSettingsExists() {
+	public void shouldSaveLoadAndConfirmExistence() {
 		assertFalse(KalibroSettings.exists());
+
 		settings.save();
 		assertTrue(KalibroSettings.exists());
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldSaveAndLoad() {
-		settings.save();
 		assertDeepEquals(settings, KalibroSettings.load());
 	}
 

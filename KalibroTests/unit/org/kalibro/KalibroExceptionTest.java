@@ -12,6 +12,11 @@ public class KalibroExceptionTest extends TestCase {
 	private KalibroException exception;
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldBeUnchecked() {
+		assertEquals(RuntimeException.class, KalibroException.class.getSuperclass());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldContructWithMessage() {
 		exception = new KalibroException(MESSAGE);
 		assertSame(MESSAGE, exception.getMessage());

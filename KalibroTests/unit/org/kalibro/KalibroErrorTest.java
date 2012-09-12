@@ -12,6 +12,11 @@ public class KalibroErrorTest extends TestCase {
 	private KalibroError error;
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldBeAnError() {
+		assertEquals(Error.class, KalibroError.class.getSuperclass());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldContructWithMessage() {
 		error = new KalibroError(MESSAGE);
 		assertSame(MESSAGE, error.getMessage());
