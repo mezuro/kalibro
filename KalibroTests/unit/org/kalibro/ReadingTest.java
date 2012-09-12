@@ -37,10 +37,21 @@ public class ReadingTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultReading() {
 		reading = new Reading();
-		assertNull(reading.getId());
+		assertFalse(reading.hasId());
 		assertEquals("", reading.getLabel());
 		assertDoubleEquals(0.0, reading.getGrade());
 		assertEquals(Color.WHITE, reading.getColor());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldThrowExceptionWhenGettingInexistentId() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.getId();
+			}
+		}, "Reading has no id.");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -79,40 +90,69 @@ public class ReadingTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetGroupId() {
+		// required for proper saving
+		setReadingGroup(42L);
+		assertEquals(42L, reading.getGroupId().longValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotSaveIfNotGrouped() {
+		checkKalibroExceptionOnSave("Reading is not in any group.");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldNotSaveIfGroupHasNoId() {
+		setReadingGroup(null);
+		checkKalibroExceptionOnSave("Group is not saved. Save group instead");
+	}
+
+	private void checkKalibroExceptionOnSave(String message) {
 		checkKalibroException(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
 				reading.save();
 			}
-		}, "Reading is not in any group.");
+		}, message);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSaveIfGrouped() {
-		reading.setGroup(mock(ReadingGroup.class));
+	public void shouldUpdateIdOnSave() {
+		setReadingGroup(28L);
+		when(dao.save(reading)).thenReturn(42L);
+
+		assertFalse(reading.hasId());
 		reading.save();
-		verify(dao).save(reading);
+		assertEquals(42L, reading.getId().longValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldDeleteIfExists() {
+	public void shouldDeleteIfHasId() {
+		assertFalse(reading.hasId());
 		reading.delete();
 		verify(dao, never()).delete(any(Long.class));
 
 		reading.setId(42L);
+
+		assertTrue(reading.hasId());
 		reading.delete();
 		verify(dao).delete(42L);
-		assertNull(reading.getId());
+		assertFalse(reading.hasId());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldRemoveFromGroupOnDelete() {
-		ReadingGroup group = mock(ReadingGroup.class);
-		reading.setGroup(group);
-
+		ReadingGroup group = setReadingGroup(42L);
 		reading.delete();
 		verify(group).removeReading(reading);
+	}
+
+	private ReadingGroup setReadingGroup(Long id) {
+		ReadingGroup group = mock(ReadingGroup.class);
+		when(group.hasId()).thenReturn(id != null);
+		when(group.getId()).thenReturn(id);
+		reading.setGroup(group);
+		return group;
 	}
 }

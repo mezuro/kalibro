@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static org.mockito.Matchers.any;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -14,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ReadingDao;
 import org.kalibro.dao.ReadingGroupDao;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -32,7 +32,7 @@ public class ReadingGroupTest extends TestCase {
 		dao = mock(ReadingGroupDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getReadingGroupDao()).thenReturn(dao);
-		group = spy(loadFixture("readingGroup-scholar", ReadingGroup.class));
+		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -60,27 +60,41 @@ public class ReadingGroupTest extends TestCase {
 	@Test(timeout = UNIT_TIMEOUT)
 	public void checkDefaultGroup() {
 		group = new ReadingGroup();
-		assertNull(group.getId());
+		assertFalse(group.hasId());
 		assertEquals("", group.getName());
 		assertEquals("", group.getDescription());
 		assertTrue(group.getReadings().isEmpty());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSetReadingsWithoutTouchingThem() {
+	public void shouldThrowExceptionWhenGettingInexistentId() {
+		checkKalibroException(new Task() {
+
+			@Override
+			protected void perform() throws Throwable {
+				group.getId();
+			}
+		}, "Reading group has no id.");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldSetGroupOnReadings() {
 		Reading reading = mock(Reading.class);
-		List<Reading> readings = spy(new ArrayList<Reading>(Arrays.asList(reading)));
-
-		group.setReadings(readings);
-		verifyZeroInteractions(reading);
-		verifyZeroInteractions(readings);
-
+		group.setReadings(Arrays.asList(reading));
 		assertDeepList(group.getReadings(), reading);
 		verify(reading).setGroup(group);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldAddReadingIfItDoesNotConflictWithExistentOnes() {
+	public void shouldSetReadingsWithoutTouchingThem() {
+		// required for lazy loading
+		List<Reading> readings = mock(List.class);
+		group.setReadings(readings);
+		verifyZeroInteractions(readings);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldAddReadingIfItDoesNotConflictWithExistingOnes() {
 		Reading reading = mock(Reading.class);
 		List<Reading> existents = group.getReadings();
 		group.addReading(reading);
@@ -104,9 +118,17 @@ public class ReadingGroupTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldSave() {
+	public void shouldUpdateIdAndReadingsOnSave() {
+		Reading reading = mock(Reading.class);
+		ReadingDao readingDao = mock(ReadingDao.class);
+		when(dao.save(group)).thenReturn(42L);
+		when(DaoFactory.getReadingDao()).thenReturn(readingDao);
+		when(readingDao.readingsOf(42L)).thenReturn(Arrays.asList(reading));
+
+		assertFalse(group.hasId());
 		group.save();
-		verify(dao).save(group);
+		assertEquals(42L, group.getId().longValue());
+		assertDeepList(group.getReadings(), reading);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -122,13 +144,26 @@ public class ReadingGroupTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldDeleteIfExists() {
+	public void shouldDeleteIfHasId() {
+		assertFalse(group.hasId());
 		group.delete();
 		verify(dao, never()).delete(any(Long.class));
 
 		group.setId(42L);
+
+		assertTrue(group.hasId());
 		group.delete();
 		verify(dao).delete(42L);
-		assertNull(group.getId());
+		assertFalse(group.hasId());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRemoveReadingIdsOnDelete() {
+		Reading reading = mock(Reading.class);
+		group.setReadings(Arrays.asList(reading));
+		group.setId(42L);
+
+		group.delete();
+		verify(reading).setId(null);
 	}
 }

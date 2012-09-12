@@ -2,15 +2,13 @@ package org.kalibro;
 
 import java.awt.Color;
 
-import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.Ignore;
-import org.kalibro.core.abstractentity.Print;
-import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.abstractentity.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 
 /**
- * Interpretation of a metric result.
+ * Interpretation of a metric result. Examples: "Good", "Bad", "Complex", "Beautiful". Besides label, readings also have
+ * color and grade for quick and comparable evaluation.
  * 
  * @author Carlos Morais
  */
@@ -20,7 +18,9 @@ public class Reading extends AbstractEntity<Reading> {
 	@Print(skip = true)
 	private Long id;
 
+	@IdentityField
 	private String label;
+
 	private Double grade;
 	private Color color;
 
@@ -39,6 +39,8 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public Long getId() {
+		if (id == null)
+			throw new KalibroException("Reading has no id.");
 		return id;
 	}
 
@@ -92,11 +94,13 @@ public class Reading extends AbstractEntity<Reading> {
 	public void save() {
 		if (group == null)
 			throw new KalibroException("Reading is not in any group.");
-		dao().save(this);
+		if (!group.hasId())
+			throw new KalibroException("Group is not saved. Save group instead");
+		id = dao().save(this);
 	}
 
 	public void delete() {
-		if (id != null)
+		if (hasId())
 			dao().delete(id);
 		if (group != null)
 			group.removeReading(this);

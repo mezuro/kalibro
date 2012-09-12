@@ -50,6 +50,8 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public Long getId() {
+		if (id == null)
+			throw new KalibroException("Reading group has no id.");
 		return id;
 	}
 
@@ -102,12 +104,15 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	public void save() {
 		if (name.trim().isEmpty())
 			throw new KalibroException("Reading group requires name.");
-		dao().save(this);
+		id = dao().save(this);
+		readings = DaoFactory.getReadingDao().readingsOf(id);
 	}
 
 	public void delete() {
-		if (id != null)
+		if (hasId())
 			dao().delete(id);
+		for (Reading reading : readings)
+			reading.setId(null);
 		id = null;
 	}
 }
