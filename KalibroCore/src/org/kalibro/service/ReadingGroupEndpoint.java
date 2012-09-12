@@ -16,25 +16,25 @@ import org.kalibro.service.xml.ReadingGroupXmlResponse;
  * 
  * @author Carlos Morais
  */
-@WebService
+@WebService(name = "ReadingGroupEndpoint", serviceName = "ReadingGroupEndpointService")
 public interface ReadingGroupEndpoint {
 
 	@WebMethod
 	@WebResult(name = "exists")
-	boolean exists(@WebParam(name = "groupId") Long groupId);
+	boolean readingGroupExists(@WebParam(name = "groupId") Long groupId);
 
 	@WebMethod
 	@WebResult(name = "readingGroup")
-	ReadingGroupXmlResponse get(@WebParam(name = "groupId") Long groupId);
+	ReadingGroupXmlResponse getReadingGroup(@WebParam(name = "groupId") Long groupId);
 
 	@WebMethod
 	@WebResult(name = "readingGroup")
-	List<ReadingGroupXmlResponse> all();
+	List<ReadingGroupXmlResponse> allReadingGroups();
 
 	@WebMethod
 	@WebResult(name = "readingGroupId")
-	Long save(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group);
+	Long saveReadingGroup(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group);
 
 	@WebMethod
-	void delete(@WebParam(name = "groupId") Long groupId);
+	void deleteReadingGroup(@WebParam(name = "groupId") Long groupId);
 }

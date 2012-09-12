@@ -26,13 +26,13 @@ public class ReadingClientDaoTest extends
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
-		when(port.save(request)).thenReturn(42L);
+		when(port.saveReading(request)).thenReturn(42L);
 		assertEquals(42L, client.save(entity).longValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDelete() {
 		client.delete(42L);
-		verify(port).delete(42L);
+		verify(port).deleteReading(42L);
 	}
 }

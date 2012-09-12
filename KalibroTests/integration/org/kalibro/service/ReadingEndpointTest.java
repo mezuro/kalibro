@@ -39,12 +39,12 @@ public class ReadingEndpointTest extends EndpointTest {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSave() {
 		when(dao.save(eq(fixture))).thenReturn(42L);
-		assertEquals(42L, port.save(new ReadingXml(fixture)).longValue());
+		assertEquals(42L, port.saveReading(new ReadingXml(fixture)).longValue());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldDelete() {
-		port.delete(42L);
+		port.deleteReading(42L);
 		verify(dao).delete(42L);
 	}
 }

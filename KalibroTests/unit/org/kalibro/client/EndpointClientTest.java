@@ -50,8 +50,8 @@ public class EndpointClientTest extends TestCase {
 		TestEndpointClient client = new TestEndpointClient("http://localhost:8080/KalibroService/");
 		assertSame(port, client.port);
 
-		verifyCreatedService("http://localhost:8080/KalibroService/TestEndpoint/?wsdl", "TestEndpointImplService");
-		verifyCreatedPort("TestEndpointImplPort");
+		verifyCreatedService("http://localhost:8080/KalibroService/TestEndpoint/?wsdl", "TestEndpointService");
+		verifyCreatedPort("TestEndpointPort");
 	}
 
 	private void verifyCreatedService(String wsdlLocation, String qName) {

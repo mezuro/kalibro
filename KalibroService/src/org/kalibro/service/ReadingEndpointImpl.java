@@ -17,7 +17,7 @@ import org.kalibro.service.xml.ReadingXml;
  * 
  * @author Carlos Morais
  */
-@WebService
+@WebService(name = "ReadingEndpoint", serviceName = "ReadingEndpointService")
 public class ReadingEndpointImpl implements ReadingEndpoint {
 
 	private ReadingDao dao;
@@ -41,12 +41,12 @@ public class ReadingEndpointImpl implements ReadingEndpoint {
 
 	@Override
 	@WebResult(name = "readingId")
-	public Long save(@WebParam(name = "reading") ReadingXml reading) {
+	public Long saveReading(@WebParam(name = "reading") ReadingXml reading) {
 		return dao.save(reading.convert());
 	}
 
 	@Override
-	public void delete(@WebParam(name = "readingId") Long readingId) {
+	public void deleteReading(@WebParam(name = "readingId") Long readingId) {
 		dao.delete(readingId);
 	}
 }

@@ -10,7 +10,7 @@ import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.service.entities.BaseToolXml;
 
-@WebService
+@WebService(name = "BaseToolEndpoint", serviceName = "BaseToolEndpointService")
 public class BaseToolEndpointImpl implements BaseToolEndpoint {
 
 	private BaseToolDao dao;

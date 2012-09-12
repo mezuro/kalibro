@@ -22,8 +22,8 @@ abstract class EndpointClient<ENDPOINT> {
 	protected EndpointClient(String serviceAddress, Class<ENDPOINT> endpointClass) {
 		String endpointName = endpointClass.getSimpleName();
 		URL wsdlLocation = getWsdlLocation(endpointName, serviceAddress);
-		QName serviceName = new QName(NAMESPACE, endpointName + "ImplService");
-		QName portName = new QName(NAMESPACE, endpointName + "ImplPort");
+		QName serviceName = new QName(NAMESPACE, endpointName + "Service");
+		QName portName = new QName(NAMESPACE, endpointName + "Port");
 		port = Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
 	}
 

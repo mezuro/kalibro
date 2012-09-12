@@ -43,8 +43,8 @@ public abstract class EndpointTest extends TestCase {
 	protected <T> T publishAndGetPort(T implementor, Class<T> endpointClass) throws MalformedURLException {
 		String endpointName = endpointClass.getSimpleName();
 		URL wsdlLocation = publish(implementor, endpointName);
-		QName serviceName = new QName(NAMESPACE, endpointName + "ImplService");
-		QName portName = new QName(NAMESPACE, endpointName + "ImplPort");
+		QName serviceName = new QName(NAMESPACE, endpointName + "Service");
+		QName portName = new QName(NAMESPACE, endpointName + "Port");
 		return Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
 	}
 

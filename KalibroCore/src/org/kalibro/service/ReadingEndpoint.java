@@ -15,7 +15,7 @@ import org.kalibro.service.xml.ReadingXml;
  * 
  * @author Carlos Morais
  */
-@WebService
+@WebService(name = "ReadingEndpoint", serviceName = "ReadingEndpointService")
 public interface ReadingEndpoint {
 
 	@WebMethod
@@ -24,8 +24,8 @@ public interface ReadingEndpoint {
 
 	@WebMethod
 	@WebResult(name = "readingId")
-	Long save(@WebParam(name = "reading") ReadingXml reading);
+	Long saveReading(@WebParam(name = "reading") ReadingXml reading);
 
 	@WebMethod
-	void delete(@WebParam(name = "readingId") Long readingId);
+	void deleteReading(@WebParam(name = "readingId") Long readingId);
 }

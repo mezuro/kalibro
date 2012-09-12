@@ -35,7 +35,7 @@ public class ReadingGroupEndpointTest extends EndpointTest {
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(Arrays.asList(fixture));
 
-		List<ReadingGroupXmlResponse> groups = port.all();
+		List<ReadingGroupXmlResponse> groups = port.allReadingGroups();
 		assertEquals(1, groups.size());
 		assertCorrectResponse(groups.get(0));
 	}
@@ -43,7 +43,7 @@ public class ReadingGroupEndpointTest extends EndpointTest {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldGetById() {
 		when(dao.get(42L)).thenReturn(fixture);
-		assertCorrectResponse(port.get(42L));
+		assertCorrectResponse(port.getReadingGroup(42L));
 	}
 
 	private void assertCorrectResponse(ReadingGroupXmlResponse response) {
@@ -61,12 +61,12 @@ public class ReadingGroupEndpointTest extends EndpointTest {
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldSave() {
 		when(dao.save(eq(fixture))).thenReturn(42L);
-		assertEquals(42L, port.save(new ReadingGroupXmlRequest(fixture)).longValue());
+		assertEquals(42L, port.saveReadingGroup(new ReadingGroupXmlRequest(fixture)).longValue());
 	}
 
 	@Test(timeout = INTEGRATION_TIMEOUT)
 	public void shouldDelete() {
-		port.delete(42L);
+		port.deleteReadingGroup(42L);
 		verify(dao).delete(42L);
 	}
 }

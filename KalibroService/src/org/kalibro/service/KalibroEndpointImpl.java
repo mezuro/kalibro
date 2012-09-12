@@ -10,7 +10,7 @@ import javax.jws.WebService;
 import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.enums.RepositoryType;
 
-@WebService
+@WebService(name = "KalibroEndpoint", serviceName = "KalibroEndpointService")
 public class KalibroEndpointImpl implements KalibroEndpoint {
 
 	@Override

@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 import org.kalibro.core.model.enums.RepositoryType;
 
-@WebService
+@WebService(name = "KalibroEndpoint", serviceName = "KalibroEndpointService")
 public interface KalibroEndpoint {
 
 	@WebMethod

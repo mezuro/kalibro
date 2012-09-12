@@ -11,7 +11,7 @@ import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.entities.ProjectXml;
 import org.kalibro.service.entities.RawProjectXml;
 
-@WebService
+@WebService(name = "ProjectEndpoint", serviceName = "ProjectEndpointService")
 public class ProjectEndpointImpl implements ProjectEndpoint {
 
 	private ProjectDao dao;

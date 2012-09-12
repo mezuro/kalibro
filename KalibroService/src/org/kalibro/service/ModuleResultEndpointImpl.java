@@ -13,7 +13,7 @@ import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.service.entities.ModuleResultXml;
 
-@WebService
+@WebService(name = "ModuleResultEndpoint", serviceName = "ModuleResultEndpointService")
 public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 
 	private ModuleResultDao dao;

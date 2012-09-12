@@ -26,11 +26,11 @@ class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements Readin
 
 	@Override
 	public Long save(Reading reading) {
-		return port.save(new ReadingXml(reading));
+		return port.saveReading(new ReadingXml(reading));
 	}
 
 	@Override
 	public void delete(Long readingId) {
-		port.delete(readingId);
+		port.deleteReading(readingId);
 	}
 }

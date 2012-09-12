@@ -10,7 +10,7 @@ import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.service.entities.ProjectResultXml;
 
-@WebService
+@WebService(name = "ProjectResultEndpoint", serviceName = "ProjectResultEndpointService")
 public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 
 	private ProjectResultDao dao;

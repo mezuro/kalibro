@@ -21,26 +21,26 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 
 	@Override
 	public boolean exists(Long groupId) {
-		return port.exists(groupId);
+		return port.readingGroupExists(groupId);
 	}
 
 	@Override
 	public ReadingGroup get(Long groupId) {
-		return port.get(groupId).convert();
+		return port.getReadingGroup(groupId).convert();
 	}
 
 	@Override
 	public List<ReadingGroup> all() {
-		return DataTransferObject.convert(port.all());
+		return DataTransferObject.convert(port.allReadingGroups());
 	}
 
 	@Override
 	public Long save(ReadingGroup group) {
-		return port.save(new ReadingGroupXmlRequest(group));
+		return port.saveReadingGroup(new ReadingGroupXmlRequest(group));
 	}
 
 	@Override
 	public void delete(Long groupId) {
-		port.delete(groupId);
+		port.deleteReadingGroup(groupId);
 	}
 }

@@ -10,7 +10,7 @@ import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.service.entities.ConfigurationXml;
 
-@WebService
+@WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
 	private ConfigurationDao dao;

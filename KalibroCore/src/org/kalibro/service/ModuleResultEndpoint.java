@@ -10,7 +10,7 @@ import javax.jws.WebService;
 
 import org.kalibro.service.entities.ModuleResultXml;
 
-@WebService
+@WebService(name = "ModuleResultEndpoint", serviceName = "ModuleResultEndpointService")
 public interface ModuleResultEndpoint {
 
 	@WebMethod

@@ -4,7 +4,7 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/jax-ws/ri/runtime
                         http://java.sun.com/webservices/docs/2.0/jaxws/sun-jaxws.xsd">
 
-	<endpoint name="KalibroMetrics"              url-pattern="/"                             implementation="org.kalibro.service.KalibroMetricsImpl"/>
+	<endpoint name="Kalibro" url-pattern="/" implementation="org.kalibro.service.KalibroImpl"/>
 
 	<endpoint name="BaseToolEndpoint"            url-pattern="/BaseToolEndpoint/"            implementation="org.kalibro.service.BaseToolEndpointImpl"/>
 	<endpoint name="ConfigurationEndpoint"       url-pattern="/ConfigurationEndpoint/"       implementation="org.kalibro.service.ConfigurationEndpointImpl"/>

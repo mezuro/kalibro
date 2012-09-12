@@ -27,12 +27,12 @@ public class ReadingEndpointImplTest extends
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(42L);
-		assertEquals(42L, endpoint.save(request).longValue());
+		assertEquals(42L, endpoint.saveReading(request).longValue());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldDeleteReading() {
-		endpoint.delete(42L);
+		endpoint.deleteReading(42L);
 		verify(dao).delete(42L);
 	}
 }

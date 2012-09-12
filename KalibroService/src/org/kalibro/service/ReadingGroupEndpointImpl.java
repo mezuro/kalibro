@@ -18,7 +18,7 @@ import org.kalibro.service.xml.ReadingGroupXmlResponse;
  * 
  * @author Carlos Morais
  */
-@WebService
+@WebService(name = "ReadingGroupEndpoint", serviceName = "ReadingGroupEndpointService")
 public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 
 	private ReadingGroupDao dao;
@@ -33,19 +33,19 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 
 	@Override
 	@WebResult(name = "exists")
-	public boolean exists(@WebParam(name = "groupId") Long groupId) {
+	public boolean readingGroupExists(@WebParam(name = "groupId") Long groupId) {
 		return dao.exists(groupId);
 	}
 
 	@Override
 	@WebResult(name = "readingGroup")
-	public ReadingGroupXmlResponse get(@WebParam(name = "groupId") Long groupId) {
+	public ReadingGroupXmlResponse getReadingGroup(@WebParam(name = "groupId") Long groupId) {
 		return new ReadingGroupXmlResponse(dao.get(groupId));
 	}
 
 	@Override
 	@WebResult(name = "readingGroup")
-	public List<ReadingGroupXmlResponse> all() {
+	public List<ReadingGroupXmlResponse> allReadingGroups() {
 		List<ReadingGroupXmlResponse> groups = new ArrayList<ReadingGroupXmlResponse>();
 		for (ReadingGroup group : dao.all())
 			groups.add(new ReadingGroupXmlResponse(group));
@@ -54,12 +54,12 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 
 	@Override
 	@WebResult(name = "readingGroupId")
-	public Long save(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group) {
+	public Long saveReadingGroup(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group) {
 		return dao.save(group.convert());
 	}
 
 	@Override
-	public void delete(@WebParam(name = "groupId") Long groupId) {
+	public void deleteReadingGroup(@WebParam(name = "groupId") Long groupId) {
 		dao.delete(groupId);
 	}
 }
