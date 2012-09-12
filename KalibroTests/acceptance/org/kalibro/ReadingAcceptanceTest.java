@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import org.junit.After;
 import org.junit.Before;
@@ -15,6 +15,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 	@Before
 	public void setUp() {
 		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
+		group.save();
 		reading = group.getReadings().get(0);
 	}
 
@@ -25,9 +26,6 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Test(timeout = ACCEPTANCE_TIMEOUT)
 	public void testCrud() {
-		assertTrue(ReadingGroup.all().isEmpty());
-
-		reading.save();
 		assertSaved();
 
 		reading.setLabel("ReadingAcceptanceTest label");

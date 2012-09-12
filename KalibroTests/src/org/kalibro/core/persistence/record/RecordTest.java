@@ -71,7 +71,7 @@ public abstract class RecordTest<ENTITY, RECORD extends DataTransferObject<ENTIT
 
 		ManyToOne manyToOne = reflector.getFieldAnnotation(field, ManyToOne.class);
 		assertNotNull(manyToOne);
-		assertArrayEquals(new CascadeType[]{CascadeType.ALL}, manyToOne.cascade());
+		assertEquals(0, manyToOne.cascade().length);
 		assertEquals(FetchType.LAZY, manyToOne.fetch());
 		assertEquals(optional, manyToOne.optional());
 

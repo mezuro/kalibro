@@ -31,7 +31,7 @@ public class ReadingRecord extends ReadingDto {
 	private Integer color;
 
 	@SuppressWarnings("unused" /* JPA */)
-	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
 	private ReadingGroupRecord group;
 

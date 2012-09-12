@@ -39,8 +39,6 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public Long getId() {
-		if (id == null)
-			throw new KalibroException("Reading has no id.");
 		return id;
 	}
 

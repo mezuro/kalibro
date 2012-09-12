@@ -67,17 +67,6 @@ public class ReadingGroupTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionWhenGettingInexistentId() {
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				group.getId();
-			}
-		}, "Reading group has no id.");
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldSetGroupOnReadings() {
 		Reading reading = mock(Reading.class);
 		group.setReadings(Arrays.asList(reading));

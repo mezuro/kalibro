@@ -50,8 +50,6 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public Long getId() {
-		if (id == null)
-			throw new KalibroException("Reading group has no id.");
 		return id;
 	}
 
