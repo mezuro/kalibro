@@ -14,7 +14,7 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.dao.ModuleResultDaoFake;
 import org.kalibro.service.entities.ModuleResultXml;
 
-public class ModuleResultEndpointTest extends KalibroServiceTestCase {
+public class ModuleResultEndpointTest extends EndpointTest {
 
 	private static final String PROJECT_NAME = "HelloWorld-1.0";
 	private static final String CLASS_NAME = "HelloWorld";

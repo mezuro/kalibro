@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.dao.BaseToolDaoFake;
 
-public class BaseToolEndpointTest extends KalibroServiceTestCase {
+public class BaseToolEndpointTest extends EndpointTest {
 
 	private BaseTool analizo;
 	private BaseToolEndpoint port;

@@ -12,7 +12,7 @@ import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.dao.MetricConfigurationDaoFake;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
-public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
+public class MetricConfigurationEndpointTest extends EndpointTest {
 
 	private static final String CONFIGURATION_NAME = "MetricConfigurationEndpointTest";
 

@@ -15,7 +15,7 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.dao.ConfigurationDaoFake;
 import org.kalibro.service.entities.ConfigurationXml;
 
-public class ConfigurationEndpointTest extends KalibroServiceTestCase {
+public class ConfigurationEndpointTest extends EndpointTest {
 
 	private Configuration sample;
 	private ConfigurationEndpoint port;

@@ -38,6 +38,8 @@ public abstract class EndpointImplementationTest<// @formatter:off
 		endpoint = constructor(endpointClass(), new Class<?>[0]).newInstance();
 	}
 
+	protected abstract Class<?>[] parameterClasses();
+
 	private void mockEntity() throws Exception {
 		entity = mock(entityClass());
 		request = mock(requestClass());
@@ -59,8 +61,6 @@ public abstract class EndpointImplementationTest<// @formatter:off
 				return method;
 		throw new KalibroError("DaoFactory method not found for class: " + daoClass());
 	}
-
-	protected abstract Class<?>[] parameterClasses();
 
 	private Class<ENTITY> entityClass() {
 		return (Class<ENTITY>) classes[0];

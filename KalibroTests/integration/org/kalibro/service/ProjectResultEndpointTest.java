@@ -12,7 +12,7 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.dao.ProjectResultDaoFake;
 
-public class ProjectResultEndpointTest extends KalibroServiceTestCase {
+public class ProjectResultEndpointTest extends EndpointTest {
 
 	private static final String PROJECT_NAME = "HelloWorld-1.0";
 	private static final Date DATE_1 = new Date(1);

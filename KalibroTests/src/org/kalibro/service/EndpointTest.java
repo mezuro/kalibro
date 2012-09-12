@@ -13,7 +13,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.kalibro.TestCase;
 
-public abstract class KalibroServiceTestCase extends TestCase {
+public abstract class EndpointTest extends TestCase {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 
