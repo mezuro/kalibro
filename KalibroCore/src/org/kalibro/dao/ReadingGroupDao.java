@@ -11,9 +11,11 @@ import org.kalibro.ReadingGroup;
  */
 public interface ReadingGroupDao {
 
-	List<ReadingGroup> all();
+	boolean exists(Long groupId);
 
 	ReadingGroup get(Long groupId);
+
+	List<ReadingGroup> all();
 
 	Long save(ReadingGroup group);
 

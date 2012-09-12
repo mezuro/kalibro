@@ -25,10 +25,11 @@ public class ReadingGroupDatabaseDaoTest extends TestCase {
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetAll() {
-		List<ReadingGroup> all = mock(List.class);
-		doReturn(all).when(dao).allOrderedByName();
-		assertSame(all, dao.all());
+	public void shouldConfirmExistence() {
+		doReturn(false).when(dao).existsWithId(28L);
+		doReturn(true).when(dao).existsWithId(42L);
+		assertFalse(dao.exists(28L));
+		assertTrue(dao.exists(42L));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
@@ -36,6 +37,13 @@ public class ReadingGroupDatabaseDaoTest extends TestCase {
 		ReadingGroup group = mock(ReadingGroup.class);
 		doReturn(group).when(dao).getById(42L);
 		assertSame(group, dao.get(42L));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetAll() {
+		List<ReadingGroup> all = mock(List.class);
+		doReturn(all).when(dao).allOrderedByName();
+		assertSame(all, dao.all());
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

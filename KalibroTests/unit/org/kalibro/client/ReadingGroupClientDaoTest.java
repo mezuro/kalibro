@@ -21,15 +21,22 @@ public class ReadingGroupClientDaoTest extends ClientTest<// @formatter:off
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldGetAll() {
-		when(port.all()).thenReturn(Arrays.asList(response));
-		assertDeepList(client.all(), entity);
+	public void shouldConfirmExistence() {
+		when(port.exists(42L)).thenReturn(true);
+		assertFalse(client.exists(28L));
+		assertTrue(client.exists(42L));
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldGetById() {
 		when(port.get(42L)).thenReturn(response);
 		assertSame(entity, client.get(42L));
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldGetAll() {
+		when(port.all()).thenReturn(Arrays.asList(response));
+		assertDeepList(client.all(), entity);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

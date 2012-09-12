@@ -1,7 +1,8 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.persistence.Query;
@@ -29,6 +30,20 @@ public class DatabaseDaoTest extends TestCase {
 		when(record.convert()).thenReturn(person);
 
 		dao = new PersonDatabaseDao(recordManager);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldConfirmExistence() {
+		Query query = mock(Query.class);
+		when(recordManager.createQuery("SELECT 1 FROM Person WHERE id = :id")).thenReturn(query);
+
+		when(query.getResultList()).thenReturn(Arrays.asList(1));
+		assertTrue(dao.existsWithId(42L));
+		verify(query).setParameter("id", 42L);
+
+		when(query.getResultList()).thenReturn(new ArrayList<Integer>());
+		assertFalse(dao.existsWithId(28L));
+		verify(query).setParameter("id", 28L);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

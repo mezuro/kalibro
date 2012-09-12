@@ -26,6 +26,12 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		this.recordManager = recordManager;
 	}
 
+	protected boolean existsWithId(Long recordId) {
+		Query query = recordManager.createQuery("SELECT 1 FROM " + entityName() + " WHERE id = :id");
+		query.setParameter("id", recordId);
+		return !query.getResultList().isEmpty();
+	}
+
 	protected ENTITY getById(Long recordId) {
 		return recordManager.getById(recordId, recordClass).convert();
 	}
@@ -35,14 +41,14 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		return DataTransferObject.convert(query.getResultList());
 	}
 
+	protected RECORD save(RECORD record) {
+		return recordManager.save(record);
+	}
+
 	protected void deleteById(Long recordId) {
 		Query query = recordManager.createQuery("DELETE FROM " + entityName() + " WHERE id = :id");
 		query.setParameter("id", recordId);
 		recordManager.executeUpdate(query);
-	}
-
-	protected RECORD save(RECORD record) {
-		return recordManager.save(record);
 	}
 
 	@Deprecated

@@ -20,12 +20,16 @@ import org.kalibro.service.xml.ReadingGroupXmlResponse;
 public interface ReadingGroupEndpoint {
 
 	@WebMethod
-	@WebResult(name = "readingGroup")
-	List<ReadingGroupXmlResponse> all();
+	@WebResult(name = "exists")
+	boolean exists(@WebParam(name = "groupId") Long groupId);
 
 	@WebMethod
 	@WebResult(name = "readingGroup")
 	ReadingGroupXmlResponse get(@WebParam(name = "groupId") Long groupId);
+
+	@WebMethod
+	@WebResult(name = "readingGroup")
+	List<ReadingGroupXmlResponse> all();
 
 	@WebMethod
 	@WebResult(name = "readingGroupId")

@@ -32,18 +32,24 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 	}
 
 	@Override
-	@WebResult(name = "readingGroup")
-	public List<ReadingGroupXmlResponse> all() {
-		List<ReadingGroupXmlResponse> groups = new ArrayList<ReadingGroupXmlResponse>();
-		for (ReadingGroup group : dao.all())
-			groups.add(new ReadingGroupXmlResponse(group));
-		return groups;
+	@WebResult(name = "exists")
+	public boolean exists(@WebParam(name = "groupId") Long groupId) {
+		return dao.exists(groupId);
 	}
 
 	@Override
 	@WebResult(name = "readingGroup")
 	public ReadingGroupXmlResponse get(@WebParam(name = "groupId") Long groupId) {
 		return new ReadingGroupXmlResponse(dao.get(groupId));
+	}
+
+	@Override
+	@WebResult(name = "readingGroup")
+	public List<ReadingGroupXmlResponse> all() {
+		List<ReadingGroupXmlResponse> groups = new ArrayList<ReadingGroupXmlResponse>();
+		for (ReadingGroup group : dao.all())
+			groups.add(new ReadingGroupXmlResponse(group));
+		return groups;
 	}
 
 	@Override

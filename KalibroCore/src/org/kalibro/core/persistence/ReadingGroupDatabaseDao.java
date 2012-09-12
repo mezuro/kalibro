@@ -18,13 +18,18 @@ public class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGr
 	}
 
 	@Override
-	public List<ReadingGroup> all() {
-		return allOrderedByName();
+	public boolean exists(Long groupId) {
+		return existsWithId(groupId);
 	}
 
 	@Override
 	public ReadingGroup get(Long groupId) {
 		return getById(groupId);
+	}
+
+	@Override
+	public List<ReadingGroup> all() {
+		return allOrderedByName();
 	}
 
 	@Override
