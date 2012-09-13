@@ -30,6 +30,9 @@ public class KalibroSettingsPanelTest extends TestCase {
 		clientSettingsPanel().set(settings.getClientSettings());
 		serverSettingsPanel().set(settings.getServerSettings());
 		assertDeepEquals(settings, panel.get());
+
+		clientField().set(!settings.clientSide());
+		assertFalse(panel.get().deepEquals(settings));
 	}
 
 	@Test

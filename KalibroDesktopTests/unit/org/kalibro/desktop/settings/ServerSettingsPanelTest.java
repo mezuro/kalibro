@@ -19,6 +19,7 @@ public class ServerSettingsPanelTest extends TestCase {
 	@Before
 	public void setUp() {
 		settings = new ServerSettings();
+		settings.getLoadDirectory().mkdirs();
 		panel = new ServerSettingsPanel();
 		finder = new ComponentFinder(panel);
 	}

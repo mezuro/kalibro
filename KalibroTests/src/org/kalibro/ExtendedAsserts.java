@@ -84,7 +84,7 @@ abstract class ExtendedAsserts extends PowerMockito {
 	}
 
 	protected void assertThrows(Task task, Class<? extends Throwable> exceptionClass) {
-		Pattern pattern = Pattern.compile(".*", Pattern.MULTILINE);
+		Pattern pattern = Pattern.compile(".*", Pattern.DOTALL);
 		assertThrows(task, exceptionClass, pattern, null);
 	}
 

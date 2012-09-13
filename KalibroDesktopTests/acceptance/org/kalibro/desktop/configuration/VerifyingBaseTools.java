@@ -1,14 +1,14 @@
 package org.kalibro.desktop.configuration;
 
 import org.junit.Test;
-import org.kalibro.desktop.KalibroDesktopTestCase;
+import org.kalibro.desktop.KalibroDesktopAcceptanceTest;
 
 /**
  * Base tools should be saved automatically.
  * 
  * @author Carlos Morais
  */
-public class VerifyingBaseTools extends KalibroDesktopTestCase {
+public class VerifyingBaseTools extends KalibroDesktopAcceptanceTest {
 
 	@Test
 	public void shouldHaveBaseTools() {

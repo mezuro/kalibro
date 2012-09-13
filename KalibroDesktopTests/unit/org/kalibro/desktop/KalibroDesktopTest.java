@@ -1,11 +1,10 @@
 package org.kalibro.desktop;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
-import org.kalibro.TestCase;
+import org.kalibro.UtilityClassTest;
 import org.kalibro.desktop.settings.SettingsController;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
@@ -15,12 +14,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({KalibroSettings.class, KalibroDesktop.class, SettingsController.class})
-public class KalibroDesktopTest extends TestCase {
-
-	@BeforeClass
-	public static void emmaCoverage() throws Exception {
-		KalibroDesktop.class.getDeclaredConstructor().newInstance();
-	}
+public class KalibroDesktopTest extends UtilityClassTest {
 
 	private KalibroFrame kalibroFrame;
 
@@ -30,6 +24,11 @@ public class KalibroDesktopTest extends TestCase {
 		mockStatic(SettingsController.class);
 		kalibroFrame = mock(KalibroFrame.class);
 		whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
+	}
+
+	@Override
+	protected Class<?> utilityClass() {
+		return KalibroDesktop.class;
 	}
 
 	@Test

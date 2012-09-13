@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.AnswerAdapter;
 import org.kalibro.TestCase;
-import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -54,14 +53,14 @@ public class ColorChooserTest extends TestCase {
 
 	@Test
 	public void shouldSetChooserName() {
-		Mockito.verify(nativeChooser).setName("colorChooser");
+		verify(nativeChooser).setName("colorChooser");
 	}
 
 	@Test
 	public void shouldShowColorChooserDialogWithDefaultColorSelected() {
 		colorChooser.chooseColor(DEFAULT_COLOR);
-		Mockito.verify(nativeChooser).setColor(DEFAULT_COLOR);
-		Mockito.verify(chooserDialog).setVisible(true);
+		verify(nativeChooser).setColor(DEFAULT_COLOR);
+		verify(chooserDialog).setVisible(true);
 	}
 
 	@Test
