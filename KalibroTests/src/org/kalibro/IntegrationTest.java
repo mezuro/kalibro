@@ -9,7 +9,7 @@ public class IntegrationTest extends TestCase {
 
 	@Override
 	protected Timeout testTimeout() {
-		return new Timeout(Timeouts.INTEGRATION_TIMEOUT);
+		return new Timeout(5000);
 	}
 
 	protected File samplesDirectory() {

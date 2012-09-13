@@ -29,7 +29,7 @@ public abstract class TestCase extends TestShortcuts {
 	private boolean waiting;
 
 	protected Timeout testTimeout() {
-		return new Timeout(Timeouts.UNIT_TIMEOUT);
+		return new Timeout(1000);
 	}
 
 	protected void waitNotification() throws InterruptedException {

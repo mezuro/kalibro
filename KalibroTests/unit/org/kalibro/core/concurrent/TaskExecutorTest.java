@@ -5,11 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.TestCase;
-import org.kalibro.Timeouts;
 
 public class TaskExecutorTest extends TestCase implements TaskListener {
 
-	private static final long TIMEOUT = Timeouts.UNIT_TIMEOUT / 5;
+	private static final long TIMEOUT = 200;
 
 	private TaskReport report;
 
@@ -92,7 +91,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 
 			@Override
 			protected void perform() throws Throwable {
-				new TaskExecutor(new SleepTask(Timeouts.UNIT_TIMEOUT)).executeAndWait(TIMEOUT);
+				new TaskExecutor(new SleepTask(2 * TIMEOUT)).executeAndWait(TIMEOUT);
 			}
 		}, "Timed out after " + TIMEOUT + " milliseconds while sleeping", InterruptedException.class);
 	}

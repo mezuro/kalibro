@@ -8,7 +8,6 @@ import java.util.Queue;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.Timeouts;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -87,7 +86,7 @@ public class MethodInvocationTest extends TestCase {
 
 				@Override
 				protected void perform() throws Throwable {
-					Thread.sleep(Timeouts.UNIT_TIMEOUT / 5);
+					Thread.sleep(200);
 					invocation.invokeAndNotify();
 				}
 			}.executeInBackground();

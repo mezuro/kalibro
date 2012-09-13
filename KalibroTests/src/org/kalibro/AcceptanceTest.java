@@ -50,6 +50,6 @@ public abstract class AcceptanceTest extends TestCase {
 
 	@Override
 	protected Timeout testTimeout() {
-		return new Timeout(Timeouts.ACCEPTANCE_TIMEOUT);
+		return new Timeout(20000);
 	}
 }
