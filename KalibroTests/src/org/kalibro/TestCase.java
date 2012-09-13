@@ -33,18 +33,6 @@ public abstract class TestCase extends TestShortcuts implements Timeouts {
 		notify();
 	}
 
-	protected File samplesDirectory() {
-		return new File(Environment.dotKalibro(), "samples");
-	}
-
-	protected File repositoriesDirectory() {
-		return new File(Environment.dotKalibro(), "repositories");
-	}
-
-	protected File helloWorldDirectory() {
-		return new File(repositoriesDirectory(), "HelloWorld-1.0");
-	}
-
 	protected File getResource(String name) throws Exception {
 		return new File(getClass().getResource(name).toURI());
 	}

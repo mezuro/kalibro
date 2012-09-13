@@ -29,6 +29,7 @@ public class CheckstyleMetricCollectorTest extends TestCase {
 	private CheckstyleConfiguration configuration;
 	private CheckstyleOutputParser parser;
 	private List<File> files;
+	private File codeDirectory;
 	private Checker checker;
 
 	private CheckstyleMetricCollector collector;
@@ -37,8 +38,8 @@ public class CheckstyleMetricCollectorTest extends TestCase {
 	public void setUp() throws Exception {
 		collector = new CheckstyleMetricCollector();
 		mockConfiguration();
-		mockParser();
 		mockFiles();
+		mockParser();
 		mockChecker();
 	}
 
@@ -48,15 +49,16 @@ public class CheckstyleMetricCollectorTest extends TestCase {
 		when(CheckstyleConfiguration.checkerConfiguration(METRICS)).thenReturn(configuration);
 	}
 
-	private void mockParser() throws Exception {
-		parser = mock(CheckstyleOutputParser.class);
-		whenNew(CheckstyleOutputParser.class).withArguments(repositoriesDirectory(), METRICS).thenReturn(parser);
-	}
-
 	private void mockFiles() {
+		codeDirectory = mock(File.class);
 		files = mock(List.class);
 		mockStatic(FileUtils.class);
-		when(FileUtils.listFiles(repositoriesDirectory(), new String[]{"java"}, true)).thenReturn(files);
+		when(FileUtils.listFiles(codeDirectory, new String[]{"java"}, true)).thenReturn(files);
+	}
+
+	private void mockParser() throws Exception {
+		parser = mock(CheckstyleOutputParser.class);
+		whenNew(CheckstyleOutputParser.class).withArguments(codeDirectory, METRICS).thenReturn(parser);
 	}
 
 	private void mockChecker() throws Exception {
@@ -74,7 +76,7 @@ public class CheckstyleMetricCollectorTest extends TestCase {
 		Set<NativeModuleResult> results = CheckstyleStub.results();
 		when(parser.getResults()).thenReturn(results);
 
-		assertSame(results, collector.collectMetrics(repositoriesDirectory(), METRICS));
+		assertSame(results, collector.collectMetrics(codeDirectory, METRICS));
 		InOrder order = Mockito.inOrder(checker, parser);
 		order.verify(checker).setModuleClassLoader(Checker.class.getClassLoader());
 		order.verify(checker).addListener(parser);

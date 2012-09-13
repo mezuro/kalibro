@@ -65,18 +65,21 @@ public class DirectoryFieldTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptInexistentDirectory() {
-		shouldNotAccept(helloWorldDirectory());
+		File file = mock(File.class);
+		when(file.exists()).thenReturn(false);
+		shouldNotAccept(file);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldNotAcceptFile() {
-		File file = new File(Environment.dotKalibro(), "HelloWorld.c");
+		File file = mock(File.class);
+		when(file.isDirectory()).thenReturn(false);
 		shouldNotAccept(file);
 	}
 
 	private void shouldNotAccept(File file) {
 		field.set(file);
-		Mockito.verify(errorDialog).show("\"" + file.getAbsolutePath() + "\" is not a valid directory");
+		Mockito.verify(errorDialog).show("\"" + file + "\" is not a valid directory");
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

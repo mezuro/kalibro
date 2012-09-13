@@ -2,6 +2,8 @@ package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
@@ -44,9 +46,10 @@ public class RepositoryTest extends TestCase {
 
 	@Test(timeout = UNIT_TIMEOUT)
 	public void shouldLoad() {
+		File loadDirectory = mock(File.class);
 		RepositoryType type = PowerMockito.mock(RepositoryType.class);
 		repository.setType(type);
-		repository.load(helloWorldDirectory());
-		Mockito.verify(type).load(repository, helloWorldDirectory());
+		repository.load(loadDirectory);
+		Mockito.verify(type).load(repository, loadDirectory);
 	}
 }

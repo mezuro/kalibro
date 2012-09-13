@@ -6,10 +6,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.IntegrationTest;
 import org.kalibro.core.model.NativeMetric;
 
-public class CVSAnalyTest extends TestCase {
+public class CVSAnalyTest extends IntegrationTest {
 
 	private CVSAnalyMetricCollector cvsanaly;
 
