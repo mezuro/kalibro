@@ -23,14 +23,14 @@ public class ServerSettingsPanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		loadDirectoryField().set(settings.getLoadDirectory());
 		databaseSettingsPanel().set(settings.getDatabaseSettings());
 		assertDeepEquals(settings, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(settings);
 		assertEquals(settings.getLoadDirectory(), loadDirectoryField().get());

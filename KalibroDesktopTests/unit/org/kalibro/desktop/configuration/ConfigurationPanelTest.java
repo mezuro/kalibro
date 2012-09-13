@@ -31,7 +31,7 @@ public class ConfigurationPanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		nameField().set(configuration.getName());
 		descriptionField().set(configuration.getDescription());
@@ -39,7 +39,7 @@ public class ConfigurationPanelTest extends TestCase {
 		assertDeepEquals(configuration, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(configuration);
 		assertEquals(configuration.getName(), nameField().get());
@@ -47,7 +47,7 @@ public class ConfigurationPanelTest extends TestCase {
 		assertDeepEquals(configuration.getMetricConfigurations(), metricConfigurationsTable().getData());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyRangesPanelListener() {
 		TablePanelListener<MetricConfiguration> listener = PowerMockito.mock(TablePanelListener.class);
 		panel.addMetricConfigurationsListener(listener);

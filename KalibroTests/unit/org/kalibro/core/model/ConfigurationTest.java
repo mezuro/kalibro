@@ -29,7 +29,7 @@ public class ConfigurationTest extends TestCase {
 		scName = sc.getName();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultAttributes() {
 		configuration = new Configuration();
 		assertNull(configuration.getId());
@@ -38,12 +38,12 @@ public class ConfigurationTest extends TestCase {
 		assertTrue(configuration.getMetricConfigurations().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeConfigurationName() {
 		assertEquals(configuration.getName(), "" + configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testContains() {
 		assertFalse(configuration.containsMetric("Unknown"));
 		assertTrue(configuration.containsMetric(cboName));
@@ -54,7 +54,7 @@ public class ConfigurationTest extends TestCase {
 		assertTrue(configuration.containsMetric(scName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveCompoundMetrics() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 		assertDeepSet(configuration.getCompoundMetrics(), sc);
@@ -63,20 +63,20 @@ public class ConfigurationTest extends TestCase {
 		assertTrue(configuration.getCompoundMetrics().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveNativeMetricsPerOrigin() {
 		Map<String, Set<NativeMetric>> nativeMetrics = configuration.getNativeMetrics();
 		assertEquals(1, nativeMetrics.size());
 		assertEquals(2, nativeMetrics.get("Analizo").size());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveConfigurationForMetric() {
 		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(cboName));
 		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(lcomName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNoConfigurationFoundForMetricError() {
 		checkKalibroException(new Task() {
 
@@ -87,7 +87,7 @@ public class ConfigurationTest extends TestCase {
 		}, "No configuration found for metric: Unknown");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void verifyErrorAddingConflictingMetricConfiguration() {
 		checkKalibroException(new Task() {
 
@@ -98,14 +98,14 @@ public class ConfigurationTest extends TestCase {
 		}, "A metric configuration with code 'cbo' already exists");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReplaceExistingMetricConfiguration() {
 		MetricConfiguration newMetricConfiguration = metricConfiguration("cbo");
 		configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
 		assertSame(newMetricConfiguration, configuration.getConfigurationFor(cboName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorReplacingInexistentMetricConfiguration() {
 		checkKalibroException(new Task() {
 
@@ -116,7 +116,7 @@ public class ConfigurationTest extends TestCase {
 		}, "No configuration found for metric: Unknown");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorForConflictingMetricConfigurationReplace() {
 		checkKalibroException(new Task() {
 
@@ -130,7 +130,7 @@ public class ConfigurationTest extends TestCase {
 		assertTrue(configuration.containsMetric(cboName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRemoveMetric() {
 		configuration.removeMetric(cboName);
 		configuration.removeMetric(lcomName);
@@ -145,12 +145,12 @@ public class ConfigurationTest extends TestCase {
 		}, "No configuration found for metric: " + cboName);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateCompoundMetric() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
 		checkKalibroException(new Task() {
@@ -162,7 +162,7 @@ public class ConfigurationTest extends TestCase {
 		}, "Metric with invalid code or script: Structural complexity", NullPointerException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByName() {
 		assertSorted(createConfiguration("A"), createConfiguration("B"), createConfiguration("C"), configuration);
 	}

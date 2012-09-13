@@ -55,7 +55,7 @@ public class ProjectPanelTest extends TestCase {
 		when(configurationDao.getConfigurationNames()).thenReturn(Arrays.asList(project.getConfigurationName()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		stringField("name").set(project.getName());
 		stringField("license").set(project.getLicense());
@@ -65,7 +65,7 @@ public class ProjectPanelTest extends TestCase {
 		assertDeepEquals(new RawProjectXml(project).convert(), panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(project);
 		assertEquals(project.getName(), stringField("name").get());

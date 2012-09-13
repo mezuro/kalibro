@@ -34,47 +34,47 @@ public class InternalFrameTest extends TestCase {
 		frame = new RangeFrame(range);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTitle() {
 		assertEquals("Range " + range, frame.getTitle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeResizable() {
 		assertTrue(frame.isResizable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeClosable() {
 		assertTrue(frame.isClosable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeMaximizable() {
 		assertTrue(frame.isMaximizable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeIconifiable() {
 		assertTrue(frame.isIconifiable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDoNothingOnCloseByDefault() {
 		assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame.getDefaultCloseOperation());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkName() {
 		assertEquals("range", frame.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveEntity() {
 		assertSame(range, frame.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSelectHidingPropertyVetoException() throws Exception {
 		frame = PowerMockito.spy(frame);
 		frame.select();

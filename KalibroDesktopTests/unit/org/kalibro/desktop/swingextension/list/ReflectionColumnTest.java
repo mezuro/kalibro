@@ -26,23 +26,23 @@ public class ReflectionColumnTest extends TestCase {
 		column = new ReflectionColumn("color.red", 42, new ColorRenderer());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetDefaultRenderer() {
 		column = new ReflectionColumn("", 0);
 		assertClassEquals(DefaultRenderer.class, Whitebox.getInternalState(column, "renderer"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTitle() {
 		assertEquals("Red", column.getTitle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkColumnClass() {
 		assertEquals(int.class, column.getColumnClass(Range.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkValue() {
 		Range greenRange = newRange("amloc", EXCELLENT);
 		assertEquals(0, column.getValue(greenRange));
@@ -51,7 +51,7 @@ public class ReflectionColumnTest extends TestCase {
 		assertEquals(255, column.getValue(redRange));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorGettingMethodFromInvalidClass() {
 		checkKalibroError(new Task() {
 
@@ -62,7 +62,7 @@ public class ReflectionColumnTest extends TestCase {
 		}, "Reflection column did not found method: java.lang.String.getColor", NoSuchMethodException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnNullInCaseOfInvokationError() {
 		assertNull(column.getValue(new Range() {
 

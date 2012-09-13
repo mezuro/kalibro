@@ -47,20 +47,20 @@ public class ConfigurationPortDaoTest extends TestCase {
 		Whitebox.setInternalState(dao, "port", port);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testSave() {
 		dao.save(configuration);
 		verify(port).saveConfiguration(configurationXml);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetConfigurationNames() {
 		List<String> names = mock(List.class);
 		when(port.getConfigurationNames()).thenReturn(names);
 		assertSame(names, dao.getConfigurationNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testConfirmConfiguration() {
 		when(port.hasConfiguration("42")).thenReturn(true);
 		assertTrue(dao.hasConfiguration("42"));
@@ -69,13 +69,13 @@ public class ConfigurationPortDaoTest extends TestCase {
 		assertFalse(dao.hasConfiguration("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetConfiguration() {
 		when(port.getConfiguration("")).thenReturn(configurationXml);
 		assertSame(configuration, dao.getConfiguration(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetConfigurationFor() {
 		checkKalibroException(new Task() {
 
@@ -86,7 +86,7 @@ public class ConfigurationPortDaoTest extends TestCase {
 		}, "Not available remotely");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRemoveConfiguration() {
 		dao.removeConfiguration("");
 		verify(port).removeConfiguration("");

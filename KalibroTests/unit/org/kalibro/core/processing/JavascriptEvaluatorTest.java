@@ -24,7 +24,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		evaluator = JavascriptEvaluator.create();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddVariablesAndRetrieveTheirValues() {
 		evaluator.addVariable("wonders", 7.0);
 		evaluator.addVariable("diceFaces", 6.0);
@@ -32,7 +32,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertDoubleEquals(7.0, evaluator.evaluate("wonders"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddFunctionsAndExecuteThem() {
 		evaluator.addVariable("$wonders", 7.0);
 		evaluator.addVariable("dice_faces", 6.0);
@@ -43,7 +43,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertDoubleEquals(1.0, addFunctionAndExecute("conditional", "return $wonders > dice_faces ? 1 : 0;"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateVariableName() {
 		checkKalibroException(new Task() {
 
@@ -54,7 +54,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		}, "Invalid identifier: 1bad.name");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateFunctionName() {
 		checkKalibroException(new Task() {
 
@@ -65,7 +65,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		}, "Invalid identifier: badFunction'sName");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemove() {
 		evaluator.addVariable("variable", 42.0);
 		assertDoubleEquals(42.0, evaluator.evaluate("variable"));
@@ -80,27 +80,27 @@ public class JavascriptEvaluatorTest extends TestCase {
 		}, ClassCastException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSyntaxError() {
 		assertInvalid("riturn 0;", EvaluatorException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkUnknownVariable() {
 		assertInvalid("return something;", EcmaError.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNoReturn() {
 		assertInvalid("acc = null;", ClassCastException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNullReturn() {
 		assertInvalid("return null;", NullPointerException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNotNumberReturn() {
 		assertInvalid("return 'My string';", ClassCastException.class);
 	}
@@ -120,7 +120,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		return evaluator.evaluate(functionName);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExitContextOnFinalize() throws Throwable {
 		evaluator = createEvaluator();
 		mockStatic(Context.class);

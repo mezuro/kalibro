@@ -29,25 +29,25 @@ public class ConfirmPanelTest extends TestCase {
 		finder = new ComponentFinder(confirmPanel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		finder.find("language", LanguagePanelStub.class).set(Language.CPP);
 		assertEquals(Language.CPP, confirmPanel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		confirmPanel.set(Language.JAVA);
 		assertEquals(Language.JAVA, finder.find("language", LanguagePanelStub.class).get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyCancelListener() {
 		confirmPanel.addCancelListener(listener);
 		clickAndVerify("cancel");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyOkListener() {
 		confirmPanel.addOkListener(listener);
 		clickAndVerify("ok");

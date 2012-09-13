@@ -19,17 +19,17 @@ public class LabelTest extends TestCase {
 		label = new Label("My label");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveBoldFont() {
 		assertEquals(Font.BOLD, label.getFont().getStyle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveRightHorizontalAlignment() {
 		assertEquals(SwingConstants.RIGHT, label.getHorizontalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveCenterVerticalAlignment() {
 		assertEquals(SwingConstants.CENTER, label.getVerticalAlignment());
 	}

@@ -55,30 +55,30 @@ public class SettingsControllerTest extends TestCase {
 		controller = captor.getValue();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowCurrentSettings() {
 		verify(dialog).edit(settings);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void dialogShouldNotBeResizable() {
 		verify(dialog).setResizable(false);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void dialogAdjustDialogSizeOnPanelResize() {
 		verify(panel).addComponentListener(controller);
 		controller.componentResized(null);
 		verify(dialog).adjustSize();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmValidSettings() {
 		assertTrue(controller.dialogConfirm(settings));
 		verify(settings).save();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotConfirmInvalidSettingsAndShowError() throws Exception {
 		KalibroException error = new KalibroException("SettingsControllerTest");
 		ErrorDialog errorDialog = prepareError(error);

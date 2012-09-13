@@ -27,19 +27,19 @@ public class RendererTest extends TestCase {
 		renderer = new MyRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotChangeBackgroundIfNotSelected() {
 		renderer.changeBackgroundIfSelected(component, false);
 		verify(component, never()).setBackground(any(Color.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChangeBackgroundIfSelected() {
 		renderer.changeBackgroundIfSelected(component, true);
 		verify(component).setBackground(color.darker());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChangeWhiteBackground() {
 		when(component.getBackground()).thenReturn(Color.WHITE);
 		renderer.changeBackgroundIfSelected(component, true);

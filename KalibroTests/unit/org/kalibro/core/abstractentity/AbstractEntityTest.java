@@ -29,12 +29,12 @@ public class AbstractEntityTest extends TestCase {
 		mockStatic(FileUtils.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldImportFromFile() throws Exception {
 		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("person-carlos.yml"), Person.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenCannotImport() throws Exception {
 		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
 		checkKalibroException(new Task() {
@@ -46,14 +46,14 @@ public class AbstractEntityTest extends TestCase {
 		}, "Could not import person from file: " + file, NullPointerException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExportToFile() throws Exception {
 		entity.exportTo(file);
 		verifyStatic();
 		FileUtils.writeStringToFile(file, Printer.print(entity));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenCannotExport() throws Exception {
 		doThrow(new IOException()).when(FileUtils.class);
 		FileUtils.writeStringToFile(file, Printer.print(entity));
@@ -66,21 +66,21 @@ public class AbstractEntityTest extends TestCase {
 		}, "Could not export person to file: " + file, IOException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintWithPrinter() {
 		mockStatic(Printer.class);
 		when(Printer.print(entity)).thenReturn("42");
 		assertEquals("42", entity.toString());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseHashCodeCalculator() {
 		mockStatic(HashCodeCalculator.class);
 		when(HashCodeCalculator.hash(entity)).thenReturn(42);
 		assertEquals(42, entity.hashCode());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseEqualityOnEquals() {
 		spy(Equality.class);
 		assertFalse(entity.equals(null));
@@ -88,7 +88,7 @@ public class AbstractEntityTest extends TestCase {
 		Equality.areEqual(entity, null);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseEqualityOnDeepEquals() {
 		spy(Equality.class);
 		assertFalse(entity.deepEquals(null));
@@ -96,7 +96,7 @@ public class AbstractEntityTest extends TestCase {
 		Equality.areDeepEqual(entity, null);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseEntityComparatorOnComparisons() throws Exception {
 		EntityComparator<Person> comparator = mock(EntityComparator.class);
 		whenNew(EntityComparator.class).withNoArguments().thenReturn(comparator);

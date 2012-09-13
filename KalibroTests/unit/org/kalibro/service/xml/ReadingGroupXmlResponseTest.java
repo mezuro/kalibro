@@ -15,7 +15,7 @@ public class ReadingGroupXmlResponseTest extends XmlTest<ReadingGroup, ReadingGr
 		return ReadingGroupXmlResponse.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void verifyElements() {
 		assertElement("id", Long.class, false);
 		assertElement("name", String.class, false);

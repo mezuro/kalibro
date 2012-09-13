@@ -20,7 +20,7 @@ public class CVSAnalyMetricTest extends EnumerationTestCase<CVSAnalyMetric> {
 		return CVSAnalyMetric.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNativeMetrics() {
 		for (CVSAnalyMetric metric : CVSAnalyMetric.values()) {
 			NativeMetric expected = new NativeMetric("" + metric, CLASS, Language.values());
@@ -29,7 +29,7 @@ public class CVSAnalyMetricTest extends EnumerationTestCase<CVSAnalyMetric> {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveCorrectField() {
 		MetricResult exampleResult = CVSAnalyStub.getExampleEntities().get(1);
 		double actual = CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE.getMetricValue(exampleResult);

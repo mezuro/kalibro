@@ -19,17 +19,17 @@ public class StringFieldTest extends TestCase {
 		field = new StringField("", 5);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHavePlainFont() {
 		assertEquals(Font.PLAIN, field.getFont().getStyle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveLeftHorizontalAlignment() {
 		assertEquals(SwingConstants.LEFT, field.getHorizontalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTrimText() {
 		field.set("  my text  ");
 		assertEquals("my text", field.get());

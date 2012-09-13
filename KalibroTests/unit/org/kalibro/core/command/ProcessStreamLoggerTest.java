@@ -9,7 +9,7 @@ public class ProcessStreamLoggerTest extends TestCase {
 
 	private static final long PIPE_TIMEOUT = 50;
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPipe() throws InterruptedException {
 		StringInputStream input = new StringInputStream("My string");
 		StringOutputStream output = new StringOutputStream();

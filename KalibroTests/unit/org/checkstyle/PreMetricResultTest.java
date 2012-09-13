@@ -37,25 +37,25 @@ public class PreMetricResultTest extends TestCase {
 		PowerMockito.when(metric.getAggregationType()).thenReturn(Statistic.AVERAGE);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetNativeMetric() {
 		assertSame(nativeMetric, result.getResult().getMetric());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnZeroForNoValue() {
 		NativeMetricResult metricResult = result.getResult();
 		assertDoubleEquals(0.0, metricResult.getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnUniqueValue() {
 		result.addValue(42.0);
 		NativeMetricResult metricResult = result.getResult();
 		assertDoubleEquals(42.0, metricResult.getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCalculateStatisticOfAddedValues() {
 		result.addValue(42.0);
 		result.addValue(58.0);

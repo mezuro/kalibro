@@ -52,25 +52,25 @@ public class DirectoryFieldTest extends TestCase {
 		PowerMockito.whenNew(ErrorDialog.class).withArguments(any(DirectoryField.class)).thenReturn(errorDialog);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void valueShouldBeNullByDefault() {
 		assertNull(field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetAndGet() {
 		field.set(Environment.dotKalibro());
 		assertEquals(Environment.dotKalibro(), field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptInexistentDirectory() {
 		File file = mock(File.class);
 		when(file.exists()).thenReturn(false);
 		shouldNotAccept(file);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptFile() {
 		File file = mock(File.class);
 		when(file.isDirectory()).thenReturn(false);
@@ -82,21 +82,21 @@ public class DirectoryFieldTest extends TestCase {
 		Mockito.verify(errorDialog).show("\"" + file + "\" is not a valid directory");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUpdateDirectoryWhenPathChanges() {
 		pathField().setText(Environment.dotKalibro().getAbsolutePath());
 		simulateFocusLost(false, null);
 		assertEquals(Environment.dotKalibro(), field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotUpdateDirectoryIfPathFieldLostFocusForBrowseButton() {
 		pathField().setText(Environment.dotKalibro().getAbsolutePath());
 		simulateFocusLost(false, browseButton());
 		assertNull(field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotUpdateDirectoryIfFocusEventIsTemporary() {
 		pathField().setText(Environment.dotKalibro().getAbsolutePath());
 		simulateFocusLost(true, null);
@@ -109,7 +109,7 @@ public class DirectoryFieldTest extends TestCase {
 			listener.focusLost(event);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChooseFileWithFileChooserWhenBrowseButtonClicked() {
 		PowerMockito.when(chooser.chooseDirectoryToOpen()).thenReturn(true);
 		PowerMockito.when(chooser.getChosenFile()).thenReturn(Environment.dotKalibro());
@@ -118,7 +118,7 @@ public class DirectoryFieldTest extends TestCase {
 		assertEquals(Environment.dotKalibro().getAbsolutePath(), pathField().get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSetDirectoryIfNoDirectoryIsSelectedInFileChooser() {
 		PowerMockito.when(chooser.chooseDirectoryToOpen()).thenReturn(false);
 		PowerMockito.when(chooser.getChosenFile()).thenReturn(Environment.dotKalibro());

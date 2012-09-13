@@ -17,7 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareOnlyThisForTest(KalibroMenu.class)
 public class ExitFromMenu extends KalibroDesktopTestCase {
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldExitFromMenu() {
 		PowerMockito.mockStatic(System.class);
 		startKalibroFrame();

@@ -36,7 +36,7 @@ public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectR
 		return new ProjectResultRecord(projectResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkRootNotFoundError() {
 		final ProjectResultRecord record = createDto(helloWorldResult());
 		Whitebox.setInternalState(record, "sourceTree", new ArrayList<ModuleRecord>());
@@ -49,7 +49,7 @@ public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectR
 		}, "No source tree root found in result for project: HelloWorld-1.0");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveDate() {
 		ProjectResult result = helloWorldResult();
 		ProjectResultRecord record = createDto(result);

@@ -26,45 +26,45 @@ public class MethodReflectorTest extends TestCase {
 		reflector = new MethodReflector(MethodReflectorTest.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetSimpleClassName() {
 		assertEquals("MethodReflectorTest", reflector.getClassName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetReturnTypeOfMethods() {
 		assertEquals(double.class, reflector.getReturnType("max", 42.0, 42.0));
 		assertEquals(void.class, reflector.getReturnType("throwThis", new Exception()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInvokeMethods() {
 		double a = Math.random();
 		double b = Math.random();
 		assertEquals(max(a, b), reflector.invoke("max", a, b));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenInvokingNonstaticMethod() {
 		checkKalibroError(invokeTask("setUp"), expectedMessage("invoking", "setUp"), NullPointerException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenFindingInexistentMethod() {
 		checkKalibroError(invokeTask("inexistent"), expectedMessage("finding", "inexistent"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenFindingMethodWithDifferentNumberOfArguments() {
 		checkKalibroError(invokeTask("max", 42.0), expectedMessage("finding", "max"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenFindingMethodWithIncompatibleArguments() {
 		checkKalibroError(invokeTask("throwThis", 42.0), expectedMessage("finding", "throwThis"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowSameUncheckedExceptionThrownByInvokedMethod() {
 		NullPointerException exception = new NullPointerException();
 		try {
@@ -75,7 +75,7 @@ public class MethodReflectorTest extends TestCase {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowKalibroExceptionWrappingCheckedExceptionThrownByInvokedMethod() {
 		checkKalibroException(invokeTask("throwThis", new FileNotFoundException()),
 			expectedMessage("invoking", "throwThis"), FileNotFoundException.class);

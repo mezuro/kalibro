@@ -24,7 +24,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 		group.delete();
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void testCrud() {
 		assertSaved();
 
@@ -48,7 +48,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 		assertFalse(reading.deepEquals(saved));
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void readingIsRequiredToBeInGroup() {
 		checkKalibroException(new Task() {
 

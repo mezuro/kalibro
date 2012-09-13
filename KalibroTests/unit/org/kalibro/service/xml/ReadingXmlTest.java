@@ -15,7 +15,7 @@ public class ReadingXmlTest extends XmlTest<Reading, ReadingXml> {
 		return ReadingXml.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void verifyElements() {
 		assertElement("id", Long.class, false);
 		assertElement("label", String.class, true);

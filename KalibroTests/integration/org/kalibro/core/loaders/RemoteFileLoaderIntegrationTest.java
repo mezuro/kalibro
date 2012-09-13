@@ -7,7 +7,7 @@ import org.powermock.reflect.Whitebox;
 public abstract class RemoteFileLoaderIntegrationTest extends LoaderIntegrationTest {
 
 	@Override
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testLoad() {
 		ProjectLoader loader = Whitebox.getInternalState(getRepositoryType(), ProjectLoader.class);
 		checkKalibroException(new Task() {

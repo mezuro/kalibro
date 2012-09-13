@@ -7,20 +7,30 @@ import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.MethodRule;
+import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Task;
 import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
-public abstract class TestCase extends TestShortcuts implements Timeouts {
+public abstract class TestCase extends TestShortcuts {
 
 	@BeforeClass
 	public static void setTestEnvironment() {
 		Whitebox.setInternalState(Environment.class, "current", Environment.TEST);
 	}
 
+	@Rule
+	public MethodRule testTimeout = testTimeout();
+
 	private boolean waiting;
+
+	protected Timeout testTimeout() {
+		return new Timeout(Timeouts.UNIT_TIMEOUT);
+	}
 
 	protected void waitNotification() throws InterruptedException {
 		waiting = true;

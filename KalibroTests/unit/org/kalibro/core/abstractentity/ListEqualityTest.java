@@ -26,7 +26,7 @@ public class ListEqualityTest extends TestCase {
 		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateAnyTypeOfList() {
 		assertTrue(equality.canEvaluate(new ArrayList<Object>()));
 		assertTrue(equality.canEvaluate(new LinkedList<String>()));
@@ -37,19 +37,19 @@ public class ListEqualityTest extends TestCase {
 		assertFalse(equality.canEvaluate(new ArrayBlockingQueue<String>(42)));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void listsShouldHaveSameSize() {
 		assertFalse(equality.equals(newList("1", "2"), newList("1", "2", "3")));
 		assertFalse(equality.equals(newList("1", "2", "3"), newList("1", "2")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void elementsShouldBeInTheSameOrder() {
 		assertFalse(equality.equals(newList("1", "2"), newList("2", "1")));
 		assertFalse(equality.equals(newList("1", "2", "3"), newList("1", "3", "2")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void elementsShouldBeDeepEqual() {
 		assertTrue(equality.equals(newList("1", "2", "3"), newList("1", "2", "3")));
 		verifyStatic();

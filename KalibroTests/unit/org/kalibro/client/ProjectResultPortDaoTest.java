@@ -50,7 +50,7 @@ public class ProjectResultPortDaoTest extends TestCase {
 		Whitebox.setInternalState(dao, "port", port);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveResultRemotely() {
 		checkKalibroException(new Task() {
 
@@ -61,43 +61,43 @@ public class ProjectResultPortDaoTest extends TestCase {
 		}, "Cannot save project result remotely");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsFor() {
 		when(port.hasResultsFor("")).thenReturn(flag);
 		assertEquals(flag, dao.hasResultsFor(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsBefore() {
 		when(port.hasResultsBefore(null, "")).thenReturn(flag);
 		assertEquals(flag, dao.hasResultsBefore(null, ""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsAfter() {
 		when(port.hasResultsAfter(null, "")).thenReturn(flag);
 		assertEquals(flag, dao.hasResultsAfter(null, ""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetFirstResultOf() {
 		when(port.getFirstResultOf("")).thenReturn(projectResultXml);
 		assertSame(projectResult, dao.getFirstResultOf(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetLastResultOf() {
 		PowerMockito.when(port.getLastResultOf("")).thenReturn(projectResultXml);
 		assertSame(projectResult, dao.getLastResultOf(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetLastResultBefore() {
 		PowerMockito.when(port.getLastResultBefore(null, "")).thenReturn(projectResultXml);
 		assertSame(projectResult, dao.getLastResultBefore(null, ""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetFirstResultAfter() {
 		PowerMockito.when(port.getFirstResultAfter(null, "")).thenReturn(projectResultXml);
 		assertSame(projectResult, dao.getFirstResultAfter(null, ""));

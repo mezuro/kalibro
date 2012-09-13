@@ -78,7 +78,7 @@ public class ProcessProjectTaskTest extends TestCase {
 		when(analyzeTask.execute()).thenReturn(moduleResults);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteSubtasks() {
 		processTask.perform();
 
@@ -88,14 +88,14 @@ public class ProcessProjectTaskTest extends TestCase {
 		order.verify(analyzeTask).execute();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveProjectWithUpdatedState() {
 		processTask.perform();
 		assertEquals(ProjectState.READY, project.getState());
 		Mockito.verify(projectDao).save(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveResults() {
 		processTask.perform();
 
@@ -105,7 +105,7 @@ public class ProcessProjectTaskTest extends TestCase {
 			order.verify(moduleResultDao).save(moduleResult, projectResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveProjectWithError() {
 		RuntimeException error = mock(RuntimeException.class);
 		when(loadTask.execute()).thenThrow(error);

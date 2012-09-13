@@ -28,7 +28,7 @@ public class ModuleNodeXmlTest extends DtoTestCase<ModuleNode, ModuleNodeXml> {
 		return new ModuleNodeXml(moduleNode);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullChildrenIntoEmpty() {
 		ModuleNode node = helloWorldLeaf();
 		ModuleNodeXml dto = createDto(node);

@@ -31,7 +31,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		dao = daoFactory.createProjectDao();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListSavedProjectNames() {
 		assertTrue(dao.getProjectNames().isEmpty());
 
@@ -42,7 +42,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveSavedProject() {
 		dao.save(helloWorld);
 		Project retrieved = retrieve(helloWorld);
@@ -50,7 +50,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(helloWorld, retrieved);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveProjectByName() {
 		dao.save(helloWorld);
 		dao.save(helloWorld2);
@@ -63,7 +63,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertTrue(dao.getProjectNames().isEmpty());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void projectRemovalShouldCascadeToResults() {
 		String projectName = helloWorld.getName();
 		ProjectResultDatabaseDao projectResultDao = daoFactory.createProjectResultDao();
@@ -76,7 +76,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertFalse(projectResultDao.hasResultsFor(projectName));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldNotRetrieveUnsavedProject() {
 		checkKalibroException(new Task() {
 
@@ -87,7 +87,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		}, "There is no project named '" + helloWorld.getName() + "'", NoResultException.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveAndRetrieveError() {
 		helloWorld.setError(new Exception("An error message"));
 		dao.save(helloWorld);
@@ -98,7 +98,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertEquals("Another error message", retrieve(helloWorld).getError().getMessage());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void projectsShouldNotShareRepositories() {
 		assertDeepEquals(helloWorld.getRepository(), helloWorld2.getRepository());
 		dao.save(helloWorld);

@@ -11,7 +11,7 @@ public class ObjectPrinterTest extends PrinterTestCase<Object> {
 		return new ObjectPrinter();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintAnything() {
 		assertTrue(printer.canPrint(""));
 		assertTrue(printer.canPrint(null));
@@ -19,7 +19,7 @@ public class ObjectPrinterTest extends PrinterTestCase<Object> {
 		assertTrue(printer.canPrint(printer));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintToString() throws Exception {
 		assertEquals(" The answer # is 42", print("The answer", "is 42"));
 	}

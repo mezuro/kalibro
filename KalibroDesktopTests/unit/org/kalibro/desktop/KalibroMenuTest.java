@@ -26,7 +26,7 @@ public class KalibroMenuTest extends TestCase {
 		menu = new KalibroMenu();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEditSettings() {
 		JMenuItem settingsItem = menu.getItem(0);
 		settingsItem.doClick();
@@ -34,7 +34,7 @@ public class KalibroMenuTest extends TestCase {
 		SettingsController.editSettings();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCloseSystem() {
 		JMenuItem exitItem = menu.getItem(2);
 		exitItem.doClick();

@@ -8,6 +8,7 @@ import java.util.Queue;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
+import org.kalibro.Timeouts;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -24,14 +25,14 @@ public class MethodInvocationTest extends TestCase {
 		method = String.class.getMethod("substring", int.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInvoke() throws Throwable {
 		createInvocation(3);
 		invocation.invoke();
 		assertEquals("string", invocation.getResult());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveIfInvocationWasDone() {
 		createInvocation(4);
 		assertFalse(invocation.done());
@@ -39,7 +40,7 @@ public class MethodInvocationTest extends TestCase {
 		assertTrue(invocation.done());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenRetrievingResult() {
 		createInvocation(null);
 		invocation.invoke();
@@ -52,7 +53,7 @@ public class MethodInvocationTest extends TestCase {
 		}, IllegalArgumentException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowCauseOfInvocationTargetException() {
 		createInvocation(-1);
 		invocation.invoke();
@@ -65,7 +66,7 @@ public class MethodInvocationTest extends TestCase {
 		}, StringIndexOutOfBoundsException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddToQueueAndWait() throws Exception {
 		createInvocation(0);
 		Queue<MethodInvocation> queue = mock(Queue.class);
@@ -86,7 +87,7 @@ public class MethodInvocationTest extends TestCase {
 
 				@Override
 				protected void perform() throws Throwable {
-					Thread.sleep(UNIT_TIMEOUT / 5);
+					Thread.sleep(Timeouts.UNIT_TIMEOUT / 5);
 					invocation.invokeAndNotify();
 				}
 			}.executeInBackground();

@@ -27,7 +27,7 @@ public class ConfigurationRecordTest extends DtoTestCase<Configuration, Configur
 		return new ConfigurationRecord(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveName() {
 		Configuration configuration = newConfiguration();
 		assertEquals(configuration.getName(), createDto(configuration).getName());

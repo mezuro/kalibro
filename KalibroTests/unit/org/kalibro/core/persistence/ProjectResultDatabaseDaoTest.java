@@ -41,7 +41,7 @@ public class ProjectResultDatabaseDaoTest extends TestCase {
 		dao = PowerMockito.spy(new ProjectResultDatabaseDao(recordManager));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testSave() {
 		dao.save(projectResult);
 
@@ -50,7 +50,7 @@ public class ProjectResultDatabaseDaoTest extends TestCase {
 		assertExpected(captor.getValue().convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResults() {
 		String queryText = COUNT_QUERY + " AND 1 = 1";
 
@@ -63,7 +63,7 @@ public class ProjectResultDatabaseDaoTest extends TestCase {
 		Mockito.verify(query).setParameter("projectName", projectName);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsBefore() {
 		String queryText = COUNT_QUERY + " AND result.date < :date";
 
@@ -78,7 +78,7 @@ public class ProjectResultDatabaseDaoTest extends TestCase {
 		Mockito.verify(query).setParameter("date", date.getTime());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsAfter() {
 		String queryText = COUNT_QUERY + " AND result.date > :date";
 
@@ -100,21 +100,21 @@ public class ProjectResultDatabaseDaoTest extends TestCase {
 		return query;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testFirstResult() {
 		TypedQuery<ProjectResultRecord> query = prepareResultQuery(FIRST_QUERY + "1 = 1)");
 		assertExpected(dao.getFirstResultOf(projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testLastResult() {
 		TypedQuery<ProjectResultRecord> query = prepareResultQuery(LAST_QUERY + "1 = 1)");
 		assertExpected(dao.getLastResultOf(projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testFirstResultAfter() {
 		TypedQuery<ProjectResultRecord> query = prepareResultQuery(FIRST_QUERY + "result.date > :date)");
 		assertExpected(dao.getFirstResultAfter(date, projectName));
@@ -122,7 +122,7 @@ public class ProjectResultDatabaseDaoTest extends TestCase {
 		Mockito.verify(query).setParameter("date", date.getTime());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testLastResultBefore() {
 		TypedQuery<ProjectResultRecord> query = prepareResultQuery(LAST_QUERY + "result.date < :date)");
 		assertExpected(dao.getLastResultBefore(date, projectName));

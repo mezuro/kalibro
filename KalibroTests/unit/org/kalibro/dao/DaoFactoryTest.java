@@ -34,63 +34,63 @@ public class DaoFactoryTest extends TestCase {
 		doReturn(daoFactory).when(DaoFactory.class, "getFactory");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetBaseToolDao() {
 		BaseToolDao baseToolDao = mock(BaseToolDao.class);
 		when(daoFactory.createBaseToolDao()).thenReturn(baseToolDao);
 		assertSame(baseToolDao, DaoFactory.getBaseToolDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetConfigurationDao() {
 		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
 		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
 		assertSame(configurationDao, DaoFactory.getConfigurationDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetMetricConfigurationDao() {
 		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
 		when(daoFactory.createMetricConfigurationDao()).thenReturn(metricConfigurationDao);
 		assertSame(metricConfigurationDao, DaoFactory.getMetricConfigurationDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetModuleResultDao() {
 		ModuleResultDao moduleResultDao = mock(ModuleResultDao.class);
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
 		assertSame(moduleResultDao, DaoFactory.getModuleResultDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetProjectDao() {
 		ProjectDao projectDao = mock(ProjectDao.class);
 		when(daoFactory.createProjectDao()).thenReturn(projectDao);
 		assertSame(projectDao, DaoFactory.getProjectDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetProjectResultDao() {
 		ProjectResultDao projectResultDao = mock(ProjectResultDao.class);
 		when(daoFactory.createProjectResultDao()).thenReturn(projectResultDao);
 		assertSame(projectResultDao, DaoFactory.getProjectResultDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetReadingDao() {
 		ReadingDao readingDao = mock(ReadingDao.class);
 		when(daoFactory.createReadingDao()).thenReturn(readingDao);
 		assertSame(readingDao, DaoFactory.getReadingDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetReadingGroupDao() {
 		ReadingGroupDao readingGroupDao = mock(ReadingGroupDao.class);
 		when(daoFactory.createReadingGroupDao()).thenReturn(readingGroupDao);
 		assertSame(readingGroupDao, DaoFactory.getReadingGroupDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreatePortDaoFactoryOnClientSide() throws Exception {
 		String serviceAddress = mockSettings(ServiceSide.CLIENT).getClientSettings().getServiceAddress();
 		daoFactory = mock(ClientDaoFactory.class);
@@ -98,7 +98,7 @@ public class DaoFactoryTest extends TestCase {
 		verifyFactory();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateDatabaseDaoFactoryOnServerSide() throws Exception {
 		DatabaseSettings settings = mockSettings(ServiceSide.SERVER).getServerSettings().getDatabaseSettings();
 		daoFactory = mock(DatabaseDaoFactory.class);

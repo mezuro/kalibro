@@ -37,19 +37,19 @@ public class FileChooserTest extends TestCase {
 		fileChooser = new FileChooser(parent);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAllowMultipleSelection() {
 		Mockito.verify(nativeChooser).setMultiSelectionEnabled(false);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowOnlyDirectoriesWhenChoosingDirectory() {
 		fileChooser.chooseDirectoryToOpen();
 		Mockito.verify(nativeChooser).setFileSelectionMode(DIRECTORIES_ONLY);
 		Mockito.verify(nativeChooser).setAcceptAllFileFilterUsed(false);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDirectoryFilter() {
 		fileChooser.chooseDirectoryToOpen();
 		FileFilter filter = captureFileFilter();
@@ -65,13 +65,13 @@ public class FileChooserTest extends TestCase {
 		return captor.getValue();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowOnlyFilesWhenChoosingFile() {
 		fileChooser.chooseFileToSave("");
 		Mockito.verify(nativeChooser).setFileSelectionMode(FILES_ONLY);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnTrueWhenSelected() {
 		PowerMockito.when(nativeChooser.showOpenDialog(parent)).thenReturn(APPROVE_OPTION);
 		assertTrue(fileChooser.chooseDirectoryToOpen());
@@ -80,7 +80,7 @@ public class FileChooserTest extends TestCase {
 		assertTrue(fileChooser.chooseFileToSave(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnFalseWhenCancelled() {
 		PowerMockito.when(nativeChooser.showOpenDialog(parent)).thenReturn(CANCEL_OPTION);
 		assertFalse(fileChooser.chooseDirectoryToOpen());
@@ -89,7 +89,7 @@ public class FileChooserTest extends TestCase {
 		assertFalse(fileChooser.chooseFileToSave(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnFalseWhenClosed() {
 		PowerMockito.when(nativeChooser.showOpenDialog(parent)).thenReturn(ERROR_OPTION);
 		assertFalse(fileChooser.chooseDirectoryToOpen());
@@ -98,7 +98,7 @@ public class FileChooserTest extends TestCase {
 		assertFalse(fileChooser.chooseFileToSave(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSelectSuggestionInsideCurrentDirectory() {
 		PowerMockito.when(nativeChooser.getCurrentDirectory()).thenReturn(Environment.dotKalibro());
 
@@ -107,7 +107,7 @@ public class FileChooserTest extends TestCase {
 		Mockito.verify(nativeChooser).setSelectedFile(new File(Environment.dotKalibro(), suggestion));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkChoosenFile() {
 		PowerMockito.when(nativeChooser.getSelectedFile()).thenReturn(Environment.dotKalibro());
 		assertEquals(Environment.dotKalibro(), fileChooser.getChosenFile());

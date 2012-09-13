@@ -24,7 +24,7 @@ public class MetricConfigurationTest extends TestCase {
 		configuration = newMetricConfiguration("amloc");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultAttributes() {
 		MetricConfiguration newConfiguration = new MetricConfiguration(metric);
 		String expectedCode = Identifier.fromText(metric.getName()).asVariable();
@@ -35,14 +35,14 @@ public class MetricConfigurationTest extends TestCase {
 		assertTrue(newConfiguration.getRanges().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void configurationsWithDifferentCodeAndMetricShouldNotConflict() {
 		MetricConfiguration locConfiguration = metricConfiguration("loc");
 		locConfiguration.assertNoConflictWith(configuration);
 		configuration.assertNoConflictWith(locConfiguration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void configurationsWithSameCodeShouldConflict() {
 		checkKalibroException(new Task() {
 
@@ -55,7 +55,7 @@ public class MetricConfigurationTest extends TestCase {
 		}, "A metric configuration with code 'amloc' already exists");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void configurationsForSameMetricShouldConflict() {
 		checkKalibroException(new Task() {
 
@@ -67,7 +67,7 @@ public class MetricConfigurationTest extends TestCase {
 		}, "There is already a configuration for this metric: " + metric);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasRange() {
 		assertTrue(configuration.hasRangeFor(0.0));
 		assertTrue(configuration.hasRangeFor(7.0));
@@ -78,7 +78,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertFalse(configuration.hasRangeFor(-1.0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetRange() {
 		assertDeepEquals(newRange("amloc", EXCELLENT), configuration.getRangeFor(0.0));
 		assertDeepEquals(newRange("amloc", GOOD), configuration.getRangeFor(7.0));
@@ -88,7 +88,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertDeepEquals(newRange("amloc", BAD), configuration.getRangeFor(Double.MAX_VALUE));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testNoRangeFound() {
 		checkKalibroException(new Task() {
 
@@ -99,14 +99,14 @@ public class MetricConfigurationTest extends TestCase {
 		}, "No range found for value -1.0 and metric '" + metric + "'");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testAddRange() {
 		Range newRange = new Range(-1.0, 0.0);
 		configuration.addRange(newRange);
 		assertSame(newRange, configuration.getRangeFor(-1.0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testConflictingRange() {
 		checkKalibroException(new Task() {
 
@@ -117,7 +117,7 @@ public class MetricConfigurationTest extends TestCase {
 		}, "New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReplaceExistingRange() {
 		Range newRange = new Range(-1.0, 0.0);
 		configuration.replaceRange(0.0, newRange);
@@ -125,7 +125,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertSame(newRange, configuration.getRangeFor(-1.0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorReplacingInexistentRange() {
 		checkKalibroException(new Task() {
 
@@ -136,7 +136,7 @@ public class MetricConfigurationTest extends TestCase {
 		}, "No range found for value -1.0 and metric '" + metric + "'");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorForConflictingRangeReplace() {
 		checkKalibroException(new Task() {
 
@@ -148,7 +148,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertTrue(configuration.hasRangeFor(0.0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRemoveRange() {
 		assertEquals(5, configuration.getRanges().size());
 		assertTrue(configuration.hasRangeFor(Double.MAX_VALUE));
@@ -158,13 +158,13 @@ public class MetricConfigurationTest extends TestCase {
 		assertFalse(configuration.hasRangeFor(Double.MAX_VALUE));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnIfRemovedRangeExisted() {
 		assertTrue(configuration.removeRange(newRange("amloc", BAD)));
 		assertFalse(configuration.removeRange(new Range(-1.0, 0.0)));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByCode() {
 		assertSorted(newConfiguration("amloc"), newConfiguration("loc"), newConfiguration("nom"));
 	}

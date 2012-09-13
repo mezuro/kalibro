@@ -34,7 +34,7 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 		dao = spy(new ConfigurationDatabaseDao(recordManager));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSave() {
 		when(recordManager.save(any())).thenReturn(new ConfigurationRecord(configuration));
 		dao.save(configuration);
@@ -44,13 +44,13 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 		assertDeepEquals(configuration, captor.getValue().convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListAllConfigurationNames() {
 		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
 		assertDeepList(dao.getConfigurationNames(), "4", "2");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmConfiguration() {
 		doReturn(true).when(dao).hasEntity(CONFIGURATION_NAME);
 		assertTrue(dao.hasConfiguration(CONFIGURATION_NAME));
@@ -59,13 +59,13 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 		assertFalse(dao.hasConfiguration(CONFIGURATION_NAME));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetConfigurationByName() {
 		doReturn(configuration).when(dao).getByName("42");
 		assertSame(configuration, dao.getConfiguration("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveConfigurationByName() {
 		doReturn(configuration).when(dao).getByName("42");
 		dao.removeConfiguration("42");
@@ -75,7 +75,7 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 		assertDeepEquals(configuration, captor.getValue().convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetConfigurationByProjectName() throws Exception {
 		Project project = mock(Project.class);
 		ProjectDatabaseDao projectDao = mock(ProjectDatabaseDao.class);

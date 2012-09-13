@@ -43,7 +43,7 @@ public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResu
 		return new MetricResultRecord(metricResult, helloWorldClass(), projectResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConvertModuleResult() {
 		ModuleResult moduleResult = newHelloWorldClassResult(projectResult.getDate());
 		List<MetricResultRecord> metricResults = MetricResultRecord.createRecords(moduleResult, projectResult);

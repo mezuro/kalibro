@@ -55,52 +55,52 @@ public class CommandTaskTest extends TestCase {
 		PowerMockito.whenNew(FileProcessStreamLogger.class).withNoArguments().thenReturn(logger);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteCommandOnWorkingDirectory() throws IOException {
 		File workingDirectory = PowerMockito.mock(File.class);
 		new CommandTask(COMMAND, workingDirectory).executeAndGetOuput();
 		Mockito.verify(runtime).exec(COMMAND, null, workingDirectory);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetCommandOutput() throws IOException {
 		assertSame(output, commandTask.executeAndGetOuput());
 		Mockito.verify(logger).logErrorStream(process, COMMAND);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkExceptionOnSimpleExecution() throws IOException {
 		PowerMockito.when(runtime.exec(COMMAND, null, null)).thenThrow(new IOException());
 		checkKalibroException(commandTask, ERROR_MESSAGE, IOException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionOnBadExitValue() {
 		PowerMockito.when(process.exitValue()).thenReturn(1);
 		checkKalibroException(commandTask, "Command returned with error status: " + COMMAND);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldWaitForProcess() throws Exception {
 		commandTask.perform();
 		Mockito.verify(process).waitFor();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDestroyProcessOnInterruptedException() throws InterruptedException {
 		PowerMockito.when(process.waitFor()).thenThrow(new InterruptedException());
 		checkKalibroException(commandTask, ERROR_MESSAGE, InterruptedException.class);
 		Mockito.verify(process).destroy();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLogOutput() throws Exception {
 		commandTask.perform();
 		Mockito.verify(logger).logErrorStream(process, COMMAND);
 		Mockito.verify(logger).logOutputStream(process, COMMAND);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowCommandOnDescription() {
 		assertEquals("executing command: " + COMMAND, commandTask.toString());
 	}

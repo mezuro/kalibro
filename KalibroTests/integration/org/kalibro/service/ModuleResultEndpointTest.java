@@ -39,7 +39,7 @@ public class ModuleResultEndpointTest extends EndpointTest {
 		daoFake.save(moduleResult, PROJECT_NAME);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveModuleResult() {
 		verifyModuleResult(PROJECT_NAME, DATE_1);
 		verifyModuleResult(PROJECT_NAME, DATE_1);
@@ -55,7 +55,7 @@ public class ModuleResultEndpointTest extends EndpointTest {
 		assertDeepEquals(expected, actual);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveResultHistory() {
 		verifyResultHistory(PROJECT_NAME);
 		verifyResultHistory(CLASS_NAME);

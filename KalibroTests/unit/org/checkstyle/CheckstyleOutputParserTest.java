@@ -42,18 +42,18 @@ public class CheckstyleOutputParserTest extends TestCase {
 		parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void resultsShouldBeEmptyBeforeCheckstyleExecution() {
 		assertTrue(parser.getResults().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldParseMetricResults() {
 		simulateCheckstyle("" + VALUE);
 		verifyResult(VALUE);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void metricResultShouldBeZeroIfMessageIsNotANumber() {
 		simulateCheckstyle("");
 		verifyResult(0.0);

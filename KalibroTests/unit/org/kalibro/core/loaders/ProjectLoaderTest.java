@@ -46,7 +46,7 @@ public class ProjectLoaderTest extends TestCase {
 		whenNew(CommandTask.class).withArguments(anyString(), same(loadDirectory)).thenReturn(commandTask);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidate() {
 		assertTrue(loader.validate());
 
@@ -54,20 +54,20 @@ public class ProjectLoaderTest extends TestCase {
 		assertFalse(loader.validate());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateLoadDirectoryIfNotExistentOnLoad() {
 		loader.load(repository, loadDirectory);
 		Mockito.verify(loadDirectory).mkdirs();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteLoadCommandsOnFirstLoad() throws Exception {
 		loader.load(repository, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, loadDirectory);
 		Mockito.verify(commandTask).executeAndWait(ProjectLoader.LOAD_TIMEOUT);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteUpdateCommandsIfLoadDirectoryExists() throws Exception {
 		when(loadDirectory.exists()).thenReturn(true);
 		loader.load(repository, loadDirectory);

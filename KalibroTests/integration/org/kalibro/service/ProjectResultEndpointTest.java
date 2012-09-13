@@ -31,37 +31,37 @@ public class ProjectResultEndpointTest extends EndpointTest {
 		port = publishAndGetPort(new ProjectResultEndpointImpl(daoFake), ProjectResultEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testHasResultsFor() {
 		assertTrue(port.hasResultsFor(PROJECT_NAME));
 		assertFalse(port.hasResultsFor("ProjectResultEndpointTest"));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testHasResultsBefore() {
 		assertFalse(port.hasResultsBefore(DATE_1, PROJECT_NAME));
 		assertTrue(port.hasResultsBefore(DATE_2, PROJECT_NAME));
 		assertTrue(port.hasResultsBefore(DATE_3, PROJECT_NAME));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testHasResultsAfter() {
 		assertTrue(port.hasResultsAfter(DATE_1, PROJECT_NAME));
 		assertTrue(port.hasResultsAfter(DATE_2, PROJECT_NAME));
 		assertFalse(port.hasResultsAfter(DATE_3, PROJECT_NAME));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testFirstResult() {
 		verifyResult(daoFake.getFirstResultOf(PROJECT_NAME), port.getFirstResultOf(PROJECT_NAME).convert());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testLastResult() {
 		verifyResult(daoFake.getLastResultOf(PROJECT_NAME), port.getLastResultOf(PROJECT_NAME).convert());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testLastResultBefore() {
 		verifyLastResultBefore(DATE_2);
 		verifyLastResultBefore(DATE_3);
@@ -73,7 +73,7 @@ public class ProjectResultEndpointTest extends EndpointTest {
 		verifyResult(expected, actual);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testFirstResultAfter() {
 		verifyFirstResultAfter(DATE_1);
 		verifyFirstResultAfter(DATE_2);

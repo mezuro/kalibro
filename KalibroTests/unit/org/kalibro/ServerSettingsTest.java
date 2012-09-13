@@ -9,7 +9,7 @@ import org.kalibro.core.Environment;
 
 public class ServerSettingsTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultSettings() {
 		ServerSettings settings = new ServerSettings();
 		assertEquals(new File(Environment.dotKalibro(), "repositories"), settings.getLoadDirectory());

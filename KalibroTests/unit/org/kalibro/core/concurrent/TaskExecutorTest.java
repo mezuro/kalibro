@@ -5,20 +5,21 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.TestCase;
+import org.kalibro.Timeouts;
 
 public class TaskExecutorTest extends TestCase implements TaskListener {
 
-	private static final long TIMEOUT = UNIT_TIMEOUT / 5;
+	private static final long TIMEOUT = Timeouts.UNIT_TIMEOUT / 5;
 
 	private TaskReport report;
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetReportForNormalBackgroundExecution() throws InterruptedException {
 		executeInBackgroundAndGetReport(new DoNothingTask());
 		assertTrue(report.isTaskDone());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetReportForAbnormalBackgroundExecution() throws InterruptedException {
 		executeInBackgroundAndGetReport(new ThrowErrorTask());
 		assertFalse(report.isTaskDone());
@@ -38,12 +39,12 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		notifyTest();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteAndWaitWithoutTimeout() {
 		new TaskExecutor(new DoNothingTask()).executeAndWait();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowSameKalibroExceptionThrownByTask() {
 		String message = "TaskExecutorTest message";
 		final KalibroException error = new KalibroException(message, new Throwable());
@@ -56,7 +57,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		}, message, Throwable.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowKalibroExceptionWrappingOtherError() {
 		checkKalibroException(new Task() {
 
@@ -67,12 +68,12 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		}, "Error while throwing error", Throwable.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteAndWaitWithTimeout() {
 		new TaskExecutor(new DoNothingTask()).executeAndWait(TIMEOUT);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowSameKalibroExceptionThrownByTaskWithTimeout() {
 		String message = "TaskExecutorTest message";
 		final KalibroException error = new KalibroException(message, new Throwable());
@@ -85,18 +86,18 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		}, message, Throwable.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowKalibroExceptionForTimeoutError() {
 		checkKalibroException(new Task() {
 
 			@Override
 			protected void perform() throws Throwable {
-				new TaskExecutor(new SleepTask(UNIT_TIMEOUT)).executeAndWait(TIMEOUT);
+				new TaskExecutor(new SleepTask(Timeouts.UNIT_TIMEOUT)).executeAndWait(TIMEOUT);
 			}
 		}, "Timed out after " + TIMEOUT + " milliseconds while sleeping", InterruptedException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowKalibroExceptionWrappingOtherErrorWithTimeout() {
 		checkKalibroException(new Task() {
 
@@ -107,7 +108,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		}, "Error while throwing error", Throwable.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testPeriodicExecution() throws InterruptedException {
 		IncrementResultTask task = new IncrementResultTask();
 		TaskExecutor executor = new TaskExecutor(task);

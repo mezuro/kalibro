@@ -32,7 +32,7 @@ public class DatabaseDaoTest extends TestCase {
 		dao = new PersonDatabaseDao(recordManager);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmExistence() {
 		Query query = mock(Query.class);
 		when(recordManager.createQuery("SELECT 1 FROM Person WHERE id = :id")).thenReturn(query);
@@ -46,13 +46,13 @@ public class DatabaseDaoTest extends TestCase {
 		verify(query).setParameter("id", 28L);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetById() {
 		when(recordManager.getById(42L, PersonRecord.class)).thenReturn(record);
 		assertSame(person, dao.getById(42L));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetAllOrderedByName() {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
 		String queryString = "SELECT person FROM Person person ORDER BY lower(person.name)";
@@ -62,13 +62,13 @@ public class DatabaseDaoTest extends TestCase {
 		assertDeepList(dao.allOrderedByName(), person);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSave() {
 		when(recordManager.save(record)).thenReturn(record);
 		assertSame(record, dao.save(record));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDeleteById() {
 		Query query = mock(Query.class);
 		String queryString = "DELETE FROM Person WHERE id = :id";

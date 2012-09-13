@@ -6,7 +6,7 @@ import org.kalibro.core.model.enums.Language;
 
 public class EditPanelTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		new LanguagePanelStub().set(Language.C);
 	}

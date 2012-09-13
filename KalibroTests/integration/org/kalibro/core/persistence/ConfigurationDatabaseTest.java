@@ -28,7 +28,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		dao.save(kalibroConfiguration);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListSavedConfigurationNames() {
 		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName());
 
@@ -36,7 +36,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveSavedConfiguration() {
 		dao.save(simpleConfiguration);
 		Configuration retrieved = retrieve(simpleConfiguration);
@@ -44,7 +44,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(simpleConfiguration, retrieved);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveConfigurationForProject() {
 		Project project = ProjectFixtures.helloWorld();
 		daoFactory.createProjectDao().save(project);
@@ -53,7 +53,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(kalibroConfiguration, retrieved);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveConfigurationByName() {
 		dao.save(simpleConfiguration);
 		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
@@ -65,7 +65,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		assertTrue(dao.getConfigurationNames().isEmpty());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldNotRetrieveUnsavedConfiguration() {
 		checkKalibroException(new Task() {
 
@@ -76,7 +76,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		}, "There is no configuration named '" + simpleConfiguration.getName() + "'", NoResultException.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveAndRetrieveMetric() {
 		NativeMetric loc = analizoMetric("loc");
 		String locName = loc.getName();
@@ -89,7 +89,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDoubleEquals(42.0, retrieve(kalibroConfiguration).getConfigurationFor(locName).getWeight());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void configurationsShouldNotShareMetrics() {
 		NativeMetric cbo = analizoMetric("cbo");
 		String cboName = cbo.getName();

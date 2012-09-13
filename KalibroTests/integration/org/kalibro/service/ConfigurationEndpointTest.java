@@ -28,40 +28,40 @@ public class ConfigurationEndpointTest extends EndpointTest {
 		port = publishAndGetPort(new ConfigurationEndpointImpl(daoFake), ConfigurationEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListConfigurationNames() {
 		assertDeepList(port.getConfigurationNames(), sample.getName());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetConfigurationByName() {
 		assertDeepEquals(sample, port.getConfiguration(sample.getName()).convert());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveConfigurationByName() {
 		port.removeConfiguration(sample.getName());
 		assertTrue(port.getConfigurationNames().isEmpty());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveConfiguration() {
 		testSaveConfiguration(newConfiguration("loc"));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveEmptyConfiguration() {
 		testSaveConfiguration(newConfiguration());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveConfigurationWithoutRanges() {
 		Configuration newConfiguration = newConfiguration();
 		newConfiguration.addMetricConfiguration(new MetricConfiguration(analizoMetric("loc")));
 		testSaveConfiguration(newConfiguration);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveMetricWithoutLanguages() {
 		NativeMetric nativeMetric = new NativeMetric("name", Granularity.METHOD);
 		nativeMetric.setOrigin("origin");

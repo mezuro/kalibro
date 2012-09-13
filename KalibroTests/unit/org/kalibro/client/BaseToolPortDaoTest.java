@@ -46,14 +46,14 @@ public class BaseToolPortDaoTest extends TestCase {
 		Whitebox.setInternalState(dao, "port", port);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetBaseToolNames() {
 		List<String> names = mock(List.class);
 		when(port.getBaseToolNames()).thenReturn(names);
 		assertSame(names, dao.getBaseToolNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetBaseTool() {
 		when(port.getBaseTool("")).thenReturn(baseToolXml);
 		assertSame(baseTool, dao.getBaseTool(""));

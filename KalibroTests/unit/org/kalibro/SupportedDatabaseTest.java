@@ -17,7 +17,7 @@ public class SupportedDatabaseTest extends EnumerationTestCase<SupportedDatabase
 		return (value == APACHE_DERBY) ? "Apache Derby" : super.expectedText(value);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkJdbcDrivers() {
 		assertEquals(org.apache.derby.jdbc.EmbeddedDriver.class.getName(), APACHE_DERBY.getDriverClassName());
 		assertEquals(com.mysql.jdbc.Driver.class.getName(), MYSQL.getDriverClassName());

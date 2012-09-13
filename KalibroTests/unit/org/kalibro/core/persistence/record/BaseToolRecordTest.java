@@ -29,12 +29,12 @@ public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 		return new BaseToolRecord(baseTool);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveName() {
 		assertEquals("BaseToolRecordTest", new BaseToolRecord("BaseToolRecordTest").getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorForCollectorClassNotFound() {
 		final BaseToolRecord dto = createDto(analizoStub());
 		Whitebox.setInternalState(dto, "collectorClass", "inexistent");

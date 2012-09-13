@@ -35,7 +35,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		setInternalState(GIT, ProjectLoader.class, new GitLoader());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveSupportedTypes() {
 		RepositoryType supported = mockType(true);
 		RepositoryType unsupported = mockType(false);
@@ -50,7 +50,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		return type;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveIfIsLocal() {
 		assertTrue(LOCAL_DIRECTORY.isLocal());
 		assertTrue(LOCAL_TARBALL.isLocal());
@@ -65,7 +65,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		assertFalse(SUBVERSION.isLocal());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldProvideLoader() {
 		assertClassEquals(LocalDirectoryLoader.class, getLoader(LOCAL_DIRECTORY));
 		assertClassEquals(LocalTarballLoader.class, getLoader(LOCAL_TARBALL));
@@ -84,7 +84,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		return getInternalState(type, "loader");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveAuthenticationSupport() {
 		ProjectLoader loader = mockGitLoader();
 		when(loader.supportsAuthentication()).thenReturn(false);
@@ -94,7 +94,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		assertTrue(GIT.supportsAuthentication());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateProjectLoader() {
 		ProjectLoader loader = mockGitLoader();
 		when(loader.validate()).thenReturn(true);
@@ -103,7 +103,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		assertFalse(GIT.isSupported());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoadRepository() {
 		File directory = mock(File.class);
 		Repository repository = mock(Repository.class);
@@ -119,7 +119,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		return loader;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowKalibroErrorIfLoaderCouldNotBeCreated() {
 		final RepositoryType type = spy(GIT);
 		when(type.name()).thenReturn("INEXISTENT");

@@ -6,6 +6,7 @@ import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.rules.Timeout;
 
 public abstract class AcceptanceTest extends TestCase {
 
@@ -45,5 +46,10 @@ public abstract class AcceptanceTest extends TestCase {
 		settings.setUsername(hasUser ? "kalibro" : "");
 		settings.setPassword(hasUser ? "kalibro" : "");
 		return settings;
+	}
+
+	@Override
+	protected Timeout testTimeout() {
+		return new Timeout(Timeouts.ACCEPTANCE_TIMEOUT);
 	}
 }

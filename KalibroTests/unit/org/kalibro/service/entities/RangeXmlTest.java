@@ -33,7 +33,7 @@ public class RangeXmlTest extends DtoTestCase<Range, RangeXml> {
 		return new RangeXml(range);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullUnrequiredValuesToDefault() {
 		Range range = newRange("amloc", GOOD);
 		RangeXml dto = createDto(range);

@@ -60,14 +60,14 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		Whitebox.setInternalState(panel, Table.class, table);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowBaseToolNames() {
 		JList baseToolList = baseToolList();
 		assertEquals(1, baseToolList.getModel().getSize());
 		assertEquals("Analizo", baseToolList.getModel().getElementAt(0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowNativeMetricsFromBaseTool() {
 		assertTrue(table.getData().isEmpty());
 
@@ -75,14 +75,14 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		assertDeepSet(analizo.getSupportedMetrics(), table.getData().toArray(new NativeMetric[0]));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowBaseToolDescription() {
 		analizo.setDescription("This is the description of Analizo");
 		baseToolList().setSelectedIndex(0);
 		assertTrue(descriptionPane().get().contains(analizo.getDescription()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowMetricDescription() {
 		baseToolList().setSelectedIndex(0);
 		NativeMetric firstMetric = table.getData().get(0);
@@ -92,7 +92,7 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		assertTrue(descriptionPane().get().contains(firstMetric.getDescription()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmMetricSelection() {
 		baseToolList().setSelectedIndex(0);
 		assertFalse(panel.hasSelectedMetric());
@@ -101,7 +101,7 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		assertTrue(panel.hasSelectedMetric());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveSelectedMetric() {
 		baseToolList().setSelectedIndex(0);
 		selectFirsMetric();
@@ -109,7 +109,7 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		assertSame(firstMetric, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddListListener() {
 		ListListener<NativeMetric> listener = PowerMockito.mock(ListListener.class);
 		panel.addListListener(listener);

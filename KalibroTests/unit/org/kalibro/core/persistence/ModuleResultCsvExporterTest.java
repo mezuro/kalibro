@@ -32,7 +32,7 @@ public class ModuleResultCsvExporterTest extends TestCase {
 		moduleResult.setConfiguration(newConfiguration("amloc", "cbo", "lcom4"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkExportContents() throws IOException {
 		new ModuleResultCsvExporter(moduleResult).exportTo(file);
 

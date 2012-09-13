@@ -71,13 +71,13 @@ public class ModuleResultDatabaseDaoTest extends TestCase {
 		when(configDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testSave() {
 		dao.save(moduleResult, projectResult);
 		Mockito.verify(recordManager).saveAll(records);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetModuleResult() {
 		assertSame(moduleResult, dao.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE));
 
@@ -87,7 +87,7 @@ public class ModuleResultDatabaseDaoTest extends TestCase {
 		Mockito.verify(query).setParameter("date", DATE.getTime());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetResultHistory() {
 		List<ModuleResult> resultHistory = dao.getResultHistory(PROJECT_NAME, MODULE_NAME);
 		assertEquals(1, resultHistory.size());
@@ -98,13 +98,13 @@ public class ModuleResultDatabaseDaoTest extends TestCase {
 		Mockito.verify(query).setParameter("moduleName", MODULE_NAME);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfigureModuleResult() {
 		dao.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE);
 		Mockito.verify(moduleResult).setConfiguration(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfigureResultHistory() {
 		dao.getResultHistory(PROJECT_NAME, MODULE_NAME);
 		Mockito.verify(moduleResult).setConfiguration(configuration);

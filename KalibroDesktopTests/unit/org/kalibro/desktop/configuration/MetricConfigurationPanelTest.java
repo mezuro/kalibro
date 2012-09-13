@@ -36,7 +36,7 @@ public class MetricConfigurationPanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		codeField().set(configuration.getCode());
 		metricPanel().set(configuration.getMetric());
@@ -46,7 +46,7 @@ public class MetricConfigurationPanelTest extends TestCase {
 		assertDeepEquals(configuration, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(configuration);
 		assertEquals(configuration.getCode(), codeField().get());
@@ -56,7 +56,7 @@ public class MetricConfigurationPanelTest extends TestCase {
 		assertDeepEquals(configuration.getRanges(), rangesTable().getData());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyRangesPanelListener() {
 		buttonAdd().doClick();
 		Mockito.verify(rangesListener).add();

@@ -31,7 +31,7 @@ public class EndpointClientTest extends TestCase {
 		when(Service.create(any(URL.class), any(QName.class))).thenReturn(service);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionOnMalformedUrl() {
 		checkKalibroException(new Task() {
 
@@ -42,7 +42,7 @@ public class EndpointClientTest extends TestCase {
 		}, "Invalid service address: mal formed URL", MalformedURLException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shoudCreateEndpointPort() {
 		TestEndpoint port = mock(TestEndpoint.class);
 		when(service.getPort(any(QName.class), eq(TestEndpoint.class))).thenReturn(port);

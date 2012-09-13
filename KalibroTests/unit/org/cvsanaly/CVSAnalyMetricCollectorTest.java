@@ -34,12 +34,12 @@ public class CVSAnalyMetricCollectorTest extends TestCase {
 		fetcher = PowerMockito.mock(CVSAnalyDatabaseFetcher.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkBaseTool() {
 		assertDeepEquals(CVSAnalyStub.getBaseTool(), cvsanaly.getBaseTool());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDeleteFileIfAnExceptionOccurs() throws Exception {
 		File codeDirectory = new File("/");
 		File databaseFileSpy = mockDatabaseFile();
@@ -56,7 +56,7 @@ public class CVSAnalyMetricCollectorTest extends TestCase {
 		Mockito.verify(databaseFileSpy).delete();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCollectAllMetrics() throws Exception {
 		File codeDirectory = new File("/");
 		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
@@ -69,7 +69,7 @@ public class CVSAnalyMetricCollectorTest extends TestCase {
 		assertDeepEquals(CVSAnalyStub.results(), actual);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCollectWantedMetrics() throws Exception {
 		File codeDirectory = new File("/");
 		Set<NativeMetric> metrics = new HashSet<NativeMetric>();

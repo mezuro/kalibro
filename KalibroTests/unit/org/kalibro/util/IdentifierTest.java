@@ -14,31 +14,31 @@ public class IdentifierTest extends TestCase {
 
 	private Identifier identifier;
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateFromClassName() {
 		identifier = Identifier.fromClassName(CLASS_NAME);
 		shouldConvert();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateFromVariable() {
 		identifier = Identifier.fromVariable(VARIABLE);
 		shouldConvert();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateFromText() {
 		identifier = Identifier.fromText(TEXT);
 		shouldConvert();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateFromComplexText() {
 		identifier = Identifier.fromText("_My identifier (44 - testing) àéü_");
 		shouldConvert();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateFromConstant() {
 		identifier = Identifier.fromConstant(CONSTANT);
 		shouldConvert();

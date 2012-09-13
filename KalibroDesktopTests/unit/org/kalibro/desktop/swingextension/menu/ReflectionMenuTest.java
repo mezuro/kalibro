@@ -23,7 +23,7 @@ public class ReflectionMenuTest extends TestCase {
 		menuItem = new ReflectionMenuItem("", "", ' ', controller, "open");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptInvalidMethodOnCreation() {
 		checkKalibroError(new Task() {
 
@@ -34,13 +34,13 @@ public class ReflectionMenuTest extends TestCase {
 		}, "ReflectionMenuItem did not found method on controller", NoSuchMethodException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInvokeControllerMethod() {
 		menuItem.doClick();
 		Mockito.verify(controller).open();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowControllerException() {
 		PowerMockito.doThrow(new IllegalArgumentException()).when(controller).open();
 		checkException(new Task() {
@@ -52,7 +52,7 @@ public class ReflectionMenuTest extends TestCase {
 		}, IllegalArgumentException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorOnBizarreAccessException() throws Exception {
 		Method method = CrudController.class.getDeclaredMethod("unmodified");
 		Whitebox.setInternalState(menuItem, "method", method);

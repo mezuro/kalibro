@@ -17,7 +17,7 @@ public class CheckstyleTest extends IntegrationTest {
 		checkstyle = new CheckstyleMetricCollector();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldCollectMetrics() throws Exception {
 		File samplesDirectory = new File(samplesDirectory(), "checkstyle");
 		File codeDirectory = new File(samplesDirectory, "Fibonacci");

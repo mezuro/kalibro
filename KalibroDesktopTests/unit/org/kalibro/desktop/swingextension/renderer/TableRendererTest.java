@@ -45,17 +45,17 @@ public class TableRendererTest extends TestCase {
 		renderedComponent = renderer.getTableCellRendererComponent(table, "value", isSelected, hasFocus, 24, column);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderValueWithContext() {
 		Mockito.verify(renderer).render("value", "context");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChangeBackgroundIfSelected() {
 		Mockito.verify(renderer).changeBackgroundIfSelected(component, isSelected);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnRenderedComponent() {
 		assertSame(component, renderedComponent);
 	}

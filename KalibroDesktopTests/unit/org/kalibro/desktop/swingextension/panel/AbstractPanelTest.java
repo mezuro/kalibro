@@ -15,12 +15,12 @@ public class AbstractPanelTest extends TestCase {
 		panel = new LanguagePanelStub();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetMinimumSize() {
 		assertTrue(panel.isMinimumSizeSet());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void setWidthShouldNotChangeHeight() {
 		int height = panel.getSize().height;
 		panel.setWidth(42);

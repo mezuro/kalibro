@@ -15,7 +15,7 @@ public class ReadingGroupRecordTest extends RecordTest<ReadingGroup, ReadingGrou
 		return ReadingGroupRecord.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void verifyColumns() {
 		assertId();
 		assertColumn("name", String.class, false, true);

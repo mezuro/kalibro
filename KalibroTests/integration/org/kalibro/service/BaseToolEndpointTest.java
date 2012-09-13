@@ -23,12 +23,12 @@ public class BaseToolEndpointTest extends EndpointTest {
 		port = publishAndGetPort(new BaseToolEndpointImpl(daoFake), BaseToolEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListBaseToolNames() {
 		assertDeepList(port.getBaseToolNames(), analizo.getName());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetBaseToolByName() {
 		assertDeepEquals(analizo, port.getBaseTool(analizo.getName()).convert());
 	}

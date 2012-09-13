@@ -37,7 +37,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		save();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testSave() {
 		moduleResult.getMetricResults().iterator().next().addDescendentResult(42.0);
 		assertFalse(moduleResult.deepEquals(getSavedResult()));
@@ -46,7 +46,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(moduleResult, getSavedResult());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testSaveSpecialDoubleValues() {
 		MetricResult firstResult = moduleResult.getMetricResults().iterator().next();
 		firstResult.addDescendentResult(Double.NaN);
@@ -57,7 +57,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(moduleResult, getSavedResult());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveWithConfiguredResults() {
 		save();
 
@@ -88,7 +88,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		return dao.getModuleResult(projectName, moduleName, date);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testResultHistory() {
 		Metric loc = analizoMetric("loc");
 		moduleResult.getResultFor(loc).addDescendentResult(1.0);

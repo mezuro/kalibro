@@ -9,20 +9,20 @@ import org.kalibro.core.model.enums.Granularity;
 
 public class MetricTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void defaultDescriptionShouldBeEmpty() {
 		Metric metric = new MyMetric();
 		assertEquals("", metric.getDescription());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeMetricName() {
 		assertEquals("acc", "" + new MyMetric("acc"));
 		assertEquals("loc", "" + new MyMetric("loc"));
 		assertEquals("nom", "" + new MyMetric("nom"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByCompoundThenScopeThenName() {
 		assertSorted(
 			new MyMetric(false, "G", CLASS), new MyMetric(false, "H", CLASS),

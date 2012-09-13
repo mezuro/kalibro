@@ -30,7 +30,7 @@ public class MetricConfigurationXmlTest extends DtoTestCase<MetricConfiguration,
 		return new MetricConfigurationXml(metricConfiguration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullUnrequiredFieldsToDefault() {
 		MetricConfiguration configuration = metricConfiguration("loc");
 		MetricConfigurationXml dto = createDto(configuration);

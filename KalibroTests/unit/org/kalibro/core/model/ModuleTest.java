@@ -21,7 +21,7 @@ public class ModuleTest extends TestCase {
 		module = newModule(CLASS, "org.kalibro.core.model.Module");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeShortName() {
 		assertEquals(org.getShortName(), "" + org);
 		assertEquals(kalibro.getShortName(), "" + kalibro);
@@ -30,7 +30,7 @@ public class ModuleTest extends TestCase {
 		assertEquals(module.getShortName(), "" + module);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shortNameShouldBeLastName() {
 		assertEquals("org", org.getShortName());
 		assertEquals("kalibro", kalibro.getShortName());
@@ -39,7 +39,7 @@ public class ModuleTest extends TestCase {
 		assertEquals("Module", module.getShortName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveLongName() {
 		assertEquals("org", org.getName());
 		assertEquals("org.kalibro", kalibro.getName());
@@ -48,7 +48,7 @@ public class ModuleTest extends TestCase {
 		assertEquals("org.kalibro.core.model.Module", module.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInferAncestry() {
 		assertTrue(org.inferAncestry().isEmpty());
 		assertDeepList(kalibro.inferAncestry(), org);
@@ -57,7 +57,7 @@ public class ModuleTest extends TestCase {
 		assertDeepList(module.inferAncestry(), org, kalibro, core, model);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByGranularityThenName() {
 		assertSorted(newModule(SOFTWARE, "G"), newModule(SOFTWARE, "H"),
 			newModule(PACKAGE, "E"), newModule(PACKAGE, "F"),

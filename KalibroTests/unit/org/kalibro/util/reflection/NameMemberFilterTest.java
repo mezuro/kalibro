@@ -19,7 +19,7 @@ public class NameMemberFilterTest extends TestCase {
 		filter = new NameMemberFilter(".*Member.*");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAcceptMemberIfNameMatches() {
 		when(member.getName()).thenReturn("Member");
 		assertTrue(filter.accept(member));
@@ -31,7 +31,7 @@ public class NameMemberFilterTest extends TestCase {
 		assertTrue(filter.accept(member));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptMemberIfNameDoesNotMatch() {
 		when(member.getName()).thenReturn("ember");
 		assertFalse(filter.accept(member));

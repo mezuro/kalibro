@@ -41,7 +41,7 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 		dao = PowerMockito.spy(new MetricConfigurationDatabaseDao(recordManager));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddMetricConfiguration() {
 		dao.save(locConfiguration, configuration.getName());
 
@@ -50,7 +50,7 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 		Mockito.verify(configurationDao).save(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReplaceMetricConfiguration() {
 		cboConfiguration = newMetricConfiguration("cbo");
 		cboConfiguration.setWeight(42.0);
@@ -61,14 +61,14 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 		Mockito.verify(configurationDao).save(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetMetricConfiguration() {
 		String configurationName = configuration.getName();
 		String metricName = cboConfiguration.getMetric().getName();
 		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveMetricConfiguration() {
 		String cboName = cboConfiguration.getMetric().getName();
 		dao.removeMetricConfiguration(configuration.getName(), cboName);
@@ -77,7 +77,7 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 		Mockito.verify(configurationDao).save(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionForMetricConfigurationNotFound() {
 		checkKalibroException(new Task() {
 

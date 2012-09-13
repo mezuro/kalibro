@@ -29,13 +29,13 @@ public class ErrorDialogTest extends TestCase {
 		dialog = new ErrorDialog(parent);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowErrorMessage() {
 		dialog.show(ERROR_MESSAGE);
 		verifyErrorMessageDialog();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowMessageFromError() {
 		dialog.show(ERROR);
 		verifyErrorMessageDialog();

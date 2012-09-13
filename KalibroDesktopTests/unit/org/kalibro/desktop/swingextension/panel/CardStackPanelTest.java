@@ -36,25 +36,25 @@ public class CardStackPanelTest extends TestCase {
 		cardStack.setLayout(layout);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddOnPush() {
 		cardStack.push(base);
 		Mockito.verify(cardStack).add(base, base.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowTopOnPush() {
 		cardStack.push(base);
 		Mockito.verify(layout).show(cardStack, base.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRepaintOnPush() {
 		cardStack.push(base);
 		Mockito.verify(cardStack).repaint();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveOnPop() {
 		cardStack.push(base);
 		cardStack.push(middle);
@@ -70,7 +70,7 @@ public class CardStackPanelTest extends TestCase {
 		Mockito.verify(cardStack).remove(base);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowPreviousTopOnPop() {
 		cardStack.push(base);
 		cardStack.push(middle);
@@ -84,7 +84,7 @@ public class CardStackPanelTest extends TestCase {
 		Mockito.verify(layout).show(cardStack, base.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAdjustSize() {
 		Dimension preferredSize = new Dimension(1024, 768);
 		Dimension minimumSize = new Dimension(640, 480);

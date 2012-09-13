@@ -13,7 +13,7 @@ import org.powermock.reflect.Whitebox;
 
 public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void defaultConstructorShouldDoNothing() throws Exception {
 		RECORD record = newDtoUsingDefaultConstructor();
 		for (Field field : record.getClass().getDeclaredFields())
@@ -29,7 +29,7 @@ public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTI
 
 	protected abstract RECORD newDtoUsingDefaultConstructor();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkCorrectConversion() {
 		for (ENTITY entity : entitiesForTestingConversion())
 			assertCorrectConversion(entity, createDto(entity).convert());

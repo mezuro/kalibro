@@ -15,7 +15,7 @@ public class ObjectEqualityTest extends TestCase {
 		equality = new ObjectEquality();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateAnything() {
 		assertTrue(equality.canEvaluate(""));
 		assertTrue(equality.canEvaluate(null));
@@ -23,7 +23,7 @@ public class ObjectEqualityTest extends TestCase {
 		assertTrue(equality.canEvaluate(equality));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void valuesShouldBeEqual() {
 		assertTrue(equality.equals(42, 42));
 		assertTrue(equality.equals(this, this));

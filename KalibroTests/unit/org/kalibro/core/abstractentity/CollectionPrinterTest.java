@@ -27,7 +27,7 @@ public class CollectionPrinterTest extends PrinterTestCase<Collection<?>> {
 		sample.add(Arrays.asList("cat", "dog", "pig"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintCollections() {
 		assertTrue(printer.canPrint(new HashSet<CollectionPrinter>()));
 		assertTrue(printer.canPrint(new ArrayList<CollectionPrinterTest>()));
@@ -36,13 +36,13 @@ public class CollectionPrinterTest extends PrinterTestCase<Collection<?>> {
 		assertFalse(printer.canPrint(printer));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintAsYaml() throws Exception {
 		assertEquals(" [] # empty collection", print(new ArrayList<String>(), "empty collection"));
 		assertEquals(loadResource("collection.printer.test"), print(sample, "strange collection"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeLoadableAsYaml() throws Exception {
 		assertEquals(sample, new Yaml().load(print(sample, "")));
 	}

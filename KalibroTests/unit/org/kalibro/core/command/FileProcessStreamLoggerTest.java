@@ -47,7 +47,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 		doNothing().when(logger, "pipe", inputStream, outputStream);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLogStandardOutput() throws Exception {
 		logger.logOutputStream(process, "my command");
 
@@ -55,7 +55,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 		verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLogErrorOutput() throws Exception {
 		logger.logErrorStream(process, "my command");
 
@@ -63,7 +63,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 		verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldWriteCommandOnFirstLine() throws Exception {
 		mockStatic(IOUtils.class);
 		logger.logOutputStream(process, "my command");
@@ -72,7 +72,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 		IOUtils.write("$ my command\n", outputStream);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void logFileNameShouldContainDate() throws Exception {
 		logger.logOutputStream(process, "my command");
 
@@ -81,7 +81,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 		verifyNew(File.class).withArguments(eq(logsDirectory()), eq("my." + dateString + ".out"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorOnLog() throws Exception {
 		whenNew(FileOutputStream.class).withArguments(logFile).thenThrow(new IOException());
 		checkKalibroException(new Task() {

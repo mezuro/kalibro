@@ -32,7 +32,7 @@ public class ReadingDatabaseDaoTest extends TestCase {
 		dao = spy(new ReadingDatabaseDao(null));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetReadingsOfGroup() {
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
@@ -42,7 +42,7 @@ public class ReadingDatabaseDaoTest extends TestCase {
 		verify(query).setParameter("groupId", 42L);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSave() throws Exception {
 		when(reading.getGroupId()).thenReturn(28L);
 		whenNew(ReadingRecord.class).withArguments(reading, 28L).thenReturn(record);
@@ -53,7 +53,7 @@ public class ReadingDatabaseDaoTest extends TestCase {
 		verify(dao).save(record);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDelete() {
 		doNothing().when(dao).deleteById(42L);
 		dao.delete(42L);

@@ -23,12 +23,12 @@ public class AnalizoOutputParserTest extends TestCase {
 		parser = new AnalizoOutputParser(metricListOutput);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldParseMetricListOutputToSupportedMetrics() {
 		assertDeepEquals(analizo().getSupportedMetrics(), parser.getSupportedMetrics());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldParseResultsOutputToModuleResults() {
 		InputStream resultsOutput = getStream("Analizo-Output-HelloWorld.txt");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();

@@ -27,18 +27,18 @@ public class AnalyzeResultsTaskTest extends TestCase {
 		analyzeTask = new AnalyzeResultsTask(projectResult, newHelloWorldResultMap(projectResult.getDate()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTaskState() {
 		assertEquals(ProjectState.ANALYZING, analyzeTask.getTaskState());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetSourceTreeOnProjectResult() {
 		analyzeTask.performAndGetResult();
 		assertDeepEquals(helloWorldRoot(), projectResult.getSourceTree());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnResults() {
 		Collection<ModuleResult> expected = newHelloWorldResults(projectResult.getDate());
 		Collection<ModuleResult> actual = analyzeTask.performAndGetResult();

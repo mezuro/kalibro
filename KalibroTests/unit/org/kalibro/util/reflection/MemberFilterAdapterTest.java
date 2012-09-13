@@ -24,7 +24,7 @@ public class MemberFilterAdapterTest extends TestCase {
 		};
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldFilter() throws Exception {
 		Field field = getClass().getDeclaredField("filter");
 		assertFalse(filter.accept(field));

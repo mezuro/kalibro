@@ -30,13 +30,13 @@ public class CheckstyleMetricTest extends EnumerationTestCase<CheckstyleMetric> 
 		PowerMockito.when(configuration.getChildByName(anyString())).thenReturn(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkMessageKeys() {
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
 			assertSame(metric, getMetricFor(metric.getMessageKey()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNativeMetrics() {
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
 			verifyNativeMetric(metric);
@@ -48,7 +48,7 @@ public class CheckstyleMetricTest extends EnumerationTestCase<CheckstyleMetric> 
 		assertDeepEquals(expected, metric.getNativeMetric());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationType() {
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
 			if (metric.name().startsWith("AVERAGE"))
@@ -57,7 +57,7 @@ public class CheckstyleMetricTest extends EnumerationTestCase<CheckstyleMetric> 
 				assertTrue(metric.name().endsWith("S") || metric.name().endsWith("COUNT"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddToCheckerIfNotTreeWalker() {
 		FILE_LENGTH.addToChecker(configuration);
 		InOrder order = Mockito.inOrder(configuration);
@@ -67,7 +67,7 @@ public class CheckstyleMetricTest extends EnumerationTestCase<CheckstyleMetric> 
 		Mockito.verifyNoMoreInteractions(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddToTreeWalkerIfTreeWalker() {
 		FAN_OUT.addToChecker(configuration);
 		InOrder order = Mockito.inOrder(configuration);

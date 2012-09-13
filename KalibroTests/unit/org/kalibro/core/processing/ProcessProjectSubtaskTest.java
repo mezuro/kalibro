@@ -49,25 +49,25 @@ public class ProcessProjectSubtaskTest extends TestCase {
 		when(projectResult.getProject()).thenReturn(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnTaskResult() {
 		assertEquals(TASK_RESULT, subtask.execute());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUpdateProjectState() {
 		subtask.execute();
 		Mockito.verify(project).setState(subtask.getTaskState());
 		Mockito.verify(projectDao).save(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetStateTime() {
 		subtask.execute();
 		Mockito.verify(projectResult).setStateTime(eq(TASK_STATE), anyLong());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDescribeTaskWithProjectStateMessage() {
 		when(project.getStateMessage()).thenReturn(TASK_RESULT);
 		assertEquals(TASK_RESULT, "" + subtask);

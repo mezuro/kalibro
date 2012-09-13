@@ -33,13 +33,13 @@ public class ConfigurationMenuTest extends TestCase {
 		menu = new ConfigurationMenu(desktopPane);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkControllerInitialization() {
 		menu.getItem(0).doClick();
 		Mockito.verify(controller).newEntity();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateEntityFrame() {
 		assertFalse(menu.isEntityFrame(new JInternalFrame()));
 		assertFalse(menu.isEntityFrame(mock(ProjectFrame.class)));

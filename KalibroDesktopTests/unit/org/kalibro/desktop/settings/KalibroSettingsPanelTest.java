@@ -24,7 +24,7 @@ public class KalibroSettingsPanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		clientField().set(settings.clientSide());
 		clientSettingsPanel().set(settings.getClientSettings());
@@ -32,7 +32,7 @@ public class KalibroSettingsPanelTest extends TestCase {
 		assertDeepEquals(settings, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(settings);
 		assertEquals(settings.clientSide(), clientField().get());
@@ -40,7 +40,7 @@ public class KalibroSettingsPanelTest extends TestCase {
 		assertDeepEquals(settings.getServerSettings(), serverSettingsPanel().get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSwitchPanelsWhenClientFieldChanges() {
 		clientField().doClick();
 		assertTrue(clientSettingsPanel().isVisible());
@@ -51,7 +51,7 @@ public class KalibroSettingsPanelTest extends TestCase {
 		assertTrue(serverSettingsPanel().isVisible());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowOnlyClientPanelWhenShowingClientSettings() {
 		settings.setServiceSide(ServiceSide.CLIENT);
 		panel.set(settings);
@@ -59,14 +59,14 @@ public class KalibroSettingsPanelTest extends TestCase {
 		assertFalse(serverSettingsPanel().isVisible());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowOnlyServerPanelWhenShowingServerSettings() {
 		panel.set(settings);
 		assertFalse(clientSettingsPanel().isVisible());
 		assertTrue(serverSettingsPanel().isVisible());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void clientAndServerPanelShouldHaveTheSameWidth() {
 		assertEquals(clientSettingsPanel().getSize().width, serverSettingsPanel().getSize().width);
 		assertEquals(clientSettingsPanel().getMinimumSize().width, serverSettingsPanel().getMinimumSize().width);

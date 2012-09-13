@@ -8,7 +8,7 @@ import org.kalibro.core.model.enums.Granularity;
 
 public class AbstractMetricResultTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		MyMetric metric = new MyMetric();
 		Double value = Double.NaN;

@@ -32,7 +32,7 @@ public class DaoLazyLoaderTest extends TestCase {
 		proxy = (List<Reading>) DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", 42L);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoadOnFirstInvocation() {
 		verifyStatic(never());
 		DaoFactory.getReadingDao();
@@ -44,7 +44,7 @@ public class DaoLazyLoaderTest extends TestCase {
 		verify(dao).readingsOf(any(Long.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldFetchOnlyOnce() {
 		proxy.size();
 		proxy.toArray();
@@ -52,7 +52,7 @@ public class DaoLazyLoaderTest extends TestCase {
 		verify(dao, once()).readingsOf(any(Long.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void proxyShouldActAsRealObject() {
 		when(real.size()).thenReturn(42);
 		assertEquals(42, proxy.size());

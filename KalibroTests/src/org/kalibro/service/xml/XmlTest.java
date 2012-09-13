@@ -26,7 +26,7 @@ public abstract class XmlTest<ENTITY, RECORD extends DataTransferObject<ENTITY>>
 		reflector = new FieldReflector(dto);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkClassAnnotations() {
 		XmlRootElement element = dto.getClass().getAnnotation(XmlRootElement.class);
 		assertNotNull(element);

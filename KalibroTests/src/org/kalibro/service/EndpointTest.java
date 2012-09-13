@@ -11,9 +11,9 @@ import javax.xml.ws.Service;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.kalibro.TestCase;
+import org.kalibro.IntegrationTest;
 
-public abstract class EndpointTest extends TestCase {
+public abstract class EndpointTest extends IntegrationTest {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 

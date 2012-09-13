@@ -7,7 +7,7 @@ import org.kalibro.TestCase;
 
 public class NativeModuleResultTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		Module module = ModuleFixtures.helloWorldApplication();
 		NativeModuleResult result = new NativeModuleResult(module);

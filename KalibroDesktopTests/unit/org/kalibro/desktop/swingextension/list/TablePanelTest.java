@@ -43,13 +43,13 @@ public class TablePanelTest extends TestCase {
 		table = PowerMockito.spy(table);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testShow() {
 		panel.set(new ArrayList<Range>());
 		assertTrue(table().getData().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRetrieve() {
 		assertSame(table().getData(), panel.get());
 	}
@@ -58,7 +58,7 @@ public class TablePanelTest extends TestCase {
 		return finder.find("ranges", Table.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testEnableButtons() {
 		assertEnabled(true, false, false);
 
@@ -75,20 +75,20 @@ public class TablePanelTest extends TestCase {
 		assertEquals(removeEnabled, button("remove").isEnabled());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testAddButton() {
 		button("add").doClick();
 		Mockito.verify(listener).add();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testEditButton() {
 		selectFirstLine();
 		button("edit").doClick();
 		Mockito.verify(listener).edit(table.getSelected());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRemoveButton() {
 		selectFirstLine();
 		Range selected = table.getSelected();
@@ -100,7 +100,7 @@ public class TablePanelTest extends TestCase {
 		return finder.find(name, Button.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testDoubleClick() {
 		doubleClickFirstRow();
 		Mockito.verify(listener).edit(table.getSelected());

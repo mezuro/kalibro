@@ -23,7 +23,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		settingsFile.delete();
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void checkDefaultSettings() {
 		assertFalse(settings.clientSide());
 		checkClientSettings();
@@ -46,7 +46,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		assertEquals("kalibro", databaseSettings.getPassword());
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldSaveLoadAndConfirmExistence() {
 		assertFalse(KalibroSettings.exists());
 
@@ -55,7 +55,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		assertDeepEquals(settings, KalibroSettings.load());
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void settingsFileShouldBeHumanReadable() throws IOException {
 		settings.save();
 		String expected = loadResource("kalibroSettings-default.yml");
@@ -63,18 +63,18 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		assertEquals(expected, FileUtils.readFileToString(settingsFile));
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenLoadingInexistentSettings() {
 		shouldLoadWithError(FileNotFoundException.class);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenLoadingFromCorruptedSettingsFile() throws IOException {
 		FileUtils.writeStringToFile(settingsFile, "something weird");
 		shouldLoadWithError(ConstructorException.class);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenLoadingFromNotReadableSettingsFile() {
 		settings.save();
 		settingsFile.setReadable(false);
@@ -91,7 +91,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		}, "Could not import kalibro settings from file: " + settingsFile, causeClass);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenSavingOnNotWritableFile() {
 		settings.save();
 		settingsFile.setWritable(false);

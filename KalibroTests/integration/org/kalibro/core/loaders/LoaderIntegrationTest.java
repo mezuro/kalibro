@@ -44,12 +44,12 @@ public abstract class LoaderIntegrationTest extends IntegrationTest {
 		FileUtils.deleteQuietly(repositoriesDirectory());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void validateLoaderInstallation() {
 		assertTrue(repositoryType.isSupported());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testLoad() {
 		File loaded = load();
 		File updated = load();

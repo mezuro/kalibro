@@ -39,43 +39,43 @@ public class ColorFieldTest extends TestCase {
 		PowerMockito.when(chooser.chooseColor(COLOR)).thenReturn(COLOR.brighter());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTitle() {
 		assertEquals("Choose color", field.getText());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void defaultColorShouldBeWhite() {
 		assertEquals(Color.WHITE, field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		field.setBackground(COLOR);
 		assertEquals(COLOR, field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		field.set(COLOR);
 		assertEquals(COLOR, field.getBackground());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetForegroundToContrastWithBackground() {
 		field.set(COLOR);
 		int expectedRGB = 0xff000000 | (Integer.MAX_VALUE - COLOR.getRGB());
 		assertEquals(expectedRGB, field.getForeground().getRGB());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowColorDialogWithCurrentValueSelected() {
 		field.set(COLOR);
 		field.doClick();
 		Mockito.verify(chooser).chooseColor(COLOR);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetColorWhenColorDialogCloses() {
 		field.set(COLOR);
 		field.doClick();

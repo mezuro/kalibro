@@ -28,7 +28,7 @@ public class KalibroSettingsTest extends TestCase {
 		settings = spy(new KalibroSettings());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void settingsExistsWhenSettingsFileExists() {
 		when(settingsFile.exists()).thenReturn(true);
 		assertTrue(KalibroSettings.exists());
@@ -37,27 +37,27 @@ public class KalibroSettingsTest extends TestCase {
 		assertFalse(KalibroSettings.exists());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoadFromSettingsFile() throws Exception {
 		when(AbstractEntity.class, "importFrom", settingsFile, KalibroSettings.class).thenReturn(settings);
 		assertSame(settings, KalibroSettings.load());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultSettings() {
 		assertFalse(settings.clientSide());
 		assertDeepEquals(new ClientSettings(), settings.getClientSettings());
 		assertDeepEquals(new ServerSettings(), settings.getServerSettings());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveSide() {
 		assertFalse(settings.clientSide());
 		settings.setServiceSide(ServiceSide.CLIENT);
 		assertTrue(settings.clientSide());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveSettingsToFile() {
 		doNothing().when(settings).exportTo(settingsFile);
 		settings.save();

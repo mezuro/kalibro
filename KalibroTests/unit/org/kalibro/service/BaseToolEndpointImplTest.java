@@ -39,14 +39,14 @@ public class BaseToolEndpointImplTest extends TestCase {
 		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetBaseToolNames() {
 		List<String> names = new ArrayList<String>();
 		PowerMockito.when(dao.getBaseToolNames()).thenReturn(names);
 		assertSame(names, endpoint.getBaseToolNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetBaseTool() {
 		PowerMockito.when(dao.getBaseTool("42")).thenReturn(baseTool);
 		new BaseToolXmlTest().assertCorrectConversion(baseTool, endpoint.getBaseTool("42").convert());

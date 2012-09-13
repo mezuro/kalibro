@@ -23,22 +23,22 @@ public class FieldReflectorTest extends TestCase {
 		reflector = new FieldReflector(this);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetObject() {
 		assertSame(this, reflector.getObject());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetObjectClass() {
 		assertEquals(getClass(), reflector.getObjectClass());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListFields() {
 		assertDeepList(reflector.listFields(), "reflector", "waiting");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldFilterFields() {
 		assertDeepList(reflector.listFields(named("waiting")), "waiting");
 		assertDeepList(reflector.listFields(nameMatches(".*t.*")), "reflector", "waiting");
@@ -46,30 +46,30 @@ public class FieldReflectorTest extends TestCase {
 		assertTrue(reflector.listFields(not(is(PRIVATE))).isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetFieldType() {
 		assertEquals(boolean.class, reflector.getFieldType("waiting"));
 		assertEquals(FieldReflector.class, reflector.getFieldType("reflector"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetFieldAnnotation() {
 		assertEquals("self-reflector", reflector.getFieldAnnotation("reflector", Column.class).name());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetFieldValue() {
 		assertSame(reflector, reflector.get("reflector"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetField() {
 		assertFalse((Boolean) reflector.get("waiting"));
 		reflector.set("waiting", true);
 		assertTrue((Boolean) reflector.get("waiting"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenGettingInexistentField() {
 		checkKalibroError(new Task() {
 
@@ -80,7 +80,7 @@ public class FieldReflectorTest extends TestCase {
 		}, "Error retrieving field: " + INEXISTENT, NullPointerException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenSettingInexistentField() {
 		checkKalibroError(new Task() {
 

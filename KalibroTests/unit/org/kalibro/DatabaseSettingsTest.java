@@ -6,7 +6,7 @@ import org.junit.Test;
 
 public class DatabaseSettingsTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultDatabaseSettings() {
 		DatabaseSettings settings = new DatabaseSettings();
 		assertEquals(SupportedDatabase.MYSQL, settings.getDatabaseType());

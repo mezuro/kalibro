@@ -47,13 +47,13 @@ public class ModuleResultPortDaoTest extends TestCase {
 		Whitebox.setInternalState(dao, "port", port);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetModuleResult() {
 		when(port.getModuleResult("", "", null)).thenReturn(moduleResultXml);
 		assertSame(moduleResult, dao.getModuleResult("", "", null));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testResultHistory() {
 		PowerMockito.when(port.getResultHistory("", "")).thenReturn(Arrays.asList(moduleResultXml));
 		assertDeepList(dao.getResultHistory("", ""), moduleResult);

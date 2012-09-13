@@ -59,14 +59,14 @@ public class CrudControllerTest extends TestCase {
 		when(mock.createFrameFor(entity)).thenReturn(frame);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAddFrameIfUserDoesNotTypeEntityName() throws Exception {
 		prepareInputDialog("New base tool", false);
 		controller.newEntity();
 		verifyFrameNerverAdded();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAddFrameIfEntityNameAlreadyExists() throws Exception {
 		prepareInputDialog("New base tool", true);
 		MessageDialog messageDialog = prepareMessageDialog("Base tool exists");
@@ -76,7 +76,7 @@ public class CrudControllerTest extends TestCase {
 		verifyFrameNerverAdded();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddFrameIfUserTypesValidEntityName() throws Exception {
 		prepareInputDialog("New base tool", true);
 		when(mock.getEntityNames()).thenReturn(new ArrayList<String>());
@@ -85,7 +85,7 @@ public class CrudControllerTest extends TestCase {
 		verifyFrameAdded();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotOpenIfUserDoesNotChooseEntity() throws Exception {
 		prepareChoiceDialog("Open base tool", false);
 		controller.open();
@@ -93,7 +93,7 @@ public class CrudControllerTest extends TestCase {
 		verifyFrameNerverAdded();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldOpenEntity() throws Exception {
 		prepareChoiceDialog("Open base tool", true);
 		controller.open();
@@ -101,21 +101,21 @@ public class CrudControllerTest extends TestCase {
 		verifyFrameAdded();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotRemoveIfUserDoesNotChooseEntity() throws Exception {
 		prepareChoiceDialog("Delete base tool", false);
 		controller.delete();
 		verify(mock, never()).removeEntity(NAME);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveEntity() throws Exception {
 		prepareChoiceDialog("Delete base tool", true);
 		controller.delete();
 		verify(mock).removeEntity(NAME);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowMessageIfNoEntityExists() throws Exception {
 		when(mock.getEntityNames()).thenReturn(new ArrayList<String>());
 		MessageDialog messageDialog = prepareMessageDialog("No base tool");
@@ -131,13 +131,13 @@ public class CrudControllerTest extends TestCase {
 		verify(mock, never()).removeEntity(NAME);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveSelectedEntity() {
 		controller.save();
 		verify(mock).save(entity);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveWithOtherNameIfUserDoesNotTypeNewName() throws Exception {
 		prepareInputDialog("Save base tool as...", false);
 		controller.saveAs();
@@ -146,7 +146,7 @@ public class CrudControllerTest extends TestCase {
 		verifyFrameNerverAdded();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveWithOtherName() throws Exception {
 		prepareInputDialog("Save base tool as...", true);
 		controller.saveAs();
@@ -156,20 +156,20 @@ public class CrudControllerTest extends TestCase {
 		verifyFrameAdded();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddFirstFrameOnTopLeft() throws Exception {
 		when(desktopPane.getSelectedFrame()).thenReturn(null);
 		Whitebox.invokeMethod(controller, "addFrameFor", entity);
 		verify(frame).setLocation(new Point(0, 0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddNewFrameOnNewLocation() throws Exception {
 		Whitebox.invokeMethod(controller, "addFrameFor", entity);
 		verify(frame).setLocation(new Point(20, 20));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldJustCloseFrameIfUnmodified() {
 		when(entity.deepEquals(entity)).thenReturn(true);
 		controller.close();
@@ -177,7 +177,7 @@ public class CrudControllerTest extends TestCase {
 		verify(frame).dispose();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveNeitherCloseOnCancel() throws Exception {
 		when(entity.deepEquals(entity)).thenReturn(false);
 		prepareConfirmDialog(JOptionPane.CANCEL_OPTION);
@@ -186,7 +186,7 @@ public class CrudControllerTest extends TestCase {
 		verify(frame, never()).dispose();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveAndCloseOnYes() throws Exception {
 		when(entity.deepEquals(entity)).thenReturn(false);
 		prepareConfirmDialog(JOptionPane.YES_OPTION);
@@ -195,7 +195,7 @@ public class CrudControllerTest extends TestCase {
 		verify(frame).dispose();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveButCloseOnNo() throws Exception {
 		when(entity.deepEquals(entity)).thenReturn(false);
 		prepareConfirmDialog(JOptionPane.NO_OPTION);
@@ -204,7 +204,7 @@ public class CrudControllerTest extends TestCase {
 		verify(frame).dispose();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCloseSelectedFrameOnClosingEvent() {
 		when(entity.deepEquals(entity)).thenReturn(true);
 		controller.internalFrameClosing(null);

@@ -27,22 +27,22 @@ public class RadioButtonTest extends TestCase {
 		button = new RadioButton("", "My button", listener);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveBoldFont() {
 		assertEquals(Font.BOLD, button.getFont().getStyle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveLeftHorizontalAlignment() {
 		assertEquals(SwingConstants.LEFT, button.getHorizontalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveCenterVerticalAlignment() {
 		assertEquals(SwingConstants.CENTER, button.getVerticalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListener() {
 		button.doClick();
 		Mockito.verify(listener).actionPerformed(any(ActionEvent.class));

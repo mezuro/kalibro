@@ -39,43 +39,43 @@ public class ProjectResultEndpointImplTest extends TestCase {
 		PowerMockito.when(DaoFactory.getProjectResultDao()).thenReturn(dao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsFor() {
 		PowerMockito.when(dao.hasResultsFor("")).thenReturn(flag);
 		assertEquals(flag, endpoint.hasResultsFor(""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsBefore() {
 		PowerMockito.when(dao.hasResultsBefore(null, "")).thenReturn(flag);
 		assertEquals(flag, endpoint.hasResultsBefore(null, ""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultsAfter() {
 		PowerMockito.when(dao.hasResultsAfter(null, "")).thenReturn(flag);
 		assertEquals(flag, endpoint.hasResultsAfter(null, ""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetFirstResultOf() {
 		PowerMockito.when(dao.getFirstResultOf("")).thenReturn(projectResult);
 		assertDeepEquals(projectResult, endpoint.getFirstResultOf("").convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetLastResultOf() {
 		PowerMockito.when(dao.getLastResultOf("")).thenReturn(projectResult);
 		assertDeepEquals(projectResult, endpoint.getLastResultOf("").convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetLastResultBefore() {
 		PowerMockito.when(dao.getLastResultBefore(null, "")).thenReturn(projectResult);
 		assertDeepEquals(projectResult, endpoint.getLastResultBefore(null, "").convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetFirstResultAfter() {
 		PowerMockito.when(dao.getFirstResultAfter(null, "")).thenReturn(projectResult);
 		assertDeepEquals(projectResult, endpoint.getFirstResultAfter(null, "").convert());

@@ -50,12 +50,12 @@ public class AnalizoTest extends IntegrationTest {
 		analizo = new AnalizoMetricCollector();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void checkBaseTool() {
 		assertDeepEquals(analizo(), analizo.getBaseTool());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldCollectMetrics() throws IOException {
 		File codeDirectory = new File(samplesDirectory(), "analizo");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();

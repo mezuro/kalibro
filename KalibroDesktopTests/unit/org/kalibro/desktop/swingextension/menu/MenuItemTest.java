@@ -23,7 +23,7 @@ public class MenuItemTest extends TestCase {
 		item = new MenuItem("", "My menu", 'M', listener);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListener() {
 		item.doClick();
 		Mockito.verify(listener).actionPerformed(any(ActionEvent.class));

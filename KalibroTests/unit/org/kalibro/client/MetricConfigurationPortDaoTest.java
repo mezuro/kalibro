@@ -47,19 +47,19 @@ public class MetricConfigurationPortDaoTest extends TestCase {
 		Whitebox.setInternalState(dao, "port", port);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testSave() {
 		dao.save(configuration, CONFIGURATION_NAME);
 		verify(port).saveMetricConfiguration(same(configurationXml), eq(CONFIGURATION_NAME));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetMetricConfiguration() {
 		when(port.getMetricConfiguration("", CONFIGURATION_NAME)).thenReturn(configurationXml);
 		assertSame(configuration, dao.getMetricConfiguration("", CONFIGURATION_NAME));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRemoveMetricConfiguration() {
 		dao.removeMetricConfiguration("", CONFIGURATION_NAME);
 		verify(port).removeMetricConfiguration("", CONFIGURATION_NAME);

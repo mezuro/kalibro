@@ -20,32 +20,32 @@ public class ReadingGroupEndpointImplTest extends EndpointImplementationTest<// 
 			ReadingGroupDao.class, ReadingGroupEndpointImpl.class};
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmExistence() {
 		when(dao.exists(42L)).thenReturn(true);
 		assertFalse(endpoint.readingGroupExists(28L));
 		assertTrue(endpoint.readingGroupExists(42L));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetById() {
 		when(dao.get(42L)).thenReturn(entity);
 		assertSame(response, endpoint.getReadingGroup(42L));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(Arrays.asList(entity));
 		assertDeepList(endpoint.allReadingGroups(), response);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(42L);
 		assertEquals(42L, endpoint.saveReadingGroup(request).longValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDelete() {
 		endpoint.deleteReadingGroup(42L);
 		verify(dao).delete(42L);

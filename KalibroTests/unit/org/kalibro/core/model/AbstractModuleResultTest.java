@@ -29,20 +29,20 @@ public class AbstractModuleResultTest extends TestCase {
 		moduleResult.addMetricResult(locResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testHasResultFor() {
 		assertTrue(moduleResult.hasResultFor(acc));
 		assertTrue(moduleResult.hasResultFor(loc));
 		assertFalse(moduleResult.hasResultFor(dit));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetResultFor() {
 		assertSame(accResult, moduleResult.getResultFor(acc));
 		assertSame(locResult, moduleResult.getResultFor(loc));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorForInexistentResultMetric() {
 		checkKalibroException(new Task() {
 
@@ -53,7 +53,7 @@ public class AbstractModuleResultTest extends TestCase {
 		}, "No result found for metric: Depth of Inheritance Tree");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testAddMetricResult() {
 		assertDeepCollection(moduleResult.getMetricResults(), accResult, locResult);
 
@@ -62,7 +62,7 @@ public class AbstractModuleResultTest extends TestCase {
 		assertDeepCollection(moduleResult.getMetricResults(), accResult, ditResult, locResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByModule() {
 		assertSorted(newResult(SOFTWARE, "G"), newResult(SOFTWARE, "H"),
 			newResult(PACKAGE, "E"), newResult(PACKAGE, "F"),

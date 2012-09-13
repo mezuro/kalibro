@@ -21,7 +21,7 @@ public class ProjectStatusBarTest extends TestCase {
 		statusBar = new ProjectStatusBar(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChangeMessageOnStateChange() {
 		for (ProjectState state : ProjectState.values())
 			verifyStateText(state);

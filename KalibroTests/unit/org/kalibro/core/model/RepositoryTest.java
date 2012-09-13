@@ -19,7 +19,7 @@ public class RepositoryTest extends TestCase {
 
 	private Repository repository = new Repository();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testInitialization() {
 		assertEquals(RepositoryType.LOCAL_DIRECTORY, repository.getType());
 		assertEquals("", repository.getAddress());
@@ -27,7 +27,7 @@ public class RepositoryTest extends TestCase {
 		assertEquals("", repository.getPassword());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveAuthenticationIfHasUsernameOrPassword() {
 		assertFalse(repository.hasAuthentication());
 
@@ -44,7 +44,7 @@ public class RepositoryTest extends TestCase {
 		assertTrue(repository.hasAuthentication());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoad() {
 		File loadDirectory = mock(File.class);
 		RepositoryType type = PowerMockito.mock(RepositoryType.class);

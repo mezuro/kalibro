@@ -27,7 +27,7 @@ public class MetricConfigurationEndpointTest extends EndpointTest {
 		port = publishAndGetPort(new MetricConfigurationEndpointImpl(daoFake), MetricConfigurationEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetMetricConfigurationByName() {
 		verifyGetMetricConfiguration("cbo");
 		verifyGetMetricConfiguration("loc");
@@ -40,7 +40,7 @@ public class MetricConfigurationEndpointTest extends EndpointTest {
 		assertDeepEquals(expected, actual);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveConfigurationByName() {
 		verifyRemoveMetricConfiguration("cbo");
 		verifyRemoveMetricConfiguration("loc");
@@ -53,7 +53,7 @@ public class MetricConfigurationEndpointTest extends EndpointTest {
 		assertNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveConfiguration() {
 		MetricConfiguration newConfiguration = metricConfiguration("acc");
 		String metricName = newConfiguration.getMetric().getName();

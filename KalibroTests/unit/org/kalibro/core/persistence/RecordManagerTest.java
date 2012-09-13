@@ -36,40 +36,40 @@ public class RecordManagerTest extends TestCase {
 		when(entityManager.merge(UNMERGED)).thenReturn(MERGED);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetById() {
 		when(entityManager.find(Integer.class, 28L)).thenReturn(42);
 		assertEquals(42, recordManager.getById(28L, Integer.class).intValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateQuery() {
 		Query query = mock(Query.class);
 		when(entityManager.createQuery("42")).thenReturn(query);
 		assertSame(query, recordManager.createQuery("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateTypedQuery() {
 		TypedQuery<String> query = mock(TypedQuery.class);
 		when(entityManager.createQuery("42", String.class)).thenReturn(query);
 		assertSame(query, recordManager.createQuery("42", String.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteUpdateQuery() throws Exception {
 		Query updateQuery = mock(Query.class);
 		recordManager.executeUpdate(updateQuery);
 		verifyWithinTransaction(updateQuery, "executeUpdate");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldMergeAndSave() throws Exception {
 		assertEquals(MERGED, recordManager.save(UNMERGED));
 		verifyWithinTransaction(entityManager, "persist", MERGED);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldMergeAndSaveCollection() throws Exception {
 		recordManager.saveAll(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
 		verifyWithinTransaction(entityManager, times(3), "persist", MERGED);
@@ -87,7 +87,7 @@ public class RecordManagerTest extends TestCase {
 		order.verify(transaction).commit();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
 		recordManager.finalize();
 		verify(entityManager).close();

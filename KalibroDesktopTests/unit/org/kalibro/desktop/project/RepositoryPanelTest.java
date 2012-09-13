@@ -51,7 +51,7 @@ public class RepositoryPanelTest extends TestCase {
 		when(dao.getSupportedRepositoryTypes()).thenReturn(types);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		typeField().set(repository.getType());
 		stringField("address").set(repository.getAddress());
@@ -60,7 +60,7 @@ public class RepositoryPanelTest extends TestCase {
 		assertDeepEquals(repository, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(repository);
 		assertEquals(repository.getType(), typeField().get());
@@ -69,7 +69,7 @@ public class RepositoryPanelTest extends TestCase {
 		assertEquals(repository.getPassword(), passwordField().get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void authenticationFieldsShouldBeEnabledOnlyIfAuthenticationIsSupported() {
 		panel.set(repository);
 

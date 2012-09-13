@@ -45,7 +45,7 @@ public class DatabaseDaoFactoryTest extends TestCase {
 		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(managerFactory);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetPersistencePropertiesAccordingToDatabaseSettings() {
 		@SuppressWarnings("rawtypes")
 		ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
@@ -60,7 +60,7 @@ public class DatabaseDaoFactoryTest extends TestCase {
 		assertEquals(settings.getPassword(), properties.get(JDBC_PASSWORD));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateDatabaseDaos() {
 		assertSame(baseToolDao, daoFactory.createBaseToolDao());
 		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.createConfigurationDao());
@@ -72,7 +72,7 @@ public class DatabaseDaoFactoryTest extends TestCase {
 		assertClassEquals(ReadingGroupDatabaseDao.class, daoFactory.createReadingGroupDao());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveBaseTools() {
 		Mockito.verify(baseToolDao).saveBaseTools();
 	}

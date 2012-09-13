@@ -51,7 +51,7 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		when(configurationDao.getConfiguration(anyString())).thenReturn(new Configuration());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSave() {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		when(recordManager.save(any())).thenReturn(new ProjectRecord(project, null));
@@ -63,13 +63,13 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		assertDeepEquals(project, captor.getValue().convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListAllProjectNames() {
 		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
 		assertDeepList(dao.getProjectNames(), "4", "2");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmProject() {
 		doReturn(true).when(dao).hasEntity(PROJECT_NAME);
 		assertTrue(dao.hasProject(PROJECT_NAME));
@@ -78,13 +78,13 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		assertFalse(dao.hasProject(PROJECT_NAME));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetProjectByName() {
 		doReturn(project).when(dao).getByName("42");
 		assertSame(project, dao.getProject("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveProjectByNameAndDependentEntities() {
 		TypedQuery<?> query = mockRemoveQueries("42");
 		mockRemoveDirectory();
@@ -103,7 +103,7 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		assertEquals(project.getName(), captor.getValue().convert().getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveProjectDirectoryOnRemove() {
 		mockRemoveQueries("42");
 		File directory = mockRemoveDirectory();
@@ -135,7 +135,7 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		return directory;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveSupportedRepositoryTypes() {
 		Set<RepositoryType> supportedTypes = mock(Set.class);
 		mockStatic(RepositoryType.class);
@@ -143,21 +143,21 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		assertSame(supportedTypes, dao.getSupportedRepositoryTypes());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldProcessProject() throws Exception {
 		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
 		dao.processProject(PROJECT_NAME);
 		Mockito.verify(task).executeInBackground();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldProcessPeriodically() throws Exception {
 		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
 		dao.processPeriodically(PROJECT_NAME, 42);
 		Mockito.verify(task).executePeriodically(42 * Task.DAY);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCancelPreviousPeriodicExecutionIfExistent() throws Exception {
 		ProcessProjectTask existent = mockProcessProjectTask(PROJECT_NAME);
 		dao.processPeriodically(PROJECT_NAME, 42);
@@ -169,20 +169,20 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		Mockito.verify(newTask).executePeriodically(84 * Task.DAY);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveProcessPeriod() throws Exception {
 		mockProcessProjectTask(PROJECT_NAME);
 		dao.processPeriodically(PROJECT_NAME, 42);
 		assertEquals(42, dao.getProcessPeriod(PROJECT_NAME).intValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void processPeriodShouldBeZeroIfNotScheduled() throws Exception {
 		mockProcessProjectTask(PROJECT_NAME);
 		assertEquals(0, dao.getProcessPeriod(PROJECT_NAME).intValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCancelPeriodicProcess() throws Exception {
 		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
 		dao.processPeriodically(PROJECT_NAME, 42);

@@ -18,19 +18,19 @@ public class ReadingEndpointImplTest extends
 			Reading.class, ReadingXml.class, ReadingXml.class, ReadingDao.class, ReadingEndpointImpl.class};
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetReadingsOfGroup() {
 		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(entity));
 		assertDeepList(endpoint.readingsOf(42L), response);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(42L);
 		assertEquals(42L, endpoint.saveReading(request).longValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDeleteReading() {
 		endpoint.deleteReading(42L);
 		verify(dao).delete(42L);

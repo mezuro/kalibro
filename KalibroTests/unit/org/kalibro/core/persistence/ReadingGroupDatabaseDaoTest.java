@@ -24,7 +24,7 @@ public class ReadingGroupDatabaseDaoTest extends TestCase {
 		dao = spy(new ReadingGroupDatabaseDao(null));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmExistence() {
 		doReturn(false).when(dao).existsWithId(28L);
 		doReturn(true).when(dao).existsWithId(42L);
@@ -32,21 +32,21 @@ public class ReadingGroupDatabaseDaoTest extends TestCase {
 		assertTrue(dao.exists(42L));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetById() {
 		ReadingGroup group = mock(ReadingGroup.class);
 		doReturn(group).when(dao).getById(42L);
 		assertSame(group, dao.get(42L));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetAll() {
 		List<ReadingGroup> all = mock(List.class);
 		doReturn(all).when(dao).allOrderedByName();
 		assertSame(all, dao.all());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSave() throws Exception {
 		ReadingGroup group = mock(ReadingGroup.class);
 		ReadingGroupRecord record = mock(ReadingGroupRecord.class);
@@ -58,7 +58,7 @@ public class ReadingGroupDatabaseDaoTest extends TestCase {
 		verify(dao).save(record);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDelete() {
 		doNothing().when(dao).deleteById(42L);
 		dao.delete(42L);

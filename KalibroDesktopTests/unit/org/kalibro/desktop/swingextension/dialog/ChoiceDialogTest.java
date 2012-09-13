@@ -35,20 +35,20 @@ public class ChoiceDialogTest extends TestCase {
 		dialog = new ChoiceDialog<Language>(TITLE, parent);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnFalseIfNotConfirmed() throws Exception {
 		mockJOptionPane(null);
 		assertFalse(dialog.choose(MESSAGE, OPTIONS));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChooseFromArray() throws Exception {
 		mockJOptionPane(Language.C);
 		assertTrue(dialog.choose(MESSAGE, OPTIONS));
 		assertEquals(Language.C, dialog.getChoice());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChooseFromCollection() throws Exception {
 		mockJOptionPane(Language.JAVA);
 		assertTrue(dialog.choose(MESSAGE, Arrays.asList(OPTIONS)));

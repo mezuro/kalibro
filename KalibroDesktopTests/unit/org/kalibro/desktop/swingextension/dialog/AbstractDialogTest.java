@@ -29,50 +29,50 @@ public class AbstractDialogTest extends TestCase {
 		dialog = new DialogMock();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetTitle() {
 		assertSame(TITLE, dialog.getTitle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeModal() {
 		assertTrue(dialog.isModal());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveKalibroIcon() {
 		assertDeepEquals(dialog.getIconImages(), new Icon(Icon.KALIBRO).getImage());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDisposeOnClose() {
 		assertEquals(WindowConstants.DISPOSE_ON_CLOSE, dialog.getDefaultCloseOperation());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateComponents() {
 		assertTrue(createdComponents);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetBuiltPanelAsContentPane() {
 		assertSame(PANEL, dialog.getContentPane());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void minimumSizeShouldBeSet() {
 		assertTrue(dialog.isMinimumSizeSet());
 		assertEquals(dialog.getMinimumSize(), dialog.getSize());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetVisibleWhenNotTesting() {
 		assertFalse(showed);
 		dialog.setVisible(true);
 		assertTrue(showed);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSetVisibleWhenTesting() {
 		Whitebox.setInternalState(AbstractDialog.class, "suppressShow", true);
 		dialog.setVisible(true);

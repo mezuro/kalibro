@@ -37,14 +37,14 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		daoFactory.createProjectDao().save(project);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testHasResults() {
 		assertFalse(dao.hasResultsFor(project.getName()));
 		saveResults();
 		assertTrue(dao.hasResultsFor(project.getName()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testHasResultsBefore() {
 		saveResults();
 		assertFalse(dao.hasResultsBefore(first.getDate(), project.getName()));
@@ -52,7 +52,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertTrue(dao.hasResultsBefore(third.getDate(), project.getName()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testHasResultsAfter() {
 		saveResults();
 		assertTrue(dao.hasResultsAfter(first.getDate(), project.getName()));
@@ -60,7 +60,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertFalse(dao.hasResultsAfter(third.getDate(), project.getName()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testFirstResult() {
 		dao.save(third);
 		assertDeepEquals(third, dao.getFirstResultOf(project.getName()));
@@ -72,7 +72,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(first, dao.getFirstResultOf(project.getName()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testNoFirstResultFound() {
 		checkKalibroException(new Task() {
 
@@ -83,7 +83,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		}, "No project result found", NoResultException.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testLastResult() {
 		dao.save(first);
 		assertDeepEquals(first, dao.getLastResultOf(project.getName()));
@@ -95,7 +95,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(third, dao.getLastResultOf(project.getName()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testNoLastResultFound() {
 		checkKalibroException(new Task() {
 
@@ -106,14 +106,14 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		}, "No project result found", NoResultException.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testLastResultBefore() {
 		saveResults();
 		assertDeepEquals(second, dao.getLastResultBefore(third.getDate(), project.getName()));
 		assertDeepEquals(first, dao.getLastResultBefore(second.getDate(), project.getName()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testNoResultFoundBefore() {
 		checkKalibroException(new Task() {
 
@@ -124,14 +124,14 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		}, "No project result found", NoResultException.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testFirstResultAfter() {
 		saveResults();
 		assertDeepEquals(third, dao.getFirstResultAfter(second.getDate(), project.getName()));
 		assertDeepEquals(second, dao.getFirstResultAfter(first.getDate(), project.getName()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testNoResultFoundAfter() {
 		checkKalibroException(new Task() {
 

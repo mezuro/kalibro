@@ -24,7 +24,7 @@ public class OrMemberFilterTest extends TestCase {
 		doThrow(new NullPointerException()).when(errorFilter).accept(member);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTrueTableForTwo() {
 		assertFalse(new OrMemberFilter(falseFilter, falseFilter).accept(member));
 		assertTrue(new OrMemberFilter(falseFilter, trueFilter).accept(member));
@@ -32,7 +32,7 @@ public class OrMemberFilterTest extends TestCase {
 		assertTrue(new OrMemberFilter(trueFilter, trueFilter).accept(member));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnTrueOnFirstAccept() {
 		assertTrue(new OrMemberFilter(falseFilter, trueFilter, errorFilter).accept(member));
 		verifyZeroInteractions(errorFilter);

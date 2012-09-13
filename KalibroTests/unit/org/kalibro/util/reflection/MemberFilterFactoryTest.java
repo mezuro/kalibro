@@ -28,7 +28,7 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 		return MemberFilterFactory.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateModifierMemberFilter() {
 		filter = is(PUBLIC);
 		assertTrue(filter.accept(setUp));
@@ -43,7 +43,7 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 		assertFalse(filter.accept(setTestEnvironment));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateAnnotationMemberFilter() {
 		filter = hasAnnotation(Before.class);
 		assertTrue(filter.accept(setUp));
@@ -54,7 +54,7 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 		assertTrue(filter.accept(setTestEnvironment));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateNameMemberFilter() {
 		filter = nameMatches("set.*");
 		assertTrue(filter.accept(setUp));
@@ -65,7 +65,7 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 		assertFalse(filter.accept(setTestEnvironment));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateNotMemberFilter() {
 		filter = not(is(STATIC));
 		assertTrue(filter.accept(setUp));
@@ -80,14 +80,14 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 		assertFalse(filter.accept(setTestEnvironment));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateAndMemberFilter() {
 		filter = and(is(STATIC), hasAnnotation(BeforeClass.class));
 		assertFalse(filter.accept(setUp));
 		assertTrue(filter.accept(setTestEnvironment));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateOrMemberFilter() {
 		filter = or(hasAnnotation(Before.class), not(is(STATIC)));
 		assertTrue(filter.accept(setUp));

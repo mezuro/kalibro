@@ -9,7 +9,7 @@ import org.kalibro.TestCase;
 
 public class NotMemberFilterTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNegateFilter() {
 		Member member = mock(Member.class);
 		MemberFilter filter = mock(MemberFilter.class);

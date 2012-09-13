@@ -7,7 +7,7 @@ import org.kalibro.util.Identifier;
 
 public abstract class EnumerationTestCase<ENUM extends Enum<ENUM>> extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConvertFromString() throws Exception {
 		for (ENUM value : values())
 			assertSame(value, valueOf(value.name()));
@@ -17,7 +17,7 @@ public abstract class EnumerationTestCase<ENUM extends Enum<ENUM>> extends TestC
 		return (ENUM) enumerationClass().getMethod("valueOf", String.class).invoke(null, name);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintAsText() throws Exception {
 		for (ENUM value : values())
 			assertEquals(expectedText(value), "" + value);

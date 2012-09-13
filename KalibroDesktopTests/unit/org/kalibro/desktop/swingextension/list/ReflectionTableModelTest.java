@@ -24,7 +24,7 @@ public class ReflectionTableModelTest extends TestCase {
 		model.setData(metricConfiguration("amloc").getRanges());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAcceptOnlyReflectionColumns() {
 		checkKalibroException(new Task() {
 
@@ -35,14 +35,14 @@ public class ReflectionTableModelTest extends TestCase {
 		}, "All columns of ReflectionTableModel should be ReflectionColumn");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetColumnClasses() {
 		assertEquals(Double.class, model.getColumnClass(0));
 		assertEquals(String.class, model.getColumnClass(1));
 		assertEquals(Color.class, model.getColumnClass(2));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetValues() {
 		assertDoubleEquals(0.0, (Double) model.getValueAt(0, 0));
 		assertEquals("Good", model.getValueAt(1, 1));

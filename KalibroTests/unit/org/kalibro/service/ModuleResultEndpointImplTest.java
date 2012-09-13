@@ -40,13 +40,13 @@ public class ModuleResultEndpointImplTest extends TestCase {
 		PowerMockito.when(DaoFactory.getModuleResultDao()).thenReturn(dao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetModuleResult() {
 		PowerMockito.when(dao.getModuleResult("1", "2", new Date(3))).thenReturn(moduleResult);
 		assertDeepEquals(moduleResult, endpoint.getModuleResult("1", "2", new Date(3)).convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testResultHistory() {
 		List<ModuleResult> resultHistory = Arrays.asList(moduleResult);
 		PowerMockito.when(dao.getResultHistory("4", "2")).thenReturn(resultHistory);

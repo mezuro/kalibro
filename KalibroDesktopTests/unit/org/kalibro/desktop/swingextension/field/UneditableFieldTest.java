@@ -19,22 +19,22 @@ public class UneditableFieldTest extends TestCase {
 		field = new UneditableField<String>("");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHavePlainFont() {
 		assertEquals(Font.PLAIN, field.getFont().getStyle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveLeftHorizontalAlignment() {
 		assertEquals(SwingConstants.LEFT, field.getHorizontalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveCenterVerticalAlignment() {
 		assertEquals(SwingConstants.CENTER, field.getVerticalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowValue() {
 		field.set("My string");
 		assertEquals("My string", field.getText());
@@ -43,13 +43,13 @@ public class UneditableFieldTest extends TestCase {
 		assertEquals("", field.getText());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveValue() {
 		field.set("My string");
 		assertEquals("My string", field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChangeWidthWhenSettingValue() {
 		int emptyWidth = (int) field.getSize().getWidth();
 

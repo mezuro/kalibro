@@ -47,68 +47,68 @@ public class TableTest extends TestCase {
 		model = spy(model);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowGrid() {
 		assertTrue(innerTable.getShowVerticalLines());
 		assertTrue(innerTable.getShowHorizontalLines());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAutoCreateRowSorter() {
 		assertTrue(innerTable.getAutoCreateRowSorter());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAllowColumnSelection() {
 		assertFalse(innerTable.getColumnSelectionAllowed());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAutoResize() {
 		assertEquals(JTable.AUTO_RESIZE_OFF, innerTable.getAutoResizeMode());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAllowMultipleRowsSelection() {
 		assertEquals(ListSelectionModel.SINGLE_SELECTION, innerTable.getSelectionModel().getSelectionMode());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUpdateColumnModel() {
 		verify(model).updateColumnModel(innerTable.getColumnModel());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetDataFromModel() {
 		when(model.getData()).thenReturn(null);
 		assertNull(table.getData());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetDataOnModel() {
 		verify(model).setData(data);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveRowFromModel() {
 		Range range = data.get(0);
 		table.remove(range);
 		verify(model).remove(range);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotHaveSelectionByDefault() {
 		assertFalse(table.hasSelection());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSelectedObject() {
 		innerTable.getSelectionModel().setSelectionInterval(0, 0);
 		assertTrue(table.hasSelection());
 		assertSame(data.get(0), table.getSelected());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testEnabled() {
 		assertTrue(innerTable.isEnabled());
 		table.setEnabled(false);
@@ -116,7 +116,7 @@ public class TableTest extends TestCase {
 		assertFalse(innerTable.isEnabled());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddListListener() throws Exception {
 		ListListener<Range> listener = mock(ListListener.class);
 		ListComponentAdapter<Range> adapter = mock(ListComponentAdapter.class);

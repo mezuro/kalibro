@@ -25,7 +25,7 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 		configurationDao.save(configuration);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveSavedMetricConfiguration() {
 		MetricConfiguration locConfiguration = metricConfiguration("loc");
 		String configurationName = configuration.getName();
@@ -37,7 +37,7 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(locConfiguration, retrieved);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldReplaceMetricConfiguration() {
 		MetricConfiguration cboConfiguration = newMetricConfiguration("cbo");
 		String configurationName = configuration.getName();
@@ -49,7 +49,7 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDoubleEquals(42.0, retrieved.getWeight());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveConfigurationByName() {
 		final MetricConfiguration cboConfiguration = metricConfiguration("cbo");
 		final String configurationName = configuration.getName();

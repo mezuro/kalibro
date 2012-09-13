@@ -23,7 +23,7 @@ public abstract class RecordTest<ENTITY, RECORD extends DataTransferObject<ENTIT
 		reflector = new FieldReflector(dto);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkClassAnnotations() {
 		String entityName = entity.getClass().getSimpleName();
 

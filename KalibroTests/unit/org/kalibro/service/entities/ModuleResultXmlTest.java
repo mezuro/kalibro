@@ -15,7 +15,7 @@ import org.powermock.reflect.internal.WhiteboxImpl;
 
 public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultXml> {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void defaultConstructorOfCompoundMetricWithErrorShouldDoNothing() {
 		checkException(new Task() {
 
@@ -43,7 +43,7 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 		return new ModuleResultXml(moduleResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConvertNullCompoundMetricsWithErrorIntoEmptyMap() {
 		ModuleResult moduleResult = helloWorldClassResult();
 		ModuleResultXml dto = createDto(moduleResult);

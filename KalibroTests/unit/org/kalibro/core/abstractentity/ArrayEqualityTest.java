@@ -25,7 +25,7 @@ public class ArrayEqualityTest extends TestCase {
 		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateAnyTypeOfArray() {
 		assertTrue(equality.canEvaluate(new Object[0]));
 		assertTrue(equality.canEvaluate(new String[1]));
@@ -38,19 +38,19 @@ public class ArrayEqualityTest extends TestCase {
 		assertFalse(equality.canEvaluate(new ArrayList<String>()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void arraysShouldHaveSameSize() {
 		assertFalse(equality.equals(newArray("1", "2"), newArray("1", "2", "3")));
 		assertFalse(equality.equals(newArray("1", "2", "3"), newArray("1", "2")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void elementsShouldBeInTheSameOrder() {
 		assertFalse(equality.equals(newArray("1", "2"), newArray("2", "1")));
 		assertFalse(equality.equals(newArray("1", "2", "3"), newArray("1", "3", "2")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void elementsShouldBeDeepEqual() {
 		assertTrue(equality.equals(newArray("1", "2", "3"), newArray("1", "2", "3")));
 		verifyStatic();

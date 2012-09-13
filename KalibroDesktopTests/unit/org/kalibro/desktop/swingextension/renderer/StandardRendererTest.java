@@ -15,7 +15,7 @@ public class StandardRendererTest extends TestCase {
 		renderer = PowerMockito.spy(new NullRenderer());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderIgnoringContext() {
 		renderer.render("42", "24");
 		Mockito.verify(renderer).render("42");

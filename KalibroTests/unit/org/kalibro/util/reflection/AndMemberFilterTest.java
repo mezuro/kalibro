@@ -24,7 +24,7 @@ public class AndMemberFilterTest extends TestCase {
 		doThrow(new NullPointerException()).when(errorFilter).accept(member);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTrueTableForTwo() {
 		assertFalse(new AndMemberFilter(falseFilter, falseFilter).accept(member));
 		assertFalse(new AndMemberFilter(falseFilter, trueFilter).accept(member));
@@ -32,7 +32,7 @@ public class AndMemberFilterTest extends TestCase {
 		assertTrue(new AndMemberFilter(trueFilter, trueFilter).accept(member));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnTrueOnFirstReject() {
 		assertTrue(new OrMemberFilter(trueFilter, falseFilter, errorFilter).accept(member));
 		verifyZeroInteractions(errorFilter);

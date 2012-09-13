@@ -52,24 +52,24 @@ public class ColorChooserTest extends TestCase {
 			thenReturn(chooserDialog);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetChooserName() {
 		Mockito.verify(nativeChooser).setName("colorChooser");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowColorChooserDialogWithDefaultColorSelected() {
 		colorChooser.chooseColor(DEFAULT_COLOR);
 		Mockito.verify(nativeChooser).setColor(DEFAULT_COLOR);
 		Mockito.verify(chooserDialog).setVisible(true);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnDefaultColorByDefault() {
 		assertSame(DEFAULT_COLOR, colorChooser.chooseColor(DEFAULT_COLOR));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnSelectedColorWhenSelected() {
 		doAnswer(selectColor()).when(chooserDialog).setVisible(true);
 		assertSame(SELECTED_COLOR, colorChooser.chooseColor(DEFAULT_COLOR));

@@ -42,7 +42,7 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 		dao = spy(new BaseToolDatabaseDao(recordManager));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveKnownBaseTools() throws Exception {
 		doReturn(null).when(dao, "save", any(MetricCollector.class));
 		dao.saveBaseTools();
@@ -50,7 +50,7 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 		verifyPrivate(dao).invoke("save", CheckstyleMetricCollector.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveBaseToolByClass() throws Exception {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
@@ -60,27 +60,27 @@ public class BaseToolDatabaseDaoTest extends TestCase {
 		assertDeepEquals(baseTool, captor.getValue().convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveIfCannotInstantiateBaseTool() throws Exception {
 		doReturn(new ArrayList<String>()).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", MetricCollector.class);
 		Mockito.verify(recordManager, never()).save(any());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveIfBaseToolAlreadyExists() throws Exception {
 		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
 		Mockito.verify(recordManager, never()).save(any());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListAllBaseToolNames() {
 		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
 		assertDeepEquals(BASE_TOOL_NAMES, dao.getBaseToolNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetBaseToolByName() {
 		doReturn(baseTool).when(dao).getByName("Analizo");
 		assertSame(baseTool, dao.getBaseTool("Analizo"));

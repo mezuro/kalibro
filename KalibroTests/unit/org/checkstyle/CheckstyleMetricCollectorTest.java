@@ -66,12 +66,12 @@ public class CheckstyleMetricCollectorTest extends TestCase {
 		whenNew(Checker.class).withNoArguments().thenReturn(checker);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSupportedMetrics() {
 		assertDeepEquals(METRICS, collector.getBaseTool().getSupportedMetrics());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCollectMetrics() throws Exception {
 		Set<NativeModuleResult> results = CheckstyleStub.results();
 		when(parser.getResults()).thenReturn(results);

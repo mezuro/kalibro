@@ -4,39 +4,29 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.Constructor;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
 import org.powermock.reflect.Whitebox;
 
 public class ConcurrentInvocationHandlerTest extends TestCase {
 
-	private long beforeId, testId, getterId;
-
-	private IdGetter getter;
-
-	@Before
-	public void setUp() {
-		getter = ConcurrentInvocationHandler.createProxy(new ThreadIdGetter(), IdGetter.class);
-		beforeId = getThreadId();
-		getterId = getter.getId();
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRunMethodInSameThread() {
-		testId = getThreadId();
-		assertDifferent(getterId, beforeId, testId);
+		IdGetter getter = ConcurrentInvocationHandler.createProxy(new ThreadIdGetter(), IdGetter.class);
+		long getterId = getter.getId();
+		long testId = getThreadId();
+		assertDifferent(getterId, testId);
 		assertEquals(getterId, getter.getId());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEndThreadOnFinalize() throws Throwable {
 		ConcurrentInvocationHandler handler = createHandler();
 		handler.finalize();
 		assertFalse((Boolean) Whitebox.getInternalState(handler, "running"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveDescription() throws Exception {
 		assertEquals("handling invocations for java.lang.String", "" + createHandler());
 	}

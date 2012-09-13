@@ -28,7 +28,7 @@ public class NativeMetricXmlTest extends DtoTestCase<NativeMetric, NativeMetricX
 		return new NativeMetricXml(nativeMetric);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullDescriptionAndLanguagesToEmpty() {
 		NativeMetric metric = analizoMetric("dit");
 		NativeMetricXml dto = createDto(metric);

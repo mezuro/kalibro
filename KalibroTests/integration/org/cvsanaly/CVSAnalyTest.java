@@ -18,14 +18,14 @@ public class CVSAnalyTest extends IntegrationTest {
 		cvsanaly = new CVSAnalyMetricCollector();
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = new File(samplesDirectory(), "cvsanaly");
 		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
 		assertDeepEquals(CVSAnalyStub.results(), cvsanaly.collectMetrics(codeDirectory, metrics));
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldCollectSomeMetrics() throws Exception {
 		File codeDirectory = new File(samplesDirectory(), "cvsanaly");
 		Set<NativeMetric> metrics = new HashSet<NativeMetric>();

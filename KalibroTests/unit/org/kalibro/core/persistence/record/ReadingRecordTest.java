@@ -15,7 +15,7 @@ public class ReadingRecordTest extends RecordTest<Reading, ReadingRecord> {
 		return ReadingRecord.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void verifyColumns() {
 		assertId();
 		assertColumn("label", String.class, false, false);

@@ -7,7 +7,7 @@ import org.kalibro.TestCase;
 
 public class KalibroImplTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetVersion() {
 		assertEquals("0.6", new KalibroImpl().version());
 	}

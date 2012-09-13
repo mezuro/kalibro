@@ -27,7 +27,7 @@ public class MapEqualityTest extends TestCase {
 		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateAnyTypeOfMap() {
 		assertTrue(equality.canEvaluate(new HashMap<Object, String>()));
 		assertTrue(equality.canEvaluate(new TreeMap<String, Integer>()));
@@ -36,18 +36,18 @@ public class MapEqualityTest extends TestCase {
 		assertFalse(equality.canEvaluate(this));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void mapsShouldHaveSameKeySet() {
 		assertFalse(equality.equals(newMap("c->cat", "p->pig"), newMap("c->cat", "d->dog")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void mappingsShouldBeEqual() {
 		assertFalse(equality.equals(newMap("c->cat", "p->pig"), newMap("c->car", "p->pig")));
 		assertFalse(equality.equals(newMap("c->cat", "d->dog"), newMap("c->cat", "d->dot")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void mappingsShouldBeDeepEqual() {
 		Map<String, String> map1 = newMap("d->dog", "p->pig");
 		Map<String, String> map2 = newMap("d->dog", "p->pig");

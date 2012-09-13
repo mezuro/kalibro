@@ -35,12 +35,12 @@ public class ReadingGroupTest extends TestCase {
 		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByName() {
 		assertSorted(new ReadingGroup("A"), new ReadingGroup("B"), new ReadingGroup("X"), new ReadingGroup("Z"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldImportFromFile() throws Exception {
 		File file = mock(File.class);
 		mockStatic(AbstractEntity.class);
@@ -50,14 +50,14 @@ public class ReadingGroupTest extends TestCase {
 		verifyPrivate(AbstractEntity.class).invoke("importFrom", file, ReadingGroup.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetAllReadings() {
 		List<ReadingGroup> list = mock(List.class);
 		when(dao.all()).thenReturn(list);
 		assertSame(list, ReadingGroup.all());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultGroup() {
 		group = new ReadingGroup();
 		assertFalse(group.hasId());
@@ -66,7 +66,7 @@ public class ReadingGroupTest extends TestCase {
 		assertTrue(group.getReadings().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetGroupOnReadings() {
 		Reading reading = mock(Reading.class);
 		group.setReadings(Arrays.asList(reading));
@@ -74,7 +74,7 @@ public class ReadingGroupTest extends TestCase {
 		verify(reading).setGroup(group);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetReadingsWithoutTouchingThem() {
 		// required for lazy loading
 		List<Reading> readings = mock(List.class);
@@ -82,7 +82,7 @@ public class ReadingGroupTest extends TestCase {
 		verifyZeroInteractions(readings);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddReadingIfItDoesNotConflictWithExistingOnes() {
 		Reading reading = mock(Reading.class);
 		List<Reading> existents = group.getReadings();
@@ -96,7 +96,7 @@ public class ReadingGroupTest extends TestCase {
 		assertTrue(group.getReadings().contains(reading));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveReading() {
 		Reading reading = mock(Reading.class);
 		group.addReading(reading);
@@ -106,7 +106,7 @@ public class ReadingGroupTest extends TestCase {
 		verify(reading).setGroup(null);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUpdateIdAndReadingsOnSave() {
 		Reading reading = mock(Reading.class);
 		ReadingDao readingDao = mock(ReadingDao.class);
@@ -120,7 +120,7 @@ public class ReadingGroupTest extends TestCase {
 		assertDeepList(group.getReadings(), reading);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRequiredNameToSave() {
 		group.setName(" ");
 		checkKalibroException(new Task() {
@@ -132,7 +132,7 @@ public class ReadingGroupTest extends TestCase {
 		}, "Reading group requires name.");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDeleteIfHasId() {
 		assertFalse(group.hasId());
 		group.delete();
@@ -146,7 +146,7 @@ public class ReadingGroupTest extends TestCase {
 		assertFalse(group.hasId());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveReadingIdsOnDelete() {
 		Reading reading = mock(Reading.class);
 		group.setReadings(Arrays.asList(reading));

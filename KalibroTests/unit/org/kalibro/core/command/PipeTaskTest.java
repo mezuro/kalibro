@@ -9,7 +9,7 @@ import org.kalibro.TestCase;
 
 public class PipeTaskTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPipe() throws IOException {
 		String string = "Testing PipeTask";
 		StringInputStream input = new StringInputStream(string);

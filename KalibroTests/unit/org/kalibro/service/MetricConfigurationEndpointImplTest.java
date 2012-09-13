@@ -38,20 +38,20 @@ public class MetricConfigurationEndpointImplTest extends TestCase {
 		PowerMockito.when(DaoFactory.getMetricConfigurationDao()).thenReturn(dao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testSaveConfiguration() {
 		endpoint.saveMetricConfiguration(new MetricConfigurationXml(configuration), CONFIGURATION_NAME);
 		Mockito.verify(dao).save(configuration, CONFIGURATION_NAME);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetConfiguration() {
 		String metricName = configuration.getMetric().getName();
 		PowerMockito.when(dao.getMetricConfiguration(CONFIGURATION_NAME, metricName)).thenReturn(configuration);
 		assertDeepEquals(configuration, endpoint.getMetricConfiguration(CONFIGURATION_NAME, metricName).convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRemoveConfiguration() {
 		String metricName = configuration.getMetric().getName();
 		endpoint.removeMetricConfiguration(CONFIGURATION_NAME, metricName);

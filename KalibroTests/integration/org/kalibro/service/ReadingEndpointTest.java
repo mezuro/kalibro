@@ -27,7 +27,7 @@ public class ReadingEndpointTest extends EndpointTest {
 		port = publishAndGetPort(new ReadingEndpointImpl(dao), ReadingEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetReadingsOfGroup() {
 		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(fixture));
 
@@ -36,13 +36,13 @@ public class ReadingEndpointTest extends EndpointTest {
 		assertDeepEquals(fixture, readings.get(0).convert());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSave() {
 		when(dao.save(eq(fixture))).thenReturn(42L);
 		assertEquals(42L, port.saveReading(new ReadingXml(fixture)).longValue());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldDelete() {
 		port.deleteReading(42L);
 		verify(dao).delete(42L);

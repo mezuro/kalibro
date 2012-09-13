@@ -21,12 +21,12 @@ public class DeepEntityEqualityTest extends TestCase {
 		equality = new DeepEntityEquality();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void classesShouldBeTheSame() {
 		assertFalse(equalTo(programmerCarlos));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void allFieldsShouldBeEqual() {
 		assertTrue(equalTo(otherCarlos));
 
@@ -34,7 +34,7 @@ public class DeepEntityEqualityTest extends TestCase {
 		assertFalse(equalTo(otherCarlos));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void allSubEntitiesShouldBeEqual() {
 		assertTrue(equalTo(otherCarlos));
 

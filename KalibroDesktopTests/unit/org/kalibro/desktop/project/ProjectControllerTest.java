@@ -46,54 +46,54 @@ public class ProjectControllerTest extends TestCase {
 		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDesktopPane() {
 		assertSame(desktopPane, Whitebox.getInternalState(controller, JDesktopPane.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkEntityName() {
 		assertEquals("Project", Whitebox.getInternalState(controller, String.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateProject() {
 		project = controller.createEntity(NAME);
 		assertEquals(NAME, project.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetProjectNamesFromDao() {
 		when(projectDao.getProjectNames()).thenReturn(NAMES);
 		assertSame(NAMES, controller.getEntityNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetProjectFromDao() {
 		when(projectDao.getProject(NAME)).thenReturn(project);
 		assertSame(project, controller.getEntity(NAME));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateFrame() throws Exception {
 		ProjectFrame projectFrame = mock(ProjectFrame.class);
 		whenNew(ProjectFrame.class).withArguments(project).thenReturn(projectFrame);
 		assertSame(projectFrame, controller.createFrameFor(project));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveProject() {
 		controller.removeEntity(NAME);
 		Mockito.verify(projectDao).removeProject(NAME);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveProject() {
 		controller.save(project);
 		Mockito.verify(projectDao).save(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetProjectName() {
 		controller.setEntityName(project, NAME);
 		Mockito.verify(project).setName(NAME);

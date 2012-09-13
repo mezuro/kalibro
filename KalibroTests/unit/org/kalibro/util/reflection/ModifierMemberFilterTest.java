@@ -19,14 +19,14 @@ public class ModifierMemberFilterTest extends TestCase {
 		when(member.getModifiers()).thenReturn(PROTECTED | STATIC | SYNCHRONIZED);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAcceptMemberWithModifier() {
 		assertTrue(new ModifierMemberFilter(PROTECTED).accept(member));
 		assertTrue(new ModifierMemberFilter(STATIC).accept(member));
 		assertTrue(new ModifierMemberFilter(SYNCHRONIZED).accept(member));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptMemberWithoutModifier() {
 		assertFalse(new ModifierMemberFilter(PRIVATE).accept(member));
 		assertFalse(new ModifierMemberFilter(FINAL).accept(member));

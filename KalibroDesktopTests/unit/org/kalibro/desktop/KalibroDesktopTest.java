@@ -32,7 +32,7 @@ public class KalibroDesktopTest extends TestCase {
 		whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotOpenFrameIfSettingsFileDoesNotExistAndUserCancelsSettingsEdition() throws Exception {
 		prepareScenario(false, false);
 		KalibroDesktop.main(null);
@@ -42,7 +42,7 @@ public class KalibroDesktopTest extends TestCase {
 		Mockito.verify(kalibroFrame, never()).setVisible(true);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldOpenFrameIfSettingsFileDoesNotExistButUserConfirmsSettingsEdition() throws Exception {
 		prepareScenario(false, true);
 		KalibroDesktop.main(null);
@@ -52,7 +52,7 @@ public class KalibroDesktopTest extends TestCase {
 		Mockito.verify(kalibroFrame).setVisible(true);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldOpenFrameWithoutEditSettingsIfFileAlreadyExists() throws Exception {
 		prepareScenario(true, false);
 		KalibroDesktop.main(null);

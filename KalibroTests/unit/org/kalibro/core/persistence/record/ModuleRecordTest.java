@@ -37,13 +37,13 @@ public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
 		return new ModuleRecord(moduleNode, projectResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveIfIsRoot() {
 		assertTrue(createDto(helloWorldRoot()).isRoot());
 		assertFalse(new ModuleRecord(helloWorldLeaf(), null, new ModuleRecord()).isRoot());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConvertIntoModuleResult() {
 		Date date = projectResult.getDate();
 		Module module = helloWorldClass();

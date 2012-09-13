@@ -7,7 +7,7 @@ import org.powermock.api.mockito.PowerMockito;
 
 public class ThreadInterrupterTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInterruptThread() {
 		Thread thread = PowerMockito.mock(Thread.class);
 		new ThreadInterrupter(thread).run();

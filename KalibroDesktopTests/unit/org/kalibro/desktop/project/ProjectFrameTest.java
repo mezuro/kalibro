@@ -42,17 +42,17 @@ public class ProjectFrameTest extends TestCase {
 		whenNew(ProjectPanel.class).withNoArguments().thenReturn(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void titleShouldHaveProjectName() {
 		assertEquals(project.getName() + " - Project", frame.getTitle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowProjectOnPanel() {
 		Mockito.verify(panel).set(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveProject() {
 		when(panel.get()).thenReturn(project);
 		assertSame(project, frame.get());

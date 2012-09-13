@@ -13,11 +13,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.IntegrationTest;
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.ModuleResult;
 
-public class CsvExportTest extends TestCase {
+public class CsvExportTest extends IntegrationTest {
 
 	private File csvFile;
 	private ModuleResult moduleResult;
@@ -35,7 +35,7 @@ public class CsvExportTest extends TestCase {
 		csvFile.delete();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testExport() throws IOException {
 		InputStream expectedCsv = getClass().getResourceAsStream("HelloWorld.csv");
 		new ModuleResultCsvExporter(moduleResult).exportTo(csvFile);

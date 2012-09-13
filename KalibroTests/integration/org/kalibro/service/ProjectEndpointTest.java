@@ -26,23 +26,23 @@ public class ProjectEndpointTest extends EndpointTest {
 		port = publishAndGetPort(new ProjectEndpointImpl(daoFake), ProjectEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListProjectNames() {
 		assertDeepList(port.getProjectNames(), sample.getName());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetProjectByName() {
 		assertDeepEquals(sample, port.getProject(sample.getName()).convert());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveProjectByName() {
 		port.removeProject(sample.getName());
 		assertTrue(port.getProjectNames().isEmpty());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveProject() {
 		Project newProject = newHelloWorld();
 		newProject.setName("ProjectEndpointTest project");

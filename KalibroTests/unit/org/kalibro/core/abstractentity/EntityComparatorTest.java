@@ -27,23 +27,23 @@ public class EntityComparatorTest extends TestCase {
 		comparator = new EntityComparator<Person>();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void compareShouldBeZeroWhenEntitiesAreEqual() {
 		assertEquals(0, comparator.compare(carlos, carlos));
 		assertEquals(0, comparator.compare(carlos, carlosPerson));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void compareShouldBeLessThanZeroWhenComparingToGreater() {
 		assertTrue(ASSERT_MESSAGE, comparator.compare(carlos, paulo) < 0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void compareShouldBeGreaterThanZeroWhenComparingToSmaller() {
 		assertTrue(ASSERT_MESSAGE, comparator.compare(paulo, carlos) > 0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNull() {
 		checkKalibroError(new Task() {
 
@@ -54,7 +54,7 @@ public class EntityComparatorTest extends TestCase {
 		}, ERROR_MESSAGE + "Programmer.name", InvocationTargetException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNotComparable() {
 		checkKalibroError(new Task() {
 

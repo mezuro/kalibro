@@ -27,7 +27,7 @@ public class SourceTreeBuilderTest extends TestCase {
 		treeBuilder = new SourceTreeBuilder(projectResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSourceTree() {
 		ModuleNode sourceTree = getSourceTree(
 			new Module(CLASS, "org.checkstyle.CheckstyleMetricCollector"),
@@ -42,7 +42,7 @@ public class SourceTreeBuilderTest extends TestCase {
 		assertDeepEquals(analizoCheckstyleTree(), sourceTree.getChildren().iterator().next());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetRootNameAsProjectName() {
 		assertDeepEquals(helloWorldRoot(), getSourceTree(helloWorldApplication(), helloWorldClass()));
 	}

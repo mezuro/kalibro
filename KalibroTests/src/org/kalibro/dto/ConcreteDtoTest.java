@@ -24,7 +24,7 @@ public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 
 	protected abstract ENTITY loadFixture();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHavePublicDefaultConstructor() throws Exception {
 		Constructor<DTO> constructor = dtoClass().getConstructor();
 		Modifier.isPublic(constructor.getModifiers());
@@ -32,7 +32,7 @@ public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 		constructor.newInstance();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveEntityFieldsAsTheyWere() throws Exception {
 		FieldReflector reflector = new FieldReflector(entity);
 		for (Method method : dtoClass().getDeclaredMethods())

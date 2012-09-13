@@ -19,13 +19,13 @@ public class AnnotationMemberFilterTest extends TestCase {
 		filter = new AnnotationMemberFilter(Before.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAcceptAnnotatedMember() {
 		when(member.isAnnotationPresent(Before.class)).thenReturn(true);
 		assertTrue(filter.accept(member));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptMemberWithoutAnnotation() {
 		when(member.isAnnotationPresent(Before.class)).thenReturn(false);
 		assertFalse(filter.accept(member));

@@ -43,12 +43,12 @@ public class CVSAnalyDatabaseFetcherTest extends TestCase {
 		fetcher = new CVSAnalyDatabaseFetcher(DATABASE_PATH);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testPersistenceProperties() {
 		assertDeepEquals(expectedPersistenceProperites, fetcher.getPersistenceProperties());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetResultsFromEntityManager() {
 		EntityManagerFactory managerFactory = PowerMockito.mock(EntityManagerFactory.class);
 		EntityManager mockManager = Mockito.mock(EntityManager.class);

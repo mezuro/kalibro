@@ -39,7 +39,7 @@ public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 		return (DTO) stubClass.getDeclaredConstructor(entityClass).newInstance(entity);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConvert() {
 		assertDeepEquals(entity, dto.convert());
 		for (LazyLoadExpectation e : lazyLoadExpectations()) {

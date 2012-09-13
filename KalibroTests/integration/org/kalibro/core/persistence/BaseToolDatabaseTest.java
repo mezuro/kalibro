@@ -19,18 +19,18 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 		dao = daoFactory.createBaseToolDao();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListSavedBaseToolNames() {
 		assertDeepList(dao.getBaseToolNames(), "Analizo", "Checkstyle", "CVSAnaly");
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveSavedBaseTool() {
 		assertEquals(AnalizoMetricCollector.class, dao.getBaseTool("Analizo").getCollectorClass());
 		assertEquals(CheckstyleMetricCollector.class, dao.getBaseTool("Checkstyle").getCollectorClass());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldNotRetrieveInexistentBaseTool() {
 		checkKalibroException(new Task() {
 

@@ -27,18 +27,18 @@ public class HashCodeCalculatorTest extends UtilityClassTest {
 		return HashCodeCalculator.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void hashCodesShouldBeDistributed() {
 		assertDifferent(hash(carlos), hash(cristina), hash(isis), hash(paulo));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void hashCodesShouldBeEqualForEqualObjects() {
 		assertEquals(hash(carlos), hash(programmerCarlos));
 		assertEquals(hash(paulo), hash(programmerPaulo));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void hashCodesShouldBeEqualForNullIdentities() {
 		Person fulano = new Person(null, "Fulano", "M");
 		Person cicrana = new Person(null, "Cicrana", "F");

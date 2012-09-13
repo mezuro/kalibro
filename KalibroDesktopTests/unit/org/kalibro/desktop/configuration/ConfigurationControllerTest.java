@@ -46,54 +46,54 @@ public class ConfigurationControllerTest extends TestCase {
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDesktopPane() {
 		assertSame(desktopPane, Whitebox.getInternalState(controller, JDesktopPane.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkEntityName() {
 		assertEquals("Configuration", Whitebox.getInternalState(controller, String.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateConfiguration() {
 		configuration = controller.createEntity(NAME);
 		assertEquals(NAME, configuration.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetConfigurationNamesFromDao() {
 		when(configurationDao.getConfigurationNames()).thenReturn(NAMES);
 		assertSame(NAMES, controller.getEntityNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetConfigurationFromDao() {
 		when(configurationDao.getConfiguration(NAME)).thenReturn(configuration);
 		assertSame(configuration, controller.getEntity(NAME));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateFrame() throws Exception {
 		ConfigurationFrame configurationFrame = mock(ConfigurationFrame.class);
 		whenNew(ConfigurationFrame.class).withArguments(configuration).thenReturn(configurationFrame);
 		assertSame(configurationFrame, controller.createFrameFor(configuration));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveConfiguration() {
 		controller.removeEntity(NAME);
 		Mockito.verify(configurationDao).removeConfiguration(NAME);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSaveConfiguration() {
 		controller.save(configuration);
 		Mockito.verify(configurationDao).save(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetConfigurationName() {
 		controller.setEntityName(configuration, NAME);
 		Mockito.verify(configuration).setName(NAME);

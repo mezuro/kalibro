@@ -31,7 +31,7 @@ public class ResultsAggregatorTest extends TestCase {
 		packageMetric = new NativeMetric("Package_name_length", PACKAGE, JAVA);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnOrg() {
 		Module org = analizoCheckstyleTree().getModule();
 		assertFalse(resultMap.containsKey(org));
@@ -42,7 +42,7 @@ public class ResultsAggregatorTest extends TestCase {
 		checkResult(orgResult, classMetric, Double.NaN, 22.0, 19.0, 25.0, 22.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnAnalizo() {
 		ModuleResult analizo = resultMap.get(analizoNode().getModule());
 		checkResult(analizo, packageMetric, 7.0);
@@ -53,7 +53,7 @@ public class ResultsAggregatorTest extends TestCase {
 		checkResult(analizo, classMetric, Double.NaN, 22.0, 19.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnCheckstyle() {
 		Module checkstyle = checkstyleNode().getModule();
 		assertFalse(resultMap.containsKey(checkstyle));
@@ -64,7 +64,7 @@ public class ResultsAggregatorTest extends TestCase {
 		checkResult(checkstyleResult, classMetric, Double.NaN, 25.0, 22.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnLeaf() {
 		ModuleResult checkstyleOutputParser = resultMap.get(checkstyleOutputParserNode().getModule());
 		assertFalse(checkstyleOutputParser.hasResultFor(packageMetric));

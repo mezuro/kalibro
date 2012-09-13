@@ -22,12 +22,12 @@ public class DoubleRendererTest extends TestCase {
 		renderer = new DoubleRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderDouble() {
 		assertTrue(renderer.canRender(42.0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotRenderAnythingButDouble() {
 		assertFalse(renderer.canRender(true));
 		assertFalse(renderer.canRender(Color.MAGENTA));
@@ -35,27 +35,27 @@ public class DoubleRendererTest extends TestCase {
 		assertFalse(renderer.canRender("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void renderedLabelShouldBeOpaque() {
 		assertTrue(render().isOpaque());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void renderedLabelShouldHaveWhiteBackground() {
 		assertEquals(Color.WHITE, render().getBackground());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void renderedLabelShouldHavePlainFont() {
 		assertEquals(Font.PLAIN, render().getFont().getStyle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void renderedLabelShouldHaveLeftAlignment() {
 		assertEquals(SwingConstants.RIGHT, render().getHorizontalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetValue() {
 		Double value = 42.0;
 		assertEquals(new DoubleField("").getDecimalFormat().format(value), render(value).getText());

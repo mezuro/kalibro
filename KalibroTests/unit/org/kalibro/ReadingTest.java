@@ -29,12 +29,12 @@ public class ReadingTest extends TestCase {
 		reading = loadFixture("reading-excellent", Reading.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByGrade() {
 		assertSorted(reading(Double.NEGATIVE_INFINITY), reading(0.0), reading(42.0), reading(Double.POSITIVE_INFINITY));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultReading() {
 		reading = new Reading();
 		assertFalse(reading.hasId());
@@ -43,13 +43,13 @@ public class ReadingTest extends TestCase {
 		assertEquals(Color.WHITE, reading.getColor());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void readingsWithSameLabelShouldConflict() {
 		String label = reading.getLabel();
 		shouldConflictWith(reading(label), "Reading with label \"" + label + "\" already exists in the group.");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void readingsWithSameGradeShouldConflict() {
 		Double grade = reading.getGrade();
 		shouldConflictWith(reading(grade), "Reading with grade " + grade + " already exists in the group.");
@@ -73,24 +73,24 @@ public class ReadingTest extends TestCase {
 		}, message);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void readingsWithSameColorShouldNotConflict() {
 		reading.assertNoConflictWith(new Reading("", 42.0, reading.getColor()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetGroupId() {
 		// required for proper saving
 		setReadingGroup(42L);
 		assertEquals(42L, reading.getGroupId().longValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveIfNotGrouped() {
 		checkKalibroExceptionOnSave("Reading is not in any group.");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotSaveIfGroupHasNoId() {
 		setReadingGroup(null);
 		checkKalibroExceptionOnSave("Group is not saved. Save group instead");
@@ -106,7 +106,7 @@ public class ReadingTest extends TestCase {
 		}, message);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUpdateIdOnSave() {
 		setReadingGroup(28L);
 		when(dao.save(reading)).thenReturn(42L);
@@ -116,7 +116,7 @@ public class ReadingTest extends TestCase {
 		assertEquals(42L, reading.getId().longValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDeleteIfHasId() {
 		assertFalse(reading.hasId());
 		reading.delete();
@@ -130,7 +130,7 @@ public class ReadingTest extends TestCase {
 		assertFalse(reading.hasId());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveFromGroupOnDelete() {
 		ReadingGroup group = setReadingGroup(42L);
 		reading.delete();

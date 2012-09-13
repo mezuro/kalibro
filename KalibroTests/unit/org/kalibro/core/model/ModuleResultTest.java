@@ -34,7 +34,7 @@ public class ModuleResultTest extends TestCase {
 		sc = sc();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testInitialization() {
 		Module module = result.getModule();
 		Date date = new Date();
@@ -46,7 +46,7 @@ public class ModuleResultTest extends TestCase {
 		assertNull(result.getGrade());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfigure() throws Exception {
 		Configuration configuration = kalibroConfiguration();
 		ModuleResultConfigurer configurer = mock(ModuleResultConfigurer.class);
@@ -56,20 +56,20 @@ public class ModuleResultTest extends TestCase {
 		Mockito.verify(configurer).configure();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddMultipleNativeMetricResults() {
 		result.addMetricResults(Arrays.asList(analizoResult("sc")));
 		assertTrue(result.hasResultFor(analizoMetric("sc")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveCompoundMetrics() {
 		result.addMetricResult(new MetricResult(sc, 42.0));
 		result.removeCompoundMetrics();
 		assertFalse(result.hasResultFor(sc));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddCompoundMetricWithError() {
 		assertTrue(result.getCompoundMetricsWithError().isEmpty());
 
@@ -79,7 +79,7 @@ public class ModuleResultTest extends TestCase {
 		assertSame(error, result.getErrorFor(sc));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByDateThenModule() {
 		assertSorted(newResult(0, CLASS, "C"), newResult(0, CLASS, "D"),
 			newResult(0, METHOD, "A"), newResult(0, METHOD, "B"),

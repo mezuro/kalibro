@@ -34,7 +34,7 @@ public class AnalizoMetricCollectorTest extends TestCase {
 		analizo = new AnalizoMetricCollector();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkBaseTool() {
 		BaseTool baseTool = analizo.getBaseTool();
 		assertEquals("Analizo", baseTool.getName());
@@ -42,7 +42,7 @@ public class AnalizoMetricCollectorTest extends TestCase {
 		assertTrue(baseTool.getSupportedMetrics().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = new File("/");
 		Set<NativeMetric> metrics = mock(Set.class);

@@ -70,12 +70,12 @@ public class CollectMetricsTaskTest extends TestCase {
 		when(baseToolDao.getBaseTool(baseTool.getName())).thenReturn(baseTool);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTaskState() {
 		assertEquals(ProjectState.COLLECTING, collectTask.getTaskState());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnCollectedResults() throws Exception {
 		assertDeepEquals(newHelloWorldResultMap(projectResult.getDate()), collectTask.performAndGetResult());
 	}

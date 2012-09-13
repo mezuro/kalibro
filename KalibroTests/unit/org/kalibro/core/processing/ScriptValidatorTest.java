@@ -22,7 +22,7 @@ public class ScriptValidatorTest extends TestCase {
 		validator = new ScriptValidator();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateNativeCode() {
 		configuration = metricConfiguration("loc");
 		assertValid();
@@ -31,7 +31,7 @@ public class ScriptValidatorTest extends TestCase {
 		assertInvalid(KalibroException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateCompoundCode() {
 		CompoundMetric metric = new CompoundMetric();
 		metric.setName("compound");
@@ -42,7 +42,7 @@ public class ScriptValidatorTest extends TestCase {
 		assertInvalid(KalibroException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateCompoundScript() {
 		configuration = new MetricConfiguration(sc());
 		assertInvalid(EcmaError.class);

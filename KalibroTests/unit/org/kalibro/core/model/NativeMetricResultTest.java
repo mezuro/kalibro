@@ -8,7 +8,7 @@ import org.kalibro.TestCase;
 
 public class NativeMetricResultTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		NativeMetric metric = analizoMetric("dit");
 		Double value = Math.random();

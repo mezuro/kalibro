@@ -32,7 +32,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 			each.delete();
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void testCrud() {
 		assertNotSaved();
 
@@ -57,7 +57,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		assertDeepList(ReadingGroup.all(), group);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void nameShouldBeRequiredAndUnique() {
 		group.setName(" ");
 		checkKalibroException(saveTask(), "Reading group requires name.");
@@ -79,7 +79,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		};
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void readingsInSameGroupShouldNotHaveDuplicateLabelsOrGrade() {
 		Reading reading, existent = group.getReadings().get(0);
 		String label = existent.getLabel();
@@ -108,7 +108,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		}, message);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldImportAndExportAsYaml() throws Exception {
 		group.exportTo(file);
 		String expectedYaml = loadResource("readingGroup-scholar.yml");

@@ -28,7 +28,7 @@ public class RangePanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		doubleField("beginning").set(range.getBeginning());
 		doubleField("end").set(range.getEnd());
@@ -39,7 +39,7 @@ public class RangePanelTest extends TestCase {
 		assertDeepEquals(range, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(range);
 		assertDoubleEquals(range.getBeginning(), doubleField("beginning").get());

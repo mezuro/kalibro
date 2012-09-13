@@ -27,7 +27,7 @@ public class IconTest extends TestCase {
 		PowerMockito.when(oldIcon.getIconHeight()).thenReturn(HEIGHT);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptInvalidResource() {
 		checkException(new Task() {
 
@@ -38,14 +38,14 @@ public class IconTest extends TestCase {
 		}, NullPointerException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldScaleForSize() {
 		icon = icon.scaleForSize(WIDTH, HEIGHT);
 		assertEquals(WIDTH, icon.getIconWidth());
 		assertEquals(HEIGHT, icon.getIconHeight());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReplaceInternalFrameIconScalingForSameSize() {
 		JInternalFrame frame = PowerMockito.mock(JInternalFrame.class);
 		PowerMockito.when(frame.getFrameIcon()).thenReturn(oldIcon);

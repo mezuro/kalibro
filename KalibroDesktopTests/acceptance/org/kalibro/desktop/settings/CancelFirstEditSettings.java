@@ -23,7 +23,7 @@ import org.kalibro.desktop.KalibroDesktopTestCase;
  */
 public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void cancelFirstEditSettings() throws Exception {
 		startFromMain();
 

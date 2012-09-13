@@ -10,7 +10,7 @@ import org.kalibro.TestCase;
 
 public class DataTransferObjectTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConvertListOfDtos() {
 		Collection<DataTransferObject<Integer>> dtos = Arrays.asList(dto("6"), dto("28"), dto("42"));
 		assertEquals(Arrays.asList(6, 28, 42), DataTransferObject.convert(dtos));

@@ -37,7 +37,7 @@ public class MetricResultXmlTest extends DtoTestCase<MetricResult, MetricResultX
 		return new MetricResultXml(metricResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullDescendentResultsToEmpty() {
 		MetricResult metricResult = new MetricResult(new CompoundMetric(), 42.0);
 		MetricResultXml dto = createDto(metricResult);
