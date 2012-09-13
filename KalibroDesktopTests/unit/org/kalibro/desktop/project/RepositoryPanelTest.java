@@ -11,9 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProjectDao;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.PasswordField;
@@ -24,7 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class RepositoryPanelTest extends TestCase {
 
 	private Repository repository;
@@ -37,15 +38,17 @@ public class RepositoryPanelTest extends TestCase {
 		repository = newHelloWorldRepository(SUBVERSION);
 		repository.setUsername("RepositoryPanelTest username");
 		repository.setPassword("RepositoryPanelTest password");
-		mockKalibro();
+		mockDaoFactory();
 		panel = new RepositoryPanel();
 		finder = new ComponentFinder(panel);
 	}
 
-	private void mockKalibro() {
+	private void mockDaoFactory() {
+		ProjectDao dao = mock(ProjectDao.class);
 		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
-		mockStatic(Kalibro.class);
-		when(Kalibro.getSupportedRepositoryTypes()).thenReturn(types);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(dao);
+		when(dao.getSupportedRepositoryTypes()).thenReturn(types);
 	}
 
 	@Test(timeout = UNIT_TIMEOUT)

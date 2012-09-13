@@ -1,11 +1,9 @@
 package org.kalibro.dao;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.kalibro.core.model.Project;
+import org.kalibro.core.model.enums.RepositoryType;
 
 public class ProjectDaoFake implements ProjectDao {
 
@@ -34,5 +32,30 @@ public class ProjectDaoFake implements ProjectDao {
 	@Override
 	public void removeProject(String projectName) {
 		projects.remove(projectName);
+	}
+
+	@Override
+	public Set<RepositoryType> getSupportedRepositoryTypes() {
+		return null;
+	}
+
+	@Override
+	public void processProject(String projectName) {
+		return;
+	}
+
+	@Override
+	public void processPeriodically(String projectName, Integer periodInDays) {
+		return;
+	}
+
+	@Override
+	public Integer getProcessPeriod(String projectName) {
+		return null;
+	}
+
+	@Override
+	public void cancelPeriodicProcess(String projectName) {
+		return;
 	}
 }

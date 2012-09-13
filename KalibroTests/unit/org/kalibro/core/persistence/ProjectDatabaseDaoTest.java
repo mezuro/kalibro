@@ -7,6 +7,7 @@ import static org.mockito.Matchers.*;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Set;
 
 import javax.persistence.TypedQuery;
 
@@ -15,10 +16,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
+import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.record.ProjectRecord;
+import org.kalibro.core.processing.ProcessProjectTask;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -26,7 +29,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({FileUtils.class, Kalibro.class, ProjectDatabaseDao.class})
+@PrepareForTest({FileUtils.class, ProjectDatabaseDao.class, RepositoryType.class})
 public class ProjectDatabaseDaoTest extends TestCase {
 
 	private Project project;
@@ -130,5 +133,67 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		doReturn(directory).when(project).getDirectory();
 		mockStatic(FileUtils.class);
 		return directory;
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveSupportedRepositoryTypes() {
+		Set<RepositoryType> supportedTypes = mock(Set.class);
+		mockStatic(RepositoryType.class);
+		when(RepositoryType.supportedTypes()).thenReturn(supportedTypes);
+		assertSame(supportedTypes, dao.getSupportedRepositoryTypes());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldProcessProject() throws Exception {
+		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
+		dao.processProject(PROJECT_NAME);
+		Mockito.verify(task).executeInBackground();
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldProcessPeriodically() throws Exception {
+		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
+		dao.processPeriodically(PROJECT_NAME, 42);
+		Mockito.verify(task).executePeriodically(42 * Task.DAY);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCancelPreviousPeriodicExecutionIfExistent() throws Exception {
+		ProcessProjectTask existent = mockProcessProjectTask(PROJECT_NAME);
+		dao.processPeriodically(PROJECT_NAME, 42);
+
+		ProcessProjectTask newTask = mockProcessProjectTask(PROJECT_NAME);
+		dao.processPeriodically(PROJECT_NAME, 84);
+
+		Mockito.verify(existent).cancelPeriodicExecution();
+		Mockito.verify(newTask).executePeriodically(84 * Task.DAY);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldRetrieveProcessPeriod() throws Exception {
+		mockProcessProjectTask(PROJECT_NAME);
+		dao.processPeriodically(PROJECT_NAME, 42);
+		assertEquals(42, dao.getProcessPeriod(PROJECT_NAME).intValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void processPeriodShouldBeZeroIfNotScheduled() throws Exception {
+		mockProcessProjectTask(PROJECT_NAME);
+		assertEquals(0, dao.getProcessPeriod(PROJECT_NAME).intValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void shouldCancelPeriodicProcess() throws Exception {
+		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
+		dao.processPeriodically(PROJECT_NAME, 42);
+		dao.cancelPeriodicProcess(PROJECT_NAME);
+		Mockito.verify(task).cancelPeriodicExecution();
+		assertEquals(0, dao.getProcessPeriod(PROJECT_NAME).intValue());
+	}
+
+	private ProcessProjectTask mockProcessProjectTask(String projectName) throws Exception {
+		ProcessProjectTask task = mock(ProcessProjectTask.class);
+		whenNew(ProcessProjectTask.class).withArguments(projectName).thenReturn(task);
+		return task;
 	}
 }

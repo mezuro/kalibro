@@ -2,13 +2,16 @@ package org.kalibro.client;
 
 import static org.junit.Assert.*;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
+import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.ProjectXml;
 import org.kalibro.service.entities.RawProjectXml;
@@ -19,6 +22,8 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ProjectClientDao.class, EndpointClient.class})
 public class ProjectPortDaoTest extends TestCase {
+
+	private static final String PROJECT_NAME = "ProjectPortDaoTest project";
 
 	private Project project;
 	private ProjectXml projectXml;
@@ -81,5 +86,36 @@ public class ProjectPortDaoTest extends TestCase {
 	public void testRemoveProject() {
 		dao.removeProject("");
 		verify(port).removeProject("");
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testSupportedRepositoryTypes() {
+		Set<RepositoryType> repositoryTypes = new HashSet<RepositoryType>();
+		when(port.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
+		assertSame(repositoryTypes, dao.getSupportedRepositoryTypes());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessProject() {
+		dao.processProject(PROJECT_NAME);
+		verify(port).processProject(PROJECT_NAME);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessPeriodically() {
+		dao.processPeriodically(PROJECT_NAME, 42);
+		verify(port).processPeriodically(PROJECT_NAME, 42);
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testProcessPeriod() {
+		when(port.getProcessPeriod(PROJECT_NAME)).thenReturn(42);
+		assertEquals(42, dao.getProcessPeriod(PROJECT_NAME).intValue());
+	}
+
+	@Test(timeout = UNIT_TIMEOUT)
+	public void testCancelPeriodicProcess() {
+		dao.cancelPeriodicProcess(PROJECT_NAME);
+		verify(port).cancelPeriodicProcess(PROJECT_NAME);
 	}
 }

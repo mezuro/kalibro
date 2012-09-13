@@ -8,7 +8,6 @@
 
 	<endpoint name="BaseToolEndpoint"            url-pattern="/BaseToolEndpoint/"            implementation="org.kalibro.service.BaseToolEndpointImpl"/>
 	<endpoint name="ConfigurationEndpoint"       url-pattern="/ConfigurationEndpoint/"       implementation="org.kalibro.service.ConfigurationEndpointImpl"/>
-	<endpoint name="KalibroEndpoint"             url-pattern="/KalibroEndpoint/"             implementation="org.kalibro.service.KalibroEndpointImpl"/>
 	<endpoint name="MetricConfigurationEndpoint" url-pattern="/MetricConfigurationEndpoint/" implementation="org.kalibro.service.MetricConfigurationEndpointImpl"/>
 	<endpoint name="ModuleResultEndpoint"        url-pattern="/ModuleResultEndpoint/"        implementation="org.kalibro.service.ModuleResultEndpointImpl"/>
 	<endpoint name="ProjectEndpoint"             url-pattern="/ProjectEndpoint/"             implementation="org.kalibro.service.ProjectEndpointImpl"/>

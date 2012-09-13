@@ -1,23 +1,35 @@
 package org.kalibro.core.persistence;
 
+import static org.kalibro.core.concurrent.Task.DAY;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
+import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.record.ProjectRecord;
+import org.kalibro.core.processing.ProcessProjectTask;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.ProjectDao;
 
 class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
+
+	private Map<String, ProcessProjectTask> processTasks;
+	private Map<String, Integer> processPeriods;
 
 	private ConfigurationDao configurationDao;
 
 	protected ProjectDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ProjectRecord.class);
 		configurationDao = new ConfigurationDatabaseDao(recordManager);
+		processTasks = new HashMap<String, ProcessProjectTask>();
+		processPeriods = new HashMap<String, Integer>();
 	}
 
 	@Override
@@ -65,5 +77,38 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 		TypedQuery<ProjectRecord> query = createRecordQuery(queryText);
 		query.setParameter("projectName", projectName);
 		query.executeUpdate();
+	}
+
+	@Override
+	public Set<RepositoryType> getSupportedRepositoryTypes() {
+		return RepositoryType.supportedTypes();
+	}
+
+	@Override
+	public void processProject(String projectName) {
+		new ProcessProjectTask(projectName).executeInBackground();
+	}
+
+	@Override
+	public void processPeriodically(String projectName, Integer periodInDays) {
+		cancelPeriodicProcess(projectName);
+		ProcessProjectTask task = new ProcessProjectTask(projectName);
+		processTasks.put(projectName, task);
+		processPeriods.put(projectName, periodInDays);
+		task.executePeriodically(periodInDays * DAY);
+	}
+
+	@Override
+	public Integer getProcessPeriod(String projectName) {
+		return processPeriods.containsKey(projectName) ? processPeriods.get(projectName) : 0;
+	}
+
+	@Override
+	public void cancelPeriodicProcess(String projectName) {
+		if (processTasks.containsKey(projectName)) {
+			processTasks.get(projectName).cancelPeriodicExecution();
+			processTasks.remove(projectName);
+			processPeriods.remove(projectName);
+		}
 	}
 }
