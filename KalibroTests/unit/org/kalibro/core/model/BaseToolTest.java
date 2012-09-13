@@ -55,7 +55,7 @@ public class BaseToolTest extends TestCase {
 	@Test
 	public void checkErrorCreatingCollector() {
 		analizo.setCollectorClass(null);
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

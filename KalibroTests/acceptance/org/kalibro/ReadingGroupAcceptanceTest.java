@@ -60,20 +60,20 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void nameShouldBeRequiredAndUnique() {
 		group.setName(" ");
-		checkKalibroException(saveTask(), "Reading group requires name.");
+		assertThrowsException(saveTask(), "Reading group requires name.");
 
 		group.setName("Scholar");
 		group.save();
 
 		group = new ReadingGroup("Scholar");
-		checkException(saveTask(), RollbackException.class);
+		assertThrows(saveTask(), RollbackException.class);
 	}
 
 	private Task saveTask() {
 		return new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				group.save();
 			}
 		};
@@ -99,10 +99,10 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void checkExceptionOnAddReading(final Reading reading, String message) {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				group.addReading(reading);
 			}
 		}, message);

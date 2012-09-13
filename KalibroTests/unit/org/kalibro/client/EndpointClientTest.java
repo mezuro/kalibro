@@ -33,7 +33,7 @@ public class EndpointClientTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionOnMalformedUrl() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

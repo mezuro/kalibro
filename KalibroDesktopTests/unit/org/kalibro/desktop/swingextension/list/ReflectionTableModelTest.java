@@ -26,7 +26,7 @@ public class ReflectionTableModelTest extends TestCase {
 
 	@Test
 	public void shouldAcceptOnlyReflectionColumns() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {

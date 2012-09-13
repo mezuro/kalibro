@@ -78,7 +78,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveUnsavedProject() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

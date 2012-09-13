@@ -96,7 +96,7 @@ public class ProjectTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -107,7 +107,7 @@ public class ProjectTest extends TestCase {
 
 	@Test
 	public void shouldNotAllowErrorStateWithoutException() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -124,7 +124,7 @@ public class ProjectTest extends TestCase {
 	}
 
 	private void assertNoError() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

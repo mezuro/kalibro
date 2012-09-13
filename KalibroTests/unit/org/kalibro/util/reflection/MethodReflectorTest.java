@@ -46,22 +46,22 @@ public class MethodReflectorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenInvokingNonstaticMethod() {
-		checkKalibroError(invokeTask("setUp"), expectedMessage("invoking", "setUp"), NullPointerException.class);
+		assertThrowsError(invokeTask("setUp"), expectedMessage("invoking", "setUp"), NullPointerException.class);
 	}
 
 	@Test
 	public void shouldThrowErrorWhenFindingInexistentMethod() {
-		checkKalibroError(invokeTask("inexistent"), expectedMessage("finding", "inexistent"));
+		assertThrowsError(invokeTask("inexistent"), expectedMessage("finding", "inexistent"));
 	}
 
 	@Test
 	public void shouldThrowErrorWhenFindingMethodWithDifferentNumberOfArguments() {
-		checkKalibroError(invokeTask("max", 42.0), expectedMessage("finding", "max"));
+		assertThrowsError(invokeTask("max", 42.0), expectedMessage("finding", "max"));
 	}
 
 	@Test
 	public void shouldThrowErrorWhenFindingMethodWithIncompatibleArguments() {
-		checkKalibroError(invokeTask("throwThis", 42.0), expectedMessage("finding", "throwThis"));
+		assertThrowsError(invokeTask("throwThis", 42.0), expectedMessage("finding", "throwThis"));
 	}
 
 	@Test
@@ -77,7 +77,7 @@ public class MethodReflectorTest extends TestCase {
 
 	@Test
 	public void shouldThrowKalibroExceptionWrappingCheckedExceptionThrownByInvokedMethod() {
-		checkKalibroException(invokeTask("throwThis", new FileNotFoundException()),
+		assertThrowsException(invokeTask("throwThis", new FileNotFoundException()),
 			expectedMessage("invoking", "throwThis"), FileNotFoundException.class);
 	}
 

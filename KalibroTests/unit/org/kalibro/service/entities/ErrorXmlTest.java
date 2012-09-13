@@ -29,10 +29,10 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
 	@Test
 	public void shouldThrowErrorForNotConvertibleError() {
-		checkKalibroError(new Task() {
+		assertThrowsError(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				new ErrorXml(new Throwable() {
 					// Anonymous class
 				}).convert();

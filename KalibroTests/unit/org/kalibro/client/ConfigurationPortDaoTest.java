@@ -77,7 +77,7 @@ public class ConfigurationPortDaoTest extends TestCase {
 
 	@Test
 	public void testGetConfigurationFor() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

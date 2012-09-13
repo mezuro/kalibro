@@ -87,7 +87,7 @@ public class MetricResultTest extends TestCase {
 
 	@Test
 	public void checkErrorForInexistentRange() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

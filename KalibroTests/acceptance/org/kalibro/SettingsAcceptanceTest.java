@@ -82,10 +82,10 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void shouldLoadWithError(Class<? extends Throwable> causeClass) {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				KalibroSettings.load();
 			}
 		}, "Could not import kalibro settings from file: " + settingsFile, causeClass);
@@ -95,10 +95,10 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	public void shouldThrowExceptionWhenSavingOnNotWritableFile() {
 		settings.save();
 		settingsFile.setWritable(false);
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				settings.save();
 			}
 		}, "Could not export kalibro settings to file: " + settingsFile, IOException.class);

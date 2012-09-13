@@ -47,7 +47,7 @@ public class ModuleNodeTest extends TestCase {
 
 	@Test
 	public void checkNoChildError() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

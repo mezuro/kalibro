@@ -64,10 +64,10 @@ public class ReadingTest extends TestCase {
 	}
 
 	private void shouldConflictWith(final Reading other, String message) {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				reading.assertNoConflictWith(other);
 			}
 		}, message);
@@ -97,10 +97,10 @@ public class ReadingTest extends TestCase {
 	}
 
 	private void checkKalibroExceptionOnSave(String message) {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				reading.save();
 			}
 		}, message);

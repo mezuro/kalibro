@@ -1,6 +1,6 @@
 package org.kalibro.desktop.settings;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 
 import java.util.regex.Pattern;
 
@@ -71,10 +71,10 @@ public class CancelFirstEditSettings extends KalibroDesktopTestCase {
 	}
 
 	private void verifyFrameNotOpen() {
-		checkException(new Task() {
+		assertThrows(new Task() {
 
 			@Override
-			public void perform() throws Exception {
+			public void perform() {
 				fixture = new FrameFixture(fixture.robot, "kalibroFrame");
 			}
 		}, ComponentLookupException.class);

@@ -61,7 +61,7 @@ public class ScriptValidatorTest extends TestCase {
 	}
 
 	private void assertInvalid(Class<? extends Exception> expectedExceptionClass) {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {

@@ -123,10 +123,10 @@ public class ReadingGroupTest extends TestCase {
 	@Test
 	public void shouldRequiredNameToSave() {
 		group.setName(" ");
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				group.save();
 			}
 		}, "Reading group requires name.");

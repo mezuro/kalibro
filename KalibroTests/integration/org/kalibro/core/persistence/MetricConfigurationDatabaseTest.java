@@ -58,7 +58,7 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
 
 		dao.removeMetricConfiguration(configurationName, metricName);
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

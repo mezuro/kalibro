@@ -52,7 +52,7 @@ public class ProjectResultPortDaoTest extends TestCase {
 
 	@Test
 	public void shouldNotSaveResultRemotely() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

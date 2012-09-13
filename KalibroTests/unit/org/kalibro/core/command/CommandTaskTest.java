@@ -21,7 +21,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class CommandTaskTest extends TestCase {
 
 	private static final String COMMAND = "CommandTaskTest command";
-	private static final String ERROR_MESSAGE = "Error while executing command: " + COMMAND;
 
 	private Runtime runtime;
 	private Process process;
@@ -71,13 +70,13 @@ public class CommandTaskTest extends TestCase {
 	@Test
 	public void checkExceptionOnSimpleExecution() throws IOException {
 		PowerMockito.when(runtime.exec(COMMAND, null, null)).thenThrow(new IOException());
-		checkKalibroException(commandTask, ERROR_MESSAGE, IOException.class);
+		assertThrows(commandTask, IOException.class);
 	}
 
 	@Test
 	public void shouldThrowExceptionOnBadExitValue() {
 		PowerMockito.when(process.exitValue()).thenReturn(1);
-		checkKalibroException(commandTask, "Command returned with error status: " + COMMAND);
+		assertThrowsException(commandTask, "Command returned with error status: " + COMMAND);
 	}
 
 	@Test
@@ -89,7 +88,7 @@ public class CommandTaskTest extends TestCase {
 	@Test
 	public void shouldDestroyProcessOnInterruptedException() throws InterruptedException {
 		PowerMockito.when(process.waitFor()).thenThrow(new InterruptedException());
-		checkKalibroException(commandTask, ERROR_MESSAGE, InterruptedException.class);
+		assertThrows(commandTask, InterruptedException.class);
 		Mockito.verify(process).destroy();
 	}
 

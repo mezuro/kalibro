@@ -32,7 +32,7 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveInexistentBaseTool() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

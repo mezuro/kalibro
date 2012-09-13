@@ -52,10 +52,10 @@ public class ProjectResultTest extends TestCase {
 
 	@Test
 	public void shouldValidateProjectProcessedOnRetrievingProcessData() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				new ProjectResult(helloWorld()).getSourceTree();
 			}
 		}, "Project not yet processed: " + result.getProject().getName());

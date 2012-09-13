@@ -44,7 +44,7 @@ public class AbstractModuleResultTest extends TestCase {
 
 	@Test
 	public void checkErrorForInexistentResultMetric() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

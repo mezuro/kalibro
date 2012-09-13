@@ -67,7 +67,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveUnsavedConfiguration() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

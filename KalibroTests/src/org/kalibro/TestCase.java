@@ -1,7 +1,5 @@
 package org.kalibro;
 
-import static org.junit.Assert.*;
-
 import java.io.File;
 import java.io.IOException;
 
@@ -11,7 +9,6 @@ import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
-import org.kalibro.core.concurrent.Task;
 import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
@@ -55,47 +52,5 @@ public abstract class TestCase extends TestShortcuts {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
 		return yaml.loadAs(getClass().getResourceAsStream(name + ".yml"), type);
-	}
-
-	protected void checkException(Task task, Class<? extends Throwable> exceptionClass) {
-		checkKalibroException(task, "Error while running task: null", exceptionClass);
-	}
-
-	protected void checkKalibroError(Task task, String message) {
-		checkKalibroError(task, message, null);
-	}
-
-	protected void checkKalibroError(Task task, String message, Class<? extends Throwable> causeClass) {
-		try {
-			task.executeAndWait();
-			fail("Did not throw expected error");
-		} catch (KalibroException exception) {
-			assertClassEquals(KalibroError.class, exception.getCause());
-			KalibroError error = (KalibroError) exception.getCause();
-			assertEquals(message, error.getMessage());
-			Throwable cause = error.getCause();
-			if (causeClass == null)
-				assertNull("Unexpected cause: " + cause, cause);
-			else
-				assertClassEquals(causeClass, cause);
-		}
-	}
-
-	protected void checkKalibroException(Task task, String message) {
-		checkKalibroException(task, message, null);
-	}
-
-	protected void checkKalibroException(Task task, String message, Class<? extends Throwable> causeClass) {
-		try {
-			task.executeAndWait();
-			fail("Did not throw expected exception");
-		} catch (KalibroException exception) {
-			assertEquals(message, exception.getMessage());
-			Throwable cause = exception.getCause();
-			if (causeClass == null)
-				assertNull("Unexpected cause: " + cause, cause);
-			else
-				assertClassEquals(causeClass, cause);
-		}
 	}
 }

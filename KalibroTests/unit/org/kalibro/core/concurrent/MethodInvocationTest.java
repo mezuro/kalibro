@@ -43,10 +43,10 @@ public class MethodInvocationTest extends TestCase {
 	public void shouldThrowExceptionWhenRetrievingResult() {
 		createInvocation(null);
 		invocation.invoke();
-		checkException(new Task() {
+		assertThrows(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				invocation.getResult();
 			}
 		}, IllegalArgumentException.class);
@@ -56,10 +56,10 @@ public class MethodInvocationTest extends TestCase {
 	public void shouldThrowCauseOfInvocationTargetException() {
 		createInvocation(-1);
 		invocation.invoke();
-		checkException(new Task() {
+		assertThrows(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				invocation.getResult();
 			}
 		}, StringIndexOutOfBoundsException.class);
@@ -85,7 +85,7 @@ public class MethodInvocationTest extends TestCase {
 			new Task() {
 
 				@Override
-				protected void perform() throws Throwable {
+				public void perform() throws InterruptedException {
 					Thread.sleep(200);
 					invocation.invokeAndNotify();
 				}

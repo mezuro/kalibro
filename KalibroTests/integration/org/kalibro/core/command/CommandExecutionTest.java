@@ -27,7 +27,7 @@ public class CommandExecutionTest extends IntegrationTest {
 	@Test
 	public void shouldThrowExceptionWhenGettingOutputForInvalidCommand() {
 		createCommandTask("invalid command");
-		checkException(new Task() {
+		assertThrows(new Task() {
 
 			@Override
 			public void perform() throws IOException {
@@ -39,19 +39,19 @@ public class CommandExecutionTest extends IntegrationTest {
 	@Test
 	public void shouldThrowExceptionWhenExecutingInvalidCommand() {
 		createCommandTask("invalid command");
-		checkKalibroException(task, "Error while executing command: invalid command", IOException.class);
+		assertThrowsException(task, "Error while executing command: invalid command", IOException.class);
 	}
 
 	@Test
 	public void shouldThrowExceptionOnBadExitValue() {
 		createCommandTask("make etc");
-		checkKalibroException(task, "Command returned with error status: make etc");
+		assertThrowsException(task, "Command returned with error status: make etc");
 	}
 
 	@Test
 	public void shouldThrowExceptionOnCommandTimeout() {
 		createCommandTask("sleep 1000");
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

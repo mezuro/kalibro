@@ -81,7 +81,7 @@ public class InternalFrameTest extends TestCase {
 		Mockito.verify(frame).setSelected(true);
 
 		PowerMockito.doThrow(new PropertyVetoException("", null)).when(frame).setSelected(true);
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

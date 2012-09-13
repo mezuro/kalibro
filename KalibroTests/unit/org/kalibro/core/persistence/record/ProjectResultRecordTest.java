@@ -40,7 +40,7 @@ public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectR
 	public void checkRootNotFoundError() {
 		final ProjectResultRecord record = createDto(helloWorldResult());
 		Whitebox.setInternalState(record, "sourceTree", new ArrayList<ModuleRecord>());
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {

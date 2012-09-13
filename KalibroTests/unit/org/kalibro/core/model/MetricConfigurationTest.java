@@ -44,7 +44,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void configurationsWithSameCodeShouldConflict() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -57,7 +57,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void configurationsForSameMetricShouldConflict() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -90,7 +90,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testNoRangeFound() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -108,7 +108,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testConflictingRange() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -127,7 +127,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentRange() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
@@ -138,7 +138,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorForConflictingRangeReplace() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {

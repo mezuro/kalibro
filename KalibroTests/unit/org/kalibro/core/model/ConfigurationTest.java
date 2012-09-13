@@ -78,7 +78,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkNoConfigurationFoundForMetricError() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -89,7 +89,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void verifyErrorAddingConflictingMetricConfiguration() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -107,7 +107,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentMetricConfiguration() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
@@ -118,7 +118,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorForConflictingMetricConfigurationReplace() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {
@@ -136,7 +136,7 @@ public class ConfigurationTest extends TestCase {
 		configuration.removeMetric(lcomName);
 		assertFalse(configuration.containsMetric(cboName));
 		assertFalse(configuration.containsMetric(lcomName));
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -153,7 +153,7 @@ public class ConfigurationTest extends TestCase {
 	@Test
 	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {

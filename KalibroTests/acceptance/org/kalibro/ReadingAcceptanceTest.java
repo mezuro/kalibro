@@ -50,10 +50,10 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void readingIsRequiredToBeInGroup() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				new Reading().save();
 			}
 		}, "Reading is not in any group.");

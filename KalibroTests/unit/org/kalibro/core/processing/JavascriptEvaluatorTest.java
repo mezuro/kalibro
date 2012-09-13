@@ -45,10 +45,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 
 	@Test
 	public void shouldValidateVariableName() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			public void perform() throws Exception {
+			public void perform() {
 				evaluator.addVariable("1bad.name", 13.0);
 			}
 		}, "Invalid identifier: 1bad.name");
@@ -56,10 +56,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 
 	@Test
 	public void shouldValidateFunctionName() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			public void perform() throws Exception {
+			public void perform() {
 				evaluator.addFunction("badFunction'sName", "return 13;");
 			}
 		}, "Invalid identifier: badFunction'sName");
@@ -71,10 +71,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertDoubleEquals(42.0, evaluator.evaluate("variable"));
 
 		evaluator.remove("variable");
-		checkException(new Task() {
+		assertThrows(new Task() {
 
 			@Override
-			public void perform() throws Exception {
+			public void perform() {
 				evaluator.evaluate("variable");
 			}
 		}, ClassCastException.class);
@@ -106,10 +106,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 	}
 
 	private void assertInvalid(final String body, Class<? extends Exception> exceptionClass) {
-		checkException(new Task() {
+		assertThrows(new Task() {
 
 			@Override
-			public void perform() throws Exception {
+			public void perform() {
 				addFunctionAndExecute("f", body);
 			}
 		}, exceptionClass);

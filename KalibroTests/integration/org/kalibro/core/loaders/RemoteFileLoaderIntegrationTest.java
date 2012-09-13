@@ -10,10 +10,10 @@ public abstract class RemoteFileLoaderIntegrationTest extends LoaderIntegrationT
 	@Test
 	public void testLoad() {
 		ProjectLoader loader = Whitebox.getInternalState(getRepositoryType(), ProjectLoader.class);
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() {
+			public void perform() {
 				load();
 			}
 		}, "Command returned with error status: " + loader.getLoadCommands(repository, false).get(0));

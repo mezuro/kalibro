@@ -109,7 +109,7 @@ public class RangeTest extends TestCase {
 	}
 
 	private void assertInvalid(final Double beginning, final Double end) {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {

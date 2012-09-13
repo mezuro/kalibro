@@ -79,7 +79,7 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionForMetricConfigurationNotFound() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() throws Exception {

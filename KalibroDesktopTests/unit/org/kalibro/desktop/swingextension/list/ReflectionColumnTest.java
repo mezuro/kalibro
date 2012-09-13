@@ -53,7 +53,7 @@ public class ReflectionColumnTest extends TestCase {
 
 	@Test
 	public void checkErrorGettingMethodFromInvalidClass() {
-		checkKalibroError(new Task() {
+		assertThrowsError(new Task() {
 
 			@Override
 			public void perform() throws Exception {

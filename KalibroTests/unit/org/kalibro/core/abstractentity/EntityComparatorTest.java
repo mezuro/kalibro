@@ -45,10 +45,10 @@ public class EntityComparatorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNull() {
-		checkKalibroError(new Task() {
+		assertThrowsError(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				comparator.compare(carlos, new Person("", null, ""));
 			}
 		}, ERROR_MESSAGE + "Programmer.name", InvocationTargetException.class);
@@ -56,10 +56,10 @@ public class EntityComparatorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNotComparable() {
-		checkKalibroError(new Task() {
+		assertThrowsError(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				comparator.compare(new WeirdPerson(), new WeirdPerson());
 			}
 		}, ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field", NoSuchMethodException.class);

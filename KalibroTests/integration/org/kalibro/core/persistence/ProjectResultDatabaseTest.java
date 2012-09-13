@@ -74,7 +74,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoFirstResultFound() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -97,7 +97,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoLastResultFound() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -115,7 +115,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoResultFoundBefore() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -133,7 +133,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoResultFoundAfter() {
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {

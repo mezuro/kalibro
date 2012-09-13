@@ -17,7 +17,7 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 
 	@Test
 	public void defaultConstructorOfCompoundMetricWithErrorShouldDoNothing() {
-		checkException(new Task() {
+		assertThrows(new Task() {
 
 			@Override
 			public void perform() {

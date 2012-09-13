@@ -37,7 +37,7 @@ public class AbstractEntityTest extends TestCase {
 	@Test
 	public void shouldThrowExceptionWhenCannotImport() throws Exception {
 		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
@@ -57,10 +57,10 @@ public class AbstractEntityTest extends TestCase {
 	public void shouldThrowExceptionWhenCannotExport() throws Exception {
 		doThrow(new IOException()).when(FileUtils.class);
 		FileUtils.writeStringToFile(file, Printer.print(entity));
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				entity.exportTo(file);
 			}
 		}, "Could not export person to file: " + file, IOException.class);

@@ -35,15 +35,15 @@ public class FieldReflectorTest extends TestCase {
 
 	@Test
 	public void shouldListFields() {
-		assertDeepList(reflector.listFields(), "reflector", "waiting");
+		assertDeepList(reflector.listFields(), "reflector", "testTimeout", "waiting");
 	}
 
 	@Test
 	public void shouldFilterFields() {
 		assertDeepList(reflector.listFields(named("waiting")), "waiting");
-		assertDeepList(reflector.listFields(nameMatches(".*t.*")), "reflector", "waiting");
+		assertDeepList(reflector.listFields(nameMatches(".*t.*i.*")), "testTimeout", "waiting");
 		assertDeepList(reflector.listFields(hasAnnotation(Column.class)), "reflector");
-		assertTrue(reflector.listFields(not(is(PRIVATE))).isEmpty());
+		assertDeepList(reflector.listFields(not(is(PRIVATE))), "testTimeout");
 	}
 
 	@Test
@@ -71,7 +71,7 @@ public class FieldReflectorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenGettingInexistentField() {
-		checkKalibroError(new Task() {
+		assertThrowsError(new Task() {
 
 			@Override
 			public void perform() {
@@ -82,7 +82,7 @@ public class FieldReflectorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSettingInexistentField() {
-		checkKalibroError(new Task() {
+		assertThrowsError(new Task() {
 
 			@Override
 			public void perform() {

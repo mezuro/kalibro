@@ -19,7 +19,7 @@ public abstract class TypedTask<T> extends Task {
 	}
 
 	@Override
-	protected void perform() throws Throwable {
+	public void perform() throws Throwable {
 		setResult(performAndGetResult());
 	}
 

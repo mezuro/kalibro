@@ -84,7 +84,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 	@Test
 	public void checkErrorOnLog() throws Exception {
 		whenNew(FileOutputStream.class).withArguments(logFile).thenThrow(new IOException());
-		checkKalibroException(new Task() {
+		assertThrowsException(new Task() {
 
 			@Override
 			public void perform() {
