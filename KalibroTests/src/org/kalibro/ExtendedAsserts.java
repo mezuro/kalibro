@@ -8,11 +8,9 @@ import java.util.regex.Pattern;
 import org.kalibro.core.abstractentity.Equality;
 import org.kalibro.core.abstractentity.Printer;
 import org.kalibro.core.concurrent.Task;
-import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 import org.powermock.api.mockito.PowerMockito;
 
-abstract class TestShortcuts extends PowerMockito {
+abstract class ExtendedAsserts extends PowerMockito {
 
 	protected void assertClassEquals(Class<?> expectedClass, Object object) {
 		assertEquals(expectedClass, object.getClass());
@@ -113,25 +111,5 @@ abstract class TestShortcuts extends PowerMockito {
 			else
 				assertClassEquals(causeClass, cause);
 		}
-	}
-
-	protected <T> T verify(T mock) {
-		return Mockito.verify(mock);
-	}
-
-	protected <T> T verify(T mock, VerificationMode mode) {
-		return Mockito.verify(mock, mode);
-	}
-
-	protected VerificationMode never() {
-		return Mockito.never();
-	}
-
-	protected VerificationMode once() {
-		return Mockito.times(1);
-	}
-
-	protected VerificationMode times(int times) {
-		return Mockito.times(times);
 	}
 }

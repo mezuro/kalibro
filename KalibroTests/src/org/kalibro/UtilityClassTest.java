@@ -12,8 +12,10 @@ public abstract class UtilityClassTest extends TestCase {
 	public void shouldHavePrivateConstructor() throws Exception {
 		Constructor<?> constructor = utilityClass().getDeclaredConstructor();
 		assertFalse(constructor.isAccessible());
+		invokeForCoverage(constructor);
+	}
 
-		// invoke private constructor for emma coverage
+	private void invokeForCoverage(Constructor<?> constructor) throws Exception {
 		constructor.setAccessible(true);
 		constructor.newInstance();
 	}

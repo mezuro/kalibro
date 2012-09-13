@@ -9,11 +9,13 @@ import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
+import org.mockito.Mockito;
+import org.mockito.verification.VerificationMode;
 import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
-public abstract class TestCase extends TestShortcuts {
+public abstract class TestCase extends ExtendedAsserts {
 
 	@BeforeClass
 	public static void setTestEnvironment() {
@@ -52,5 +54,25 @@ public abstract class TestCase extends TestShortcuts {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
 		return yaml.loadAs(getClass().getResourceAsStream(name + ".yml"), type);
+	}
+
+	protected <T> T verify(T mock) {
+		return Mockito.verify(mock);
+	}
+
+	protected <T> T verify(T mock, VerificationMode mode) {
+		return Mockito.verify(mock, mode);
+	}
+
+	protected VerificationMode never() {
+		return Mockito.never();
+	}
+
+	protected VerificationMode once() {
+		return Mockito.times(1);
+	}
+
+	protected VerificationMode times(int times) {
+		return Mockito.times(times);
 	}
 }
