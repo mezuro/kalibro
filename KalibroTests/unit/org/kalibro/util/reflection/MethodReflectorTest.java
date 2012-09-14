@@ -1,6 +1,6 @@
 package org.kalibro.util.reflection;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.FileNotFoundException;
 
@@ -46,42 +46,41 @@ public class MethodReflectorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenInvokingNonstaticMethod() {
-		assertThrowsError(invokeTask("setUp"), expectedMessage("invoking", "setUp"), NullPointerException.class);
+		assertThat(invoke("setUp")).throwsError().withCause(NullPointerException.class)
+			.withMessage(expectedMessage("invoking", "setUp"));
 	}
 
 	@Test
 	public void shouldThrowErrorWhenFindingInexistentMethod() {
-		assertThrowsError(invokeTask("inexistent"), expectedMessage("finding", "inexistent"));
+		assertThat(invoke("inexistent")).throwsError()
+			.withMessage(expectedMessage("finding", "inexistent"));
 	}
 
 	@Test
 	public void shouldThrowErrorWhenFindingMethodWithDifferentNumberOfArguments() {
-		assertThrowsError(invokeTask("max", 42.0), expectedMessage("finding", "max"));
+		assertThat(invoke("max", 42.0)).throwsError()
+			.withMessage(expectedMessage("finding", "max"));
 	}
 
 	@Test
 	public void shouldThrowErrorWhenFindingMethodWithIncompatibleArguments() {
-		assertThrowsError(invokeTask("throwThis", 42.0), expectedMessage("finding", "throwThis"));
+		assertThat(invoke("throwThis", 42.0)).throwsError()
+			.withMessage(expectedMessage("finding", "throwThis"));
 	}
 
 	@Test
 	public void shouldThrowSameUncheckedExceptionThrownByInvokedMethod() {
 		NullPointerException exception = new NullPointerException();
-		try {
-			reflector.invoke("throwThis", exception);
-			fail("Did not throw expected exception");
-		} catch (Exception caught) {
-			assertSame(exception, caught);
-		}
+		assertThat(invoke("throwThis", exception)).doThrow(exception);
 	}
 
 	@Test
 	public void shouldThrowKalibroExceptionWrappingCheckedExceptionThrownByInvokedMethod() {
-		assertThrowsException(invokeTask("throwThis", new FileNotFoundException()),
-			expectedMessage("invoking", "throwThis"), FileNotFoundException.class);
+		assertThat(invoke("throwThis", new FileNotFoundException())).throwsException()
+			.withMessage(expectedMessage("invoking", "throwThis")).withCause(FileNotFoundException.class);
 	}
 
-	private Task invokeTask(final String method, final Object... parameters) {
+	private Task invoke(final String method, final Object... parameters) {
 		return new Task() {
 
 			@Override

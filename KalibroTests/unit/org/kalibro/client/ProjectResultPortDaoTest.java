@@ -52,13 +52,13 @@ public class ProjectResultPortDaoTest extends TestCase {
 
 	@Test
 	public void shouldNotSaveResultRemotely() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.save(projectResult);
 			}
-		}, "Cannot save project result remotely");
+		}).throwsException().withMessage("Cannot save project result remotely");
 	}
 
 	@Test

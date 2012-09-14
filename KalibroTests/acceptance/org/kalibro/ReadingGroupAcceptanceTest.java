@@ -21,7 +21,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
+		group = loadFixture("scholar", ReadingGroup.class);
 		file = new File(Environment.dotKalibro(), "scholar.yml");
 		file.deleteOnExit();
 	}
@@ -60,16 +60,16 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void nameShouldBeRequiredAndUnique() {
 		group.setName(" ");
-		assertThrowsException(saveTask(), "Reading group requires name.");
+		assertThat(save()).throwsException().withMessage("Reading group requires name.");
 
 		group.setName("Scholar");
 		group.save();
 
 		group = new ReadingGroup("Scholar");
-		assertThrows(saveTask(), RollbackException.class);
+		assertThat(save()).doThrow(RollbackException.class);
 	}
 
-	private Task saveTask() {
+	private Task save() {
 		return new Task() {
 
 			@Override
@@ -87,31 +87,33 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 		reading = newReading();
 		reading.setLabel(label);
-		checkExceptionOnAddReading(reading, "Reading with label \"" + label + "\" already exists in the group.");
+		assertThat(addReading(reading)).throwsException()
+			.withMessage("Reading with label \"" + label + "\" already exists in the group.");
 
 		reading = newReading();
 		reading.setGrade(grade);
-		checkExceptionOnAddReading(reading, "Reading with grade " + grade + " already exists in the group.");
+		assertThat(addReading(reading)).throwsException()
+			.withMessage("Reading with grade " + grade + " already exists in the group.");
 	}
 
 	private Reading newReading() {
 		return new Reading("ReadingGroupAcceptanceTest label", 42.0, Color.MAGENTA);
 	}
 
-	private void checkExceptionOnAddReading(final Reading reading, String message) {
-		assertThrowsException(new Task() {
+	private Task addReading(final Reading reading) {
+		return new Task() {
 
 			@Override
 			public void perform() {
 				group.addReading(reading);
 			}
-		}, message);
+		};
 	}
 
 	@Test
 	public void shouldImportAndExportAsYaml() throws Exception {
 		group.exportTo(file);
-		String expectedYaml = loadResource("readingGroup-scholar.yml");
+		String expectedYaml = loadResource("ReadingGroup-scholar.yml");
 		assertEquals(expectedYaml, FileUtils.readFileToString(file));
 		assertDeepEquals(group, ReadingGroup.importFrom(file));
 	}

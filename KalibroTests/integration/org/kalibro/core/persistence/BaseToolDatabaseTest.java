@@ -32,12 +32,13 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveInexistentBaseTool() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getBaseTool("Inexistent base tool");
 			}
-		}, "There is no base tool named 'Inexistent base tool'", NoResultException.class);
+		}).throwsException().withMessage("There is no base tool named 'Inexistent base tool'")
+			.withCause(NoResultException.class);
 	}
 }

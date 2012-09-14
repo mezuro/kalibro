@@ -70,13 +70,13 @@ public class CommandTaskTest extends TestCase {
 	@Test
 	public void checkExceptionOnSimpleExecution() throws IOException {
 		PowerMockito.when(runtime.exec(COMMAND, null, null)).thenThrow(new IOException());
-		assertThrows(commandTask, IOException.class);
+		assertThat(commandTask).doThrow(IOException.class);
 	}
 
 	@Test
 	public void shouldThrowExceptionOnBadExitValue() {
 		PowerMockito.when(process.exitValue()).thenReturn(1);
-		assertThrowsException(commandTask, "Command returned with error status: " + COMMAND);
+		assertThat(commandTask).throwsException().withMessage("Command returned with error status: " + COMMAND);
 	}
 
 	@Test
@@ -88,7 +88,7 @@ public class CommandTaskTest extends TestCase {
 	@Test
 	public void shouldDestroyProcessOnInterruptedException() throws InterruptedException {
 		PowerMockito.when(process.waitFor()).thenThrow(new InterruptedException());
-		assertThrows(commandTask, InterruptedException.class);
+		assertThat(commandTask).doThrow(InterruptedException.class);
 		Mockito.verify(process).destroy();
 	}
 

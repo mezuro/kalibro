@@ -44,13 +44,13 @@ public class AbstractModuleResultTest extends TestCase {
 
 	@Test
 	public void checkErrorForInexistentResultMetric() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				moduleResult.getResultFor(dit);
 			}
-		}, "No result found for metric: Depth of Inheritance Tree");
+		}).throwsException().withMessage("No result found for metric: Depth of Inheritance Tree");
 	}
 
 	@Test

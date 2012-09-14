@@ -84,12 +84,13 @@ public class FileProcessStreamLoggerTest extends TestCase {
 	@Test
 	public void checkErrorOnLog() throws Exception {
 		whenNew(FileOutputStream.class).withArguments(logFile).thenThrow(new IOException());
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				logger.logOutputStream(process, "my command");
 			}
-		}, "Error logging command: my command\nFile: " + logFile, IOException.class);
+		}).throwsException().withMessage("Error logging command: my command\nFile: " + logFile)
+			.withCause(IOException.class);
 	}
 }

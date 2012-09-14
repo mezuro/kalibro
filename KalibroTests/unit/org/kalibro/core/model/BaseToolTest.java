@@ -55,12 +55,13 @@ public class BaseToolTest extends TestCase {
 	@Test
 	public void checkErrorCreatingCollector() {
 		analizo.setCollectorClass(null);
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				analizo.createMetricCollector();
 			}
-		}, "Could not create metric collector of base tool 'Analizo'", NullPointerException.class);
+		}).throwsException().withMessage("Could not create metric collector of base tool 'Analizo'")
+			.withCause(NullPointerException.class);
 	}
 }

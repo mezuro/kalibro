@@ -78,13 +78,14 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveUnsavedProject() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				retrieve(helloWorld);
 			}
-		}, "There is no project named '" + helloWorld.getName() + "'", NoResultException.class);
+		}).throwsException().withMessage("There is no project named '" + helloWorld.getName() + "'")
+			.withCause(NoResultException.class);
 	}
 
 	@Test

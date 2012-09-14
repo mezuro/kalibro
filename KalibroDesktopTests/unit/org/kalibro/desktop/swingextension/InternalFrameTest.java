@@ -81,12 +81,13 @@ public class InternalFrameTest extends TestCase {
 		Mockito.verify(frame).setSelected(true);
 
 		PowerMockito.doThrow(new PropertyVetoException("", null)).when(frame).setSelected(true);
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				frame.select();
 			}
-		}, "Could not select range frame: " + range, PropertyVetoException.class);
+		}).throwsException().withMessage("Could not select range frame: " + range)
+			.withCause(PropertyVetoException.class);
 	}
 }

@@ -58,7 +58,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void settingsFileShouldBeHumanReadable() throws IOException {
 		settings.save();
-		String expected = loadResource("kalibroSettings-default.yml");
+		String expected = loadResource("KalibroSettings-default.yml");
 		expected = expected.replace("~/.kalibro", dotKalibro().getPath());
 		assertEquals(expected, FileUtils.readFileToString(settingsFile));
 	}
@@ -82,25 +82,27 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void shouldLoadWithError(Class<? extends Throwable> causeClass) {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				KalibroSettings.load();
 			}
-		}, "Could not import kalibro settings from file: " + settingsFile, causeClass);
+		}).throwsException().withCause(causeClass)
+			.withMessage("Could not import kalibro settings from file: " + settingsFile);
 	}
 
 	@Test
 	public void shouldThrowExceptionWhenSavingOnNotWritableFile() {
 		settings.save();
 		settingsFile.setWritable(false);
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				settings.save();
 			}
-		}, "Could not export kalibro settings to file: " + settingsFile, IOException.class);
+		}).throwsException().withCause(IOException.class)
+			.withMessage("Could not export kalibro settings to file: " + settingsFile);
 	}
 }

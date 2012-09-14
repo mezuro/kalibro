@@ -77,13 +77,13 @@ public class ConfigurationPortDaoTest extends TestCase {
 
 	@Test
 	public void testGetConfigurationFor() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getConfigurationFor("42");
 			}
-		}, "Not available remotely");
+		}).throwsException().withMessage("Not available remotely");
 	}
 
 	@Test

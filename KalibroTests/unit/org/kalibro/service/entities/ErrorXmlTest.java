@@ -29,7 +29,7 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
 	@Test
 	public void shouldThrowErrorForNotConvertibleError() {
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
@@ -37,6 +37,6 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 					// Anonymous class
 				}).convert();
 			}
-		}, "Could not convert Error XML to Throwable", NullPointerException.class);
+		}).throwsError().withMessage("Could not convert Error XML to Throwable").withCause(NullPointerException.class);
 	}
 }

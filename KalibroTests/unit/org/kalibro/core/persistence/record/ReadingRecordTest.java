@@ -7,7 +7,7 @@ public class ReadingRecordTest extends RecordTest<Reading, ReadingRecord> {
 
 	@Override
 	protected Reading loadFixture() {
-		return loadFixture("/org/kalibro/reading-excellent", Reading.class);
+		return loadFixture("excellent", Reading.class);
 	}
 
 	@Override

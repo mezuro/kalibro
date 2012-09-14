@@ -68,12 +68,12 @@ public class CancelFirstEditSettings extends KalibroDesktopAcceptanceTest {
 	}
 
 	private void verifyFrameNotOpen() {
-		assertThrows(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				fixture = new FrameFixture(fixture.robot, "kalibroFrame");
 			}
-		}, ComponentLookupException.class);
+		}).doThrow(ComponentLookupException.class);
 	}
 }

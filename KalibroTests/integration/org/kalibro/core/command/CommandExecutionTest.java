@@ -27,37 +27,38 @@ public class CommandExecutionTest extends IntegrationTest {
 	@Test
 	public void shouldThrowExceptionWhenGettingOutputForInvalidCommand() {
 		createCommandTask("invalid command");
-		assertThrows(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws IOException {
 				task.executeAndGetOuput();
 			}
-		}, IOException.class);
+		}).doThrow(IOException.class);
 	}
 
 	@Test
 	public void shouldThrowExceptionWhenExecutingInvalidCommand() {
 		createCommandTask("invalid command");
-		assertThrowsException(task, "Error while executing command: invalid command", IOException.class);
+		assertThat(task).doThrow(IOException.class);
 	}
 
 	@Test
 	public void shouldThrowExceptionOnBadExitValue() {
 		createCommandTask("make etc");
-		assertThrowsException(task, "Command returned with error status: make etc");
+		assertThat(task).throwsException().withMessage("Command returned with error status: make etc");
 	}
 
 	@Test
 	public void shouldThrowExceptionOnCommandTimeout() {
 		createCommandTask("sleep 1000");
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				task.executeAndWait(50);
 			}
-		}, "Timed out after 50 milliseconds while executing command: sleep 1000", InterruptedException.class);
+		}).throwsException().withCause(InterruptedException.class)
+			.withMessage("Timed out after 50 milliseconds while executing command: sleep 1000");
 	}
 
 	@Test

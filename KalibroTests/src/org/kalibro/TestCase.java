@@ -53,7 +53,8 @@ public abstract class TestCase extends ExtendedAsserts {
 	protected <T> T loadFixture(String name, Class<T> type) {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
-		return yaml.loadAs(getClass().getResourceAsStream(name + ".yml"), type);
+		String resourceName = type.getSimpleName() + "-" + name + ".yml";
+		return yaml.loadAs(type.getResourceAsStream(resourceName), type);
 	}
 
 	protected <T> T verify(T mock) {

@@ -21,9 +21,9 @@ public class EntityComparatorTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		carlosPerson = loadFixture("person-carlos", Person.class);
-		carlos = loadFixture("programmer-carlos", Programmer.class);
-		paulo = loadFixture("programmer-paulo", Programmer.class);
+		carlosPerson = loadFixture("carlos", Person.class);
+		carlos = loadFixture("carlos", Programmer.class);
+		paulo = loadFixture("paulo", Programmer.class);
 		comparator = new EntityComparator<Person>();
 	}
 
@@ -45,24 +45,26 @@ public class EntityComparatorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNull() {
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				comparator.compare(carlos, new Person("", null, ""));
 			}
-		}, ERROR_MESSAGE + "Programmer.name", InvocationTargetException.class);
+		}).throwsError().withMessage(ERROR_MESSAGE + "Programmer.name")
+			.withCause(InvocationTargetException.class);
 	}
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNotComparable() {
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				comparator.compare(new WeirdPerson(), new WeirdPerson());
 			}
-		}, ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field", NoSuchMethodException.class);
+		}).throwsError().withMessage(ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field")
+			.withCause(NoSuchMethodException.class);
 	}
 
 	@SortingFields("field")

@@ -45,24 +45,24 @@ public class JavascriptEvaluatorTest extends TestCase {
 
 	@Test
 	public void shouldValidateVariableName() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				evaluator.addVariable("1bad.name", 13.0);
 			}
-		}, "Invalid identifier: 1bad.name");
+		}).throwsException().withMessage("Invalid identifier: 1bad.name");
 	}
 
 	@Test
 	public void shouldValidateFunctionName() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				evaluator.addFunction("badFunction'sName", "return 13;");
 			}
-		}, "Invalid identifier: badFunction'sName");
+		}).throwsException().withMessage("Invalid identifier: badFunction'sName");
 	}
 
 	@Test
@@ -71,13 +71,13 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertDoubleEquals(42.0, evaluator.evaluate("variable"));
 
 		evaluator.remove("variable");
-		assertThrows(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				evaluator.evaluate("variable");
 			}
-		}, ClassCastException.class);
+		}).doThrow(ClassCastException.class);
 	}
 
 	@Test
@@ -106,13 +106,13 @@ public class JavascriptEvaluatorTest extends TestCase {
 	}
 
 	private void assertInvalid(final String body, Class<? extends Exception> exceptionClass) {
-		assertThrows(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				addFunctionAndExecute("f", body);
 			}
-		}, exceptionClass);
+		}).doThrow(exceptionClass);
 	}
 
 	private Double addFunctionAndExecute(String functionName, String body) {

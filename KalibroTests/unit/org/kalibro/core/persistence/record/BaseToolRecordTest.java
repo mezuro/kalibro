@@ -38,12 +38,12 @@ public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 	public void shouldThrowErrorForCollectorClassNotFound() {
 		final BaseToolRecord dto = createDto(analizoStub());
 		Whitebox.setInternalState(dto, "collectorClass", "inexistent");
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				dto.convert();
 			}
-		}, "Could not find collector class", ClassNotFoundException.class);
+		}).throwsError().withMessage("Could not find collector class").withCause(ClassNotFoundException.class);
 	}
 }

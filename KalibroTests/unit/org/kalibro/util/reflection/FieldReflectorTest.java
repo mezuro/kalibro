@@ -71,23 +71,23 @@ public class FieldReflectorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenGettingInexistentField() {
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				reflector.get("inexistent");
 			}
-		}, "Error retrieving field: " + INEXISTENT, NullPointerException.class);
+		}).throwsError().withMessage("Error retrieving field: " + INEXISTENT).withCause(NullPointerException.class);
 	}
 
 	@Test
 	public void shouldThrowErrorWhenSettingInexistentField() {
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				reflector.set("inexistent", "anything");
 			}
-		}, "Error setting field: " + INEXISTENT, NullPointerException.class);
+		}).throwsError().withMessage("Error setting field: " + INEXISTENT).withCause(NullPointerException.class);
 	}
 }

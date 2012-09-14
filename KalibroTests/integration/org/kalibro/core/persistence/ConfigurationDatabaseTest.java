@@ -67,13 +67,14 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveUnsavedConfiguration() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getConfiguration(simpleConfiguration.getName());
 			}
-		}, "There is no configuration named '" + simpleConfiguration.getName() + "'", NoResultException.class);
+		}).throwsException().withMessage("There is no configuration named '" + simpleConfiguration.getName() + "'")
+			.withCause(NoResultException.class);
 	}
 
 	@Test

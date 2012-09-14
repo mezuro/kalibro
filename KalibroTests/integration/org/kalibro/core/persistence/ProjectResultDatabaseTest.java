@@ -74,13 +74,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoFirstResultFound() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getFirstResultOf(project.getName());
 			}
-		}, "No project result found", NoResultException.class);
+		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);
 	}
 
 	@Test
@@ -97,13 +97,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoLastResultFound() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getLastResultOf(project.getName());
 			}
-		}, "No project result found", NoResultException.class);
+		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);
 	}
 
 	@Test
@@ -115,13 +115,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoResultFoundBefore() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getLastResultBefore(first.getDate(), project.getName());
 			}
-		}, "No project result found", NoResultException.class);
+		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);
 	}
 
 	@Test
@@ -133,13 +133,13 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoResultFoundAfter() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getFirstResultAfter(third.getDate(), project.getName());
 			}
-		}, "No project result found", NoResultException.class);
+		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);
 	}
 
 	private void saveResults() {

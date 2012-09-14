@@ -79,13 +79,13 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionForMetricConfigurationNotFound() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				String metricName = locConfiguration.getMetric().getName();
 				dao.getMetricConfiguration(configuration.getName(), metricName);
 			}
-		}, "No configuration found for metric: Lines of Code");
+		}).throwsException().withMessage("No configuration found for metric: Lines of Code");
 	}
 }

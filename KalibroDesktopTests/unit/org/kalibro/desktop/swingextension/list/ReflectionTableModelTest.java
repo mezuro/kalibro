@@ -26,13 +26,18 @@ public class ReflectionTableModelTest extends TestCase {
 
 	@Test
 	public void shouldAcceptOnlyReflectionColumns() {
-		assertThrowsException(new Task() {
+		assertThat(addGenericColumn()).throwsException()
+			.withMessage("All columns of ReflectionTableModel should be ReflectionColumn");
+	}
+
+	private Task addGenericColumn() {
+		return new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				model.addColumn(new Column("", null, 0));
 			}
-		}, "All columns of ReflectionTableModel should be ReflectionColumn");
+		};
 	}
 
 	@Test

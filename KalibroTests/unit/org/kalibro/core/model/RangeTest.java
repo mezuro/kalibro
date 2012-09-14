@@ -109,12 +109,12 @@ public class RangeTest extends TestCase {
 	}
 
 	private void assertInvalid(final Double beginning, final Double end) {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				new Range(beginning, end);
 			}
-		}, "[" + beginning + ", " + end + "[ is not a valid range");
+		}).throwsException().withMessage("[" + beginning + ", " + end + "[ is not a valid range");
 	}
 }

@@ -14,7 +14,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
+		group = loadFixture("scholar", ReadingGroup.class);
 		group.save();
 		reading = group.getReadings().get(0);
 	}
@@ -50,12 +50,16 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void readingIsRequiredToBeInGroup() {
-		assertThrowsException(new Task() {
+		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
+	}
+
+	private Task save() {
+		return new Task() {
 
 			@Override
 			public void perform() {
 				new Reading().save();
 			}
-		}, "Reading is not in any group.");
+		};
 	}
 }

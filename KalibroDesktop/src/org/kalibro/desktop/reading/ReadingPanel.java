@@ -20,7 +20,7 @@ class ReadingPanel extends EditPanel<Reading> {
 
 	public ReadingPanel(Reading reading) {
 		super("model");
-		this.model = reading;
+		set(reading);
 	}
 
 	@Override

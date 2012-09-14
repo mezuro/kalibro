@@ -25,13 +25,14 @@ public class ReflectionMenuTest extends TestCase {
 
 	@Test
 	public void shouldNotAcceptInvalidMethodOnCreation() {
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				new ReflectionMenuItem("", "", ' ', controller, "invalidMethod");
 			}
-		}, "ReflectionMenuItem did not found method on controller", NoSuchMethodException.class);
+		}).throwsError().withMessage("ReflectionMenuItem did not found method on controller")
+			.withCause(NoSuchMethodException.class);
 	}
 
 	@Test
@@ -43,25 +44,24 @@ public class ReflectionMenuTest extends TestCase {
 	@Test
 	public void shouldThrowControllerException() {
 		PowerMockito.doThrow(new IllegalArgumentException()).when(controller).open();
-		assertThrows(new Task() {
-
-			@Override
-			public void perform() {
-				menuItem.doClick();
-			}
-		}, IllegalArgumentException.class);
+		assertThat(click()).doThrow(IllegalArgumentException.class);
 	}
 
 	@Test
 	public void shouldThrowErrorOnBizarreAccessException() throws Exception {
 		Method method = CrudController.class.getDeclaredMethod("unmodified");
 		Whitebox.setInternalState(menuItem, "method", method);
-		assertThrowsError(new Task() {
+		assertThat(click()).throwsError().withMessage("Could not access controller method")
+			.withCause(IllegalAccessException.class);
+	}
+
+	private Task click() {
+		return new Task() {
 
 			@Override
 			public void perform() {
 				menuItem.doClick();
 			}
-		}, "Could not access controller method", IllegalAccessException.class);
+		};
 	}
 }

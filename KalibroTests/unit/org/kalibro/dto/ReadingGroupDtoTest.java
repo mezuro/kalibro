@@ -10,7 +10,7 @@ public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup, ReadingGr
 
 	@Override
 	protected ReadingGroup loadFixture() {
-		return loadFixture("/org/kalibro/readingGroup-scholar", ReadingGroup.class);
+		return loadFixture("scholar", ReadingGroup.class);
 	}
 
 	@Override

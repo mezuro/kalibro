@@ -123,12 +123,12 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 	public void shouldThrowKalibroErrorIfLoaderCouldNotBeCreated() {
 		final RepositoryType type = spy(GIT);
 		when(type.name()).thenReturn("INEXISTENT");
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				invokeMethod(type, "initializeLoader");
 			}
-		}, "Error creating loader for Git", ClassNotFoundException.class);
+		}).throwsError().withMessage("Error creating loader for Git").withCause(ClassNotFoundException.class);
 	}
 }

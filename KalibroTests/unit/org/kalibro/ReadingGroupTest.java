@@ -32,7 +32,7 @@ public class ReadingGroupTest extends TestCase {
 		dao = mock(ReadingGroupDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getReadingGroupDao()).thenReturn(dao);
-		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
+		group = loadFixture("scholar", ReadingGroup.class);
 	}
 
 	@Test
@@ -123,13 +123,17 @@ public class ReadingGroupTest extends TestCase {
 	@Test
 	public void shouldRequiredNameToSave() {
 		group.setName(" ");
-		assertThrowsException(new Task() {
+		assertThat(save()).throwsException().withMessage("Reading group requires name.");
+	}
+
+	private Task save() {
+		return new Task() {
 
 			@Override
 			public void perform() {
 				group.save();
 			}
-		}, "Reading group requires name.");
+		};
 	}
 
 	@Test

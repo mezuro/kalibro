@@ -78,24 +78,24 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkNoConfigurationFoundForMetricError() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.getConfigurationFor("Unknown");
 			}
-		}, "No configuration found for metric: Unknown");
+		}).throwsException().withMessage("No configuration found for metric: Unknown");
 	}
 
 	@Test
 	public void verifyErrorAddingConflictingMetricConfiguration() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.addMetricConfiguration(metricConfiguration("cbo"));
 			}
-		}, "A metric configuration with code 'cbo' already exists");
+		}).throwsException().withMessage("A metric configuration with code 'cbo' already exists");
 	}
 
 	@Test
@@ -107,18 +107,18 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentMetricConfiguration() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.replaceMetricConfiguration("Unknown", metricConfiguration("noa"));
 			}
-		}, "No configuration found for metric: Unknown");
+		}).throwsException().withMessage("No configuration found for metric: Unknown");
 	}
 
 	@Test
 	public void checkErrorForConflictingMetricConfigurationReplace() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
@@ -126,7 +126,7 @@ public class ConfigurationTest extends TestCase {
 				newMetricConfiguration.setCode("lcom4");
 				configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
 			}
-		}, "A metric configuration with code 'lcom4' already exists");
+		}).throwsException().withMessage("A metric configuration with code 'lcom4' already exists");
 		assertTrue(configuration.containsMetric(cboName));
 	}
 
@@ -136,13 +136,13 @@ public class ConfigurationTest extends TestCase {
 		configuration.removeMetric(lcomName);
 		assertFalse(configuration.containsMetric(cboName));
 		assertFalse(configuration.containsMetric(lcomName));
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.removeMetric(cboName);
 			}
-		}, "No configuration found for metric: " + cboName);
+		}).throwsException().withMessage("No configuration found for metric: " + cboName);
 	}
 
 	@Test
@@ -153,13 +153,14 @@ public class ConfigurationTest extends TestCase {
 	@Test
 	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.addMetricConfiguration(new MetricConfiguration(sc));
 			}
-		}, "Metric with invalid code or script: Structural complexity", NullPointerException.class);
+		}).throwsException().withCause(NullPointerException.class)
+			.withMessage("Metric with invalid code or script: Structural complexity");
 	}
 
 	@Test

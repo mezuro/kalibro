@@ -14,7 +14,7 @@ public final class ReadingPanelManualTest extends ReadingPanel {
 	private static Reading loadFixture() {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
-		return yaml.loadAs(Reading.class.getResourceAsStream("reading-excellent.yml"), Reading.class);
+		return yaml.loadAs(Reading.class.getResourceAsStream("Reading-excellent.yml"), Reading.class);
 	}
 
 	private ReadingPanelManualTest() {
