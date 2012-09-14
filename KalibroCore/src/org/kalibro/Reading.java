@@ -2,7 +2,10 @@ package org.kalibro;
 
 import java.awt.Color;
 
-import org.kalibro.core.abstractentity.*;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Ignore;
+import org.kalibro.core.abstractentity.Print;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 
@@ -18,9 +21,7 @@ public class Reading extends AbstractEntity<Reading> {
 	@Print(skip = true)
 	private Long id;
 
-	@IdentityField
 	private String label;
-
 	private Double grade;
 	private Color color;
 
