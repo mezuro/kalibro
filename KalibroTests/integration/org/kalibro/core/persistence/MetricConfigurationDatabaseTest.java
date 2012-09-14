@@ -58,12 +58,12 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
 
 		dao.removeMetricConfiguration(configurationName, metricName);
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				dao.getMetricConfiguration(configurationName, metricName);
 			}
-		}, "No configuration found for metric: " + metricName);
+		}).throwsException().withMessage("No configuration found for metric: " + metricName);
 	}
 }

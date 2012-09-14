@@ -13,7 +13,7 @@ public class EntityEqualityTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		carlos = loadFixture("person-carlos", Person.class);
+		carlos = loadFixture("carlos", Person.class);
 		equality = new EntityEquality();
 	}
 
@@ -45,7 +45,7 @@ public class EntityEqualityTest extends TestCase {
 
 	@Test
 	public void dontNeedToBeOfSameClass() {
-		assertTrue(equalTo(loadFixture("programmer-carlos", Programmer.class)));
+		assertTrue(equalTo(loadFixture("carlos", Programmer.class)));
 		assertTrue(equalTo(new PersonImitation(carlos)));
 	}
 

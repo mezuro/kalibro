@@ -96,24 +96,24 @@ public class ProjectTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				project.getStateWhenErrorOcurred();
 			}
-		}, "Project " + project + " has no error");
+		}).throwsException().withMessage("Project " + project + " has no error");
 	}
 
 	@Test
 	public void shouldNotAllowErrorStateWithoutException() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				project.setState(ERROR);
 			}
-		}, "Use setError(Throwable) to put project in error state");
+		}).throwsException().withMessage("Use setError(Throwable) to put project in error state");
 	}
 
 	@Test
@@ -124,13 +124,13 @@ public class ProjectTest extends TestCase {
 	}
 
 	private void assertNoError() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				project.getError();
 			}
-		}, "Project " + project + " has no error");
+		}).throwsException().withMessage("Project " + project + " has no error");
 	}
 
 	@Test

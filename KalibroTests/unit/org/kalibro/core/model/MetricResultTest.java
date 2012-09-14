@@ -87,13 +87,14 @@ public class MetricResultTest extends TestCase {
 
 	@Test
 	public void checkErrorForInexistentRange() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				result.getRange();
 			}
-		}, "No range found for metric '" + result.getMetric() + "' and value " + result.getValue());
+		}).throwsException()
+			.withMessage("No range found for metric '" + result.getMetric() + "' and value " + result.getValue());
 	}
 
 	@Test

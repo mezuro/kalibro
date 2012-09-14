@@ -47,13 +47,13 @@ public class ModuleNodeTest extends TestCase {
 
 	@Test
 	public void checkNoChildError() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				checkstyle.getChildFor(analizo.getModule());
 			}
-		}, "Module org.checkstyle has no child named analizo");
+		}).throwsException().withMessage("Module org.checkstyle has no child named analizo");
 	}
 
 	@Test

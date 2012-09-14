@@ -53,13 +53,14 @@ public class ReflectionColumnTest extends TestCase {
 
 	@Test
 	public void checkErrorGettingMethodFromInvalidClass() {
-		assertThrowsError(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				column.getColumnClass(String.class);
 			}
-		}, "Reflection column did not found method: java.lang.String.getColor", NoSuchMethodException.class);
+		}).throwsError().withMessage("Reflection column did not found method: java.lang.String.getColor")
+			.withCause(NoSuchMethodException.class);
 	}
 
 	@Test

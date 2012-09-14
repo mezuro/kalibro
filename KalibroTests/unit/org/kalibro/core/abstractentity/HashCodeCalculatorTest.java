@@ -14,12 +14,12 @@ public class HashCodeCalculatorTest extends UtilityClassTest {
 
 	@Before
 	public void setUp() {
-		carlos = loadFixture("person-carlos", Person.class);
-		cristina = loadFixture("person-cristina", Person.class);
-		isis = loadFixture("person-isis", Person.class);
-		paulo = loadFixture("person-paulo", Person.class);
-		programmerCarlos = loadFixture("programmer-carlos", Programmer.class);
-		programmerPaulo = loadFixture("programmer-paulo", Programmer.class);
+		carlos = loadFixture("carlos", Person.class);
+		cristina = loadFixture("cristina", Person.class);
+		isis = loadFixture("isis", Person.class);
+		paulo = loadFixture("paulo", Person.class);
+		programmerCarlos = loadFixture("carlos", Programmer.class);
+		programmerPaulo = loadFixture("paulo", Programmer.class);
 	}
 
 	@Override

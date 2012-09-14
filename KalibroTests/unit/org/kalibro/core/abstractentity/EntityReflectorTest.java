@@ -14,8 +14,8 @@ public class EntityReflectorTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		person = loadFixture("person-carlos", Person.class);
-		programmer = loadFixture("programmer-carlos", Programmer.class);
+		person = loadFixture("carlos", Person.class);
+		programmer = loadFixture("carlos", Programmer.class);
 		noIdentityEntity = new NoIdentityEntity();
 	}
 

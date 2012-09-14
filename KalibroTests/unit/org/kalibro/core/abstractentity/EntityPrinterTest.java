@@ -18,7 +18,7 @@ public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 
 	@Before
 	public void setUp() {
-		programmer = loadFixture("programmer-carlos", Programmer.class);
+		programmer = loadFixture("carlos", Programmer.class);
 	}
 
 	@Test
@@ -32,7 +32,7 @@ public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 
 	@Test
 	public void shouldPrintAsYaml() throws Exception {
-		assertEquals(loadResource("programmer-carlos.yml").replace("---", ""), print(programmer, ""));
+		assertEquals(loadResource("Programmer-carlos.yml").replace("---", ""), print(programmer, ""));
 	}
 
 	@Test

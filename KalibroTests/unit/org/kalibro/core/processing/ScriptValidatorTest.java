@@ -61,12 +61,13 @@ public class ScriptValidatorTest extends TestCase {
 	}
 
 	private void assertInvalid(Class<? extends Exception> expectedExceptionClass) {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				assertValid();
 			}
-		}, "Metric with invalid code or script: " + configuration.getMetric(), expectedExceptionClass);
+		}).throwsException().withMessage("Metric with invalid code or script: " + configuration.getMetric())
+			.withCause(expectedExceptionClass);
 	}
 }

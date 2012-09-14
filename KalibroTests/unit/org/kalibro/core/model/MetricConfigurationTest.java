@@ -44,7 +44,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void configurationsWithSameCodeShouldConflict() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
@@ -52,19 +52,19 @@ public class MetricConfigurationTest extends TestCase {
 				configurationWithSameCode.setCode(configuration.getCode());
 				configurationWithSameCode.assertNoConflictWith(configuration);
 			}
-		}, "A metric configuration with code 'amloc' already exists");
+		}).throwsException().withMessage("A metric configuration with code 'amloc' already exists");
 	}
 
 	@Test
 	public void configurationsForSameMetricShouldConflict() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				MetricConfiguration configurationForSameMetric = new MetricConfiguration(metric);
 				configurationForSameMetric.assertNoConflictWith(configuration);
 			}
-		}, "There is already a configuration for this metric: " + metric);
+		}).throwsException().withMessage("There is already a configuration for this metric: " + metric);
 	}
 
 	@Test
@@ -90,13 +90,13 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testNoRangeFound() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.getRangeFor(-1.0);
 			}
-		}, "No range found for value -1.0 and metric '" + metric + "'");
+		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
 	}
 
 	@Test
@@ -108,13 +108,13 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testConflictingRange() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				configuration.addRange(new Range(6.0, 12.0));
 			}
-		}, "New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
+		}).throwsException().withMessage("New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
 	}
 
 	@Test
@@ -127,24 +127,24 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentRange() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.replaceRange(-1.0, new Range(-1.0, 0.0));
 			}
-		}, "No range found for value -1.0 and metric '" + metric + "'");
+		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
 	}
 
 	@Test
 	public void checkErrorForConflictingRangeReplace() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.replaceRange(0.0, new Range());
 			}
-		}, "New range [-Infinity, Infinity[ would conflict with [7.0, 10.0[");
+		}).throwsException().withMessage("New range [-Infinity, Infinity[ would conflict with [7.0, 10.0[");
 		assertTrue(configuration.hasRangeFor(0.0));
 	}
 

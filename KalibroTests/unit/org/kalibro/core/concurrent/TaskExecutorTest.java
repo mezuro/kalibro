@@ -47,24 +47,24 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 	public void shouldThrowSameKalibroExceptionThrownByTask() {
 		String message = "TaskExecutorTest message";
 		final KalibroException error = new KalibroException(message, new Throwable());
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				new TaskExecutor(new ThrowErrorTask(error)).executeAndWait();
 			}
-		}, message, Throwable.class);
+		}).throwsException().withMessage(message).withCause(Throwable.class);
 	}
 
 	@Test
 	public void shouldThrowKalibroExceptionWrappingOtherError() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				new TaskExecutor(new ThrowErrorTask(new Throwable())).executeAndWait();
 			}
-		}, "Error while throwing error", Throwable.class);
+		}).throwsException().withMessage("Error while throwing error").withCause(Throwable.class);
 	}
 
 	@Test
@@ -76,35 +76,36 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 	public void shouldThrowSameKalibroExceptionThrownByTaskWithTimeout() {
 		String message = "TaskExecutorTest message";
 		final KalibroException error = new KalibroException(message, new Throwable());
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				new TaskExecutor(new ThrowErrorTask(error)).executeAndWait(TIMEOUT);
 			}
-		}, message, Throwable.class);
+		}).throwsException().withMessage(message).withCause(Throwable.class);
 	}
 
 	@Test
 	public void shouldThrowKalibroExceptionForTimeoutError() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				new TaskExecutor(new SleepTask(2 * TIMEOUT)).executeAndWait(TIMEOUT);
 			}
-		}, "Timed out after " + TIMEOUT + " milliseconds while sleeping", InterruptedException.class);
+		}).throwsException().withMessage("Timed out after " + TIMEOUT + " milliseconds while sleeping")
+			.withCause(InterruptedException.class);
 	}
 
 	@Test
 	public void shouldThrowKalibroExceptionWrappingOtherErrorWithTimeout() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				new TaskExecutor(new ThrowErrorTask(new Throwable())).executeAndWait(TIMEOUT);
 			}
-		}, "Error while throwing error", Throwable.class);
+		}).throwsException().withMessage("Error while throwing error").withCause(Throwable.class);
 	}
 
 	@Test

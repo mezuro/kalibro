@@ -43,26 +43,24 @@ public class MethodInvocationTest extends TestCase {
 	public void shouldThrowExceptionWhenRetrievingResult() {
 		createInvocation(null);
 		invocation.invoke();
-		assertThrows(new Task() {
-
-			@Override
-			public void perform() throws Throwable {
-				invocation.getResult();
-			}
-		}, IllegalArgumentException.class);
+		assertThat(getResult()).doThrow(IllegalArgumentException.class);
 	}
 
 	@Test
 	public void shouldThrowCauseOfInvocationTargetException() {
 		createInvocation(-1);
 		invocation.invoke();
-		assertThrows(new Task() {
+		assertThat(getResult()).doThrow(StringIndexOutOfBoundsException.class);
+	}
+
+	private Task getResult() {
+		return new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				invocation.getResult();
 			}
-		}, StringIndexOutOfBoundsException.class);
+		};
 	}
 
 	@Test

@@ -25,25 +25,26 @@ public class AbstractEntityTest extends TestCase {
 	@Before
 	public void setUp() {
 		file = mock(File.class);
-		entity = loadFixture("person-carlos", Person.class);
+		entity = loadFixture("carlos", Person.class);
 		mockStatic(FileUtils.class);
 	}
 
 	@Test
 	public void shouldImportFromFile() throws Exception {
-		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("person-carlos.yml"), Person.class));
+		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("Person-carlos.yml"), Person.class));
 	}
 
 	@Test
 	public void shouldThrowExceptionWhenCannotImport() throws Exception {
 		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				AbstractEntity.importFrom(file, Person.class);
 			}
-		}, "Could not import person from file: " + file, NullPointerException.class);
+		}).throwsException().withMessage("Could not import person from file: " + file)
+			.withCause(NullPointerException.class);
 	}
 
 	@Test
@@ -57,13 +58,13 @@ public class AbstractEntityTest extends TestCase {
 	public void shouldThrowExceptionWhenCannotExport() throws Exception {
 		doThrow(new IOException()).when(FileUtils.class);
 		FileUtils.writeStringToFile(file, Printer.print(entity));
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				entity.exportTo(file);
 			}
-		}, "Could not export person to file: " + file, IOException.class);
+		}).throwsException().withMessage("Could not export person to file: " + file).withCause(IOException.class);
 	}
 
 	@Test

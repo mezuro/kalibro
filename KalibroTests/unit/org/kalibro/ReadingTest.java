@@ -26,7 +26,7 @@ public class ReadingTest extends TestCase {
 		dao = mock(ReadingDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getReadingDao()).thenReturn(dao);
-		reading = loadFixture("reading-excellent", Reading.class);
+		reading = loadFixture("excellent", Reading.class);
 	}
 
 	@Test
@@ -64,13 +64,13 @@ public class ReadingTest extends TestCase {
 	}
 
 	private void shouldConflictWith(final Reading other, String message) {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				reading.assertNoConflictWith(other);
 			}
-		}, message);
+		}).throwsException().withMessage(message);
 	}
 
 	@Test
@@ -81,34 +81,34 @@ public class ReadingTest extends TestCase {
 	@Test
 	public void shouldGetGroupId() {
 		// required for proper saving
-		setReadingGroup(42L);
+		setReadingGroupWithId(42L);
 		assertEquals(42L, reading.getGroupId().longValue());
 	}
 
 	@Test
 	public void shouldNotSaveIfNotGrouped() {
-		checkKalibroExceptionOnSave("Reading is not in any group.");
+		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
 	}
 
 	@Test
 	public void shouldNotSaveIfGroupHasNoId() {
-		setReadingGroup(null);
-		checkKalibroExceptionOnSave("Group is not saved. Save group instead");
+		setReadingGroupWithId(null);
+		assertThat(save()).throwsException().withMessage("Group is not saved. Save group instead");
 	}
 
-	private void checkKalibroExceptionOnSave(String message) {
-		assertThrowsException(new Task() {
+	private Task save() {
+		return new Task() {
 
 			@Override
 			public void perform() {
 				reading.save();
 			}
-		}, message);
+		};
 	}
 
 	@Test
 	public void shouldUpdateIdOnSave() {
-		setReadingGroup(28L);
+		setReadingGroupWithId(28L);
 		when(dao.save(reading)).thenReturn(42L);
 
 		assertFalse(reading.hasId());
@@ -132,12 +132,12 @@ public class ReadingTest extends TestCase {
 
 	@Test
 	public void shouldRemoveFromGroupOnDelete() {
-		ReadingGroup group = setReadingGroup(42L);
+		ReadingGroup group = setReadingGroupWithId(42L);
 		reading.delete();
 		verify(group).removeReading(reading);
 	}
 
-	private ReadingGroup setReadingGroup(Long id) {
+	private ReadingGroup setReadingGroupWithId(Long id) {
 		ReadingGroup group = mock(ReadingGroup.class);
 		when(group.hasId()).thenReturn(id != null);
 		when(group.getId()).thenReturn(id);

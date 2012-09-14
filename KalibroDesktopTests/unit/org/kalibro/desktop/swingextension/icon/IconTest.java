@@ -29,13 +29,13 @@ public class IconTest extends TestCase {
 
 	@Test
 	public void shouldNotAcceptInvalidResource() {
-		assertThrows(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				icon = new Icon("inexistent.gif");
 			}
-		}, NullPointerException.class);
+		}).doThrow(NullPointerException.class);
 	}
 
 	@Test

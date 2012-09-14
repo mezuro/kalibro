@@ -15,9 +15,9 @@ public class DeepEntityEqualityTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		carlos = loadFixture("person-carlos", Person.class);
-		otherCarlos = loadFixture("person-carlos", Person.class);
-		programmerCarlos = loadFixture("programmer-carlos", Programmer.class);
+		carlos = loadFixture("carlos", Person.class);
+		otherCarlos = loadFixture("carlos", Person.class);
+		programmerCarlos = loadFixture("carlos", Programmer.class);
 		equality = new DeepEntityEquality();
 	}
 

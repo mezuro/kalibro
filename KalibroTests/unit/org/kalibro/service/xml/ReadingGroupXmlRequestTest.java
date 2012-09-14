@@ -7,7 +7,7 @@ public class ReadingGroupXmlRequestTest extends XmlTest<ReadingGroup, ReadingGro
 
 	@Override
 	protected ReadingGroup loadFixture() {
-		return loadFixture("/org/kalibro/readingGroup-scholar", ReadingGroup.class);
+		return loadFixture("scholar", ReadingGroup.class);
 	}
 
 	@Override

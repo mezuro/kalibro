@@ -52,12 +52,12 @@ public class ProjectResultTest extends TestCase {
 
 	@Test
 	public void shouldValidateProjectProcessedOnRetrievingProcessData() {
-		assertThrowsException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Throwable {
 				new ProjectResult(helloWorld()).getSourceTree();
 			}
-		}, "Project not yet processed: " + result.getProject().getName());
+		}).throwsException().withMessage("Project not yet processed: " + result.getProject().getName());
 	}
 }

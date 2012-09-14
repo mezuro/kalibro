@@ -17,13 +17,13 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 
 	@Test
 	public void defaultConstructorOfCompoundMetricWithErrorShouldDoNothing() {
-		assertThrows(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				new CompoundMetricWithErrorXml().getError();
 			}
-		}, NullPointerException.class);
+		}).doThrow(NullPointerException.class);
 	}
 
 	@Override
