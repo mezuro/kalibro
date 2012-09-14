@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.ServerSettings;
 import org.kalibro.TestCase;
+import org.kalibro.core.Environment;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.DirectoryField;
 
@@ -19,7 +20,7 @@ public class ServerSettingsPanelTest extends TestCase {
 	@Before
 	public void setUp() {
 		settings = new ServerSettings();
-		settings.getLoadDirectory().mkdirs();
+		settings.setLoadDirectory(Environment.dotKalibro());
 		panel = new ServerSettingsPanel();
 		finder = new ComponentFinder(panel);
 	}
