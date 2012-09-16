@@ -17,8 +17,8 @@ public enum Granularity {
 	}
 
 	public Granularity inferParentGranularity() {
-		if (ordinal() > 1)
-			return values()[ordinal() - 1];
-		return this;
+		if (ordinal() <= 1)
+			return this;
+		return values()[ordinal() - 1];
 	}
 }
