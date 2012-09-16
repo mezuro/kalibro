@@ -22,6 +22,13 @@ public abstract class TestCase extends ExtendedAsserts {
 		Whitebox.setInternalState(Environment.class, "current", Environment.TEST);
 	}
 
+	public static <T> T loadFixture(String name, Class<T> type) {
+		Yaml yaml = new Yaml();
+		yaml.setBeanAccess(BeanAccess.FIELD);
+		String resourceName = type.getSimpleName() + "-" + name + ".yml";
+		return yaml.loadAs(type.getResourceAsStream(resourceName), type);
+	}
+
 	@Rule
 	public MethodRule testTimeout = testTimeout();
 
@@ -48,13 +55,6 @@ public abstract class TestCase extends ExtendedAsserts {
 
 	protected String loadResource(String name) throws IOException {
 		return IOUtils.toString(getClass().getResourceAsStream(name));
-	}
-
-	protected <T> T loadFixture(String name, Class<T> type) {
-		Yaml yaml = new Yaml();
-		yaml.setBeanAccess(BeanAccess.FIELD);
-		String resourceName = type.getSimpleName() + "-" + name + ".yml";
-		return yaml.loadAs(type.getResourceAsStream(resourceName), type);
 	}
 
 	protected <T> T verify(T mock) {

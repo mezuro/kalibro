@@ -2,10 +2,9 @@ package org.kalibro.desktop.reading;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
+import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
-import org.yaml.snakeyaml.Yaml;
-import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public final class ReadingGroupPanelManualTest implements TablePanelListener<Reading> {
 
@@ -13,14 +12,9 @@ public final class ReadingGroupPanelManualTest implements TablePanelListener<Rea
 		new ReadingGroupPanelManualTest();
 	}
 
-	private static ReadingGroup loadFixture() {
-		Yaml yaml = new Yaml();
-		yaml.setBeanAccess(BeanAccess.FIELD);
-		return yaml.loadAs(ReadingGroup.class.getResourceAsStream("ReadingGroup-scholar.yml"), ReadingGroup.class);
-	}
-
 	private ReadingGroupPanelManualTest() {
-		ReadingGroupPanel panel = new ReadingGroupPanel(loadFixture());
+		ReadingGroup group = TestCase.loadFixture("scholar", ReadingGroup.class);
+		ReadingGroupPanel panel = new ReadingGroupPanel(group);
 		panel.addReadingsListener(this);
 		new ComponentWrapperDialog("ReadingGroupPanel", panel).setVisible(true);
 	}
