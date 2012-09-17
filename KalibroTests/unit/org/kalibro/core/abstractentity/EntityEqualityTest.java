@@ -13,11 +13,11 @@ public class EntityEqualityTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		carlos = loadFixture("person-carlos", Person.class);
+		carlos = loadFixture("carlos", Person.class);
 		equality = new EntityEquality();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateAnyTypeOfEntity() {
 		assertTrue(equality.canEvaluate(new Person()));
 		assertTrue(equality.canEvaluate(new Programmer()));
@@ -28,12 +28,12 @@ public class EntityEqualityTest extends TestCase {
 		assertFalse(equality.canEvaluate(equality));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void identityFieldsShouldBeEqual() {
 		assertFalse(equalTo(new NoIdentityEntity()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void identityValuesShouldBeEqual() {
 		assertFalse(equalTo(new Person()));
 		assertFalse(equalTo(new Person("0", "Carlos Morais", "Male")));
@@ -43,9 +43,9 @@ public class EntityEqualityTest extends TestCase {
 		assertTrue(equalTo(new Person("CM", "Cristina", "Female")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void dontNeedToBeOfSameClass() {
-		assertTrue(equalTo(loadFixture("programmer-carlos", Programmer.class)));
+		assertTrue(equalTo(loadFixture("carlos", Programmer.class)));
 		assertTrue(equalTo(new PersonImitation(carlos)));
 	}
 

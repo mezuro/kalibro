@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.menu;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -23,7 +23,7 @@ public class MenuItemTest extends TestCase {
 		item = new MenuItem("", "My menu", 'M', listener);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListener() {
 		item.doClick();
 		Mockito.verify(listener).actionPerformed(any(ActionEvent.class));

@@ -1,6 +1,6 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
 
 import java.util.Arrays;
@@ -28,7 +28,7 @@ public class ModuleNodeXmlTest extends DtoTestCase<ModuleNode, ModuleNodeXml> {
 		return new ModuleNodeXml(moduleNode);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullChildrenIntoEmpty() {
 		ModuleNode node = helloWorldLeaf();
 		ModuleNodeXml dto = createDto(node);

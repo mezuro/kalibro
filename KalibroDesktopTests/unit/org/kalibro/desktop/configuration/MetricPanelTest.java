@@ -33,13 +33,13 @@ public class MetricPanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetNativeMetric() {
 		panel.set(nativeMetric);
 		assertDeepEquals(nativeMetric, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetCompoundMetric() {
 		nameField().set(compoundMetric.getName());
 		scopeField().set(compoundMetric.getScope());
@@ -48,7 +48,7 @@ public class MetricPanelTest extends TestCase {
 		assertDeepEquals(compoundMetric, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetNativeMetric() {
 		panel.set(nativeMetric);
 		assertEquals(nativeMetric.getName(), nameField().get());
@@ -62,7 +62,7 @@ public class MetricPanelTest extends TestCase {
 		finder.assertNotPresent("script");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetCompoundMetric() {
 		panel.set(compoundMetric);
 		assertEquals(compoundMetric.getName(), nameField().get());

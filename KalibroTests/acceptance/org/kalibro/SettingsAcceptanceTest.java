@@ -23,7 +23,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		settingsFile.delete();
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void checkDefaultSettings() {
 		assertFalse(settings.clientSide());
 		checkClientSettings();
@@ -55,39 +55,35 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		assertEquals("kalibro", databaseSettings.getPassword());
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldRetrieveIfSettingsExists() {
+	@Test
+	public void shouldSaveLoadAndConfirmExistence() {
 		assertFalse(KalibroSettings.exists());
+
 		settings.save();
 		assertTrue(KalibroSettings.exists());
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldSaveAndLoad() {
-		settings.save();
 		assertDeepEquals(settings, KalibroSettings.load());
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void settingsFileShouldBeHumanReadable() throws IOException {
 		settings.save();
-		String expected = loadResource("kalibroSettings-default.yml");
+		String expected = loadResource("KalibroSettings-default.yml");
 		expected = expected.replace("~/.kalibro", dotKalibro().getPath());
 		assertEquals(expected, FileUtils.readFileToString(settingsFile));
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenLoadingInexistentSettings() {
 		shouldLoadWithError(FileNotFoundException.class);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenLoadingFromCorruptedSettingsFile() throws IOException {
 		FileUtils.writeStringToFile(settingsFile, "something weird");
 		shouldLoadWithError(ConstructorException.class);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenLoadingFromNotReadableSettingsFile() {
 		settings.save();
 		settingsFile.setReadable(false);
@@ -95,25 +91,27 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void shouldLoadWithError(Class<? extends Throwable> causeClass) {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				KalibroSettings.load();
 			}
-		}, "Could not import kalibro settings from file: " + settingsFile, causeClass);
+		}).throwsException().withCause(causeClass)
+			.withMessage("Could not import kalibro settings from file: " + settingsFile);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenSavingOnNotWritableFile() {
 		settings.save();
 		settingsFile.setWritable(false);
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				settings.save();
 			}
-		}, "Could not export kalibro settings to file: " + settingsFile, IOException.class);
+		}).throwsException().withCause(IOException.class)
+			.withMessage("Could not export kalibro settings to file: " + settingsFile);
 	}
 }

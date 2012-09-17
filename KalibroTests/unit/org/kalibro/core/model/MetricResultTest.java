@@ -23,7 +23,7 @@ public class MetricResultTest extends TestCase {
 		configuration = newConfiguration("amloc").getConfigurationFor(result.getMetric().getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInitializeWithNativeMetricResult() {
 		NativeMetricResult nativeResult = analizoResult("loc");
 		result = new MetricResult(nativeResult);
@@ -31,7 +31,7 @@ public class MetricResultTest extends TestCase {
 		assertSame(nativeResult.getValue(), result.getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveStatisticsWhenHasDescendentResults() {
 		assertTrue(result.hasStatistics());
 
@@ -39,13 +39,13 @@ public class MetricResultTest extends TestCase {
 		assertFalse(result.hasStatistics());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetStatisticFromDescendentResults() {
 		for (Statistic statistic : Statistic.values())
 			assertEquals(statistic.calculate(result.getDescendentResults()), result.getStatistic(statistic));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddSingleDescendentResult() {
 		result.addDescendentResult(0.0);
 		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0);
@@ -53,20 +53,20 @@ public class MetricResultTest extends TestCase {
 		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddMultipleDescendentResults() {
 		result.addDescendentResults(Arrays.asList(0.0, 14.0));
 		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotChangeValueWhenSettingConfiguration() {
 		assertDoubleEquals(4.2, result.getValue());
 		result.setConfiguration(configuration);
 		assertDoubleEquals(4.2, result.getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetValueFromAggregationFormIfValueIsNaN() {
 		for (Statistic statistic : Statistic.values()) {
 			result.value = Double.NaN;
@@ -76,7 +76,7 @@ public class MetricResultTest extends TestCase {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldFindRangeInConfiguration() {
 		assertFalse(result.hasRange());
 
@@ -85,24 +85,25 @@ public class MetricResultTest extends TestCase {
 		assertDeepEquals(configuration.getRangeFor(result.getValue()), result.getRange());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorForInexistentRange() {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				result.getRange();
 			}
-		}, "No range found for metric '" + result.getMetric() + "' and value " + result.getValue());
+		}).throwsException()
+			.withMessage("No range found for metric '" + result.getMetric() + "' and value " + result.getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetGradeFromRange() {
 		result.setConfiguration(configuration);
 		assertDoubleEquals(result.getRange().getGrade(), result.getGrade());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetWeightFromConfiguration() {
 		configuration.setWeight(42.0);
 		result.setConfiguration(configuration);

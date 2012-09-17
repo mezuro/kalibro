@@ -19,12 +19,12 @@ public class NullRendererTest extends TestCase {
 		renderer = new NullRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderNull() {
 		assertTrue(renderer.canRender(null));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotRenderAnythingButNull() {
 		assertFalse(renderer.canRender(true));
 		assertFalse(renderer.canRender(Color.MAGENTA));
@@ -32,12 +32,12 @@ public class NullRendererTest extends TestCase {
 		assertFalse(renderer.canRender("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderPlainPanel() {
 		assertEquals(0, render().getComponentCount());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderWithWhiteBackground() {
 		assertEquals(Color.WHITE, render().getBackground());
 	}

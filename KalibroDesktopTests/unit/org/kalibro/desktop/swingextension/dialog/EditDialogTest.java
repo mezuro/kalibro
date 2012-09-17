@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.dialog;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.any;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -45,7 +45,7 @@ public class EditDialogTest extends TestCase {
 		PowerMockito.whenNew(ErrorDialog.class).withArguments(editDialog).thenReturn(errorDialog);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetAndShowOnEdit() {
 		Whitebox.setInternalState(AbstractDialog.class, "suppressShow", true);
 		editDialog.edit("12321");
@@ -53,14 +53,14 @@ public class EditDialogTest extends TestCase {
 		assertFalse(Whitebox.getInternalState(AbstractDialog.class, boolean.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCloseOnCancel() {
 		assertTrue(editDialog.isDisplayable());
 		button("cancel").doClick();
 		assertFalse(editDialog.isDisplayable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowErrorFromFieldGetAndDontClose() {
 		editPanel.set("Not a palindrome");
 		button("ok").doClick();
@@ -68,7 +68,7 @@ public class EditDialogTest extends TestCase {
 		assertTrue(editDialog.isDisplayable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotCloseIfRejectedByListener() {
 		PowerMockito.when(listener.dialogConfirm("4224")).thenReturn(false);
 		editPanel.set("4224");
@@ -76,7 +76,7 @@ public class EditDialogTest extends TestCase {
 		assertTrue(editDialog.isDisplayable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCloseIfAcceptedByListener() {
 		PowerMockito.when(listener.dialogConfirm("4224")).thenReturn(true);
 		editPanel.set("4224");

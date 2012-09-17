@@ -26,7 +26,7 @@ public class DatabaseSettingsPanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		databaseTypeField().set(settings.getDatabaseType());
 		jdbcUrlField().set(settings.getJdbcUrl());
@@ -35,7 +35,7 @@ public class DatabaseSettingsPanelTest extends TestCase {
 		assertDeepEquals(settings, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(settings);
 		assertEquals(settings.getDatabaseType(), databaseTypeField().get());

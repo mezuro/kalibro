@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Matchers.any;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -27,22 +27,22 @@ public class ButtonTest extends TestCase {
 		button = new Button("", "My button", listener);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveBoldFont() {
 		assertEquals(Font.BOLD, button.getFont().getStyle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveCenterHorizontalAlignment() {
 		assertEquals(SwingConstants.CENTER, button.getHorizontalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveCenterVerticalAlignment() {
 		assertEquals(SwingConstants.CENTER, button.getVerticalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListener() {
 		button.doClick();
 		Mockito.verify(listener).actionPerformed(any(ActionEvent.class));

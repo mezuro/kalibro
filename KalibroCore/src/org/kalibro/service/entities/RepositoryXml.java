@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Repository")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RepositoryXml implements DataTransferObject<Repository> {
+public class RepositoryXml extends DataTransferObject<Repository> {
 
 	@XmlElement(required = true)
 	private RepositoryType type;

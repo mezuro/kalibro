@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
 
 import java.util.Set;
 
@@ -21,13 +21,13 @@ public class RangeFieldRendererTest extends TestCase {
 		renderer = new RangeFieldRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderStringWithRangeColorAsBackground() {
 		for (Range range : ranges)
 			assertEquals(range.getColor(), renderer.render("Label", range).getBackground());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderDoubleWithRangeColorAsBackground() {
 		for (Range range : ranges)
 			assertEquals(range.getColor(), renderer.render(42.0, range).getBackground());

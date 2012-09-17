@@ -21,7 +21,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
+		group = loadFixture("scholar", ReadingGroup.class);
 		file = new File(Environment.dotKalibro(), "scholar.yml");
 		file.deleteOnExit();
 	}
@@ -32,90 +32,88 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 			each.delete();
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldSaveRetrieveAndDelete() {
-		assertFalse(group.isSaved());
-		assertTrue(ReadingGroup.all().isEmpty());
+	@Test
+	public void testCrud() {
+		assertNotSaved();
 
 		group.save();
-		assertTrue(group.isSaved());
-		assertDeepList(ReadingGroup.all(), group);
+		assertSaved();
+
+		group.addReading(newReading());
+		assertFalse(ReadingGroup.all().get(0).deepEquals(group));
+
+		group.save();
+		assertSaved();
 
 		group.delete();
-		assertFalse(group.isSaved());
+		assertNotSaved();
+	}
+
+	private void assertNotSaved() {
 		assertTrue(ReadingGroup.all().isEmpty());
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void nameShouldBeRequired() {
-		group.setName("");
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				group.save();
-			}
-		}, "Reading group requires name.", RollbackException.class);
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void descriptionShouldNotBeRequired() {
-		group.setDescription("");
-		group.save();
-		assertTrue(group.isSaved());
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void nameShouldBeUnique() {
-		group.save();
-		group = loadFixture("readingGroup-scholar", ReadingGroup.class);
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				group.save();
-			}
-		}, "Reading group named \"Scholar\" already exists.", RollbackException.class);
-	}
-
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldAddReadings() {
-		group.save();
-		assertTrue(group.isSaved());
-
-		group.add(new Reading("Label", 42.0, Color.MAGENTA));
-		assertFalse(group.isSaved());
-
-		group.save();
+	private void assertSaved() {
 		assertDeepList(ReadingGroup.all(), group);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldNotAcceptReadingsWithSameLabel() {
-		checkKalibroException(new Task() {
+	@Test
+	public void nameShouldBeRequiredAndUnique() {
+		group.setName(" ");
+		assertThat(save()).throwsException().withMessage("Reading group requires name.");
 
-			@Override
-			protected void perform() throws Throwable {
-				group.add(new Reading("Good", 42.0, Color.WHITE));
-			}
-		}, "Reading with label 'Good' already exists in the group.");
+		group.setName("Scholar");
+		group.save();
+
+		group = new ReadingGroup("Scholar");
+		assertThat(save()).doThrow(RollbackException.class);
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldNotHaveDuplicateGradesInGroup() {
-		checkKalibroException(new Task() {
+	private Task save() {
+		return new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
-				group.add(new Reading("label", 0.0, Color.WHITE));
+			public void perform() {
+				group.save();
 			}
-		}, "Reading with grade 0.0 already exists in the group.");
+		};
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
+	public void readingsInSameGroupShouldNotHaveDuplicateLabelsOrGrade() {
+		Reading reading, existent = group.getReadings().get(0);
+		String label = existent.getLabel();
+		Double grade = existent.getGrade();
+
+		reading = newReading();
+		reading.setLabel(label);
+		assertThat(addReading(reading)).throwsException()
+			.withMessage("Reading with label \"" + label + "\" already exists in the group.");
+
+		reading = newReading();
+		reading.setGrade(grade);
+		assertThat(addReading(reading)).throwsException()
+			.withMessage("Reading with grade " + grade + " already exists in the group.");
+	}
+
+	private Reading newReading() {
+		return new Reading("ReadingGroupAcceptanceTest label", 42.0, Color.MAGENTA);
+	}
+
+	private Task addReading(final Reading reading) {
+		return new Task() {
+
+			@Override
+			public void perform() {
+				group.addReading(reading);
+			}
+		};
+	}
+
+	@Test
 	public void shouldImportAndExportAsYaml() throws Exception {
 		group.exportTo(file);
-		String expectedYaml = loadResource("readingGroup-scholar.yml");
+		String expectedYaml = loadResource("ReadingGroup-scholar.yml");
 		assertEquals(expectedYaml, FileUtils.readFileToString(file));
 		assertDeepEquals(group, ReadingGroup.importFrom(file));
 	}

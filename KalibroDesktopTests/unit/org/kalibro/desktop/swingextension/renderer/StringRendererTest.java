@@ -19,12 +19,12 @@ public class StringRendererTest extends TestCase {
 		renderer = new StringRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderString() {
 		assertTrue(renderer.canRender("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotRenderAnythingButString() {
 		assertFalse(renderer.canRender(true));
 		assertFalse(renderer.canRender(Color.MAGENTA));
@@ -32,18 +32,18 @@ public class StringRendererTest extends TestCase {
 		assertFalse(renderer.canRender(null));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderOpaqueLabel() {
 		JLabel component = render("");
 		assertTrue(component.isOpaque());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderWithWhiteBackground() {
 		assertEquals(Color.WHITE, render("").getBackground());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetText() {
 		assertEquals("My string", render("My string").getText());
 	}

@@ -23,12 +23,12 @@ public class DoubleFieldTest extends TestCase {
 		valueField = new ComponentFinder(field).find("field", JFormattedTextField.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveEightColumns() {
 		assertEquals(8, field.getColumns());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveAtLeast2FractionDigits() {
 		field.set(3.0);
 		assertEquals(format("3.00"), valueField.getText());
@@ -36,7 +36,7 @@ public class DoubleFieldTest extends TestCase {
 		assertEquals(format("3.10"), valueField.getText());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveAtMost2FractionDigits() {
 		field.set(3.1415);
 		assertEquals(format("3.14"), valueField.getText());
@@ -48,7 +48,7 @@ public class DoubleFieldTest extends TestCase {
 		return numberText.replace('.', new DecimalFormatSymbols().getDecimalSeparator());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetSpecialNumberWhenButtonIsClicked() {
 		field = new DoubleField("field", Double.POSITIVE_INFINITY);
 		assertNull(field.get());

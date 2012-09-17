@@ -16,7 +16,7 @@ public class StatisticTest extends EnumerationTestCase<Statistic> {
 		return Statistic.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testCalculate() {
 		testCalculate(AVERAGE, Double.NaN, 6.0, 5.0);
 		testCalculate(COUNT, 0.0, 5.0, 6.0);

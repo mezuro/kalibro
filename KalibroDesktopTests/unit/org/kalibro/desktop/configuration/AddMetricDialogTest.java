@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
-import static org.mockito.Matchers.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.mockito.Matchers.any;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,10 +18,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.persistence.dao.BaseToolDao;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.RadioButton;
@@ -34,7 +34,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class AddMetricDialogTest extends TestCase {
 
 	private AddMetricDialog dialog;
@@ -42,27 +42,27 @@ public class AddMetricDialogTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		mockKalibro();
+		mockDaoFactory();
 		dialog = new AddMetricDialog();
 		finder = new ComponentFinder(dialog);
 	}
 
-	private void mockKalibro() {
+	private void mockDaoFactory() {
 		BaseToolDao dao = PowerMockito.mock(BaseToolDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getBaseToolDao()).thenReturn(dao);
+		PowerMockito.mockStatic(DaoFactory.class);
+		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
 		PowerMockito.when(dao.getBaseToolNames()).thenReturn(Arrays.asList("Analizo"));
 		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(analizoStub());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void compoundShouldBeSelectedByDefault() {
 		assertTrue(radio("compound").isSelected());
 		assertFalse(radio("native").isSelected());
 		assertFalse(nativeMetricPanel().isVisible());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSwitchToNative() {
 		radio("native").doClick();
 		assertFalse(radio("compound").isSelected());
@@ -70,7 +70,7 @@ public class AddMetricDialogTest extends TestCase {
 		assertTrue(nativeMetricPanel().isVisible());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSwitchBackToCompound() {
 		radio("native").doClick();
 		radio("compound").doClick();
@@ -79,7 +79,7 @@ public class AddMetricDialogTest extends TestCase {
 		assertFalse(nativeMetricPanel().isVisible());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void okButtonShouldBeEnabledOnlyWhenMetricIsSelected() {
 		Button okButton = button("ok");
 		assertTrue(okButton.isEnabled());
@@ -100,14 +100,14 @@ public class AddMetricDialogTest extends TestCase {
 		assertTrue(okButton.isEnabled());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void cancelShouldCloseDialog() {
 		assertTrue(dialog.isDisplayable());
 		button("cancel").doClick();
 		assertFalse(dialog.isDisplayable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddOkListener() {
 		ActionListener listener = PowerMockito.mock(ActionListener.class);
 		dialog.addOkListener(listener);
@@ -116,12 +116,12 @@ public class AddMetricDialogTest extends TestCase {
 		Mockito.verify(listener).actionPerformed(any(ActionEvent.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveNewCompoundMetricWhenSelected() {
 		assertDeepEquals(new CompoundMetric(), dialog.getMetric());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveNativeMetricWhenSelected() {
 		radio("native").doClick();
 		selectFirstBaseTool();
@@ -129,7 +129,7 @@ public class AddMetricDialogTest extends TestCase {
 		assertSame(firstMetric(), dialog.getMetric());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void doubleClickMetricShouldMeanOkClick() {
 		ActionListener listener = PowerMockito.mock(ActionListener.class);
 		dialog.addOkListener(listener);

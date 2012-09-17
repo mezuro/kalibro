@@ -24,13 +24,13 @@ public class DefaultRendererTest extends TestCase {
 		renderer = new DefaultRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderStringByDefault() {
 		JLabel component = (JLabel) render(new Range(1.0, 2.0));
 		assertEquals("[1.0, 2.0[", component.getText());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHandleAnything() {
 		assertClassEquals(BooleanField.class, render(true));
 		assertClassEquals(Label.class, render(42.0));

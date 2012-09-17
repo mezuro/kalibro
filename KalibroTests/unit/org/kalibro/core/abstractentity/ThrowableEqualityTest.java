@@ -15,7 +15,7 @@ public class ThrowableEqualityTest extends TestCase {
 		equality = new ThrowableEquality();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateThrowable() {
 		assertTrue(equality.canEvaluate(new Error()));
 		assertTrue(equality.canEvaluate(new Exception()));
@@ -26,29 +26,29 @@ public class ThrowableEqualityTest extends TestCase {
 		assertFalse(equality.canEvaluate(equality));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void classesShouldBeEqual() {
 		assertFalse(equality.equals(new Exception(), new RuntimeException()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void messagesShouldBeEqual() {
 		assertFalse(equality.equals(new Exception("42"), new Exception("28")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void causesShouldBeEqual() {
 		assertFalse(equality.equals(new Exception(), new Exception(new NullPointerException())));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void stackTracesShouldBeEqual() {
 		Exception value = new Exception();
 		assertFalse(equality.equals(value, new Exception()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void stackTraceAndCauseShouldBeDeepEqual() {
+	@Test
+	public void allFourShouldBeDeepEqual() {
 		assertTrue(equality.equals(new Exception(), new Exception()));
 	}
 }

@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.dao.DaoFactory;
 
 public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, ModuleResult>> {
 
@@ -27,7 +27,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	@Override
 	protected Map<Module, ModuleResult> performAndGetResult() throws Exception {
 		resultMap = new HashMap<Module, ModuleResult>();
-		Configuration configuration = Kalibro.getConfigurationDao().getConfigurationFor(project.getName());
+		Configuration configuration = DaoFactory.getConfigurationDao().getConfigurationFor(project.getName());
 		Map<String, Set<NativeMetric>> metricsMap = configuration.getNativeMetrics();
 		for (String baseToolName : metricsMap.keySet())
 			collectMetrics(baseToolName, metricsMap.get(baseToolName));
@@ -36,7 +36,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 
 	private void collectMetrics(String baseToolName, Set<NativeMetric> metrics) throws Exception {
 		File codeDirectory = project.getDirectory();
-		MetricCollector metricCollector = Kalibro.getBaseToolDao().getBaseTool(baseToolName).createMetricCollector();
+		MetricCollector metricCollector = DaoFactory.getBaseToolDao().getBaseTool(baseToolName).createMetricCollector();
 		Set<NativeModuleResult> nativeResults = metricCollector.collectMetrics(codeDirectory, metrics);
 		for (NativeModuleResult nativeResult : nativeResults) {
 			for (NativeMetricResult metricResult : nativeResult.getMetricResults())

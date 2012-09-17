@@ -1,7 +1,6 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.assertEquals;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
 
@@ -16,7 +15,7 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(Printer.class)
 public class PrinterTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSpecialPrinters() throws Exception {
 		Printer<?>[] printers = Whitebox.invokeMethod(Printer.class, "specialPrinters");
 		assertEquals(6, printers.length);
@@ -28,7 +27,7 @@ public class PrinterTest extends TestCase {
 		assertClassEquals(StringPrinter.class, printers[5]);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkPrint() throws Exception {
 		spy(Printer.class);
 		doReturn(new Printer[]{new CascadePrinter()}).when(Printer.class, "specialPrinters");

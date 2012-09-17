@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Dimension;
 import java.awt.Font;
@@ -32,17 +32,17 @@ public class FieldSizeTest extends TestCase {
 		fieldSize = new FieldSize(component);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetWidthFromComponent() {
 		assertEquals(WIDTH, fieldSize.width);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetHeightFromFontSize() {
 		assertEquals(2 * FONT_SIZE, fieldSize.height);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetMinimumAndPreferredSize() {
 		Mockito.verify(component).setMinimumSize(fieldSize);
 		Mockito.verify(component).setPreferredSize(fieldSize);

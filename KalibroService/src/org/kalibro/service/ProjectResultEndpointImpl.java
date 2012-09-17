@@ -6,17 +6,17 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.Kalibro;
-import org.kalibro.core.persistence.dao.ProjectResultDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.service.entities.ProjectResultXml;
 
-@WebService
+@WebService(name = "ProjectResultEndpoint", serviceName = "ProjectResultEndpointService")
 public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 
 	private ProjectResultDao dao;
 
 	public ProjectResultEndpointImpl() {
-		this(Kalibro.getProjectResultDao());
+		this(DaoFactory.getProjectResultDao());
 	}
 
 	protected ProjectResultEndpointImpl(ProjectResultDao projectResultDao) {

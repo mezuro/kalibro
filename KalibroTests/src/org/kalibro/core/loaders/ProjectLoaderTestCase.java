@@ -30,21 +30,21 @@ public abstract class ProjectLoaderTestCase extends TestCase {
 
 	protected abstract RepositoryType getRepositoryType();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkValidationCommands() {
 		assertDeepEquals(expectedValidationCommands(), loader.getValidationCommands());
 	}
 
 	protected abstract List<String> expectedValidationCommands();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAuthenticationSupport() {
 		assertEquals(shouldSupportAuthentication(), loader.supportsAuthentication());
 	}
 
 	protected abstract boolean shouldSupportAuthentication();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkLoadCommands() {
 		assertDeepEquals(expectedLoadCommands(true), loader.getLoadCommands(repository, true));
 		assertDeepEquals(expectedLoadCommands(false), loader.getLoadCommands(repository, false));

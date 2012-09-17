@@ -1,9 +1,8 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
+import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 import static org.kalibro.core.model.enums.RepositoryType.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -12,9 +11,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProjectDao;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.PasswordField;
@@ -25,7 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class RepositoryPanelTest extends TestCase {
 
 	private Repository repository;
@@ -38,18 +38,20 @@ public class RepositoryPanelTest extends TestCase {
 		repository = newHelloWorldRepository(SUBVERSION);
 		repository.setUsername("RepositoryPanelTest username");
 		repository.setPassword("RepositoryPanelTest password");
-		mockKalibro();
+		mockDaoFactory();
 		panel = new RepositoryPanel();
 		finder = new ComponentFinder(panel);
 	}
 
-	private void mockKalibro() {
+	private void mockDaoFactory() {
+		ProjectDao dao = mock(ProjectDao.class);
 		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
-		mockStatic(Kalibro.class);
-		when(Kalibro.getSupportedRepositoryTypes()).thenReturn(types);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(dao);
+		when(dao.getSupportedRepositoryTypes()).thenReturn(types);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		typeField().set(repository.getType());
 		stringField("address").set(repository.getAddress());
@@ -58,7 +60,7 @@ public class RepositoryPanelTest extends TestCase {
 		assertDeepEquals(repository, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(repository);
 		assertEquals(repository.getType(), typeField().get());
@@ -67,7 +69,7 @@ public class RepositoryPanelTest extends TestCase {
 		assertEquals(repository.getPassword(), passwordField().get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void authenticationFieldsShouldBeEnabledOnlyIfAuthenticationIsSupported() {
 		panel.set(repository);
 

@@ -35,19 +35,19 @@ public class ModuleResultConfigurerTest extends TestCase {
 		return scConfiguration;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfigureNativeMetricResults() {
 		configurer.configure();
 		assertTrue(result.getResultFor(analizoMetric("cbo")).hasRange());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfigureCompoundMetricResult() {
 		configurer.configure();
 		assertTrue(result.getResultFor(sc).hasRange());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkGrade() {
 		configuration.removeMetric(sc.getName());
 
@@ -64,7 +64,7 @@ public class ModuleResultConfigurerTest extends TestCase {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveCompoundMetricsWhichAreNotInConfiguration() {
 		CompoundMetric metric = new CompoundMetric();
 		result.addMetricResult(new MetricResult(metric, 42.0));
@@ -72,7 +72,7 @@ public class ModuleResultConfigurerTest extends TestCase {
 		assertFalse(result.hasResultFor(metric));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldComputeCompoundResult() {
 		configurer.configure();
 		Double cbo = result.getResultFor(analizoMetric("cbo")).getValue();
@@ -80,7 +80,7 @@ public class ModuleResultConfigurerTest extends TestCase {
 		assertDoubleEquals(cbo * lcom4, result.getResultFor(sc).getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldIncludeOnlyCompoundMetricsWithCompatibleScope() {
 		changeScScope();
 		configurer.configure();
@@ -93,7 +93,7 @@ public class ModuleResultConfigurerTest extends TestCase {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddCompoundMetricsWithError() {
 		addCompoundMetricWithError();
 		configurer.configure();

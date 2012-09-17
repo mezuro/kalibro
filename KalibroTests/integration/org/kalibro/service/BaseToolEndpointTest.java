@@ -7,9 +7,9 @@ import java.net.MalformedURLException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.persistence.dao.BaseToolDaoFake;
+import org.kalibro.dao.BaseToolDaoFake;
 
-public class BaseToolEndpointTest extends KalibroServiceTestCase {
+public class BaseToolEndpointTest extends EndpointTest {
 
 	private BaseTool analizo;
 	private BaseToolEndpoint port;
@@ -23,12 +23,12 @@ public class BaseToolEndpointTest extends KalibroServiceTestCase {
 		port = publishAndGetPort(new BaseToolEndpointImpl(daoFake), BaseToolEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListBaseToolNames() {
 		assertDeepList(port.getBaseToolNames(), analizo.getName());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetBaseToolByName() {
 		assertDeepEquals(analizo, port.getBaseTool(analizo.getName()).convert());
 	}

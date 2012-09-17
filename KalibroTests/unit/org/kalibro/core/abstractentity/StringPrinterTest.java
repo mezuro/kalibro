@@ -14,7 +14,7 @@ public class StringPrinterTest extends PrinterTestCase<String> {
 		return new StringPrinter();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintStrings() {
 		assertTrue(printer.canPrint(""));
 		assertTrue(printer.canPrint("" + this));
@@ -23,12 +23,12 @@ public class StringPrinterTest extends PrinterTestCase<String> {
 		assertFalse(printer.canPrint(printer));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExcapeSpecialCharacters() throws Exception {
 		assertEquals(" \"\\tMy\\n\\\"special\\\"\\nstring\" # special string", print(STRING, "special string"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeLoadableAsYaml() throws Exception {
 		assertEquals(STRING, new Yaml().load(print(STRING, "")));
 	}

@@ -3,7 +3,7 @@ package org.kalibro.core.abstractentity;
 import java.util.Set;
 
 /**
- * Determines equality of sets deeply for each element.
+ * Determines equality of sets deeply for each element. Two sets are equal if they contain the same elements.
  * 
  * @author Carlos Morais
  */

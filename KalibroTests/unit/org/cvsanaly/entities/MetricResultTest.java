@@ -1,6 +1,6 @@
 package org.cvsanaly.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.cvsanaly.DataObjectTest;
 import org.junit.Test;
@@ -12,7 +12,7 @@ public class MetricResultTest extends DataObjectTest<MetricResult> {
 		return MetricResult.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testConstructorWithFileLink() throws IllegalAccessException {
 		MetricResult metricResult = new MetricResult();
 		metricResult.setId(42);

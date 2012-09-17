@@ -9,7 +9,7 @@ import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 
 public enum CheckstyleMetric {
 

@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
 
 import java.util.Arrays;
 import java.util.SortedSet;
@@ -38,24 +38,24 @@ public class ListTest extends TestCase {
 		innerList = new ComponentFinder(list).find("ranges", JList.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAllowMultipleRowsSelection() {
 		assertEquals(ListSelectionModel.SINGLE_SELECTION, innerList.getSelectionModel().getSelectionMode());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotHaveSelectionByDefault() {
 		assertFalse(list.hasSelection());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSelectedObject() {
 		innerList.getSelectionModel().setSelectionInterval(0, 0);
 		assertTrue(list.hasSelection());
 		assertSame(ranges.first(), list.getSelected());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testEnabled() {
 		assertTrue(innerList.isEnabled());
 		list.setEnabled(false);
@@ -63,7 +63,7 @@ public class ListTest extends TestCase {
 		assertFalse(innerList.isEnabled());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddListListener() throws Exception {
 		ListListener<Range> listener = PowerMockito.mock(ListListener.class);
 		ListComponentAdapter<Range> adapter = PowerMockito.mock(ListComponentAdapter.class);

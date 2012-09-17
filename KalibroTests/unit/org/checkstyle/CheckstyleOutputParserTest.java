@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -25,30 +26,34 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({AuditEvent.class, LocalizedMessage.class})
 public class CheckstyleOutputParserTest extends TestCase {
 
+	private static final String PATH = "/code/directory/absolute/path";
 	private static final CheckstyleMetric METRIC = CheckstyleMetric.FAN_OUT;
 	private static final NativeMetric NATIVE_METRIC = METRIC.getNativeMetric();
 	private static final Double VALUE = 42.0;
 
+	private File codeDirectory;
 	private CheckstyleOutputParser parser;
 
 	@Before
 	public void setUp() {
+		codeDirectory = mock(File.class);
+		when(codeDirectory.getAbsolutePath()).thenReturn(PATH);
 		Set<NativeMetric> wantedMetrics = new HashSet<NativeMetric>(Arrays.asList(NATIVE_METRIC));
-		parser = new CheckstyleOutputParser(repositoriesDirectory(), wantedMetrics);
+		parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void resultsShouldBeEmptyBeforeCheckstyleExecution() {
 		assertTrue(parser.getResults().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldParseMetricResults() {
 		simulateCheckstyle("" + VALUE);
 		verifyResult(VALUE);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void metricResultShouldBeZeroIfMessageIsNotANumber() {
 		simulateCheckstyle("");
 		verifyResult(0.0);
@@ -66,7 +71,7 @@ public class CheckstyleOutputParserTest extends TestCase {
 
 		AuditEvent event = PowerMockito.mock(AuditEvent.class);
 		PowerMockito.when(event.getLocalizedMessage()).thenReturn(localizedMessage);
-		PowerMockito.when(event.getFileName()).thenReturn(repositoriesDirectory() + "/org/fibonacci/Fibonacci.java");
+		PowerMockito.when(event.getFileName()).thenReturn(PATH + "/org/fibonacci/Fibonacci.java");
 		PowerMockito.when(event.getMessage()).thenReturn(message);
 		return event;
 	}

@@ -1,7 +1,6 @@
 package org.kalibro.desktop.configuration;
 
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
 
 import java.awt.Container;
 import java.awt.event.ActionEvent;
@@ -54,25 +53,25 @@ public class MetricConfigurationControllerTest extends TestCase {
 		PowerMockito.whenNew(AddMetricDialog.class).withNoArguments().thenReturn(addDialog);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListenToMetricConfigurationPanel() {
 		verify(metricPanel).addRangesListener(controller);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListenToConfirmPanel() {
 		verify(confirmPanel).addOkListener(controller);
 		verify(confirmPanel).addCancelListener(controller);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowAddMetricDialogOnAdd() {
 		controller.addMetricConfiguration();
 		verify(addDialog).addOkListener(controller);
 		verify(addDialog).setVisible(true);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotCloseAddDialogOnConflictingMetric() throws Exception {
 		Exception error = new KalibroException("MetricConfigurationControllerTest");
 		ErrorDialog errorDialog = mockErrorDialog();
@@ -87,7 +86,7 @@ public class MetricConfigurationControllerTest extends TestCase {
 		verify(addDialog, never()).dispose();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowNewConfigurationForChosenMetricWhenAdding() throws Exception {
 		Metric chosenMetric = PowerMockito.mock(Metric.class);
 		PowerMockito.when(addDialog.getMetric()).thenReturn(chosenMetric);
@@ -102,20 +101,20 @@ public class MetricConfigurationControllerTest extends TestCase {
 		verify(addDialog).dispose();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowMetricConfigurationWhenEditing() {
 		controller.edit(metricConfiguration);
 		verify(confirmPanel).set(metricConfiguration);
 		verify(cardStack).push(confirmPanel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldJustPopPanelOnCancel() {
 		clickButton(confirmPanel, "cancel");
 		verify(cardStack).pop();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReplaceMetricConfigurationAndPopPanelOnConfirm() {
 		Metric metric = PowerMockito.mock(Metric.class);
 		MetricConfiguration oldConfiguration = PowerMockito.mock(MetricConfiguration.class);
@@ -131,7 +130,7 @@ public class MetricConfigurationControllerTest extends TestCase {
 		verify(cardStack).pop();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotPopPanelOnError() throws Exception {
 		Metric metric = PowerMockito.mock(Metric.class);
 		PowerMockito.when(metricConfiguration.getMetric()).thenReturn(metric);
@@ -163,7 +162,7 @@ public class MetricConfigurationControllerTest extends TestCase {
 		return errorDialog;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddRange() throws Exception {
 		RangeController rangeController = mockRangeController();
 		controller.add();
@@ -171,7 +170,7 @@ public class MetricConfigurationControllerTest extends TestCase {
 		verify(confirmPanel).set(metricConfiguration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEditRange() throws Exception {
 		RangeController rangeController = mockRangeController();
 		Range range = new Range();

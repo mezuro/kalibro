@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.ModuleResultFixtures.helloWorldApplicationResult;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -11,16 +11,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.service.entities.ModuleResultXml;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class ModuleResultEndpointImplTest extends TestCase {
 
 	private ModuleResultDao dao;
@@ -36,17 +36,17 @@ public class ModuleResultEndpointImplTest extends TestCase {
 
 	private void mockDao() {
 		dao = PowerMockito.mock(ModuleResultDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getModuleResultDao()).thenReturn(dao);
+		PowerMockito.mockStatic(DaoFactory.class);
+		PowerMockito.when(DaoFactory.getModuleResultDao()).thenReturn(dao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetModuleResult() {
 		PowerMockito.when(dao.getModuleResult("1", "2", new Date(3))).thenReturn(moduleResult);
 		assertDeepEquals(moduleResult, endpoint.getModuleResult("1", "2", new Date(3)).convert());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testResultHistory() {
 		List<ModuleResult> resultHistory = Arrays.asList(moduleResult);
 		PowerMockito.when(dao.getResultHistory("4", "2")).thenReturn(resultHistory);

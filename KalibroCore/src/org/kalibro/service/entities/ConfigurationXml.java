@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Configuration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConfigurationXml implements DataTransferObject<Configuration> {
+public class ConfigurationXml extends DataTransferObject<Configuration> {
 
 	private Long id;
 

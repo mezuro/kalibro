@@ -14,7 +14,7 @@ public class ColorPrinterTest extends PrinterTestCase<Color> {
 		return new ColorPrinter();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintColors() {
 		assertTrue(printer.canPrint(Color.RED));
 		assertTrue(printer.canPrint(new Color(42)));
@@ -23,7 +23,7 @@ public class ColorPrinterTest extends PrinterTestCase<Color> {
 		assertFalse(printer.canPrint(printer));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintAsHexString() throws Exception {
 		assertEquals(" 0xff0000 # red", print(Color.RED, "red"));
 		assertEquals(" 0x00ff00 # green", print(Color.GREEN, "green"));
@@ -32,7 +32,7 @@ public class ColorPrinterTest extends PrinterTestCase<Color> {
 		assertEquals(" 0xffffff # white", print(Color.WHITE, "white"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeLoadableAsYaml() throws Exception {
 		assertEquals(Color.RED, loadFromPrinted(Color.RED));
 		assertEquals(Color.GREEN, loadFromPrinted(Color.GREEN));

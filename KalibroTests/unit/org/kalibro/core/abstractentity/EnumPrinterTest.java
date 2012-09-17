@@ -15,7 +15,7 @@ public class EnumPrinterTest extends PrinterTestCase<Enum<?>> {
 		return new EnumPrinter();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintEnums() {
 		assertTrue(printer.canPrint(Environment.TEST));
 		assertTrue(printer.canPrint(MYSQL));
@@ -24,12 +24,12 @@ public class EnumPrinterTest extends PrinterTestCase<Enum<?>> {
 		assertFalse(printer.canPrint(printer));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintName() throws Exception {
 		assertEquals(" MYSQL # database type", print(MYSQL, "database type"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeLoadableAsYaml() throws Exception {
 		String printed = print(APACHE_DERBY, "");
 		assertEquals(APACHE_DERBY, new Yaml().loadAs(printed, SupportedDatabase.class));

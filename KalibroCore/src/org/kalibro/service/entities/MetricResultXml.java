@@ -11,11 +11,11 @@ import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "MetricResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricResultXml implements DataTransferObject<MetricResult> {
+public class MetricResultXml extends DataTransferObject<MetricResult> {
 
 	private MetricXml<?> metric;
 

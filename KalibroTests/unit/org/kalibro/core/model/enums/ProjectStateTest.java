@@ -13,7 +13,7 @@ public class ProjectStateTest extends EnumerationTestCase<ProjectState> {
 		return ProjectState.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveIfIsTemporary() {
 		assertFalse(NEW.isTemporary());
 		assertTrue(LOADING.isTemporary());
@@ -23,7 +23,7 @@ public class ProjectStateTest extends EnumerationTestCase<ProjectState> {
 		assertFalse(ERROR.isTemporary());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldProvideExplainingMessage() {
 		String projectName = "HelloWorld-1.0";
 		assertEquals("Project HelloWorld-1.0 was not processed", NEW.getMessage(projectName));

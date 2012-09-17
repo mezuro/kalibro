@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.Range;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Range")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RangeXml implements DataTransferObject<Range> {
+public class RangeXml extends DataTransferObject<Range> {
 
 	@XmlElement(required = true)
 	private Double beginning;

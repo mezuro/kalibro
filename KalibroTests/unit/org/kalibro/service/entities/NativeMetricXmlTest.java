@@ -1,8 +1,8 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
 import java.util.Collection;
 
@@ -28,7 +28,7 @@ public class NativeMetricXmlTest extends DtoTestCase<NativeMetric, NativeMetricX
 		return new NativeMetricXml(nativeMetric);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullDescriptionAndLanguagesToEmpty() {
 		NativeMetric metric = analizoMetric("dit");
 		NativeMetricXml dto = createDto(metric);

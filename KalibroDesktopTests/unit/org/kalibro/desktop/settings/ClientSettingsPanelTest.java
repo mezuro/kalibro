@@ -1,6 +1,6 @@
 package org.kalibro.desktop.settings;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -23,13 +23,13 @@ public class ClientSettingsPanelTest extends TestCase {
 		finder = new ComponentFinder(panel);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		serviceAddressField().set(settings.getServiceAddress());
 		assertDeepEquals(settings, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		panel.set(settings);
 		assertEquals(settings.getServiceAddress(), serviceAddressField().get());

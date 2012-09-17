@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.*;
+import static org.kalibro.core.model.RangeFixtures.newRange;
 import static org.kalibro.core.model.RangeLabel.*;
 
 import java.awt.Color;
@@ -24,7 +24,7 @@ public class RangeTest extends TestCase {
 		bad = newRange("amloc", BAD);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultValues() {
 		Range range = new Range();
 		assertDoubleEquals(Double.NEGATIVE_INFINITY, range.getBeginning());
@@ -35,7 +35,7 @@ public class RangeTest extends TestCase {
 		assertEquals("", range.getComments());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testToString() {
 		assertEquals("[0.0, 7.0[", "" + excellent);
 		assertEquals("[7.0, 10.0[", "" + good);
@@ -44,7 +44,7 @@ public class RangeTest extends TestCase {
 		assertEquals("[19.5, " + Double.POSITIVE_INFINITY + "[", "" + bad);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testIsFinite() {
 		assertTrue(excellent.isFinite());
 		assertTrue(good.isFinite());
@@ -53,7 +53,7 @@ public class RangeTest extends TestCase {
 		assertFalse(bad.isFinite());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testContains() {
 		assertFalse(excellent.contains(-0.1));
 		assertTrue(excellent.contains(0.0));
@@ -62,7 +62,7 @@ public class RangeTest extends TestCase {
 		assertTrue(good.contains(7.0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testIntersectsWith() {
 		assertFalse(excellent.intersectsWith(good));
 		assertFalse(good.intersectsWith(excellent));
@@ -72,7 +72,7 @@ public class RangeTest extends TestCase {
 		assertTrue(good.intersectsWith(range6to8));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateEqualsByBeginning() {
 		assertEquals(excellent, new Range(excellent.getBeginning(), Double.POSITIVE_INFINITY));
 		assertEquals(good, new Range(good.getBeginning(), Double.POSITIVE_INFINITY));
@@ -81,12 +81,12 @@ public class RangeTest extends TestCase {
 		assertEquals(bad, new Range(bad.getBeginning(), Double.POSITIVE_INFINITY));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByBeginning() {
 		assertSorted(excellent, good, regular, warning, bad);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testValidation() {
 		assertValid(1.0, 5.0);
 		assertValid(Double.NEGATIVE_INFINITY, 0.0);
@@ -109,12 +109,12 @@ public class RangeTest extends TestCase {
 	}
 
 	private void assertInvalid(final Double beginning, final Double end) {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				new Range(beginning, end);
 			}
-		}, "[" + beginning + ", " + end + "[ is not a valid range");
+		}).throwsException().withMessage("[" + beginning + ", " + end + "[ is not a valid range");
 	}
 }

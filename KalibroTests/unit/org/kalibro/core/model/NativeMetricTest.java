@@ -10,7 +10,7 @@ import org.kalibro.TestCase;
 
 public class NativeMetricTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		NativeMetric metric = new NativeMetric("", CLASS, JAVA, CPP);
 		assertEquals("", metric.getName());
@@ -19,13 +19,13 @@ public class NativeMetricTest extends TestCase {
 		assertEquals("", metric.getDescription());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void nativeMetricsShouldNotBeCompound() {
 		for (NativeMetric metric : analizoStub().getSupportedMetrics())
 			assertFalse(metric.isCompound());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testOrigin() {
 		NativeMetric metric = new NativeMetric("", PACKAGE, C);
 		assertNull(metric.getOrigin());

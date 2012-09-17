@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 import org.kalibro.service.entities.ProjectResultXml;
 
-@WebService
+@WebService(name = "ProjectResultEndpoint", serviceName = "ProjectResultEndpointService")
 public interface ProjectResultEndpoint {
 
 	@WebMethod

@@ -2,7 +2,6 @@ package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.Arrays;
 
@@ -38,24 +37,24 @@ public class RemoteFileLoaderTest extends TestCase {
 			.thenReturn(Arrays.asList(LOCAL_LOAD_COMMAND));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkValidationCommands() {
 		assertDeepList(remoteLoader.getValidationCommands(), "wget --version", LOCAL_VALIDATION_COMMAND);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSupportAuthentication() {
 		assertTrue(remoteLoader.supportsAuthentication());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkLoadCommands() {
 		assertDeepList(remoteLoader.getLoadCommands(repository, false),
 			"wget -N --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
 			LOCAL_LOAD_COMMAND);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkGetLocalLoadCommandsForTemporaryFile() {
 		remoteLoader.getLoadCommands(repository, false);
 

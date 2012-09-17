@@ -1,7 +1,6 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -26,25 +25,63 @@ public class AbstractEntityTest extends TestCase {
 	@Before
 	public void setUp() {
 		file = mock(File.class);
-		entity = loadFixture("person-carlos", Person.class);
+		entity = loadFixture("carlos", Person.class);
 		mockStatic(FileUtils.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
+	public void shouldImportFromFile() throws Exception {
+		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("Person-carlos.yml"), Person.class));
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenCannotImport() throws Exception {
+		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
+		assertThat(new Task() {
+
+			@Override
+			public void perform() {
+				AbstractEntity.importFrom(file, Person.class);
+			}
+		}).throwsException().withMessage("Could not import person from file: " + file)
+			.withCause(NullPointerException.class);
+	}
+
+	@Test
+	public void shouldExportToFile() throws Exception {
+		entity.exportTo(file);
+		verifyStatic();
+		FileUtils.writeStringToFile(file, Printer.print(entity));
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenCannotExport() throws Exception {
+		doThrow(new IOException()).when(FileUtils.class);
+		FileUtils.writeStringToFile(file, Printer.print(entity));
+		assertThat(new Task() {
+
+			@Override
+			public void perform() {
+				entity.exportTo(file);
+			}
+		}).throwsException().withMessage("Could not export person to file: " + file).withCause(IOException.class);
+	}
+
+	@Test
 	public void shouldPrintWithPrinter() {
 		mockStatic(Printer.class);
 		when(Printer.print(entity)).thenReturn("42");
 		assertEquals("42", entity.toString());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseHashCodeCalculator() {
 		mockStatic(HashCodeCalculator.class);
 		when(HashCodeCalculator.hash(entity)).thenReturn(42);
 		assertEquals(42, entity.hashCode());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseEqualityOnEquals() {
 		spy(Equality.class);
 		assertFalse(entity.equals(null));
@@ -52,7 +89,7 @@ public class AbstractEntityTest extends TestCase {
 		Equality.areEqual(entity, null);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseEqualityOnDeepEquals() {
 		spy(Equality.class);
 		assertFalse(entity.deepEquals(null));
@@ -60,48 +97,11 @@ public class AbstractEntityTest extends TestCase {
 		Equality.areDeepEqual(entity, null);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseEntityComparatorOnComparisons() throws Exception {
 		EntityComparator<Person> comparator = mock(EntityComparator.class);
 		whenNew(EntityComparator.class).withNoArguments().thenReturn(comparator);
 		when(comparator.compare(entity, entity)).thenReturn(42);
 		assertEquals(42, entity.compareTo(entity));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldImportFromFile() throws Exception {
-		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("person-carlos.yml"), Person.class));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionWhenCantImport() throws Exception {
-		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
-		checkKalibroException(new Task() {
-
-			@Override
-			public void perform() {
-				AbstractEntity.importFrom(file, Person.class);
-			}
-		}, "Could not import person from file: " + file, NullPointerException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldExportToFile() throws Exception {
-		entity.exportTo(file);
-		verifyStatic();
-		FileUtils.writeStringToFile(file, Printer.print(entity));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldThrowExceptionWhenCantExport() throws Exception {
-		doThrow(new IOException()).when(FileUtils.class);
-		FileUtils.writeStringToFile(file, Printer.print(entity));
-		checkKalibroException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				entity.exportTo(file);
-			}
-		}, "Could not export person to file: " + file, IOException.class);
 	}
 }

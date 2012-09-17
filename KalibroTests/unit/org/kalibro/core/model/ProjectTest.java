@@ -1,9 +1,8 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 import static org.kalibro.core.model.enums.ProjectState.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,7 +34,7 @@ public class ProjectTest extends TestCase {
 		when(KalibroSettings.load()).thenReturn(settings);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitializationAttributes() {
 		project = new Project();
 		assertNull(project.getId());
@@ -48,12 +47,12 @@ public class ProjectTest extends TestCase {
 		assertNoError();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeProjectName() {
 		assertEquals(project.getName(), "" + project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoadRepository() {
 		Repository repository = PowerMockito.mock(Repository.class);
 		project.setRepository(repository);
@@ -61,7 +60,7 @@ public class ProjectTest extends TestCase {
 		Mockito.verify(repository).load(project.getDirectory());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeInErrorStateAfterSettingError() {
 		Exception error = new Exception();
 		project.setError(error);
@@ -69,7 +68,7 @@ public class ProjectTest extends TestCase {
 		assertEquals(ERROR, project.getState());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetStateMessageFromState() {
 		for (ProjectState state : ProjectState.values()) {
 			setState(state);
@@ -84,7 +83,7 @@ public class ProjectTest extends TestCase {
 			project.setState(state);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveStateWhenErrorOcurred() {
 		List<ProjectState> normalStates = new ArrayList<ProjectState>(Arrays.asList(ProjectState.values()));
 		normalStates.remove(ERROR);
@@ -95,29 +94,29 @@ public class ProjectTest extends TestCase {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				project.getStateWhenErrorOcurred();
 			}
-		}, "Project " + project + " has no error");
+		}).throwsException().withMessage("Project " + project + " has no error");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAllowErrorStateWithoutException() {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				project.setState(ERROR);
 			}
-		}, "Use setError(Throwable) to put project in error state");
+		}).throwsException().withMessage("Use setError(Throwable) to put project in error state");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldClearErrorWhenSettingNormalState() {
 		project.setError(new Exception());
 		project.setState(ANALYZING);
@@ -125,16 +124,16 @@ public class ProjectTest extends TestCase {
 	}
 
 	private void assertNoError() {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				project.getError();
 			}
-		}, "Project " + project + " has no error");
+		}).throwsException().withMessage("Project " + project + " has no error");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveProjectDirectory() {
 		project.setId(42L);
 		project.setName("Testing camel case++");
@@ -142,7 +141,7 @@ public class ProjectTest extends TestCase {
 		assertEquals(settings.getServerSettings().getLoadDirectory(), project.getDirectory().getParentFile());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByName() {
 		assertSorted(newProject(""), newProject("Abc"), newProject("Def"), newProject("Xyz"));
 	}

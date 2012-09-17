@@ -20,12 +20,12 @@ public class CollectionRendererTest extends TestCase {
 		renderer = new CollectionRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderCollection() {
 		assertTrue(renderer.canRender(Arrays.asList("42")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotRenderAnythingButCollection() {
 		assertFalse(renderer.canRender(true));
 		assertFalse(renderer.canRender(Color.MAGENTA));
@@ -33,7 +33,7 @@ public class CollectionRendererTest extends TestCase {
 		assertFalse(renderer.canRender(null));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderListString() {
 		assertEquals("My, list", render(Arrays.asList("My", "list")));
 		assertEquals("", render(new ArrayList<String>()));

@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.IntegrationTest;
 import org.kalibro.core.model.NativeMetric;
 
-public class CheckstyleTest extends TestCase {
+public class CheckstyleTest extends IntegrationTest {
 
 	private CheckstyleMetricCollector checkstyle;
 
@@ -17,7 +17,7 @@ public class CheckstyleTest extends TestCase {
 		checkstyle = new CheckstyleMetricCollector();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldCollectMetrics() throws Exception {
 		File samplesDirectory = new File(samplesDirectory(), "checkstyle");
 		File codeDirectory = new File(samplesDirectory, "Fibonacci");

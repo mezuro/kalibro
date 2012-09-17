@@ -1,7 +1,6 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,18 +21,18 @@ public class LoadSourceTaskTest extends TestCase {
 		loadTask = new LoadSourceTask(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTaskState() {
 		assertEquals(ProjectState.LOADING, loadTask.getTaskState());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoadProject() {
 		loadTask.performAndGetResult();
 		Mockito.verify(project).load();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnProjectResult() {
 		assertSame(loadTask.projectResult, loadTask.performAndGetResult());
 	}

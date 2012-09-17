@@ -24,32 +24,32 @@ public class KalibroFrameTest extends TestCase {
 		frame = new KalibroFrame();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExitWhenClosing() {
 		assertEquals(WindowConstants.EXIT_ON_CLOSE, frame.getDefaultCloseOperation());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveKalibroIcon() {
 		assertEquals(new Icon(Icon.KALIBRO).getImage(), frame.getIconImage());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkName() {
 		assertEquals("kalibroFrame", frame.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkMinimumSize() {
 		assertEquals(new Dimension(900, 700), frame.getMinimumSize());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeMaximized() {
 		assertEquals(Frame.MAXIMIZED_BOTH, frame.getExtendedState());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkMenu() {
 		JMenuBar menuBar = frame.getJMenuBar();
 		assertEquals(3, menuBar.getMenuCount());

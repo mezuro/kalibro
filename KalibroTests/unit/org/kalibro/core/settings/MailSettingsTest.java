@@ -1,7 +1,6 @@
 package org.kalibro.core.settings;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.codemonkey.simplejavamail.Mailer;
 import org.codemonkey.simplejavamail.TransportStrategy;
@@ -18,15 +17,15 @@ public class MailSettingsTest extends TestCase {
 
 	private MailSettings settings = new MailSettings();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultSettings() {
 		assertEquals("smtp.gmail.com", settings.getSmtpHost());
 		assertEquals(465, settings.getSmtpPort().intValue());
 		assertEquals("example@gmail.com", settings.getSenderMail());
-		assertEquals("", settings.getPassword());
+		assertEquals("securepassword", settings.getPassword());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateMailer() throws Exception {
 		Mailer mailer = mock(Mailer.class);
 		whenNew(Mailer.class).withArguments(settings.getSmtpHost(), settings.getSmtpPort(), settings.getSenderMail(),

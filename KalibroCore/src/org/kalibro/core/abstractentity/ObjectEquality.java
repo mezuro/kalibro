@@ -1,7 +1,7 @@
 package org.kalibro.core.abstractentity;
 
 /**
- * Determines equality of objects.
+ * Default equality. Determines equality of objects using {@code Object.equals()}.
  * 
  * @author Carlos Morais
  */

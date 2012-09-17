@@ -3,7 +3,7 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import java.util.Arrays;
@@ -27,7 +27,7 @@ public class SourceTreeBuilderTest extends TestCase {
 		treeBuilder = new SourceTreeBuilder(projectResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSourceTree() {
 		ModuleNode sourceTree = getSourceTree(
 			new Module(CLASS, "org.checkstyle.CheckstyleMetricCollector"),
@@ -42,7 +42,7 @@ public class SourceTreeBuilderTest extends TestCase {
 		assertDeepEquals(analizoCheckstyleTree(), sourceTree.getChildren().iterator().next());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetRootNameAsProjectName() {
 		assertDeepEquals(helloWorldRoot(), getSourceTree(helloWorldApplication(), helloWorldClass()));
 	}

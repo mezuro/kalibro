@@ -19,26 +19,26 @@ public class MaybeEditableFieldTest extends TestCase {
 		finder = new ComponentFinder(field);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeEditableByDefault() {
 		assertTrue(field.isEditable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowEditableFieldWhenEditable() {
 		field.setEditable(true);
 		assertTrue(field.isEditable());
 		findEditableField();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowUneditableFieldWhenNotEditable() {
 		field.setEditable(false);
 		assertFalse(field.isEditable());
 		findUneditableField();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowValueSet() {
 		testLastValue("First value", false);
 		testLastValue("Another value", true);

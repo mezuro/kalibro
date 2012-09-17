@@ -12,11 +12,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "BaseTool")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseToolXml implements DataTransferObject<BaseTool> {
+public class BaseToolXml extends DataTransferObject<BaseTool> {
 
 	private String name;
 	private String description;

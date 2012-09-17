@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.awt.Font;
 
@@ -21,22 +21,22 @@ public class BooleanFieldTest extends TestCase {
 		field = new BooleanField("", "My boolean field");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveBoldFont() {
 		assertEquals(Font.BOLD, field.getFont().getStyle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveCentertHorizontalAlignment() {
 		assertEquals(SwingConstants.CENTER, field.getHorizontalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveCenterVerticalAlignment() {
 		assertEquals(SwingConstants.CENTER, field.getVerticalAlignment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		for (Boolean value : VALUES) {
 			field.setSelected(value);
@@ -44,7 +44,7 @@ public class BooleanFieldTest extends TestCase {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		for (Boolean value : VALUES) {
 			field.set(value);

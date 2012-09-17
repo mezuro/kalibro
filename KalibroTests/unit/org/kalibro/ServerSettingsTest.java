@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.io.File;
 
@@ -9,7 +9,7 @@ import org.kalibro.core.Environment;
 
 public class ServerSettingsTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultSettings() {
 		ServerSettings settings = new ServerSettings();
 		assertEquals(new File(Environment.dotKalibro(), "repositories"), settings.getLoadDirectory());

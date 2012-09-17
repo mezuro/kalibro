@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -16,7 +16,7 @@ public class ChoiceFieldTest extends TestCase {
 		field = new ChoiceField<Granularity>("", Granularity.values());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGet() {
 		for (Granularity granularity : Granularity.values()) {
 			field.setSelectedItem(granularity);
@@ -24,7 +24,7 @@ public class ChoiceFieldTest extends TestCase {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSet() {
 		for (Granularity granularity : Granularity.values()) {
 			field.set(granularity);

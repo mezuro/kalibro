@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.mockito.Matchers.*;
 
 import javax.swing.JPanel;
@@ -55,22 +55,22 @@ public class ConfigurationFrameTest extends TestCase {
 			.thenReturn(metricConfigurationController);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void titleShouldHaveConfigurationName() {
 		assertEquals(configuration.getName() + " - Configuration", frame.getTitle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowConfigurationOnPanel() {
 		Mockito.verify(panel).set(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListenToMetricConfigurationsPanel() {
 		Mockito.verify(panel).addMetricConfigurationsListener(frame);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddMetricConfiguration() {
 		finder.find("add", Button.class).doClick();
 
@@ -78,7 +78,7 @@ public class ConfigurationFrameTest extends TestCase {
 		Mockito.verify(metricConfigurationController).addMetricConfiguration();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEditMetricConfiguration() {
 		finder.find("metricConfigurations", JTable.class).getSelectionModel().setSelectionInterval(0, 0);
 		finder.find("edit", Button.class).doClick();
@@ -88,13 +88,13 @@ public class ConfigurationFrameTest extends TestCase {
 		Mockito.verify(metricConfigurationController).edit(metricConfiguration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveConfiguration() {
 		PowerMockito.when(panel.get()).thenReturn(configuration);
 		assertSame(configuration, frame.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRefreshConfigurationWhenPanelIsRemovedFromCardStack() {
 		CardStackPanel cardStack = (CardStackPanel) Whitebox.getInternalState(frame, "cardStack");
 		cardStack.push(new JPanel());

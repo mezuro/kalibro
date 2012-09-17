@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 import org.kalibro.service.entities.ConfigurationXml;
 
-@WebService
+@WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public interface ConfigurationEndpoint {
 
 	@WebMethod

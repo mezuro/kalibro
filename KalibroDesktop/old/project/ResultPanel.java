@@ -25,7 +25,7 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.Range;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
+import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.desktop.old.listeners.ResultPanelListener;
 import org.kalibro.desktop.old.model.ConfiguredResultTableCellRenderer;
 import org.kalibro.desktop.old.model.ConfiguredResultTableModel;

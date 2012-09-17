@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 import org.kalibro.service.entities.BaseToolXml;
 
-@WebService
+@WebService(name = "BaseToolEndpoint", serviceName = "BaseToolEndpointService")
 public interface BaseToolEndpoint {
 
 	@WebMethod

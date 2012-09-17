@@ -1,6 +1,6 @@
 package org.kalibro.service.entities;
 
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.sc;
 
 import java.util.Arrays;
 import java.util.Collection;

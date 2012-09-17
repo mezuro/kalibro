@@ -1,6 +1,6 @@
 package org.kalibro.core.model.enums;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Test;
@@ -13,12 +13,12 @@ public class GranularityTest extends EnumerationTestCase<Granularity> {
 		return Granularity.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testSorting() {
 		assertSorted(SOFTWARE, PACKAGE, CLASS, METHOD);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInferredParentGranularity() {
 		assertEquals(CLASS, METHOD.inferParentGranularity());
 		assertEquals(PACKAGE, CLASS.inferParentGranularity());

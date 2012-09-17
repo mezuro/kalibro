@@ -31,19 +31,19 @@ public class InputDialogTest extends TestCase {
 		dialog = new InputDialog(TITLE, parent);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnFalseIfNotConfirmed() throws Exception {
 		mockJOptionPane(null);
 		assertFalse(dialog.userTyped(MESSAGE));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReturnFalseOnEmptyInput() throws Exception {
 		mockJOptionPane("   ");
 		assertFalse(dialog.userTyped(MESSAGE));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetUserInput() throws Exception {
 		mockJOptionPane("the input");
 		assertTrue(dialog.userTyped(MESSAGE));

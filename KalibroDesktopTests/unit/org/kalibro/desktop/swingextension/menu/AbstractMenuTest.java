@@ -21,20 +21,20 @@ public class AbstractMenuTest extends TestCase {
 		menu = new MenuStub();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNameTextAndMnemonic() {
 		assertEquals("menu", menu.getName());
 		assertEquals("Menu", menu.getText());
 		assertEquals('M', menu.getMnemonic());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateItemsAndBuildMenu() {
 		assertTrue(itemsCreated);
 		assertTrue(menuBuilded);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldListenToItself() {
 		assertSame(menu, menu.getMenuListeners()[0]);
 		menu.menuSelected(null);

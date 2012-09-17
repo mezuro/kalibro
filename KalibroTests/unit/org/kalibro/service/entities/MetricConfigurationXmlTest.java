@@ -1,8 +1,8 @@
 package org.kalibro.service.entities;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.core.model.MetricFixtures.sc;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -30,7 +30,7 @@ public class MetricConfigurationXmlTest extends DtoTestCase<MetricConfiguration,
 		return new MetricConfigurationXml(metricConfiguration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullUnrequiredFieldsToDefault() {
 		MetricConfiguration configuration = metricConfiguration("loc");
 		MetricConfigurationXml dto = createDto(configuration);

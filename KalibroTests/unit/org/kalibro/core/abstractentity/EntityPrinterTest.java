@@ -18,10 +18,10 @@ public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 
 	@Before
 	public void setUp() {
-		programmer = loadFixture("programmer-carlos", Programmer.class);
+		programmer = loadFixture("carlos", Programmer.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintEntities() {
 		assertTrue(printer.canPrint(new Person()));
 		assertTrue(printer.canPrint(new Programmer()));
@@ -30,12 +30,12 @@ public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 		assertFalse(printer.canPrint(printer));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintAsYaml() throws Exception {
-		assertEquals(loadResource("programmer-carlos.yml").replace("---", ""), print(programmer, ""));
+		assertEquals(loadResource("Programmer-carlos.yml").replace("---", ""), print(programmer, ""));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeLoadableAsYaml() throws Exception {
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);

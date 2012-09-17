@@ -4,17 +4,17 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.Kalibro;
-import org.kalibro.core.persistence.dao.MetricConfigurationDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
-@WebService
+@WebService(name = "MetricConfigurationEndpoint", serviceName = "MetricConfigurationEndpointService")
 public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpoint {
 
 	private MetricConfigurationDao dao;
 
 	public MetricConfigurationEndpointImpl() {
-		this(Kalibro.getMetricConfigurationDao());
+		this(DaoFactory.getMetricConfigurationDao());
 	}
 
 	public MetricConfigurationEndpointImpl(MetricConfigurationDao metricConfigurationDao) {

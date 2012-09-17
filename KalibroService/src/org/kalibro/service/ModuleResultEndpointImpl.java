@@ -8,18 +8,18 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.service.entities.ModuleResultXml;
 
-@WebService
+@WebService(name = "ModuleResultEndpoint", serviceName = "ModuleResultEndpointService")
 public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 
 	private ModuleResultDao dao;
 
 	public ModuleResultEndpointImpl() {
-		this(Kalibro.getModuleResultDao());
+		this(DaoFactory.getModuleResultDao());
 	}
 
 	protected ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {

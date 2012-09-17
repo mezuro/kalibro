@@ -1,9 +1,9 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Mockito.atLeastOnce;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,57 +34,57 @@ public class TableModelTest extends TestCase {
 		model.addColumn(new Column("Label", String.class, 42));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkData() {
 		assertDeepEquals(data, model.getData());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyDataChanged() {
 		model.setData(Arrays.asList(new Range()));
 		verify(model, atLeastOnce()).fireTableDataChanged();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkObjectByRow() {
 		for (int i = 0; i < data.size(); i++)
 			assertSame(data.get(i), model.getObjectAt(i));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRemoveRow() {
 		Range range = data.get(0);
 		model.remove(range);
 		assertFalse(model.getData().contains(range));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyRemoval() {
 		model.remove(data.get(0));
 		verify(model, atLeastOnce()).fireTableDataChanged();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveColumnCount() {
 		assertEquals(1, model.getColumnCount());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveColumnName() {
 		assertEquals("Label", model.getColumnName(0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveColumnClass() {
 		assertEquals(String.class, model.getColumnClass(0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrievePreferredWidth() {
 		assertEquals(10 + model.columns.get(0).getPreferredWidth(), model.getPreferredWidth());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUpdateColumnModel() {
 		TableColumn tableColumn = PowerMockito.mock(TableColumn.class);
 		TableColumnModel columnModel = PowerMockito.mock(TableColumnModel.class);
@@ -98,12 +98,12 @@ public class TableModelTest extends TestCase {
 		assertClassEquals(DefaultRenderer.class, captor.getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void rowCountShouldBeDataSize() {
 		assertEquals(data.size(), model.getRowCount());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddColumn() {
 		model.addColumn(new Column("Comments", String.class, 84));
 		assertEquals(2, model.getColumnCount());

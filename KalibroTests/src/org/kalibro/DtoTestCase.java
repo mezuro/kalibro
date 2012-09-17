@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNull;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -8,12 +8,13 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 import org.powermock.reflect.Whitebox;
 
+@Deprecated
 public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void defaultConstructorShouldDoNothing() throws Exception {
 		RECORD record = newDtoUsingDefaultConstructor();
 		for (Field field : record.getClass().getDeclaredFields())
@@ -24,12 +25,12 @@ public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTI
 	private boolean isInstanceField(Field field) {
 		boolean isStatic = Modifier.isStatic(field.getModifiers());
 		boolean isOuterField = field.getName().startsWith("this$");
-		return ! (isStatic || isOuterField);
+		return !(isStatic || isOuterField);
 	}
 
 	protected abstract RECORD newDtoUsingDefaultConstructor();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkCorrectConversion() {
 		for (ENTITY entity : entitiesForTestingConversion())
 			assertCorrectConversion(entity, createDto(entity).convert());

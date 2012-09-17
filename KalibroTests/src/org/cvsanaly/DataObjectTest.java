@@ -6,12 +6,12 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 import org.mockito.Mockito;
 
 public abstract class DataObjectTest<T extends Object> extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testDataObject() throws Exception {
 		for (Field field : getTypeClass().getDeclaredFields()) {
 			if (field.getAnnotations().length == 0)

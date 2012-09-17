@@ -3,8 +3,8 @@ package org.kalibro.desktop.project;
 import java.awt.Component;
 import java.util.List;
 
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.Project;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.StringField;
@@ -26,7 +26,7 @@ public class ProjectPanel extends EditPanel<Project> {
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
-		List<String> configurationNames = Kalibro.getConfigurationDao().getConfigurationNames();
+		List<String> configurationNames = DaoFactory.getConfigurationDao().getConfigurationNames();
 		nameField = new StringField("name", 20);
 		licenseField = new StringField("license", 20);
 		descriptionField = new TextField("description", 3, 20);

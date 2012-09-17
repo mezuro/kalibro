@@ -1,8 +1,7 @@
 package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +26,7 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 		PowerMockito.whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteAndWaitWithoutTimeout() throws Throwable {
 		RetrieveResultTask<String> task = new RetrieveResultTask<String>(RESULT);
 		task.perform();
@@ -36,7 +35,7 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 		verify(executor).executeAndWait();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteAndWaitWithTimeout() throws Throwable {
 		long timeout = 42;
 		RetrieveResultTask<String> task = new RetrieveResultTask<String>(RESULT);
@@ -46,7 +45,7 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 		verify(executor).executeAndWait(timeout);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListenerOfTaskDone() throws InterruptedException {
 		RetrieveResultTask<String> task = new RetrieveResultTask<String>(RESULT);
 		runAndGetReport(task);
@@ -54,7 +53,7 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 		assertEquals(RESULT, report.getResult());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListenerOfTaskHalted() throws InterruptedException {
 		runAndGetReport(new ThrowExceptionTypedTask<String>());
 		assertFalse(report.isTaskDone());

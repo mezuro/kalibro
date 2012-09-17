@@ -14,13 +14,12 @@ public class HashCodeCalculatorTest extends UtilityClassTest {
 
 	@Before
 	public void setUp() {
-		carlos = loadFixture("person-carlos", Person.class);
-		cristina = loadFixture("person-cristina", Person.class);
-		isis = loadFixture("person-isis", Person.class);
-		paulo = loadFixture("person-paulo", Person.class);
-		programmerCarlos = loadFixture("programmer-carlos", Programmer.class);
-		programmerPaulo = loadFixture("programmer-paulo", Programmer.class);
-		programmerCarlos.addColleague(programmerPaulo);
+		carlos = loadFixture("carlos", Person.class);
+		cristina = loadFixture("cristina", Person.class);
+		isis = loadFixture("isis", Person.class);
+		paulo = loadFixture("paulo", Person.class);
+		programmerCarlos = loadFixture("carlos", Programmer.class);
+		programmerPaulo = loadFixture("paulo", Programmer.class);
 	}
 
 	@Override
@@ -28,18 +27,18 @@ public class HashCodeCalculatorTest extends UtilityClassTest {
 		return HashCodeCalculator.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void hashCodesShouldBeDistributed() {
 		assertDifferent(hash(carlos), hash(cristina), hash(isis), hash(paulo));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void hashCodesShouldBeEqualForEqualObjects() {
 		assertEquals(hash(carlos), hash(programmerCarlos));
 		assertEquals(hash(paulo), hash(programmerPaulo));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void hashCodesShouldBeEqualForNullIdentities() {
 		Person fulano = new Person(null, "Fulano", "M");
 		Person cicrana = new Person(null, "Cicrana", "F");

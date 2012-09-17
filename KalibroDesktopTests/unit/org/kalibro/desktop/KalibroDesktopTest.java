@@ -1,8 +1,5 @@
 package org.kalibro.desktop;
 
-import static org.mockito.internal.verification.VerificationModeFactory.*;
-import static org.powermock.api.mockito.PowerMockito.*;
-
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -35,17 +32,17 @@ public class KalibroDesktopTest extends TestCase {
 		whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotOpenFrameIfSettingsFileDoesNotExistAndUserCancelsSettingsEdition() throws Exception {
 		prepareScenario(false, false);
 		KalibroDesktop.main(null);
 
 		verifyStatic();
 		SettingsController.editSettings();
-		Mockito.verify(kalibroFrame, times(0)).setVisible(true);
+		Mockito.verify(kalibroFrame, never()).setVisible(true);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldOpenFrameIfSettingsFileDoesNotExistButUserConfirmsSettingsEdition() throws Exception {
 		prepareScenario(false, true);
 		KalibroDesktop.main(null);
@@ -55,12 +52,12 @@ public class KalibroDesktopTest extends TestCase {
 		Mockito.verify(kalibroFrame).setVisible(true);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldOpenFrameWithoutEditSettingsIfFileAlreadyExists() throws Exception {
 		prepareScenario(true, false);
 		KalibroDesktop.main(null);
 
-		verifyStatic(times(0));
+		verifyStatic(never());
 		SettingsController.editSettings();
 		Mockito.verify(kalibroFrame).setVisible(true);
 	}

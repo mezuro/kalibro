@@ -23,45 +23,45 @@ public class ReflectionMenuTest extends TestCase {
 		menuItem = new ReflectionMenuItem("", "", ' ', controller, "open");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAcceptInvalidMethodOnCreation() {
-		checkKalibroError(new Task() {
+		assertThat(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				new ReflectionMenuItem("", "", ' ', controller, "invalidMethod");
 			}
-		}, "ReflectionMenuItem did not found method on controller", NoSuchMethodException.class);
+		}).throwsError().withMessage("ReflectionMenuItem did not found method on controller")
+			.withCause(NoSuchMethodException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInvokeControllerMethod() {
 		menuItem.doClick();
 		Mockito.verify(controller).open();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowControllerException() {
 		PowerMockito.doThrow(new IllegalArgumentException()).when(controller).open();
-		checkException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				menuItem.doClick();
-			}
-		}, IllegalArgumentException.class);
+		assertThat(click()).doThrow(IllegalArgumentException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorOnBizarreAccessException() throws Exception {
 		Method method = CrudController.class.getDeclaredMethod("unmodified");
 		Whitebox.setInternalState(menuItem, "method", method);
-		checkKalibroError(new Task() {
+		assertThat(click()).throwsError().withMessage("Could not access controller method")
+			.withCause(IllegalAccessException.class);
+	}
+
+	private Task click() {
+		return new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				menuItem.doClick();
 			}
-		}, "Could not access controller method", IllegalAccessException.class);
+		};
 	}
 }

@@ -2,7 +2,6 @@ package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -15,14 +14,14 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(Equality.class)
 public class EqualityTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseNormalCasesOnNormalEquals() throws Exception {
 		spyEvaluate();
 		Equality.areEqual(null, null);
 		verifyPrivate(Equality.class).invoke("evaluate", eq(null), eq(null), isA(EntityEquality.class));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseDeepCasesOnDeepEquals() throws Exception {
 		spyEvaluate();
 		Equality.areDeepEqual(null, null);
@@ -36,23 +35,23 @@ public class EqualityTest extends TestCase {
 		doReturn(true).when(Equality.class, "evaluate", any(), any(), anyVararg());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void nullShouldBeEqualNull() throws Exception {
 		assertTrue(evaluate(null, null));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void onlyNullShouldBeEqualNull() throws Exception {
 		assertFalse(evaluate(this, null));
 		assertFalse(evaluate(null, this));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void objectShouldBeEqualItself() throws Exception {
 		assertTrue(evaluate(this, this));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUseSpecialCaseEvaluators() throws Exception {
 		FirstCharEvaluator firstCharEvaluator = new FirstCharEvaluator();
 		assertFalse(evaluate("Equality", "Evaluator"));

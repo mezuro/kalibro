@@ -2,6 +2,8 @@ package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
@@ -17,7 +19,7 @@ public class RepositoryTest extends TestCase {
 
 	private Repository repository = new Repository();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testInitialization() {
 		assertEquals(RepositoryType.LOCAL_DIRECTORY, repository.getType());
 		assertEquals("", repository.getAddress());
@@ -25,7 +27,7 @@ public class RepositoryTest extends TestCase {
 		assertEquals("", repository.getPassword());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveAuthenticationIfHasUsernameOrPassword() {
 		assertFalse(repository.hasAuthentication());
 
@@ -42,11 +44,12 @@ public class RepositoryTest extends TestCase {
 		assertTrue(repository.hasAuthentication());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoad() {
+		File loadDirectory = mock(File.class);
 		RepositoryType type = PowerMockito.mock(RepositoryType.class);
 		repository.setType(type);
-		repository.load(helloWorldDirectory());
-		Mockito.verify(type).load(repository, helloWorldDirectory());
+		repository.load(loadDirectory);
+		Mockito.verify(type).load(repository, loadDirectory);
 	}
 }

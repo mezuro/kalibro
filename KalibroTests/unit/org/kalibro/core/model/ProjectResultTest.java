@@ -1,9 +1,9 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ModuleNodeFixtures.helloWorldRoot;
+import static org.kalibro.core.model.ProjectFixtures.helloWorld;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Date;
 
@@ -23,7 +23,7 @@ public class ProjectResultTest extends TestCase {
 		result = newHelloWorldResult(date);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAttributes() {
 		assertDeepEquals(helloWorld(), result.getProject());
 		assertSame(date, result.getDate());
@@ -33,7 +33,7 @@ public class ProjectResultTest extends TestCase {
 		assertDeepEquals(helloWorldRoot(), result.getSourceTree());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByProjectThenDate() {
 		ProjectResult result3 = new ProjectResult(helloWorld());
 		ProjectResult result4 = new ProjectResult(helloWorld());
@@ -44,20 +44,20 @@ public class ProjectResultTest extends TestCase {
 		assertSorted(result1, result2, result3, result4);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveIfIsProcessed() {
 		assertTrue(result.isProcessed());
 		assertFalse(new ProjectResult(helloWorld()).isProcessed());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateProjectProcessedOnRetrievingProcessData() {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				new ProjectResult(helloWorld()).getSourceTree();
 			}
-		}, "Project not yet processed: " + result.getProject().getName());
+		}).throwsException().withMessage("Project not yet processed: " + result.getProject().getName());
 	}
 }

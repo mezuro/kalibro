@@ -18,12 +18,12 @@ public class CheckstyleConfigurationTest extends TestCase {
 		configuration = new CheckstyleConfiguration("The module name");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkName() {
 		assertEquals("The module name", configuration.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAttributes() {
 		assertArrayEquals(new String[0], configuration.getAttributeNames());
 
@@ -31,12 +31,12 @@ public class CheckstyleConfigurationTest extends TestCase {
 		assertArrayEquals(new String[]{"my attribute"}, configuration.getAttributeNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void attributeShouldBeAlwaysBeOneNegative() {
 		assertEquals("-1", configuration.getAttribute("anything"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkMessages() {
 		assertTrue(configuration.getMessages().isEmpty());
 
@@ -46,7 +46,7 @@ public class CheckstyleConfigurationTest extends TestCase {
 		assertEquals(key + "{0}", configuration.getMessages().get(key));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateChildOnFirstGetByName() {
 		assertEquals(0, configuration.getChildren().length);
 
@@ -55,7 +55,7 @@ public class CheckstyleConfigurationTest extends TestCase {
 		assertSame(fileLength, configuration.getChildByName("FileLength"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateCheckerConfigurationFilteringMetrics() {
 		NativeMetric numberOfMethods = CheckstyleMetric.NUMBER_OF_METHODS.getNativeMetric();
 		configuration = CheckstyleConfiguration.checkerConfiguration(Arrays.asList(numberOfMethods));

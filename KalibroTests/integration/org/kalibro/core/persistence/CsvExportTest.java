@@ -1,8 +1,8 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,11 +13,11 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.IntegrationTest;
 import org.kalibro.core.Environment;
 import org.kalibro.core.model.ModuleResult;
 
-public class CsvExportTest extends TestCase {
+public class CsvExportTest extends IntegrationTest {
 
 	private File csvFile;
 	private ModuleResult moduleResult;
@@ -35,7 +35,7 @@ public class CsvExportTest extends TestCase {
 		csvFile.delete();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testExport() throws IOException {
 		InputStream expectedCsv = getClass().getResourceAsStream("HelloWorld.csv");
 		new ModuleResultCsvExporter(moduleResult).exportTo(csvFile);

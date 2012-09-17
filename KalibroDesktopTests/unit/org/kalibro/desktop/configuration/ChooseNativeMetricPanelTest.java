@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 
 import java.util.Arrays;
 
@@ -12,10 +12,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.Kalibro;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.persistence.dao.BaseToolDao;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.list.ListListener;
@@ -29,7 +29,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareForTest(Kalibro.class)
+@PrepareForTest(DaoFactory.class)
 public class ChooseNativeMetricPanelTest extends TestCase {
 
 	private BaseTool analizo;
@@ -41,16 +41,16 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 	@Before
 	public void setUp() {
 		analizo = analizoStub();
-		mockKalibro();
+		mockDaoFactory();
 		panel = new ChooseNativeMetricPanel();
 		finder = new ComponentFinder(panel);
 		spyMetricTable();
 	}
 
-	private void mockKalibro() {
+	private void mockDaoFactory() {
 		BaseToolDao dao = PowerMockito.mock(BaseToolDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getBaseToolDao()).thenReturn(dao);
+		PowerMockito.mockStatic(DaoFactory.class);
+		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
 		PowerMockito.when(dao.getBaseToolNames()).thenReturn(Arrays.asList("Analizo"));
 		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(analizo);
 	}
@@ -60,29 +60,29 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		Whitebox.setInternalState(panel, Table.class, table);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowBaseToolNames() {
 		JList baseToolList = baseToolList();
 		assertEquals(1, baseToolList.getModel().getSize());
 		assertEquals("Analizo", baseToolList.getModel().getElementAt(0));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowNativeMetricsFromBaseTool() {
 		assertTrue(table.getData().isEmpty());
 
 		baseToolList().setSelectedIndex(0);
-		assertDeepEquals(analizo.getSupportedMetrics(), table.getData());
+		assertDeepSet(analizo.getSupportedMetrics(), table.getData().toArray(new NativeMetric[0]));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowBaseToolDescription() {
 		analizo.setDescription("This is the description of Analizo");
 		baseToolList().setSelectedIndex(0);
 		assertTrue(descriptionPane().get().contains(analizo.getDescription()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowMetricDescription() {
 		baseToolList().setSelectedIndex(0);
 		NativeMetric firstMetric = table.getData().get(0);
@@ -92,7 +92,7 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		assertTrue(descriptionPane().get().contains(firstMetric.getDescription()));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConfirmMetricSelection() {
 		baseToolList().setSelectedIndex(0);
 		assertFalse(panel.hasSelectedMetric());
@@ -101,7 +101,7 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		assertTrue(panel.hasSelectedMetric());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveSelectedMetric() {
 		baseToolList().setSelectedIndex(0);
 		selectFirsMetric();
@@ -109,7 +109,7 @@ public class ChooseNativeMetricPanelTest extends TestCase {
 		assertSame(firstMetric, panel.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddListListener() {
 		ListListener<NativeMetric> listener = PowerMockito.mock(ListListener.class);
 		panel.addListListener(listener);

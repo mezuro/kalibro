@@ -26,24 +26,24 @@ public class PreModuleResultTest extends TestCase {
 		result = new PreModuleResult(MODULE, wantedMetrics);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveModule() {
 		assertSame(MODULE, result.getModuleResult().getModule());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveMetricResultEvenWithoutAdding() {
 		assertDoubleEquals(0.0, result.getModuleResult().getResultFor(NATIVE_METRIC).getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveMetricResultWithAddedValues() {
 		result.addMetricResult(METRIC.getMessageKey(), 28.0);
 		result.addMetricResult(METRIC.getMessageKey(), 14.0);
 		assertDoubleEquals(42.0, result.getModuleResult().getResultFor(NATIVE_METRIC).getValue());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotRetrieveMetricResultsForUnwantedMetrics() {
 		CheckstyleMetric unwantedMetric = CheckstyleMetric.FILE_LENGTH;
 		result.addMetricResult(unwantedMetric.getMessageKey(), 42.0);

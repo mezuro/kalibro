@@ -20,35 +20,35 @@ public class TextFieldTest extends TestCase {
 		textPane = (JTextPane) field.getViewport().getComponent(0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotHaveBorderByDefault() {
 		assertNull(field.getBorder());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveTitledBorderWhenCreatedWithTitle() {
 		field = new TextField("", 3, 10, "My title");
 		assertEquals("My title", ((TitledBorder) field.getBorder()).getTitle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shoudBeEditableByDefault() {
 		assertTrue(textPane.isEditable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shoudNotBeEditableWhenShowingHtml() {
 		field.setShowHtml(true);
 		assertFalse(textPane.isEditable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTrimText() {
 		field.set("\n  my text  \n");
 		assertEquals("my text", field.get());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetEditableOnTextPane() {
 		field.setEditable(true);
 		assertTrue(textPane.isEditable());
@@ -57,7 +57,7 @@ public class TextFieldTest extends TestCase {
 		assertFalse(textPane.isEditable());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetEnabledOnTextPane() {
 		field.setEnabled(true);
 		assertTrue(field.isEnabled());

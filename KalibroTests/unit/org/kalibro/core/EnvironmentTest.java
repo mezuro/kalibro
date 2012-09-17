@@ -25,29 +25,29 @@ public class EnvironmentTest extends EnumerationTestCase<Environment> {
 		return Environment.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeInTestEnvironmentWhenTesting() {
 		assertSame(TEST, getEnvironment());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateAndRetrieveDotKalibroDirectory() {
 		assertTrue(dotKalibro().exists());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void dotKalibroShouldBeAtHomeOnProdution() {
 		setEnvironment(PRODUCTION);
 		assertEquals(DOT_KALIBRO, dotKalibro());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void dotKalibroShouldBeTestsDirectoryWhenTesting() {
 		assertEquals("tests", dotKalibro().getName());
 		assertEquals(DOT_KALIBRO, dotKalibro().getParentFile());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateAndRetrieveLogsDirectory() {
 		File logs = logsDirectory();
 		assertTrue(logs.exists());
@@ -55,12 +55,12 @@ public class EnvironmentTest extends EnumerationTestCase<Environment> {
 		assertEquals(dotKalibro(), logs.getParentFile());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDropAndCreateDatabaseWhenTesting() {
 		assertEquals(DROP_AND_CREATE, ddlGeneration());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldOnlyCreateDatabaseWhenNotTesting() {
 		setEnvironment(PRODUCTION);
 		assertEquals(CREATE_ONLY, ddlGeneration());

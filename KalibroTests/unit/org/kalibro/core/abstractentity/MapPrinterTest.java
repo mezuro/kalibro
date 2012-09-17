@@ -27,7 +27,7 @@ public class MapPrinterTest extends PrinterTestCase<Map<?, ?>> {
 		sample.put("vehicles", newMap("b->bus", "c->car"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintMaps() {
 		assertTrue(printer.canPrint(sample));
 		assertTrue(printer.canPrint(new HashMap<MapPrinter, MapPrinterTest>()));
@@ -36,13 +36,13 @@ public class MapPrinterTest extends PrinterTestCase<Map<?, ?>> {
 		assertFalse(printer.canPrint(printer));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPrintAsYaml() throws Exception {
 		assertEquals(" {} # empty map", print(newMap(), "empty map"));
 		assertEquals(loadResource("map.printer.test"), print(sample, "strange map"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeLoadableAsYaml() throws Exception {
 		assertEquals(sample, new Yaml().load(print(sample, "")));
 	}

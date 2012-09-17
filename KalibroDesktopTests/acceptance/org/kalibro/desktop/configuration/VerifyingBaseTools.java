@@ -10,7 +10,7 @@ import org.kalibro.desktop.KalibroDesktopTestCase;
  */
 public class VerifyingBaseTools extends KalibroDesktopTestCase {
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
+	@Test
 	public void shouldHaveBaseTools() {
 		startKalibroFrame();
 

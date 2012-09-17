@@ -15,7 +15,7 @@ public class StackTraceEqualityTest extends TestCase {
 		equality = new StackTraceEquality();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldEvaluateOnlyStackTraceElements() {
 		assertTrue(equality.canEvaluate(newElement("Object.equals(Object.java:150)")));
 		assertTrue(equality.canEvaluate(newElement("String.indexOf(String.java:1534)")));
@@ -25,27 +25,27 @@ public class StackTraceEqualityTest extends TestCase {
 		assertFalse(equality.canEvaluate(equality));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void declaringClassesShouldBeEqual() {
 		assertFalse(equality.equals(newElement("Set.contains(Set.java:42)"), newElement("Map.contains(Set.java:42)")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void methodNamesShouldBeEqual() {
 		assertFalse(equality.equals(newElement("Set.contains(Set.java:42)"), newElement("Set.equals(Set.java:42)")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void fileNamesShouldBeEqual() {
 		assertFalse(equality.equals(newElement("Set.contains(Set.java:42)"), newElement("Set.contains(Map.java:42)")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void lineNumbersShouldBeEqual() {
 		assertFalse(equality.equals(newElement("Set.contains(Set.java:42)"), newElement("Set.contains(Set.java:84)")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void allFourShouldBeEqual() {
 		assertTrue(equality.equals(newElement("Set.contains(Set.java:42)"), newElement("Set.contains(Set.java:42)")));
 	}

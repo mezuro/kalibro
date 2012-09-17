@@ -32,7 +32,7 @@ public class ListComponentAdapterTest extends TestCase {
 		PowerMockito.when(component.getSelected()).thenReturn(range);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyDoubleClick() {
 		MouseEvent event = PowerMockito.mock(MouseEvent.class);
 		PowerMockito.when(event.getClickCount()).thenReturn(2);
@@ -41,7 +41,7 @@ public class ListComponentAdapterTest extends TestCase {
 		Mockito.verify(listener).doubleClicked(range);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifySelected() {
 		ListSelectionEvent event = PowerMockito.mock(ListSelectionEvent.class);
 		PowerMockito.when(component.hasSelection()).thenReturn(true);
@@ -50,13 +50,13 @@ public class ListComponentAdapterTest extends TestCase {
 		Mockito.verify(listener).selected(range);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifySelectionCleared() {
 		adapter.valueChanged(PowerMockito.mock(ListSelectionEvent.class));
 		Mockito.verify(listener).selectionCleared();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotNotifyIfValueIsAdjusting() {
 		ListSelectionEvent event = PowerMockito.mock(ListSelectionEvent.class);
 		PowerMockito.when(event.getValueIsAdjusting()).thenReturn(true);

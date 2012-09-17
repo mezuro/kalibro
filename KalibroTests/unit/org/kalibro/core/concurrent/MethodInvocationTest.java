@@ -1,7 +1,6 @@
 package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.lang.reflect.Method;
 import java.util.Queue;
@@ -25,14 +24,14 @@ public class MethodInvocationTest extends TestCase {
 		method = String.class.getMethod("substring", int.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInvoke() throws Throwable {
 		createInvocation(3);
 		invocation.invoke();
 		assertEquals("string", invocation.getResult());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveIfInvocationWasDone() {
 		createInvocation(4);
 		assertFalse(invocation.done());
@@ -40,33 +39,31 @@ public class MethodInvocationTest extends TestCase {
 		assertTrue(invocation.done());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenRetrievingResult() {
 		createInvocation(null);
 		invocation.invoke();
-		checkException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				invocation.getResult();
-			}
-		}, IllegalArgumentException.class);
+		assertThat(getResult()).doThrow(IllegalArgumentException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowCauseOfInvocationTargetException() {
 		createInvocation(-1);
 		invocation.invoke();
-		checkException(new Task() {
-
-			@Override
-			protected void perform() throws Throwable {
-				invocation.getResult();
-			}
-		}, StringIndexOutOfBoundsException.class);
+		assertThat(getResult()).doThrow(StringIndexOutOfBoundsException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	private Task getResult() {
+		return new Task() {
+
+			@Override
+			public void perform() throws Throwable {
+				invocation.getResult();
+			}
+		};
+	}
+
+	@Test
 	public void shouldAddToQueueAndWait() throws Exception {
 		createInvocation(0);
 		Queue<MethodInvocation> queue = mock(Queue.class);
@@ -86,8 +83,8 @@ public class MethodInvocationTest extends TestCase {
 			new Task() {
 
 				@Override
-				protected void perform() throws Throwable {
-					Thread.sleep(UNIT_TIMEOUT / 5);
+				public void perform() throws InterruptedException {
+					Thread.sleep(200);
 					invocation.invokeAndNotify();
 				}
 			}.executeInBackground();

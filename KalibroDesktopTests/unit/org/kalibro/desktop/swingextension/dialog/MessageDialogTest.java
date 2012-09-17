@@ -29,7 +29,7 @@ public class MessageDialogTest extends TestCase {
 		dialog = new MessageDialog(TITLE, parent);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldShowMessage() {
 		dialog.show(MESSAGE);
 

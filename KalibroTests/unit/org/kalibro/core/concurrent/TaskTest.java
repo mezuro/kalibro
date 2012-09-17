@@ -1,8 +1,7 @@
 package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -26,58 +25,58 @@ public class TaskTest extends TestCase implements TaskListener {
 		PowerMockito.whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteInBackground() {
 		new DoNothingTask().executeInBackground();
 		verify(executor).executeInBackground();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteAndWaitWithoutTimeout() {
 		new DoNothingTask().executeAndWait();
 		verify(executor).executeAndWait();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteAndWaitWithTimeout() {
 		new DoNothingTask().executeAndWait(42);
 		verify(executor).executeAndWait(42);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecutePeriodically() {
 		new DoNothingTask().executePeriodically(42);
 		Mockito.verify(executor).executePeriodically(42);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCancelPeriodicExecution() {
 		new DoNothingTask().cancelPeriodicExecution();
 		verify(executor).cancelPeriodicExecution();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListenerOfTaskDone() throws InterruptedException {
 		runAndGetReport(new DoNothingTask());
 		assertTrue(report.isTaskDone());
 		assertNull(report.getError());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotifyListenerOfTaskHalted() throws InterruptedException {
 		runAndGetReport(new ThrowErrorTask());
 		assertFalse(report.isTaskDone());
 		assertNotNull(report.getError());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveReport() throws InterruptedException {
 		Task task = new DoNothingTask();
 		runAndGetReport(task);
 		assertSame(report, task.getReport());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveDefaultDescription() {
 		assertEquals("running task: org.kalibro.core.concurrent.DoNothingTask", "" + new DoNothingTask());
 	}

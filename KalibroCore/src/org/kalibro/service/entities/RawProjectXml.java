@@ -6,11 +6,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.Project;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Project")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RawProjectXml implements DataTransferObject<Project> {
+public class RawProjectXml extends DataTransferObject<Project> {
 
 	@XmlElement(required = true)
 	private String name;

@@ -1,8 +1,8 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.junit.Assert.assertTrue;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 
 import java.util.Collection;
 import java.util.HashSet;
@@ -37,7 +37,7 @@ public class MetricResultXmlTest extends DtoTestCase<MetricResult, MetricResultX
 		return new MetricResultXml(metricResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldTurnNullDescendentResultsToEmpty() {
 		MetricResult metricResult = new MetricResult(new CompoundMetric(), 42.0);
 		MetricResultXml dto = createDto(metricResult);

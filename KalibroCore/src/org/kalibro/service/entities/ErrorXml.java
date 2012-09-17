@@ -9,11 +9,11 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.KalibroError;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Error")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorXml implements DataTransferObject<Throwable> {
+public class ErrorXml extends DataTransferObject<Throwable> {
 
 	private String errorClass;
 

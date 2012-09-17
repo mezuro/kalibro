@@ -1,7 +1,6 @@
 package org.kalibro.desktop;
 
 import static org.junit.Assert.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
@@ -37,37 +36,37 @@ public class CrudMenuTest extends TestCase {
 		menu = new BaseToolMenu(desktopPane);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNew() {
 		checkItem(NEW, "new", "New", 'N');
 		Mockito.verify(crudController).newEntity();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkOpen() {
 		checkItem(OPEN, "open", "Open", 'O');
 		Mockito.verify(crudController).open();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDelete() {
 		checkItem(DELETE, "delete", "Delete", 'D');
 		Mockito.verify(crudController).delete();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSave() {
 		checkItem(SAVE, "save", "Save", 'S');
 		Mockito.verify(crudController).save();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSaveAs() {
 		checkItem(SAVE_AS, "saveAs", "Save as...", 'a');
 		Mockito.verify(crudController).saveAs();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkClose() {
 		checkItem(CLOSE, "close", "Close", 'l');
 		Mockito.verify(crudController).close();
@@ -81,7 +80,7 @@ public class CrudMenuTest extends TestCase {
 		item.doClick();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void itemsForCurrentEntityShouldBeDisabledWhenThereIsNoEntityFrameSelected() {
 		menu.menuSelected(null);
 		assertFalse(menu.getItem(SAVE).isEnabled());
@@ -89,7 +88,7 @@ public class CrudMenuTest extends TestCase {
 		assertFalse(menu.getItem(CLOSE).isEnabled());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void itemsForCurrentEntityShouldBeEnabledWhenEntityFrameIsSelected() {
 		when(desktopPane.getSelectedFrame()).thenReturn(frame);
 		menu.menuSelected(null);

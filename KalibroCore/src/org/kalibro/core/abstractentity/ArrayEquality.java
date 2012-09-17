@@ -1,7 +1,8 @@
 package org.kalibro.core.abstractentity;
 
 /**
- * Determines equality of arrays deeply for each element.
+ * Determines equality of arrays deeply for each element. Two arrays are equal when they contain the same elements in
+ * the same order.
  * 
  * @author Carlos Morais
  */

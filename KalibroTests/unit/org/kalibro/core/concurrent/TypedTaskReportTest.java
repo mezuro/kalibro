@@ -9,7 +9,7 @@ public class TypedTaskReportTest extends TestCase {
 
 	private TypedTaskReport<String> report;
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkReportForTaskDone() {
 		report = new TypedTaskReport<String>(42, null, "My result");
 		assertEquals(42, report.getExecutionTime());
@@ -18,7 +18,7 @@ public class TypedTaskReportTest extends TestCase {
 		assertNull(report.getError());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkReportForTaskHalted() {
 		NullPointerException error = new NullPointerException();
 		report = new TypedTaskReport<String>(42, error, null);

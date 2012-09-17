@@ -20,13 +20,13 @@ public class BooleanRendererTest extends TestCase {
 		renderer = new BooleanRenderer();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderBoolean() {
 		assertTrue(renderer.canRender(true));
 		assertTrue(renderer.canRender(false));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotRenderAnythingButBoolean() {
 		assertFalse(renderer.canRender(Color.MAGENTA));
 		assertFalse(renderer.canRender(42.0));
@@ -34,27 +34,27 @@ public class BooleanRendererTest extends TestCase {
 		assertFalse(renderer.canRender("42"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderPlainBooleanField() {
 		assertTrue(render(true).getText().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderWithWhiteBackground() {
 		assertEquals(Color.WHITE, render(true).getBackground());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderTrueWithSelectedField() {
 		assertTrue(render(true).isSelected());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRenderFalseWithUnselectedField() {
 		assertFalse(render(false).isSelected());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeCentralized() {
 		BooleanField component = render(false);
 		assertEquals(SwingConstants.CENTER, component.getVerticalAlignment());

@@ -22,7 +22,7 @@ public class BaseToolTest extends TestCase {
 		analizo = newAnalizoStub();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		assertEquals("Analizo", analizo.getName());
 		assertEquals("", analizo.getDescription());
@@ -30,7 +30,7 @@ public class BaseToolTest extends TestCase {
 		assertEquals(analizoStub().getSupportedMetrics(), analizo.getSupportedMetrics());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetOriginOnSupportedMetrics() {
 		NativeMetric metric1 = new NativeMetric("Metric 1", Granularity.CLASS, Language.JAVA);
 		NativeMetric metric2 = new NativeMetric("Metric 2", Granularity.METHOD, Language.C);
@@ -42,25 +42,26 @@ public class BaseToolTest extends TestCase {
 		assertEquals(analizo.getName(), metric2.getOrigin());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeName() {
 		assertEquals("Analizo", "" + analizo);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testCollectorCreation() {
 		analizo.createMetricCollector();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorCreatingCollector() {
 		analizo.setCollectorClass(null);
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() {
 				analizo.createMetricCollector();
 			}
-		}, "Could not create metric collector of base tool 'Analizo'", NullPointerException.class);
+		}).throwsException().withMessage("Could not create metric collector of base tool 'Analizo'")
+			.withCause(NullPointerException.class);
 	}
 }

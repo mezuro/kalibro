@@ -8,7 +8,7 @@ import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 
 @SortingFields("name")
 public class Project extends AbstractEntity<Project> {

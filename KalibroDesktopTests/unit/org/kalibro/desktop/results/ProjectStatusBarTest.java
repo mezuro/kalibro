@@ -1,6 +1,6 @@
 package org.kalibro.desktop.results;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.ProjectFixtures.*;
 
 import org.junit.Before;
@@ -21,7 +21,7 @@ public class ProjectStatusBarTest extends TestCase {
 		statusBar = new ProjectStatusBar(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldChangeMessageOnStateChange() {
 		for (ProjectState state : ProjectState.values())
 			verifyStateText(state);

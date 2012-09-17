@@ -1,7 +1,7 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.core.model.MetricFixtures.sc;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class ScriptValidatorTest extends TestCase {
 		validator = new ScriptValidator();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateNativeCode() {
 		configuration = metricConfiguration("loc");
 		assertValid();
@@ -31,7 +31,7 @@ public class ScriptValidatorTest extends TestCase {
 		assertInvalid(KalibroException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateCompoundCode() {
 		CompoundMetric metric = new CompoundMetric();
 		metric.setName("compound");
@@ -42,7 +42,7 @@ public class ScriptValidatorTest extends TestCase {
 		assertInvalid(KalibroException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateCompoundScript() {
 		configuration = new MetricConfiguration(sc());
 		assertInvalid(EcmaError.class);
@@ -61,12 +61,13 @@ public class ScriptValidatorTest extends TestCase {
 	}
 
 	private void assertInvalid(Class<? extends Exception> expectedExceptionClass) {
-		checkKalibroException(new Task() {
+		assertThat(new Task() {
 
 			@Override
 			public void perform() throws Exception {
 				assertValid();
 			}
-		}, "Metric with invalid code or script: " + configuration.getMetric(), expectedExceptionClass);
+		}).throwsException().withMessage("Metric with invalid code or script: " + configuration.getMetric())
+			.withCause(expectedExceptionClass);
 	}
 }

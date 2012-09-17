@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.swing.table.TableColumn;
 
@@ -23,28 +23,28 @@ public class ColumnTest extends TestCase {
 		column = new Column("Answer", Double.class, 42);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetDefaultRenderer() {
 		assertClassEquals(DefaultRenderer.class, renderer());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkTitle() {
 		assertEquals("Answer", column.getTitle());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkColumnClass() {
 		assertEquals(Double.class, column.getColumnClass());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkWidth() {
 		int expected = new StringField("", 42).getPreferredSize().width;
 		assertEquals(expected, column.getPreferredWidth());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldUpdateTableColumn() {
 		TableColumn tableColumn = PowerMockito.mock(TableColumn.class);
 		column.updateTableColumn(tableColumn);

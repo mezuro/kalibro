@@ -6,17 +6,17 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.Kalibro;
-import org.kalibro.core.persistence.dao.ConfigurationDao;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.service.entities.ConfigurationXml;
 
-@WebService
+@WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
 	private ConfigurationDao dao;
 
 	public ConfigurationEndpointImpl() {
-		this(Kalibro.getConfigurationDao());
+		this(DaoFactory.getConfigurationDao());
 	}
 
 	protected ConfigurationEndpointImpl(ConfigurationDao configurationDao) {

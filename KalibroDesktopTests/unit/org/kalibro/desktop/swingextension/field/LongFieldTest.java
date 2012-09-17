@@ -19,12 +19,12 @@ public class LongFieldTest extends TestCase {
 		field = new LongField("field");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldHaveSixColumns() {
 		assertEquals(6, field.getColumns());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotShowFractionDigits() {
 		JFormattedTextField valueField = new ComponentFinder(field).find("field", JFormattedTextField.class);
 		valueField.setValue(3.1415);

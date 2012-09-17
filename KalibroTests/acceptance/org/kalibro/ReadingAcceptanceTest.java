@@ -10,39 +10,56 @@ import org.kalibro.core.concurrent.Task;
 public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	private Reading reading;
-	private ReadingGroup readingGroup;
+	private ReadingGroup group;
 
 	@Before
 	public void setUp() {
-		readingGroup = loadFixture("readingGroup-scholar", ReadingGroup.class);
-		reading = readingGroup.getReadings().get(0);
-		readingGroup.save();
+		group = loadFixture("scholar", ReadingGroup.class);
+		group.save();
+		reading = group.getReadings().get(0);
 	}
 
 	@After
 	public void tearDown() {
-		readingGroup.delete();
+		group.delete();
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldSaveAndDeleteIndividually() {
-		reading.setLabel("label");
+	@Test
+	public void testCrud() {
+		assertSaved();
+
+		reading.setLabel("ReadingAcceptanceTest label");
+		assertDifferentFromSaved();
+
 		reading.save();
-		assertDeepList(ReadingGroup.all(), readingGroup);
+		assertSaved();
 
 		reading.delete();
-		assertFalse(readingGroup.getReadings().contains(reading));
+		assertFalse(group.getReadings().contains(reading));
+		assertFalse(ReadingGroup.all().get(0).getReadings().contains(reading));
 	}
 
-	@Test(timeout = ACCEPTANCE_TIMEOUT)
-	public void shouldRequireToBeInGroup() {
-		reading.delete();
-		checkKalibroException(new Task() {
+	private void assertSaved() {
+		assertDeepEquals(reading, ReadingGroup.all().get(0).getReadings().get(0));
+	}
+
+	private void assertDifferentFromSaved() {
+		Reading saved = ReadingGroup.all().get(0).getReadings().get(0);
+		assertFalse(reading.deepEquals(saved));
+	}
+
+	@Test
+	public void readingIsRequiredToBeInGroup() {
+		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
+	}
+
+	private Task save() {
+		return new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
-				reading.save();
+			public void perform() {
+				new Reading().save();
 			}
-		}, "Reading is not in any group.");
+		};
 	}
 }

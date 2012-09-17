@@ -21,48 +21,50 @@ public class EntityComparatorTest extends TestCase {
 
 	@Before
 	public void setUp() {
-		carlosPerson = loadFixture("person-carlos", Person.class);
-		carlos = loadFixture("programmer-carlos", Programmer.class);
-		paulo = loadFixture("programmer-paulo", Programmer.class);
+		carlosPerson = loadFixture("carlos", Person.class);
+		carlos = loadFixture("carlos", Programmer.class);
+		paulo = loadFixture("paulo", Programmer.class);
 		comparator = new EntityComparator<Person>();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void compareShouldBeZeroWhenEntitiesAreEqual() {
 		assertEquals(0, comparator.compare(carlos, carlos));
 		assertEquals(0, comparator.compare(carlos, carlosPerson));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void compareShouldBeLessThanZeroWhenComparingToGreater() {
 		assertTrue(ASSERT_MESSAGE, comparator.compare(carlos, paulo) < 0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void compareShouldBeGreaterThanZeroWhenComparingToSmaller() {
 		assertTrue(ASSERT_MESSAGE, comparator.compare(paulo, carlos) > 0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNull() {
-		checkKalibroError(new Task() {
+		assertThat(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				comparator.compare(carlos, new Person("", null, ""));
 			}
-		}, ERROR_MESSAGE + "Programmer.name", InvocationTargetException.class);
+		}).throwsError().withMessage(ERROR_MESSAGE + "Programmer.name")
+			.withCause(InvocationTargetException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNotComparable() {
-		checkKalibroError(new Task() {
+		assertThat(new Task() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() {
 				comparator.compare(new WeirdPerson(), new WeirdPerson());
 			}
-		}, ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field", NoSuchMethodException.class);
+		}).throwsError().withMessage(ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field")
+			.withCause(NoSuchMethodException.class);
 	}
 
 	@SortingFields("field")
