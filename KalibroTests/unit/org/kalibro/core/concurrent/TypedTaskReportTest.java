@@ -11,7 +11,7 @@ public class TypedTaskReportTest extends TestCase {
 
 	@Test
 	public void checkReportForTaskDone() {
-		report = new TypedTaskReport<String>(42, null, "My result");
+		report = new TypedTaskReport<String>(null, 42, null, "My result");
 		assertEquals(42, report.getExecutionTime());
 		assertTrue(report.isTaskDone());
 		assertEquals("My result", report.getResult());
@@ -21,7 +21,7 @@ public class TypedTaskReportTest extends TestCase {
 	@Test
 	public void checkReportForTaskHalted() {
 		NullPointerException error = new NullPointerException();
-		report = new TypedTaskReport<String>(42, error, null);
+		report = new TypedTaskReport<String>(null, 42, error, null);
 		assertEquals(42, report.getExecutionTime());
 		assertFalse(report.isTaskDone());
 		assertNull(report.getResult());

@@ -27,6 +27,6 @@ public abstract class TypedTask<T> extends Task {
 
 	@Override
 	protected void setReport(long executionTime, Throwable error) {
-		report = new TypedTaskReport<T>(executionTime, error, result);
+		report = new TypedTaskReport<T>(this, executionTime, error, result);
 	}
 }

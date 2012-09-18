@@ -62,7 +62,7 @@ public abstract class Task implements Runnable {
 	public abstract void perform() throws Throwable;
 
 	protected void setReport(long executionTime, Throwable error) {
-		report = new TaskReport(executionTime, error);
+		report = new TaskReport(this, executionTime, error);
 	}
 
 	public TaskReport getReport() {
