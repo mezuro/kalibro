@@ -35,7 +35,7 @@ public abstract class TestCase extends ExtendedAsserts {
 	private boolean waiting;
 
 	protected Timeout testTimeout() {
-		return new Timeout(1000);
+		return new Timeout(2000);
 	}
 
 	protected void waitNotification() throws InterruptedException {

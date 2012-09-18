@@ -13,14 +13,17 @@ public class TaskReportTest extends TestCase {
 	private static final long EXECUTION_TIME = new Random().nextLong();
 
 	private Task task;
+	private Object result;
 	private Throwable error;
+
 	private TaskReport report;
 
 	@Before
 	public void setUp() {
 		task = mock(Task.class);
+		result = mock(Object.class);
 		error = mock(Throwable.class);
-		report = new TaskReport(task, EXECUTION_TIME, error);
+		report = new TaskReport(task, EXECUTION_TIME, result, error);
 	}
 
 	@Test
@@ -37,8 +40,13 @@ public class TaskReportTest extends TestCase {
 	public void shouldAnswerTaskDone() {
 		assertFalse(report.isTaskDone());
 
-		report = new TaskReport(task, EXECUTION_TIME, null);
+		report = new TaskReport(task, EXECUTION_TIME, result, null);
 		assertTrue(report.isTaskDone());
+	}
+
+	@Test
+	public void shouldGetResult() {
+		assertSame(result, report.getResult());
 	}
 
 	@Test

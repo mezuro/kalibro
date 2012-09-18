@@ -12,11 +12,13 @@ public class TaskReport {
 	private Task task;
 	private long executionTime;
 
+	private Object result;
 	private Throwable error;
 
-	protected TaskReport(Task task, long executionTime, Throwable error) {
+	protected TaskReport(Task task, long executionTime, Object result, Throwable error) {
 		this.task = task;
 		this.executionTime = executionTime;
+		this.result = result;
 		this.error = error;
 	}
 
@@ -30,6 +32,10 @@ public class TaskReport {
 
 	public boolean isTaskDone() {
 		return error == null;
+	}
+
+	public Object getResult() {
+		return result;
 	}
 
 	public Throwable getError() {
