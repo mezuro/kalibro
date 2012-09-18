@@ -15,11 +15,19 @@ public class TaskReport<T> {
 	private T result;
 	private Throwable error;
 
-	protected TaskReport(Task task, long executionTime, T result, Throwable error) {
-		this.task = task;
-		this.executionTime = executionTime;
+	protected TaskReport(Task task, long start, T result) {
+		this(task, start);
 		this.result = result;
+	}
+
+	protected TaskReport(Task task, long start, Throwable error) {
+		this(task, start);
 		this.error = error;
+	}
+
+	private TaskReport(Task task, long start) {
+		this.task = task;
+		executionTime = System.currentTimeMillis() - start;
 	}
 
 	public Task getTask() {

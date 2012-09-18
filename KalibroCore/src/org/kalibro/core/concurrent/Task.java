@@ -42,27 +42,25 @@ public abstract class Task implements Runnable {
 
 	@Override
 	public void run() {
-		long start = System.currentTimeMillis();
-		Throwable error = performAndGetError();
-		long executionTime = System.currentTimeMillis() - start;
-		setReport(executionTime, error);
+		performAndSetReport();
 		if (listener != null)
 			reportTaskFinished();
 	}
 
-	private Throwable performAndGetError() {
+	private void performAndSetReport() {
+		long start = System.currentTimeMillis();
 		try {
 			perform();
-			return null;
+			setReport(new TaskReport<Object>(this, start, (Object) null));
 		} catch (Throwable exception) {
-			return exception;
+			setReport(new TaskReport<Object>(this, start, exception));
 		}
 	}
 
 	public abstract void perform() throws Throwable;
 
-	protected void setReport(long executionTime, Throwable error) {
-		report = new TaskReport<Object>(this, executionTime, null, error);
+	protected void setReport(TaskReport<?> report) {
+		this.report = report;
 	}
 
 	public TaskReport<?> getReport() {

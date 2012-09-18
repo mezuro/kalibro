@@ -1,5 +1,6 @@
 package org.kalibro.core.processing;
 
+import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.concurrent.TypedTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
@@ -23,9 +24,9 @@ abstract class ProcessProjectSubtask<T> extends TypedTask<T> {
 	}
 
 	@Override
-	protected void setReport(long executionTime, Throwable error) {
-		projectResult.setStateTime(getTaskState(), executionTime);
-		super.setReport(executionTime, error);
+	protected void setReport(TaskReport<?> report) {
+		projectResult.setStateTime(getTaskState(), report.getExecutionTime());
+		super.setReport(report);
 	}
 
 	protected abstract ProjectState getTaskState();

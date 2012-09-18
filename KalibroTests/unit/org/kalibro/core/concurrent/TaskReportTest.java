@@ -23,7 +23,7 @@ public class TaskReportTest extends TestCase {
 		task = mock(Task.class);
 		result = mock(Object.class);
 		error = mock(Throwable.class);
-		report = new TaskReport<Object>(task, EXECUTION_TIME, result, error);
+		report = new TaskReport<Object>(task, System.currentTimeMillis() - EXECUTION_TIME, result);
 	}
 
 	@Test
@@ -33,15 +33,15 @@ public class TaskReportTest extends TestCase {
 
 	@Test
 	public void shouldGetExecutionTime() {
-		assertEquals(EXECUTION_TIME, report.getExecutionTime());
+		assertEquals(EXECUTION_TIME, report.getExecutionTime(), 10);
 	}
 
 	@Test
 	public void shouldAnswerTaskDone() {
-		assertFalse(report.isTaskDone());
-
-		report = new TaskReport<Object>(task, EXECUTION_TIME, result, null);
 		assertTrue(report.isTaskDone());
+
+		createErrorReport();
+		assertFalse(report.isTaskDone());
 	}
 
 	@Test
@@ -51,6 +51,11 @@ public class TaskReportTest extends TestCase {
 
 	@Test
 	public void shouldGetError() {
+		createErrorReport();
 		assertSame(error, report.getError());
+	}
+
+	private void createErrorReport() {
+		report = new TaskReport<Object>(task, 0, error);
 	}
 }
