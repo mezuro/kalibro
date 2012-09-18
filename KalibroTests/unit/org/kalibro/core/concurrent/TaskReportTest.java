@@ -16,14 +16,14 @@ public class TaskReportTest extends TestCase {
 	private Object result;
 	private Throwable error;
 
-	private TaskReport report;
+	private TaskReport<Object> report;
 
 	@Before
 	public void setUp() {
 		task = mock(Task.class);
 		result = mock(Object.class);
 		error = mock(Throwable.class);
-		report = new TaskReport(task, EXECUTION_TIME, result, error);
+		report = new TaskReport<Object>(task, EXECUTION_TIME, result, error);
 	}
 
 	@Test
@@ -40,7 +40,7 @@ public class TaskReportTest extends TestCase {
 	public void shouldAnswerTaskDone() {
 		assertFalse(report.isTaskDone());
 
-		report = new TaskReport(task, EXECUTION_TIME, result, null);
+		report = new TaskReport<Object>(task, EXECUTION_TIME, result, null);
 		assertTrue(report.isTaskDone());
 	}
 

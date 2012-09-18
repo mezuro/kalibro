@@ -16,7 +16,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Task.class)
 public class TaskTest extends TestCase implements TaskListener {
 
-	private TaskReport report;
+	private TaskReport<?> report;
 	private TaskExecutor executor;
 
 	@Before
@@ -89,7 +89,7 @@ public class TaskTest extends TestCase implements TaskListener {
 	}
 
 	@Override
-	public synchronized void taskFinished(TaskReport taskReport) {
+	public synchronized void taskFinished(TaskReport<?> taskReport) {
 		report = taskReport;
 		notifyTest();
 	}

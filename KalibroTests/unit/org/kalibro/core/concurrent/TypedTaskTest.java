@@ -17,7 +17,7 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 
 	private static final String RESULT = "TypedTaskTest result";
 
-	private TaskReport report;
+	private TaskReport<?> report;
 	private TaskExecutor executor;
 
 	@Before
@@ -68,7 +68,7 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 	}
 
 	@Override
-	public synchronized void taskFinished(TaskReport taskReport) {
+	public synchronized void taskFinished(TaskReport<?> taskReport) {
 		report = taskReport;
 		notifyTest();
 	}

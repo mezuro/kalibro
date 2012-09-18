@@ -10,7 +10,7 @@ public abstract class Task implements Runnable {
 	private TaskListener listener;
 	private TaskExecutor executor;
 
-	protected TaskReport report;
+	protected TaskReport<?> report;
 
 	public Task() {
 		this.executor = new TaskExecutor(this);
@@ -62,10 +62,10 @@ public abstract class Task implements Runnable {
 	public abstract void perform() throws Throwable;
 
 	protected void setReport(long executionTime, Throwable error) {
-		report = new TaskReport(this, executionTime, null, error);
+		report = new TaskReport<Object>(this, executionTime, null, error);
 	}
 
-	public TaskReport getReport() {
+	public TaskReport<?> getReport() {
 		return report;
 	}
 

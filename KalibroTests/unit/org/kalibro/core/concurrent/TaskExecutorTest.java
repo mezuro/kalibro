@@ -10,7 +10,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 
 	private static final long TIMEOUT = 200;
 
-	private TaskReport report;
+	private TaskReport<?> report;
 
 	@Test
 	public void shouldGetReportForNormalBackgroundExecution() throws InterruptedException {
@@ -33,7 +33,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 	}
 
 	@Override
-	public synchronized void taskFinished(TaskReport taskReport) {
+	public synchronized void taskFinished(TaskReport<?> taskReport) {
 		report = taskReport;
 		notifyTest();
 	}
