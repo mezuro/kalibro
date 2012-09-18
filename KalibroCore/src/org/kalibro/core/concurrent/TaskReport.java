@@ -34,7 +34,7 @@ public class TaskReport<T> {
 		return error == null;
 	}
 
-	public Object getResult() {
+	public T getResult() {
 		return result;
 	}
 
