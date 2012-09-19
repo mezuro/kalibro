@@ -2,15 +2,22 @@ package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
-import org.kalibro.KalibroException;
-import org.kalibro.TestCase;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
-public class TaskExecutorTest extends TestCase implements TaskListener<Void> {
+import org.junit.Test;
+import org.kalibro.UtilityClassTest;
+
+public class TaskExecutorTest extends UtilityClassTest implements TaskListener<Void> {
 
 	private static final long TIMEOUT = 200;
 
 	private TaskReport<?> report;
+
+	@Override
+	protected Class<?> utilityClass() {
+		return TaskExecutor.class;
+	}
 
 	@Test
 	public void shouldGetReportForNormalBackgroundExecution() throws InterruptedException {
@@ -28,7 +35,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener<Void> {
 	private synchronized void executeInBackgroundAndGetReport(VoidTask task) throws InterruptedException {
 		report = null;
 		task.addListener(this);
-		new TaskExecutor(task).executeInBackground();
+		TaskExecutor.executeInBackground(task);
 		waitNotification();
 	}
 
@@ -40,49 +47,23 @@ public class TaskExecutorTest extends TestCase implements TaskListener<Void> {
 
 	@Test
 	public void shouldExecuteAndWaitWithoutTimeout() {
-		new TaskExecutor(new DoNothingTask()).executeAndWait();
+		TaskExecutor.execute(new DoNothingTask());
 	}
 
 	@Test
-	public void shouldThrowSameKalibroExceptionThrownByTask() {
-		String message = "TaskExecutorTest message";
-		final KalibroException error = new KalibroException(message, new Throwable());
+	public void shouldThrowKalibroExceptionWrappingTaskError() {
 		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {
-				new TaskExecutor(new ThrowErrorTask(error)).executeAndWait();
-			}
-		}).throwsException().withMessage(message).withCause(Throwable.class);
-	}
-
-	@Test
-	public void shouldThrowKalibroExceptionWrappingOtherError() {
-		assertThat(new VoidTask() {
-
-			@Override
-			public void perform() throws Throwable {
-				new TaskExecutor(new ThrowErrorTask(new Throwable())).executeAndWait();
+				TaskExecutor.execute(new ThrowErrorTask(new Throwable()));
 			}
 		}).throwsException().withMessage("Error while throwing error").withCause(Throwable.class);
 	}
 
 	@Test
 	public void shouldExecuteAndWaitWithTimeout() {
-		new TaskExecutor(new DoNothingTask()).executeAndWait(TIMEOUT);
-	}
-
-	@Test
-	public void shouldThrowSameKalibroExceptionThrownByTaskWithTimeout() {
-		String message = "TaskExecutorTest message";
-		final KalibroException error = new KalibroException(message, new Throwable());
-		assertThat(new VoidTask() {
-
-			@Override
-			public void perform() throws Throwable {
-				new TaskExecutor(new ThrowErrorTask(error)).executeAndWait(TIMEOUT);
-			}
-		}).throwsException().withMessage(message).withCause(Throwable.class);
+		TaskExecutor.execute(new DoNothingTask(), TIMEOUT, TimeUnit.MILLISECONDS);
 	}
 
 	@Test
@@ -91,30 +72,17 @@ public class TaskExecutorTest extends TestCase implements TaskListener<Void> {
 
 			@Override
 			public void perform() throws Throwable {
-				new TaskExecutor(new SleepTask(2 * TIMEOUT)).executeAndWait(TIMEOUT);
+				TaskExecutor.execute(new SleepTask(2 * TIMEOUT), TIMEOUT, TimeUnit.MILLISECONDS);
 			}
 		}).throwsException().withMessage("Timed out after " + TIMEOUT + " milliseconds while sleeping")
-			.withCause(InterruptedException.class);
-	}
-
-	@Test
-	public void shouldThrowKalibroExceptionWrappingOtherErrorWithTimeout() {
-		assertThat(new VoidTask() {
-
-			@Override
-			public void perform() throws Throwable {
-				new TaskExecutor(new ThrowErrorTask(new Throwable())).executeAndWait(TIMEOUT);
-			}
-		}).throwsException().withMessage("Error while throwing error").withCause(Throwable.class);
+			.withCause(TimeoutException.class);
 	}
 
 	@Test
 	public void testPeriodicExecution() throws InterruptedException {
-		IncrementResultTask task = new IncrementResultTask();
-		TaskExecutor executor = new TaskExecutor(task);
-
 		long period = 50;
-		executor.executePeriodically(period);
+		CounterTask task = new CounterTask();
+		task.executePeriodically(period);
 
 		Thread.sleep(period / 2);
 		assertEquals(1, task.result);
@@ -125,18 +93,8 @@ public class TaskExecutorTest extends TestCase implements TaskListener<Void> {
 		Thread.sleep(period);
 		assertEquals(3, task.result);
 
-		executor.cancelPeriodicExecution();
+		task.cancelPeriodicExecution();
 		Thread.sleep(period);
 		assertEquals(3, task.result);
-	}
-
-	private class IncrementResultTask extends Task<Integer> {
-
-		private int result;
-
-		@Override
-		public Integer compute() {
-			return result++;
-		}
 	}
 }

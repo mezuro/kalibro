@@ -2,6 +2,8 @@ package org.kalibro.core.concurrent;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Task<T> implements Runnable {
 
@@ -10,13 +12,11 @@ public abstract class Task<T> implements Runnable {
 	public static final long HOUR = 60 * MINUTE;
 	public static final long DAY = 24 * HOUR;
 
-	private TaskExecutor executor;
+	private Future<?> future;
+	private TaskReport<T> report;
 	private Set<TaskListener<T>> listeners;
 
-	private TaskReport<T> report;
-
 	public Task() {
-		executor = new TaskExecutor(this);
 		listeners = new HashSet<TaskListener<T>>();
 	}
 
@@ -25,25 +25,23 @@ public abstract class Task<T> implements Runnable {
 	}
 
 	public void executeInBackground() {
-		executor.executeInBackground();
+		TaskExecutor.executeInBackground(this);
 	}
 
 	public T executeAndWait() {
-		executor.executeAndWait();
-		return report.getResult();
+		return TaskExecutor.execute(this);
 	}
 
 	public T executeAndWait(long timeout) {
-		executor.executeAndWait(timeout);
-		return report.getResult();
+		return TaskExecutor.execute(this, timeout, TimeUnit.MILLISECONDS);
 	}
 
 	public void executePeriodically(long period) {
-		executor.executePeriodically(period);
+		future = TaskExecutor.executePeriodically(this, period, TimeUnit.MILLISECONDS);
 	}
 
 	public void cancelPeriodicExecution() {
-		executor.cancelPeriodicExecution();
+		future.cancel(false);
 	}
 
 	@Override

@@ -3,6 +3,9 @@ package org.kalibro.core.concurrent;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,51 +15,56 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Task.class)
+@PrepareForTest(TaskExecutor.class)
 public class TaskTest extends TestCase implements TaskListener<Void> {
 
-	private TaskReport<?> report;
-	private TaskExecutor executor;
-
 	private VoidTask task;
+	private TaskReport<?> report;
 
 	@Before
-	public void setUp() throws Exception {
-		executor = mock(TaskExecutor.class);
-		whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
-		doAnswer(new SetReport()).when(executor).executeAndWait();
-		doAnswer(new SetReport()).when(executor).executeAndWait(anyLong());
+	public void setUp() {
+		mockStatic(TaskExecutor.class);
+		when(TaskExecutor.execute(task)).thenAnswer(new SetReport());
+		when(TaskExecutor.execute(eq(task), anyLong(), eq(TimeUnit.MILLISECONDS))).thenAnswer(new SetReport());
 		task = new DoNothingTask();
 	}
 
 	@Test
 	public void shouldExecuteInBackground() {
 		task.executeInBackground();
-		verify(executor).executeInBackground();
+		verifyStatic();
+		TaskExecutor.executeInBackground(task);
 	}
 
 	@Test
 	public void shouldExecuteAndWaitWithoutTimeout() {
 		task.executeAndWait();
-		verify(executor).executeAndWait();
+		verifyStatic();
+		TaskExecutor.execute(task);
 	}
 
 	@Test
 	public void shouldExecuteAndWaitWithTimeout() {
 		task.executeAndWait(42);
-		verify(executor).executeAndWait(42);
+		verifyStatic();
+		TaskExecutor.execute(task, 42, TimeUnit.MILLISECONDS);
 	}
 
 	@Test
 	public void shouldExecutePeriodically() {
 		task.executePeriodically(42);
-		verify(executor).executePeriodically(42);
+		verifyStatic();
+		TaskExecutor.executePeriodically(task, 42, TimeUnit.MILLISECONDS);
 	}
 
 	@Test
 	public void shouldCancelPeriodicExecution() {
+		Future future = mock(Future.class);
+		when(TaskExecutor.executePeriodically(task, 42, TimeUnit.MILLISECONDS)).thenReturn(future);
+
+		task.executePeriodically(42);
 		task.cancelPeriodicExecution();
-		verify(executor).cancelPeriodicExecution();
+		verify(future).cancel(false);
 	}
 
 	@Test
