@@ -93,7 +93,7 @@ public class JabutiTest extends IntegrationTest {
 		jabuti.getBaseTool();
 		Set<NativeModuleResult> result = jabuti.collectMetrics(project, metrics);
 		assertNotNull(result);
-		assertEquals(3, result.size()); // só retorna global, por enquanto
+		assertEquals(3, result.size());
 	}
 	
 	@Test(expected=KalibroException.class)
