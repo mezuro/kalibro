@@ -10,7 +10,7 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class SettingsAcceptanceTest extends AcceptanceTest {
@@ -82,7 +82,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void shouldLoadWithError(Class<? extends Throwable> causeClass) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -96,7 +96,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	public void shouldThrowExceptionWhenSavingOnNotWritableFile() {
 		settings.save();
 		settingsFile.setWritable(false);
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

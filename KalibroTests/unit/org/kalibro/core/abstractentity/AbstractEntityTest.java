@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -37,7 +37,7 @@ public class AbstractEntityTest extends TestCase {
 	@Test
 	public void shouldThrowExceptionWhenCannotImport() throws Exception {
 		whenNew(FileInputStream.class).withArguments(file).thenThrow(new NullPointerException());
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -58,7 +58,7 @@ public class AbstractEntityTest extends TestCase {
 	public void shouldThrowExceptionWhenCannotExport() throws Exception {
 		doThrow(new IOException()).when(FileUtils.class);
 		FileUtils.writeStringToFile(file, Printer.print(entity));
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

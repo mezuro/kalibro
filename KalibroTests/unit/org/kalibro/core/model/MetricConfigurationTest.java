@@ -9,7 +9,7 @@ import static org.kalibro.core.model.RangeLabel.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.Statistic;
 import org.kalibro.util.Identifier;
 
@@ -44,7 +44,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void configurationsWithSameCodeShouldConflict() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -57,7 +57,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void configurationsForSameMetricShouldConflict() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -90,7 +90,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testNoRangeFound() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -108,7 +108,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testConflictingRange() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -127,7 +127,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentRange() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {
@@ -138,7 +138,7 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorForConflictingRangeReplace() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {

@@ -8,7 +8,7 @@ import static org.kalibro.core.model.enums.Granularity.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class ModuleNodeTest extends TestCase {
 
@@ -47,7 +47,7 @@ public class ModuleNodeTest extends TestCase {
 
 	@Test
 	public void checkNoChildError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

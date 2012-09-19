@@ -8,7 +8,7 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.ModuleResult;
 import org.powermock.reflect.internal.WhiteboxImpl;
@@ -17,7 +17,7 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 
 	@Test
 	public void defaultConstructorOfCompoundMetricWithErrorShouldDoNothing() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

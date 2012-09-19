@@ -11,7 +11,7 @@ import javax.swing.JPanel;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
@@ -53,7 +53,7 @@ public class ReflectionColumnTest extends TestCase {
 
 	@Test
 	public void checkErrorGettingMethodFromInvalidClass() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {

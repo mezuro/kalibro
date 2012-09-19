@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.EvaluatorException;
@@ -45,7 +45,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 
 	@Test
 	public void shouldValidateVariableName() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -56,7 +56,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 
 	@Test
 	public void shouldValidateFunctionName() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -71,7 +71,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertDoubleEquals(42.0, evaluator.evaluate("variable"));
 
 		evaluator.remove("variable");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -106,7 +106,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 	}
 
 	private void assertInvalid(final String body, Class<? extends Exception> exceptionClass) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

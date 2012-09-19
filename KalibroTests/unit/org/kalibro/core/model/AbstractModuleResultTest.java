@@ -8,7 +8,7 @@ import static org.kalibro.core.model.enums.Granularity.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.Granularity;
 
 public class AbstractModuleResultTest extends TestCase {
@@ -44,7 +44,7 @@ public class AbstractModuleResultTest extends TestCase {
 
 	@Test
 	public void checkErrorForInexistentResultMetric() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

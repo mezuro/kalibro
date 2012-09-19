@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.desktop.CrudController;
 import org.kalibro.desktop.configuration.ConfigurationController;
 import org.mockito.Mockito;
@@ -25,7 +25,7 @@ public class ReflectionMenuTest extends TestCase {
 
 	@Test
 	public void shouldNotAcceptInvalidMethodOnCreation() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -55,8 +55,8 @@ public class ReflectionMenuTest extends TestCase {
 			.withCause(IllegalAccessException.class);
 	}
 
-	private Task click() {
-		return new Task() {
+	private VoidTask click() {
+		return new VoidTask() {
 
 			@Override
 			public void perform() {

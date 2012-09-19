@@ -8,7 +8,7 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.BaseTool;
 import org.powermock.reflect.Whitebox;
 
@@ -38,7 +38,7 @@ public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 	public void shouldThrowErrorForCollectorClassNotFound() {
 		final BaseToolRecord dto = createDto(analizoStub());
 		Whitebox.setInternalState(dto, "collectorClass", "inexistent");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {

@@ -10,7 +10,7 @@ import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.EnumerationTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.loaders.*;
 import org.kalibro.core.model.Repository;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -123,7 +123,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 	public void shouldThrowKalibroErrorIfLoaderCouldNotBeCreated() {
 		final RepositoryType type = spy(GIT);
 		when(type.name()).thenReturn("INEXISTENT");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {

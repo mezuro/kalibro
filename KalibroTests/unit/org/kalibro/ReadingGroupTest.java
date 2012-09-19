@@ -11,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.dao.ReadingGroupDao;
@@ -126,8 +126,8 @@ public class ReadingGroupTest extends TestCase {
 		assertThat(save()).throwsException().withMessage("Reading group requires name.");
 	}
 
-	private Task save() {
-		return new Task() {
+	private VoidTask save() {
+		return new VoidTask() {
 
 			@Override
 			public void perform() {

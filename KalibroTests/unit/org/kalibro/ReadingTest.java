@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -64,7 +65,7 @@ public class ReadingTest extends TestCase {
 	}
 
 	private void shouldConflictWith(final Reading other, String message) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -97,7 +98,7 @@ public class ReadingTest extends TestCase {
 	}
 
 	private Task save() {
-		return new Task() {
+		return new VoidTask() {
 
 			@Override
 			public void perform() {

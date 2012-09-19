@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.service.ProjectResultEndpoint;
 import org.kalibro.service.entities.ProjectResultXml;
@@ -52,7 +52,7 @@ public class ProjectResultPortDaoTest extends TestCase {
 
 	@Test
 	public void shouldNotSaveResultRemotely() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

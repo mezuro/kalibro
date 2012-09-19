@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.ProjectState;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -96,7 +96,7 @@ public class ProjectTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -107,7 +107,7 @@ public class ProjectTest extends TestCase {
 
 	@Test
 	public void shouldNotAllowErrorStateWithoutException() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -124,7 +124,7 @@ public class ProjectTest extends TestCase {
 	}
 
 	private void assertNoError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

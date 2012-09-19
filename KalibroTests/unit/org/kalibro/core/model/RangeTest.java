@@ -9,7 +9,7 @@ import java.awt.Color;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class RangeTest extends TestCase {
 
@@ -109,7 +109,7 @@ public class RangeTest extends TestCase {
 	}
 
 	private void assertInvalid(final Double beginning, final Double end) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {

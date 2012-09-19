@@ -8,7 +8,7 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Statistic;
 
@@ -67,7 +67,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveUnsavedConfiguration() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

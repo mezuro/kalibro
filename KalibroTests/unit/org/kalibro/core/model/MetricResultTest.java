@@ -9,7 +9,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.Statistic;
 
 public class MetricResultTest extends TestCase {
@@ -87,7 +87,7 @@ public class MetricResultTest extends TestCase {
 
 	@Test
 	public void checkErrorForInexistentRange() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

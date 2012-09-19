@@ -6,7 +6,7 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 
@@ -58,7 +58,7 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
 
 		dao.removeMetricConfiguration(configurationName, metricName);
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

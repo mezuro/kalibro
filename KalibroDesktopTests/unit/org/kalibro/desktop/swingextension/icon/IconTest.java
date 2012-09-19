@@ -7,7 +7,7 @@ import javax.swing.JInternalFrame;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -29,7 +29,7 @@ public class IconTest extends TestCase {
 
 	@Test
 	public void shouldNotAcceptInvalidResource() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

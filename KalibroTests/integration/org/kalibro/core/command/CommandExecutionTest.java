@@ -11,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
 import org.kalibro.IntegrationTest;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class CommandExecutionTest extends IntegrationTest {
 
@@ -27,7 +27,7 @@ public class CommandExecutionTest extends IntegrationTest {
 	@Test
 	public void shouldThrowExceptionWhenGettingOutputForInvalidCommand() {
 		createCommandTask("invalid command");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws IOException {
@@ -51,7 +51,7 @@ public class CommandExecutionTest extends IntegrationTest {
 	@Test
 	public void shouldThrowExceptionOnCommandTimeout() {
 		createCommandTask("sleep 1000");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

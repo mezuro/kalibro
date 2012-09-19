@@ -5,9 +5,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
-class PipeTask extends Task {
+class PipeTask extends VoidTask {
 
 	private InputStream inputStream;
 	private OutputStream outputStream;

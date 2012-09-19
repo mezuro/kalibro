@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.MetricConfiguration;
 import org.mozilla.javascript.EcmaError;
@@ -61,7 +61,7 @@ public class ScriptValidatorTest extends TestCase {
 	}
 
 	private void assertInvalid(Class<? extends Exception> expectedExceptionClass) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {

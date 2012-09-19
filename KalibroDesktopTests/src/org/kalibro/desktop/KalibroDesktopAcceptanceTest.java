@@ -10,7 +10,7 @@ import org.junit.After;
 import org.kalibro.AcceptanceTest;
 import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class KalibroDesktopAcceptanceTest extends AcceptanceTest {
 
@@ -23,7 +23,7 @@ public class KalibroDesktopAcceptanceTest extends AcceptanceTest {
 
 	protected void startFromMain() throws Exception {
 		new File(Environment.dotKalibro(), "kalibro.settings").delete();
-		new Task() {
+		new VoidTask() {
 
 			@Override
 			public void perform() {

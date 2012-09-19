@@ -9,7 +9,7 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.ProjectResult;
 import org.powermock.reflect.Whitebox;
 
@@ -40,7 +40,7 @@ public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectR
 	public void checkRootNotFoundError() {
 		final ProjectResultRecord record = createDto(helloWorldResult());
 		Whitebox.setInternalState(record, "sourceTree", new ArrayList<ModuleRecord>());
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {

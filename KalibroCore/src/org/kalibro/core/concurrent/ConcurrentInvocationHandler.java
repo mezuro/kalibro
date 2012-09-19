@@ -5,7 +5,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.concurrent.LinkedBlockingQueue;
 
-public final class ConcurrentInvocationHandler extends Task implements InvocationHandler {
+public final class ConcurrentInvocationHandler extends VoidTask implements InvocationHandler {
 
 	public static <T> T createProxy(Object object, Class<T> interfaceClass) {
 		InvocationHandler handler = new ConcurrentInvocationHandler(object);

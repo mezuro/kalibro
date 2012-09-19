@@ -11,7 +11,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class ConfigurationTest extends TestCase {
 
@@ -78,7 +78,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkNoConfigurationFoundForMetricError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -89,7 +89,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void verifyErrorAddingConflictingMetricConfiguration() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -107,7 +107,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentMetricConfiguration() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {
@@ -118,7 +118,7 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorForConflictingMetricConfigurationReplace() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {
@@ -136,7 +136,7 @@ public class ConfigurationTest extends TestCase {
 		configuration.removeMetric(lcomName);
 		assertFalse(configuration.containsMetric(cboName));
 		assertFalse(configuration.containsMetric(lcomName));
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -153,7 +153,7 @@ public class ConfigurationTest extends TestCase {
 	@Test
 	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {

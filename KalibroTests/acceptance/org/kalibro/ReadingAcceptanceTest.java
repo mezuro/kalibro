@@ -5,7 +5,7 @@ import static org.junit.Assert.assertFalse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class ReadingAcceptanceTest extends AcceptanceTest {
 
@@ -53,8 +53,8 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
 	}
 
-	private Task save() {
-		return new Task() {
+	private VoidTask save() {
+		return new VoidTask() {
 
 			@Override
 			public void perform() {

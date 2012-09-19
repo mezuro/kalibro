@@ -8,7 +8,7 @@ import java.awt.Color;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Range;
 
 public class ReflectionTableModelTest extends TestCase {
@@ -30,8 +30,8 @@ public class ReflectionTableModelTest extends TestCase {
 			.withMessage("All columns of ReflectionTableModel should be ReflectionColumn");
 	}
 
-	private Task addGenericColumn() {
-		return new Task() {
+	private VoidTask addGenericColumn() {
+		return new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {

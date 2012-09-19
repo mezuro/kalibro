@@ -11,7 +11,7 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.dao.ProjectResultDao;
@@ -74,7 +74,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoFirstResultFound() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -97,7 +97,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoLastResultFound() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -115,7 +115,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoResultFoundBefore() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -133,7 +133,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void testNoResultFoundAfter() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

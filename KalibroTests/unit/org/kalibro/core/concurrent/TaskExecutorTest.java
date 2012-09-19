@@ -47,7 +47,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 	public void shouldThrowSameKalibroExceptionThrownByTask() {
 		String message = "TaskExecutorTest message";
 		final KalibroException error = new KalibroException(message, new Throwable());
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {
@@ -58,7 +58,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 
 	@Test
 	public void shouldThrowKalibroExceptionWrappingOtherError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {
@@ -76,7 +76,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 	public void shouldThrowSameKalibroExceptionThrownByTaskWithTimeout() {
 		String message = "TaskExecutorTest message";
 		final KalibroException error = new KalibroException(message, new Throwable());
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {
@@ -87,7 +87,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 
 	@Test
 	public void shouldThrowKalibroExceptionForTimeoutError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {
@@ -99,7 +99,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 
 	@Test
 	public void shouldThrowKalibroExceptionWrappingOtherErrorWithTimeout() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {

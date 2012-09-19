@@ -12,7 +12,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.Environment;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
@@ -69,8 +69,8 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		assertThat(save()).doThrow(RollbackException.class);
 	}
 
-	private Task save() {
-		return new Task() {
+	private VoidTask save() {
+		return new VoidTask() {
 
 			@Override
 			public void perform() {
@@ -100,8 +100,8 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		return new Reading("ReadingGroupAcceptanceTest label", 42.0, Color.MAGENTA);
 	}
 
-	private Task addReading(final Reading reading) {
-		return new Task() {
+	private VoidTask addReading(final Reading reading) {
+		return new VoidTask() {
 
 			@Override
 			public void perform() {

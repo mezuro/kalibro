@@ -9,7 +9,7 @@ import org.kalibro.ClientSettings;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServerSettings;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.desktop.KalibroDesktopAcceptanceTest;
 
 /**
@@ -68,7 +68,7 @@ public class CancelFirstEditSettings extends KalibroDesktopAcceptanceTest {
 	}
 
 	private void verifyFrameNotOpen() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

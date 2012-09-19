@@ -53,8 +53,8 @@ public class MethodInvocationTest extends TestCase {
 		assertThat(getResult()).doThrow(StringIndexOutOfBoundsException.class);
 	}
 
-	private Task getResult() {
-		return new Task() {
+	private VoidTask getResult() {
+		return new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {
@@ -80,7 +80,7 @@ public class MethodInvocationTest extends TestCase {
 
 		@Override
 		public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
-			new Task() {
+			new VoidTask() {
 
 				@Override
 				public void perform() throws InterruptedException {

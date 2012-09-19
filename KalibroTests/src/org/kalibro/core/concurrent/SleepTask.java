@@ -1,6 +1,6 @@
 package org.kalibro.core.concurrent;
 
-class SleepTask extends Task {
+class SleepTask extends VoidTask {
 
 	private long sleepingTime;
 

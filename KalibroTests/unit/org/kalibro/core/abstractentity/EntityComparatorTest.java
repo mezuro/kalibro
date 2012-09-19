@@ -7,7 +7,7 @@ import java.lang.reflect.InvocationTargetException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class EntityComparatorTest extends TestCase {
 
@@ -45,7 +45,7 @@ public class EntityComparatorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNull() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Throwable {
@@ -57,7 +57,7 @@ public class EntityComparatorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNotComparable() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {

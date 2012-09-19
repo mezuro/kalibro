@@ -5,9 +5,9 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
-public class CommandTask extends Task {
+public class CommandTask extends VoidTask {
 
 	private String command;
 	private File workingDirectory;
@@ -16,7 +16,7 @@ public class CommandTask extends Task {
 	public CommandTask(String command) {
 		this(command, null);
 	}
-	
+
 	public CommandTask(String command, File workingDirectory) {
 		this.command = command;
 		this.workingDirectory = workingDirectory;

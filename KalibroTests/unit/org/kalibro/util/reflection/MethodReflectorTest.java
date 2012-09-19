@@ -7,7 +7,7 @@ import java.io.FileNotFoundException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class MethodReflectorTest extends TestCase {
 
@@ -80,8 +80,8 @@ public class MethodReflectorTest extends TestCase {
 			.withMessage(expectedMessage("invoking", "throwThis")).withCause(FileNotFoundException.class);
 	}
 
-	private Task invoke(final String method, final Object... parameters) {
-		return new Task() {
+	private VoidTask invoke(final String method, final Object... parameters) {
+		return new VoidTask() {
 
 			@Override
 			public void perform() {
