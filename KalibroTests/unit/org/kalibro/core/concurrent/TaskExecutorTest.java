@@ -27,7 +27,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 
 	private synchronized void executeInBackgroundAndGetReport(Task task) throws InterruptedException {
 		report = null;
-		task.setListener(this);
+		task.addListener(this);
 		new TaskExecutor(task).executeInBackground();
 		waitNotification();
 	}

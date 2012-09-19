@@ -7,8 +7,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -21,8 +19,8 @@ public class TaskTest extends TestCase implements TaskListener {
 
 	@Before
 	public void setUp() throws Exception {
-		executor = PowerMockito.mock(TaskExecutor.class);
-		PowerMockito.whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
+		executor = mock(TaskExecutor.class);
+		whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
 	}
 
 	@Test
@@ -46,7 +44,7 @@ public class TaskTest extends TestCase implements TaskListener {
 	@Test
 	public void shouldExecutePeriodically() {
 		new DoNothingTask().executePeriodically(42);
-		Mockito.verify(executor).executePeriodically(42);
+		verify(executor).executePeriodically(42);
 	}
 
 	@Test
@@ -83,7 +81,7 @@ public class TaskTest extends TestCase implements TaskListener {
 
 	private synchronized void runAndGetReport(Task task) throws InterruptedException {
 		report = null;
-		task.setListener(this);
+		task.addListener(this);
 		new Thread(task).start();
 		waitNotification();
 	}

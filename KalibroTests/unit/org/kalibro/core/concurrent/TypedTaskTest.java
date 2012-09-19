@@ -62,7 +62,7 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 
 	private synchronized void runAndGetReport(TypedTask<String> task) throws InterruptedException {
 		report = null;
-		task.setListener(this);
+		task.addListener(this);
 		new Thread(task).start();
 		waitNotification();
 	}

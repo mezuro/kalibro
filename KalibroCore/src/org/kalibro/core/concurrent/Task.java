@@ -1,5 +1,8 @@
 package org.kalibro.core.concurrent;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public abstract class Task implements Runnable {
 
 	public static final long SECOND = 1000L;
@@ -7,17 +10,18 @@ public abstract class Task implements Runnable {
 	public static final long HOUR = 60 * MINUTE;
 	public static final long DAY = 24 * HOUR;
 
-	private TaskListener listener;
 	private TaskExecutor executor;
+	private Set<TaskListener> listeners;
 
 	protected TaskReport<?> report;
 
 	public Task() {
-		this.executor = new TaskExecutor(this);
+		executor = new TaskExecutor(this);
+		listeners = new HashSet<TaskListener>();
 	}
 
-	public void setListener(TaskListener listener) {
-		this.listener = listener;
+	public void addListener(TaskListener listener) {
+		listeners.add(listener);
 	}
 
 	public void executeInBackground() {
@@ -43,8 +47,8 @@ public abstract class Task implements Runnable {
 	@Override
 	public void run() {
 		performAndSetReport();
-		if (listener != null)
-			reportTaskFinished();
+		for (TaskListener listener : listeners)
+			reportTaskFinished(listener);
 	}
 
 	private void performAndSetReport() {
@@ -67,7 +71,7 @@ public abstract class Task implements Runnable {
 		return report;
 	}
 
-	protected void reportTaskFinished() {
+	protected void reportTaskFinished(final TaskListener listener) {
 		new Thread(new Runnable() {
 
 			@Override
