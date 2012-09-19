@@ -1,8 +1,21 @@
 package org.kalibro.core.concurrent;
 
+import static org.junit.Assert.assertNull;
+
+import org.junit.Test;
 import org.kalibro.TestCase;
 
 public class VoidTaskTest extends TestCase {
 
-	// TODO
+	@Test
+	public void shouldSparePerformOfReturnClauseAndComputeNull() throws Throwable {
+		VoidTask task = new VoidTask() {
+
+			@Override
+			public void perform() throws Throwable {
+				assert true;
+			}
+		};
+		assertNull(task.compute());
+	}
 }

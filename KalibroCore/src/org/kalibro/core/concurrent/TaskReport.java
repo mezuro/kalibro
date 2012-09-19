@@ -9,28 +9,28 @@ package org.kalibro.core.concurrent;
  */
 public class TaskReport<T> {
 
-	private Task task;
+	private Task<T> task;
 	private long executionTime;
 
 	private T result;
 	private Throwable error;
 
-	protected TaskReport(Task task, long start, T result) {
+	protected TaskReport(Task<T> task, long start, T result) {
 		this(task, start);
 		this.result = result;
 	}
 
-	protected TaskReport(Task task, long start, Throwable error) {
+	protected TaskReport(Task<T> task, long start, Throwable error) {
 		this(task, start);
 		this.error = error;
 	}
 
-	private TaskReport(Task task, long start) {
+	private TaskReport(Task<T> task, long start) {
 		this.task = task;
 		executionTime = System.currentTimeMillis() - start;
 	}
 
-	public Task getTask() {
+	public Task<T> getTask() {
 		return task;
 	}
 

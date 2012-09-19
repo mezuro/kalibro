@@ -16,7 +16,7 @@ class LoadSourceTask extends ProcessProjectSubtask<ProjectResult> {
 	}
 
 	@Override
-	protected ProjectResult compute() {
+	public ProjectResult compute() {
 		project.load();
 		return projectResult;
 	}

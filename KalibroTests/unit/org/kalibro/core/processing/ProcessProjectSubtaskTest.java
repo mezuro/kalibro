@@ -85,7 +85,7 @@ public class ProcessProjectSubtaskTest extends TestCase {
 		}
 
 		@Override
-		protected String compute() {
+		public String compute() {
 			return TASK_RESULT;
 		}
 	}

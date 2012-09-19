@@ -54,7 +54,7 @@ abstract class ExtendedAsserts extends PowerMockito {
 		}
 	}
 
-	protected static TaskMatcher assertThat(Task task) {
+	protected static TaskMatcher assertThat(Task<?> task) {
 		return new TaskMatcher(task);
 	}
 }

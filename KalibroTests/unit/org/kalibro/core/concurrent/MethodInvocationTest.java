@@ -7,10 +7,9 @@ import java.util.Queue;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.AnswerAdapter;
 import org.kalibro.TestCase;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
 public class MethodInvocationTest extends TestCase {
 
@@ -76,10 +75,10 @@ public class MethodInvocationTest extends TestCase {
 		invocation = new MethodInvocation(STRING, method, index);
 	}
 
-	private class WaitAndInvokeInOtherThread implements Answer<Object> {
+	private class WaitAndInvokeInOtherThread extends AnswerAdapter {
 
 		@Override
-		public Object answer(InvocationOnMock invocationOnMock) throws Throwable {
+		public void answer() {
 			new VoidTask() {
 
 				@Override
@@ -88,7 +87,6 @@ public class MethodInvocationTest extends TestCase {
 					invocation.invokeAndNotify();
 				}
 			}.executeInBackground();
-			return null;
 		}
 	}
 }

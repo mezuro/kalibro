@@ -24,7 +24,7 @@ abstract class ProcessProjectSubtask<T> extends TypedTask<T> {
 	}
 
 	@Override
-	protected void setReport(TaskReport<?> report) {
+	public void setReport(TaskReport<T> report) {
 		projectResult.setStateTime(getTaskState(), report.getExecutionTime());
 		super.setReport(report);
 	}

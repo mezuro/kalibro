@@ -3,12 +3,11 @@ package org.kalibro.desktop;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.AnswerAdapter;
 import org.kalibro.KalibroSettings;
 import org.kalibro.UtilityClassTest;
 import org.kalibro.desktop.settings.SettingsController;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -68,14 +67,13 @@ public class KalibroDesktopTest extends UtilityClassTest {
 		doAnswer(answer).when(SettingsController.class, "editSettings");
 	}
 
-	private final class EditSettingsAnswer implements Answer<Object> {
+	private final class EditSettingsAnswer extends AnswerAdapter {
 
 		private boolean userConfirms;
 
 		@Override
-		public Object answer(InvocationOnMock invocation) throws Throwable {
+		public void answer() {
 			when(KalibroSettings.exists()).thenReturn(userConfirms);
-			return null;
 		}
 	}
 }

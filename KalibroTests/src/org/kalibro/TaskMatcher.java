@@ -6,9 +6,9 @@ import org.kalibro.core.concurrent.Task;
 
 public class TaskMatcher {
 
-	private Task task;
+	private Task<?> task;
 
-	protected TaskMatcher(Task task) {
+	protected TaskMatcher(Task<?> task) {
 		this.task = task;
 	}
 
@@ -32,7 +32,7 @@ public class TaskMatcher {
 
 	private Throwable invokeAndCatch(Object expected) {
 		try {
-			task.perform();
+			task.compute();
 			fail("Expected but not throwed:\n" + expected);
 			return null;
 		} catch (Throwable throwed) {

@@ -12,7 +12,7 @@ public class TaskReportTest extends TestCase {
 
 	private static final long EXECUTION_TIME = new Random().nextLong();
 
-	private Task task;
+	private Task<Object> task;
 	private Object result;
 	private Throwable error;
 

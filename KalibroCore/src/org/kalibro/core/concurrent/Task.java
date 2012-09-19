@@ -3,7 +3,7 @@ package org.kalibro.core.concurrent;
 import java.util.HashSet;
 import java.util.Set;
 
-public abstract class Task implements Runnable {
+public abstract class Task<T> implements Runnable {
 
 	public static final long SECOND = 1000L;
 	public static final long MINUTE = 60 * SECOND;
@@ -13,7 +13,7 @@ public abstract class Task implements Runnable {
 	private TaskExecutor executor;
 	private Set<TaskListener> listeners;
 
-	protected TaskReport<?> report;
+	protected TaskReport<T> report;
 
 	public Task() {
 		executor = new TaskExecutor(this);
@@ -46,28 +46,27 @@ public abstract class Task implements Runnable {
 
 	@Override
 	public void run() {
-		performAndSetReport();
+		computeReport();
 		for (TaskListener listener : listeners)
 			reportTaskFinished(listener);
 	}
 
-	private void performAndSetReport() {
+	private void computeReport() {
 		long start = System.currentTimeMillis();
 		try {
-			perform();
-			setReport(new TaskReport<Object>(this, start, (Object) null));
-		} catch (Throwable exception) {
-			setReport(new TaskReport<Object>(this, start, exception));
+			setReport(new TaskReport<T>(this, start, compute()));
+		} catch (Throwable error) {
+			setReport(new TaskReport<T>(this, start, error));
 		}
 	}
 
-	public abstract void perform() throws Throwable;
+	public abstract T compute() throws Throwable;
 
-	protected void setReport(TaskReport<?> report) {
+	protected void setReport(TaskReport<T> report) {
 		this.report = report;
 	}
 
-	public TaskReport<?> getReport() {
+	public TaskReport<T> getReport() {
 		return report;
 	}
 

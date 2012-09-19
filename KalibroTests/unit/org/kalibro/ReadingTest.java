@@ -8,7 +8,6 @@ import java.awt.Color;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
@@ -97,7 +96,7 @@ public class ReadingTest extends TestCase {
 		assertThat(save()).throwsException().withMessage("Group is not saved. Save group instead");
 	}
 
-	private Task save() {
+	private VoidTask save() {
 		return new VoidTask() {
 
 			@Override

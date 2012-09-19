@@ -25,7 +25,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		assertNotNull(report.getError());
 	}
 
-	private synchronized void executeInBackgroundAndGetReport(Task task) throws InterruptedException {
+	private synchronized void executeInBackgroundAndGetReport(Task<?> task) throws InterruptedException {
 		report = null;
 		task.addListener(this);
 		new TaskExecutor(task).executeInBackground();
