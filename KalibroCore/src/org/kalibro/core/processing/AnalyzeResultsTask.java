@@ -23,7 +23,7 @@ class AnalyzeResultsTask extends ProcessProjectSubtask<Collection<ModuleResult>>
 	}
 
 	@Override
-	public Collection<ModuleResult> performAndGetResult() {
+	public Collection<ModuleResult> compute() {
 		new SourceTreeBuilder(projectResult).buildSourceTree(resultMap.keySet());
 		new ResultsAggregator(projectResult, resultMap).aggregate();
 		return resultMap.values();

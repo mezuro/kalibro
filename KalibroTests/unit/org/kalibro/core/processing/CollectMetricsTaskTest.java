@@ -77,6 +77,6 @@ public class CollectMetricsTaskTest extends TestCase {
 
 	@Test
 	public void shouldReturnCollectedResults() throws Exception {
-		assertDeepEquals(newHelloWorldResultMap(projectResult.getDate()), collectTask.performAndGetResult());
+		assertDeepEquals(newHelloWorldResultMap(projectResult.getDate()), collectTask.compute());
 	}
 }

@@ -135,7 +135,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		private int result;
 
 		@Override
-		public Integer performAndGetResult() {
+		public Integer compute() {
 			return result++;
 		}
 	}

@@ -9,7 +9,7 @@ class RetrieveResultTask<T> extends TypedTask<T> {
 	}
 
 	@Override
-	public T performAndGetResult() {
+	public T compute() {
 		return resultToBeRetrieved;
 	}
 }

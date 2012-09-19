@@ -20,10 +20,10 @@ public abstract class TypedTask<T> extends Task {
 
 	@Override
 	public void perform() throws Throwable {
-		setResult(performAndGetResult());
+		setResult(compute());
 	}
 
-	protected abstract T performAndGetResult() throws Throwable;
+	protected abstract T compute() throws Throwable;
 
 	@Override
 	protected void setReport(TaskReport<?> report) {

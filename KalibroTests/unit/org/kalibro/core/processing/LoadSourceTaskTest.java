@@ -28,12 +28,12 @@ public class LoadSourceTaskTest extends TestCase {
 
 	@Test
 	public void shouldLoadProject() {
-		loadTask.performAndGetResult();
+		loadTask.compute();
 		Mockito.verify(project).load();
 	}
 
 	@Test
 	public void shouldReturnProjectResult() {
-		assertSame(loadTask.projectResult, loadTask.performAndGetResult());
+		assertSame(loadTask.projectResult, loadTask.compute());
 	}
 }
