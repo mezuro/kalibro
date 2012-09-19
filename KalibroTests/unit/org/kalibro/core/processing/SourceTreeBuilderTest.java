@@ -3,19 +3,19 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleNode;
 import org.kalibro.core.model.ProjectResult;
 
-public class SourceTreeBuilderTest extends KalibroTestCase {
+public class SourceTreeBuilderTest extends TestCase {
 
 	private ProjectResult projectResult;
 	private SourceTreeBuilder treeBuilder;
@@ -27,7 +27,7 @@ public class SourceTreeBuilderTest extends KalibroTestCase {
 		treeBuilder = new SourceTreeBuilder(projectResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkSourceTree() {
 		ModuleNode sourceTree = getSourceTree(
 			new Module(CLASS, "org.checkstyle.CheckstyleMetricCollector"),
@@ -37,12 +37,12 @@ public class SourceTreeBuilderTest extends KalibroTestCase {
 			new Module(CLASS, "org.analizo.AnalizoOutputParser"));
 
 		String projectName = projectResult.getProject().getName();
-		assertDeepEquals(new Module(APPLICATION, projectName), sourceTree.getModule());
+		assertDeepEquals(new Module(SOFTWARE, projectName), sourceTree.getModule());
 		assertEquals(1, sourceTree.getChildren().size());
 		assertDeepEquals(analizoCheckstyleTree(), sourceTree.getChildren().iterator().next());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetRootNameAsProjectName() {
 		assertDeepEquals(helloWorldRoot(), getSourceTree(helloWorldApplication(), helloWorldClass()));
 	}

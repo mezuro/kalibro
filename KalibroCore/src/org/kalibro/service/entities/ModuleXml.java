@@ -6,11 +6,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Module")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModuleXml implements DataTransferObject<Module> {
+public class ModuleXml extends DataTransferObject<Module> {
 
 	private String name;
 	private Granularity granularity;

@@ -11,18 +11,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.persistence.dao.ModuleResultDao;
-import org.kalibro.core.persistence.dao.ModuleResultDaoFake;
+import org.kalibro.dao.ModuleResultDaoFake;
 import org.kalibro.service.entities.ModuleResultXml;
 
-public class ModuleResultEndpointTest extends KalibroServiceTestCase {
+public class ModuleResultEndpointTest extends EndpointTest {
 
 	private static final String PROJECT_NAME = "HelloWorld-1.0";
 	private static final String CLASS_NAME = "HelloWorld";
 	private static final Date DATE_1 = new Date(1);
 	private static final Date DATE_2 = new Date(2);
 
-	private ModuleResultDao daoFake;
+	private ModuleResultDaoFake daoFake;
 	private ModuleResultEndpoint port;
 
 	@Before
@@ -40,7 +39,7 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 		daoFake.save(moduleResult, PROJECT_NAME);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveModuleResult() {
 		verifyModuleResult(PROJECT_NAME, DATE_1);
 		verifyModuleResult(PROJECT_NAME, DATE_1);
@@ -56,7 +55,7 @@ public class ModuleResultEndpointTest extends KalibroServiceTestCase {
 		assertDeepEquals(expected, actual);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRetrieveResultHistory() {
 		verifyResultHistory(PROJECT_NAME);
 		verifyResultHistory(CLASS_NAME);

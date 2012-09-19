@@ -5,10 +5,10 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 
-public class ModuleTest extends KalibroTestCase {
+public class ModuleTest extends TestCase {
 
 	private Module org, kalibro, core, model, module;
 
@@ -21,7 +21,7 @@ public class ModuleTest extends KalibroTestCase {
 		module = newModule(CLASS, "org.kalibro.core.model.Module");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeShortName() {
 		assertEquals(org.getShortName(), "" + org);
 		assertEquals(kalibro.getShortName(), "" + kalibro);
@@ -30,7 +30,7 @@ public class ModuleTest extends KalibroTestCase {
 		assertEquals(module.getShortName(), "" + module);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shortNameShouldBeLastName() {
 		assertEquals("org", org.getShortName());
 		assertEquals("kalibro", kalibro.getShortName());
@@ -39,7 +39,7 @@ public class ModuleTest extends KalibroTestCase {
 		assertEquals("Module", module.getShortName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveLongName() {
 		assertEquals("org", org.getName());
 		assertEquals("org.kalibro", kalibro.getName());
@@ -48,18 +48,18 @@ public class ModuleTest extends KalibroTestCase {
 		assertEquals("org.kalibro.core.model.Module", module.getName());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInferAncestry() {
 		assertTrue(org.inferAncestry().isEmpty());
-		assertDeepEquals(kalibro.inferAncestry(), org);
-		assertDeepEquals(core.inferAncestry(), org, kalibro);
-		assertDeepEquals(model.inferAncestry(), org, kalibro, core);
-		assertDeepEquals(module.inferAncestry(), org, kalibro, core, model);
+		assertDeepList(kalibro.inferAncestry(), org);
+		assertDeepList(core.inferAncestry(), org, kalibro);
+		assertDeepList(model.inferAncestry(), org, kalibro, core);
+		assertDeepList(module.inferAncestry(), org, kalibro, core, model);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByGranularityThenName() {
-		assertSorted(newModule(APPLICATION, "G"), newModule(APPLICATION, "H"),
+		assertSorted(newModule(SOFTWARE, "G"), newModule(SOFTWARE, "H"),
 			newModule(PACKAGE, "E"), newModule(PACKAGE, "F"),
 			newModule(CLASS, "C"), newModule(CLASS, "D"),
 			newModule(METHOD, "A"), newModule(METHOD, "B"));

@@ -1,14 +1,14 @@
 package org.kalibro.desktop;
 
-import org.kalibro.Kalibro;
+import org.kalibro.KalibroSettings;
 import org.kalibro.desktop.settings.SettingsController;
 
 public final class KalibroDesktop {
 
 	public static void main(String[] arguments) {
-		if (!Kalibro.settingsFileExists())
+		if (!KalibroSettings.exists())
 			SettingsController.editSettings();
-		if (Kalibro.settingsFileExists())
+		if (KalibroSettings.exists())
 			new KalibroFrame().setVisible(true);
 	}
 

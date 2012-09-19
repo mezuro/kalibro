@@ -7,10 +7,10 @@ import org.kalibro.KalibroException;
 
 class TaskExecutor {
 
-	private Task task;
+	private Task<?> task;
 	private Timer periodicExecutionTimer;
 
-	protected TaskExecutor(Task task) {
+	protected TaskExecutor(Task<?> task) {
 		this.task = task;
 		this.periodicExecutionTimer = new Timer();
 	}

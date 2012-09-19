@@ -2,28 +2,32 @@ package org.kalibro.core.model.enums;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.RepositoryType.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 import static org.powermock.reflect.Whitebox.*;
 
+import java.io.File;
+
 import org.junit.After;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.EnumerationTestCase;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.loaders.*;
-import org.mockito.Mockito;
+import org.kalibro.core.model.Repository;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RepositoryType.class)
-public class RepositoryTypeTest extends KalibroTestCase {
+public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		RepositoryType.values();
-		RepositoryType.valueOf("GIT");
+	@Override
+	protected Class<RepositoryType> enumerationClass() {
+		return RepositoryType.class;
+	}
+
+	@Override
+	protected String expectedText(RepositoryType type) {
+		return (type == CVS) ? "CVS" : super.expectedText(type);
 	}
 
 	@After
@@ -31,13 +35,13 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		setInternalState(GIT, ProjectLoader.class, new GitLoader());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveSupportedTypes() {
 		RepositoryType supported = mockType(true);
 		RepositoryType unsupported = mockType(false);
 		spy(RepositoryType.class);
 		when(RepositoryType.values()).thenReturn(new RepositoryType[]{supported, unsupported});
-		assertDeepEquals(RepositoryType.supportedTypes(), supported);
+		assertDeepSet(RepositoryType.supportedTypes(), supported);
 	}
 
 	private RepositoryType mockType(boolean supported) {
@@ -46,23 +50,8 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		return type;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkToString() {
-		assertEquals("Local directory", "" + LOCAL_DIRECTORY);
-		assertEquals("Local tarball", "" + LOCAL_TARBALL);
-		assertEquals("Local zip", "" + LOCAL_ZIP);
-
-		assertEquals("Bazaar", "" + BAZAAR);
-		assertEquals("CVS", "" + CVS);
-		assertEquals("Git", "" + GIT);
-		assertEquals("Mercurial", "" + MERCURIAL);
-		assertEquals("Remote tarball", "" + REMOTE_TARBALL);
-		assertEquals("Remote zip", "" + REMOTE_ZIP);
-		assertEquals("Subversion", "" + SUBVERSION);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkLocal() {
+	@Test
+	public void shouldRetrieveIfIsLocal() {
 		assertTrue(LOCAL_DIRECTORY.isLocal());
 		assertTrue(LOCAL_TARBALL.isLocal());
 		assertTrue(LOCAL_ZIP.isLocal());
@@ -76,8 +65,8 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		assertFalse(SUBVERSION.isLocal());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkProjectLoader() {
+	@Test
+	public void shouldProvideLoader() {
 		assertClassEquals(LocalDirectoryLoader.class, getLoader(LOCAL_DIRECTORY));
 		assertClassEquals(LocalTarballLoader.class, getLoader(LOCAL_TARBALL));
 		assertClassEquals(LocalZipLoader.class, getLoader(LOCAL_ZIP));
@@ -95,7 +84,7 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		return getInternalState(type, "loader");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveAuthenticationSupport() {
 		ProjectLoader loader = mockGitLoader();
 		when(loader.supportsAuthentication()).thenReturn(false);
@@ -105,7 +94,7 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		assertTrue(GIT.supportsAuthentication());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidateProjectLoader() {
 		ProjectLoader loader = mockGitLoader();
 		when(loader.validate()).thenReturn(true);
@@ -114,11 +103,14 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		assertFalse(GIT.isSupported());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoadRepository() {
+		File directory = mock(File.class);
+		Repository repository = mock(Repository.class);
 		ProjectLoader loader = mockGitLoader();
-		GIT.load(null, HELLO_WORLD_DIRECTORY);
-		Mockito.verify(loader).load(null, HELLO_WORLD_DIRECTORY);
+
+		GIT.load(repository, directory);
+		verify(loader).load(repository, directory);
 	}
 
 	private ProjectLoader mockGitLoader() {
@@ -127,16 +119,16 @@ public class RepositoryTypeTest extends KalibroTestCase {
 		return loader;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowKalibroErrorIfLoaderCouldNotBeCreated() {
 		final RepositoryType type = spy(GIT);
 		when(type.name()).thenReturn("INEXISTENT");
-		checkKalibroError(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				invokeMethod(type, "initializeLoader");
 			}
-		}, "Error creating loader for Git", ClassNotFoundException.class);
+		}).throwsError().withMessage("Error creating loader for Git").withCause(ClassNotFoundException.class);
 	}
 }

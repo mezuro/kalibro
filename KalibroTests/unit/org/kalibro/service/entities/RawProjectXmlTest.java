@@ -1,6 +1,6 @@
 package org.kalibro.service.entities;
 
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.helloWorld;
 
 import java.util.Arrays;
 import java.util.Collection;

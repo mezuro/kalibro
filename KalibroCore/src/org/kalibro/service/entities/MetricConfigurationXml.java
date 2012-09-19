@@ -10,11 +10,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "MetricConfiguration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricConfigurationXml implements DataTransferObject<MetricConfiguration> {
+public class MetricConfigurationXml extends DataTransferObject<MetricConfiguration> {
 
 	@XmlElement(required = true)
 	private MetricXml<?> metric;

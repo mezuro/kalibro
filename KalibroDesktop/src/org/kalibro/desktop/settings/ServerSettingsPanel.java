@@ -4,7 +4,7 @@ import java.awt.Component;
 
 import javax.swing.border.TitledBorder;
 
-import org.kalibro.core.settings.ServerSettings;
+import org.kalibro.ServerSettings;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.DirectoryField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;

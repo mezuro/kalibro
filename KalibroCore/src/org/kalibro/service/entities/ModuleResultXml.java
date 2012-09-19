@@ -12,11 +12,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "ModuleResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModuleResultXml implements DataTransferObject<ModuleResult> {
+public class ModuleResultXml extends DataTransferObject<ModuleResult> {
 
 	private ModuleXml module;
 	private Date date;

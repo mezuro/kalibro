@@ -1,6 +1,6 @@
 package org.kalibro.service.entities;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 
 import java.util.Arrays;
 import java.util.Collection;

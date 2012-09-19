@@ -7,7 +7,7 @@ import java.util.TreeSet;
 import org.kalibro.KalibroError;
 import org.kalibro.core.loaders.ProjectLoader;
 import org.kalibro.core.model.Repository;
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 
 public enum RepositoryType {
 

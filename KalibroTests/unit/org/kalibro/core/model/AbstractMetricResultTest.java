@@ -1,14 +1,14 @@
 package org.kalibro.core.model;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 
-public class AbstractMetricResultTest extends KalibroTestCase {
+public class AbstractMetricResultTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		MyMetric metric = new MyMetric();
 		Double value = Double.NaN;
@@ -27,12 +27,7 @@ public class AbstractMetricResultTest extends KalibroTestCase {
 	private class MyMetric extends Metric {
 
 		public MyMetric() {
-			super("", Granularity.CLASS);
-		}
-
-		@Override
-		public boolean isCompound() {
-			return false;
+			super(false, "", Granularity.CLASS);
 		}
 	}
 }

@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 import org.kalibro.service.entities.ConfigurationXml;
 
-@WebService
+@WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public interface ConfigurationEndpoint {
 
 	@WebMethod
@@ -18,6 +18,10 @@ public interface ConfigurationEndpoint {
 	@WebMethod
 	@WebResult(name = "configurationName")
 	List<String> getConfigurationNames();
+
+	@WebMethod
+	@WebResult(name = "hasConfiguration")
+	boolean hasConfiguration(@WebParam(name = "configurationName") String configurationName);
 
 	@WebMethod
 	@WebResult(name = "configuration")

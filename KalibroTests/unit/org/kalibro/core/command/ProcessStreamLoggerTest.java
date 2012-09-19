@@ -1,15 +1,15 @@
 package org.kalibro.core.command;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class ProcessStreamLoggerTest extends KalibroTestCase {
+public class ProcessStreamLoggerTest extends TestCase {
 
 	private static final long PIPE_TIMEOUT = 50;
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldPipe() throws InterruptedException {
 		StringInputStream input = new StringInputStream("My string");
 		StringOutputStream output = new StringOutputStream();

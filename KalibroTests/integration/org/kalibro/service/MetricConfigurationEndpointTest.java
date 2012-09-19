@@ -8,11 +8,11 @@ import java.net.MalformedURLException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.persistence.dao.MetricConfigurationDao;
-import org.kalibro.core.persistence.dao.MetricConfigurationDaoFake;
+import org.kalibro.dao.MetricConfigurationDao;
+import org.kalibro.dao.MetricConfigurationDaoFake;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
-public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
+public class MetricConfigurationEndpointTest extends EndpointTest {
 
 	private static final String CONFIGURATION_NAME = "MetricConfigurationEndpointTest";
 
@@ -27,7 +27,7 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 		port = publishAndGetPort(new MetricConfigurationEndpointImpl(daoFake), MetricConfigurationEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetMetricConfigurationByName() {
 		verifyGetMetricConfiguration("cbo");
 		verifyGetMetricConfiguration("loc");
@@ -40,7 +40,7 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 		assertDeepEquals(expected, actual);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveConfigurationByName() {
 		verifyRemoveMetricConfiguration("cbo");
 		verifyRemoveMetricConfiguration("loc");
@@ -53,7 +53,7 @@ public class MetricConfigurationEndpointTest extends KalibroServiceTestCase {
 		assertNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveConfiguration() {
 		MetricConfiguration newConfiguration = metricConfiguration("acc");
 		String metricName = newConfiguration.getMetric().getName();

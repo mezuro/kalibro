@@ -1,6 +1,6 @@
 package org.kalibro.service.entities;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 
 import java.util.Arrays;
@@ -8,22 +8,22 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.ModuleResult;
 import org.powermock.reflect.internal.WhiteboxImpl;
 
 public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultXml> {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void defaultConstructorOfCompoundMetricWithErrorShouldDoNothing() {
-		checkException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				new CompoundMetricWithErrorXml().getError();
 			}
-		}, NullPointerException.class);
+		}).doThrow(NullPointerException.class);
 	}
 
 	@Override
@@ -43,7 +43,7 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 		return new ModuleResultXml(moduleResult);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldConvertNullCompoundMetricsWithErrorIntoEmptyMap() {
 		ModuleResult moduleResult = helloWorldClassResult();
 		ModuleResultXml dto = createDto(moduleResult);

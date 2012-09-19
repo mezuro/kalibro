@@ -1,31 +1,31 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 import static org.kalibro.core.model.enums.Granularity.*;
 import static org.kalibro.core.model.enums.Language.*;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 
-public class NativeMetricTest extends KalibroTestCase {
+public class NativeMetricTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		NativeMetric metric = new NativeMetric("", CLASS, JAVA, CPP);
 		assertEquals("", metric.getName());
 		assertEquals(CLASS, metric.getScope());
-		assertDeepEquals(metric.getLanguages(), JAVA, CPP);
+		assertDeepList(metric.getLanguages(), JAVA, CPP);
 		assertEquals("", metric.getDescription());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void nativeMetricsShouldNotBeCompound() {
 		for (NativeMetric metric : analizoStub().getSupportedMetrics())
 			assertFalse(metric.isCompound());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testOrigin() {
 		NativeMetric metric = new NativeMetric("", PACKAGE, C);
 		assertNull(metric.getOrigin());

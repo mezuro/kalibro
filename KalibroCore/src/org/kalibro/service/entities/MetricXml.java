@@ -7,11 +7,11 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({CompoundMetricXml.class, NativeMetricXml.class})
-public abstract class MetricXml<METRIC extends Metric> implements DataTransferObject<METRIC> {
+public abstract class MetricXml<METRIC extends Metric> extends DataTransferObject<METRIC> {
 
 	@XmlElement(required = true)
 	protected String name;

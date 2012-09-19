@@ -3,9 +3,9 @@ package org.kalibro.desktop.swingextension.list;
 import java.lang.reflect.Method;
 
 import org.kalibro.KalibroError;
-import org.kalibro.core.util.Identifier;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
+import org.kalibro.util.Identifier;
 
 public class ReflectionColumn extends Column {
 

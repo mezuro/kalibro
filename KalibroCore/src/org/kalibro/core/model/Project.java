@@ -3,13 +3,17 @@ package org.kalibro.core.model;
 import java.io.File;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.abstracts.AbstractEntity;
-import org.kalibro.core.model.abstracts.IdentityField;
-import org.kalibro.core.model.abstracts.SortingMethods;
+import org.kalibro.KalibroSettings;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.util.Identifier;
 
-@SortingMethods("getName")
+@SortingFields("name")
 public class Project extends AbstractEntity<Project> {
+
+	private Long id;
 
 	@IdentityField
 	private String name;
@@ -23,6 +27,7 @@ public class Project extends AbstractEntity<Project> {
 	private ProjectState state;
 
 	public Project() {
+		setId(null);
 		setName("");
 		setLicense("");
 		setDescription("");
@@ -34,6 +39,14 @@ public class Project extends AbstractEntity<Project> {
 	@Override
 	public String toString() {
 		return name;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getName() {
@@ -68,8 +81,8 @@ public class Project extends AbstractEntity<Project> {
 		this.configurationName = configurationName;
 	}
 
-	public void load(File loadDirectory) {
-		repository.load(loadDirectory);
+	public void load() {
+		repository.load(getDirectory());
 	}
 
 	public Repository getRepository() {
@@ -114,5 +127,10 @@ public class Project extends AbstractEntity<Project> {
 
 	public void setError(Throwable error) {
 		this.error = error;
+	}
+
+	public File getDirectory() {
+		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
+		return new File(loadDirectory, id + "-" + Identifier.fromText(name).asVariable());
 	}
 }

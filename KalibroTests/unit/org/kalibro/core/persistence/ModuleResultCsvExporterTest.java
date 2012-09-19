@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.core.model.ModuleResultFixtures.helloWorldClassResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,7 +11,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.ModuleResult;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(FileUtils.class)
-public class ModuleResultCsvExporterTest extends KalibroTestCase {
+public class ModuleResultCsvExporterTest extends TestCase {
 
 	private File file;
 	private ModuleResult moduleResult;
@@ -32,7 +32,7 @@ public class ModuleResultCsvExporterTest extends KalibroTestCase {
 		moduleResult.setConfiguration(newConfiguration("amloc", "cbo", "lcom4"));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkExportContents() throws IOException {
 		new ModuleResultCsvExporter(moduleResult).exportTo(file);
 

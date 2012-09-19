@@ -6,25 +6,24 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
-import org.kalibro.Kalibro;
-import org.kalibro.core.ProjectStateListener;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.icon.Icon;
 
-public class ProjectStatusBar extends JPanel implements ProjectStateListener {
+public class ProjectStatusBar extends JPanel {
+
+	private String projectName;
 
 	public ProjectStatusBar(Project project) {
 		setLayout(new GridLayout());
 		setBorder(new BevelBorder(BevelBorder.LOWERED));
 		setPreferredSize(new Dimension(0, new Label("").getSize().height));
-		projectStateChanged(project.getName(), project.getState());
-		Kalibro.addProjectStateListener(project, this);
+		projectName = project.getName();
+		setProjectState(project.getState());
 	}
 
-	@Override
-	public void projectStateChanged(String projectName, ProjectState newProjectState) {
+	public void setProjectState(ProjectState newProjectState) {
 		String icon = "";
 		if (newProjectState == ProjectState.ERROR)
 			icon = "error.gif";

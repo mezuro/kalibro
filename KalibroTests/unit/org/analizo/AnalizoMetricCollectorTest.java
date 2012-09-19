@@ -1,7 +1,6 @@
 package org.analizo;
 
-import static org.kalibro.core.model.BaseToolFixtures.*;
-import static org.kalibro.core.model.NativeModuleResultFixtures.*;
+import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.InputStream;
@@ -10,45 +9,54 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
-import org.powermock.api.mockito.PowerMockito;
+import org.kalibro.core.model.NativeModuleResult;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(AnalizoMetricCollector.class)
-public class AnalizoMetricCollectorTest extends KalibroTestCase {
+public class AnalizoMetricCollectorTest extends TestCase {
 
 	private CommandTask executor;
+	private AnalizoOutputParser parser;
 
 	private AnalizoMetricCollector analizo;
 
 	@Before
 	public void setUp() throws Exception {
-		executor = PowerMockito.mock(CommandTask.class);
-		mockOutput("analizo metrics --list", "Analizo-Output-MetricList.txt");
+		executor = mock(CommandTask.class);
+		parser = mock(AnalizoOutputParser.class);
+		mockOutput("analizo metrics --list");
 		analizo = new AnalizoMetricCollector();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkBaseTool() {
-		assertDeepEquals(analizo(), analizo.getBaseTool());
+		BaseTool baseTool = analizo.getBaseTool();
+		assertEquals("Analizo", baseTool.getName());
+		assertEquals(AnalizoMetricCollector.class, baseTool.getCollectorClass());
+		assertTrue(baseTool.getSupportedMetrics().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = new File("/");
-		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
-		mockOutput("analizo metrics /", "Analizo-Output-HelloWorld.txt");
-		assertDeepEquals(analizo.collectMetrics(codeDirectory, metrics),
-			helloWorldApplicationResult(), helloWorldClassResult());
+		Set<NativeMetric> metrics = mock(Set.class);
+		InputStream output = mockOutput("analizo metrics /");
+		Set<NativeModuleResult> results = mock(Set.class);
+		when(parser.parseResults(output, metrics)).thenReturn(results);
+		assertSame(results, analizo.collectMetrics(codeDirectory, metrics));
 	}
 
-	private void mockOutput(String command, String outputResource) throws Exception {
-		InputStream output = getClass().getResourceAsStream(outputResource);
-		PowerMockito.whenNew(CommandTask.class).withArguments(command).thenReturn(executor);
-		PowerMockito.when(executor.executeAndGetOuput()).thenReturn(output);
+	private InputStream mockOutput(String command) throws Exception {
+		InputStream output = mock(InputStream.class);
+		whenNew(CommandTask.class).withArguments(command).thenReturn(executor);
+		when(executor.executeAndGetOuput()).thenReturn(output);
+		whenNew(AnalizoOutputParser.class).withArguments(output).thenReturn(parser);
+		return output;
 	}
 }

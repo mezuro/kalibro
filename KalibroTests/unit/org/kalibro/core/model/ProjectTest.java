@@ -1,27 +1,43 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 import static org.kalibro.core.model.enums.ProjectState.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.junit.runner.RunWith;
+import org.kalibro.KalibroSettings;
+import org.kalibro.TestCase;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.ProjectState;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-public class ProjectTest extends KalibroTestCase {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(KalibroSettings.class)
+public class ProjectTest extends TestCase {
 
+	private KalibroSettings settings;
 	private Project project = newHelloWorld();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Before
+	public void setUp() {
+		settings = new KalibroSettings();
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(settings);
+	}
+
+	@Test
 	public void checkInitializationAttributes() {
 		project = new Project();
+		assertNull(project.getId());
 		assertEquals("", project.getName());
 		assertEquals("", project.getLicense());
 		assertEquals("", project.getDescription());
@@ -31,20 +47,20 @@ public class ProjectTest extends KalibroTestCase {
 		assertNoError();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeProjectName() {
 		assertEquals(project.getName(), "" + project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldLoadRepository() {
 		Repository repository = PowerMockito.mock(Repository.class);
 		project.setRepository(repository);
-		project.load(HELLO_WORLD_DIRECTORY);
-		Mockito.verify(repository).load(HELLO_WORLD_DIRECTORY);
+		project.load();
+		Mockito.verify(repository).load(project.getDirectory());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeInErrorStateAfterSettingError() {
 		Exception error = new Exception();
 		project.setError(error);
@@ -52,7 +68,7 @@ public class ProjectTest extends KalibroTestCase {
 		assertEquals(ERROR, project.getState());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldGetStateMessageFromState() {
 		for (ProjectState state : ProjectState.values()) {
 			setState(state);
@@ -67,7 +83,7 @@ public class ProjectTest extends KalibroTestCase {
 			project.setState(state);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveStateWhenErrorOcurred() {
 		List<ProjectState> normalStates = new ArrayList<ProjectState>(Arrays.asList(ProjectState.values()));
 		normalStates.remove(ERROR);
@@ -78,29 +94,29 @@ public class ProjectTest extends KalibroTestCase {
 		}
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				project.getStateWhenErrorOcurred();
 			}
-		}, "Project " + project + " has no error");
+		}).throwsException().withMessage("Project " + project + " has no error");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldNotAllowErrorStateWithoutException() {
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				project.setState(ERROR);
 			}
-		}, "Use setError(Throwable) to put project in error state");
+		}).throwsException().withMessage("Use setError(Throwable) to put project in error state");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldClearErrorWhenSettingNormalState() {
 		project.setError(new Exception());
 		project.setState(ANALYZING);
@@ -108,16 +124,24 @@ public class ProjectTest extends KalibroTestCase {
 	}
 
 	private void assertNoError() {
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				project.getError();
 			}
-		}, "Project " + project + " has no error");
+		}).throwsException().withMessage("Project " + project + " has no error");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
+	public void shouldRetrieveProjectDirectory() {
+		project.setId(42L);
+		project.setName("Testing camel case++");
+		assertEquals("42-testingCamelCase", project.getDirectory().getName());
+		assertEquals(settings.getServerSettings().getLoadDirectory(), project.getDirectory().getParentFile());
+	}
+
+	@Test
 	public void shouldSortByName() {
 		assertSorted(newProject(""), newProject("Abc"), newProject("Def"), newProject("Xyz"));
 	}

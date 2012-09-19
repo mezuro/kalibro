@@ -2,7 +2,7 @@ package org.kalibro.core.model;
 
 import java.io.File;
 
-import org.kalibro.core.model.abstracts.AbstractEntity;
+import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.model.enums.RepositoryType;
 
 public class Repository extends AbstractEntity<Repository> {

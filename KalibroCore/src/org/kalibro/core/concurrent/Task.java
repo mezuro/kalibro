@@ -1,23 +1,27 @@
 package org.kalibro.core.concurrent;
 
-public abstract class Task implements Runnable {
+import java.util.HashSet;
+import java.util.Set;
+
+public abstract class Task<T> implements Runnable {
 
 	public static final long SECOND = 1000L;
 	public static final long MINUTE = 60 * SECOND;
 	public static final long HOUR = 60 * MINUTE;
 	public static final long DAY = 24 * HOUR;
 
-	private TaskListener listener;
 	private TaskExecutor executor;
+	private Set<TaskListener<T>> listeners;
 
-	protected TaskReport report;
+	protected TaskReport<T> report;
 
 	public Task() {
-		this.executor = new TaskExecutor(this);
+		executor = new TaskExecutor(this);
+		listeners = new HashSet<TaskListener<T>>();
 	}
 
-	public void setListener(TaskListener listener) {
-		this.listener = listener;
+	public void addListener(TaskListener<T> listener) {
+		listeners.add(listener);
 	}
 
 	public void executeInBackground() {
@@ -42,34 +46,31 @@ public abstract class Task implements Runnable {
 
 	@Override
 	public void run() {
-		long start = System.currentTimeMillis();
-		Throwable error = performAndGetError();
-		long executionTime = System.currentTimeMillis() - start;
-		setReport(executionTime, error);
-		if (listener != null)
-			reportTaskFinished();
+		computeReport();
+		for (TaskListener<T> listener : listeners)
+			reportTaskFinished(listener);
 	}
 
-	private Throwable performAndGetError() {
+	private void computeReport() {
+		long start = System.currentTimeMillis();
 		try {
-			perform();
-			return null;
-		} catch (Throwable exception) {
-			return exception;
+			setReport(new TaskReport<T>(this, start, compute()));
+		} catch (Throwable error) {
+			setReport(new TaskReport<T>(this, start, error));
 		}
 	}
 
-	protected abstract void perform() throws Throwable;
+	public abstract T compute() throws Throwable;
 
-	protected void setReport(long executionTime, Throwable error) {
-		report = new TaskReport(executionTime, error);
+	protected void setReport(TaskReport<T> report) {
+		this.report = report;
 	}
 
-	public TaskReport getReport() {
+	public TaskReport<T> getReport() {
 		return report;
 	}
 
-	protected void reportTaskFinished() {
+	protected void reportTaskFinished(final TaskListener<T> listener) {
 		new Thread(new Runnable() {
 
 			@Override

@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.powermock.reflect.Whitebox;
 
-public abstract class ProjectLoaderTestCase extends KalibroTestCase {
+public abstract class ProjectLoaderTestCase extends TestCase {
 
 	protected ProjectLoader loader;
 	protected Repository repository;
@@ -30,21 +30,21 @@ public abstract class ProjectLoaderTestCase extends KalibroTestCase {
 
 	protected abstract RepositoryType getRepositoryType();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkValidationCommands() {
 		assertDeepEquals(expectedValidationCommands(), loader.getValidationCommands());
 	}
 
 	protected abstract List<String> expectedValidationCommands();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAuthenticationSupport() {
 		assertEquals(shouldSupportAuthentication(), loader.supportsAuthentication());
 	}
 
 	protected abstract boolean shouldSupportAuthentication();
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkLoadCommands() {
 		assertDeepEquals(expectedLoadCommands(true), loader.getLoadCommands(repository, true));
 		assertDeepEquals(expectedLoadCommands(false), loader.getLoadCommands(repository, false));

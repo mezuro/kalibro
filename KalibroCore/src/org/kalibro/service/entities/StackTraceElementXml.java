@@ -4,11 +4,11 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "StackTraceElement")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StackTraceElementXml implements DataTransferObject<StackTraceElement> {
+public class StackTraceElementXml extends DataTransferObject<StackTraceElement> {
 
 	private String declaringClass;
 	private String methodName;

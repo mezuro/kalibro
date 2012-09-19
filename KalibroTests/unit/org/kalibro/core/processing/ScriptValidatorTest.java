@@ -1,104 +1,73 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
-
-import javax.script.ScriptException;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.core.model.MetricFixtures.sc;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.KalibroException;
+import org.kalibro.TestCase;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
+import org.mozilla.javascript.EcmaError;
 
-public class ScriptValidatorTest extends KalibroTestCase {
+public class ScriptValidatorTest extends TestCase {
 
-	private Configuration configuration;
+	private MetricConfiguration configuration;
 	private ScriptValidator validator;
 
 	@Before
 	public void setUp() {
-		configuration = newConfiguration("cbo", "lcom4");
-		validator = new ScriptValidator(configuration);
+		validator = new ScriptValidator();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateSimpleReturn() {
-		validate("return 0;");
+	@Test
+	public void shouldValidateNativeCode() {
+		configuration = metricConfiguration("loc");
+		assertValid();
+
+		configuration.setCode("42");
+		assertInvalid(KalibroException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateExponentNotation() {
-		validate("return 1E10;");
+	@Test
+	public void shouldValidateCompoundCode() {
+		CompoundMetric metric = new CompoundMetric();
+		metric.setName("compound");
+		configuration = new MetricConfiguration(metric);
+		assertValid();
+
+		configuration.setCode("42");
+		assertInvalid(KalibroException.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateExpressions() {
-		validate("flag = true; return flag ? 1 : 0;");
+	@Test
+	public void shouldValidateCompoundScript() {
+		configuration = new MetricConfiguration(sc());
+		assertInvalid(EcmaError.class);
+
+		MetricConfiguration cboConfiguration = metricConfiguration("cbo");
+		validator.add(cboConfiguration);
+		validator.add(metricConfiguration("lcom4"));
+		assertValid();
+
+		validator.remove(cboConfiguration);
+		assertInvalid(EcmaError.class);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateReferenceToValidIdentifiers() {
-		validate(sc().getScript());
+	private void assertValid() {
+		validator.add(configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateSyntaxError() {
-		assertInvalid("riturn 0;", ScriptException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateUnknownIdentifier() {
-		assertInvalid("return something;", ScriptException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateNoReturn() {
-		assertInvalid("acc = null;", NullPointerException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateNullReturn() {
-		assertInvalid("return null;", NullPointerException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateNotNumberReturn() {
-		assertInvalid("return 'My string';", ClassCastException.class);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateInvalidCode() {
-		assertInvalid("42", "return 1.0;", ScriptException.class);
-	}
-
-	private void assertInvalid(String script, Class<? extends Exception> exceptionClass) {
-		assertInvalid("metric", script, exceptionClass);
-	}
-
-	private void assertInvalid(final String code, final String script, Class<? extends Exception> exceptionClass) {
-		checkKalibroException(new Task() {
+	private void assertInvalid(Class<? extends Exception> expectedExceptionClass) {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {
-				validate(code, script);
+				assertValid();
 			}
-		}, "Compound metric with invalid script: " + code, exceptionClass);
-	}
-
-	private void validate(String script) {
-		validate("metric", script);
-	}
-
-	private void validate(String code, String script) {
-		CompoundMetric metric = new CompoundMetric();
-		metric.setName(code);
-		metric.setScript(script);
-		MetricConfiguration metricConfiguration = new MetricConfiguration(metric);
-		metricConfiguration.setCode(code);
-		configuration.addMetricConfiguration(metricConfiguration);
-		validator.validateScriptOf(new MetricConfiguration(metric));
+		}).throwsException().withMessage("Metric with invalid code or script: " + configuration.getMetric())
+			.withCause(expectedExceptionClass);
 	}
 }

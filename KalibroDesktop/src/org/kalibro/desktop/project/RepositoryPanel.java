@@ -8,9 +8,9 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.kalibro.Kalibro;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.PasswordField;
@@ -33,7 +33,7 @@ public class RepositoryPanel extends EditPanel<Repository> implements ActionList
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
-		typeField = new ChoiceField<RepositoryType>("type", Kalibro.getSupportedRepositoryTypes());
+		typeField = new ChoiceField<RepositoryType>("type", DaoFactory.getProjectDao().getSupportedRepositoryTypes());
 		addressField = new StringField("address", 20);
 		usernameLabel = new Label("Username:");
 		usernameField = new StringField("username", 10);
@@ -77,7 +77,7 @@ public class RepositoryPanel extends EditPanel<Repository> implements ActionList
 
 	private void updateAuthenticationField(JComponent authenticationComponent, boolean authenticationSupported) {
 		authenticationComponent.setEnabled(authenticationSupported);
-		if (! authenticationSupported && authenticationComponent instanceof JTextField)
+		if (!authenticationSupported && authenticationComponent instanceof JTextField)
 			((JTextField) authenticationComponent).setText("");
 	}
 }

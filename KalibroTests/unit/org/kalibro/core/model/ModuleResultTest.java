@@ -1,10 +1,10 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
 import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.MetricResultFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.MetricResultFixtures.analizoResult;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import java.util.Arrays;
@@ -12,31 +12,29 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.junit.runner.RunWith;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.core.processing.ModuleResultConfigurer;
+import org.mockito.Mockito;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-public class ModuleResultTest extends KalibroTestCase {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ModuleResult.class)
+public class ModuleResultTest extends TestCase {
 
 	private ModuleResult result;
-	private CompoundMetric sc, invalid;
-	private Configuration configuration;
+	private CompoundMetric sc;
 
 	@Before
 	public void setUp() {
 		result = newHelloWorldClassResult();
-		result.metricResults.remove(analizoMetric("sc"));
-		configuration = newConfiguration("cbo", "lcom4");
-		configuration.addMetricConfiguration(createScConfiguration());
+		result.removeResultFor(analizoMetric("sc"));
+		sc = sc();
 	}
 
-	private MetricConfiguration createScConfiguration() {
-		sc = newSc();
-		MetricConfiguration scConfiguration = new MetricConfiguration(sc);
-		scConfiguration.addRange(new Range());
-		return scConfiguration;
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testInitialization() {
 		Module module = result.getModule();
 		Date date = new Date();
@@ -48,96 +46,44 @@ public class ModuleResultTest extends KalibroTestCase {
 		assertNull(result.getGrade());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldConfigureNativeMetricResults() {
+	@Test
+	public void shouldConfigure() throws Exception {
+		Configuration configuration = kalibroConfiguration();
+		ModuleResultConfigurer configurer = mock(ModuleResultConfigurer.class);
+		whenNew(ModuleResultConfigurer.class).withArguments(result, configuration).thenReturn(configurer);
+
 		result.setConfiguration(configuration);
-		assertTrue(result.getResultFor(analizoMetric("cbo")).hasRange());
+		Mockito.verify(configurer).configure();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldConfigureCompoundMetricResult() {
-		result.setConfiguration(configuration);
-		assertTrue(result.getResultFor(sc).hasRange());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void checkGrade() {
-		configuration.removeMetric(sc.getName());
-
-		NativeMetric cbo = analizoMetric("cbo");
-		MetricResult cboResult = result.getResultFor(cbo);
-		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo.getName());
-
-		for (Double weight : new Double[]{0.0, 1.0, 2.0, 3.0, 4.0}) {
-			cboConfiguration.setWeight(weight);
-			result.setConfiguration(configuration);
-			Double numerator = 20.0 + cboResult.getGrade() * weight;
-			Double denominator = 2.0 + weight;
-			assertDoubleEquals(numerator / denominator, result.getGrade());
-		}
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRemoveCompoundMetricsWhichAreNotInConfiguration() {
-		CompoundMetric metric = new CompoundMetric();
-		result.addMetricResult(new MetricResult(metric, 42.0));
-		result.setConfiguration(configuration);
-		assertFalse(result.hasResultFor(metric));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldComputeCompoundResult() {
-		result.setConfiguration(configuration);
-		Double cbo = result.getResultFor(analizoMetric("cbo")).getValue();
-		Double lcom4 = result.getResultFor(analizoMetric("lcom4")).getValue();
-		assertDoubleEquals(cbo * lcom4, result.getResultFor(sc).getValue());
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldIncludeOnlyCompoundMetricsWithCompatibleScope() {
-		changeScScope();
-		result.setConfiguration(configuration);
-		assertFalse(result.hasResultFor(sc));
-	}
-
-	private void changeScScope() {
-		configuration.removeMetric(sc.getName());
-		sc.setScope(Granularity.PACKAGE);
-		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldAddMultipleNativeMetricResults() {
 		result.addMetricResults(Arrays.asList(analizoResult("sc")));
 		assertTrue(result.hasResultFor(analizoMetric("sc")));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveCompoundMetricsWithError() {
-		addCompoundMetricWithError();
-		result.setConfiguration(configuration);
-		assertDeepEquals(result.getCompoundMetricsWithError(), invalid);
+	@Test
+	public void shouldRemoveCompoundMetrics() {
+		result.addMetricResult(new MetricResult(sc, 42.0));
+		result.removeCompoundMetrics();
+		assertFalse(result.hasResultFor(sc));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldRetrieveCompoundMetricError() {
-		addCompoundMetricWithError();
-		result.setConfiguration(configuration);
-		assertClassEquals(NullPointerException.class, result.getErrorFor(invalid));
+	@Test
+	public void shouldAddCompoundMetricWithError() {
+		assertTrue(result.getCompoundMetricsWithError().isEmpty());
+
+		Exception error = new Exception();
+		result.addCompoundMetricWithError(sc, error);
+		assertDeepSet(result.getCompoundMetricsWithError(), sc);
+		assertSame(error, result.getErrorFor(sc));
 	}
 
-	private void addCompoundMetricWithError() {
-		invalid = new CompoundMetric();
-		invalid.setName("Invalid");
-		invalid.setScript("return cbo > 0 ? 1.0 : null;");
-		configuration.addMetricConfiguration(new MetricConfiguration(invalid));
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByDateThenModule() {
 		assertSorted(newResult(0, CLASS, "C"), newResult(0, CLASS, "D"),
 			newResult(0, METHOD, "A"), newResult(0, METHOD, "B"),
-			newResult(1, APPLICATION, "G"), newResult(1, APPLICATION, "H"),
+			newResult(1, SOFTWARE, "G"), newResult(1, SOFTWARE, "H"),
 			newResult(1, PACKAGE, "E"), newResult(1, PACKAGE, "F"));
 	}
 

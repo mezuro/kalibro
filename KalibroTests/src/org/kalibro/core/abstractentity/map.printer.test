@@ -1,0 +1,9 @@
+ # strange map
+empty: {}
+pets:
+  c: "cat"
+  d: "dog"
+  p: "pig"
+vehicles:
+  b: "bus"
+  c: "car"

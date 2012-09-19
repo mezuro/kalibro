@@ -1,6 +1,7 @@
 package org.kalibro.core.command;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.Environment.logsDirectory;
 
 import java.io.File;
 import java.io.IOException;
@@ -9,66 +10,64 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.util.Directories;
+import org.kalibro.IntegrationTest;
+import org.kalibro.core.concurrent.VoidTask;
 
-public class CommandExecutionTest extends KalibroTestCase {
+public class CommandExecutionTest extends IntegrationTest {
 
 	private static final long PIPE_TIMEOUT = 50;
-	private static final File LOGS = Directories.logs();
 
 	private CommandTask task;
 
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(LOGS);
-		LOGS.mkdirs();
+		FileUtils.deleteQuietly(logsDirectory());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenGettingOutputForInvalidCommand() {
 		createCommandTask("invalid command");
-		checkException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws IOException {
 				task.executeAndGetOuput();
 			}
-		}, IOException.class);
+		}).doThrow(IOException.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionWhenExecutingInvalidCommand() {
 		createCommandTask("invalid command");
-		checkKalibroException(task, "Error while executing command: invalid command", IOException.class);
+		assertThat(task).doThrow(IOException.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionOnBadExitValue() {
 		createCommandTask("make etc");
-		checkKalibroException(task, "Command returned with error status: make etc");
+		assertThat(task).throwsException().withMessage("Command returned with error status: make etc");
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldThrowExceptionOnCommandTimeout() {
 		createCommandTask("sleep 1000");
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				task.executeAndWait(50);
 			}
-		}, "Timed out after 50 milliseconds while executing command: sleep 1000", InterruptedException.class);
+		}).throwsException().withCause(InterruptedException.class)
+			.withMessage("Timed out after 50 milliseconds while executing command: sleep 1000");
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetCommandOutput() throws IOException {
 		createCommandTask("echo test");
 		assertEquals("test\n", IOUtils.toString(task.executeAndGetOuput()));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldLogCommandOutput() throws Exception {
 		createCommandTask("echo test");
 		task.executeAndWait();
@@ -77,7 +76,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 		assertEquals("$ echo test\n", getLog("err"));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldLogCommandErrorOutput() throws Exception {
 		createCommandTask("make etc");
 		executeErrorCommandQuietly();
@@ -99,7 +98,7 @@ public class CommandExecutionTest extends KalibroTestCase {
 	}
 
 	private String getLog(String logFileExtension) throws IOException {
-		File logFile = (File) FileUtils.iterateFiles(LOGS, new String[]{logFileExtension}, false).next();
+		File logFile = (File) FileUtils.iterateFiles(logsDirectory(), new String[]{logFileExtension}, false).next();
 		return FileUtils.readFileToString(logFile);
 	}
 

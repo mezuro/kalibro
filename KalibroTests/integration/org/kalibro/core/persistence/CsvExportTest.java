@@ -1,8 +1,8 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,31 +13,32 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.IntegrationTest;
+import org.kalibro.core.Environment;
 import org.kalibro.core.model.ModuleResult;
 
-public class CsvExportTest extends KalibroTestCase {
+public class CsvExportTest extends IntegrationTest {
 
-	private static final File CSV_FILE = new File(TESTS_DIRECTORY, "HelloWorld.csv");
-
+	private File csvFile;
 	private ModuleResult moduleResult;
 
 	@Before
 	public void setUp() {
-		assertFalse(CSV_FILE.exists());
+		csvFile = new File(Environment.dotKalibro(), "HelloWorld.csv");
+		assertFalse(csvFile.exists());
 		moduleResult = newHelloWorldClassResult();
 		moduleResult.setConfiguration(newConfiguration("amloc", "cbo", "lcom4"));
 	}
 
 	@After
 	public void tearDown() {
-		CSV_FILE.delete();
+		csvFile.delete();
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void testExport() throws IOException {
 		InputStream expectedCsv = getClass().getResourceAsStream("HelloWorld.csv");
-		new ModuleResultCsvExporter(moduleResult).exportTo(CSV_FILE);
-		assertEquals(IOUtils.toString(expectedCsv), FileUtils.readFileToString(CSV_FILE));
+		new ModuleResultCsvExporter(moduleResult).exportTo(csvFile);
+		assertEquals(IOUtils.toString(expectedCsv), FileUtils.readFileToString(csvFile));
 	}
 }

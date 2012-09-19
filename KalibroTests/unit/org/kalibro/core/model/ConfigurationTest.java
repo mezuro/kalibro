@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 
@@ -10,10 +10,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.TestCase;
+import org.kalibro.core.concurrent.VoidTask;
 
-public class ConfigurationTest extends KalibroTestCase {
+public class ConfigurationTest extends TestCase {
 
 	private CompoundMetric sc;
 	private Configuration configuration;
@@ -29,20 +29,21 @@ public class ConfigurationTest extends KalibroTestCase {
 		scName = sc.getName();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkDefaultAttributes() {
 		configuration = new Configuration();
+		assertNull(configuration.getId());
 		assertEquals("", configuration.getName());
 		assertEquals("", configuration.getDescription());
 		assertTrue(configuration.getMetricConfigurations().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void toStringShouldBeConfigurationName() {
 		assertEquals(configuration.getName(), "" + configuration);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testContains() {
 		assertFalse(configuration.containsMetric("Unknown"));
 		assertTrue(configuration.containsMetric(cboName));
@@ -53,71 +54,71 @@ public class ConfigurationTest extends KalibroTestCase {
 		assertTrue(configuration.containsMetric(scName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveCompoundMetrics() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-		assertDeepEquals(configuration.getCompoundMetrics(), sc);
+		assertDeepSet(configuration.getCompoundMetrics(), sc);
 
 		configuration.removeMetric(scName);
 		assertTrue(configuration.getCompoundMetrics().isEmpty());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveNativeMetricsPerOrigin() {
 		Map<String, Set<NativeMetric>> nativeMetrics = configuration.getNativeMetrics();
 		assertEquals(1, nativeMetrics.size());
 		assertEquals(2, nativeMetrics.get("Analizo").size());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldRetrieveConfigurationForMetric() {
 		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(cboName));
 		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(lcomName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkNoConfigurationFoundForMetricError() {
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				configuration.getConfigurationFor("Unknown");
 			}
-		}, "No configuration found for metric: Unknown");
+		}).throwsException().withMessage("No configuration found for metric: Unknown");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void verifyErrorAddingConflictingMetricConfiguration() {
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				configuration.addMetricConfiguration(metricConfiguration("cbo"));
 			}
-		}, "A metric configuration with code 'cbo' already exists");
+		}).throwsException().withMessage("A metric configuration with code 'cbo' already exists");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldReplaceExistingMetricConfiguration() {
 		MetricConfiguration newMetricConfiguration = metricConfiguration("cbo");
 		configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
 		assertSame(newMetricConfiguration, configuration.getConfigurationFor(cboName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorReplacingInexistentMetricConfiguration() {
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.replaceMetricConfiguration("Unknown", metricConfiguration("noa"));
 			}
-		}, "No configuration found for metric: Unknown");
+		}).throwsException().withMessage("No configuration found for metric: Unknown");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkErrorForConflictingMetricConfigurationReplace() {
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {
@@ -125,43 +126,44 @@ public class ConfigurationTest extends KalibroTestCase {
 				newMetricConfiguration.setCode("lcom4");
 				configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
 			}
-		}, "A metric configuration with code 'lcom4' already exists");
+		}).throwsException().withMessage("A metric configuration with code 'lcom4' already exists");
 		assertTrue(configuration.containsMetric(cboName));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testRemoveMetric() {
 		configuration.removeMetric(cboName);
 		configuration.removeMetric(lcomName);
 		assertFalse(configuration.containsMetric(cboName));
 		assertFalse(configuration.containsMetric(lcomName));
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() {
 				configuration.removeMetric(cboName);
 			}
-		}, "No configuration found for metric: " + cboName);
+		}).throwsException().withMessage("No configuration found for metric: " + cboName);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldValidateValidCompoundMetric() {
+	@Test
+	public void shouldValidateCompoundMetric() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldInvalidateInvalidCompoundMetric() {
+	@Test
+	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
-		checkKalibroException(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
 			public void perform() throws Exception {
 				configuration.addMetricConfiguration(new MetricConfiguration(sc));
 			}
-		}, "Compound metric with invalid script: Structural complexity", NullPointerException.class);
+		}).throwsException().withCause(NullPointerException.class)
+			.withMessage("Metric with invalid code or script: Structural complexity");
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSortByName() {
 		assertSorted(createConfiguration("A"), createConfiguration("B"), createConfiguration("C"), configuration);
 	}

@@ -1,76 +1,57 @@
 package org.kalibro.core.concurrent;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroTestCase;
-import org.powermock.api.mockito.PowerMockito;
+import org.kalibro.AnswerAdapter;
+import org.kalibro.TestCase;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Task.class)
-public class TypedTaskTest extends KalibroTestCase implements TaskListener {
+public class TypedTaskTest extends TestCase {
 
 	private static final String RESULT = "TypedTaskTest result";
 
-	private TypedTaskReport<String> report;
 	private TaskExecutor executor;
+	private RetrieveResultTask<String> task;
 
 	@Before
 	public void setUp() throws Exception {
-		executor = PowerMockito.mock(TaskExecutor.class);
-		PowerMockito.whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
+		executor = mock(TaskExecutor.class);
+		whenNew(TaskExecutor.class).withArguments(any()).thenReturn(executor);
+		doAnswer(new SetReport()).when(executor).executeAndWait();
+		doAnswer(new SetReport()).when(executor).executeAndWait(anyLong());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldExecuteAndWaitWithoutTimeout() throws Throwable {
-		RetrieveResultTask<String> task = new RetrieveResultTask<String>(RESULT);
-		task.perform();
+	@Test
+	public void shouldExecuteAndWaitWithoutTimeout() {
+		task = new RetrieveResultTask<String>(RESULT);
+		task.compute();
 
 		assertEquals(RESULT, task.executeAndWaitResult());
 		verify(executor).executeAndWait();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldExecuteAndWaitWithTimeout() throws Throwable {
+	@Test
+	public void shouldExecuteAndWaitWithTimeout() {
 		long timeout = 42;
-		RetrieveResultTask<String> task = new RetrieveResultTask<String>(RESULT);
-		task.perform();
+		task = new RetrieveResultTask<String>(RESULT);
+		task.compute();
 
 		assertEquals(RESULT, task.executeAndWaitResult(timeout));
 		verify(executor).executeAndWait(timeout);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotifyListenerOfTaskDone() throws InterruptedException {
-		RetrieveResultTask<String> task = new RetrieveResultTask<String>(RESULT);
-		runAndGetReport(task);
-		assertTrue(report.isTaskDone());
-		assertEquals(RESULT, report.getResult());
-	}
+	private class SetReport extends AnswerAdapter {
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldNotifyListenerOfTaskHalted() throws InterruptedException {
-		runAndGetReport(new ThrowExceptionTypedTask<String>());
-		assertFalse(report.isTaskDone());
-		assertNotNull(report.getError());
-	}
-
-	private synchronized void runAndGetReport(TypedTask<String> task) throws InterruptedException {
-		report = null;
-		task.setListener(this);
-		new Thread(task).start();
-		waitNotification();
-	}
-
-	@Override
-	public synchronized void taskFinished(TaskReport taskReport) {
-		report = (TypedTaskReport<String>) taskReport;
-		notifyTest();
+		@Override
+		protected void answer() throws Throwable {
+			task.setReport(new TaskReport<String>(task, 0, RESULT));
+		}
 	}
 }

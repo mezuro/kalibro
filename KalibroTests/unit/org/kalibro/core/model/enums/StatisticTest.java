@@ -1,36 +1,22 @@
 package org.kalibro.core.model.enums;
 
-import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Statistic.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.EnumerationTestCase;
 
-public class StatisticTest extends KalibroTestCase {
+public class StatisticTest extends EnumerationTestCase<Statistic> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		Statistic.values();
-		Statistic.valueOf("SUM");
+	@Override
+	protected Class<Statistic> enumerationClass() {
+		return Statistic.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testToString() {
-		assertEquals("Average", "" + AVERAGE);
-		assertEquals("Count", "" + COUNT);
-		assertEquals("Maximum", "" + MAXIMUM);
-		assertEquals("Median", "" + MEDIAN);
-		assertEquals("Minimum", "" + MINIMUM);
-		assertEquals("Standard deviation", "" + STANDARD_DEVIATION);
-		assertEquals("Sum", "" + SUM);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testCalculate() {
 		testCalculate(AVERAGE, Double.NaN, 6.0, 5.0);
 		testCalculate(COUNT, 0.0, 5.0, 6.0);

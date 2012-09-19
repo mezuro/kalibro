@@ -8,11 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "ProjectResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectResultXml implements DataTransferObject<ProjectResult> {
+public class ProjectResultXml extends DataTransferObject<ProjectResult> {
 
 	private ProjectXml project;
 	private Date date;

@@ -1,88 +1,92 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
-import static org.kalibro.core.model.enums.ProjectState.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.enums.ProjectState.COLLECTING;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.persistence.dao.ProjectDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProjectDao;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
-public class ProcessProjectSubtaskTest extends KalibroTestCase {
+@PrepareForTest(DaoFactory.class)
+public class ProcessProjectSubtaskTest extends TestCase {
 
-	private static final String RESULT = "ProcessProjectSubtaskTest result";
+	private static final String TASK_RESULT = "ProcessProjectSubtaskTest result";
+	private static final ProjectState TASK_STATE = COLLECTING;
 
 	private Project project;
 	private ProjectDao projectDao;
+	private ProjectResult projectResult;
 
 	private FakeSubtask subtask;
 
 	@Before
 	public void setUp() {
-		project = newHelloWorld();
-		project.setState(NEW);
-		mockKalibro();
-		subtask = new FakeSubtask(project);
+		mockDaoFactory();
+		mockProjectResult();
+		subtask = new FakeSubtask(projectResult);
 	}
 
-	private void mockKalibro() {
+	private void mockDaoFactory() {
 		projectDao = mock(ProjectDao.class);
-		mockStatic(Kalibro.class);
-		when(Kalibro.getProjectDao()).thenReturn(projectDao);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void shouldReturnResult() {
-		assertEquals(RESULT, subtask.execute());
+	private void mockProjectResult() {
+		project = mock(Project.class);
+		projectResult = mock(ProjectResult.class);
+		when(projectResult.getProject()).thenReturn(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
+	public void shouldReturnTaskResult() {
+		assertEquals(TASK_RESULT, subtask.execute());
+	}
+
+	@Test
 	public void shouldUpdateProjectState() {
 		subtask.execute();
-		assertEquals(subtask.getTaskState(), project.getState());
+		Mockito.verify(project).setState(subtask.getTaskState());
 		Mockito.verify(projectDao).save(project);
-		verifyStatic();
-		Kalibro.fireProjectStateChanged(project);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldSetStateTime() {
 		subtask.execute();
-		Mockito.verify(subtask.projectResult).setStateTime(eq(subtask.getTaskState()), anyLong());
+		Mockito.verify(projectResult).setStateTime(eq(TASK_STATE), anyLong());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldDescribeTaskWithProjectStateMessage() {
-		assertEquals(project.getStateMessage(), "" + subtask);
+		when(project.getStateMessage()).thenReturn(TASK_RESULT);
+		assertEquals(TASK_RESULT, "" + subtask);
 	}
 
-	private class FakeSubtask extends ProcessProjectSubtask<String> {
+	private final class FakeSubtask extends ProcessProjectSubtask<String> {
 
-		public FakeSubtask(Project project) {
-			super(spy(new ProjectResult(project)));
+		private FakeSubtask(ProjectResult result) {
+			super(result);
 		}
 
 		@Override
 		protected ProjectState getTaskState() {
-			return COLLECTING;
+			return TASK_STATE;
 		}
 
 		@Override
-		protected String performAndGetResult() {
-			return RESULT;
+		public String compute() {
+			return TASK_RESULT;
 		}
 	}
 }

@@ -6,17 +6,17 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.Kalibro;
-import org.kalibro.core.persistence.dao.BaseToolDao;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.service.entities.BaseToolXml;
 
-@WebService
+@WebService(name = "BaseToolEndpoint", serviceName = "BaseToolEndpointService")
 public class BaseToolEndpointImpl implements BaseToolEndpoint {
 
 	private BaseToolDao dao;
 
 	public BaseToolEndpointImpl() {
-		this(Kalibro.getBaseToolDao());
+		this(DaoFactory.getBaseToolDao());
 	}
 
 	protected BaseToolEndpointImpl(BaseToolDao baseToolDao) {

@@ -1,6 +1,6 @@
 package org.kalibro.core.model.enums;
 
-import org.kalibro.core.util.Identifier;
+import org.kalibro.util.Identifier;
 
 /**
  * Represents a software language.
@@ -9,7 +9,7 @@ import org.kalibro.core.util.Identifier;
  */
 public enum Language {
 
-	C, CPP("C++"), JAVA;
+	C, CPP("C++"), JAVA, PYTHON;
 
 	private String name;
 

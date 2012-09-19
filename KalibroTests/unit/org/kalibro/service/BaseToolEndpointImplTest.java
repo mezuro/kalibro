@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.junit.Assert.assertSame;
+import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +9,18 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Kalibro;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.persistence.dao.BaseToolDao;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.service.entities.BaseToolXmlTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(Kalibro.class)
-public class BaseToolEndpointImplTest extends KalibroTestCase {
+@PrepareForTest(DaoFactory.class)
+public class BaseToolEndpointImplTest extends TestCase {
 
 	private BaseToolDao dao;
 	private BaseTool baseTool;
@@ -35,18 +35,18 @@ public class BaseToolEndpointImplTest extends KalibroTestCase {
 
 	private void mockDao() {
 		dao = PowerMockito.mock(BaseToolDao.class);
-		PowerMockito.mockStatic(Kalibro.class);
-		PowerMockito.when(Kalibro.getBaseToolDao()).thenReturn(dao);
+		PowerMockito.mockStatic(DaoFactory.class);
+		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetBaseToolNames() {
 		List<String> names = new ArrayList<String>();
 		PowerMockito.when(dao.getBaseToolNames()).thenReturn(names);
 		assertSame(names, endpoint.getBaseToolNames());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void testGetBaseTool() {
 		PowerMockito.when(dao.getBaseTool("42")).thenReturn(baseTool);
 		new BaseToolXmlTest().assertCorrectConversion(baseTool, endpoint.getBaseTool("42").convert());

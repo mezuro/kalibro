@@ -1,8 +1,8 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.junit.Assert.assertTrue;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
 import java.net.MalformedURLException;
 
@@ -12,10 +12,10 @@ import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.persistence.dao.ConfigurationDaoFake;
+import org.kalibro.dao.ConfigurationDaoFake;
 import org.kalibro.service.entities.ConfigurationXml;
 
-public class ConfigurationEndpointTest extends KalibroServiceTestCase {
+public class ConfigurationEndpointTest extends EndpointTest {
 
 	private Configuration sample;
 	private ConfigurationEndpoint port;
@@ -28,40 +28,40 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 		port = publishAndGetPort(new ConfigurationEndpointImpl(daoFake), ConfigurationEndpoint.class);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldListConfigurationNames() {
-		assertDeepEquals(port.getConfigurationNames(), sample.getName());
+		assertDeepList(port.getConfigurationNames(), sample.getName());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldGetConfigurationByName() {
 		assertDeepEquals(sample, port.getConfiguration(sample.getName()).convert());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldRemoveConfigurationByName() {
 		port.removeConfiguration(sample.getName());
 		assertTrue(port.getConfigurationNames().isEmpty());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveConfiguration() {
 		testSaveConfiguration(newConfiguration("loc"));
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveEmptyConfiguration() {
 		testSaveConfiguration(newConfiguration());
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveConfigurationWithoutRanges() {
 		Configuration newConfiguration = newConfiguration();
 		newConfiguration.addMetricConfiguration(new MetricConfiguration(analizoMetric("loc")));
 		testSaveConfiguration(newConfiguration);
 	}
 
-	@Test(timeout = INTEGRATION_TIMEOUT)
+	@Test
 	public void shouldSaveMetricWithoutLanguages() {
 		NativeMetric nativeMetric = new NativeMetric("name", Granularity.METHOD);
 		nativeMetric.setOrigin("origin");
@@ -73,6 +73,6 @@ public class ConfigurationEndpointTest extends KalibroServiceTestCase {
 	private void testSaveConfiguration(Configuration newConfiguration) {
 		newConfiguration.setName("ConfigurationEndpointTest configuration");
 		port.saveConfiguration(new ConfigurationXml(newConfiguration));
-		assertDeepEquals(port.getConfigurationNames(), newConfiguration.getName(), sample.getName());
+		assertDeepList(port.getConfigurationNames(), newConfiguration.getName(), sample.getName());
 	}
 }

@@ -1,20 +1,20 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertFalse;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ModuleResultFixtures.analizoCheckstyleResultMap;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 import static org.kalibro.core.model.enums.Granularity.*;
-import static org.kalibro.core.model.enums.Language.*;
+import static org.kalibro.core.model.enums.Language.JAVA;
 
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.*;
 
-public class ResultsAggregatorTest extends KalibroTestCase {
+public class ResultsAggregatorTest extends TestCase {
 
 	private Map<Module, ModuleResult> resultMap;
 	private NativeMetric classMetric, packageMetric;
@@ -31,7 +31,7 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 		packageMetric = new NativeMetric("Package_name_length", PACKAGE, JAVA);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnOrg() {
 		Module org = analizoCheckstyleTree().getModule();
 		assertFalse(resultMap.containsKey(org));
@@ -42,7 +42,7 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 		checkResult(orgResult, classMetric, Double.NaN, 22.0, 19.0, 25.0, 22.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnAnalizo() {
 		ModuleResult analizo = resultMap.get(analizoNode().getModule());
 		checkResult(analizo, packageMetric, 7.0);
@@ -53,7 +53,7 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 		checkResult(analizo, classMetric, Double.NaN, 22.0, 19.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnCheckstyle() {
 		Module checkstyle = checkstyleNode().getModule();
 		assertFalse(resultMap.containsKey(checkstyle));
@@ -64,7 +64,7 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 		checkResult(checkstyleResult, classMetric, Double.NaN, 25.0, 22.0);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkAggregationOnLeaf() {
 		ModuleResult checkstyleOutputParser = resultMap.get(checkstyleOutputParserNode().getModule());
 		assertFalse(checkstyleOutputParser.hasResultFor(packageMetric));
@@ -78,6 +78,6 @@ public class ResultsAggregatorTest extends KalibroTestCase {
 	private void checkResult(ModuleResult result, NativeMetric metric, Double value, Double... descendentResults) {
 		MetricResult metricResult = result.getResultFor(metric);
 		assertDoubleEquals(value, metricResult.getValue());
-		assertDeepEquals(metricResult.getDescendentResults(), descendentResults);
+		assertDeepCollection(metricResult.getDescendentResults(), descendentResults);
 	}
 }

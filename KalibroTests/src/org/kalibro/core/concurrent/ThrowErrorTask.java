@@ -1,6 +1,6 @@
 package org.kalibro.core.concurrent;
 
-class ThrowErrorTask extends Task {
+class ThrowErrorTask extends VoidTask {
 
 	private Throwable error;
 

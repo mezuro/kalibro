@@ -3,30 +3,18 @@ package org.kalibro.core.model.enums;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.ProjectState.*;
 
-import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.EnumerationTestCase;
 
-public class ProjectStateTest extends KalibroTestCase {
+public class ProjectStateTest extends EnumerationTestCase<ProjectState> {
 
-	@BeforeClass
-	public static void emmaCoverage() {
-		ProjectState.values();
-		ProjectState.valueOf("NEW");
+	@Override
+	protected Class<ProjectState> enumerationClass() {
+		return ProjectState.class;
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testToString() {
-		assertEquals("New", "" + NEW);
-		assertEquals("Loading", "" + LOADING);
-		assertEquals("Collecting", "" + COLLECTING);
-		assertEquals("Analyzing", "" + ANALYZING);
-		assertEquals("Ready", "" + READY);
-		assertEquals("Error", "" + ERROR);
-	}
-
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testIsTemporary() {
+	@Test
+	public void shouldRetrieveIfIsTemporary() {
 		assertFalse(NEW.isTemporary());
 		assertTrue(LOADING.isTemporary());
 		assertTrue(COLLECTING.isTemporary());
@@ -35,8 +23,8 @@ public class ProjectStateTest extends KalibroTestCase {
 		assertFalse(ERROR.isTemporary());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
-	public void testMessage() {
+	@Test
+	public void shouldProvideExplainingMessage() {
 		String projectName = "HelloWorld-1.0";
 		assertEquals("Project HelloWorld-1.0 was not processed", NEW.getMessage(projectName));
 		assertEquals("Loading HelloWorld-1.0 from repository", LOADING.getMessage(projectName));

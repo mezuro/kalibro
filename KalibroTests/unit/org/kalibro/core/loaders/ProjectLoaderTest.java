@@ -2,7 +2,6 @@ package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
-import static org.powermock.api.mockito.PowerMockito.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -12,7 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.Repository;
 import org.mockito.Mockito;
@@ -21,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ProjectLoader.class)
-public class ProjectLoaderTest extends KalibroTestCase {
+public class ProjectLoaderTest extends TestCase {
 
 	private static final String LOAD_COMMAND = "ProjectLoaderTest load command";
 	private static final String UPDATE_COMMAND = "ProjectLoaderTest update command";
@@ -47,7 +46,7 @@ public class ProjectLoaderTest extends KalibroTestCase {
 		whenNew(CommandTask.class).withArguments(anyString(), same(loadDirectory)).thenReturn(commandTask);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldValidate() {
 		assertTrue(loader.validate());
 
@@ -55,20 +54,20 @@ public class ProjectLoaderTest extends KalibroTestCase {
 		assertFalse(loader.validate());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldCreateLoadDirectoryIfNotExistentOnLoad() {
 		loader.load(repository, loadDirectory);
 		Mockito.verify(loadDirectory).mkdirs();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteLoadCommandsOnFirstLoad() throws Exception {
 		loader.load(repository, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, loadDirectory);
 		Mockito.verify(commandTask).executeAndWait(ProjectLoader.LOAD_TIMEOUT);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldExecuteUpdateCommandsIfLoadDirectoryExists() throws Exception {
 		when(loadDirectory.exists()).thenReturn(true);
 		loader.load(repository, loadDirectory);

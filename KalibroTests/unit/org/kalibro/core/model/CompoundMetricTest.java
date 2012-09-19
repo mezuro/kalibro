@@ -4,10 +4,10 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 
-public class CompoundMetricTest extends KalibroTestCase {
+public class CompoundMetricTest extends TestCase {
 
 	private CompoundMetric metric;
 
@@ -16,19 +16,19 @@ public class CompoundMetricTest extends KalibroTestCase {
 		metric = new CompoundMetric();
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void checkInitialization() {
 		assertEquals("New metric", metric.getName());
 		assertEquals("", metric.getDescription());
 		assertEquals(Granularity.CLASS, metric.getScope());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void defaultScriptShouldReturn1() {
 		assertEquals("return 1;", metric.getScript());
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldBeCompound() {
 		assertTrue(metric.isCompound());
 	}

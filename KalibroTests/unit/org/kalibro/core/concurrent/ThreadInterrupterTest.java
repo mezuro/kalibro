@@ -1,13 +1,13 @@
 package org.kalibro.core.concurrent;
 
 import org.junit.Test;
-import org.kalibro.KalibroTestCase;
+import org.kalibro.TestCase;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ThreadInterrupterTest extends KalibroTestCase {
+public class ThreadInterrupterTest extends TestCase {
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldInterruptThread() {
 		Thread thread = PowerMockito.mock(Thread.class);
 		new ThreadInterrupter(thread).run();

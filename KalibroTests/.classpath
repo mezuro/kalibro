@@ -4,25 +4,25 @@
 	<classpathentry kind="src" path="unit"/>
 	<classpathentry kind="src" path="integration"/>
 	<classpathentry kind="src" path="acceptance"/>
-	<classpathentry kind="src" path="manual"/>
 	
 	<classpathentry kind="src" path="/KalibroCore" combineaccessrules="false"/>
 	<classpathentry kind="src" path="/KalibroDesktop" combineaccessrules="false"/>
 	<classpathentry kind="src" path="/KalibroService" combineaccessrules="false"/>
-	<classpathentry kind="src" path="/KalibroSpago" combineaccessrules="false"/>
 	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Derby 10.5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Checkstyle 5.5"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Cglib 3.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.1.2"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/FEST Swing"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mysql Connector Java 5.1.13"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Rhino"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
+	
+	<!-- test libraries -->
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit 4.8.2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito 1.8.5"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mysql Connector Java 5.1.13"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PowerMock 1.4.12"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Spago"/>
 	
 	<classpathentry kind="output" path="bin"/>
 </classpath>

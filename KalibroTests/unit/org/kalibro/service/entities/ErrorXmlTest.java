@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.KalibroException;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
@@ -27,16 +27,16 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 		return new ErrorXml(error);
 	}
 
-	@Test(timeout = UNIT_TIMEOUT)
+	@Test
 	public void shouldThrowErrorForNotConvertibleError() {
-		checkKalibroError(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			protected void perform() throws Throwable {
+			public void perform() throws Throwable {
 				new ErrorXml(new Throwable() {
 					// Anonymous class
 				}).convert();
 			}
-		}, "Could not convert Error XML to Throwable", NullPointerException.class);
+		}).throwsError().withMessage("Could not convert Error XML to Throwable").withCause(NullPointerException.class);
 	}
 }

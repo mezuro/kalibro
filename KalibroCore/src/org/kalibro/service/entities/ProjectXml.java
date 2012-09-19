@@ -8,12 +8,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.util.DataTransferObject;
+import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Project")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectXml implements DataTransferObject<Project> {
+public class ProjectXml extends DataTransferObject<Project> {
 
+	private Long id;
 	private String name;
 	private String license;
 	private String description;
@@ -29,6 +30,7 @@ public class ProjectXml implements DataTransferObject<Project> {
 	}
 
 	public ProjectXml(Project project) {
+		id = project.getId();
 		name = project.getName();
 		license = project.getLicense();
 		description = project.getDescription();
@@ -50,6 +52,7 @@ public class ProjectXml implements DataTransferObject<Project> {
 	@Override
 	public Project convert() {
 		Project project = new Project();
+		project.setId(id);
 		project.setName(name);
 		project.setLicense(license);
 		project.setDescription(description);

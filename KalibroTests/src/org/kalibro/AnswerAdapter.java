@@ -3,10 +3,10 @@ package org.kalibro;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-public abstract class AnswerAdapter implements Answer<Object> {
+public abstract class AnswerAdapter implements Answer<Void> {
 
 	@Override
-	public Object answer(InvocationOnMock invocation) throws Throwable {
+	public Void answer(InvocationOnMock invocation) throws Throwable {
 		answer();
 		return null;
 	}

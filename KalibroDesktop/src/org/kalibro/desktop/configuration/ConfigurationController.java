@@ -4,9 +4,9 @@ import java.util.List;
 
 import javax.swing.JDesktopPane;
 
-import org.kalibro.Kalibro;
 import org.kalibro.core.model.Configuration;
-import org.kalibro.core.persistence.dao.ConfigurationDao;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.CrudController;
 
 public class ConfigurationController extends CrudController<Configuration> {
@@ -53,6 +53,6 @@ public class ConfigurationController extends CrudController<Configuration> {
 	}
 
 	private ConfigurationDao configurationDao() {
-		return Kalibro.getConfigurationDao();
+		return DaoFactory.getConfigurationDao();
 	}
 }
