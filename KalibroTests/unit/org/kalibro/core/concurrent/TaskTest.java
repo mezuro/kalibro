@@ -12,7 +12,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Task.class)
-public class TaskTest extends TestCase implements TaskListener {
+public class TaskTest extends TestCase implements TaskListener<Void> {
 
 	private TaskReport<?> report;
 	private TaskExecutor executor;
@@ -69,7 +69,7 @@ public class TaskTest extends TestCase implements TaskListener {
 
 	@Test
 	public void shouldRetrieveReport() throws InterruptedException {
-		Task<?> task = new DoNothingTask();
+		VoidTask task = new DoNothingTask();
 		runAndGetReport(task);
 		assertSame(report, task.getReport());
 	}
@@ -79,7 +79,7 @@ public class TaskTest extends TestCase implements TaskListener {
 		assertEquals("running task: org.kalibro.core.concurrent.DoNothingTask", "" + new DoNothingTask());
 	}
 
-	private synchronized void runAndGetReport(Task<?> task) throws InterruptedException {
+	private synchronized void runAndGetReport(VoidTask task) throws InterruptedException {
 		report = null;
 		task.addListener(this);
 		new Thread(task).start();
@@ -87,7 +87,7 @@ public class TaskTest extends TestCase implements TaskListener {
 	}
 
 	@Override
-	public synchronized void taskFinished(TaskReport<?> taskReport) {
+	public synchronized void taskFinished(TaskReport<Void> taskReport) {
 		report = taskReport;
 		notifyTest();
 	}

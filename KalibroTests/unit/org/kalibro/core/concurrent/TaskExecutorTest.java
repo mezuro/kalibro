@@ -6,7 +6,7 @@ import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.TestCase;
 
-public class TaskExecutorTest extends TestCase implements TaskListener {
+public class TaskExecutorTest extends TestCase implements TaskListener<Void> {
 
 	private static final long TIMEOUT = 200;
 
@@ -25,7 +25,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 		assertNotNull(report.getError());
 	}
 
-	private synchronized void executeInBackgroundAndGetReport(Task<?> task) throws InterruptedException {
+	private synchronized void executeInBackgroundAndGetReport(VoidTask task) throws InterruptedException {
 		report = null;
 		task.addListener(this);
 		new TaskExecutor(task).executeInBackground();
@@ -33,7 +33,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener {
 	}
 
 	@Override
-	public synchronized void taskFinished(TaskReport<?> taskReport) {
+	public synchronized void taskFinished(TaskReport<Void> taskReport) {
 		report = taskReport;
 		notifyTest();
 	}

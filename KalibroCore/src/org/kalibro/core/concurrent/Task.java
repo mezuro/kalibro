@@ -11,16 +11,16 @@ public abstract class Task<T> implements Runnable {
 	public static final long DAY = 24 * HOUR;
 
 	private TaskExecutor executor;
-	private Set<TaskListener> listeners;
+	private Set<TaskListener<T>> listeners;
 
 	protected TaskReport<T> report;
 
 	public Task() {
 		executor = new TaskExecutor(this);
-		listeners = new HashSet<TaskListener>();
+		listeners = new HashSet<TaskListener<T>>();
 	}
 
-	public void addListener(TaskListener listener) {
+	public void addListener(TaskListener<T> listener) {
 		listeners.add(listener);
 	}
 
@@ -47,7 +47,7 @@ public abstract class Task<T> implements Runnable {
 	@Override
 	public void run() {
 		computeReport();
-		for (TaskListener listener : listeners)
+		for (TaskListener<T> listener : listeners)
 			reportTaskFinished(listener);
 	}
 
@@ -70,7 +70,7 @@ public abstract class Task<T> implements Runnable {
 		return report;
 	}
 
-	protected void reportTaskFinished(final TaskListener listener) {
+	protected void reportTaskFinished(final TaskListener<T> listener) {
 		new Thread(new Runnable() {
 
 			@Override

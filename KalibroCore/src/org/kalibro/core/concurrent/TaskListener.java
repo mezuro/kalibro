@@ -7,7 +7,7 @@ package org.kalibro.core.concurrent;
  * 
  * @author Carlos Morais
  */
-public interface TaskListener {
+public interface TaskListener<T> {
 
-	void taskFinished(TaskReport<?> report);
+	void taskFinished(TaskReport<T> report);
 }
