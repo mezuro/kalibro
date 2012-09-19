@@ -130,7 +130,7 @@ public class TaskExecutorTest extends TestCase implements TaskListener<Void> {
 		assertEquals(3, task.result);
 	}
 
-	private class IncrementResultTask extends TypedTask<Integer> {
+	private class IncrementResultTask extends Task<Integer> {
 
 		private int result;
 

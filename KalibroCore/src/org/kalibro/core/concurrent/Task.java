@@ -28,12 +28,14 @@ public abstract class Task<T> implements Runnable {
 		executor.executeInBackground();
 	}
 
-	public void executeAndWait() {
+	public T executeAndWait() {
 		executor.executeAndWait();
+		return report.getResult();
 	}
 
-	public void executeAndWait(long timeout) {
+	public T executeAndWait(long timeout) {
 		executor.executeAndWait(timeout);
+		return report.getResult();
 	}
 
 	public void executePeriodically(long period) {
