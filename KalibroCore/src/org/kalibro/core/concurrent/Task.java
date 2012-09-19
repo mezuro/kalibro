@@ -13,7 +13,7 @@ public abstract class Task<T> implements Runnable {
 	private TaskExecutor executor;
 	private Set<TaskListener<T>> listeners;
 
-	protected TaskReport<T> report;
+	private TaskReport<T> report;
 
 	public Task() {
 		executor = new TaskExecutor(this);
