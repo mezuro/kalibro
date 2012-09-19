@@ -1,6 +1,9 @@
 package br.jabuti;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -36,21 +39,21 @@ public class JabutiOutputParserTest {
 	public void setUp() throws IOException {
 		
 		metrics = new LinkedHashSet<NativeMetric>();
-		allNodesEI = new NativeMetric("All Nodes Exception Independent", Granularity.APPLICATION, Language.JAVA);
+		allNodesEI = new NativeMetric("All Nodes Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesEI);
-		allNodesED = new NativeMetric("All Nodes Exception Dependent",   Granularity.APPLICATION, Language.JAVA);
+		allNodesED = new NativeMetric("All Nodes Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesED);
-		allEdgesEI = new NativeMetric("All Edges Exception Independent", Granularity.APPLICATION, Language.JAVA);
+		allEdgesEI = new NativeMetric("All Edges Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesEI);
-		allEdgesED = new NativeMetric("All Edges Exception Dependent",   Granularity.APPLICATION, Language.JAVA);
+		allEdgesED = new NativeMetric("All Edges Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesED);
-		allUsesEI = new NativeMetric("All Uses Exception Independent",  Granularity.APPLICATION, Language.JAVA);
+		allUsesEI = new NativeMetric("All Uses Exception Independent",  Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesEI);
-		allUsesED = new NativeMetric("All Uses Exception Dependent",    Granularity.APPLICATION, Language.JAVA);
+		allUsesED = new NativeMetric("All Uses Exception Dependent",    Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesED);
-		allPotEI = new NativeMetric("All Pot Exception Independent",   Granularity.APPLICATION, Language.JAVA);
+		allPotEI = new NativeMetric("All Pot Exception Independent",   Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotEI);
-		allPotED = new NativeMetric("All Pot Exception Dependent",     Granularity.APPLICATION, Language.JAVA);
+		allPotED = new NativeMetric("All Pot Exception Dependent",     Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotED);
 		
 		InputStream metricListOutput = getClass().getResourceAsStream("Jabuti-Output-MetricList.txt");

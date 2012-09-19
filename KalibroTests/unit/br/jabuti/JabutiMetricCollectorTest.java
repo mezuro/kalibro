@@ -36,14 +36,14 @@ public class JabutiMetricCollectorTest {
 		InputStream mockFile = getClass().getResourceAsStream("Mock.file");
 
 		metrics = new HashSet<NativeMetric>();
-		metrics.add(new NativeMetric("All Nodes Exception Independent", Granularity.APPLICATION, Language.JAVA));
-		metrics.add(new NativeMetric("All Nodes Exception Dependent",   Granularity.APPLICATION, Language.JAVA));
-		metrics.add(new NativeMetric("All Edges Exception Independent", Granularity.APPLICATION, Language.JAVA));
-		metrics.add(new NativeMetric("All Edges Exception Dependent",   Granularity.APPLICATION, Language.JAVA));
-		metrics.add(new NativeMetric("All Uses Exception Independent",  Granularity.APPLICATION, Language.JAVA));
-		metrics.add(new NativeMetric("All Uses Exception Dependent",    Granularity.APPLICATION, Language.JAVA));
-		metrics.add(new NativeMetric("All Pot Exception Independent",   Granularity.APPLICATION, Language.JAVA));
-		metrics.add(new NativeMetric("All Pot Exception Dependent",     Granularity.APPLICATION, Language.JAVA));
+		metrics.add(new NativeMetric("All Nodes Exception Independent", Granularity.SOFTWARE, Language.JAVA));
+		metrics.add(new NativeMetric("All Nodes Exception Dependent",   Granularity.SOFTWARE, Language.JAVA));
+		metrics.add(new NativeMetric("All Edges Exception Independent", Granularity.SOFTWARE, Language.JAVA));
+		metrics.add(new NativeMetric("All Edges Exception Dependent",   Granularity.SOFTWARE, Language.JAVA));
+		metrics.add(new NativeMetric("All Uses Exception Independent",  Granularity.SOFTWARE, Language.JAVA));
+		metrics.add(new NativeMetric("All Uses Exception Dependent",    Granularity.SOFTWARE, Language.JAVA));
+		metrics.add(new NativeMetric("All Pot Exception Independent",   Granularity.SOFTWARE, Language.JAVA));
+		metrics.add(new NativeMetric("All Pot Exception Dependent",     Granularity.SOFTWARE, Language.JAVA));
 
 		
 		parser = PowerMockito.mock(JabutiOutputParser.class);

@@ -17,6 +17,8 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.Timeout;
+import org.kalibro.IntegrationTest;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
@@ -24,9 +26,7 @@ import org.kalibro.core.model.NativeModuleResult;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 
-import br.jabuti.JabutiMetricCollector;
-
-public class JabutiTest {
+public class JabutiTest extends IntegrationTest {
 
 	private JabutiMetricCollector jabuti;
 	private File project;
@@ -44,23 +44,23 @@ public class JabutiTest {
 	public void setUp() throws Exception {
 		jabuti = new JabutiMetricCollector();
 		jabuti.getBaseTool();
-		project = new File(System.getenv("HOME") + "/vending");
+		project = new File(samplesDirectory(), "jabuti");
 		metrics = new HashSet<NativeMetric>();
-		allNodesEI = new NativeMetric("All Nodes Exception Independent", Granularity.APPLICATION, Language.JAVA);
+		allNodesEI = new NativeMetric("All Nodes Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesEI);
-		allNodesED = new NativeMetric("All Nodes Exception Dependent",   Granularity.APPLICATION, Language.JAVA);
+		allNodesED = new NativeMetric("All Nodes Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesED);
-		allEdgesEI = new NativeMetric("All Edges Exception Independent", Granularity.APPLICATION, Language.JAVA);
+		allEdgesEI = new NativeMetric("All Edges Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesEI);
-		allEdgesED = new NativeMetric("All Edges Exception Dependent",   Granularity.APPLICATION, Language.JAVA);
+		allEdgesED = new NativeMetric("All Edges Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesED);
-		allUsesEI = new NativeMetric("All Uses Exception Independent",  Granularity.APPLICATION, Language.JAVA);
+		allUsesEI = new NativeMetric("All Uses Exception Independent",  Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesEI);
-		allUsesED = new NativeMetric("All Uses Exception Dependent",    Granularity.APPLICATION, Language.JAVA);
+		allUsesED = new NativeMetric("All Uses Exception Dependent",    Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesED);
-		allPotEI = new NativeMetric("All Pot Exception Independent",   Granularity.APPLICATION, Language.JAVA);
+		allPotEI = new NativeMetric("All Pot Exception Independent",   Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotEI);
-		allPotED = new NativeMetric("All Pot Exception Dependent",     Granularity.APPLICATION, Language.JAVA);
+		allPotED = new NativeMetric("All Pot Exception Dependent",     Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotED);
 	}
 	
@@ -72,7 +72,7 @@ public class JabutiTest {
 
 	@Test
 	public void vendingProjectTest() {
-		assertTrue(new File(System.getenv("HOME") + "/vending").isDirectory());
+		assertTrue(new File(samplesDirectory(), "jabuti").isDirectory());
 	}
 	
 	@Test
@@ -83,12 +83,17 @@ public class JabutiTest {
 		assertNotNull(baseTool.getSupportedMetrics());
 	}
 
+	@Override
+	protected Timeout testTimeout() {
+		return new Timeout(90000);
+	}
+	
 	@Test
 	public void collectMetricsOk() throws Exception {
 		jabuti.getBaseTool();
 		Set<NativeModuleResult> result = jabuti.collectMetrics(project, metrics);
 		assertNotNull(result);
-		assertEquals(5, result.size()); // só retorna global, por enquanto
+		assertEquals(3, result.size()); // só retorna global, por enquanto
 	}
 	
 	@Test(expected=KalibroException.class)
@@ -114,7 +119,7 @@ public class JabutiTest {
 
 		Map<Integer, Map<Integer, Double>> resultFile = this.outputJabutiMap();
 		// Test Run Global
-		for (int j =0; j < 5; j++) {
+		for (int j =0; j < 3; j++) {
 			NativeModuleResult result = results.toArray(new NativeModuleResult[0])[j];
 			assertEquals(metrics.size(), result.getMetricResults().size());
 			Map<Integer, Double> valueMap = resultFile.get(j);

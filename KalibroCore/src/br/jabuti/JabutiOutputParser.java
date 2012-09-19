@@ -1,6 +1,5 @@
 package br.jabuti;
 
-import static org.kalibro.core.model.enums.Granularity.APPLICATION;
 import static org.kalibro.core.model.enums.Granularity.CLASS;
 
 import java.io.IOException;
@@ -53,7 +52,7 @@ public class JabutiOutputParser {
 		int hyphenIndex = line.indexOf(" - ");
 		String code = line.substring(0, hyphenIndex).trim();
 		String name = line.substring(hyphenIndex + 3).trim();
-		Granularity scope = APPLICATION;
+		Granularity scope = Granularity.SOFTWARE;
 		NativeMetric metric = new NativeMetric(name, scope, Language.JAVA);
 		metric.setOrigin("Jabuti");
 		supportedMetrics.put(code, metric);
@@ -72,7 +71,7 @@ public class JabutiOutputParser {
 
 	private NativeModuleResult createModuleResult(Map<?, ?> resultMap) {
 		String moduleName = "" + resultMap.get("_module");
-		Granularity granularity = moduleName.equals("null") ? APPLICATION : CLASS;
+		Granularity granularity = moduleName.equals("null") ? Granularity.SOFTWARE : CLASS;
 		Module module = new Module(granularity, moduleName.split(":+"));
 		return new NativeModuleResult(module);
 	}

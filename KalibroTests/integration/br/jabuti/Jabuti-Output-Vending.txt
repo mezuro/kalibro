@@ -1,12 +1,12 @@
 ---
 _module: Global
-All-Nodes-ei: 70.83
+All-Nodes-ei: 55.17
 All-Nodes-ed: 100.00
-All-Edges-ei: 51.06
+All-Edges-ei: 35.71
 All-Edges-ed: 20.00
-All-Uses-ei: 42.68
+All-Uses-ei: 37.50
 All-Uses-ed: 0.00
-All-Pot-Uses-ei: 43.89
+All-Pot-Uses-ei: 23.36
 All-Pot-Uses-ed: 75.00
 ---
 _module: vending.Dispenser
@@ -19,32 +19,12 @@ All-Uses-ed: 0.0
 All-Pot-Uses-ei: 21.0
 All-Pot-Uses-ed: 75.0
 ---
-_module: vending.DispenserTestCase
-All-Nodes-ei: 100.0
-All-Nodes-ed: 0.0
-All-Edges-ei: 100.0
-All-Edges-ed: 0.0
-All-Uses-ei: 0.0
-All-Uses-ed: 0.0
-All-Pot-Uses-ei: 100.0
-All-Pot-Uses-ed: 0.0
----
 _module: vending.VendingMachine
 All-Nodes-ei: 87.0
 All-Nodes-ed: 0.0
 All-Edges-ei: 60.0
 All-Edges-ed: 0.0
 All-Uses-ei: 50.0
-All-Uses-ed: 0.0
-All-Pot-Uses-ei: 57.0
-All-Pot-Uses-ed: 0.0
----
-_module: vending.TestDriverJUnit
-All-Nodes-ei: 92.0
-All-Nodes-ed: 0.0
-All-Edges-ei: 72.0
-All-Edges-ed: 0.0
-All-Uses-ei: 53.0
 All-Uses-ed: 0.0
 All-Pot-Uses-ei: 57.0
 All-Pot-Uses-ed: 0.0
