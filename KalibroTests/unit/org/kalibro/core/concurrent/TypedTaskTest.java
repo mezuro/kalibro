@@ -53,13 +53,6 @@ public class TypedTaskTest extends TestCase implements TaskListener {
 		assertEquals(RESULT, report.getResult());
 	}
 
-	@Test
-	public void shouldNotifyListenerOfTaskHalted() throws InterruptedException {
-		runAndGetReport(new ThrowExceptionTypedTask<String>());
-		assertFalse(report.isTaskDone());
-		assertNotNull(report.getError());
-	}
-
 	private synchronized void runAndGetReport(TypedTask<String> task) throws InterruptedException {
 		report = null;
 		task.addListener(this);
