@@ -15,6 +15,8 @@ import org.kalibro.core.persistence.database.entities.ConfigurationRecord;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
+import br.jabuti.JabutiMetricCollector;
+
 public class SeedsFileGenerator {
 
 	public static void main(String[] args) throws Exception {
@@ -37,6 +39,7 @@ public class SeedsFileGenerator {
 		List<BaseToolRecord> baseTools = new ArrayList<BaseToolRecord>();
 		baseTools.add(newBaseTool(AnalizoMetricCollector.class));
 		baseTools.add(newBaseTool(CheckstyleMetricCollector.class));
+		baseTools.add(newBaseTool(JabutiMetricCollector.class));
 		return baseTools;
 	}
 
