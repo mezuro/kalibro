@@ -14,6 +14,9 @@ import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
 
+/*
+ * Jabuti Metric Collector
+ */
 public class JabutiMetricCollector implements MetricCollector {
 
 	private BaseTool baseTool;

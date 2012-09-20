@@ -20,6 +20,10 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.yaml.snakeyaml.Yaml;
 
+/**
+ * Jabuti Output Parser
+ *
+ */
 public class JabutiOutputParser {
 
 	private Map<String, NativeMetric> supportedMetrics;
