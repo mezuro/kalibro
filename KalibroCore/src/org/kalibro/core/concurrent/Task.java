@@ -5,6 +5,13 @@ import java.util.Set;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * A task that computes a result and may throw an error. This class implements the {@link Runnable} interface because
+ * its instances are potentially executed by another thread. It contains utility methods to execute in background, with
+ * timeouts and periodically, without worrying about the mechanics of its execution.
+ * 
+ * @author Carlos Morais
+ */
 public abstract class Task<T> implements Runnable {
 
 	private Future<?> future;
@@ -39,40 +46,30 @@ public abstract class Task<T> implements Runnable {
 		future.cancel(true);
 	}
 
+	public TaskReport<T> getReport() {
+		return report;
+	}
+
 	@Override
 	public void run() {
 		computeReport();
-		for (TaskListener<T> listener : listeners)
-			reportTaskFinished(listener);
+		reportTaskFinished();
 	}
 
 	private void computeReport() {
 		long start = System.currentTimeMillis();
 		try {
-			setReport(new TaskReport<T>(this, start, compute()));
+			report = new TaskReport<T>(this, start, compute());
 		} catch (Throwable error) {
-			setReport(new TaskReport<T>(this, start, error));
+			report = new TaskReport<T>(this, start, error);
 		}
 	}
 
 	protected abstract T compute() throws Throwable;
 
-	protected void setReport(TaskReport<T> report) {
-		this.report = report;
-	}
-
-	public TaskReport<T> getReport() {
-		return report;
-	}
-
-	protected void reportTaskFinished(final TaskListener<T> listener) {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				listener.taskFinished(report);
-			}
-		}).start();
+	protected void reportTaskFinished() {
+		for (TaskListener<T> listener : listeners)
+			new TaskListenerNotifier<T>(report, listener).executeInBackground();
 	}
 
 	@Override
