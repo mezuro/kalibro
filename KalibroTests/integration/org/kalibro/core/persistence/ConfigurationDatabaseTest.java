@@ -8,6 +8,7 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Configuration;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Statistic;

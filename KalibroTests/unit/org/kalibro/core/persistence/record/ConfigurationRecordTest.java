@@ -7,8 +7,8 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
+import org.kalibro.Configuration;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.Configuration;
 
 public class ConfigurationRecordTest extends DtoTestCase<Configuration, ConfigurationRecord> {
 

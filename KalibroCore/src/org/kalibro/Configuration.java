@@ -1,12 +1,15 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
 import java.util.*;
 
-import org.kalibro.KalibroException;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.Ignore;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.model.CompoundMetric;
+import org.kalibro.core.model.Metric;
+import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.processing.ScriptValidator;
 
 @SortingFields("name")

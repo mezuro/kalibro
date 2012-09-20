@@ -8,9 +8,9 @@ import java.util.Collection;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
+import org.kalibro.Configuration;
 import org.kalibro.DtoTestCase;
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

@@ -5,7 +5,7 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;

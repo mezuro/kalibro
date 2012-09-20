@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Configuration;
 import org.kalibro.KalibroException;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.*;

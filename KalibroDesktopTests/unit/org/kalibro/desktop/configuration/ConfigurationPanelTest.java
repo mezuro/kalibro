@@ -5,8 +5,8 @@ import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Configuration;
 import org.kalibro.TestCase;
-import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;

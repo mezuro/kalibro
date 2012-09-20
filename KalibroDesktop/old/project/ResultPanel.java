@@ -21,7 +21,7 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.kalibro.Kalibro;
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.Range;

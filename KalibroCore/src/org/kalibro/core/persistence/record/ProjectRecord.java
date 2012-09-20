@@ -4,7 +4,7 @@ import static org.kalibro.core.model.enums.ProjectState.*;
 
 import javax.persistence.*;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dto.DataTransferObject;

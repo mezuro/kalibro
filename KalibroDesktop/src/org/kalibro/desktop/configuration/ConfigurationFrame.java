@@ -3,7 +3,7 @@ package org.kalibro.desktop.configuration;
 import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;

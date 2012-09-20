@@ -13,6 +13,7 @@ import java.util.Date;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Configuration;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.processing.ModuleResultConfigurer;

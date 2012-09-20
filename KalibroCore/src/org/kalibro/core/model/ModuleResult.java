@@ -2,6 +2,7 @@ package org.kalibro.core.model;
 
 import java.util.*;
 
+import org.kalibro.Configuration;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.processing.ModuleResultConfigurer;

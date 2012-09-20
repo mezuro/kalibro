@@ -8,7 +8,7 @@ import java.net.MalformedURLException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;

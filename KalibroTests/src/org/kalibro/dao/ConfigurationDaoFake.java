@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 
 public class ConfigurationDaoFake implements ConfigurationDao {
 

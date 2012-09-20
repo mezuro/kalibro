@@ -8,7 +8,7 @@ import java.beans.PropertyVetoException;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class ConfigurationFrameManualTest extends JDesktopPane {

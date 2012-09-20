@@ -2,8 +2,8 @@ package org.kalibro.client;
 
 import java.util.List;
 
+import org.kalibro.Configuration;
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.Configuration;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;

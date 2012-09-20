@@ -5,8 +5,8 @@ import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import java.util.Arrays;
 import java.util.Collection;
 
+import org.kalibro.Configuration;
 import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.Configuration;
 
 public class ConfigurationXmlTest extends DtoTestCase<Configuration, ConfigurationXml> {
 

@@ -2,6 +2,8 @@ package org.kalibro.core.model;
 
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
+import org.kalibro.Configuration;
+
 public final class ConfigurationFixtures {
 
 	public static final String CONFIGURATION_NAME = "Kalibro for Java";

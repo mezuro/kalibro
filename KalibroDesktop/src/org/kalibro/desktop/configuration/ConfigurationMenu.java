@@ -3,7 +3,7 @@ package org.kalibro.desktop.configuration;
 import javax.swing.JDesktopPane;
 import javax.swing.JInternalFrame;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.desktop.CrudMenu;
 
 public class ConfigurationMenu extends CrudMenu<Configuration> {

@@ -6,8 +6,8 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Configuration;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 
 public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {

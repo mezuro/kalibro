@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JDesktopPane;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.CrudController;

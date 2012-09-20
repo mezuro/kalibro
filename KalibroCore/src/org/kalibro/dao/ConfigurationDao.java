@@ -2,7 +2,7 @@ package org.kalibro.dao;
 
 import java.util.List;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 
 public interface ConfigurationDao {
 
