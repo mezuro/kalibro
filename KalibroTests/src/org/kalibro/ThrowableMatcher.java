@@ -6,7 +6,7 @@ public class ThrowableMatcher {
 
 	private Throwable throwed;
 
-	protected ThrowableMatcher(Throwable throwed) {
+	public ThrowableMatcher(Throwable throwed) {
 		this.throwed = throwed;
 	}
 

@@ -60,7 +60,7 @@ public abstract class Task<T> implements Runnable {
 		}
 	}
 
-	public abstract T compute() throws Throwable;
+	protected abstract T compute() throws Throwable;
 
 	protected void setReport(TaskReport<T> report) {
 		this.report = report;

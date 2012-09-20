@@ -5,7 +5,7 @@ final class CounterTask extends Task<Integer> {
 	int result;
 
 	@Override
-	public Integer compute() {
+	protected Integer compute() {
 		return result++;
 	}
 }

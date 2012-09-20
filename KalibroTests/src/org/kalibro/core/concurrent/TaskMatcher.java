@@ -1,14 +1,17 @@
-package org.kalibro;
+package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
 
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.ExtendedAsserts;
+import org.kalibro.KalibroError;
+import org.kalibro.KalibroException;
+import org.kalibro.ThrowableMatcher;
 
 public class TaskMatcher {
 
 	private Task<?> task;
 
-	protected TaskMatcher(Task<?> task) {
+	public TaskMatcher(Task<?> task) {
 		this.task = task;
 	}
 

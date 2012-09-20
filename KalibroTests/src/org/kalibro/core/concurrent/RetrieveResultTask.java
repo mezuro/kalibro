@@ -9,7 +9,7 @@ final class RetrieveResultTask<T> extends Task<T> {
 	}
 
 	@Override
-	public T compute() {
+	protected T compute() {
 		return resultToBeRetrieved;
 	}
 }

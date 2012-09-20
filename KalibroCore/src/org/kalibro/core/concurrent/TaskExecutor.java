@@ -6,7 +6,7 @@ import org.kalibro.KalibroException;
 
 final class TaskExecutor {
 
-	private static final int THREAD_POOL_SIZE = 10;
+	private static final int THREAD_POOL_SIZE = 100;
 	private static final ScheduledExecutorService EXECUTOR = Executors.newScheduledThreadPool(THREAD_POOL_SIZE);
 
 	static void executeInBackground(Task<?> task) {
