@@ -15,6 +15,6 @@ final class SleepTask extends VoidTask {
 
 	@Override
 	public String toString() {
-		return "sleeping";
+		return "sleeping for " + sleepingTime + " milliseconds.";
 	}
 }

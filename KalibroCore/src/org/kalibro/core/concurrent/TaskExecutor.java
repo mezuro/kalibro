@@ -5,6 +5,12 @@ import java.util.concurrent.*;
 import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 
+/**
+ * Utility class that executes submitted {@link Task}s. It provides a way of decoupling task execution from the
+ * mechanics of how will they run.
+ * 
+ * @author Carlos Morais.
+ */
 final class TaskExecutor {
 
 	private static final int THREAD_POOL_SIZE = 100;
@@ -27,14 +33,18 @@ final class TaskExecutor {
 	}
 
 	private static <T> T scheduleAndGet(Task<T> task) {
-		return scheduleAndGet(task, 1, TimeUnit.DAYS);
+		return scheduleAndGet(task, null, null);
 	}
 
-	private static <T> T scheduleAndGet(Task<T> task, long timeout, TimeUnit timeUnit) {
+	private static <T> T scheduleAndGet(Task<T> task, Long timeout, TimeUnit timeUnit) {
+		Future<?> future = scheduleForNow(task);
 		try {
-			scheduleForNow(task).get(timeout, timeUnit);
+			if (timeout == null)
+				future.get();
+			else
+				future.get(timeout, timeUnit);
 		} catch (ExecutionException exception) {
-			throw new KalibroError("Error while " + task + "\nOverriden Task.run() threw an exception.", exception);
+			throw new KalibroError("Error while " + task + "\nTask.run() should not be overriden.", exception);
 		} catch (InterruptedException exception) {
 			throw new KalibroException("Thread interrupted while waiting for task to finish: " + task, exception);
 		} catch (TimeoutException exception) {

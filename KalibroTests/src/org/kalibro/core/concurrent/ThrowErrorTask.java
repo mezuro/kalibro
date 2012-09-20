@@ -19,6 +19,6 @@ final class ThrowErrorTask extends VoidTask {
 
 	@Override
 	public String toString() {
-		return "throwing error";
+		return "throwing error.";
 	}
 }

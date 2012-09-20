@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class ThrowableMatcher {
 
@@ -17,6 +17,11 @@ public class ThrowableMatcher {
 
 	public ThrowableMatcher withCause(Class<? extends Throwable> causeClass) {
 		ExtendedAsserts.assertClassEquals(causeClass, throwed.getCause());
+		return this;
+	}
+
+	public ThrowableMatcher withCause(Throwable cause) {
+		assertSame(cause, throwed.getCause());
 		return this;
 	}
 }
