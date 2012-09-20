@@ -20,7 +20,7 @@ public class ModuleResultXmlTest extends DtoTestCase<ModuleResult, ModuleResultX
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				new CompoundMetricWithErrorXml().getError();
 			}
 		}).doThrow(NullPointerException.class);

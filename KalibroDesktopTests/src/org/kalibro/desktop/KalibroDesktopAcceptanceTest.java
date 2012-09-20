@@ -26,7 +26,7 @@ public class KalibroDesktopAcceptanceTest extends AcceptanceTest {
 		new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				KalibroDesktop.main(null);
 			}
 		}.executeInBackground();

@@ -1,5 +1,6 @@
 package org.kalibro.core.loaders;
 
+import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 
@@ -50,7 +51,7 @@ public class ProjectLoaderTest extends TestCase {
 	public void shouldValidate() {
 		assertTrue(loader.validate());
 
-		doThrow(new KalibroException("")).when(commandTask).executeAndWait(ProjectLoader.VALIDATION_TIMEOUT);
+		doThrow(new KalibroException("")).when(commandTask).execute(1, MINUTES);
 		assertFalse(loader.validate());
 	}
 
@@ -64,7 +65,7 @@ public class ProjectLoaderTest extends TestCase {
 	public void shouldExecuteLoadCommandsOnFirstLoad() throws Exception {
 		loader.load(repository, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, loadDirectory);
-		Mockito.verify(commandTask).executeAndWait(ProjectLoader.LOAD_TIMEOUT);
+		Mockito.verify(commandTask).execute(1, HOURS);
 	}
 
 	@Test
@@ -72,7 +73,7 @@ public class ProjectLoaderTest extends TestCase {
 		when(loadDirectory.exists()).thenReturn(true);
 		loader.load(repository, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(UPDATE_COMMAND, loadDirectory);
-		Mockito.verify(commandTask).executeAndWait(ProjectLoader.LOAD_TIMEOUT);
+		Mockito.verify(commandTask).execute(1, HOURS);
 	}
 
 	private class FakeLoader extends ProjectLoader {

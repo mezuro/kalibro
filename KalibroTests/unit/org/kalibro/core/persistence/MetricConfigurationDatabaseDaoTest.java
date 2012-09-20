@@ -82,7 +82,7 @@ public class MetricConfigurationDatabaseDaoTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				String metricName = locConfiguration.getMetric().getName();
 				dao.getMetricConfiguration(configuration.getName(), metricName);
 			}

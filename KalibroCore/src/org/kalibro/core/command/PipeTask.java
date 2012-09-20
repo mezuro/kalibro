@@ -18,7 +18,7 @@ class PipeTask extends VoidTask {
 	}
 
 	@Override
-	public void perform() throws IOException {
+	protected void perform() throws IOException {
 		IOUtils.copy(inputStream, outputStream);
 	}
 }

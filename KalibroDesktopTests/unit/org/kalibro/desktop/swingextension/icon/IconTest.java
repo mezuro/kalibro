@@ -32,7 +32,7 @@ public class IconTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				icon = new Icon("inexistent.gif");
 			}
 		}).doThrow(NullPointerException.class);

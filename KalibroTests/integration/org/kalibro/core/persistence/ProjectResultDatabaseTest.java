@@ -77,7 +77,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getFirstResultOf(project.getName());
 			}
 		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);
@@ -100,7 +100,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getLastResultOf(project.getName());
 			}
 		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);
@@ -118,7 +118,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getLastResultBefore(first.getDate(), project.getName());
 			}
 		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);
@@ -136,7 +136,7 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getFirstResultAfter(third.getDate(), project.getName());
 			}
 		}).throwsException().withMessage("No project result found").withCause(NoResultException.class);

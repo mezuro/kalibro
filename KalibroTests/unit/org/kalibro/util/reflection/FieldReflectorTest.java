@@ -8,6 +8,7 @@ import javax.persistence.Column;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.MethodRule;
 import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
 
@@ -35,20 +36,20 @@ public class FieldReflectorTest extends TestCase {
 
 	@Test
 	public void shouldListFields() {
-		assertDeepList(reflector.listFields(), "reflector", "testTimeout", "waiting");
+		assertDeepList(reflector.listFields(), "reflector", "testTimeout");
 	}
 
 	@Test
 	public void shouldFilterFields() {
-		assertDeepList(reflector.listFields(named("waiting")), "waiting");
-		assertDeepList(reflector.listFields(nameMatches(".*t.*i.*")), "testTimeout", "waiting");
+		assertDeepList(reflector.listFields(named("testTimeout")), "testTimeout");
+		assertDeepList(reflector.listFields(nameMatches(".*lector")), "reflector");
 		assertDeepList(reflector.listFields(hasAnnotation(Column.class)), "reflector");
 		assertDeepList(reflector.listFields(not(is(PRIVATE))), "testTimeout");
 	}
 
 	@Test
 	public void shouldGetFieldType() {
-		assertEquals(boolean.class, reflector.getFieldType("waiting"));
+		assertEquals(MethodRule.class, reflector.getFieldType("testTimeout"));
 		assertEquals(FieldReflector.class, reflector.getFieldType("reflector"));
 	}
 
@@ -64,9 +65,9 @@ public class FieldReflectorTest extends TestCase {
 
 	@Test
 	public void shouldSetField() {
-		assertFalse((Boolean) reflector.get("waiting"));
-		reflector.set("waiting", true);
-		assertTrue((Boolean) reflector.get("waiting"));
+		assertSame(reflector, reflector.get("reflector"));
+		reflector.set("reflector", null);
+		assertNull(reflector);
 	}
 
 	@Test
@@ -74,7 +75,7 @@ public class FieldReflectorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				reflector.get("inexistent");
 			}
 		}).throwsError().withMessage("Error retrieving field: " + INEXISTENT).withCause(NullPointerException.class);
@@ -85,7 +86,7 @@ public class FieldReflectorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				reflector.set("inexistent", "anything");
 			}
 		}).throwsError().withMessage("Error setting field: " + INEXISTENT).withCause(NullPointerException.class);

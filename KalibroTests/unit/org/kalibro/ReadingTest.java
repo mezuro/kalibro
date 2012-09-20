@@ -67,7 +67,7 @@ public class ReadingTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				reading.assertNoConflictWith(other);
 			}
 		}).throwsException().withMessage(message);
@@ -100,7 +100,7 @@ public class ReadingTest extends TestCase {
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				reading.save();
 			}
 		};

@@ -58,7 +58,7 @@ public class BaseToolTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				analizo.createMetricCollector();
 			}
 		}).throwsException().withMessage("Could not create metric collector of base tool 'Analizo'")

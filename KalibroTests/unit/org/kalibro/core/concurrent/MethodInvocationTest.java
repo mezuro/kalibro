@@ -1,6 +1,6 @@
 package org.kalibro.core.concurrent;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Method;
 import java.util.Queue;
@@ -31,14 +31,6 @@ public class MethodInvocationTest extends TestCase {
 	}
 
 	@Test
-	public void shouldRetrieveIfInvocationWasDone() {
-		createInvocation(4);
-		assertFalse(invocation.done());
-		invocation.invoke();
-		assertTrue(invocation.done());
-	}
-
-	@Test
 	public void shouldThrowExceptionWhenRetrievingResult() {
 		createInvocation(null);
 		invocation.invoke();
@@ -56,7 +48,7 @@ public class MethodInvocationTest extends TestCase {
 		return new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				invocation.getResult();
 			}
 		};
@@ -82,7 +74,7 @@ public class MethodInvocationTest extends TestCase {
 			new VoidTask() {
 
 				@Override
-				public void perform() throws InterruptedException {
+				protected void perform() throws InterruptedException {
 					Thread.sleep(200);
 					invocation.invokeAndNotify();
 				}

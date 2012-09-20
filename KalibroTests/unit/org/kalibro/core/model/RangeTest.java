@@ -112,7 +112,7 @@ public class RangeTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				new Range(beginning, end);
 			}
 		}).throwsException().withMessage("[" + beginning + ", " + end + "[ is not a valid range");

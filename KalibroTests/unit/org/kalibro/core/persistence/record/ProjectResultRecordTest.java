@@ -43,7 +43,7 @@ public class ProjectResultRecordTest extends DtoTestCase<ProjectResult, ProjectR
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				record.convert();
 			}
 		}).throwsException().withMessage("No source tree root found in result for project: HelloWorld-1.0");

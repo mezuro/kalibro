@@ -29,10 +29,6 @@ class MethodInvocation {
 		done = true;
 	}
 
-	protected boolean done() {
-		return done;
-	}
-
 	protected Object getResult() throws Throwable {
 		if (error != null)
 			throw (error instanceof InvocationTargetException) ? error.getCause() : error;
@@ -41,7 +37,7 @@ class MethodInvocation {
 
 	protected synchronized void addToQueueAndWait(Queue<MethodInvocation> queue) throws Exception {
 		queue.add(this);
-		while (!done())
+		while (!done)
 			wait();
 	}
 

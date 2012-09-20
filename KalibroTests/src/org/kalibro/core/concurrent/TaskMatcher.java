@@ -1,14 +1,17 @@
-package org.kalibro;
+package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
 
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.ExtendedAsserts;
+import org.kalibro.KalibroError;
+import org.kalibro.KalibroException;
+import org.kalibro.ThrowableMatcher;
 
 public class TaskMatcher {
 
 	private Task<?> task;
 
-	protected TaskMatcher(Task<?> task) {
+	public TaskMatcher(Task<?> task) {
 		this.task = task;
 	}
 
@@ -21,16 +24,16 @@ public class TaskMatcher {
 	}
 
 	public ThrowableMatcher doThrow(Class<? extends Throwable> throwableClass) {
-		Throwable throwed = invokeAndCatch(throwableClass);
+		Throwable throwed = doCatch(throwableClass);
 		ExtendedAsserts.assertClassEquals(throwableClass, throwed);
 		return new ThrowableMatcher(throwed);
 	}
 
 	public void doThrow(Throwable throwable) {
-		assertSame(throwable, invokeAndCatch(throwable));
+		assertSame(throwable, doCatch(throwable));
 	}
 
-	private Throwable invokeAndCatch(Object expected) {
+	private Throwable doCatch(Object expected) {
 		try {
 			task.compute();
 			fail("Expected but not throwed:\n" + expected);

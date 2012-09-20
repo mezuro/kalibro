@@ -55,7 +55,7 @@ public class ProjectResultTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				new ProjectResult(helloWorld()).getSourceTree();
 			}
 		}).throwsException().withMessage("Project not yet processed: " + result.getProject().getName());

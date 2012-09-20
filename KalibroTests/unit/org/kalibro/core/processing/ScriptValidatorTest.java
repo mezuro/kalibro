@@ -64,7 +64,7 @@ public class ScriptValidatorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() throws Exception {
 				assertValid();
 			}
 		}).throwsException().withMessage("Metric with invalid code or script: " + configuration.getMetric())

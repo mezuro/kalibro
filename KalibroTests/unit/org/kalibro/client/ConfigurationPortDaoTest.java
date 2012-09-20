@@ -80,7 +80,7 @@ public class ConfigurationPortDaoTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getConfigurationFor("42");
 			}
 		}).throwsException().withMessage("Not available remotely");

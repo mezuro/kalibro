@@ -41,7 +41,7 @@ public class BaseToolRecordTest extends DtoTestCase<BaseTool, BaseToolRecord> {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				dto.convert();
 			}
 		}).throwsError().withMessage("Could not find collector class").withCause(ClassNotFoundException.class);

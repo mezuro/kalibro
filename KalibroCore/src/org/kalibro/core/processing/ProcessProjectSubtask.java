@@ -1,13 +1,13 @@
 package org.kalibro.core.processing;
 
+import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.concurrent.TaskReport;
-import org.kalibro.core.concurrent.TypedTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dao.DaoFactory;
 
-abstract class ProcessProjectSubtask<T> extends TypedTask<T> {
+abstract class ProcessProjectSubtask<T> extends Task<T> {
 
 	protected Project project;
 	protected ProjectResult projectResult;
@@ -17,10 +17,10 @@ abstract class ProcessProjectSubtask<T> extends TypedTask<T> {
 		project = projectResult.getProject();
 	}
 
-	protected T execute() {
+	T executeSubTask() {
 		project.setState(getTaskState());
 		DaoFactory.getProjectDao().save(project);
-		return executeAndWaitResult();
+		return execute();
 	}
 
 	@Override

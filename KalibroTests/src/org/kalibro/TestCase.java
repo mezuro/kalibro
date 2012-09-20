@@ -32,21 +32,8 @@ public abstract class TestCase extends ExtendedAsserts {
 	@Rule
 	public MethodRule testTimeout = testTimeout();
 
-	private boolean waiting;
-
 	protected Timeout testTimeout() {
 		return new Timeout(2000);
-	}
-
-	protected void waitNotification() throws InterruptedException {
-		waiting = true;
-		while (waiting)
-			wait();
-	}
-
-	protected void notifyTest() {
-		waiting = false;
-		notify();
 	}
 
 	protected File getResource(String name) throws Exception {

@@ -34,7 +34,7 @@ public class ReflectionTableModelTest extends TestCase {
 		return new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				model.addColumn(new Column("", null, 0));
 			}
 		};

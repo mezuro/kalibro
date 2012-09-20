@@ -7,7 +7,7 @@ package org.kalibro.core.concurrent;
  * 
  * @author Carlos Morais
  */
-public class TaskReport<T> {
+public final class TaskReport<T> {
 
 	private Task<T> task;
 	private long executionTime;
@@ -15,12 +15,12 @@ public class TaskReport<T> {
 	private T result;
 	private Throwable error;
 
-	protected TaskReport(Task<T> task, long start, T result) {
+	TaskReport(Task<T> task, long start, T result) {
 		this(task, start);
 		this.result = result;
 	}
 
-	protected TaskReport(Task<T> task, long start, Throwable error) {
+	TaskReport(Task<T> task, long start, Throwable error) {
 		this(task, start);
 		this.error = error;
 	}

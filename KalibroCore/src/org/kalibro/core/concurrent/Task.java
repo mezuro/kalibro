@@ -2,21 +2,16 @@ package org.kalibro.core.concurrent;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
 public abstract class Task<T> implements Runnable {
 
-	public static final long SECOND = 1000L;
-	public static final long MINUTE = 60 * SECOND;
-	public static final long HOUR = 60 * MINUTE;
-	public static final long DAY = 24 * HOUR;
-
-	private TaskExecutor executor;
+	private Future<?> future;
+	private TaskReport<T> report;
 	private Set<TaskListener<T>> listeners;
 
-	protected TaskReport<T> report;
-
 	public Task() {
-		executor = new TaskExecutor(this);
 		listeners = new HashSet<TaskListener<T>>();
 	}
 
@@ -25,23 +20,23 @@ public abstract class Task<T> implements Runnable {
 	}
 
 	public void executeInBackground() {
-		executor.executeInBackground();
+		future = TaskExecutor.executeInBackground(this);
 	}
 
-	public void executeAndWait() {
-		executor.executeAndWait();
+	public T execute() {
+		return TaskExecutor.execute(this);
 	}
 
-	public void executeAndWait(long timeout) {
-		executor.executeAndWait(timeout);
+	public T execute(long timeout, TimeUnit timeUnit) {
+		return TaskExecutor.execute(this, timeout, timeUnit);
 	}
 
-	public void executePeriodically(long period) {
-		executor.executePeriodically(period);
+	public void executePeriodically(long period, TimeUnit timeUnit) {
+		future = TaskExecutor.executePeriodically(this, period, timeUnit);
 	}
 
-	public void cancelPeriodicExecution() {
-		executor.cancelPeriodicExecution();
+	public void cancelExecution() {
+		future.cancel(true);
 	}
 
 	@Override
@@ -60,7 +55,7 @@ public abstract class Task<T> implements Runnable {
 		}
 	}
 
-	public abstract T compute() throws Throwable;
+	protected abstract T compute() throws Throwable;
 
 	protected void setReport(TaskReport<T> report) {
 		this.report = report;

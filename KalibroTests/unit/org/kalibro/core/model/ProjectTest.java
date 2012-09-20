@@ -99,7 +99,7 @@ public class ProjectTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				project.getStateWhenErrorOcurred();
 			}
 		}).throwsException().withMessage("Project " + project + " has no error");
@@ -110,7 +110,7 @@ public class ProjectTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				project.setState(ERROR);
 			}
 		}).throwsException().withMessage("Use setError(Throwable) to put project in error state");
@@ -127,7 +127,7 @@ public class ProjectTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				project.getError();
 			}
 		}).throwsException().withMessage("Project " + project + " has no error");

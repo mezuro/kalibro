@@ -70,7 +70,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getConfiguration(simpleConfiguration.getName());
 			}
 		}).throwsException().withMessage("There is no configuration named '" + simpleConfiguration.getName() + "'")

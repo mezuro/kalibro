@@ -73,7 +73,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				group.save();
 			}
 		};
@@ -104,7 +104,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				group.addReading(reading);
 			}
 		};

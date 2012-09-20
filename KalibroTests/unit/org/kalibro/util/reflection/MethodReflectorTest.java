@@ -84,7 +84,7 @@ public class MethodReflectorTest extends TestCase {
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				reflector.invoke(method, parameters);
 			}
 		};

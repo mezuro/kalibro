@@ -90,7 +90,7 @@ public class MetricResultTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				result.getRange();
 			}
 		}).throwsException()

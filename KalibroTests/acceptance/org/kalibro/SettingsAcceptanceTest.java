@@ -85,7 +85,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				KalibroSettings.load();
 			}
 		}).throwsException().withCause(causeClass)
@@ -99,7 +99,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				settings.save();
 			}
 		}).throwsException().withCause(IOException.class)

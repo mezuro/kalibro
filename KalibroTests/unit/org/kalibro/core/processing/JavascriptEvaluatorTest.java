@@ -48,7 +48,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				evaluator.addVariable("1bad.name", 13.0);
 			}
 		}).throwsException().withMessage("Invalid identifier: 1bad.name");
@@ -59,7 +59,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				evaluator.addFunction("badFunction'sName", "return 13;");
 			}
 		}).throwsException().withMessage("Invalid identifier: badFunction'sName");
@@ -74,7 +74,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				evaluator.evaluate("variable");
 			}
 		}).doThrow(ClassCastException.class);
@@ -109,7 +109,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				addFunctionAndExecute("f", body);
 			}
 		}).doThrow(exceptionClass);

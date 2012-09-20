@@ -21,7 +21,7 @@ public class ProcessProjectTask extends VoidTask {
 	}
 
 	@Override
-	public void perform() {
+	protected void perform() {
 		try {
 			processProject();
 		} catch (Throwable error) {
@@ -30,9 +30,9 @@ public class ProcessProjectTask extends VoidTask {
 	}
 
 	private void processProject() {
-		ProjectResult projectResult = new LoadSourceTask(project).execute();
-		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).execute();
-		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).execute();
+		ProjectResult projectResult = new LoadSourceTask(project).executeSubTask();
+		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).executeSubTask();
+		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).executeSubTask();
 
 		DaoFactory.getProjectResultDao().save(projectResult);
 		saveModuleResults(moduleResults, projectResult);

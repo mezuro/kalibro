@@ -51,19 +51,19 @@ public class ProcessProjectSubtaskTest extends TestCase {
 
 	@Test
 	public void shouldReturnTaskResult() {
-		assertEquals(TASK_RESULT, subtask.execute());
+		assertEquals(TASK_RESULT, subtask.executeSubTask());
 	}
 
 	@Test
 	public void shouldUpdateProjectState() {
-		subtask.execute();
+		subtask.executeSubTask();
 		Mockito.verify(project).setState(subtask.getTaskState());
 		Mockito.verify(projectDao).save(project);
 	}
 
 	@Test
 	public void shouldSetStateTime() {
-		subtask.execute();
+		subtask.executeSubTask();
 		Mockito.verify(projectResult).setStateTime(eq(TASK_STATE), anyLong());
 	}
 
@@ -85,7 +85,7 @@ public class ProcessProjectSubtaskTest extends TestCase {
 		}
 
 		@Override
-		public String compute() {
+		protected String compute() {
 			return TASK_RESULT;
 		}
 	}
