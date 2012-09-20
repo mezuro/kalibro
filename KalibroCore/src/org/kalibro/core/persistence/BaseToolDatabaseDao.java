@@ -10,6 +10,8 @@ import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.record.BaseToolRecord;
 import org.kalibro.dao.BaseToolDao;
 
+import br.jabuti.JabutiMetricCollector;
+
 class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implements BaseToolDao {
 
 	protected BaseToolDatabaseDao(RecordManager recordManager) {
@@ -20,6 +22,7 @@ class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implemen
 		save(AnalizoMetricCollector.class);
 		save(CheckstyleMetricCollector.class);
 		save(CVSAnalyMetricCollector.class);
+		save(JabutiMetricCollector.class);
 	}
 
 	private void save(Class<? extends MetricCollector> collectorClass) {
