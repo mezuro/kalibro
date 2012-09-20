@@ -12,6 +12,7 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 
 	private static final long TIMEOUT = 200;
 
+	private boolean waiting;
 	private TaskReport<?> report;
 
 	@Override
@@ -36,13 +37,20 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 		report = null;
 		task.addListener(this);
 		TaskExecutor.executeInBackground(task);
-		waitNotification();
+		waitReport();
+	}
+
+	private synchronized void waitReport() throws InterruptedException {
+		waiting = true;
+		while (waiting)
+			wait();
 	}
 
 	@Override
 	public synchronized void taskFinished(TaskReport<Void> taskReport) {
 		report = taskReport;
-		notifyTest();
+		waiting = false;
+		notify();
 	}
 
 	@Test

@@ -2,6 +2,7 @@ package org.kalibro.core.concurrent;
 
 import java.util.concurrent.*;
 
+import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 
 final class TaskExecutor {
@@ -26,34 +27,32 @@ final class TaskExecutor {
 	}
 
 	private static <T> T scheduleAndGet(Task<T> task) {
-		return scheduleAndGet(task, null, null);
+		return scheduleAndGet(task, 1, TimeUnit.DAYS);
 	}
 
-	private static <T> T scheduleAndGet(Task<T> task, Long timeout, TimeUnit timeUnit) {
+	private static <T> T scheduleAndGet(Task<T> task, long timeout, TimeUnit timeUnit) {
 		try {
-			doScheduleAndGet(task, timeout, timeUnit);
+			scheduleForNow(task).get(timeout, timeUnit);
+		} catch (ExecutionException exception) {
+			throw new KalibroError("Error while " + task + "\nOverriden Task.run() threw an exception.", exception);
+		} catch (InterruptedException exception) {
+			throw new KalibroException("Thread interrupted while waiting for task to finish: " + task, exception);
 		} catch (TimeoutException exception) {
-			String timeoutString = timeout + " " + timeUnit.name().toLowerCase();
-			throw new KalibroException("Timed out after " + timeoutString + " while " + task, exception);
-		} catch (Exception exception) {
-			throw new KalibroException("Error while " + task, exception);
+			String message = "Timed out after " + timeout + " " + timeUnit.name().toLowerCase() + " while " + task;
+			throw new KalibroException(message, exception);
 		}
-		TaskReport<T> report = task.getReport();
-		if (report.isTaskDone())
-			return report.getResult();
-		throw new KalibroException("Error while " + task, report.getError());
-	}
-
-	private static void doScheduleAndGet(Task<?> task, Long timeout, TimeUnit timeUnit) throws Exception {
-		Future<?> future = scheduleForNow(task);
-		if (timeout == null)
-			future.get();
-		else
-			future.get(timeout, timeUnit);
+		return resultOf(task);
 	}
 
 	private static Future<?> scheduleForNow(Task<?> task) {
 		return EXECUTOR.schedule(task, 0, TimeUnit.NANOSECONDS);
+	}
+
+	private static <T> T resultOf(Task<T> task) {
+		TaskReport<T> report = task.getReport();
+		if (report.isTaskDone())
+			return report.getResult();
+		throw new KalibroException("Error while " + task, report.getError());
 	}
 
 	private TaskExecutor() {

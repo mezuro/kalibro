@@ -19,6 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(TaskExecutor.class)
 public class TaskTest extends TestCase implements TaskListener<Void> {
 
+	private boolean waiting;
 	private VoidTask task;
 	private TaskReport<?> report;
 
@@ -98,13 +99,20 @@ public class TaskTest extends TestCase implements TaskListener<Void> {
 		report = null;
 		task.addListener(this);
 		new Thread(task).start();
-		waitNotification();
+		waitReport();
+	}
+
+	private synchronized void waitReport() throws InterruptedException {
+		waiting = true;
+		while (waiting)
+			wait();
 	}
 
 	@Override
 	public synchronized void taskFinished(TaskReport<Void> taskReport) {
 		report = taskReport;
-		notifyTest();
+		waiting = false;
+		notify();
 	}
 
 	private class SetReport extends AnswerAdapter {
