@@ -17,4 +17,6 @@ public interface ConfigurationDao {
 	Configuration getConfigurationFor(String projectName);
 
 	void removeConfiguration(String configurationName);
+
+	List<Configuration> all();
 }

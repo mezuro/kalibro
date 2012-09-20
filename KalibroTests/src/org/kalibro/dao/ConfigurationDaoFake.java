@@ -40,4 +40,10 @@ public class ConfigurationDaoFake implements ConfigurationDao {
 	public void removeConfiguration(String configurationName) {
 		configurations.remove(configurationName);
 	}
+
+	@Override
+	public List<Configuration> all() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

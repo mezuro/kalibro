@@ -43,4 +43,10 @@ class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> imple
 	public void removeConfiguration(String configurationName) {
 		port.removeConfiguration(configurationName);
 	}
+
+	@Override
+	public List<Configuration> all() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

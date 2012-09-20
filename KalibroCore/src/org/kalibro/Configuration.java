@@ -18,13 +18,7 @@ import org.kalibro.dao.DaoFactory;
 public class Configuration extends AbstractEntity<Configuration> {
 
 	public static List<Configuration> all() {
-		ConfigurationDao configurationDao = dao();
-		List<String> names = configurationDao.getConfigurationNames();
-		List<Configuration> configurations = new ArrayList<Configuration>();
-		for (String name : names) {
-			configurations.add(configurationDao.getConfiguration(name));
-		}
-		return configurations;
+		return dao().all();
 	}
 
 	private static ConfigurationDao dao() {

@@ -14,6 +14,11 @@ class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationR
 	}
 
 	@Override
+	public List<Configuration> all() {
+		return allOrderedByName();
+	}
+
+	@Override
 	public void save(Configuration configuration) {
 		ConfigurationRecord record = new ConfigurationRecord(configuration);
 		record = recordManager.save(record);

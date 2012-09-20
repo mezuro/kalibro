@@ -5,6 +5,7 @@ import static org.kalibro.core.model.ConfigurationFixtures.*;
 import static org.mockito.Matchers.any;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -32,6 +33,13 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 		configuration = newConfiguration("cbo", "lcom4");
 		recordManager = mock(RecordManager.class);
 		dao = spy(new ConfigurationDatabaseDao(recordManager));
+	}
+
+	@Test
+	public void shouldGetAll() {
+		List<Configuration> all = mock(List.class);
+		doReturn(all).when(dao).allOrderedByName();
+		assertSame(all, dao.all());
 	}
 
 	@Test

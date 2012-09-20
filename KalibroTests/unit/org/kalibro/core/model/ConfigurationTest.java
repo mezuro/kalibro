@@ -5,21 +5,30 @@ import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.DaoFactory;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
 public class ConfigurationTest extends TestCase {
 
 	private CompoundMetric sc;
 	private Configuration configuration;
 
 	private String cboName, lcomName, scName;
+	private ConfigurationDao dao;
 
 	@Before
 	public void setUp() {
@@ -28,6 +37,20 @@ public class ConfigurationTest extends TestCase {
 		cboName = analizoMetric("cbo").getName();
 		lcomName = analizoMetric("lcom4").getName();
 		scName = sc.getName();
+		mockDao();
+	}
+
+	private void mockDao() {
+		dao = mock(ConfigurationDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getConfigurationDao()).thenReturn(dao);
+	}
+
+	@Test
+	public void shouldGetAll() {
+		List<Configuration> configurationList = mock(List.class);
+		when(dao.all()).thenReturn(configurationList);
+		assertSame(configurationList, Configuration.all());
 	}
 
 	@Test
@@ -173,5 +196,33 @@ public class ConfigurationTest extends TestCase {
 		Configuration newConfiguration = new Configuration();
 		newConfiguration.setName(name);
 		return newConfiguration;
+	}
+
+	@Test
+	public void shouldSave() {
+		configuration.save();
+		verify(dao).save(configuration);
+	}
+
+	@Test
+	public void shouldRequireNameToSave() {
+		configuration.setName(" ");
+		assertThat(save()).throwsException().withMessage("Configuration requires name.");
+	}
+
+	private VoidTask save() {
+		return new VoidTask() {
+
+			@Override
+			protected void perform() {
+				configuration.save();
+			}
+		};
+	}
+
+	@Test
+	public void shouldDelete() {
+		configuration.delete();
+		verify(dao).removeConfiguration(configuration.getName());
 	}
 }
