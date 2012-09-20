@@ -1,6 +1,6 @@
 package org.kalibro.core.concurrent;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.lang.reflect.Method;
 import java.util.Queue;
@@ -28,14 +28,6 @@ public class MethodInvocationTest extends TestCase {
 		createInvocation(3);
 		invocation.invoke();
 		assertEquals("string", invocation.getResult());
-	}
-
-	@Test
-	public void shouldRetrieveIfInvocationWasDone() {
-		createInvocation(4);
-		assertFalse(invocation.done());
-		invocation.invoke();
-		assertTrue(invocation.done());
 	}
 
 	@Test
