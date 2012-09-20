@@ -30,7 +30,7 @@ public class CommandTask extends VoidTask {
 	}
 
 	@Override
-	public void perform() throws Exception {
+	protected void perform() throws Exception {
 		Process process = Runtime.getRuntime().exec(command, null, workingDirectory);
 		processStreamLogger.logErrorStream(process, command);
 		processStreamLogger.logOutputStream(process, command);

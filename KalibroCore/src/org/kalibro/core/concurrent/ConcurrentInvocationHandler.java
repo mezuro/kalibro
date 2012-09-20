@@ -25,7 +25,7 @@ public final class ConcurrentInvocationHandler extends VoidTask implements Invoc
 	}
 
 	@Override
-	public void perform() throws Throwable {
+	protected void perform() throws Throwable {
 		while (running)
 			methodInvocations.take().invokeAndNotify();
 	}

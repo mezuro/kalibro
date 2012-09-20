@@ -32,7 +32,7 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				new ErrorXml(new Throwable() {
 					// Anonymous class
 				}).convert();

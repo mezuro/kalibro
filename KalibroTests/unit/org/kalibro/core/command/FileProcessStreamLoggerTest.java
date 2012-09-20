@@ -87,7 +87,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				logger.logOutputStream(process, "my command");
 			}
 		}).throwsException().withMessage("Error logging command: my command\nFile: " + logFile)

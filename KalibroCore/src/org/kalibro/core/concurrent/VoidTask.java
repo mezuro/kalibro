@@ -8,5 +8,5 @@ public abstract class VoidTask extends Task<Void> {
 		return null;
 	}
 
-	public abstract void perform() throws Throwable;
+	protected abstract void perform() throws Throwable;
 }

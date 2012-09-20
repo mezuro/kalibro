@@ -47,7 +47,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				MetricConfiguration configurationWithSameCode = new MetricConfiguration(analizoMetric("loc"));
 				configurationWithSameCode.setCode(configuration.getCode());
 				configurationWithSameCode.assertNoConflictWith(configuration);
@@ -60,7 +60,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				MetricConfiguration configurationForSameMetric = new MetricConfiguration(metric);
 				configurationForSameMetric.assertNoConflictWith(configuration);
 			}
@@ -93,7 +93,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				configuration.getRangeFor(-1.0);
 			}
 		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
@@ -111,7 +111,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				configuration.addRange(new Range(6.0, 12.0));
 			}
 		}).throwsException().withMessage("New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
@@ -130,7 +130,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				configuration.replaceRange(-1.0, new Range(-1.0, 0.0));
 			}
 		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
@@ -141,7 +141,7 @@ public class MetricConfigurationTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				configuration.replaceRange(0.0, new Range());
 			}
 		}).throwsException().withMessage("New range [-Infinity, Infinity[ would conflict with [7.0, 10.0[");

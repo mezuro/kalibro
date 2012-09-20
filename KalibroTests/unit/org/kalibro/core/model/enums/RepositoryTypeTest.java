@@ -126,7 +126,7 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Exception {
 				invokeMethod(type, "initializeLoader");
 			}
 		}).throwsError().withMessage("Error creating loader for Git").withCause(ClassNotFoundException.class);

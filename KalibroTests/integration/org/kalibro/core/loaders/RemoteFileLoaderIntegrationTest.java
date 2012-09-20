@@ -16,7 +16,7 @@ public abstract class RemoteFileLoaderIntegrationTest extends LoaderIntegrationT
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				load();
 			}
 		};

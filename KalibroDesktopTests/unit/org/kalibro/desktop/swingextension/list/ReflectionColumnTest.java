@@ -56,7 +56,7 @@ public class ReflectionColumnTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				column.getColumnClass(String.class);
 			}
 		}).throwsError().withMessage("Reflection column did not found method: java.lang.String.getColor")

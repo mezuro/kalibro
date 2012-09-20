@@ -61,7 +61,7 @@ public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getMetricConfiguration(configurationName, metricName);
 			}
 		}).throwsException().withMessage("No configuration found for metric: " + metricName);

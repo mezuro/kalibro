@@ -30,7 +30,7 @@ public class CommandExecutionTest extends IntegrationTest {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws IOException {
+			protected void perform() throws IOException {
 				task.executeAndGetOuput();
 			}
 		}).doThrow(IOException.class);
@@ -54,7 +54,7 @@ public class CommandExecutionTest extends IntegrationTest {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				task.executeAndWait(50);
 			}
 		}).throwsException().withCause(InterruptedException.class)

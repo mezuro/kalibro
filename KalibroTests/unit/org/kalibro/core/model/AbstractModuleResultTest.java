@@ -47,7 +47,7 @@ public class AbstractModuleResultTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				moduleResult.getResultFor(dit);
 			}
 		}).throwsException().withMessage("No result found for metric: Depth of Inheritance Tree");

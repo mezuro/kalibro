@@ -35,7 +35,7 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getBaseTool("Inexistent base tool");
 			}
 		}).throwsException().withMessage("There is no base tool named 'Inexistent base tool'")

@@ -40,7 +40,7 @@ public class AbstractEntityTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				AbstractEntity.importFrom(file, Person.class);
 			}
 		}).throwsException().withMessage("Could not import person from file: " + file)
@@ -61,7 +61,7 @@ public class AbstractEntityTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				entity.exportTo(file);
 			}
 		}).throwsException().withMessage("Could not export person to file: " + file).withCause(IOException.class);

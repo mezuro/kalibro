@@ -130,7 +130,7 @@ public class ReadingGroupTest extends TestCase {
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				group.save();
 			}
 		};

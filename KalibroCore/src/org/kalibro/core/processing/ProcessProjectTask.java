@@ -21,7 +21,7 @@ public class ProcessProjectTask extends VoidTask {
 	}
 
 	@Override
-	public void perform() {
+	protected void perform() {
 		try {
 			processProject();
 		} catch (Throwable error) {

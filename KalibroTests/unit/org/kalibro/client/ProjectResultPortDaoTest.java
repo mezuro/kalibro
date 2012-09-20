@@ -55,7 +55,7 @@ public class ProjectResultPortDaoTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.save(projectResult);
 			}
 		}).throwsException().withMessage("Cannot save project result remotely");

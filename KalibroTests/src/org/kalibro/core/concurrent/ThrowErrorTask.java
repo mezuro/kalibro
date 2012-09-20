@@ -8,12 +8,12 @@ final class ThrowErrorTask extends VoidTask {
 		this(new Throwable());
 	}
 
-	protected ThrowErrorTask(Throwable error) {
+	ThrowErrorTask(Throwable error) {
 		this.error = error;
 	}
 
 	@Override
-	public void perform() throws Throwable {
+	protected void perform() throws Throwable {
 		throw error;
 	}
 

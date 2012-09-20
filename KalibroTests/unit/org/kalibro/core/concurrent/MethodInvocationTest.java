@@ -48,7 +48,7 @@ public class MethodInvocationTest extends TestCase {
 		return new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				invocation.getResult();
 			}
 		};
@@ -74,7 +74,7 @@ public class MethodInvocationTest extends TestCase {
 			new VoidTask() {
 
 				@Override
-				public void perform() throws InterruptedException {
+				protected void perform() throws InterruptedException {
 					Thread.sleep(200);
 					invocation.invokeAndNotify();
 				}

@@ -50,7 +50,7 @@ public class ModuleNodeTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				checkstyle.getChildFor(analizo.getModule());
 			}
 		}).throwsException().withMessage("Module org.checkstyle has no child named analizo");

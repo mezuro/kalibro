@@ -28,7 +28,7 @@ public class ReflectionMenuTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				new ReflectionMenuItem("", "", ' ', controller, "invalidMethod");
 			}
 		}).throwsError().withMessage("ReflectionMenuItem did not found method on controller")
@@ -59,7 +59,7 @@ public class ReflectionMenuTest extends TestCase {
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				menuItem.doClick();
 			}
 		};

@@ -84,7 +84,7 @@ public class InternalFrameTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				frame.select();
 			}
 		}).throwsException().withMessage("Could not select range frame: " + range)

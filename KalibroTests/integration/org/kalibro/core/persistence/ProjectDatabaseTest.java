@@ -81,7 +81,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				retrieve(helloWorld);
 			}
 		}).throwsException().withMessage("There is no project named '" + helloWorld.getName() + "'")

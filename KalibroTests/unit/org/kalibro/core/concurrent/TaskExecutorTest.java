@@ -55,7 +55,7 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() {
 				TaskExecutor.execute(new ThrowErrorTask(new Throwable()));
 			}
 		}).throwsException().withMessage("Error while throwing error").withCause(Throwable.class);
@@ -71,7 +71,7 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() {
 				TaskExecutor.execute(new SleepTask(2 * TIMEOUT), TIMEOUT, TimeUnit.MILLISECONDS);
 			}
 		}).throwsException().withMessage("Timed out after " + TIMEOUT + " milliseconds while sleeping")

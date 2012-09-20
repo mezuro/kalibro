@@ -48,7 +48,7 @@ public class EntityComparatorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				comparator.compare(carlos, new Person("", null, ""));
 			}
 		}).throwsError().withMessage(ERROR_MESSAGE + "Programmer.name")
@@ -60,7 +60,7 @@ public class EntityComparatorTest extends TestCase {
 		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				comparator.compare(new WeirdPerson(), new WeirdPerson());
 			}
 		}).throwsError().withMessage(ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field")

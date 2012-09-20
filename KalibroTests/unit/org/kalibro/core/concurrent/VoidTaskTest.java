@@ -12,7 +12,7 @@ public class VoidTaskTest extends TestCase {
 		VoidTask task = new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() {
 				assert true;
 			}
 		};

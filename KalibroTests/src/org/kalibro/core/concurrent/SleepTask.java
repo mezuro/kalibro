@@ -9,7 +9,7 @@ final class SleepTask extends VoidTask {
 	}
 
 	@Override
-	public void perform() throws InterruptedException {
+	protected void perform() throws InterruptedException {
 		Thread.sleep(sleepingTime);
 	}
 

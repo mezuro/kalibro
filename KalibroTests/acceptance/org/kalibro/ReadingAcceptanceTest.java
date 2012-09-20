@@ -57,7 +57,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				new Reading().save();
 			}
 		};
