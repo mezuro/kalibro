@@ -11,12 +11,24 @@ import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.processing.ScriptValidator;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.DaoFactory;
 
 @SortingFields("name")
 public class Configuration extends AbstractEntity<Configuration> {
 
 	public static List<Configuration> all() {
-		return null;
+		ConfigurationDao configurationDao = dao();
+		List<String> names = configurationDao.getConfigurationNames();
+		List<Configuration> configurations = new ArrayList<Configuration>();
+		for (String name : names) {
+			configurations.add(configurationDao.getConfiguration(name));
+		}
+		return configurations;
+	}
+
+	private static ConfigurationDao dao() {
+		return DaoFactory.getConfigurationDao();
 	}
 
 	private Long id;
@@ -150,13 +162,13 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public void save() {
-		// TODO Auto-generated method stub
-
+		if (name.trim().isEmpty())
+			throw new KalibroException("Configuration requires name.");
+		dao().save(this);
 	}
 
 	public void delete() {
-		// TODO Auto-generated method stub
-
+		dao().removeConfiguration(name);
 	}
 
 }
