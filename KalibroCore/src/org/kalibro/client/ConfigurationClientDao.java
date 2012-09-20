@@ -40,8 +40,8 @@ class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> imple
 	}
 
 	@Override
-	public void removeConfiguration(String configurationName) {
-		port.removeConfiguration(configurationName);
+	public void delete(Long configurationId) {
+		port.deleteConfiguration(configurationId);
 	}
 
 	@Override

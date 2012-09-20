@@ -37,8 +37,8 @@ public class ConfigurationDaoFake implements ConfigurationDao {
 	}
 
 	@Override
-	public void removeConfiguration(String configurationName) {
-		configurations.remove(configurationName);
+	public void delete(Long configurationId) {
+		configurations.remove(configurationId);
 	}
 
 	@Override

@@ -6,6 +6,8 @@ import org.kalibro.Configuration;
 
 public interface ConfigurationDao {
 
+	List<Configuration> all();
+
 	void save(Configuration configuration);
 
 	List<String> getConfigurationNames();
@@ -16,7 +18,6 @@ public interface ConfigurationDao {
 
 	Configuration getConfigurationFor(String projectName);
 
-	void removeConfiguration(String configurationName);
+	void delete(Long configurationId);
 
-	List<Configuration> all();
 }

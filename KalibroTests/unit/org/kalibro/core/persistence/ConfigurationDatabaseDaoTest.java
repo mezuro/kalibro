@@ -75,12 +75,9 @@ public class ConfigurationDatabaseDaoTest extends TestCase {
 
 	@Test
 	public void shouldRemoveConfigurationByName() {
-		doReturn(configuration).when(dao).getByName("42");
-		dao.removeConfiguration("42");
-
-		ArgumentCaptor<ConfigurationRecord> captor = ArgumentCaptor.forClass(ConfigurationRecord.class);
-		verify(recordManager).remove(captor.capture());
-		assertDeepEquals(configuration, captor.getValue().convert());
+		doNothing().when(dao).deleteById(42L);
+		dao.delete(42L);
+		verify(dao).deleteById(42L);
 	}
 
 	@Test

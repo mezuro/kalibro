@@ -223,6 +223,6 @@ public class ConfigurationTest extends TestCase {
 	@Test
 	public void shouldDelete() {
 		configuration.delete();
-		verify(dao).removeConfiguration(configuration.getName());
+		verify(dao).delete(configuration.getId());
 	}
 }

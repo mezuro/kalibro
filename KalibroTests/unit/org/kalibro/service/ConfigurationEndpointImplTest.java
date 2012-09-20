@@ -69,7 +69,7 @@ public class ConfigurationEndpointImplTest extends TestCase {
 
 	@Test
 	public void testRemoveConfiguration() {
-		endpoint.removeConfiguration("42");
-		Mockito.verify(dao).removeConfiguration("42");
+		endpoint.deleteConfiguration(42L);
+		Mockito.verify(dao).delete(42L);
 	}
 }

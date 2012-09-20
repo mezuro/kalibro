@@ -47,10 +47,7 @@ class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationR
 	}
 
 	@Override
-	public void removeConfiguration(String configurationName) {
-		ConfigurationRecord record = new ConfigurationRecord(getByName(configurationName));
-		recordManager.beginTransaction();
-		recordManager.remove(record);
-		recordManager.commitTransaction();
+	public void delete(Long configurationId) {
+		deleteById(configurationId);
 	}
 }

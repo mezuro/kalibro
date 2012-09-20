@@ -39,8 +39,8 @@ public class ConfigurationEndpointTest extends EndpointTest {
 	}
 
 	@Test
-	public void shouldRemoveConfigurationByName() {
-		port.removeConfiguration(sample.getName());
+	public void shouldDeleteConfigurationById() {
+		port.deleteConfiguration(sample.getId());
 		assertTrue(port.getConfigurationNames().isEmpty());
 	}
 

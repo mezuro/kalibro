@@ -28,5 +28,5 @@ public interface ConfigurationEndpoint {
 	ConfigurationXml getConfiguration(@WebParam(name = "configurationName") String configurationName);
 
 	@WebMethod
-	void removeConfiguration(@WebParam(name = "configurationName") String configurationName);
+	void deleteConfiguration(@WebParam(name = "configurationId") Long configurationId);
 }

@@ -18,7 +18,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ConfigurationClientDao.class, EndpointClient.class})
-public class ConfigurationPortDaoTest extends TestCase {
+public class ConfigurationClientDaoTest extends TestCase {
 
 	private Configuration configuration;
 	private ConfigurationXml configurationXml;
@@ -87,8 +87,8 @@ public class ConfigurationPortDaoTest extends TestCase {
 	}
 
 	@Test
-	public void testRemoveConfiguration() {
-		dao.removeConfiguration("");
-		verify(port).removeConfiguration("");
+	public void testDeleteConfiguration() {
+		dao.delete(42L);
+		verify(port).deleteConfiguration(42L);
 	}
 }

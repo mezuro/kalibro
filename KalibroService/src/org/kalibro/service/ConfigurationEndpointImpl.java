@@ -47,7 +47,7 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 	}
 
 	@Override
-	public void removeConfiguration(@WebParam(name = "configurationName") String configurationName) {
-		dao.removeConfiguration(configurationName);
+	public void deleteConfiguration(@WebParam(name = "configurationId") Long configurationId) {
+		dao.delete(configurationId);
 	}
 }

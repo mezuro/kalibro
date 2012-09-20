@@ -10,7 +10,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Configuration;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.*;
+import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.core.model.NativeMetric;
+import org.kalibro.core.model.Project;
+import org.kalibro.core.model.ProjectFixtures;
 import org.kalibro.core.model.enums.Statistic;
 
 public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
@@ -55,14 +58,14 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 	}
 
 	@Test
-	public void shouldRemoveConfigurationByName() {
+	public void shouldDeleteConfigurationById() {
 		dao.save(simpleConfiguration);
 		assertDeepList(dao.getConfigurationNames(), kalibroConfiguration.getName(), simpleConfiguration.getName());
 
-		dao.removeConfiguration(kalibroConfiguration.getName());
+		dao.delete(kalibroConfiguration.getId());
 		assertDeepList(dao.getConfigurationNames(), simpleConfiguration.getName());
 
-		dao.removeConfiguration(simpleConfiguration.getName());
+		dao.delete(simpleConfiguration.getId());
 		assertTrue(dao.getConfigurationNames().isEmpty());
 	}
 

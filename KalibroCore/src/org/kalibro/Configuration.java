@@ -162,7 +162,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public void delete() {
-		dao().removeConfiguration(name);
+		dao().delete(id);
 	}
 
 }
