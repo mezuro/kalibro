@@ -65,7 +65,7 @@ public class CVSAnalyMetricCollectorTest extends TestCase {
 		mockFetcher();
 
 		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
-		Mockito.verify(executor).executeAndWait();
+		Mockito.verify(executor).execute();
 		assertDeepEquals(CVSAnalyStub.results(), actual);
 	}
 
@@ -80,7 +80,7 @@ public class CVSAnalyMetricCollectorTest extends TestCase {
 		mockFetcher();
 
 		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
-		Mockito.verify(executor).executeAndWait();
+		Mockito.verify(executor).execute();
 		assertDeepEquals(CVSAnalyStub.limitedResults(), actual);
 	}
 

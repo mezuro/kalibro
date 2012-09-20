@@ -1,5 +1,6 @@
 package org.kalibro.core.concurrent;
 
+import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.*;
 
@@ -25,7 +26,7 @@ public class TaskTest extends TestCase implements TaskListener<Void> {
 	public void setUp() {
 		mockStatic(TaskExecutor.class);
 		when(TaskExecutor.execute(task)).thenAnswer(new SetReport());
-		when(TaskExecutor.execute(eq(task), anyLong(), eq(TimeUnit.MILLISECONDS))).thenAnswer(new SetReport());
+		when(TaskExecutor.execute(same(task), anyLong(), any(TimeUnit.class))).thenAnswer(new SetReport());
 		task = new DoNothingTask();
 	}
 
@@ -38,31 +39,31 @@ public class TaskTest extends TestCase implements TaskListener<Void> {
 
 	@Test
 	public void shouldExecuteAndWaitWithoutTimeout() {
-		task.executeAndWait();
+		task.execute();
 		verifyStatic();
 		TaskExecutor.execute(task);
 	}
 
 	@Test
 	public void shouldExecuteAndWaitWithTimeout() {
-		task.executeAndWait(42);
+		task.execute(42, DAYS);
 		verifyStatic();
-		TaskExecutor.execute(task, 42, TimeUnit.MILLISECONDS);
+		TaskExecutor.execute(task, 42, DAYS);
 	}
 
 	@Test
 	public void shouldExecutePeriodically() {
-		task.executePeriodically(42);
+		task.executePeriodically(42, HOURS);
 		verifyStatic();
-		TaskExecutor.executePeriodically(task, 42, TimeUnit.MILLISECONDS);
+		TaskExecutor.executePeriodically(task, 42, HOURS);
 	}
 
 	@Test
 	public void shouldCancelPeriodicExecution() {
 		Future future = mock(Future.class);
-		when(TaskExecutor.executePeriodically(task, 42, TimeUnit.MILLISECONDS)).thenReturn(future);
+		when(TaskExecutor.executePeriodically(task, 42, MINUTES)).thenReturn(future);
 
-		task.executePeriodically(42);
+		task.executePeriodically(42, MINUTES);
 		task.cancelPeriodicExecution();
 		verify(future).cancel(false);
 	}

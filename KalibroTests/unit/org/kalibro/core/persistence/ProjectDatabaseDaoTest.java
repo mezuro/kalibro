@@ -1,5 +1,6 @@
 package org.kalibro.core.persistence;
 
+import static java.util.concurrent.TimeUnit.DAYS;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
 import static org.mockito.Matchers.*;
@@ -16,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
@@ -154,7 +154,7 @@ public class ProjectDatabaseDaoTest extends TestCase {
 	public void shouldProcessPeriodically() throws Exception {
 		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
 		dao.processPeriodically(PROJECT_NAME, 42);
-		Mockito.verify(task).executePeriodically(42 * Task.DAY);
+		Mockito.verify(task).executePeriodically(42, DAYS);
 	}
 
 	@Test
@@ -166,7 +166,7 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		dao.processPeriodically(PROJECT_NAME, 84);
 
 		Mockito.verify(existent).cancelPeriodicExecution();
-		Mockito.verify(newTask).executePeriodically(84 * Task.DAY);
+		Mockito.verify(newTask).executePeriodically(84, DAYS);
 	}
 
 	@Test

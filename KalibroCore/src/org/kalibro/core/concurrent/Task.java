@@ -7,11 +7,6 @@ import java.util.concurrent.TimeUnit;
 
 public abstract class Task<T> implements Runnable {
 
-	public static final long SECOND = 1000L;
-	public static final long MINUTE = 60 * SECOND;
-	public static final long HOUR = 60 * MINUTE;
-	public static final long DAY = 24 * HOUR;
-
 	private Future<?> future;
 	private TaskReport<T> report;
 	private Set<TaskListener<T>> listeners;
@@ -28,16 +23,16 @@ public abstract class Task<T> implements Runnable {
 		TaskExecutor.executeInBackground(this);
 	}
 
-	public T executeAndWait() {
+	public T execute() {
 		return TaskExecutor.execute(this);
 	}
 
-	public T executeAndWait(long timeout) {
-		return TaskExecutor.execute(this, timeout, TimeUnit.MILLISECONDS);
+	public T execute(long timeout, TimeUnit timeUnit) {
+		return TaskExecutor.execute(this, timeout, timeUnit);
 	}
 
-	public void executePeriodically(long period) {
-		future = TaskExecutor.executePeriodically(this, period, TimeUnit.MILLISECONDS);
+	public void executePeriodically(long period, TimeUnit timeUnit) {
+		future = TaskExecutor.executePeriodically(this, period, timeUnit);
 	}
 
 	public void cancelPeriodicExecution() {

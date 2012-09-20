@@ -1,8 +1,8 @@
 package org.kalibro.core.concurrent;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.Assert.*;
 
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.junit.Test;
@@ -63,7 +63,7 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 
 	@Test
 	public void shouldExecuteAndWaitWithTimeout() {
-		TaskExecutor.execute(new DoNothingTask(), TIMEOUT, TimeUnit.MILLISECONDS);
+		TaskExecutor.execute(new DoNothingTask(), TIMEOUT, MILLISECONDS);
 	}
 
 	@Test
@@ -72,7 +72,7 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 
 			@Override
 			protected void perform() {
-				TaskExecutor.execute(new SleepTask(2 * TIMEOUT), TIMEOUT, TimeUnit.MILLISECONDS);
+				TaskExecutor.execute(new SleepTask(2 * TIMEOUT), TIMEOUT, MILLISECONDS);
 			}
 		}).throwsException().withMessage("Timed out after " + TIMEOUT + " milliseconds while sleeping")
 			.withCause(TimeoutException.class);
@@ -82,7 +82,7 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 	public void testPeriodicExecution() throws InterruptedException {
 		long period = 50;
 		CounterTask task = new CounterTask();
-		task.executePeriodically(period);
+		task.executePeriodically(period, MILLISECONDS);
 
 		Thread.sleep(period / 2);
 		assertEquals(1, task.result);

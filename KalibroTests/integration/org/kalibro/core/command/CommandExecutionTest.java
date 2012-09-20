@@ -1,5 +1,6 @@
 package org.kalibro.core.command;
 
+import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.Assert.*;
 import static org.kalibro.core.Environment.logsDirectory;
 
@@ -55,7 +56,7 @@ public class CommandExecutionTest extends IntegrationTest {
 
 			@Override
 			protected void perform() {
-				task.executeAndWait(50);
+				task.execute(50, MILLISECONDS);
 			}
 		}).throwsException().withCause(InterruptedException.class)
 			.withMessage("Timed out after 50 milliseconds while executing command: sleep 1000");
@@ -70,7 +71,7 @@ public class CommandExecutionTest extends IntegrationTest {
 	@Test
 	public void shouldLogCommandOutput() throws Exception {
 		createCommandTask("echo test");
-		task.executeAndWait();
+		task.execute();
 		waitPipeTask();
 		assertEquals("$ echo test\ntest\n", getLog("out"));
 		assertEquals("$ echo test\n", getLog("err"));
@@ -86,7 +87,7 @@ public class CommandExecutionTest extends IntegrationTest {
 
 	private void executeErrorCommandQuietly() throws InterruptedException {
 		try {
-			task.executeAndWait();
+			task.execute();
 			fail("Should have thrown exception");
 		} catch (RuntimeException exception) {
 			waitPipeTask();

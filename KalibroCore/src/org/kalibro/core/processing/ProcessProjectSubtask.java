@@ -17,10 +17,10 @@ abstract class ProcessProjectSubtask<T> extends Task<T> {
 		project = projectResult.getProject();
 	}
 
-	protected T execute() {
+	T executeSubTask() {
 		project.setState(getTaskState());
 		DaoFactory.getProjectDao().save(project);
-		return executeAndWait();
+		return execute();
 	}
 
 	@Override

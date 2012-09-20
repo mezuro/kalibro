@@ -24,16 +24,16 @@ public class TaskMatcher {
 	}
 
 	public ThrowableMatcher doThrow(Class<? extends Throwable> throwableClass) {
-		Throwable throwed = invokeAndCatch(throwableClass);
+		Throwable throwed = doCatch(throwableClass);
 		ExtendedAsserts.assertClassEquals(throwableClass, throwed);
 		return new ThrowableMatcher(throwed);
 	}
 
 	public void doThrow(Throwable throwable) {
-		assertSame(throwable, invokeAndCatch(throwable));
+		assertSame(throwable, doCatch(throwable));
 	}
 
-	private Throwable invokeAndCatch(Object expected) {
+	private Throwable doCatch(Object expected) {
 		try {
 			task.compute();
 			fail("Expected but not throwed:\n" + expected);
