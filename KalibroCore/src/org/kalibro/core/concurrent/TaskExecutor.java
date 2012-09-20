@@ -10,8 +10,8 @@ final class TaskExecutor {
 	private static final int THREAD_POOL_SIZE = 100;
 	private static final ScheduledExecutorService EXECUTOR = Executors.newScheduledThreadPool(THREAD_POOL_SIZE);
 
-	static void executeInBackground(Task<?> task) {
-		scheduleForNow(task);
+	static Future<?> executeInBackground(Task<?> task) {
+		return scheduleForNow(task);
 	}
 
 	static <T> T execute(Task<T> task) {

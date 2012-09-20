@@ -65,7 +65,7 @@ public class TaskTest extends TestCase implements TaskListener<Void> {
 		when(TaskExecutor.executePeriodically(task, 42, MINUTES)).thenReturn(future);
 
 		task.executePeriodically(42, MINUTES);
-		task.cancelPeriodicExecution();
+		task.cancelExecution();
 		verify(future).cancel(false);
 	}
 

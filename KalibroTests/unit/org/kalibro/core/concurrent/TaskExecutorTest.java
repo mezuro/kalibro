@@ -101,7 +101,7 @@ public class TaskExecutorTest extends UtilityClassTest implements TaskListener<V
 		Thread.sleep(period);
 		assertEquals(3, task.result);
 
-		task.cancelPeriodicExecution();
+		task.cancelExecution();
 		Thread.sleep(period);
 		assertEquals(3, task.result);
 	}

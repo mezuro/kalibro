@@ -165,7 +165,7 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		ProcessProjectTask newTask = mockProcessProjectTask(PROJECT_NAME);
 		dao.processPeriodically(PROJECT_NAME, 84);
 
-		Mockito.verify(existent).cancelPeriodicExecution();
+		Mockito.verify(existent).cancelExecution();
 		Mockito.verify(newTask).executePeriodically(84, DAYS);
 	}
 
@@ -187,7 +187,7 @@ public class ProjectDatabaseDaoTest extends TestCase {
 		ProcessProjectTask task = mockProcessProjectTask(PROJECT_NAME);
 		dao.processPeriodically(PROJECT_NAME, 42);
 		dao.cancelPeriodicProcess(PROJECT_NAME);
-		Mockito.verify(task).cancelPeriodicExecution();
+		Mockito.verify(task).cancelExecution();
 		assertEquals(0, dao.getProcessPeriod(PROJECT_NAME).intValue());
 	}
 

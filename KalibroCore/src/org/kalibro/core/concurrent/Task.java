@@ -20,7 +20,7 @@ public abstract class Task<T> implements Runnable {
 	}
 
 	public void executeInBackground() {
-		TaskExecutor.executeInBackground(this);
+		future = TaskExecutor.executeInBackground(this);
 	}
 
 	public T execute() {
@@ -35,8 +35,8 @@ public abstract class Task<T> implements Runnable {
 		future = TaskExecutor.executePeriodically(this, period, timeUnit);
 	}
 
-	public void cancelPeriodicExecution() {
-		future.cancel(false);
+	public void cancelExecution() {
+		future.cancel(true);
 	}
 
 	@Override

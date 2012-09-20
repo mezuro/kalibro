@@ -106,7 +106,7 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 	@Override
 	public void cancelPeriodicProcess(String projectName) {
 		if (processTasks.containsKey(projectName)) {
-			processTasks.get(projectName).cancelPeriodicExecution();
+			processTasks.get(projectName).cancelExecution();
 			processTasks.remove(projectName);
 			processPeriods.remove(projectName);
 		}
