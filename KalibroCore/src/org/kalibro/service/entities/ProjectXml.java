@@ -2,6 +2,8 @@ package org.kalibro.service.entities;
 
 import static org.kalibro.core.model.enums.ProjectState.*;
 
+import java.util.Collection;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,6 +21,7 @@ public class ProjectXml extends DataTransferObject<Project> {
 	private String license;
 	private String description;
 	private RepositoryXml repository;
+	private Collection<String> mailsToNotify;
 
 	private ProjectState state;
 	private ErrorXml error;
@@ -35,6 +38,7 @@ public class ProjectXml extends DataTransferObject<Project> {
 		license = project.getLicense();
 		description = project.getDescription();
 		repository = new RepositoryXml(project.getRepository());
+		mailsToNotify = project.getMailsToNotify();
 		initializeState(project);
 		initializeError(project);
 		configurationName = project.getConfigurationName();
@@ -57,6 +61,7 @@ public class ProjectXml extends DataTransferObject<Project> {
 		project.setLicense(license);
 		project.setDescription(description);
 		project.setRepository(repository.convert());
+		project.setMailsToNotify(mailsToNotify);
 		project.setState(state);
 		if (error != null)
 			project.setError(error.convert());

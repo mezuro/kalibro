@@ -2,6 +2,8 @@ package org.kalibro.core.persistence.record;
 
 import static org.kalibro.core.model.enums.ProjectState.*;
 
+import java.util.Collection;
+
 import javax.persistence.*;
 
 import org.kalibro.core.model.Configuration;
@@ -29,6 +31,9 @@ public class ProjectRecord extends DataTransferObject<Project> {
 	@OneToOne(cascade = CascadeType.ALL, mappedBy = "project", optional = false, orphanRemoval = true)
 	private RepositoryRecord repository;
 
+	@Column
+	private Collection<String> mailsToNotify;
+
 	@Column(nullable = false)
 	private String state;
 
@@ -49,6 +54,7 @@ public class ProjectRecord extends DataTransferObject<Project> {
 		license = project.getLicense();
 		description = project.getDescription();
 		repository = new RepositoryRecord(project.getRepository(), this);
+		mailsToNotify = project.getMailsToNotify();
 		initializeConfiguration(configurationId);
 		initializeState(project);
 		initializeError(project);
@@ -80,9 +86,11 @@ public class ProjectRecord extends DataTransferObject<Project> {
 		project.setLicense(license);
 		project.setDescription(description);
 		project.setRepository(repository.convert());
+		project.setMailsToNotify(mailsToNotify);
 		project.setConfigurationName(configuration.getName());
 		project.setState(ProjectState.valueOf(state));
 		project.setError(error);
 		return project;
 	}
+
 }
