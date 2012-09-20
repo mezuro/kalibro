@@ -15,6 +15,10 @@ import org.kalibro.core.processing.ScriptValidator;
 @SortingFields("name")
 public class Configuration extends AbstractEntity<Configuration> {
 
+	public static List<Configuration> all() {
+		return null;
+	}
+
 	private Long id;
 
 	@IdentityField
@@ -144,4 +148,15 @@ public class Configuration extends AbstractEntity<Configuration> {
 		if (nativeMetrics.get(origin).isEmpty())
 			nativeMetrics.remove(origin);
 	}
+
+	public void save() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void delete() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
