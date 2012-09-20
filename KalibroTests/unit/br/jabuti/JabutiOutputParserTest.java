@@ -74,7 +74,7 @@ public class JabutiOutputParserTest {
 
 		Map<Integer, Map<Integer, Double>> resultFile = this.outputJabutiMap();
 		// Test Run Global
-		for (int j =0; j < 5; j++) {
+		for (int j =0; j < 3; j++) {
 			NativeModuleResult result = results.toArray(new NativeModuleResult[0])[j];
 			assertEquals(metrics.size(), result.getMetricResults().size());
 			Map<Integer, Double> valueMap = resultFile.get(j);
