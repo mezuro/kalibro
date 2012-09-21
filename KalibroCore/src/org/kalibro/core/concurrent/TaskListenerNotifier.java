@@ -1,5 +1,10 @@
 package org.kalibro.core.concurrent;
 
+/**
+ * Task for notifying task listener.
+ * 
+ * @author Carlos Morais
+ */
 class TaskListenerNotifier<T> extends VoidTask {
 
 	private TaskReport<T> report;

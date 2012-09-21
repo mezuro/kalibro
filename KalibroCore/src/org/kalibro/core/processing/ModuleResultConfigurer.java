@@ -8,7 +8,7 @@ public class ModuleResultConfigurer {
 	private Configuration configuration;
 
 	private Double gradeSum, weightSum;
-	private ScriptEvaluator compoundEvaluator;
+	private JavascriptEvaluator compoundEvaluator;
 
 	public ModuleResultConfigurer(ModuleResult moduleResult, Configuration configuration) {
 		this.moduleResult = moduleResult;
@@ -25,7 +25,7 @@ public class ModuleResultConfigurer {
 	private void clearConfiguration() {
 		gradeSum = 0.0;
 		weightSum = 0.0;
-		compoundEvaluator = JavascriptEvaluator.create();
+		compoundEvaluator = new JavascriptEvaluator();
 		moduleResult.removeCompoundMetrics();
 	}
 

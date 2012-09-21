@@ -17,11 +17,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Context.class)
 public class JavascriptEvaluatorTest extends TestCase {
 
-	private ScriptEvaluator evaluator;
+	private JavascriptEvaluator evaluator;
 
 	@Before
 	public void setUp() {
-		evaluator = JavascriptEvaluator.create();
+		evaluator = new JavascriptEvaluator();
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 	public void shouldExitContextOnFinalize() throws Throwable {
 		evaluator = createEvaluator();
 		mockStatic(Context.class);
-		((JavascriptEvaluator) evaluator).finalize();
+		evaluator.finalize();
 		verifyStatic();
 		Context.exit();
 	}
