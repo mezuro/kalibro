@@ -8,17 +8,15 @@ import org.apache.commons.io.IOUtils;
 import org.kalibro.KalibroException;
 import org.kalibro.core.Environment;
 
-public class FileProcessStreamLogger extends ProcessStreamLogger {
+public class FileProcessStreamLogger {
 
 	private Date date;
 	private Process lastProcess;
 
-	@Override
 	public void logOutputStream(Process process, String command) {
 		logStream(process, process.getInputStream(), command, "out");
 	}
 
-	@Override
 	public void logErrorStream(Process process, String command) {
 		logStream(process, process.getErrorStream(), command, "err");
 	}
@@ -46,5 +44,9 @@ public class FileProcessStreamLogger extends ProcessStreamLogger {
 		} catch (IOException exception) {
 			throw new KalibroException("Error logging command: " + command + "\nFile: " + file, exception);
 		}
+	}
+
+	private void pipe(InputStream input, OutputStream output) {
+		new PipeTask(input, output).executeInBackground();
 	}
 }

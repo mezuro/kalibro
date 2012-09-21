@@ -11,7 +11,7 @@ public class CommandTask extends VoidTask {
 
 	private String command;
 	private File workingDirectory;
-	private ProcessStreamLogger processStreamLogger;
+	private FileProcessStreamLogger processStreamLogger;
 
 	public CommandTask(String command) {
 		this(command, null);

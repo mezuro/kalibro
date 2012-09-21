@@ -16,7 +16,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -27,6 +26,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 
 	private File logFile;
 	private Process process;
+	private PipeTask pipeTask;
 	private InputStream inputStream;
 	private FileOutputStream outputStream;
 
@@ -36,22 +36,23 @@ public class FileProcessStreamLoggerTest extends TestCase {
 	public void setUp() throws Exception {
 		logFile = mock(File.class);
 		process = mock(Process.class);
+		pipeTask = mock(PipeTask.class);
 		inputStream = mock(InputStream.class);
 		outputStream = mock(FileOutputStream.class);
-		logger = spy(new FileProcessStreamLogger());
+		logger = new FileProcessStreamLogger();
 		when(process.getInputStream()).thenReturn(inputStream);
 		when(process.getErrorStream()).thenReturn(inputStream);
 		whenNew(File.class).withParameterTypes(File.class, String.class)
 			.withArguments(eq(logsDirectory()), anyString()).thenReturn(logFile);
 		whenNew(FileOutputStream.class).withArguments(logFile).thenReturn(outputStream);
-		doNothing().when(logger, "pipe", inputStream, outputStream);
+		whenNew(PipeTask.class).withArguments(inputStream, outputStream).thenReturn(pipeTask);
 	}
 
 	@Test
 	public void shouldLogStandardOutput() throws Exception {
 		logger.logOutputStream(process, "my command");
 
-		Mockito.verify(process).getInputStream();
+		verify(process).getInputStream();
 		verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
 	}
 
@@ -59,7 +60,7 @@ public class FileProcessStreamLoggerTest extends TestCase {
 	public void shouldLogErrorOutput() throws Exception {
 		logger.logErrorStream(process, "my command");
 
-		Mockito.verify(process).getErrorStream();
+		verify(process).getErrorStream();
 		verifyPrivate(logger).invoke("pipe", inputStream, outputStream);
 	}
 
@@ -92,5 +93,11 @@ public class FileProcessStreamLoggerTest extends TestCase {
 			}
 		}).throwsException().withMessage("Error logging command: my command\nFile: " + logFile)
 			.withCause(IOException.class);
+	}
+
+	@Test
+	public void shouldPipe() {
+		logger.logOutputStream(process, "my command");
+		verify(pipeTask).executeInBackground();
 	}
 }
