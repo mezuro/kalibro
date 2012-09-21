@@ -3,7 +3,7 @@ package org.kalibro.core.abstractentity;
 import java.lang.reflect.Method;
 
 import org.kalibro.KalibroError;
-import org.kalibro.util.reflection.FieldReflector;
+import org.kalibro.core.reflection.FieldReflector;
 
 /**
  * Compares entities based on fields specified at {@link SortingFields} annotation.

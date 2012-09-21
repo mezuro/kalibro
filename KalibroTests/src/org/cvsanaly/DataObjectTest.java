@@ -6,7 +6,7 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 import org.kalibro.TestCase;
-import org.kalibro.util.Identifier;
+import org.kalibro.core.Identifier;
 import org.mockito.Mockito;
 
 public abstract class DataObjectTest<T extends Object> extends TestCase {

@@ -9,9 +9,9 @@ import static org.kalibro.core.model.RangeLabel.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.TestCase;
+import org.kalibro.core.Identifier;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.util.Identifier;
 
 public class MetricConfigurationTest extends TestCase {
 

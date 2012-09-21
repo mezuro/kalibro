@@ -1,7 +1,7 @@
-package org.kalibro.util.reflection;
+package org.kalibro.core.reflection;
 
 import static java.lang.reflect.Modifier.STATIC;
-import static org.kalibro.util.reflection.MemberFilterFactory.*;
+import static org.kalibro.core.reflection.MemberFilterFactory.*;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;

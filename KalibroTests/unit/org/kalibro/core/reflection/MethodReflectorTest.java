@@ -1,4 +1,4 @@
-package org.kalibro.util.reflection;
+package org.kalibro.core.reflection;
 
 import static org.junit.Assert.assertEquals;
 

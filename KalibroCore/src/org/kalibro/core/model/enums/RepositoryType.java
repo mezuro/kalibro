@@ -5,9 +5,9 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.kalibro.KalibroError;
+import org.kalibro.core.Identifier;
 import org.kalibro.core.loaders.ProjectLoader;
 import org.kalibro.core.model.Repository;
-import org.kalibro.util.Identifier;
 
 public enum RepositoryType {
 

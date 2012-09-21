@@ -1,8 +1,8 @@
-package org.kalibro.util.reflection;
+package org.kalibro.core.reflection;
 
 import static java.lang.reflect.Modifier.PRIVATE;
 import static org.junit.Assert.*;
-import static org.kalibro.util.reflection.MemberFilterFactory.*;
+import static org.kalibro.core.reflection.MemberFilterFactory.*;
 
 import javax.persistence.Column;
 
@@ -14,7 +14,7 @@ import org.kalibro.core.concurrent.VoidTask;
 
 public class FieldReflectorTest extends TestCase {
 
-	private static final String INEXISTENT = "org.kalibro.util.reflection.FieldReflectorTest.inexistent";
+	private static final String INEXISTENT = "org.kalibro.core.reflection.FieldReflectorTest.inexistent";
 
 	@Column(name = "self-reflector")
 	private FieldReflector reflector;

@@ -3,7 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.util.Identifier;
+import org.kalibro.core.Identifier;
 
 public abstract class EnumerationTestCase<ENUM extends Enum<ENUM>> extends TestCase {
 

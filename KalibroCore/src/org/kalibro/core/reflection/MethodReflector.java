@@ -1,4 +1,4 @@
-package org.kalibro.util.reflection;
+package org.kalibro.core.reflection;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
