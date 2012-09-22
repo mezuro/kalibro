@@ -6,6 +6,8 @@ import static org.kalibro.core.Environment.logsDirectory;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
@@ -17,94 +19,82 @@ import org.kalibro.core.concurrent.VoidTask;
 
 public class CommandExecutionTest extends IntegrationTest {
 
-	private static final long PIPE_TIMEOUT = 50;
-
-	private CommandTask task;
-
 	@After
-	public void tearDown() {
-		FileUtils.deleteQuietly(logsDirectory());
-	}
-
-	@Test
-	public void shouldThrowExceptionWhenGettingOutputForInvalidCommand() {
-		createCommandTask("invalid command");
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws IOException {
-				task.executeAndGetOuput();
-			}
-		}).doThrow(IOException.class);
+	public void tearDown() throws IOException {
+		FileUtils.cleanDirectory(logsDirectory());
 	}
 
 	@Test
 	public void shouldThrowExceptionWhenExecutingInvalidCommand() {
-		createCommandTask("invalid command");
-		assertThat(task).doThrow(IOException.class);
+		CommandTask invalidCommand = command("invalid command");
+		assertThat(invalidCommand).doThrow(IOException.class);
+		assertThat(getOutputFor(invalidCommand)).doThrow(IOException.class);
+	}
+
+	private VoidTask getOutputFor(final CommandTask command) {
+		return new VoidTask() {
+
+			@Override
+			protected void perform() throws IOException {
+				command.executeAndGetOuput();
+			}
+		};
 	}
 
 	@Test
 	public void shouldThrowExceptionOnBadExitValue() {
-		createCommandTask("make etc");
-		assertThat(task).throwsException().withMessage("Command returned with error status: make etc");
+		assertThat(command("make etc")).throwsException().withMessage("Command returned with error status: make etc");
 	}
 
 	@Test
 	public void shouldThrowExceptionOnCommandTimeout() {
-		createCommandTask("sleep 1000");
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				task.execute(50, MILLISECONDS);
-			}
-		}).throwsException().withCause(InterruptedException.class)
-			.withMessage("Timed out after 50 milliseconds while executing command: sleep 1000");
+		assertThat(command("sleep 1")).timesOutWith(50, MILLISECONDS);
 	}
 
 	@Test
 	public void shouldGetCommandOutput() throws IOException {
-		createCommandTask("echo test");
-		assertEquals("test\n", IOUtils.toString(task.executeAndGetOuput()));
+		assertEquals("test\n", IOUtils.toString(command("echo test").executeAndGetOuput()));
 	}
 
 	@Test
 	public void shouldLogCommandOutput() throws Exception {
-		createCommandTask("echo test");
-		task.execute();
-		waitPipeTask();
-		assertEquals("$ echo test\ntest\n", getLog("out"));
-		assertEquals("$ echo test\n", getLog("err"));
+		command("echo test").execute();
+		waitLogging();
+		assertEquals("\n\n$ echo test\ntest\n", getLog("echo", "out"));
 	}
 
 	@Test
-	public void shouldLogCommandErrorOutput() throws Exception {
-		createCommandTask("make etc");
-		executeErrorCommandQuietly();
-		assertEquals("$ make etc\n", getLog("out"));
-		assertTrue(getLog("err").startsWith("$ make etc\nmake: *** "));
+	public void shouldNotLogInexistentOutput() throws Exception {
+		assertThat(command("make etc")).throwsException();
+		waitLogging();
+		assertNull(getLog("make", "out"));
 	}
 
-	private void executeErrorCommandQuietly() throws InterruptedException {
-		try {
-			task.execute();
-			fail("Should have thrown exception");
-		} catch (RuntimeException exception) {
-			waitPipeTask();
-		}
+	@Test
+	public void shouldLogErrorOutput() throws Exception {
+		assertThat(command("make etc")).throwsException();
+		waitLogging();
+		assertTrue(getLog("make", "err").startsWith("\n\n$ make etc\nmake: *** "));
 	}
 
-	private void waitPipeTask() throws InterruptedException {
-		Thread.sleep(PIPE_TIMEOUT);
+	@Test
+	public void shouldNotLogInexistentErrorOutput() throws Exception {
+		command("echo test").execute();
+		waitLogging();
+		assertNull(getLog("echo", "err"));
 	}
 
-	private String getLog(String logFileExtension) throws IOException {
-		File logFile = (File) FileUtils.iterateFiles(logsDirectory(), new String[]{logFileExtension}, false).next();
-		return FileUtils.readFileToString(logFile);
+	private CommandTask command(String command) {
+		return new CommandTask(command);
 	}
 
-	private void createCommandTask(String command) {
-		task = new CommandTask(command);
+	private void waitLogging() throws InterruptedException {
+		Thread.sleep(100);
+	}
+
+	private String getLog(String name, String extension) throws IOException {
+		String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		File logFile = new File(logsDirectory(), name + "." + today + "." + extension);
+		return logFile.exists() ? FileUtils.readFileToString(logFile) : null;
 	}
 }

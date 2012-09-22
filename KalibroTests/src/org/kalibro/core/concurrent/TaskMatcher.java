@@ -1,8 +1,11 @@
 package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
+import static org.kalibro.ExtendedAsserts.assertClassEquals;
 
-import org.kalibro.ExtendedAsserts;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
+
 import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
 import org.kalibro.ThrowableMatcher;
@@ -15,6 +18,18 @@ public class TaskMatcher {
 		this.task = task;
 	}
 
+	public void timesOutWith(long timeout, TimeUnit timeUnit) {
+		try {
+			task.execute(timeout, timeUnit);
+		} catch (Throwable exception) {
+			assertClassEquals(KalibroException.class, exception);
+			assertNotNull(exception.getCause());
+			assertClassEquals(TimeoutException.class, exception.getCause());
+			String unit = timeUnit.name().toLowerCase();
+			assertEquals("Timed out after " + timeout + " " + unit + " while " + task, exception.getMessage());
+		}
+	}
+
 	public ThrowableMatcher throwsError() {
 		return doThrow(KalibroError.class);
 	}
@@ -25,7 +40,7 @@ public class TaskMatcher {
 
 	public ThrowableMatcher doThrow(Class<? extends Throwable> throwableClass) {
 		Throwable throwed = doCatch(throwableClass);
-		ExtendedAsserts.assertClassEquals(throwableClass, throwed);
+		assertClassEquals(throwableClass, throwed);
 		return new ThrowableMatcher(throwed);
 	}
 
