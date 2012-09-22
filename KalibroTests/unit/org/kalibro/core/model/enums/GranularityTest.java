@@ -4,9 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Test;
-import org.kalibro.EnumerationTestCase;
+import org.kalibro.EnumerationTest;
 
-public class GranularityTest extends EnumerationTestCase<Granularity> {
+public class GranularityTest extends EnumerationTest<Granularity> {
 
 	@Override
 	protected Class<Granularity> enumerationClass() {

@@ -2,9 +2,9 @@ package org.kalibro.core.model.enums;
 
 import static org.kalibro.core.model.enums.Language.CPP;
 
-import org.kalibro.EnumerationTestCase;
+import org.kalibro.EnumerationTest;
 
-public class LanguageTest extends EnumerationTestCase<Language> {
+public class LanguageTest extends EnumerationTest<Language> {
 
 	@Override
 	protected Class<Language> enumerationClass() {

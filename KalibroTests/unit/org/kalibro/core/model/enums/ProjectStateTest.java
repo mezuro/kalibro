@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.ProjectState.*;
 
 import org.junit.Test;
-import org.kalibro.EnumerationTestCase;
+import org.kalibro.EnumerationTest;
 
-public class ProjectStateTest extends EnumerationTestCase<ProjectState> {
+public class ProjectStateTest extends EnumerationTest<ProjectState> {
 
 	@Override
 	protected Class<ProjectState> enumerationClass() {

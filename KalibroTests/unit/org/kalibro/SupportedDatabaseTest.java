@@ -5,7 +5,7 @@ import static org.kalibro.SupportedDatabase.*;
 
 import org.junit.Test;
 
-public class SupportedDatabaseTest extends EnumerationTestCase<SupportedDatabase> {
+public class SupportedDatabaseTest extends EnumerationTest<SupportedDatabase> {
 
 	@Override
 	protected Class<SupportedDatabase> enumerationClass() {

@@ -1,6 +1,6 @@
 package org.kalibro;
 
-public class ServiceSideTest extends EnumerationTestCase<ServiceSide> {
+public class ServiceSideTest extends EnumerationTest<ServiceSide> {
 
 	@Override
 	protected Class<ServiceSide> enumerationClass() {

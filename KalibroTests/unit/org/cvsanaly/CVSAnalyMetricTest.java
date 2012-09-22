@@ -5,7 +5,7 @@ import static org.kalibro.core.model.enums.Granularity.CLASS;
 import org.cvsanaly.entities.MetricResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.EnumerationTestCase;
+import org.kalibro.EnumerationTest;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Language;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -13,7 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CVSAnalyMetric.class)
-public class CVSAnalyMetricTest extends EnumerationTestCase<CVSAnalyMetric> {
+public class CVSAnalyMetricTest extends EnumerationTest<CVSAnalyMetric> {
 
 	@Override
 	protected Class<CVSAnalyMetric> enumerationClass() {
