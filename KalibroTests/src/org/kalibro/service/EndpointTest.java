@@ -1,37 +1,12 @@
 package org.kalibro.service;
 
-import java.io.PrintStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-
-import javax.xml.namespace.QName;
 import javax.xml.ws.Endpoint;
-import javax.xml.ws.Service;
 
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.kalibro.IntegrationTest;
+import org.kalibro.client.EndpointClient;
 
 public abstract class EndpointTest extends IntegrationTest {
-
-	private static final String NAMESPACE = "http://service.kalibro.org/";
-
-	private static PrintStream out, err;
-
-	@BeforeClass
-	public static void suppressOutput() {
-		out = System.out;
-		err = System.err;
-		System.setOut(null);
-		System.setErr(null);
-	}
-
-	@AfterClass
-	public static void restoreOutput() {
-		System.setOut(out);
-		System.setErr(err);
-	}
 
 	private Endpoint endpoint;
 
@@ -40,18 +15,11 @@ public abstract class EndpointTest extends IntegrationTest {
 		endpoint.stop();
 	}
 
-	protected <T> T publishAndGetPort(T implementor, Class<T> endpointClass) throws MalformedURLException {
-		String endpointName = endpointClass.getSimpleName();
-		URL wsdlLocation = publish(implementor, endpointName);
-		QName serviceName = new QName(NAMESPACE, endpointName + "Service");
-		QName portName = new QName(NAMESPACE, endpointName + "Port");
-		return Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
-	}
-
-	private URL publish(Object implementor, String endpointName) throws MalformedURLException {
-		String address = "http://localhost:8080/KalibroService/" + endpointName + "/";
+	protected <T> T publishAndGetPort(T implementor, Class<T> endpointClass) {
+		String serviceAddress = "http://localhost:8080/KalibroService/";
+		String endpointAddress = serviceAddress + endpointClass.getSimpleName() + "/";
 		endpoint = Endpoint.create(implementor);
-		endpoint.publish(address);
-		return new URL(address + "?wsdl");
+		endpoint.publish(endpointAddress);
+		return EndpointClient.getPort(serviceAddress, endpointClass);
 	}
 }

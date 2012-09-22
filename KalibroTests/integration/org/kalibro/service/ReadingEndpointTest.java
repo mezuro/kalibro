@@ -1,9 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
 
-import java.net.MalformedURLException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,8 +19,8 @@ public class ReadingEndpointTest extends EndpointTest {
 	private ReadingEndpoint port;
 
 	@Before
-	public void setUp() throws MalformedURLException {
-		fixture = loadFixture("/org/kalibro/reading-excellent", Reading.class);
+	public void setUp() {
+		fixture = loadFixture("excellent", Reading.class);
 		dao = mock(ReadingDao.class);
 		port = publishAndGetPort(new ReadingEndpointImpl(dao), ReadingEndpoint.class);
 	}
@@ -38,7 +36,7 @@ public class ReadingEndpointTest extends EndpointTest {
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(eq(fixture))).thenReturn(42L);
+		when(dao.save(fixture)).thenReturn(42L);
 		assertEquals(42L, port.saveReading(new ReadingXml(fixture)).longValue());
 	}
 

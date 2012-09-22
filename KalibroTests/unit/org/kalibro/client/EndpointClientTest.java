@@ -33,14 +33,18 @@ public class EndpointClientTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionOnMalformedUrl() {
-		assertThat(new VoidTask() {
+		assertThat(createClientWithMalformedUrl()).throwsException().withCause(MalformedURLException.class)
+			.withMessage("Invalid service address: mal formed URL");
+	}
+
+	private VoidTask createClientWithMalformedUrl() {
+		return new VoidTask() {
 
 			@Override
 			protected void perform() {
 				new TestEndpointClient("mal formed URL");
 			}
-		}).throwsException().withMessage("Invalid service address: mal formed URL")
-			.withCause(MalformedURLException.class);
+		};
 	}
 
 	@Test
