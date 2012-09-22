@@ -1,9 +1,8 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 
-import java.net.MalformedURLException;
 import java.util.Date;
 
 import org.junit.Before;
@@ -12,7 +11,7 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.dao.ProjectResultDaoFake;
 
-public class ProjectResultEndpointTest extends EndpointTest {
+public class ProjectResultEndpointTest extends OldEndpointTest {
 
 	private static final String PROJECT_NAME = "HelloWorld-1.0";
 	private static final Date DATE_1 = new Date(1);
@@ -23,7 +22,7 @@ public class ProjectResultEndpointTest extends EndpointTest {
 	private ProjectResultEndpoint port;
 
 	@Before
-	public void setUp() throws MalformedURLException {
+	public void setUp() {
 		daoFake = new ProjectResultDaoFake();
 		daoFake.save(newHelloWorldResult(DATE_1));
 		daoFake.save(newHelloWorldResult(DATE_2));

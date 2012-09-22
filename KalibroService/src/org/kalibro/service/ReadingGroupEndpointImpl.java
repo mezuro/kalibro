@@ -27,7 +27,7 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 		this(DaoFactory.getReadingGroupDao());
 	}
 
-	protected ReadingGroupEndpointImpl(ReadingGroupDao readingGroupDao) {
+	public ReadingGroupEndpointImpl(ReadingGroupDao readingGroupDao) {
 		dao = readingGroupDao;
 	}
 

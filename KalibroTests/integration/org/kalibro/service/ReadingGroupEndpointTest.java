@@ -1,65 +1,45 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
-import org.kalibro.service.xml.ReadingGroupXmlResponse;
-import org.powermock.reflect.Whitebox;
 
-public class ReadingGroupEndpointTest extends EndpointTest {
+public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, ReadingGroupDao, ReadingGroupEndpoint> {
 
-	private ReadingGroup fixture;
-	private ReadingGroupDao dao;
+	@Override
+	public ReadingGroup loadFixture() {
+		ReadingGroup fixture = loadFixture("scholar", ReadingGroup.class);
+		fixture.setId(28L);
+		return fixture;
+	}
 
-	private ReadingGroupEndpoint port;
-
-	@Before
-	public void setUp() {
-		fixture = loadFixture("scholar", ReadingGroup.class);
-		fixture.setId(0L);
-		dao = mock(ReadingGroupDao.class);
-		port = publishAndGetPort(new ReadingGroupEndpointImpl(dao), ReadingGroupEndpoint.class);
+	@Override
+	public List<String> fieldsThatShouldBeProxy() {
+		return Arrays.asList("readings");
 	}
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(Arrays.asList(fixture));
-
-		List<ReadingGroupXmlResponse> groups = port.allReadingGroups();
-		assertEquals(1, groups.size());
-		assertCorrectResponse(groups.get(0));
+		when(dao.all()).thenReturn(Arrays.asList(entity));
+		assertDeepDtoList(port.allReadingGroups(), entity);
 	}
 
 	@Test
 	public void shouldGetById() {
-		when(dao.get(42L)).thenReturn(fixture);
-		assertCorrectResponse(port.getReadingGroup(42L));
-	}
-
-	private void assertCorrectResponse(ReadingGroupXmlResponse response) {
-		ReadingGroup group = response.convert();
-		readingsShouldBeProxy(group);
-		assertDeepEquals(fixture, group);
-	}
-
-	private void readingsShouldBeProxy(ReadingGroup group) {
-		List<Reading> readings = Whitebox.getInternalState(group, "readings");
-		assertTrue(readings.getClass().getName().contains("EnhancerByCGLIB"));
-		group.setReadings(fixture.getReadings());
+		when(dao.get(42L)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getReadingGroup(42L));
 	}
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(fixture)).thenReturn(42L);
-		assertEquals(42L, port.saveReadingGroup(new ReadingGroupXmlRequest(fixture)).longValue());
+		when(dao.save(entity)).thenReturn(42L);
+		assertEquals(42L, port.saveReadingGroup(new ReadingGroupXmlRequest(entity)).longValue());
 	}
 
 	@Test

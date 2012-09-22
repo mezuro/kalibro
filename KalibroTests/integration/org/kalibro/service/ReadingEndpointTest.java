@@ -3,41 +3,29 @@ package org.kalibro.service;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Arrays;
-import java.util.List;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Reading;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
 
-public class ReadingEndpointTest extends EndpointTest {
+public class ReadingEndpointTest extends EndpointTest<Reading, ReadingDao, ReadingEndpoint> {
 
-	private Reading fixture;
-	private ReadingDao dao;
-
-	private ReadingEndpoint port;
-
-	@Before
-	public void setUp() {
-		fixture = loadFixture("excellent", Reading.class);
-		dao = mock(ReadingDao.class);
-		port = publishAndGetPort(new ReadingEndpointImpl(dao), ReadingEndpoint.class);
+	@Override
+	protected Reading loadFixture() {
+		return loadFixture("excellent", Reading.class);
 	}
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(fixture));
-
-		List<ReadingXml> readings = port.readingsOf(42L);
-		assertEquals(1, readings.size());
-		assertDeepEquals(fixture, readings.get(0).convert());
+		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(entity));
+		assertDeepDtoList(port.readingsOf(42L), entity);
 	}
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(fixture)).thenReturn(42L);
-		assertEquals(42L, port.saveReading(new ReadingXml(fixture)).longValue());
+		when(dao.save(entity)).thenReturn(42L);
+		assertEquals(42L, port.saveReading(new ReadingXml(entity)).longValue());
 	}
 
 	@Test
