@@ -1,4 +1,4 @@
-package org.kalibro.core.command;
+package org.kalibro.core;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static org.junit.Assert.*;
@@ -12,6 +12,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
 import org.kalibro.IntegrationTest;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.VoidTask;
 
 public class CommandExecutionTest extends IntegrationTest {
