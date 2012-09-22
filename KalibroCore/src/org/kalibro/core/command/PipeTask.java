@@ -7,12 +7,17 @@ import java.io.OutputStream;
 import org.apache.commons.io.IOUtils;
 import org.kalibro.core.concurrent.VoidTask;
 
+/**
+ * Copy bytes from an {@link InputStream} to an {@link OutputStream}.
+ * 
+ * @author Carlos Morais
+ */
 class PipeTask extends VoidTask {
 
 	private InputStream inputStream;
 	private OutputStream outputStream;
 
-	protected PipeTask(InputStream inputStream, OutputStream outputStream) {
+	PipeTask(InputStream inputStream, OutputStream outputStream) {
 		this.inputStream = inputStream;
 		this.outputStream = outputStream;
 	}

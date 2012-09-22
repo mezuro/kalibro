@@ -1,7 +1,6 @@
 package org.kalibro.core.command;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,96 +10,108 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.TestCase;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(CommandTask.class)
+@PrepareForTest({CommandTask.class, Runtime.class})
 public class CommandTaskTest extends TestCase {
 
 	private static final String COMMAND = "CommandTaskTest command";
 
 	private Runtime runtime;
 	private Process process;
-	private InputStream output, error;
-	private FileProcessStreamLogger logger;
+	private PipeTask errorPipe, normalPipe;
+	private InputStream errorInput, normalInput;
+	private CommandLogStream errorOutput, normalOutput;
 
 	private CommandTask commandTask;
 
 	@Before
 	public void setUp() throws Exception {
 		mockProcess();
-		mockLogger();
+		mockLogging();
 		commandTask = new CommandTask(COMMAND);
 	}
 
 	private void mockProcess() throws IOException {
-		runtime = PowerMockito.mock(Runtime.class);
-		process = PowerMockito.mock(Process.class);
-		output = PowerMockito.mock(InputStream.class);
-		error = PowerMockito.mock(InputStream.class);
+		runtime = mock(Runtime.class);
+		process = mock(Process.class);
+		errorInput = mock(InputStream.class);
+		normalInput = mock(InputStream.class);
 
-		PowerMockito.mockStatic(Runtime.class);
-		PowerMockito.when(Runtime.getRuntime()).thenReturn(runtime);
-		PowerMockito.when(runtime.exec(eq(COMMAND), any(String[].class), any(File.class))).thenReturn(process);
-		PowerMockito.when(process.getInputStream()).thenReturn(output);
-		PowerMockito.when(process.getErrorStream()).thenReturn(error);
+		mockStatic(Runtime.class);
+		when(Runtime.getRuntime()).thenReturn(runtime);
+		when(runtime.exec(COMMAND, null, null)).thenReturn(process);
+		when(process.getErrorStream()).thenReturn(errorInput);
+		when(process.getInputStream()).thenReturn(normalInput);
 	}
 
-	private void mockLogger() throws Exception {
-		logger = PowerMockito.mock(FileProcessStreamLogger.class);
-		PowerMockito.whenNew(FileProcessStreamLogger.class).withNoArguments().thenReturn(logger);
+	private void mockLogging() throws Exception {
+		errorPipe = mock(PipeTask.class);
+		normalPipe = mock(PipeTask.class);
+		errorOutput = mock(CommandLogStream.class);
+		normalOutput = mock(CommandLogStream.class);
+
+		whenNew(CommandLogStream.class).withArguments(COMMAND, "err").thenReturn(errorOutput);
+		whenNew(CommandLogStream.class).withArguments(COMMAND, "out").thenReturn(normalOutput);
+		whenNew(PipeTask.class).withArguments(errorInput, errorOutput).thenReturn(errorPipe);
+		whenNew(PipeTask.class).withArguments(normalInput, normalOutput).thenReturn(normalPipe);
 	}
 
 	@Test
-	public void shouldExecuteCommandOnWorkingDirectory() throws IOException {
-		File workingDirectory = PowerMockito.mock(File.class);
+	public void shouldExecuteCommandOnWorkingDirectory() throws Exception {
+		File workingDirectory = mock(File.class);
+		when(runtime.exec(COMMAND, null, workingDirectory)).thenReturn(process);
+
 		new CommandTask(COMMAND, workingDirectory).executeAndGetOuput();
-		Mockito.verify(runtime).exec(COMMAND, null, workingDirectory);
+		verify(runtime).exec(COMMAND, null, workingDirectory);
 	}
 
 	@Test
-	public void shouldGetCommandOutput() throws IOException {
-		assertSame(output, commandTask.executeAndGetOuput());
-		Mockito.verify(logger).logErrorStream(process, COMMAND);
+	public void shouldExecuteAndGetOutput() throws IOException {
+		assertSame(normalInput, commandTask.executeAndGetOuput());
+		verify(errorPipe).executeInBackground();
 	}
 
 	@Test
-	public void checkExceptionOnSimpleExecution() throws IOException {
-		PowerMockito.when(runtime.exec(COMMAND, null, null)).thenThrow(new IOException());
-		assertThat(commandTask).doThrow(IOException.class);
+	public void shouldThrowExceptionWhenFailToCreateProcess() throws IOException {
+		IOException exception = new IOException();
+		when(runtime.exec(COMMAND, null, null)).thenThrow(exception);
+		assertThat(commandTask).doThrow(exception);
 	}
 
 	@Test
-	public void shouldThrowExceptionOnBadExitValue() {
-		PowerMockito.when(process.exitValue()).thenReturn(1);
+	public void shouldLogProcessInputStreamsInBackground() throws Exception {
+		commandTask.perform();
+		verify(errorPipe).executeInBackground();
+		verify(normalPipe).executeInBackground();
+	}
+
+	@Test
+	public void shouldThrowExceptionWhenProcessTerminatesWithBadExitValue() {
+		when(process.exitValue()).thenReturn(1);
 		assertThat(commandTask).throwsException().withMessage("Command returned with error status: " + COMMAND);
 	}
 
 	@Test
-	public void shouldWaitForProcess() throws Exception {
+	public void shouldDestroyProcessOnNormalExecution() throws Exception {
 		commandTask.perform();
-		Mockito.verify(process).waitFor();
+		verify(process).waitFor();
+		verify(process).destroy();
 	}
 
 	@Test
-	public void shouldDestroyProcessOnInterruptedException() throws InterruptedException {
-		PowerMockito.when(process.waitFor()).thenThrow(new InterruptedException());
-		assertThat(commandTask).doThrow(InterruptedException.class);
-		Mockito.verify(process).destroy();
-	}
+	public void shouldDestroyProcessOnInterruptedWainting() throws InterruptedException {
+		InterruptedException exception = new InterruptedException();
+		when(process.waitFor()).thenThrow(exception);
 
-	@Test
-	public void shouldLogOutput() throws Exception {
-		commandTask.perform();
-		Mockito.verify(logger).logErrorStream(process, COMMAND);
-		Mockito.verify(logger).logOutputStream(process, COMMAND);
+		assertThat(commandTask).doThrow(exception);
+		verify(process).destroy();
 	}
 
 	@Test
 	public void shouldShowCommandOnDescription() {
-		assertEquals("executing command: " + COMMAND, commandTask.toString());
+		assertEquals("executing command: " + COMMAND, "" + commandTask);
 	}
 }

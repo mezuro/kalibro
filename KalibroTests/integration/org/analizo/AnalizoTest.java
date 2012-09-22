@@ -13,17 +13,10 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.IntegrationTest;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.command.FileProcessStreamLogger;
 import org.kalibro.core.model.NativeMetric;
-import org.powermock.api.support.membermodification.MemberModifier;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(FileProcessStreamLogger.class)
 public class AnalizoTest extends IntegrationTest {
 
 	@BeforeClass
@@ -37,7 +30,6 @@ public class AnalizoTest extends IntegrationTest {
 	}
 
 	private static String getAnalizoVersion() throws IOException {
-		MemberModifier.suppress(FileProcessStreamLogger.class.getMethods());
 		InputStream output = new CommandTask("analizo --version").executeAndGetOuput();
 		return IOUtils.toString(output).replace("analizo version", "").trim();
 	}
@@ -46,7 +38,6 @@ public class AnalizoTest extends IntegrationTest {
 
 	@Before
 	public void setUp() throws IOException {
-		MemberModifier.suppress(FileProcessStreamLogger.class.getMethods());
 		analizo = new AnalizoMetricCollector();
 	}
 
