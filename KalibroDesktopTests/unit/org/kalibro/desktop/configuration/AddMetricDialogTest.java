@@ -2,7 +2,6 @@ package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
-import static org.mockito.Matchers.any;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

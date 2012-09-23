@@ -1,7 +1,6 @@
 package org.kalibro.client;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;

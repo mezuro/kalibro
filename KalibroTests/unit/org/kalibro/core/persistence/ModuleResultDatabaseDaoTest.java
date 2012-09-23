@@ -1,7 +1,6 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
 
 import java.util.Arrays;
 import java.util.Date;

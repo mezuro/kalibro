@@ -1,7 +1,5 @@
 package org.kalibro.dto;
 
-import static org.mockito.Matchers.*;
-
 import java.util.ArrayList;
 import java.util.List;
 

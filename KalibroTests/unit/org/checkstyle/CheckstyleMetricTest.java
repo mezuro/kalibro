@@ -4,7 +4,6 @@ import static org.checkstyle.CheckstyleMetric.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.CLASS;
 import static org.kalibro.core.model.enums.Language.JAVA;
-import static org.mockito.Matchers.anyString;
 
 import org.junit.Before;
 import org.junit.Test;

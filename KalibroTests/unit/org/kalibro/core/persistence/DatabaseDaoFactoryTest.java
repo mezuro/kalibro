@@ -2,7 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.util.Map;
 

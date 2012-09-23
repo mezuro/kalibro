@@ -1,7 +1,6 @@
 package org.kalibro.client;
 
 import static org.junit.Assert.assertSame;
-import static org.mockito.Matchers.*;
 
 import org.junit.Before;
 import org.junit.Test;

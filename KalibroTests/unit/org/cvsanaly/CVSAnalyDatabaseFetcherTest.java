@@ -1,7 +1,6 @@
 package org.cvsanaly;
 
 import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.util.HashMap;

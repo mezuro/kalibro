@@ -1,7 +1,6 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.util.HashMap;
 import java.util.Map;

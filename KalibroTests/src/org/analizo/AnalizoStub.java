@@ -1,6 +1,6 @@
 package org.analizo;
 
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.core.model.BaseToolFixtures.newAnalizoStub;
 import static org.kalibro.core.model.NativeModuleResultFixtures.*;
 
 import java.io.File;

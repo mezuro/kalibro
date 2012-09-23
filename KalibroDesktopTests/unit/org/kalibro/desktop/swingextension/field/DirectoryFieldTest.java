@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.awt.Component;
 import java.awt.event.FocusEvent;

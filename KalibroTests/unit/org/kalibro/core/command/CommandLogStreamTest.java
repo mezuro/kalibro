@@ -1,7 +1,6 @@
 package org.kalibro.core.command;
 
 import static org.kalibro.core.Environment.logsDirectory;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.io.FileOutputStream;

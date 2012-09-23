@@ -5,7 +5,7 @@ import java.io.File;
 import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
 
-public class IntegrationTest extends TestCase {
+public abstract class IntegrationTest extends TestCase {
 
 	@Override
 	protected Timeout testTimeout() {

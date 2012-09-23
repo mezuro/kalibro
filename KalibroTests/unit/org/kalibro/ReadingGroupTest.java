@@ -1,7 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.io.File;
 import java.util.Arrays;

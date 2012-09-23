@@ -1,6 +1,6 @@
 package org.cvsanaly;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.startsWith;
 
 import java.io.File;
 import java.io.IOException;

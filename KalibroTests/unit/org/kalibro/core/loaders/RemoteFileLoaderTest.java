@@ -1,7 +1,7 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyBoolean;
 
 import java.util.Arrays;
 

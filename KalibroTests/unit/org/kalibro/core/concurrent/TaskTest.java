@@ -2,7 +2,6 @@ package org.kalibro.core.concurrent;
 
 import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.util.concurrent.Future;
 

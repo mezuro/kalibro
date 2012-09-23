@@ -1,6 +1,7 @@
 package org.cvsanaly;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 

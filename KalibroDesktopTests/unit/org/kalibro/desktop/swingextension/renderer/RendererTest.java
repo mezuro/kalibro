@@ -1,7 +1,5 @@
 package org.kalibro.desktop.swingextension.renderer;
 
-import static org.mockito.Matchers.any;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Random;

@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ModuleNodeFixtures.newHelloWorldRoot;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
 import java.util.Date;
 

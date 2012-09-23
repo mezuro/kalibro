@@ -2,7 +2,6 @@ package org.kalibro.core.loaders;
 
 import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.util.Arrays;

@@ -1,7 +1,7 @@
 package org.kalibro.core.loaders;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
+import static org.junit.Assert.assertEquals;
+import static org.kalibro.core.model.RepositoryFixtures.helloWorldRepository;
 
 import java.util.List;
 

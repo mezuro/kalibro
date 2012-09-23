@@ -2,7 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.mockito.Matchers.any;
 
 import java.util.Arrays;
 
