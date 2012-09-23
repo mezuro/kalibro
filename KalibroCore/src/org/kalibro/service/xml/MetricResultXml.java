@@ -13,7 +13,7 @@ import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "MetricResult")
+@XmlRootElement(name = "metricResult")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MetricResultXml extends DataTransferObject<MetricResult> {
 
