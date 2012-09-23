@@ -41,10 +41,8 @@ public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 
 	private void verifyField(FieldReflector reflector, Method method) throws Exception {
 		String methodName = method.getName();
-		if (reflector.listFields().contains(methodName)) {
-			method.setAccessible(true);
+		if (reflector.listFields().contains(methodName))
 			assertEquals(reflector.get(methodName), method.invoke(dto));
-		}
 	}
 
 	protected abstract Class<DTO> dtoClass();
