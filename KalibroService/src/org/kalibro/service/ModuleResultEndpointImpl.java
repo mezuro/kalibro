@@ -22,7 +22,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 		this(DaoFactory.getModuleResultDao());
 	}
 
-	protected ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {
+	public ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {
 		dao = moduleResultDao;
 	}
 
