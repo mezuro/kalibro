@@ -1,6 +1,6 @@
 package org.kalibro.dao;
 
-public class DummyDaoFactory extends DaoFactory {
+class DummyDaoFactory extends DaoFactory {
 
 	@Override
 	protected BaseToolDao createBaseToolDao() {

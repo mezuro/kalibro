@@ -1,9 +1,10 @@
-package org.kalibro.dao;
+package org.kalibro.service;
 
 import java.util.*;
 
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.dao.ProjectDao;
 
 public class ProjectDaoFake implements ProjectDao {
 

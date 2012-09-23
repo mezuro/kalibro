@@ -1,4 +1,4 @@
-package org.kalibro.dao;
+package org.kalibro.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kalibro.core.model.BaseTool;
+import org.kalibro.dao.BaseToolDao;
 
 public class BaseToolDaoFake implements BaseToolDao {
 

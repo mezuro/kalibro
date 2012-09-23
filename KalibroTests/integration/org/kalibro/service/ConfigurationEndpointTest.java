@@ -10,7 +10,6 @@ import org.kalibro.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.dao.ConfigurationDaoFake;
 import org.kalibro.service.entities.ConfigurationXml;
 
 public class ConfigurationEndpointTest extends OldEndpointTest {

@@ -1,8 +1,9 @@
-package org.kalibro.dao;
+package org.kalibro.service;
 
 import java.util.*;
 
 import org.kalibro.core.model.ModuleResult;
+import org.kalibro.dao.ModuleResultDao;
 
 public class ModuleResultDaoFake implements ModuleResultDao {
 

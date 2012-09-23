@@ -9,7 +9,9 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
+@PrepareForTest(ReadingGroupEndpointImpl.class)
 public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @formatter:off
 	ReadingGroup, ReadingGroupXmlRequest, ReadingGroupXmlResponse,
 	ReadingGroupDao, ReadingGroupEndpointImpl> {// @formatter:on

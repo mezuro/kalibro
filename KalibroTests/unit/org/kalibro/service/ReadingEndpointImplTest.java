@@ -8,7 +8,9 @@ import org.junit.Test;
 import org.kalibro.Reading;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
+@PrepareForTest(ReadingEndpointImpl.class)
 public class ReadingEndpointImplTest extends
 	EndpointImplementorTest<Reading, ReadingXml, ReadingXml, ReadingDao, ReadingEndpointImpl> {
 

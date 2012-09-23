@@ -10,7 +10,6 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.ModuleResult;
-import org.kalibro.dao.ModuleResultDaoFake;
 import org.kalibro.service.entities.ModuleResultXml;
 
 public class ModuleResultEndpointTest extends OldEndpointTest {

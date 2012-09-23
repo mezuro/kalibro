@@ -5,7 +5,6 @@ import static org.kalibro.core.model.BaseToolFixtures.newAnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.model.BaseTool;
-import org.kalibro.dao.BaseToolDaoFake;
 
 public class BaseToolEndpointTest extends OldEndpointTest {
 

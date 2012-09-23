@@ -1,4 +1,4 @@
-package org.kalibro.dao;
+package org.kalibro.service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -6,6 +6,7 @@ import java.util.Map;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.dao.MetricConfigurationDao;
 
 public class MetricConfigurationDaoFake implements MetricConfigurationDao {
 

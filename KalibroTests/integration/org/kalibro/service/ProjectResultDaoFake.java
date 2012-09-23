@@ -1,10 +1,11 @@
-package org.kalibro.dao;
+package org.kalibro.service;
 
 import java.util.Date;
 import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.dao.ProjectResultDao;
 
 public class ProjectResultDaoFake implements ProjectResultDao {
 

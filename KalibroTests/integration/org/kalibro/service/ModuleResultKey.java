@@ -1,4 +1,4 @@
-package org.kalibro.dao;
+package org.kalibro.service;
 
 import java.util.Date;
 

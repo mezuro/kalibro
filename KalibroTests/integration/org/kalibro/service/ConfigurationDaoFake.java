@@ -1,4 +1,4 @@
-package org.kalibro.dao;
+package org.kalibro.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.kalibro.Configuration;
+import org.kalibro.dao.ConfigurationDao;
 
 public class ConfigurationDaoFake implements ConfigurationDao {
 
