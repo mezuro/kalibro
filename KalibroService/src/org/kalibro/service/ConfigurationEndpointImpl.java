@@ -19,7 +19,7 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 		this(DaoFactory.getConfigurationDao());
 	}
 
-	protected ConfigurationEndpointImpl(ConfigurationDao configurationDao) {
+	public ConfigurationEndpointImpl(ConfigurationDao configurationDao) {
 		dao = configurationDao;
 	}
 

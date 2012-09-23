@@ -1,75 +1,73 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertTrue;
 import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
-import org.junit.Before;
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.kalibro.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.service.entities.ConfigurationXml;
 
-public class ConfigurationEndpointTest extends OldEndpointTest {
+public class ConfigurationEndpointTest extends EndpointTest<Configuration, ConfigurationDao, ConfigurationEndpoint> {
 
-	private Configuration sample;
-	private ConfigurationEndpoint port;
-
-	@Before
-	public void setUp() {
-		sample = newConfiguration();
-		ConfigurationDaoFake daoFake = new ConfigurationDaoFake();
-		daoFake.save(sample);
-		port = publishAndGetPort(new ConfigurationEndpointImpl(daoFake), ConfigurationEndpoint.class);
+	@Override
+	protected Configuration loadFixture() {
+		return newConfiguration();
 	}
 
 	@Test
 	public void shouldListConfigurationNames() {
-		assertDeepList(port.getConfigurationNames(), sample.getName());
+		when(dao.getConfigurationNames()).thenReturn(Arrays.asList("42"));
+		assertDeepList(port.getConfigurationNames(), "42");
 	}
 
 	@Test
 	public void shouldGetConfigurationByName() {
-		assertDeepEquals(sample, port.getConfiguration(sample.getName()).convert());
+		when(dao.getConfiguration("42")).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getConfiguration("42"));
 	}
 
 	@Test
 	public void shouldDeleteConfigurationById() {
-		port.deleteConfiguration(sample.getId());
-		assertTrue(port.getConfigurationNames().isEmpty());
+		port.deleteConfiguration(42L);
+		verify(dao).delete(42L);
 	}
 
 	@Test
-	public void shouldSaveConfiguration() {
-		testSaveConfiguration(newConfiguration("loc"));
+	public void shouldSaveNormalConfiguration() {
+		entity = newConfiguration("loc");
+		shouldSaveConfiguration();
 	}
 
 	@Test
 	public void shouldSaveEmptyConfiguration() {
-		testSaveConfiguration(newConfiguration());
+		entity = newConfiguration();
+		shouldSaveConfiguration();
 	}
 
 	@Test
 	public void shouldSaveConfigurationWithoutRanges() {
-		Configuration newConfiguration = newConfiguration();
-		newConfiguration.addMetricConfiguration(new MetricConfiguration(analizoMetric("loc")));
-		testSaveConfiguration(newConfiguration);
+		entity = newConfiguration();
+		entity.addMetricConfiguration(new MetricConfiguration(analizoMetric("loc")));
+		shouldSaveConfiguration();
 	}
 
 	@Test
 	public void shouldSaveMetricWithoutLanguages() {
 		NativeMetric nativeMetric = new NativeMetric("name", Granularity.METHOD);
 		nativeMetric.setOrigin("origin");
-		Configuration newConfiguration = new Configuration();
-		newConfiguration.addMetricConfiguration(new MetricConfiguration(nativeMetric));
-		testSaveConfiguration(newConfiguration);
+		entity = new Configuration();
+		entity.addMetricConfiguration(new MetricConfiguration(nativeMetric));
+		shouldSaveConfiguration();
 	}
 
-	private void testSaveConfiguration(Configuration newConfiguration) {
-		newConfiguration.setName("ConfigurationEndpointTest configuration");
-		port.saveConfiguration(new ConfigurationXml(newConfiguration));
-		assertDeepList(port.getConfigurationNames(), newConfiguration.getName(), sample.getName());
+	private void shouldSaveConfiguration() {
+		port.saveConfiguration(new ConfigurationXml(entity));
+		verify(dao).save(entity);
 	}
 }
