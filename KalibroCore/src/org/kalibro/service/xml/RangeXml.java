@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.core.model.Range;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "Range")
+@XmlRootElement(name = "range")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RangeXml extends DataTransferObject<Range> {
 
