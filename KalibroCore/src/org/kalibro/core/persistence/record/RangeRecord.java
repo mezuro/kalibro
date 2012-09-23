@@ -8,7 +8,8 @@ import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.core.model.Range;
 import org.kalibro.dto.DataTransferObject;
 
-@Entity(name = "\"Range\"")
+@Entity(name = "Range")
+@Table(name = "\"RANGE\"")
 @PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName"), @Column(name = "beginning")})
 public class RangeRecord extends DataTransferObject<Range> {
 
@@ -39,6 +40,10 @@ public class RangeRecord extends DataTransferObject<Range> {
 
 	public RangeRecord() {
 		super();
+	}
+
+	public RangeRecord(Range range) {
+		this(range, null);
 	}
 
 	public RangeRecord(Range range, MetricConfigurationRecord metricConfiguration) {
