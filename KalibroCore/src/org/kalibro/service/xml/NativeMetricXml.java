@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Language;
 
-@XmlRootElement(name = "NativeMetric")
+@XmlRootElement(name = "nativeMetric")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NativeMetricXml extends MetricXml<NativeMetric> {
 
