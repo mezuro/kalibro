@@ -11,6 +11,7 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 
 @Entity(name = "NativeMetric")
+@Table(name = "\"NATIVE_METRIC\"")
 @PrimaryKey(columns = {@Column(name = "name"), @Column(name = "origin")})
 public class NativeMetricRecord extends MetricRecord<NativeMetric> {
 
