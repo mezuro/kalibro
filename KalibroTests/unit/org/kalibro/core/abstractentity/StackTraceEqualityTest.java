@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class StackTraceEqualityTest extends TestCase {
+public class StackTraceEqualityTest extends UnitTest {
 
 	private StackTraceEquality equality;
 

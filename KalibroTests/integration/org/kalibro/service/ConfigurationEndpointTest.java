@@ -4,8 +4,6 @@ import static org.junit.Assert.assertTrue;
 import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
-import java.net.MalformedURLException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Configuration;
@@ -15,13 +13,13 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.dao.ConfigurationDaoFake;
 import org.kalibro.service.entities.ConfigurationXml;
 
-public class ConfigurationEndpointTest extends EndpointTest {
+public class ConfigurationEndpointTest extends OldEndpointTest {
 
 	private Configuration sample;
 	private ConfigurationEndpoint port;
 
 	@Before
-	public void setUp() throws MalformedURLException {
+	public void setUp() {
 		sample = newConfiguration();
 		ConfigurationDaoFake daoFake = new ConfigurationDaoFake();
 		daoFake.save(sample);

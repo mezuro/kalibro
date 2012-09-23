@@ -3,7 +3,6 @@ package org.kalibro.core.persistence;
 import static java.util.concurrent.TimeUnit.DAYS;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ProjectFixtures.*;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,11 +16,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.core.persistence.record.ProjectRecord;
 import org.kalibro.core.processing.ProcessProjectTask;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -30,7 +29,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({FileUtils.class, ProjectDatabaseDao.class, RepositoryType.class})
-public class ProjectDatabaseDaoTest extends TestCase {
+public class ProjectDatabaseDaoTest extends UnitTest {
 
 	private Project project;
 	private RecordManager recordManager;

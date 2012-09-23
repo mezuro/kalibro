@@ -6,9 +6,9 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class DataTransferObjectTest extends TestCase {
+public class DataTransferObjectTest extends UnitTest {
 
 	@Test
 	public void shouldConvertListOfDtos() {

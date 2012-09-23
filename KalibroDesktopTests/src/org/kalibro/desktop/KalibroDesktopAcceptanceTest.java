@@ -7,10 +7,10 @@ import org.fest.swing.fixture.DialogFixture;
 import org.fest.swing.fixture.FrameFixture;
 import org.fest.swing.fixture.WindowFixture;
 import org.junit.After;
-import org.kalibro.AcceptanceTest;
 import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.AcceptanceTest;
 
 public class KalibroDesktopAcceptanceTest extends AcceptanceTest {
 

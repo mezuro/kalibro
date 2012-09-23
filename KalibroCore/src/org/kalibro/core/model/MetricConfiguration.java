@@ -4,11 +4,11 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.kalibro.KalibroException;
+import org.kalibro.core.Identifier;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.util.Identifier;
 
 @SortingFields("code")
 public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {

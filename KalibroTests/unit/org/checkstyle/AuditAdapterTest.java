@@ -2,11 +2,11 @@ package org.checkstyle;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class AuditAdapterTest extends TestCase {
+public class AuditAdapterTest extends UnitTest {
 
 	private AuditAdapter adapter;
 

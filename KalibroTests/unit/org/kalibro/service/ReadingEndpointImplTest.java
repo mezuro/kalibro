@@ -10,29 +10,28 @@ import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
 
 public class ReadingEndpointImplTest extends
-	EndpointImplementationTest<Reading, ReadingXml, ReadingXml, ReadingDao, ReadingEndpointImpl> {
+	EndpointImplementorTest<Reading, ReadingXml, ReadingXml, ReadingDao, ReadingEndpointImpl> {
 
 	@Override
-	protected Class<?>[] parameterClasses() {
-		return new Class<?>[]{
-			Reading.class, ReadingXml.class, ReadingXml.class, ReadingDao.class, ReadingEndpointImpl.class};
+	protected Class<Reading> entityClass() {
+		return Reading.class;
 	}
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
 		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(entity));
-		assertDeepList(endpoint.readingsOf(42L), response);
+		assertDeepList(implementor.readingsOf(42L), response);
 	}
 
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(42L);
-		assertEquals(42L, endpoint.saveReading(request).longValue());
+		assertEquals(42L, implementor.saveReading(request).longValue());
 	}
 
 	@Test
 	public void shouldDeleteReading() {
-		endpoint.deleteReading(42L);
+		implementor.deleteReading(42L);
 		verify(dao).delete(42L);
 	}
 }

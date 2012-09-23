@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.MetricResultFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.analizoMetricCodes;
+import static org.kalibro.core.model.MetricResultFixtures.analizoResult;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.kalibro.core.model.enums.Granularity;

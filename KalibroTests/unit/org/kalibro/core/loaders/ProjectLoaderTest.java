@@ -2,7 +2,6 @@ package org.kalibro.core.loaders;
 
 import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.util.Arrays;
@@ -12,16 +11,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
-import org.kalibro.TestCase;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.Repository;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ProjectLoader.class)
-public class ProjectLoaderTest extends TestCase {
+public class ProjectLoaderTest extends UnitTest {
 
 	private static final String LOAD_COMMAND = "ProjectLoaderTest load command";
 	private static final String UPDATE_COMMAND = "ProjectLoaderTest update command";

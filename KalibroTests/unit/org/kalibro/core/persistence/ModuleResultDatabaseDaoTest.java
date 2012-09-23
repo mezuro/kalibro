@@ -1,7 +1,6 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -13,18 +12,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.ProjectResultFixtures;
 import org.kalibro.core.persistence.record.MetricResultRecord;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({MetricResultRecord.class, ModuleResultDatabaseDao.class})
-public class ModuleResultDatabaseDaoTest extends TestCase {
+public class ModuleResultDatabaseDaoTest extends UnitTest {
 
 	private static final Date DATE = new Date();
 	private static final String MODULE_NAME = "ModuleResultDatabaseDaoTest module";

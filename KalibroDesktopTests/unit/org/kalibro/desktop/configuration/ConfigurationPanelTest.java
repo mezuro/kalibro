@@ -6,7 +6,6 @@ import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Configuration;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
@@ -14,10 +13,11 @@ import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.field.UneditableField;
 import org.kalibro.desktop.swingextension.list.Table;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ConfigurationPanelTest extends TestCase {
+public class ConfigurationPanelTest extends UnitTest {
 
 	private Configuration configuration;
 

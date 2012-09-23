@@ -6,6 +6,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.AcceptanceTest;
 
 public class ReadingAcceptanceTest extends AcceptanceTest {
 

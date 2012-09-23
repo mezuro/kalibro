@@ -9,16 +9,16 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.EnumerationTestCase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.loaders.*;
 import org.kalibro.core.model.Repository;
+import org.kalibro.tests.EnumerationTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RepositoryType.class)
-public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
+public class RepositoryTypeTest extends EnumerationTest<RepositoryType> {
 
 	@Override
 	protected Class<RepositoryType> enumerationClass() {

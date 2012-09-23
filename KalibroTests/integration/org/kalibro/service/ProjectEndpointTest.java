@@ -3,8 +3,6 @@ package org.kalibro.service;
 import static org.junit.Assert.assertTrue;
 import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
-import java.net.MalformedURLException;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroException;
@@ -12,13 +10,13 @@ import org.kalibro.core.model.Project;
 import org.kalibro.dao.ProjectDaoFake;
 import org.kalibro.service.entities.RawProjectXml;
 
-public class ProjectEndpointTest extends EndpointTest {
+public class ProjectEndpointTest extends OldEndpointTest {
 
 	private Project sample;
 	private ProjectEndpoint port;
 
 	@Before
-	public void setUp() throws MalformedURLException {
+	public void setUp() {
 		sample = newHelloWorld();
 		sample.setError(new KalibroException("ProjectEndpointTest", new Exception()));
 		ProjectDaoFake daoFake = new ProjectDaoFake();

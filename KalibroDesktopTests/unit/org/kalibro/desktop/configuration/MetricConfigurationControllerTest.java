@@ -1,7 +1,5 @@
 package org.kalibro.desktop.configuration;
 
-import static org.mockito.Matchers.any;
-
 import java.awt.Container;
 import java.awt.event.ActionEvent;
 
@@ -10,19 +8,22 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.KalibroException;
-import org.kalibro.TestCase;
-import org.kalibro.core.model.*;
+import org.kalibro.core.model.CompoundMetric;
+import org.kalibro.core.model.Metric;
+import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;
 import org.kalibro.desktop.swingextension.panel.ConfirmPanel;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(MetricConfigurationController.class)
-public class MetricConfigurationControllerTest extends TestCase {
+public class MetricConfigurationControllerTest extends UnitTest {
 
 	private MetricConfiguration metricConfiguration;
 	private Configuration configuration;

@@ -1,8 +1,8 @@
 package org.kalibro.desktop.reading;
 
 import org.kalibro.Reading;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.tests.UnitTest;
 
 public final class ReadingPanelManualTest extends ReadingPanel {
 
@@ -11,6 +11,6 @@ public final class ReadingPanelManualTest extends ReadingPanel {
 	}
 
 	private ReadingPanelManualTest() {
-		super(TestCase.loadFixture("excellent", Reading.class));
+		super(UnitTest.loadFixture("excellent", Reading.class));
 	}
 }

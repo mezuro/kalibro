@@ -10,15 +10,15 @@ import javax.swing.JOptionPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Language;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JOptionPane.class)
-public class ChoiceDialogTest extends TestCase {
+public class ChoiceDialogTest extends UnitTest {
 
 	private static final String TITLE = "ChoiceDialogTest title";
 	private static final String MESSAGE = "ChoiceDialogTest message";

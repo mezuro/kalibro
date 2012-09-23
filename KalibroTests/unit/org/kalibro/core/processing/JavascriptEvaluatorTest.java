@@ -5,8 +5,8 @@ import java.lang.reflect.Constructor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.EvaluatorException;
@@ -15,13 +15,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)
-public class JavascriptEvaluatorTest extends TestCase {
+public class JavascriptEvaluatorTest extends UnitTest {
 
-	private ScriptEvaluator evaluator;
+	private JavascriptEvaluator evaluator;
 
 	@Before
 	public void setUp() {
-		evaluator = JavascriptEvaluator.create();
+		evaluator = new JavascriptEvaluator();
 	}
 
 	@Test
@@ -124,7 +124,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 	public void shouldExitContextOnFinalize() throws Throwable {
 		evaluator = createEvaluator();
 		mockStatic(Context.class);
-		((JavascriptEvaluator) evaluator).finalize();
+		evaluator.finalize();
 		verifyStatic();
 		Context.exit();
 	}

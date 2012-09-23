@@ -2,7 +2,6 @@ package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.mockito.Matchers.*;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;
@@ -11,11 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.api.mockito.PowerMockito;
@@ -26,7 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(ConfigurationFrame.class)
-public class ConfigurationFrameTest extends TestCase {
+public class ConfigurationFrameTest extends UnitTest {
 
 	private Configuration configuration;
 	private ConfigurationPanel panel;

@@ -4,7 +4,6 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 
 import java.io.File;
 
-import org.kalibro.util.Identifier;
 
 /**
  * Responsible for providing information which depends on the environment: production or test.

@@ -2,24 +2,24 @@ package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.ProjectState.COLLECTING;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyLong;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class ProcessProjectSubtaskTest extends TestCase {
+public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private static final String TASK_RESULT = "ProcessProjectSubtaskTest result";
 	private static final ProjectState TASK_STATE = COLLECTING;

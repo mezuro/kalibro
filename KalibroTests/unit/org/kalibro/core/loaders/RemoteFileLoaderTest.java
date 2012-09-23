@@ -1,18 +1,18 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.anyBoolean;
 
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Repository;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 
-public class RemoteFileLoaderTest extends TestCase {
+public class RemoteFileLoaderTest extends UnitTest {
 
 	private static final String ADDRESS = "RemoteFileLoaderTest address";
 	private static final String LOCAL_LOAD_COMMAND = "RemoteFileLoaderTest local load command";

@@ -11,9 +11,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.TestCase;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -21,7 +21,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ConfigurationController.class, DaoFactory.class})
-public class ConfigurationControllerTest extends TestCase {
+public class ConfigurationControllerTest extends UnitTest {
 
 	private static final String NAME = "ConfigurationControllerTest name";
 	private static final List<String> NAMES = Arrays.asList(NAME);

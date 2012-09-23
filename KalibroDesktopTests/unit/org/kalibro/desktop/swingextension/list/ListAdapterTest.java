@@ -2,11 +2,11 @@ package org.kalibro.desktop.swingextension.list;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ListAdapterTest extends TestCase {
+public class ListAdapterTest extends UnitTest {
 
 	private ListAdapter<String> adapter;
 

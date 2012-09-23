@@ -1,6 +1,6 @@
 package org.kalibro.core.model.enums;
 
-import org.kalibro.util.Identifier;
+import org.kalibro.core.Identifier;
 
 /**
  * Each granularity represents the type of a {@link Module} which contains modules of the same or next type.

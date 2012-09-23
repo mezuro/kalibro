@@ -14,16 +14,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.processing.ModuleResultConfigurer;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ModuleResult.class)
-public class ModuleResultTest extends TestCase {
+public class ModuleResultTest extends UnitTest {
 
 	private ModuleResult result;
 	private CompoundMetric sc;

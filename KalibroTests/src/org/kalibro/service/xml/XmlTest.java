@@ -11,10 +11,10 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.core.Identifier;
+import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.dto.ConcreteDtoTest;
 import org.kalibro.dto.DataTransferObject;
-import org.kalibro.util.Identifier;
-import org.kalibro.util.reflection.FieldReflector;
 
 public abstract class XmlTest<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends
 	ConcreteDtoTest<ENTITY, RECORD> {

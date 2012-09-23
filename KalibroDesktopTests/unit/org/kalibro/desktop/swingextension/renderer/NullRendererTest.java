@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class NullRendererTest extends TestCase {
+public class NullRendererTest extends UnitTest {
 
 	private NullRenderer renderer;
 

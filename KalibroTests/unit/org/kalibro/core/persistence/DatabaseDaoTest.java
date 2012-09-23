@@ -10,11 +10,11 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.persistence.PersonDatabaseDao.Person;
 import org.kalibro.core.persistence.PersonDatabaseDao.PersonRecord;
+import org.kalibro.tests.UnitTest;
 
-public class DatabaseDaoTest extends TestCase {
+public class DatabaseDaoTest extends UnitTest {
 
 	private Person person;
 	private PersonRecord record;

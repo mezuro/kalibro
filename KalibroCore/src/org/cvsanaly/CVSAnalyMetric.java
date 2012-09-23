@@ -1,11 +1,11 @@
 package org.cvsanaly;
 
 import org.cvsanaly.entities.MetricResult;
+import org.kalibro.core.Identifier;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
-import org.kalibro.util.Identifier;
-import org.kalibro.util.reflection.FieldReflector;
+import org.kalibro.core.reflection.FieldReflector;
 
 public enum CVSAnalyMetric {
 	NUMBER_OF_SOURCE_LINES_OF_CODE,

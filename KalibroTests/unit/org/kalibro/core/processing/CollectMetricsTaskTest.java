@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServerSettings;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.ProjectResult;
@@ -23,12 +22,13 @@ import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DaoFactory.class, KalibroSettings.class})
-public class CollectMetricsTaskTest extends TestCase {
+public class CollectMetricsTaskTest extends UnitTest {
 
 	private BaseTool baseTool;
 	private ProjectResult projectResult;

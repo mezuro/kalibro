@@ -2,9 +2,9 @@ package org.kalibro.desktop.reading;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
+import org.kalibro.tests.UnitTest;
 
 public final class ReadingGroupPanelManualTest implements TablePanelListener<Reading> {
 
@@ -13,7 +13,7 @@ public final class ReadingGroupPanelManualTest implements TablePanelListener<Rea
 	}
 
 	private ReadingGroupPanelManualTest() {
-		ReadingGroup group = TestCase.loadFixture("scholar", ReadingGroup.class);
+		ReadingGroup group = UnitTest.loadFixture("scholar", ReadingGroup.class);
 		ReadingGroupPanel panel = new ReadingGroupPanel(group);
 		panel.addReadingsListener(this);
 		new ComponentWrapperDialog("ReadingGroupPanel", panel).setVisible(true);

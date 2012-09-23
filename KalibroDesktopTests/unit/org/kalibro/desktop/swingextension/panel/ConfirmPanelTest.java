@@ -1,21 +1,20 @@
 package org.kalibro.desktop.swingextension.panel;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ConfirmPanelTest extends TestCase {
+public class ConfirmPanelTest extends UnitTest {
 
 	private ActionListener listener;
 

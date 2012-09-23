@@ -10,18 +10,18 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.service.entities.ModuleResultXml;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class ModuleResultEndpointImplTest extends TestCase {
+public class ModuleResultEndpointImplTest extends UnitTest {
 
 	private ModuleResultDao dao;
 	private ModuleResult moduleResult;

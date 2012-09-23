@@ -10,12 +10,12 @@ import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.tests.UnitTest;
 
-public class AnalyzeResultsTaskTest extends TestCase {
+public class AnalyzeResultsTaskTest extends UnitTest {
 
 	private ProjectResult projectResult;
 	private AnalyzeResultsTask analyzeTask;

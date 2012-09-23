@@ -9,16 +9,16 @@ import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServiceSide;
-import org.kalibro.TestCase;
 import org.kalibro.client.ClientDaoFactory;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DaoFactory.class, KalibroSettings.class})
-public class DaoFactoryTest extends TestCase {
+public class DaoFactoryTest extends UnitTest {
 
 	@BeforeClass
 	public static void constructorCoverage() {

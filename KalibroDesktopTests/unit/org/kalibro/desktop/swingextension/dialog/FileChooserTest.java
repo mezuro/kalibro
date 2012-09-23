@@ -12,8 +12,8 @@ import javax.swing.filechooser.FileFilter;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(FileChooser.class)
-public class FileChooserTest extends TestCase {
+public class FileChooserTest extends UnitTest {
 
 	private Component parent;
 	private JFileChooser nativeChooser;
