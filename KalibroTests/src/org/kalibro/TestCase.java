@@ -4,20 +4,16 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.IOUtils;
-import org.hamcrest.Matcher;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
-import org.mockito.Matchers;
-import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
-public abstract class TestCase extends ExtendedAsserts {
+public abstract class TestCase extends SpecialAssertions {
 
 	@BeforeClass
 	public static void setTestEnvironment() {
@@ -44,49 +40,5 @@ public abstract class TestCase extends ExtendedAsserts {
 
 	protected String loadResource(String name) throws IOException {
 		return IOUtils.toString(getClass().getResourceAsStream(name));
-	}
-
-	protected <T> T verify(T mock) {
-		return Mockito.verify(mock);
-	}
-
-	protected <T> T verify(T mock, VerificationMode mode) {
-		return Mockito.verify(mock, mode);
-	}
-
-	protected VerificationMode never() {
-		return Mockito.never();
-	}
-
-	protected VerificationMode once() {
-		return Mockito.times(1);
-	}
-
-	protected VerificationMode times(int times) {
-		return Mockito.times(times);
-	}
-
-	protected <T> T any() {
-		return Matchers.any();
-	}
-
-	protected String anyString() {
-		return Matchers.anyString();
-	}
-
-	protected <T> T any(Class<T> type) {
-		return Matchers.any(type);
-	}
-
-	protected <T> T eq(T expected) {
-		return Matchers.eq(expected);
-	}
-
-	protected <T> T same(T expected) {
-		return Matchers.same(expected);
-	}
-
-	protected <T> T argThat(Matcher<T> matcher) {
-		return Matchers.argThat(matcher);
 	}
 }

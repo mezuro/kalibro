@@ -8,9 +8,8 @@ import org.kalibro.core.abstractentity.Equality;
 import org.kalibro.core.abstractentity.Printer;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.concurrent.TaskMatcher;
-import org.powermock.api.mockito.PowerMockito;
 
-public abstract class ExtendedAsserts extends PowerMockito {
+public abstract class SpecialAssertions extends MockitoProxy {
 
 	public static void assertClassEquals(Class<?> expectedClass, Object object) {
 		assertEquals(expectedClass, object.getClass());

@@ -16,7 +16,7 @@ public class ThrowableMatcher {
 	}
 
 	public ThrowableMatcher withCause(Class<? extends Throwable> causeClass) {
-		ExtendedAsserts.assertClassEquals(causeClass, throwed.getCause());
+		SpecialAssertions.assertClassEquals(causeClass, throwed.getCause());
 		return this;
 	}
 

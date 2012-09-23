@@ -1,7 +1,7 @@
 package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ExtendedAsserts.assertClassEquals;
+import static org.kalibro.SpecialAssertions.assertClassEquals;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
