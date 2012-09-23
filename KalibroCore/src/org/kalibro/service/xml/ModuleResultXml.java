@@ -14,7 +14,7 @@ import org.kalibro.core.model.MetricResult;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "ModuleResult")
+@XmlRootElement(name = "moduleResult")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModuleResultXml extends DataTransferObject<ModuleResult> {
 
