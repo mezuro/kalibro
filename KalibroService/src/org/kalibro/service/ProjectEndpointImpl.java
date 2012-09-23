@@ -23,7 +23,7 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 		this(DaoFactory.getProjectDao());
 	}
 
-	protected ProjectEndpointImpl(ProjectDao projectDao) {
+	public ProjectEndpointImpl(ProjectDao projectDao) {
 		dao = projectDao;
 	}
 

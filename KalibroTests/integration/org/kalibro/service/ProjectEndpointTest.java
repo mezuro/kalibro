@@ -1,49 +1,45 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertTrue;
 import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
-import org.junit.Before;
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.Project;
+import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.entities.RawProjectXml;
 
-public class ProjectEndpointTest extends OldEndpointTest {
+public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, ProjectEndpoint> {
 
-	private Project sample;
-	private ProjectEndpoint port;
-
-	@Before
-	public void setUp() {
-		sample = newHelloWorld();
-		sample.setError(new KalibroException("ProjectEndpointTest", new Exception()));
-		ProjectDaoFake daoFake = new ProjectDaoFake();
-		daoFake.save(sample);
-		port = publishAndGetPort(new ProjectEndpointImpl(daoFake), ProjectEndpoint.class);
+	@Override
+	protected Project loadFixture() {
+		Project fixture = newHelloWorld();
+		fixture.setError(new KalibroException("ProjectEndpointTest exception", new Exception()));
+		return fixture;
 	}
 
 	@Test
 	public void shouldListProjectNames() {
-		assertDeepList(port.getProjectNames(), sample.getName());
+		when(dao.getProjectNames()).thenReturn(Arrays.asList("42"));
+		assertDeepList(port.getProjectNames(), "42");
 	}
 
 	@Test
 	public void shouldGetProjectByName() {
-		assertDeepEquals(sample, port.getProject(sample.getName()).convert());
+		when(dao.getProject("42")).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getProject("42"));
 	}
 
 	@Test
 	public void shouldRemoveProjectByName() {
-		port.removeProject(sample.getName());
-		assertTrue(port.getProjectNames().isEmpty());
+		port.removeProject("42");
+		verify(dao).removeProject("42");
 	}
 
 	@Test
 	public void shouldSaveProject() {
-		Project newProject = newHelloWorld();
-		newProject.setName("ProjectEndpointTest project");
-		port.saveProject(new RawProjectXml(newProject));
-		assertDeepList(port.getProjectNames(), sample.getName(), newProject.getName());
+		port.saveProject(new RawProjectXml(entity));
+		verify(dao).save(entity);
 	}
 }
