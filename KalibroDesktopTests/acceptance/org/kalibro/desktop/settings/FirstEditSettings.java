@@ -1,11 +1,11 @@
 package org.kalibro.desktop.settings;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertTrue;
 
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 import org.kalibro.KalibroSettings;
-import org.kalibro.desktop.KalibroDesktopTestCase;
+import org.kalibro.desktop.KalibroDesktopAcceptanceTest;
 
 /**
  * On the first execution, if the user edit the settings and confirms, the settings file should be written and the
@@ -13,14 +13,15 @@ import org.kalibro.desktop.KalibroDesktopTestCase;
  * 
  * @author Carlos Morais
  */
-public class FirstEditSettings extends KalibroDesktopTestCase {
+public class FirstEditSettings extends KalibroDesktopAcceptanceTest {
 
 	@Test
 	public void firstEditSettings() throws Exception {
 		startFromMain();
 
-		fixture.panel("loadDirectory").textBox("path").setText("/tmp");
+		fixture.checkBox("client").requireNotSelected();
 
+		fixture.checkBox("client").check();
 		fixture.button("ok").click();
 		assertTrue(KalibroSettings.exists());
 
@@ -28,6 +29,6 @@ public class FirstEditSettings extends KalibroDesktopTestCase {
 		fixture = new FrameFixture(fixture.robot, "kalibroFrame");
 		fixture.menuItem("settings").click();
 		fixture = fixture.dialog();
-		fixture.panel("loadDirectory").textBox("path").requireText("/tmp");
+		fixture.checkBox("client").requireSelected();
 	}
 }

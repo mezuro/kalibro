@@ -8,12 +8,12 @@ import static org.kalibro.core.model.RangeLabel.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.Identifier;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.util.Identifier;
+import org.kalibro.tests.UnitTest;
 
-public class MetricConfigurationTest extends TestCase {
+public class MetricConfigurationTest extends UnitTest {
 
 	private NativeMetric metric;
 	private MetricConfiguration configuration;
@@ -44,10 +44,10 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void configurationsWithSameCodeShouldConflict() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				MetricConfiguration configurationWithSameCode = new MetricConfiguration(analizoMetric("loc"));
 				configurationWithSameCode.setCode(configuration.getCode());
 				configurationWithSameCode.assertNoConflictWith(configuration);
@@ -57,10 +57,10 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void configurationsForSameMetricShouldConflict() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				MetricConfiguration configurationForSameMetric = new MetricConfiguration(metric);
 				configurationForSameMetric.assertNoConflictWith(configuration);
 			}
@@ -90,10 +90,10 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testNoRangeFound() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				configuration.getRangeFor(-1.0);
 			}
 		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
@@ -108,10 +108,10 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void testConflictingRange() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				configuration.addRange(new Range(6.0, 12.0));
 			}
 		}).throwsException().withMessage("New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
@@ -127,10 +127,10 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentRange() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				configuration.replaceRange(-1.0, new Range(-1.0, 0.0));
 			}
 		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
@@ -138,10 +138,10 @@ public class MetricConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorForConflictingRangeReplace() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				configuration.replaceRange(0.0, new Range());
 			}
 		}).throwsException().withMessage("New range [-Infinity, Infinity[ would conflict with [7.0, 10.0[");

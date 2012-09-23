@@ -9,16 +9,16 @@ import java.io.File;
 import org.junit.After;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.EnumerationTestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.loaders.*;
 import org.kalibro.core.model.Repository;
+import org.kalibro.tests.EnumerationTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(RepositoryType.class)
-public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
+public class RepositoryTypeTest extends EnumerationTest<RepositoryType> {
 
 	@Override
 	protected Class<RepositoryType> enumerationClass() {
@@ -123,10 +123,10 @@ public class RepositoryTypeTest extends EnumerationTestCase<RepositoryType> {
 	public void shouldThrowKalibroErrorIfLoaderCouldNotBeCreated() {
 		final RepositoryType type = spy(GIT);
 		when(type.name()).thenReturn("INEXISTENT");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Exception {
 				invokeMethod(type, "initializeLoader");
 			}
 		}).throwsError().withMessage("Error creating loader for Git").withCause(ClassNotFoundException.class);

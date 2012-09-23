@@ -2,7 +2,7 @@ package org.kalibro.core.model;
 
 import static org.kalibro.core.model.ModuleFixtures.*;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.*;
+import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Collection;
 import java.util.Date;

@@ -4,8 +4,9 @@ import static org.junit.Assert.assertEquals;
 import static org.kalibro.SupportedDatabase.*;
 
 import org.junit.Test;
+import org.kalibro.tests.EnumerationTest;
 
-public class SupportedDatabaseTest extends EnumerationTestCase<SupportedDatabase> {
+public class SupportedDatabaseTest extends EnumerationTest<SupportedDatabase> {
 
 	@Override
 	protected Class<SupportedDatabase> enumerationClass() {

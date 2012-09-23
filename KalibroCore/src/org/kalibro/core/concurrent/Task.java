@@ -1,82 +1,75 @@
 package org.kalibro.core.concurrent;
 
-public abstract class Task implements Runnable {
+import java.util.HashSet;
+import java.util.Set;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 
-	public static final long SECOND = 1000L;
-	public static final long MINUTE = 60 * SECOND;
-	public static final long HOUR = 60 * MINUTE;
-	public static final long DAY = 24 * HOUR;
+/**
+ * A task that computes a result and may throw an error. This class implements the {@link Runnable} interface because
+ * its instances are potentially executed by another thread. It contains utility methods to execute in background, with
+ * timeouts and periodically, without worrying about the mechanics of its execution.
+ * 
+ * @author Carlos Morais
+ */
+public abstract class Task<T> implements Runnable {
 
-	private TaskListener listener;
-	private TaskExecutor executor;
-
-	protected TaskReport report;
+	private Future<?> future;
+	private TaskReport<T> report;
+	private Set<TaskListener<T>> listeners;
 
 	public Task() {
-		this.executor = new TaskExecutor(this);
+		listeners = new HashSet<TaskListener<T>>();
 	}
 
-	public void setListener(TaskListener listener) {
-		this.listener = listener;
+	public void addListener(TaskListener<T> listener) {
+		listeners.add(listener);
 	}
 
 	public void executeInBackground() {
-		executor.executeInBackground();
+		future = TaskExecutor.executeInBackground(this);
 	}
 
-	public void executeAndWait() {
-		executor.executeAndWait();
+	public T execute() {
+		return TaskExecutor.execute(this);
 	}
 
-	public void executeAndWait(long timeout) {
-		executor.executeAndWait(timeout);
+	public T execute(long timeout, TimeUnit timeUnit) {
+		return TaskExecutor.execute(this, timeout, timeUnit);
 	}
 
-	public void executePeriodically(long period) {
-		executor.executePeriodically(period);
+	public void executePeriodically(long period, TimeUnit timeUnit) {
+		future = TaskExecutor.executePeriodically(this, period, timeUnit);
 	}
 
-	public void cancelPeriodicExecution() {
-		executor.cancelPeriodicExecution();
+	public void cancelExecution() {
+		future.cancel(true);
+	}
+
+	public TaskReport<T> getReport() {
+		return report;
 	}
 
 	@Override
 	public void run() {
-		long start = System.currentTimeMillis();
-		Throwable error = performAndGetError();
-		long executionTime = System.currentTimeMillis() - start;
-		setReport(executionTime, error);
-		if (listener != null)
-			reportTaskFinished();
+		computeReport();
+		reportTaskFinished();
 	}
 
-	private Throwable performAndGetError() {
+	private void computeReport() {
+		long start = System.currentTimeMillis();
 		try {
-			perform();
-			return null;
-		} catch (Throwable exception) {
-			return exception;
+			report = new TaskReport<T>(this, start, compute());
+		} catch (Throwable error) {
+			report = new TaskReport<T>(this, start, error);
 		}
 	}
 
-	public abstract void perform() throws Throwable;
-
-	protected void setReport(long executionTime, Throwable error) {
-		report = new TaskReport(executionTime, error);
-	}
-
-	public TaskReport getReport() {
-		return report;
-	}
+	protected abstract T compute() throws Throwable;
 
 	protected void reportTaskFinished() {
-		new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-				listener.taskFinished(report);
-			}
-		}).start();
+		for (TaskListener<T> listener : listeners)
+			new TaskListenerNotifier<T>(report, listener).executeInBackground();
 	}
 
 	@Override

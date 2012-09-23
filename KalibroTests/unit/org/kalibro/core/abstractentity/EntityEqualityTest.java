@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class EntityEqualityTest extends TestCase {
+public class EntityEqualityTest extends UnitTest {
 
 	private Person carlos;
 	private EntityEquality equality;

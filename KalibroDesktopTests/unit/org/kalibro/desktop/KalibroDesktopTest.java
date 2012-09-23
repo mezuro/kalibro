@@ -1,26 +1,19 @@
 package org.kalibro.desktop;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.AnswerAdapter;
 import org.kalibro.KalibroSettings;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.settings.SettingsController;
+import org.kalibro.tests.UtilityClassTest;
 import org.mockito.Mockito;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({KalibroSettings.class, KalibroDesktop.class, SettingsController.class})
-public class KalibroDesktopTest extends TestCase {
-
-	@BeforeClass
-	public static void emmaCoverage() throws Exception {
-		KalibroDesktop.class.getDeclaredConstructor().newInstance();
-	}
+public class KalibroDesktopTest extends UtilityClassTest {
 
 	private KalibroFrame kalibroFrame;
 
@@ -30,6 +23,11 @@ public class KalibroDesktopTest extends TestCase {
 		mockStatic(SettingsController.class);
 		kalibroFrame = mock(KalibroFrame.class);
 		whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
+	}
+
+	@Override
+	protected Class<?> utilityClass() {
+		return KalibroDesktop.class;
 	}
 
 	@Test
@@ -69,14 +67,13 @@ public class KalibroDesktopTest extends TestCase {
 		doAnswer(answer).when(SettingsController.class, "editSettings");
 	}
 
-	private final class EditSettingsAnswer implements Answer<Object> {
+	private final class EditSettingsAnswer extends AnswerAdapter {
 
 		private boolean userConfirms;
 
 		@Override
-		public Object answer(InvocationOnMock invocation) throws Throwable {
+		public void answer() {
 			when(KalibroSettings.exists()).thenReturn(userConfirms);
-			return null;
 		}
 	}
 }

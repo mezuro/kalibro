@@ -1,12 +1,12 @@
 package org.kalibro.core.abstractentity;
 
-import static org.kalibro.util.reflection.MemberFilterFactory.hasAnnotation;
+import static org.kalibro.core.reflection.MemberFilterFactory.hasAnnotation;
 
 import java.lang.reflect.AccessibleObject;
 import java.util.*;
 
-import org.kalibro.util.reflection.FieldReflector;
-import org.kalibro.util.reflection.MemberFilterAdapter;
+import org.kalibro.core.reflection.FieldReflector;
+import org.kalibro.core.reflection.MemberFilterAdapter;
 
 /**
  * Specialized {@link FieldReflector} for entities.

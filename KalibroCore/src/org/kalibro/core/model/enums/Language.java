@@ -1,6 +1,6 @@
 package org.kalibro.core.model.enums;
 
-import org.kalibro.util.Identifier;
+import org.kalibro.core.Identifier;
 
 /**
  * Represents a software language.

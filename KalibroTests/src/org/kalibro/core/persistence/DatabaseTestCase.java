@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
 import org.junit.Before;
-import org.kalibro.IntegrationTest;
+import org.kalibro.tests.IntegrationTest;
 
 public abstract class DatabaseTestCase extends IntegrationTest {
 

@@ -9,17 +9,17 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(AnalizoMetricCollector.class)
-public class AnalizoMetricCollectorTest extends TestCase {
+public class AnalizoMetricCollectorTest extends UnitTest {
 
 	private CommandTask executor;
 	private AnalizoOutputParser parser;

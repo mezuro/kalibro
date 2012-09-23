@@ -1,22 +1,22 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class ReadingTest extends TestCase {
+public class ReadingTest extends UnitTest {
 
 	private Reading reading;
 	private ReadingDao dao;
@@ -64,10 +64,10 @@ public class ReadingTest extends TestCase {
 	}
 
 	private void shouldConflictWith(final Reading other, String message) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				reading.assertNoConflictWith(other);
 			}
 		}).throwsException().withMessage(message);
@@ -96,11 +96,11 @@ public class ReadingTest extends TestCase {
 		assertThat(save()).throwsException().withMessage("Group is not saved. Save group instead");
 	}
 
-	private Task save() {
-		return new Task() {
+	private VoidTask save() {
+		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				reading.save();
 			}
 		};

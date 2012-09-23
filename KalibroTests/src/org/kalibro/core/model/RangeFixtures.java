@@ -1,6 +1,6 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.core.model.MetricConfigurationFixtures.thresholds;
 
 import java.util.*;
 

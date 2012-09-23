@@ -1,15 +1,15 @@
 package org.kalibro.core.concurrent;
 
-class RetrieveResultTask<T> extends TypedTask<T> {
+final class RetrieveResultTask<T> extends Task<T> {
 
-	private T resultToBeRetrieved;
+	private T result;
 
-	protected RetrieveResultTask(T result) {
-		resultToBeRetrieved = result;
+	RetrieveResultTask(T result) {
+		this.result = result;
 	}
 
 	@Override
-	public T performAndGetResult() {
-		return resultToBeRetrieved;
+	protected T compute() {
+		return result;
 	}
 }

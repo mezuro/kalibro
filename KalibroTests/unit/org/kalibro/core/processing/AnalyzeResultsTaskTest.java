@@ -10,12 +10,12 @@ import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.tests.UnitTest;
 
-public class AnalyzeResultsTaskTest extends TestCase {
+public class AnalyzeResultsTaskTest extends UnitTest {
 
 	private ProjectResult projectResult;
 	private AnalyzeResultsTask analyzeTask;
@@ -34,14 +34,14 @@ public class AnalyzeResultsTaskTest extends TestCase {
 
 	@Test
 	public void shouldSetSourceTreeOnProjectResult() {
-		analyzeTask.performAndGetResult();
+		analyzeTask.compute();
 		assertDeepEquals(helloWorldRoot(), projectResult.getSourceTree());
 	}
 
 	@Test
 	public void shouldReturnResults() {
 		Collection<ModuleResult> expected = newHelloWorldResults(projectResult.getDate());
-		Collection<ModuleResult> actual = analyzeTask.performAndGetResult();
+		Collection<ModuleResult> actual = analyzeTask.compute();
 		assertDeepEquals(new HashSet<ModuleResult>(expected), new HashSet<ModuleResult>(actual));
 	}
 }

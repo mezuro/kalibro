@@ -1,7 +1,6 @@
 package org.cvsanaly;
 
 import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
-import static org.mockito.Matchers.*;
 
 import java.io.File;
 import java.util.HashMap;
@@ -15,7 +14,7 @@ import javax.persistence.Query;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -23,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Persistence.class)
-public class CVSAnalyDatabaseFetcherTest extends TestCase {
+public class CVSAnalyDatabaseFetcherTest extends UnitTest {
 
 	private static final File DATABASE_PATH = new File("/tmp/teste");
 

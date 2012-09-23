@@ -3,10 +3,10 @@ package org.kalibro.core.model;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.tests.UnitTest;
 
-public class AbstractMetricResultTest extends TestCase {
+public class AbstractMetricResultTest extends UnitTest {
 
 	@Test
 	public void checkInitialization() {

@@ -10,10 +10,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class ConfigurationTest extends TestCase {
+public class ConfigurationTest extends UnitTest {
 
 	private CompoundMetric sc;
 	private Configuration configuration;
@@ -78,10 +78,10 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkNoConfigurationFoundForMetricError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				configuration.getConfigurationFor("Unknown");
 			}
 		}).throwsException().withMessage("No configuration found for metric: Unknown");
@@ -89,10 +89,10 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void verifyErrorAddingConflictingMetricConfiguration() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				configuration.addMetricConfiguration(metricConfiguration("cbo"));
 			}
 		}).throwsException().withMessage("A metric configuration with code 'cbo' already exists");
@@ -107,10 +107,10 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorReplacingInexistentMetricConfiguration() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() throws Exception {
 				configuration.replaceMetricConfiguration("Unknown", metricConfiguration("noa"));
 			}
 		}).throwsException().withMessage("No configuration found for metric: Unknown");
@@ -118,10 +118,10 @@ public class ConfigurationTest extends TestCase {
 
 	@Test
 	public void checkErrorForConflictingMetricConfigurationReplace() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() throws Exception {
 				MetricConfiguration newMetricConfiguration = newMetricConfiguration("cbo");
 				newMetricConfiguration.setCode("lcom4");
 				configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
@@ -136,10 +136,10 @@ public class ConfigurationTest extends TestCase {
 		configuration.removeMetric(lcomName);
 		assertFalse(configuration.containsMetric(cboName));
 		assertFalse(configuration.containsMetric(lcomName));
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				configuration.removeMetric(cboName);
 			}
 		}).throwsException().withMessage("No configuration found for metric: " + cboName);
@@ -153,10 +153,10 @@ public class ConfigurationTest extends TestCase {
 	@Test
 	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() throws Exception {
 				configuration.addMetricConfiguration(new MetricConfiguration(sc));
 			}
 		}).throwsException().withCause(NullPointerException.class)

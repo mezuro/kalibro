@@ -9,12 +9,12 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.field.StringField;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class CardStackPanelTest extends TestCase {
+public class CardStackPanelTest extends UnitTest {
 
 	private StringField base, middle, top;
 	private CardLayout layout;

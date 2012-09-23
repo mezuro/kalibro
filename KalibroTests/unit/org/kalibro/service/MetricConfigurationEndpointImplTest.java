@@ -5,11 +5,11 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfigura
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -17,7 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class MetricConfigurationEndpointImplTest extends TestCase {
+public class MetricConfigurationEndpointImplTest extends UnitTest {
 
 	private static final String CONFIGURATION_NAME = "MetricConfigurationEndpointImplTest";
 

@@ -25,7 +25,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	}
 
 	@Override
-	protected Map<Module, ModuleResult> performAndGetResult() throws Exception {
+	protected Map<Module, ModuleResult> compute() throws Exception {
 		resultMap = new HashMap<Module, ModuleResult>();
 		Configuration configuration = DaoFactory.getConfigurationDao().getConfigurationFor(project.getName());
 		Map<String, Set<NativeMetric>> metricsMap = configuration.getNativeMetrics();

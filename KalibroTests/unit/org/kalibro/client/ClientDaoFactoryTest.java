@@ -5,13 +5,13 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ClientDaoFactory.class)
-public class ClientDaoFactoryTest extends TestCase {
+public class ClientDaoFactoryTest extends UnitTest {
 
 	private static final String SERVICE_ADDRESS = "ClientDaoFactoryTest service address";
 

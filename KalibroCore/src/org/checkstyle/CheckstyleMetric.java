@@ -5,11 +5,11 @@ import static org.kalibro.core.model.enums.Statistic.*;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kalibro.core.Identifier;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.util.Identifier;
 
 public enum CheckstyleMetric {
 

@@ -8,17 +8,17 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class ProjectResultEndpointImplTest extends TestCase {
+public class ProjectResultEndpointImplTest extends UnitTest {
 
 	private boolean flag;
 	private ProjectResultDao dao;

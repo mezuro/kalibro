@@ -1,7 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.io.File;
 import java.util.Arrays;
@@ -11,10 +10,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.dao.ReadingGroupDao;
+import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, DaoFactory.class})
-public class ReadingGroupTest extends TestCase {
+public class ReadingGroupTest extends UnitTest {
 
 	private ReadingGroup group;
 	private ReadingGroupDao dao;
@@ -126,11 +126,11 @@ public class ReadingGroupTest extends TestCase {
 		assertThat(save()).throwsException().withMessage("Reading group requires name.");
 	}
 
-	private Task save() {
-		return new Task() {
+	private VoidTask save() {
+		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				group.save();
 			}
 		};

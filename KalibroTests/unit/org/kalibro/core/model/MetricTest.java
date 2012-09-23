@@ -4,10 +4,10 @@ import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.tests.UnitTest;
 
-public class MetricTest extends TestCase {
+public class MetricTest extends UnitTest {
 
 	@Test
 	public void defaultDescriptionShouldBeEmpty() {

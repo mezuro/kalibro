@@ -2,17 +2,16 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.mockito.Matchers.any;
 
 import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -20,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ConfigurationDatabaseDao.class)
-public class ConfigurationDatabaseDaoTest extends TestCase {
+public class ConfigurationDatabaseDaoTest extends UnitTest {
 
 	private Configuration configuration;
 	private RecordManager recordManager;

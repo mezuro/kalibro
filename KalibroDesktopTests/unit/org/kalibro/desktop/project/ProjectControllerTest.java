@@ -10,10 +10,10 @@ import javax.swing.JDesktopPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -21,7 +21,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ProjectController.class, DaoFactory.class})
-public class ProjectControllerTest extends TestCase {
+public class ProjectControllerTest extends UnitTest {
 
 	private static final String NAME = "ProjectControllerTest name";
 	private static final List<String> NAMES = Arrays.asList(NAME);

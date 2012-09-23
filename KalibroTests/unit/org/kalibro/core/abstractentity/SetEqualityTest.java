@@ -1,21 +1,20 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class SetEqualityTest extends TestCase {
+public class SetEqualityTest extends UnitTest {
 
 	private SetEquality equality;
 

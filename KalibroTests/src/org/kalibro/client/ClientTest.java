@@ -2,23 +2,21 @@ package org.kalibro.client;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.dto.DataTransferObject;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({ReadingClientDao.class, ReadingGroupClientDao.class, EndpointClient.class})
+@PrepareOnlyThisForTest(EndpointClient.class)
 public abstract class ClientTest<// @formatter:off
 	ENTITY,
 	REQUEST extends DataTransferObject<ENTITY>,
 	RESPONSE extends DataTransferObject<ENTITY>,
 	ENDPOINT,
 	CLIENT extends EndpointClient<ENDPOINT>>// @formatter:on
-	extends TestCase {
-
-	private Class<?>[] classes;
+	extends UnitTest {
 
 	protected ENTITY entity;
 	protected REQUEST request;
@@ -29,7 +27,6 @@ public abstract class ClientTest<// @formatter:off
 
 	@Before
 	public void setUp() throws Exception {
-		classes = parameterClasses();
 		mockEntity();
 		createSupressedClient();
 	}
@@ -50,25 +47,33 @@ public abstract class ClientTest<// @formatter:off
 		Whitebox.setInternalState(client, "port", port);
 	}
 
-	protected abstract Class<?>[] parameterClasses();
-
-	private Class<ENTITY> entityClass() {
-		return (Class<ENTITY>) classes[0];
+	private Class<REQUEST> requestClass() throws ClassNotFoundException {
+		return xmlClass("Request");
 	}
 
-	private Class<REQUEST> requestClass() {
-		return (Class<REQUEST>) classes[1];
+	private Class<RESPONSE> responseClass() throws ClassNotFoundException {
+		return xmlClass("Response");
 	}
 
-	private Class<RESPONSE> responseClass() {
-		return (Class<RESPONSE>) classes[2];
+	private <T> Class<T> xmlClass(String side) throws ClassNotFoundException {
+		try {
+			return (Class<T>) Class.forName("org.kalibro.service.xml." + entityName() + "Xml");
+		} catch (ClassNotFoundException exception) {
+			return (Class<T>) Class.forName("org.kalibro.service.xml." + entityName() + "Xml" + side);
+		}
 	}
 
-	private Class<ENDPOINT> endpointClass() {
-		return (Class<ENDPOINT>) classes[3];
+	private Class<CLIENT> clientClass() throws ClassNotFoundException {
+		return (Class<CLIENT>) Class.forName("org.kalibro.client." + entityName() + "ClientDao");
 	}
 
-	private Class<CLIENT> clientClass() {
-		return (Class<CLIENT>) classes[4];
+	private Class<ENDPOINT> endpointClass() throws ClassNotFoundException {
+		return (Class<ENDPOINT>) Class.forName("org.kalibro.service." + entityName() + "Endpoint");
 	}
+
+	private String entityName() {
+		return entityClass().getSimpleName();
+	}
+
+	protected abstract Class<ENTITY> entityClass();
 }

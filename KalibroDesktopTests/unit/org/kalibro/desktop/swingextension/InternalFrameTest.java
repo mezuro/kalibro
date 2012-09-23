@@ -11,9 +11,9 @@ import javax.swing.WindowConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Range;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -23,7 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(InternalFrame.class)
-public class InternalFrameTest extends TestCase {
+public class InternalFrameTest extends UnitTest {
 
 	private Range range;
 	private RangeFrame frame;
@@ -81,10 +81,10 @@ public class InternalFrameTest extends TestCase {
 		Mockito.verify(frame).setSelected(true);
 
 		PowerMockito.doThrow(new PropertyVetoException("", null)).when(frame).setSelected(true);
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				frame.select();
 			}
 		}).throwsException().withMessage("Could not select range frame: " + range)

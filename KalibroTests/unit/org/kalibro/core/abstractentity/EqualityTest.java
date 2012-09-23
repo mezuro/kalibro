@@ -5,14 +5,14 @@ import static org.mockito.Matchers.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class EqualityTest extends TestCase {
+public class EqualityTest extends UnitTest {
 
 	@Test
 	public void shouldUseNormalCasesOnNormalEquals() throws Exception {

@@ -1,7 +1,7 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.CONFIGURATION_NAME;
+import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.model.enums.RepositoryType;

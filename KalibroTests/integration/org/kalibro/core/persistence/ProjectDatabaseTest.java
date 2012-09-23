@@ -9,7 +9,7 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.dao.ProjectDao;
@@ -78,10 +78,10 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveUnsavedProject() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				retrieve(helloWorld);
 			}
 		}).throwsException().withMessage("There is no project named '" + helloWorld.getName() + "'")

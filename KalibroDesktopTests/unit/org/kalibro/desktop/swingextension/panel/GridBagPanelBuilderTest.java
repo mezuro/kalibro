@@ -13,12 +13,12 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.DoubleField;
 import org.kalibro.desktop.swingextension.field.StringField;
+import org.kalibro.tests.UnitTest;
 
-public class GridBagPanelBuilderTest extends TestCase {
+public class GridBagPanelBuilderTest extends UnitTest {
 
 	private JPanel panel;
 	private Random random;

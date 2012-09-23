@@ -1,6 +1,6 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.PROJECT_NAME;
 
 import org.kalibro.core.model.enums.Granularity;
 

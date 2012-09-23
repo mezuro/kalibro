@@ -10,12 +10,12 @@ import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.configuration.ConfigurationMenu;
 import org.kalibro.desktop.project.ProjectMenu;
 import org.kalibro.desktop.swingextension.icon.Icon;
+import org.kalibro.tests.UnitTest;
 
-public class KalibroFrameTest extends TestCase {
+public class KalibroFrameTest extends UnitTest {
 
 	private KalibroFrame frame;
 

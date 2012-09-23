@@ -5,12 +5,12 @@ import static org.kalibro.core.model.ProjectFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.desktop.swingextension.Label;
+import org.kalibro.tests.UnitTest;
 
-public class ProjectStatusBarTest extends TestCase {
+public class ProjectStatusBarTest extends UnitTest {
 
 	private Project project;
 	private ProjectStatusBar statusBar;

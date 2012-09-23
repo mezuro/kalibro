@@ -7,17 +7,17 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.service.BaseToolEndpoint;
 import org.kalibro.service.entities.BaseToolXml;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({BaseToolClientDao.class, EndpointClient.class})
-public class BaseToolPortDaoTest extends TestCase {
+public class BaseToolPortDaoTest extends UnitTest {
 
 	private BaseTool baseTool;
 	private BaseToolXml baseToolXml;

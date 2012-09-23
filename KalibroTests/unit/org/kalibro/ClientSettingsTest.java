@@ -3,8 +3,9 @@ package org.kalibro;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.kalibro.tests.UnitTest;
 
-public class ClientSettingsTest extends TestCase {
+public class ClientSettingsTest extends UnitTest {
 
 	@Test
 	public void checkDefaultClientSettings() {

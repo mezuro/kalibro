@@ -1,10 +1,9 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.core.model.ModuleResultFixtures.*;
 
-import java.net.MalformedURLException;
 import java.util.Date;
 import java.util.List;
 
@@ -14,7 +13,7 @@ import org.kalibro.core.model.ModuleResult;
 import org.kalibro.dao.ModuleResultDaoFake;
 import org.kalibro.service.entities.ModuleResultXml;
 
-public class ModuleResultEndpointTest extends EndpointTest {
+public class ModuleResultEndpointTest extends OldEndpointTest {
 
 	private static final String PROJECT_NAME = "HelloWorld-1.0";
 	private static final String CLASS_NAME = "HelloWorld";
@@ -25,7 +24,7 @@ public class ModuleResultEndpointTest extends EndpointTest {
 	private ModuleResultEndpoint port;
 
 	@Before
-	public void setUp() throws MalformedURLException {
+	public void setUp() {
 		daoFake = new ModuleResultDaoFake();
 		configureAndAddModuleResult(newHelloWorldApplicationResult(DATE_1));
 		configureAndAddModuleResult(newHelloWorldApplicationResult(DATE_2));

@@ -1,20 +1,19 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class ArrayEqualityTest extends TestCase {
+public class ArrayEqualityTest extends UnitTest {
 
 	private ArrayEquality equality;
 

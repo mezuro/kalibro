@@ -1,57 +1,95 @@
 package org.kalibro.service;
 
-import java.io.PrintStream;
-import java.net.MalformedURLException;
-import java.net.URL;
+import static org.junit.Assert.assertTrue;
 
-import javax.xml.namespace.QName;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import javax.xml.ws.Endpoint;
-import javax.xml.ws.Service;
 
 import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.kalibro.IntegrationTest;
+import org.junit.Before;
+import org.kalibro.client.EndpointClient;
+import org.kalibro.dto.DataTransferObject;
+import org.kalibro.tests.IntegrationTest;
+import org.powermock.reflect.Whitebox;
 
-public abstract class EndpointTest extends IntegrationTest {
+public abstract class EndpointTest<ENTITY, DAO, ENDPOINT> extends IntegrationTest {
 
-	private static final String NAMESPACE = "http://service.kalibro.org/";
+	private static final String SERVICE_ADDRESS = "http://localhost:8080/KalibroService/";
 
-	private static PrintStream out, err;
-
-	@BeforeClass
-	public static void suppressOutput() {
-		out = System.out;
-		err = System.err;
-		System.setOut(null);
-		System.setErr(null);
-	}
-
-	@AfterClass
-	public static void restoreOutput() {
-		System.setOut(out);
-		System.setErr(err);
-	}
+	protected DAO dao;
+	protected ENTITY entity;
+	protected ENDPOINT port;
 
 	private Endpoint endpoint;
+
+	@Before
+	public void setUp() throws Exception {
+		entity = loadFixture();
+		dao = mock(daoClass());
+		publish();
+		port = EndpointClient.getPort(SERVICE_ADDRESS, endpointClass());
+	}
+
+	protected abstract ENTITY loadFixture();
+
+	private void publish() throws Exception {
+		Class<?> implementorClass = Class.forName(endpointClass().getName() + "Impl");
+		Object implementor = implementorClass.getConstructor(daoClass()).newInstance(dao);
+		endpoint = Endpoint.create(implementor);
+		endpoint.publish(SERVICE_ADDRESS + endpointClass().getSimpleName() + "/");
+	}
+
+	private Class<DAO> daoClass() throws ClassNotFoundException {
+		return (Class<DAO>) Class.forName("org.kalibro.dao." + entityName() + "Dao");
+	}
+
+	private Class<ENDPOINT> endpointClass() throws ClassNotFoundException {
+		return (Class<ENDPOINT>) Class.forName("org.kalibro.service." + entityName() + "Endpoint");
+	}
+
+	private String entityName() {
+		return entity.getClass().getSimpleName();
+	}
 
 	@After
 	public void tearDown() {
 		endpoint.stop();
 	}
 
-	protected <T> T publishAndGetPort(T implementor, Class<T> endpointClass) throws MalformedURLException {
-		String endpointName = endpointClass.getSimpleName();
-		URL wsdlLocation = publish(implementor, endpointName);
-		QName serviceName = new QName(NAMESPACE, endpointName + "Service");
-		QName portName = new QName(NAMESPACE, endpointName + "Port");
-		return Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
+	protected <T extends DataTransferObject<ENTITY>> void assertDeepDtoEquals(ENTITY expected, T actual) {
+		assertDeepEquals(expected, convert(actual));
 	}
 
-	private URL publish(Object implementor, String endpointName) throws MalformedURLException {
-		String address = "http://localhost:8080/KalibroService/" + endpointName + "/";
-		endpoint = Endpoint.create(implementor);
-		endpoint.publish(address);
-		return new URL(address + "?wsdl");
+	protected void assertDeepDtoList(List<? extends DataTransferObject<ENTITY>> dtoList, ENTITY... expected) {
+		assertDeepList(convert(dtoList), expected);
+	}
+
+	private List<ENTITY> convert(Collection<? extends DataTransferObject<ENTITY>> dtos) {
+		List<ENTITY> entities = new ArrayList<ENTITY>();
+		for (DataTransferObject<ENTITY> dto : dtos)
+			entities.add(convert(dto));
+		return entities;
+	}
+
+	private ENTITY convert(DataTransferObject<ENTITY> dto) {
+		ENTITY converted = dto.convert();
+		for (String field : fieldsThatShouldBeProxy())
+			assertProxy(converted, field);
+		return converted;
+	}
+
+	protected List<String> fieldsThatShouldBeProxy() {
+		return new ArrayList<String>();
+	}
+
+	private void assertProxy(ENTITY converted, String field) {
+		Object value = Whitebox.getInternalState(converted, field);
+		assertTrue("Field " + field + " is not a proxy.", value.getClass().getName().contains("EnhancerByCGLIB"));
+
+		Object originalValue = Whitebox.getInternalState(entity, field);
+		Whitebox.setInternalState(converted, field, originalValue);
 	}
 }

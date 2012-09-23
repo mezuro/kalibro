@@ -10,7 +10,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
@@ -20,6 +19,7 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -27,7 +27,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DaoFactory.class, ProcessProjectTask.class})
-public class ProcessProjectTaskTest extends TestCase {
+public class ProcessProjectTaskTest extends UnitTest {
 
 	private Project project;
 	private ProjectResult projectResult;
@@ -71,11 +71,11 @@ public class ProcessProjectTaskTest extends TestCase {
 		projectResult = mock(ProjectResult.class);
 		Map<Module, ModuleResult> resultMap = mock(Map.class);
 		whenNew(LoadSourceTask.class).withArguments(project).thenReturn(loadTask);
-		when(loadTask.execute()).thenReturn(projectResult);
+		when(loadTask.executeSubTask()).thenReturn(projectResult);
 		whenNew(CollectMetricsTask.class).withArguments(projectResult).thenReturn(collectTask);
-		when(collectTask.execute()).thenReturn(resultMap);
+		when(collectTask.executeSubTask()).thenReturn(resultMap);
 		whenNew(AnalyzeResultsTask.class).withArguments(projectResult, resultMap).thenReturn(analyzeTask);
-		when(analyzeTask.execute()).thenReturn(moduleResults);
+		when(analyzeTask.executeSubTask()).thenReturn(moduleResults);
 	}
 
 	@Test
@@ -83,9 +83,9 @@ public class ProcessProjectTaskTest extends TestCase {
 		processTask.perform();
 
 		InOrder order = Mockito.inOrder(loadTask, collectTask, analyzeTask);
-		order.verify(loadTask).execute();
-		order.verify(collectTask).execute();
-		order.verify(analyzeTask).execute();
+		order.verify(loadTask).executeSubTask();
+		order.verify(collectTask).executeSubTask();
+		order.verify(analyzeTask).executeSubTask();
 	}
 
 	@Test
@@ -108,7 +108,7 @@ public class ProcessProjectTaskTest extends TestCase {
 	@Test
 	public void shouldSaveProjectWithError() {
 		RuntimeException error = mock(RuntimeException.class);
-		when(loadTask.execute()).thenThrow(error);
+		when(loadTask.executeSubTask()).thenThrow(error);
 
 		processTask.perform();
 		assertEquals(ProjectState.ERROR, project.getState());

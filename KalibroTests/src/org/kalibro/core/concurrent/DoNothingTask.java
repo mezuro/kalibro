@@ -1,9 +1,9 @@
 package org.kalibro.core.concurrent;
 
-class DoNothingTask extends Task {
+final class DoNothingTask extends VoidTask {
 
 	@Override
-	public void perform() {
+	protected void perform() {
 		return;
 	}
 }

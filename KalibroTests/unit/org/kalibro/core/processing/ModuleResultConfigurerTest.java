@@ -7,11 +7,11 @@ import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResu
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.tests.UnitTest;
 
-public class ModuleResultConfigurerTest extends TestCase {
+public class ModuleResultConfigurerTest extends UnitTest {
 
 	private ModuleResult result;
 	private CompoundMetric sc, invalid;

@@ -6,7 +6,7 @@ import java.util.Collection;
 import org.junit.Test;
 import org.kalibro.DtoTestCase;
 import org.kalibro.KalibroException;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
@@ -29,10 +29,10 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
 	@Test
 	public void shouldThrowErrorForNotConvertibleError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				new ErrorXml(new Throwable() {
 					// Anonymous class
 				}).convert();

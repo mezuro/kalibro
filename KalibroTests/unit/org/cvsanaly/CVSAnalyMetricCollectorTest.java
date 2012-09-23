@@ -1,6 +1,6 @@
 package org.cvsanaly;
 
-import static org.mockito.Matchers.*;
+import static org.mockito.Matchers.startsWith;
 
 import java.io.File;
 import java.io.IOException;
@@ -10,10 +10,10 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CVSAnalyMetricCollector.class)
-public class CVSAnalyMetricCollectorTest extends TestCase {
+public class CVSAnalyMetricCollectorTest extends UnitTest {
 
 	private CVSAnalyMetricCollector cvsanaly;
 	private CommandTask executor;
@@ -65,7 +65,7 @@ public class CVSAnalyMetricCollectorTest extends TestCase {
 		mockFetcher();
 
 		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
-		Mockito.verify(executor).executeAndWait();
+		Mockito.verify(executor).execute();
 		assertDeepEquals(CVSAnalyStub.results(), actual);
 	}
 
@@ -80,7 +80,7 @@ public class CVSAnalyMetricCollectorTest extends TestCase {
 		mockFetcher();
 
 		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
-		Mockito.verify(executor).executeAndWait();
+		Mockito.verify(executor).execute();
 		assertDeepEquals(CVSAnalyStub.limitedResults(), actual);
 	}
 

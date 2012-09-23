@@ -9,10 +9,10 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class ProjectResultTest extends TestCase {
+public class ProjectResultTest extends UnitTest {
 
 	private Date date;
 	private ProjectResult result;
@@ -52,10 +52,10 @@ public class ProjectResultTest extends TestCase {
 
 	@Test
 	public void shouldValidateProjectProcessedOnRetrievingProcessData() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				new ProjectResult(helloWorld()).getSourceTree();
 			}
 		}).throwsException().withMessage("Project not yet processed: " + result.getProject().getName());

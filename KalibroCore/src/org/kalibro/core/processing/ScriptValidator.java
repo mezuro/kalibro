@@ -7,10 +7,10 @@ import org.kalibro.core.model.MetricConfiguration;
 
 public class ScriptValidator {
 
-	private ScriptEvaluator evaluator;
+	private JavascriptEvaluator evaluator;
 
 	public ScriptValidator() {
-		evaluator = JavascriptEvaluator.create();
+		evaluator = new JavascriptEvaluator();
 	}
 
 	public void add(MetricConfiguration configuration) {

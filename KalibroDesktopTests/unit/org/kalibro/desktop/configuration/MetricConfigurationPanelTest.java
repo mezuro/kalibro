@@ -5,7 +5,6 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfigura
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.Range;
 import org.kalibro.core.model.enums.Statistic;
@@ -16,10 +15,11 @@ import org.kalibro.desktop.swingextension.field.DoubleField;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.list.Table;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class MetricConfigurationPanelTest extends TestCase {
+public class MetricConfigurationPanelTest extends UnitTest {
 
 	private MetricConfiguration configuration;
 

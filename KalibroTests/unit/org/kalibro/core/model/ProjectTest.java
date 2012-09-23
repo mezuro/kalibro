@@ -12,9 +12,9 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -22,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(KalibroSettings.class)
-public class ProjectTest extends TestCase {
+public class ProjectTest extends UnitTest {
 
 	private KalibroSettings settings;
 	private Project project = newHelloWorld();
@@ -96,10 +96,10 @@ public class ProjectTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				project.getStateWhenErrorOcurred();
 			}
 		}).throwsException().withMessage("Project " + project + " has no error");
@@ -107,10 +107,10 @@ public class ProjectTest extends TestCase {
 
 	@Test
 	public void shouldNotAllowErrorStateWithoutException() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				project.setState(ERROR);
 			}
 		}).throwsException().withMessage("Use setError(Throwable) to put project in error state");
@@ -124,10 +124,10 @@ public class ProjectTest extends TestCase {
 	}
 
 	private void assertNoError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				project.getError();
 			}
 		}).throwsException().withMessage("Project " + project + " has no error");

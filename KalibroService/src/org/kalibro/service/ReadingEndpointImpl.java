@@ -26,7 +26,7 @@ public class ReadingEndpointImpl implements ReadingEndpoint {
 		this(DaoFactory.getReadingDao());
 	}
 
-	protected ReadingEndpointImpl(ReadingDao readingDao) {
+	public ReadingEndpointImpl(ReadingDao readingDao) {
 		dao = readingDao;
 	}
 

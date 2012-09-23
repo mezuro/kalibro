@@ -8,10 +8,10 @@ import java.io.File;
 
 import org.junit.After;
 import org.junit.Test;
-import org.kalibro.EnumerationTestCase;
+import org.kalibro.tests.EnumerationTest;
 import org.powermock.reflect.Whitebox;
 
-public class EnvironmentTest extends EnumerationTestCase<Environment> {
+public class EnvironmentTest extends EnumerationTest<Environment> {
 
 	private static final File DOT_KALIBRO = new File(new File(System.getProperty("user.home")), ".kalibro");
 

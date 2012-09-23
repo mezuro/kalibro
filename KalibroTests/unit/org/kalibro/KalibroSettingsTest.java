@@ -9,12 +9,13 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, KalibroSettings.class})
-public class KalibroSettingsTest extends TestCase {
+public class KalibroSettingsTest extends UnitTest {
 
 	private File settingsFile;
 
