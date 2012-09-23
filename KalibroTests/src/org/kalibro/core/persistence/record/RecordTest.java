@@ -13,11 +13,14 @@ import org.kalibro.dto.ConcreteDtoTest;
 public abstract class RecordTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
 
 	@Test
-	public void checkClassAnnotations() throws ClassNotFoundException {
+	public void persistenceEntityNameShouldBeEqualEntityName() throws ClassNotFoundException {
 		Entity entityAnnotation = dtoClass().getAnnotation(Entity.class);
 		assertNotNull(entityAnnotation);
 		assertEquals(entityName(), entityAnnotation.name());
+	}
 
+	@Test
+	public void tableNameShouldBeEntityNameAsConstant() throws ClassNotFoundException {
 		Table table = dtoClass().getAnnotation(Table.class);
 		assertNotNull(table);
 		assertEquals(tableName(), table.name());

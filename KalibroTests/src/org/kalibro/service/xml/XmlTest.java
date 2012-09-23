@@ -16,18 +16,21 @@ import org.kalibro.dto.ConcreteDtoTest;
 public abstract class XmlTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
 
 	@Test
-	public void checkClassAnnotations() throws ClassNotFoundException {
+	public void elementNameShouldBeEntityNameAsVariable() throws ClassNotFoundException {
 		XmlRootElement element = dtoClass().getAnnotation(XmlRootElement.class);
 		assertNotNull(element);
-		assertEquals(rootElementName(), element.name());
+		assertEquals(expectedElementName(), element.name());
+	}
 
+	private String expectedElementName() {
+		return Identifier.fromVariable(entityName()).asVariable();
+	}
+
+	@Test
+	public void shouldHaveFieldXmlAccess() throws ClassNotFoundException {
 		XmlAccessorType accessorType = dtoClass().getAnnotation(XmlAccessorType.class);
 		assertNotNull(accessorType);
 		assertEquals(XmlAccessType.FIELD, accessorType.value());
-	}
-
-	private String rootElementName() {
-		return Identifier.fromVariable(entityName()).asVariable();
 	}
 
 	protected void assertElement(String field, Class<?> type, boolean required) {
