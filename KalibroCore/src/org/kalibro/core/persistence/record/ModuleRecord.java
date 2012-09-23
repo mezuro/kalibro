@@ -14,6 +14,7 @@ import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Module")
+@Table(name = "\"MODULE\"")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date"), @Column(name = "name")})
 public class ModuleRecord extends DataTransferObject<ModuleNode> {
 
@@ -41,6 +42,10 @@ public class ModuleRecord extends DataTransferObject<ModuleNode> {
 
 	public ModuleRecord() {
 		super();
+	}
+
+	public ModuleRecord(Module module) {
+		this(new ModuleNode(module), new ProjectResultRecord(), new ModuleRecord());
 	}
 
 	public ModuleRecord(ModuleNode moduleNode, ProjectResult projectResult) {
