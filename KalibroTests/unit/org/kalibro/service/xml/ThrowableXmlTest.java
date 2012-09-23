@@ -8,23 +8,23 @@ import org.kalibro.DtoTestCase;
 import org.kalibro.KalibroException;
 import org.kalibro.core.concurrent.VoidTask;
 
-public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
+public class ThrowableXmlTest extends DtoTestCase<Throwable, ThrowableXml> {
 
 	@Override
-	protected ErrorXml newDtoUsingDefaultConstructor() {
-		return new ErrorXml();
+	protected ThrowableXml newDtoUsingDefaultConstructor() {
+		return new ThrowableXml();
 	}
 
 	@Override
 	protected Collection<Throwable> entitiesForTestingConversion() {
-		Throwable error = new Throwable("ErrorXmlTest");
-		KalibroException exception = new KalibroException("ErrorXmlTest", error);
+		Throwable error = new Throwable("ThrowableXmlTest");
+		KalibroException exception = new KalibroException("ThrowableXmlTest", error);
 		return Arrays.asList(error, exception);
 	}
 
 	@Override
-	protected ErrorXml createDto(Throwable error) {
-		return new ErrorXml(error);
+	protected ThrowableXml createDto(Throwable error) {
+		return new ThrowableXml(error);
 	}
 
 	@Test
@@ -33,7 +33,7 @@ public class ErrorXmlTest extends DtoTestCase<Throwable, ErrorXml> {
 
 			@Override
 			protected void perform() throws Throwable {
-				new ErrorXml(new Throwable() {
+				new ThrowableXml(new Throwable() {
 					// Anonymous class
 				}).convert();
 			}

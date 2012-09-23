@@ -13,26 +13,26 @@ import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "Error")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ErrorXml extends DataTransferObject<Throwable> {
+public class ThrowableXml extends DataTransferObject<Throwable> {
 
 	private String errorClass;
 
 	private String message;
 
-	private ErrorXml cause;
+	private ThrowableXml cause;
 
 	@XmlElement(name = "stackTraceElement")
 	private List<StackTraceElementXml> stackTrace;
 
-	public ErrorXml() {
+	public ThrowableXml() {
 		super();
 	}
 
-	public ErrorXml(Throwable error) {
+	public ThrowableXml(Throwable error) {
 		errorClass = error.getClass().getCanonicalName();
 		message = error.getMessage();
 		if (error.getCause() != null)
-			cause = new ErrorXml(error.getCause());
+			cause = new ThrowableXml(error.getCause());
 		initializeStackTrace(error);
 	}
 

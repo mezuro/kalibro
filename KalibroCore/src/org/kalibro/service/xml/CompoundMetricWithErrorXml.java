@@ -11,7 +11,7 @@ import org.kalibro.core.model.CompoundMetric;
 class CompoundMetricWithErrorXml {
 
 	private CompoundMetricXml metric;
-	private ErrorXml error;
+	private ThrowableXml error;
 
 	public CompoundMetricWithErrorXml() {
 		super();
@@ -19,7 +19,7 @@ class CompoundMetricWithErrorXml {
 
 	protected CompoundMetricWithErrorXml(CompoundMetric metric, Throwable error) {
 		this.metric = new CompoundMetricXml(metric);
-		this.error = new ErrorXml(error);
+		this.error = new ThrowableXml(error);
 	}
 
 	protected CompoundMetric getMetric() {

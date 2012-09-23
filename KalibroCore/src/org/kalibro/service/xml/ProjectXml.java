@@ -21,7 +21,7 @@ public class ProjectXml extends DataTransferObject<Project> {
 	private RepositoryXml repository;
 
 	private ProjectState state;
-	private ErrorXml error;
+	private ThrowableXml error;
 
 	private String configurationName;
 
@@ -46,7 +46,7 @@ public class ProjectXml extends DataTransferObject<Project> {
 
 	private void initializeError(Project project) {
 		if (project.getState() == ERROR)
-			error = new ErrorXml(project.getError());
+			error = new ThrowableXml(project.getError());
 	}
 
 	@Override
