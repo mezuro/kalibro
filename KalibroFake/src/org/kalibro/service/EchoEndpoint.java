@@ -8,7 +8,7 @@ import javax.jws.WebService;
 import org.kalibro.Configuration;
 import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.service.entities.*;
+import org.kalibro.service.xml.*;
 
 @WebService
 public class EchoEndpoint {

@@ -11,8 +11,8 @@ import javax.jws.WebService;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.entities.ProjectXml;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.ProjectXml;
+import org.kalibro.service.xml.RawProjectXml;
 
 @WebService(name = "ProjectEndpoint", serviceName = "ProjectEndpointService")
 public class ProjectEndpointImpl implements ProjectEndpoint {

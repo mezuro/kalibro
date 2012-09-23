@@ -5,7 +5,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.service.xml.MetricConfigurationXml;
 
 @WebService(name = "MetricConfigurationEndpoint", serviceName = "MetricConfigurationEndpointService")
 public interface MetricConfigurationEndpoint {

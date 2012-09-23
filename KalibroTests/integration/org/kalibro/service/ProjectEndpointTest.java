@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.Project;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.RawProjectXml;
 
 public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, ProjectEndpoint> {
 

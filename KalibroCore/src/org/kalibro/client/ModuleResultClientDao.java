@@ -7,7 +7,7 @@ import java.util.List;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.service.ModuleResultEndpoint;
-import org.kalibro.service.entities.ModuleResultXml;
+import org.kalibro.service.xml.ModuleResultXml;
 
 class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> implements ModuleResultDao {
 

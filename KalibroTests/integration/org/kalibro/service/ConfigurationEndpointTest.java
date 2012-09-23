@@ -11,7 +11,7 @@ import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXml;
 
 public class ConfigurationEndpointTest extends EndpointTest<Configuration, ConfigurationDao, ConfigurationEndpoint> {
 

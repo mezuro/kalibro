@@ -5,7 +5,7 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfigura
 import org.junit.Test;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.service.xml.MetricConfigurationXml;
 
 public class MetricConfigurationEndpointTest extends
 	EndpointTest<MetricConfiguration, MetricConfigurationDao, MetricConfigurationEndpoint> {

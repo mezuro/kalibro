@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.service.xml.MetricConfigurationXml;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;

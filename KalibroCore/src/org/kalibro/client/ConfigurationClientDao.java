@@ -6,7 +6,7 @@ import org.kalibro.Configuration;
 import org.kalibro.KalibroException;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.service.ConfigurationEndpoint;
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXml;
 
 class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> implements ConfigurationDao {
 

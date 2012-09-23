@@ -13,7 +13,7 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.RawProjectXml;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;

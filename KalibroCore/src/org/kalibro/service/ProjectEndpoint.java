@@ -9,8 +9,8 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.service.entities.ProjectXml;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.ProjectXml;
+import org.kalibro.service.xml.RawProjectXml;
 
 @WebService(name = "ProjectEndpoint", serviceName = "ProjectEndpointService")
 public interface ProjectEndpoint {

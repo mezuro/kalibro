@@ -7,7 +7,7 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.ProjectEndpoint;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.RawProjectXml;
 
 class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
 

@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.service.ProjectResultEndpoint;
-import org.kalibro.service.entities.ProjectResultXml;
+import org.kalibro.service.xml.ProjectResultXml;
 import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;

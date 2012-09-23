@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXml;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;

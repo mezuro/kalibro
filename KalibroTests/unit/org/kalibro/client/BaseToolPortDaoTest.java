@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.service.BaseToolEndpoint;
-import org.kalibro.service.entities.BaseToolXml;
+import org.kalibro.service.xml.BaseToolXml;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

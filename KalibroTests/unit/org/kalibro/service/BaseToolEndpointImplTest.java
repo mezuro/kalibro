@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.service.entities.BaseToolXmlTest;
 import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -49,6 +48,6 @@ public class BaseToolEndpointImplTest extends UnitTest {
 	@Test
 	public void testGetBaseTool() {
 		PowerMockito.when(dao.getBaseTool("42")).thenReturn(baseTool);
-		new BaseToolXmlTest().assertCorrectConversion(baseTool, endpoint.getBaseTool("42").convert());
+		assertDeepEquals(baseTool, endpoint.getBaseTool("42").convert());
 	}
 }

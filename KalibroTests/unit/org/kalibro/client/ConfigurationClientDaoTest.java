@@ -10,7 +10,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.service.ConfigurationEndpoint;
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXml;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

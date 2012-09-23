@@ -7,7 +7,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXml;
 
 @WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public interface ConfigurationEndpoint {

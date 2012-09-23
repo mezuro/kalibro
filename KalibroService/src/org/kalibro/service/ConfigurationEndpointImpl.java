@@ -8,7 +8,7 @@ import javax.jws.WebService;
 
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXml;
 
 @WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public class ConfigurationEndpointImpl implements ConfigurationEndpoint {

@@ -6,7 +6,7 @@ import javax.jws.WebService;
 
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.service.xml.MetricConfigurationXml;
 
 @WebService(name = "MetricConfigurationEndpoint", serviceName = "MetricConfigurationEndpointService")
 public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpoint {
