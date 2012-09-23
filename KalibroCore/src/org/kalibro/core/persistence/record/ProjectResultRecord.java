@@ -13,6 +13,7 @@ import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "ProjectResult")
+@Table(name = "\"PROJECT_RESULT\"")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date")})
 public class ProjectResultRecord extends DataTransferObject<ProjectResult> {
 
