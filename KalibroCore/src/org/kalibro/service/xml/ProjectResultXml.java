@@ -10,7 +10,7 @@ import org.kalibro.core.model.ProjectResult;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "ProjectResult")
+@XmlRootElement(name = "projectResult")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProjectResultXml extends DataTransferObject<ProjectResult> {
 
