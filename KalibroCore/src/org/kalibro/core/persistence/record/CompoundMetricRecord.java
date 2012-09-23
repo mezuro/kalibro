@@ -7,6 +7,7 @@ import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.enums.Granularity;
 
 @Entity(name = "CompoundMetric")
+@Table(name = "\"COMPOUND_METRIC\"")
 @PrimaryKey(columns = {@Column(name = "name"), @Column(name = "configuration")})
 public class CompoundMetricRecord extends MetricRecord<CompoundMetric> {
 
@@ -22,6 +23,10 @@ public class CompoundMetricRecord extends MetricRecord<CompoundMetric> {
 
 	public CompoundMetricRecord() {
 		super();
+	}
+
+	public CompoundMetricRecord(CompoundMetric compoundMetric) {
+		this(compoundMetric, null);
 	}
 
 	public CompoundMetricRecord(CompoundMetric compoundMetric, MetricConfigurationRecord metricConfiguration) {
