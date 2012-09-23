@@ -12,7 +12,7 @@ import org.kalibro.core.model.*;
 import org.kalibro.core.model.enums.Statistic;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "MetricConfiguration")
+@XmlRootElement(name = "metricConfiguration")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MetricConfigurationXml extends DataTransferObject<MetricConfiguration> {
 
