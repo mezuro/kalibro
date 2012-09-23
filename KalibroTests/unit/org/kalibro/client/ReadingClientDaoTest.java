@@ -8,14 +8,15 @@ import org.junit.Test;
 import org.kalibro.Reading;
 import org.kalibro.service.ReadingEndpoint;
 import org.kalibro.service.xml.ReadingXml;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
+@PrepareOnlyThisForTest(ReadingClientDao.class)
 public class ReadingClientDaoTest extends
 	ClientTest<Reading, ReadingXml, ReadingXml, ReadingEndpoint, ReadingClientDao> {
 
 	@Override
-	protected Class<?>[] parameterClasses() {
-		return new Class<?>[]{Reading.class, ReadingXml.class, ReadingXml.class,
-			ReadingEndpoint.class, ReadingClientDao.class};
+	protected Class<Reading> entityClass() {
+		return Reading.class;
 	}
 
 	@Test
