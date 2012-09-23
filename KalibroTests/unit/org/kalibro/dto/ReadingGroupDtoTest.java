@@ -6,7 +6,7 @@ import java.util.List;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingDao;
 
-public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup, ReadingGroupDto> {
+public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup> {
 
 	@Override
 	protected ReadingGroup loadFixture() {

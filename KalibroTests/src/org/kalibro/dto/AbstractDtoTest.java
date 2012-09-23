@@ -12,9 +12,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoLazyLoader.class)
-public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends UnitTest {
+public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
-	protected DTO dto;
+	private DataTransferObject<ENTITY> dto;
+
 	protected ENTITY entity;
 
 	@Before
@@ -28,10 +29,10 @@ public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 
 	protected abstract ENTITY loadFixture();
 
-	private DTO createDtoStub() throws Exception {
+	private DataTransferObject<ENTITY> createDtoStub() throws Exception {
 		Class<?> entityClass = entity.getClass();
-		Class<?> stubClass = Class.forName("org.kalibro.dto." + entityClass.getSimpleName() + "DtoStub");
-		return (DTO) stubClass.getDeclaredConstructor(entityClass).newInstance(entity);
+		Class<?> stubClass = Class.forName(getClass().getName().replace("Test", "Stub"));
+		return (DataTransferObject<ENTITY>) stubClass.getDeclaredConstructor(entityClass).newInstance(entity);
 	}
 
 	@Test
