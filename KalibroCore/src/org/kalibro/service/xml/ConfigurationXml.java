@@ -12,7 +12,7 @@ import org.kalibro.Configuration;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "Configuration")
+@XmlRootElement(name = "configuration")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ConfigurationXml extends DataTransferObject<Configuration> {
 
