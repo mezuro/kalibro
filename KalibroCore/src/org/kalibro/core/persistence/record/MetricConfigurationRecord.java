@@ -11,6 +11,7 @@ import org.kalibro.core.model.enums.Statistic;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "MetricConfiguration")
+@Table(name = "\"METRIC_CONFIGURATION\"")
 @PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName")})
 public class MetricConfigurationRecord extends DataTransferObject<MetricConfiguration> {
 
@@ -49,6 +50,10 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 
 	public MetricConfigurationRecord() {
 		super();
+	}
+
+	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
+		this(metricConfiguration, null);
 	}
 
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, ConfigurationRecord configuration) {
