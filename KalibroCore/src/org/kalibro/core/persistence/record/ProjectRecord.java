@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.enums.ProjectState.*;
+import static org.kalibro.core.model.enums.ProjectState.ERROR;
 
 import javax.persistence.*;
 
@@ -10,6 +10,7 @@ import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Project")
+@Table(name = "\"PROJECT\"")
 public class ProjectRecord extends DataTransferObject<Project> {
 
 	@Id
@@ -41,6 +42,10 @@ public class ProjectRecord extends DataTransferObject<Project> {
 
 	public ProjectRecord() {
 		super();
+	}
+
+	public ProjectRecord(Project project) {
+		this(project, null);
 	}
 
 	public ProjectRecord(Project project, Long configurationId) {
