@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "StackTraceElement")
+@XmlRootElement(name = "stackTraceElement")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StackTraceElementXml extends DataTransferObject<StackTraceElement> {
 
