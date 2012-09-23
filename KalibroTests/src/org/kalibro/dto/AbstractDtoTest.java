@@ -3,13 +3,10 @@ package org.kalibro.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
-import org.mockito.ArgumentMatcher;
-import org.mockito.internal.matchers.VarargMatcher;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -56,39 +53,5 @@ public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 
 	protected LazyLoadExpectation expectLazy(Object stub, Class<?> daoClass, String methodName, Object... parameters) {
 		return new LazyLoadExpectation(stub, daoClass, methodName, parameters);
-	}
-
-	protected class LazyLoadExpectation {
-
-		private Object stub;
-		private Class<?> daoClass;
-		private String methodName;
-		private Object[] parameters;
-
-		protected LazyLoadExpectation(Object stub, Class<?> daoClass, String methodName, Object... parameters) {
-			this.stub = stub;
-			this.daoClass = daoClass;
-			this.methodName = methodName;
-			this.parameters = parameters;
-		}
-	}
-
-	private class ParametersMatcher extends ArgumentMatcher<Object[]> implements VarargMatcher {
-
-		private LazyLoadExpectation expectation;
-
-		ParametersMatcher(LazyLoadExpectation expectation) {
-			this.expectation = expectation;
-		}
-
-		@Override
-		public boolean matches(Object parameters) {
-			try {
-				Assert.assertArrayEquals(expectation.parameters, (Object[]) parameters);
-				return true;
-			} catch (AssertionError error) {
-				return false;
-			}
-		}
 	}
 }
