@@ -10,6 +10,7 @@ import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Configuration")
+@Table(name = "\"CONFIGURATION\"")
 public class ConfigurationRecord extends DataTransferObject<Configuration> {
 
 	@Id
