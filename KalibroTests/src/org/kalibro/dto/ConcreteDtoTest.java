@@ -39,11 +39,13 @@ public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 			verifyField(reflector, method);
 	}
 
+	private Class<DTO> dtoClass() throws ClassNotFoundException {
+		return (Class<DTO>) Class.forName(getClass().getName().replace("Test", ""));
+	}
+
 	private void verifyField(FieldReflector reflector, Method method) throws Exception {
 		String methodName = method.getName();
 		if (reflector.listFields().contains(methodName))
 			assertEquals(reflector.get(methodName), method.invoke(dto));
 	}
-
-	protected abstract Class<DTO> dtoClass();
 }

@@ -10,11 +10,6 @@ public class ReadingGroupXmlResponseTest extends XmlTest<ReadingGroup, ReadingGr
 		return loadFixture("scholar", ReadingGroup.class);
 	}
 
-	@Override
-	protected Class<ReadingGroupXmlResponse> dtoClass() {
-		return ReadingGroupXmlResponse.class;
-	}
-
 	@Test
 	public void verifyElements() {
 		assertElement("id", Long.class, false);

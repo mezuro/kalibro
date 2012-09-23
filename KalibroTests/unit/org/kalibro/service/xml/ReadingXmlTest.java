@@ -10,11 +10,6 @@ public class ReadingXmlTest extends XmlTest<Reading, ReadingXml> {
 		return loadFixture("excellent", Reading.class);
 	}
 
-	@Override
-	protected Class<ReadingXml> dtoClass() {
-		return ReadingXml.class;
-	}
-
 	@Test
 	public void verifyElements() {
 		assertElement("id", Long.class, false);

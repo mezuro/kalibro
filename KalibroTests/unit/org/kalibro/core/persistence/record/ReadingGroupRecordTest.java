@@ -10,11 +10,6 @@ public class ReadingGroupRecordTest extends RecordTest<ReadingGroup, ReadingGrou
 		return loadFixture("scholar", ReadingGroup.class);
 	}
 
-	@Override
-	protected Class<ReadingGroupRecord> dtoClass() {
-		return ReadingGroupRecord.class;
-	}
-
 	@Test
 	public void verifyColumns() {
 		assertId();

@@ -10,9 +10,4 @@ public class RangeRecordTest extends RecordTest<Range, RangeRecord> {
 	protected Range loadFixture() {
 		return RangeFixtures.newRange("amloc", RangeLabel.REGULAR);
 	}
-
-	@Override
-	protected Class<RangeRecord> dtoClass() {
-		return RangeRecord.class;
-	}
 }
