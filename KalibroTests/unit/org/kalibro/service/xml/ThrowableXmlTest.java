@@ -1,34 +1,17 @@
 package org.kalibro.service.xml;
 
-import java.util.Arrays;
-import java.util.Collection;
-
 import org.junit.Test;
-import org.kalibro.DtoTestCase;
-import org.kalibro.KalibroException;
 import org.kalibro.core.concurrent.VoidTask;
 
-public class ThrowableXmlTest extends DtoTestCase<Throwable, ThrowableXml> {
+public class ThrowableXmlTest extends XmlTest<Throwable> {
 
 	@Override
-	protected ThrowableXml newDtoUsingDefaultConstructor() {
-		return new ThrowableXml();
-	}
-
-	@Override
-	protected Collection<Throwable> entitiesForTestingConversion() {
-		Throwable error = new Throwable("ThrowableXmlTest");
-		KalibroException exception = new KalibroException("ThrowableXmlTest", error);
-		return Arrays.asList(error, exception);
-	}
-
-	@Override
-	protected ThrowableXml createDto(Throwable error) {
-		return new ThrowableXml(error);
+	protected Throwable loadFixture() {
+		return new Throwable("ThrowableXmlTest message", new Throwable("ThrowableXmlTest cause message"));
 	}
 
 	@Test
-	public void shouldThrowErrorForNotConvertibleError() {
+	public void shouldThrowErrorIfThrowableIsNotConvertible() {
 		assertThat(new VoidTask() {
 
 			@Override

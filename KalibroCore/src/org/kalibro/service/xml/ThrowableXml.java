@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.KalibroError;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "Error")
+@XmlRootElement(name = "throwable")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ThrowableXml extends DataTransferObject<Throwable> {
 
