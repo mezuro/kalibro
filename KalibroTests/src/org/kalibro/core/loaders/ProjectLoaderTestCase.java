@@ -7,12 +7,12 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.tests.UnitTest;
 import org.powermock.reflect.Whitebox;
 
-public abstract class ProjectLoaderTestCase extends TestCase {
+public abstract class ProjectLoaderTestCase extends UnitTest {
 
 	protected ProjectLoader loader;
 	protected Repository repository;

@@ -8,11 +8,11 @@ import javax.swing.JFormattedTextField;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.tests.UnitTest;
 
-public class DoubleFieldTest extends TestCase {
+public class DoubleFieldTest extends UnitTest {
 
 	private DoubleField field;
 	private JFormattedTextField valueField;

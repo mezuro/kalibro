@@ -13,9 +13,9 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.junit.After;
 import org.junit.Test;
-import org.kalibro.IntegrationTest;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.IntegrationTest;
 
 public class CommandExecutionTest extends IntegrationTest {
 

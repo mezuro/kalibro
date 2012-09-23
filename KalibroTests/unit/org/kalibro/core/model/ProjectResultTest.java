@@ -9,10 +9,10 @@ import java.util.Date;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class ProjectResultTest extends TestCase {
+public class ProjectResultTest extends UnitTest {
 
 	private Date date;
 	private ProjectResult result;

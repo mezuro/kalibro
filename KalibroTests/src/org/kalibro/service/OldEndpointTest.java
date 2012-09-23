@@ -3,8 +3,8 @@ package org.kalibro.service;
 import javax.xml.ws.Endpoint;
 
 import org.junit.After;
-import org.kalibro.IntegrationTest;
 import org.kalibro.client.EndpointClient;
+import org.kalibro.tests.IntegrationTest;
 
 @Deprecated
 public abstract class OldEndpointTest extends IntegrationTest {

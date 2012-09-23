@@ -1,4 +1,4 @@
-package org.kalibro;
+package org.kalibro.tests;
 
 import static org.junit.Assert.*;
 

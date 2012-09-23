@@ -5,19 +5,19 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(CheckstyleMetric.class)
-public class PreMetricResultTest extends TestCase {
+public class PreMetricResultTest extends UnitTest {
 
 	private CheckstyleMetric metric;
 	private NativeMetric nativeMetric;

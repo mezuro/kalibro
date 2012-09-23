@@ -7,10 +7,10 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.entities.ModuleResultXml;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -18,7 +18,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ModuleResultClientDao.class, EndpointClient.class})
-public class ModuleResultPortDaoTest extends TestCase {
+public class ModuleResultPortDaoTest extends UnitTest {
 
 	private ModuleResult moduleResult;
 	private ModuleResultXml moduleResultXml;

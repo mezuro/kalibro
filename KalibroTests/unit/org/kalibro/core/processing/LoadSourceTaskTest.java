@@ -4,12 +4,12 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 
-public class LoadSourceTaskTest extends TestCase {
+public class LoadSourceTaskTest extends UnitTest {
 
 	private Project project;
 

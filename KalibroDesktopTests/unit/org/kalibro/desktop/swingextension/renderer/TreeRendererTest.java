@@ -12,9 +12,9 @@ import javax.swing.tree.DefaultTreeCellRenderer;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class TreeRendererTest extends TestCase {
+public class TreeRendererTest extends UnitTest {
 
 	private JTree tree;
 	private TreeRenderer renderer;

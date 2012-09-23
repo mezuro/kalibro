@@ -4,9 +4,9 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class AbstractPanelTest extends TestCase {
+public class AbstractPanelTest extends UnitTest {
 
 	private AbstractPanel<?> panel;
 

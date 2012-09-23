@@ -3,9 +3,9 @@ package org.kalibro.core.model;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class NativeModuleResultTest extends TestCase {
+public class NativeModuleResultTest extends UnitTest {
 
 	@Test
 	public void checkInitialization() {

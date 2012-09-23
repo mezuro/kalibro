@@ -7,9 +7,9 @@ import static org.kalibro.core.model.enums.Language.JAVA;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.EnumerationTest;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.tests.EnumerationTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;

@@ -3,8 +3,9 @@ package org.kalibro;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
+import org.kalibro.tests.UnitTest;
 
-public class DatabaseSettingsTest extends TestCase {
+public class DatabaseSettingsTest extends UnitTest {
 
 	@Test
 	public void checkDefaultDatabaseSettings() {

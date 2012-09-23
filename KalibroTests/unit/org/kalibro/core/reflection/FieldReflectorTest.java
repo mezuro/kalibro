@@ -9,10 +9,10 @@ import javax.persistence.Column;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.MethodRule;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class FieldReflectorTest extends TestCase {
+public class FieldReflectorTest extends UnitTest {
 
 	private static final String INEXISTENT = "org.kalibro.core.reflection.FieldReflectorTest.inexistent";
 

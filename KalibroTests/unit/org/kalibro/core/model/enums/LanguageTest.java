@@ -2,7 +2,7 @@ package org.kalibro.core.model.enums;
 
 import static org.kalibro.core.model.enums.Language.CPP;
 
-import org.kalibro.EnumerationTest;
+import org.kalibro.tests.EnumerationTest;
 
 public class LanguageTest extends EnumerationTest<Language> {
 

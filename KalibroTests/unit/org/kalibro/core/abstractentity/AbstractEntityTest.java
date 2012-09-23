@@ -10,14 +10,14 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, Equality.class, FileUtils.class, HashCodeCalculator.class, Printer.class})
-public class AbstractEntityTest extends TestCase {
+public class AbstractEntityTest extends UnitTest {
 
 	private File file;
 	private Person entity;

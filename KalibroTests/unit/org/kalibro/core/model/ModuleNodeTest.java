@@ -7,10 +7,10 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class ModuleNodeTest extends TestCase {
+public class ModuleNodeTest extends UnitTest {
 
 	private ModuleNode org, analizo, checkstyle;
 

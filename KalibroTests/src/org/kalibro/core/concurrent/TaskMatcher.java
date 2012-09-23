@@ -1,14 +1,14 @@
 package org.kalibro.core.concurrent;
 
 import static org.junit.Assert.*;
-import static org.kalibro.SpecialAssertions.assertClassEquals;
+import static org.kalibro.tests.SpecialAssertions.assertClassEquals;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import org.kalibro.KalibroError;
 import org.kalibro.KalibroException;
-import org.kalibro.ThrowableMatcher;
+import org.kalibro.tests.ThrowableMatcher;
 
 public class TaskMatcher {
 

@@ -1,4 +1,4 @@
-package org.kalibro;
+package org.kalibro.tests;
 
 import static org.kalibro.core.Environment.dotKalibro;
 
@@ -7,8 +7,11 @@ import java.io.File;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.rules.Timeout;
+import org.kalibro.DatabaseSettings;
+import org.kalibro.KalibroSettings;
+import org.kalibro.SupportedDatabase;
 
-public abstract class AcceptanceTest extends TestCase {
+public abstract class AcceptanceTest extends UnitTest {
 
 	private static final SupportedDatabase DATABASE = SupportedDatabase.APACHE_DERBY;
 

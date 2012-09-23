@@ -9,13 +9,13 @@ import java.io.InputStream;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({CommandTask.class, Runtime.class})
-public class CommandTaskTest extends TestCase {
+public class CommandTaskTest extends UnitTest {
 
 	private static final String COMMAND = "CommandTaskTest command";
 

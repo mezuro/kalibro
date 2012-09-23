@@ -3,9 +3,9 @@ package org.kalibro.core;
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class IdentifierTest extends TestCase {
+public class IdentifierTest extends UnitTest {
 
 	private static final String CLASS_NAME = "MyIdentifier44Testing";
 	private static final String VARIABLE = "myIdentifier44Testing";

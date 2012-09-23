@@ -5,9 +5,9 @@ import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroError;
-import org.kalibro.TestCase;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dto.DataTransferObject;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -19,7 +19,7 @@ public abstract class EndpointImplementationTest<// @formatter:off
 	RESPONSE extends DataTransferObject<ENTITY>,
 	DAO,
 	ENDPOINT>// @formatter:on
-	extends TestCase {
+	extends UnitTest {
 
 	private Class<?>[] classes;
 

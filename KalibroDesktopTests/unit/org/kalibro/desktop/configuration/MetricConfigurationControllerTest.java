@@ -7,19 +7,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.*;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;
 import org.kalibro.desktop.swingextension.panel.ConfirmPanel;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(MetricConfigurationController.class)
-public class MetricConfigurationControllerTest extends TestCase {
+public class MetricConfigurationControllerTest extends UnitTest {
 
 	private MetricConfiguration metricConfiguration;
 	private Configuration configuration;

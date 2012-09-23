@@ -6,10 +6,10 @@ import java.io.FileNotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class MethodReflectorTest extends TestCase {
+public class MethodReflectorTest extends UnitTest {
 
 	private static double max(Double a, Double b) {
 		return Math.max(a, b);

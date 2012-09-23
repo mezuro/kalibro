@@ -10,7 +10,6 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.dao.DaoFactory;
@@ -19,6 +18,7 @@ import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.PasswordField;
 import org.kalibro.desktop.swingextension.field.StringField;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -26,7 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareForTest(DaoFactory.class)
-public class RepositoryPanelTest extends TestCase {
+public class RepositoryPanelTest extends UnitTest {
 
 	private Repository repository;
 

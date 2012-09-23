@@ -8,12 +8,12 @@ import java.util.Arrays;
 import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.model.enums.Language;
+import org.kalibro.tests.UnitTest;
 
-public class BaseToolTest extends TestCase {
+public class BaseToolTest extends UnitTest {
 
 	private BaseTool analizo;
 

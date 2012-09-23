@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.kalibro.EnumerationTest;
+import org.kalibro.tests.EnumerationTest;
 
 public class StatisticTest extends EnumerationTest<Statistic> {
 

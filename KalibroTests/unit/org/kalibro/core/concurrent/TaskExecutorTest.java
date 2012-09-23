@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.UtilityClassTest;
+import org.kalibro.tests.UtilityClassTest;
 
 public class TaskExecutorTest extends UtilityClassTest {
 

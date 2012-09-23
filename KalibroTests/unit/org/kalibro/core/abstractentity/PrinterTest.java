@@ -6,14 +6,14 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Printer.class)
-public class PrinterTest extends TestCase {
+public class PrinterTest extends UnitTest {
 
 	@Test
 	public void checkSpecialPrinters() throws Exception {

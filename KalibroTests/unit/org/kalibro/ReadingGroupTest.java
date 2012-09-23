@@ -14,6 +14,7 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.dao.ReadingGroupDao;
+import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -21,7 +22,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, DaoFactory.class})
-public class ReadingGroupTest extends TestCase {
+public class ReadingGroupTest extends UnitTest {
 
 	private ReadingGroup group;
 	private ReadingGroupDao dao;

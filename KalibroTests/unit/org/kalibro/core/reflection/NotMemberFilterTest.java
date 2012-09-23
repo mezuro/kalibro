@@ -5,9 +5,9 @@ import static org.junit.Assert.*;
 import java.lang.reflect.Member;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class NotMemberFilterTest extends TestCase {
+public class NotMemberFilterTest extends UnitTest {
 
 	@Test
 	public void shouldNegateFilter() {

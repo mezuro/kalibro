@@ -7,7 +7,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentMatcher;
 import org.mockito.internal.matchers.VarargMatcher;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -15,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoLazyLoader.class)
-public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends TestCase {
+public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends UnitTest {
 
 	protected DTO dto;
 	protected ENTITY entity;

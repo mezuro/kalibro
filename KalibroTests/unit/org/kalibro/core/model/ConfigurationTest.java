@@ -10,10 +10,10 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class ConfigurationTest extends TestCase {
+public class ConfigurationTest extends UnitTest {
 
 	private CompoundMetric sc;
 	private Configuration configuration;

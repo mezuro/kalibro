@@ -5,17 +5,17 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({MetricConfigurationClientDao.class, EndpointClient.class})
-public class MetricConfigurationPortDaoTest extends TestCase {
+public class MetricConfigurationPortDaoTest extends UnitTest {
 
 	private static final String CONFIGURATION_NAME = "MetricConfigurationPortDaoTest";
 

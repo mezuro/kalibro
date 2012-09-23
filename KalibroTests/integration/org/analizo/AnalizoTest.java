@@ -13,9 +13,9 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.IntegrationTest;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.model.NativeMetric;
+import org.kalibro.tests.IntegrationTest;
 
 public class AnalizoTest extends IntegrationTest {
 

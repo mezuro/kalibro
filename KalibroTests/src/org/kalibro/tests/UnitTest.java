@@ -1,4 +1,4 @@
-package org.kalibro;
+package org.kalibro.tests;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,7 +13,7 @@ import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
-public abstract class TestCase extends SpecialAssertions {
+public abstract class UnitTest extends SpecialAssertions {
 
 	@BeforeClass
 	public static void setTestEnvironment() {

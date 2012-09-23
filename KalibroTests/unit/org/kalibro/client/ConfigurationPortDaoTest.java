@@ -7,18 +7,18 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Configuration;
 import org.kalibro.service.ConfigurationEndpoint;
 import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ConfigurationClientDao.class, EndpointClient.class})
-public class ConfigurationPortDaoTest extends TestCase {
+public class ConfigurationPortDaoTest extends UnitTest {
 
 	private Configuration configuration;
 	private ConfigurationXml configurationXml;

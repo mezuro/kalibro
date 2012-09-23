@@ -1,11 +1,11 @@
-package org.kalibro;
+package org.kalibro.tests;
 
 import java.io.File;
 
 import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
 
-public abstract class IntegrationTest extends TestCase {
+public abstract class IntegrationTest extends UnitTest {
 
 	@Override
 	protected Timeout testTimeout() {

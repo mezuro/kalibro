@@ -10,9 +10,9 @@ import javax.xml.ws.Endpoint;
 
 import org.junit.After;
 import org.junit.Before;
-import org.kalibro.IntegrationTest;
 import org.kalibro.client.EndpointClient;
 import org.kalibro.dto.DataTransferObject;
+import org.kalibro.tests.IntegrationTest;
 import org.powermock.reflect.Whitebox;
 
 public abstract class EndpointTest<ENTITY, DAO, ENDPOINT> extends IntegrationTest {

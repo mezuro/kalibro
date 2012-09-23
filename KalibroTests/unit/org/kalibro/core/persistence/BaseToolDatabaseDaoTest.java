@@ -13,10 +13,10 @@ import org.checkstyle.CheckstyleMetricCollector;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.record.BaseToolRecord;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -25,7 +25,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(BaseToolDatabaseDao.class)
-public class BaseToolDatabaseDaoTest extends TestCase {
+public class BaseToolDatabaseDaoTest extends UnitTest {
 
 	private static final List<String> BASE_TOOL_NAMES = Arrays.asList("Analizo", "Checkstyle");
 

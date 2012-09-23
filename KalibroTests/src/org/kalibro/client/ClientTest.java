@@ -2,8 +2,8 @@ package org.kalibro.client;
 
 import org.junit.Before;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.dto.DataTransferObject;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -16,7 +16,7 @@ public abstract class ClientTest<// @formatter:off
 	RESPONSE extends DataTransferObject<ENTITY>,
 	ENDPOINT,
 	CLIENT extends EndpointClient<ENDPOINT>>// @formatter:on
-	extends TestCase {
+	extends UnitTest {
 
 	private Class<?>[] classes;
 

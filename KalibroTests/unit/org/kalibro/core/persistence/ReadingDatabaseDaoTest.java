@@ -10,14 +10,14 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Reading;
-import org.kalibro.TestCase;
 import org.kalibro.core.persistence.record.ReadingRecord;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ReadingDatabaseDao.class)
-public class ReadingDatabaseDaoTest extends TestCase {
+public class ReadingDatabaseDaoTest extends UnitTest {
 
 	private Reading reading;
 	private ReadingRecord record;

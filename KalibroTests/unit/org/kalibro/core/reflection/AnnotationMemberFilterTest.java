@@ -6,9 +6,9 @@ import java.lang.reflect.AccessibleObject;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class AnnotationMemberFilterTest extends TestCase {
+public class AnnotationMemberFilterTest extends UnitTest {
 
 	private AccessibleObject member;
 	private AnnotationMemberFilter filter;

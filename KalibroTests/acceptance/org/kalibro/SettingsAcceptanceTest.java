@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.AcceptanceTest;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class SettingsAcceptanceTest extends AcceptanceTest {

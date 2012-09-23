@@ -1,11 +1,11 @@
-package org.kalibro;
+package org.kalibro.tests;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.kalibro.core.Identifier;
 
-public abstract class EnumerationTest<ENUM extends Enum<ENUM>> extends TestCase {
+public abstract class EnumerationTest<ENUM extends Enum<ENUM>> extends UnitTest {
 
 	@Test
 	public void shouldConvertFromString() throws Exception {

@@ -10,9 +10,9 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.IntegrationTest;
 import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.tests.IntegrationTest;
 
 public abstract class LoaderIntegrationTest extends IntegrationTest {
 

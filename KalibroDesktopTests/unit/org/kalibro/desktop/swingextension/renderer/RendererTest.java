@@ -8,9 +8,9 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class RendererTest extends TestCase {
+public class RendererTest extends UnitTest {
 
 	private Color color;
 	private Component component;

@@ -8,7 +8,7 @@ import java.io.File;
 
 import org.junit.After;
 import org.junit.Test;
-import org.kalibro.EnumerationTest;
+import org.kalibro.tests.EnumerationTest;
 import org.powermock.reflect.Whitebox;
 
 public class EnvironmentTest extends EnumerationTest<Environment> {

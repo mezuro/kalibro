@@ -6,15 +6,15 @@ import javax.swing.table.TableColumn;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 
-public class ColumnTest extends TestCase {
+public class ColumnTest extends UnitTest {
 
 	private Column column;
 

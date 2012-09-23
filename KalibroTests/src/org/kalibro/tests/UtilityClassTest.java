@@ -1,4 +1,4 @@
-package org.kalibro;
+package org.kalibro.tests;
 
 import static org.junit.Assert.assertFalse;
 
@@ -6,7 +6,7 @@ import java.lang.reflect.Constructor;
 
 import org.junit.Test;
 
-public abstract class UtilityClassTest extends TestCase {
+public abstract class UtilityClassTest extends UnitTest {
 
 	@Test
 	public void shouldHavePrivateConstructor() throws Exception {

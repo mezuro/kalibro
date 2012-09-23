@@ -1,5 +1,7 @@
 package org.kalibro;
 
+import org.kalibro.tests.EnumerationTest;
+
 public class ServiceSideTest extends EnumerationTest<ServiceSide> {
 
 	@Override

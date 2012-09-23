@@ -8,9 +8,9 @@ import java.io.OutputStream;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class PipeTaskTest extends TestCase {
+public class PipeTaskTest extends UnitTest {
 
 	private StringBuffer buffer = new StringBuffer();
 

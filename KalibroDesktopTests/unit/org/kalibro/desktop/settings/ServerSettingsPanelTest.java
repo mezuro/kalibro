@@ -5,12 +5,12 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.ServerSettings;
-import org.kalibro.TestCase;
 import org.kalibro.core.Environment;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.DirectoryField;
+import org.kalibro.tests.UnitTest;
 
-public class ServerSettingsPanelTest extends TestCase {
+public class ServerSettingsPanelTest extends UnitTest {
 
 	private ServerSettings settings;
 

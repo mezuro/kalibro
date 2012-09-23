@@ -4,15 +4,15 @@ import java.lang.reflect.Method;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.desktop.CrudController;
 import org.kalibro.desktop.configuration.ConfigurationController;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 
-public class ReflectionMenuTest extends TestCase {
+public class ReflectionMenuTest extends UnitTest {
 
 	private ReflectionMenuItem menuItem;
 	private ConfigurationController controller;

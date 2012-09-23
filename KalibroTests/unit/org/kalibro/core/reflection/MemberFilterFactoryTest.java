@@ -9,7 +9,7 @@ import java.lang.reflect.Member;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.UtilityClassTest;
+import org.kalibro.tests.UtilityClassTest;
 
 public class MemberFilterFactoryTest extends UtilityClassTest {
 

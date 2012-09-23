@@ -8,9 +8,9 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class TabbedPanelTest extends TestCase implements TabbedPanelListener {
+public class TabbedPanelTest extends UnitTest implements TabbedPanelListener {
 
 	private JPanel firstPanel, secondPanel, thirdPanel;
 

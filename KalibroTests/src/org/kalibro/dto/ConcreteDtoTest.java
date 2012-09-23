@@ -8,10 +8,10 @@ import java.lang.reflect.Modifier;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.reflection.FieldReflector;
+import org.kalibro.tests.UnitTest;
 
-public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends TestCase {
+public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends UnitTest {
 
 	protected DTO dto;
 	protected ENTITY entity;

@@ -8,15 +8,15 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Reading;
-import org.kalibro.TestCase;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class DaoLazyLoaderTest extends TestCase {
+public class DaoLazyLoaderTest extends UnitTest {
 
 	private ReadingDao dao;
 	private List<Reading> real, proxy;

@@ -5,10 +5,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.field.PalindromeField;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -19,7 +19,7 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest(EditDialog.class)
-public class EditDialogTest extends TestCase {
+public class EditDialogTest extends UnitTest {
 
 	private EditDialogListener<String> listener;
 	private PalindromeField editPanel;
