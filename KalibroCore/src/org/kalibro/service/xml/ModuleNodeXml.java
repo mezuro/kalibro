@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.core.model.ModuleNode;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "ModuleNode")
+@XmlRootElement(name = "moduleNode")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModuleNodeXml extends DataTransferObject<ModuleNode> {
 
