@@ -9,7 +9,7 @@ import org.kalibro.core.model.Repository;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "Repository")
+@XmlRootElement(name = "repository")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RepositoryXml extends DataTransferObject<Repository> {
 
