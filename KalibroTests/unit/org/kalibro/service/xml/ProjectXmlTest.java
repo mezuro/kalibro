@@ -1,31 +1,16 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
-import java.util.Arrays;
-import java.util.Collection;
-
-import org.kalibro.DtoTestCase;
 import org.kalibro.KalibroException;
 import org.kalibro.core.model.Project;
 
-public class ProjectXmlTest extends DtoTestCase<Project, ProjectXml> {
+public class ProjectXmlTest extends XmlTest<Project> {
 
 	@Override
-	protected ProjectXml newDtoUsingDefaultConstructor() {
-		return new ProjectXml();
-	}
-
-	@Override
-	protected Collection<Project> entitiesForTestingConversion() {
-		Project normal = helloWorld();
-		Project withError = newHelloWorld();
-		withError.setError(new KalibroException("ProjectXmlTest", new Exception()));
-		return Arrays.asList(normal, withError);
-	}
-
-	@Override
-	protected ProjectXml createDto(Project project) {
-		return new ProjectXml(project);
+	protected Project loadFixture() {
+		Project fixture = newHelloWorld();
+		fixture.setError(new KalibroException("ProjectXmlTest", new Exception()));
+		return fixture;
 	}
 }

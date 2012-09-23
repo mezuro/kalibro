@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.enums.ProjectState.*;
+import static org.kalibro.core.model.enums.ProjectState.ERROR;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,7 +10,7 @@ import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "Project")
+@XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProjectXml extends DataTransferObject<Project> {
 
