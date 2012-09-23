@@ -3,6 +3,8 @@ package org.kalibro.core.model;
 import static org.kalibro.core.model.ConfigurationFixtures.CONFIGURATION_NAME;
 import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 
+import java.util.Arrays;
+
 import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.model.enums.RepositoryType;
 
@@ -21,6 +23,7 @@ public final class ProjectFixtures {
 		project.setName(PROJECT_NAME);
 		project.setLicense("Creative Commons");
 		project.setRepository(newHelloWorldRepository(RepositoryType.LOCAL_DIRECTORY));
+		project.setMailsToNotify(Arrays.asList("aaa@example.com", "bbb@example.com"));
 		project.setConfigurationName(CONFIGURATION_NAME);
 		project.setState(ProjectState.READY);
 		return project;

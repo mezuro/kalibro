@@ -1,5 +1,7 @@
 package org.kalibro.service.entities;
 
+import java.util.Collection;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -20,6 +22,9 @@ public class RawProjectXml extends DataTransferObject<Project> {
 
 	@XmlElement(required = true)
 	private RepositoryXml repository;
+	
+	@XmlElement
+	private Collection<String> mailsToNotify;
 
 	@XmlElement(required = true)
 	private String configurationName;
@@ -33,6 +38,7 @@ public class RawProjectXml extends DataTransferObject<Project> {
 		license = project.getLicense();
 		description = project.getDescription();
 		repository = new RepositoryXml(project.getRepository());
+		mailsToNotify = project.getMailsToNotify();
 		configurationName = project.getConfigurationName();
 	}
 
@@ -43,6 +49,7 @@ public class RawProjectXml extends DataTransferObject<Project> {
 		project.setLicense(license);
 		project.setDescription(description);
 		project.setRepository(repository.convert());
+		project.setMailsToNotify(mailsToNotify);
 		project.setConfigurationName(configurationName);
 		return project;
 	}

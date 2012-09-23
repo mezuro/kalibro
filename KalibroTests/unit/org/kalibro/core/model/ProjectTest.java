@@ -6,6 +6,7 @@ import static org.kalibro.core.model.enums.ProjectState.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Before;
@@ -42,6 +43,7 @@ public class ProjectTest extends UnitTest {
 		assertEquals("", project.getLicense());
 		assertEquals("", project.getDescription());
 		assertDeepEquals(new Repository(), project.getRepository());
+		assertEquals(new LinkedList<String>(), project.getMailsToNotify());
 		assertEquals("", project.getConfigurationName());
 		assertEquals(NEW, project.getState());
 		assertNoError();

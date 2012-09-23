@@ -1,6 +1,8 @@
 package org.kalibro.core.model;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import org.kalibro.KalibroException;
 import org.kalibro.KalibroSettings;
@@ -22,7 +24,8 @@ public class Project extends AbstractEntity<Project> {
 	private String description;
 	private String configurationName;
 	private Repository repository;
-
+	private Collection<String> mailsToNotify;
+	
 	private Throwable error;
 	private ProjectState state;
 
@@ -34,6 +37,7 @@ public class Project extends AbstractEntity<Project> {
 		setConfigurationName("");
 		setRepository(new Repository());
 		setState(ProjectState.NEW);
+		setMailsToNotify(new LinkedList<String>());
 	}
 
 	@Override
@@ -132,5 +136,13 @@ public class Project extends AbstractEntity<Project> {
 	public File getDirectory() {
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
 		return new File(loadDirectory, id + "-" + Identifier.fromText(name).asVariable());
+	}
+
+	public Collection<String> getMailsToNotify() {
+		return mailsToNotify;
+	}
+
+	public void setMailsToNotify(Collection<String> mailsToNotify) {
+		this.mailsToNotify = mailsToNotify;
 	}
 }
