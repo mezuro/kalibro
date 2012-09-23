@@ -8,7 +8,7 @@ import org.kalibro.core.model.Module;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "Module")
+@XmlRootElement(name = "module")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModuleXml extends DataTransferObject<Module> {
 
