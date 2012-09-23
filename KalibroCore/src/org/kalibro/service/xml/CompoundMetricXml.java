@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.core.model.CompoundMetric;
 
-@XmlRootElement(name = "CompoundMetric")
+@XmlRootElement(name = "compoundMetric")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class CompoundMetricXml extends MetricXml<CompoundMetric> {
 
