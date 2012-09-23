@@ -2,31 +2,30 @@ package org.kalibro.service;
 
 import static org.kalibro.core.model.BaseToolFixtures.newAnalizoStub;
 
-import org.junit.Before;
+import java.util.Arrays;
+
 import org.junit.Test;
 import org.kalibro.core.model.BaseTool;
+import org.kalibro.dao.BaseToolDao;
 
-public class BaseToolEndpointTest extends OldEndpointTest {
+public class BaseToolEndpointTest extends EndpointTest<BaseTool, BaseToolDao, BaseToolEndpoint> {
 
-	private BaseTool analizo;
-	private BaseToolEndpoint port;
-
-	@Before
-	public void setUp() {
-		analizo = newAnalizoStub();
-		analizo.setCollectorClass(null);
-		BaseToolDaoFake daoFake = new BaseToolDaoFake();
-		daoFake.save(analizo);
-		port = publishAndGetPort(new BaseToolEndpointImpl(daoFake), BaseToolEndpoint.class);
+	@Override
+	protected BaseTool loadFixture() {
+		BaseTool fixture = newAnalizoStub();
+		fixture.setCollectorClass(null);
+		return fixture;
 	}
 
 	@Test
 	public void shouldListBaseToolNames() {
-		assertDeepList(port.getBaseToolNames(), analizo.getName());
+		when(dao.getBaseToolNames()).thenReturn(Arrays.asList("42"));
+		assertDeepList(port.getBaseToolNames(), "42");
 	}
 
 	@Test
 	public void shouldGetBaseToolByName() {
-		assertDeepEquals(analizo, port.getBaseTool(analizo.getName()).convert());
+		when(dao.getBaseTool("42")).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getBaseTool("42"));
 	}
 }

@@ -19,7 +19,7 @@ public class BaseToolEndpointImpl implements BaseToolEndpoint {
 		this(DaoFactory.getBaseToolDao());
 	}
 
-	protected BaseToolEndpointImpl(BaseToolDao baseToolDao) {
+	public BaseToolEndpointImpl(BaseToolDao baseToolDao) {
 		dao = baseToolDao;
 	}
 
