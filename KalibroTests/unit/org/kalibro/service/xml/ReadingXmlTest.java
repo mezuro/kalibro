@@ -3,7 +3,7 @@ package org.kalibro.service.xml;
 import org.junit.Test;
 import org.kalibro.Reading;
 
-public class ReadingXmlTest extends XmlTest<Reading, ReadingXml> {
+public class ReadingXmlTest extends XmlTest<Reading> {
 
 	@Override
 	protected Reading loadFixture() {

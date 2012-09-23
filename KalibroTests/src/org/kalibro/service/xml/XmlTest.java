@@ -9,49 +9,37 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.Identifier;
-import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.dto.ConcreteDtoTest;
-import org.kalibro.dto.DataTransferObject;
 
-public abstract class XmlTest<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends
-	ConcreteDtoTest<ENTITY, RECORD> {
-
-	private FieldReflector reflector;
-
-	@Before
-	public void createReflector() {
-		reflector = new FieldReflector(dto);
-	}
+public abstract class XmlTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
 
 	@Test
-	public void checkClassAnnotations() {
-		XmlRootElement element = dto.getClass().getAnnotation(XmlRootElement.class);
+	public void checkClassAnnotations() throws ClassNotFoundException {
+		XmlRootElement element = dtoClass().getAnnotation(XmlRootElement.class);
 		assertNotNull(element);
 		assertEquals(rootElementName(), element.name());
 
-		XmlAccessorType accessorType = dto.getClass().getAnnotation(XmlAccessorType.class);
+		XmlAccessorType accessorType = dtoClass().getAnnotation(XmlAccessorType.class);
 		assertNotNull(accessorType);
 		assertEquals(XmlAccessType.FIELD, accessorType.value());
 	}
 
 	private String rootElementName() {
-		String entityName = entity.getClass().getSimpleName();
-		return Identifier.fromVariable(entityName).asVariable();
+		return Identifier.fromVariable(entityName()).asVariable();
 	}
 
 	protected void assertElement(String field, Class<?> type, boolean required) {
-		assertEquals(type, reflector.getFieldType(field));
-		XmlElement element = reflector.getFieldAnnotation(field, XmlElement.class);
+		assertEquals(type, dtoReflector.getFieldType(field));
+		XmlElement element = dtoReflector.getFieldAnnotation(field, XmlElement.class);
 		assertNotNull(element);
 		assertEquals(required, element.required());
 	}
 
 	protected void assertCollection(String field, boolean required, String elementName) {
-		assertEquals(Collection.class, reflector.getFieldType(field));
-		XmlElement element = reflector.getFieldAnnotation(field, XmlElement.class);
+		assertEquals(Collection.class, dtoReflector.getFieldType(field));
+		XmlElement element = dtoReflector.getFieldAnnotation(field, XmlElement.class);
 		assertNotNull(element);
 		assertEquals(required, element.required());
 		assertEquals(elementName, element.name());

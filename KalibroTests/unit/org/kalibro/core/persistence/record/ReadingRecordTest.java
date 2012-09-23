@@ -3,7 +3,7 @@ package org.kalibro.core.persistence.record;
 import org.junit.Test;
 import org.kalibro.Reading;
 
-public class ReadingRecordTest extends RecordTest<Reading, ReadingRecord> {
+public class ReadingRecordTest extends RecordTest<Reading> {
 
 	@Override
 	protected Reading loadFixture() {

@@ -4,7 +4,7 @@ import org.kalibro.core.model.Range;
 import org.kalibro.core.model.RangeFixtures;
 import org.kalibro.core.model.RangeLabel;
 
-public class RangeRecordTest extends RecordTest<Range, RangeRecord> {
+public class RangeRecordTest extends RecordTest<Range> {
 
 	@Override
 	protected Range loadFixture() {
