@@ -1,35 +1,26 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.kalibro.DtoTestCase;
+import org.junit.Test;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
 import org.kalibro.core.persistence.record.MetricRecordTest.MyMetric;
+import org.kalibro.dto.AbstractDtoTest;
 
-public class MetricRecordTest extends DtoTestCase<MyMetric, MetricRecord<MyMetric>> {
+public class MetricRecordTest extends AbstractDtoTest<MyMetric> {
 
 	@Override
-	protected MetricRecord<MyMetric> newDtoUsingDefaultConstructor() {
-		return new MyMetricRecord();
+	protected MyMetric loadFixture() {
+		NativeMetric nativeMetric = analizoMetric("lcom4");
+		return new MyMetric(nativeMetric.getName(), nativeMetric.getScope(), nativeMetric.getDescription());
 	}
 
+	@Test
 	@Override
-	protected Collection<MyMetric> entitiesForTestingConversion() {
-		List<MyMetric> metrics = new ArrayList<MyMetric>();
-		for (NativeMetric nativeMetric : analizoStub().getSupportedMetrics())
-			metrics.add(new MyMetric(nativeMetric.getName(), nativeMetric.getScope(), nativeMetric.getDescription()));
-		return metrics;
-	}
-
-	@Override
-	protected MetricRecord<MyMetric> createDto(MyMetric metric) {
-		return new MyMetricRecord(metric);
+	public void shouldConvert() {
+		assertDeepEquals(entity, new MyMetricRecord(entity).convert());
 	}
 
 	class MyMetricRecord extends MetricRecord<MyMetric> {
