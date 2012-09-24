@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
@@ -34,7 +35,9 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	@Print(skip = true)
 	private Long id;
 
+	@IdentityField
 	private String name;
+
 	private String description;
 	private List<Reading> readings;
 
