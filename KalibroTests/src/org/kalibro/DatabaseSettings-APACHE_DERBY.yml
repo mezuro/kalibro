@@ -1,0 +1,5 @@
+---
+databaseType: APACHE_DERBY
+jdbcUrl: "jdbc:derby:memory:kalibro_test;create=true"
+username: ""
+password: ""

@@ -5,13 +5,20 @@ import static org.junit.Assert.assertFalse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
+@RunWith(Parameterized.class)
 public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	private Reading reading;
 	private ReadingGroup group;
+
+	public ReadingAcceptanceTest(SupportedDatabase databaseType) {
+		super(databaseType);
+	}
 
 	@Before
 	public void setUp() {

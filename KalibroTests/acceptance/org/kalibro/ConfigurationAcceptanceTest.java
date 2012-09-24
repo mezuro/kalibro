@@ -2,21 +2,34 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
+
 import javax.persistence.RollbackException;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
+@RunWith(Parameterized.class)
 public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
+	private File file;
 	private Configuration configuration;
+
+	public ConfigurationAcceptanceTest(SupportedDatabase databaseType) {
+		super(databaseType);
+	}
 
 	@Before
 	public void setUp() {
 		configuration = loadFixture("default", Configuration.class);
+		file = new File(Environment.dotKalibro(), "Configuration-exported.yml");
+		file.deleteOnExit();
 	}
 
 	@After

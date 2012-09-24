@@ -1,0 +1,5 @@
+---
+databaseType: MYSQL
+jdbcUrl: "jdbc:mysql://localhost:3306/kalibro_test"
+username: "kalibro"
+password: "kalibro"

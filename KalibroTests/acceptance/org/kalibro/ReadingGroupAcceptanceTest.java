@@ -11,19 +11,26 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
+@RunWith(Parameterized.class)
 public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	private File file;
 	private ReadingGroup group;
 
+	public ReadingGroupAcceptanceTest(SupportedDatabase databaseType) {
+		super(databaseType);
+	}
+
 	@Before
 	public void setUp() {
 		group = loadFixture("scholar", ReadingGroup.class);
-		file = new File(Environment.dotKalibro(), "scholar.yml");
+		file = new File(Environment.dotKalibro(), "ReadingGroup-exported.yml");
 		file.deleteOnExit();
 	}
 
