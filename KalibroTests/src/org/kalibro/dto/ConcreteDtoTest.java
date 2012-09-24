@@ -1,7 +1,5 @@
 package org.kalibro.dto;
 
-import static org.junit.Assert.assertEquals;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
@@ -32,7 +30,6 @@ public abstract class ConcreteDtoTest<ENTITY> extends UnitTest {
 	public void shouldHavePublicDefaultConstructor() throws Exception {
 		Constructor<?> constructor = dtoClass().getConstructor();
 		Modifier.isPublic(constructor.getModifiers());
-		assertEquals(0, constructor.getParameterTypes().length);
 		constructor.newInstance();
 	}
 

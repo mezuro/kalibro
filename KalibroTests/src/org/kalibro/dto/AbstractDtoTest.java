@@ -1,5 +1,8 @@
 package org.kalibro.dto;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,6 +10,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
+import org.mockito.Mockito;
+import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -21,7 +26,7 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		entity = loadFixture();
-		dto = createDtoStub();
+		createDto();
 		mockStatic(DaoLazyLoader.class);
 		for (LazyLoadExpectation e : lazyLoadExpectations())
 			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.stub);
@@ -29,10 +34,23 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
 	protected abstract ENTITY loadFixture();
 
-	private DataTransferObject<ENTITY> createDtoStub() throws Exception {
-		Class<?> entityClass = entity.getClass();
-		Class<?> stubClass = Class.forName(getClass().getName().replace("Test", "Stub"));
-		return (DataTransferObject<ENTITY>) stubClass.getDeclaredConstructor(entityClass).newInstance(entity);
+	private void createDto() throws Exception {
+		Class<?> dtoClass = Class.forName(getClass().getName().replace("Test", ""));
+		dto = (DataTransferObject<ENTITY>) mock(dtoClass, Mockito.CALLS_REAL_METHODS);
+		for (Method method : dtoClass.getDeclaredMethods())
+			if (Modifier.isAbstract(method.getModifiers()))
+				doReturn(entityField(method.getName())).when(dto, method).withNoArguments();
+	}
+
+	private Object entityField(String field) {
+		return Whitebox.getInternalState(entity, field);
+	}
+
+	@Test
+	public void shouldHavePublicDefaultConstructor() throws Exception {
+		Constructor<?> constructor = dto.getClass().getConstructor();
+		Modifier.isPublic(constructor.getModifiers());
+		constructor.newInstance();
 	}
 
 	@Test
