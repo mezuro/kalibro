@@ -83,8 +83,9 @@ public class ConfigurationControllerTest extends UnitTest {
 
 	@Test
 	public void shouldRemoveConfiguration() {
+		when(configurationDao.getConfiguration(NAME)).thenReturn(configuration);
 		controller.removeEntity(NAME);
-//		TODO Mockito.verify(configurationDao).removeConfiguration(NAME);
+		verify(configurationDao).delete(configuration.getId());
 	}
 
 	@Test

@@ -39,7 +39,7 @@ public class ConfigurationController extends CrudController<Configuration> {
 
 	@Override
 	protected void removeEntity(String name) {
-//		TODO configurationDao().removeConfiguration(name);
+		configurationDao().delete(configurationDao().getConfiguration(name).getId());
 	}
 
 	@Override
