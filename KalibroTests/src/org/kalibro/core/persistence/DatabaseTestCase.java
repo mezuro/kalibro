@@ -12,5 +12,5 @@ public abstract class DatabaseTestCase extends IntegrationTest {
 		daoFactory = getDaoFactoryForTest();
 	}
 
-	protected abstract DatabaseDaoFactoryForTest getDaoFactoryForTest();
+	protected abstract DatabaseDaoFactory getDaoFactoryForTest();
 }

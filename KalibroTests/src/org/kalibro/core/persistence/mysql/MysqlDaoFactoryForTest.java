@@ -2,9 +2,9 @@ package org.kalibro.core.persistence.mysql;
 
 import org.kalibro.DatabaseSettings;
 import org.kalibro.SupportedDatabase;
-import org.kalibro.core.persistence.DatabaseDaoFactoryForTest;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
 
-class MysqlDaoFactoryForTest extends DatabaseDaoFactoryForTest {
+class MysqlDaoFactoryForTest extends DatabaseDaoFactory {
 
 	private static DatabaseSettings mysqlTestSettings() {
 		DatabaseSettings settings = new DatabaseSettings();

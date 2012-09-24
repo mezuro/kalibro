@@ -4,9 +4,9 @@ import java.io.File;
 
 import org.kalibro.DatabaseSettings;
 import org.kalibro.SupportedDatabase;
-import org.kalibro.core.persistence.DatabaseDaoFactoryForTest;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
 
-class DerbyDaoFactoryForTest extends DatabaseDaoFactoryForTest {
+class DerbyDaoFactoryForTest extends DatabaseDaoFactory {
 
 	private static DatabaseSettings derbyTestSettings() {
 		DatabaseSettings settings = new DatabaseSettings();
