@@ -1,35 +1,26 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.kalibro.DtoTestCase;
+import org.junit.Test;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.dto.AbstractDtoTest;
 import org.kalibro.service.xml.MetricXmlTest.MyMetric;
 
-public class MetricXmlTest extends DtoTestCase<MyMetric, MetricXml<MyMetric>> {
+public class MetricXmlTest extends AbstractDtoTest<MyMetric> {
 
 	@Override
-	protected MetricXml<MyMetric> newDtoUsingDefaultConstructor() {
-		return new MyMetricXml();
+	protected MyMetric loadFixture() {
+		NativeMetric nativeMetric = analizoMetric("cbo");
+		return new MyMetric(nativeMetric.getName(), nativeMetric.getScope(), nativeMetric.getDescription());
 	}
 
+	@Test
 	@Override
-	protected Collection<MyMetric> entitiesForTestingConversion() {
-		List<MyMetric> metrics = new ArrayList<MyMetric>();
-		for (NativeMetric nativeMetric : analizoStub().getSupportedMetrics())
-			metrics.add(new MyMetric(nativeMetric.getName(), nativeMetric.getScope(), nativeMetric.getDescription()));
-		return metrics;
-	}
-
-	@Override
-	protected MetricXml<MyMetric> createDto(MyMetric metric) {
-		return new MyMetricXml(metric);
+	public void shouldConvert() {
+		assertDeepEquals(entity, new MyMetricXml(entity).convert());
 	}
 
 	class MyMetricXml extends MetricXml<MyMetric> {
