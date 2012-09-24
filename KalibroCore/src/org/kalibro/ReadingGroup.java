@@ -116,4 +116,9 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 			reading.setId(null);
 		id = null;
 	}
+
+	@Override
+	public String toString() {
+		return name;
+	}
 }

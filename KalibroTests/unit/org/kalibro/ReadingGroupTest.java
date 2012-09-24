@@ -159,4 +159,9 @@ public class ReadingGroupTest extends UnitTest {
 		group.delete();
 		verify(reading).setId(null);
 	}
+
+	@Test
+	public void toStringShouldBeName() {
+		assertEquals(group.getName(), "" + group);
+	}
 }

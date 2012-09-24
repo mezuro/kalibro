@@ -108,4 +108,9 @@ public class Reading extends AbstractEntity<Reading> {
 	private ReadingDao dao() {
 		return DaoFactory.getReadingDao();
 	}
+
+	@Override
+	public String toString() {
+		return grade + " - " + label;
+	}
 }

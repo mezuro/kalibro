@@ -144,4 +144,9 @@ public class ReadingTest extends UnitTest {
 		reading.setGroup(group);
 		return group;
 	}
+
+	@Test
+	public void toStringShouldHaveGradeAndLabel() {
+		assertEquals("10.0 - Excellent", "" + reading);
+	}
 }
