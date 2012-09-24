@@ -28,6 +28,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 		persistenceProperties.put(JDBC_URL, settings.getJdbcUrl());
 		persistenceProperties.put(JDBC_USER, settings.getUsername());
 		persistenceProperties.put(JDBC_PASSWORD, settings.getPassword());
+		persistenceProperties.put(LOGGING_LOGGER, PersistenceLogger.class.getName());
 		return persistenceProperties;
 	}
 

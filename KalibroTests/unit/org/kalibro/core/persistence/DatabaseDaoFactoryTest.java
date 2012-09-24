@@ -57,6 +57,7 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 		assertEquals(settings.getJdbcUrl(), properties.get(JDBC_URL));
 		assertEquals(settings.getUsername(), properties.get(JDBC_USER));
 		assertEquals(settings.getPassword(), properties.get(JDBC_PASSWORD));
+		assertEquals(PersistenceLogger.class.getName(), properties.get(LOGGING_LOGGER));
 	}
 
 	@Test
