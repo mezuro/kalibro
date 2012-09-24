@@ -3,32 +3,25 @@ package org.kalibro.service;
 import static org.junit.Assert.assertEquals;
 import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Date;
 
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.dao.ProjectResultDao;
 
-@RunWith(value = Parameterized.class)
+@RunWith(value = Theories.class)
 public class ProjectResultEndpointTest extends EndpointTest<ProjectResult, ProjectResultDao, ProjectResultEndpoint> {
 
 	private static final String PROJECT_NAME = "ProjectResultEndpointTest project name";
 	private static final Date DATE = new Date();
 
-	@Parameters
-	public static Collection<Boolean[]> flags() {
-		return Arrays.asList(new Boolean[]{true}, new Boolean[]{false});
-	}
-
-	private boolean flag;
-
-	public ProjectResultEndpointTest(boolean flag) {
-		this.flag = flag;
+	@DataPoints
+	public static boolean[] flags() {
+		return new boolean[]{true, false};
 	}
 
 	@Override
@@ -36,20 +29,21 @@ public class ProjectResultEndpointTest extends EndpointTest<ProjectResult, Proje
 		return newHelloWorldResult(DATE);
 	}
 
-	@Test
-	public void testHasResultsFor() {
+	@Theory
+	public void testHasResultsFor(boolean flag) {
 		when(dao.hasResultsFor(PROJECT_NAME)).thenReturn(flag);
 		assertEquals(flag, port.hasResultsFor(PROJECT_NAME));
+		System.out.println(flag);
 	}
 
-	@Test
-	public void testHasResultsBefore() {
+	@Theory
+	public void testHasResultsBefore(boolean flag) {
 		when(dao.hasResultsBefore(DATE, PROJECT_NAME)).thenReturn(flag);
 		assertEquals(flag, port.hasResultsBefore(DATE, PROJECT_NAME));
 	}
 
-	@Test
-	public void testHasResultsAfter() {
+	@Theory
+	public void testHasResultsAfter(boolean flag) {
 		when(dao.hasResultsAfter(DATE, PROJECT_NAME)).thenReturn(flag);
 		assertEquals(flag, port.hasResultsAfter(DATE, PROJECT_NAME));
 	}
