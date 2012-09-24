@@ -16,7 +16,7 @@ class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultR
 
 	@Override
 	public void save(ProjectResult projectResult) {
-		recordManager.save(new ProjectResultRecord(projectResult));
+		save(new ProjectResultRecord(projectResult));
 	}
 
 	@Override

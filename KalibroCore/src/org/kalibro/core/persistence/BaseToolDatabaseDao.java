@@ -34,7 +34,7 @@ class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implemen
 		BaseTool baseTool = collectorClass.newInstance().getBaseTool();
 		baseTool.setCollectorClass(collectorClass);
 		if (!getBaseToolNames().contains(baseTool.getName()))
-			recordManager.save(new BaseToolRecord(baseTool));
+			save(new BaseToolRecord(baseTool));
 	}
 
 	@Override

@@ -21,7 +21,7 @@ class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationR
 	@Override
 	public void save(Configuration configuration) {
 		ConfigurationRecord record = new ConfigurationRecord(configuration);
-		record = recordManager.save(record);
+		record = save(record);
 		configuration.setId(record.convert().getId());
 	}
 
