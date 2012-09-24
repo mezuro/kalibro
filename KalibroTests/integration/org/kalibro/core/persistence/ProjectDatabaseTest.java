@@ -9,17 +9,28 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+import org.kalibro.SupportedDatabase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
+import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.tests.AcceptanceTest;
 
-public abstract class ProjectDatabaseTest extends DatabaseTestCase {
+@RunWith(Parameterized.class)
+public class ProjectDatabaseTest extends AcceptanceTest {
 
 	private ProjectDao dao;
 
 	private Project helloWorld, helloWorld2;
 	private ProjectResult projectResult;
+
+	public ProjectDatabaseTest(SupportedDatabase databaseType) {
+		super(databaseType);
+	}
 
 	@Before
 	public void setUp() {
@@ -27,8 +38,8 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		helloWorld = projectResult.getProject();
 		helloWorld2 = newHelloWorld();
 		helloWorld2.setName("HelloWorld-2.0");
-		daoFactory.createConfigurationDao().save(kalibroConfiguration());
-		dao = daoFactory.createProjectDao();
+		DaoFactory.getConfigurationDao().save(kalibroConfiguration());
+		dao = DaoFactory.getProjectDao();
 	}
 
 	@Test
@@ -66,7 +77,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 	@Test
 	public void projectRemovalShouldCascadeToResults() {
 		String projectName = helloWorld.getName();
-		ProjectResultDatabaseDao projectResultDao = daoFactory.createProjectResultDao();
+		ProjectResultDao projectResultDao = DaoFactory.getProjectResultDao();
 
 		dao.save(helloWorld);
 		projectResultDao.save(projectResult);

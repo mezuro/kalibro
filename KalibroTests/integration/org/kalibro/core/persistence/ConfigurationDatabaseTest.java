@@ -8,19 +8,30 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.kalibro.Configuration;
+import org.kalibro.SupportedDatabase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.ProjectFixtures;
 import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.tests.AcceptanceTest;
 
-public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
+@RunWith(Parameterized.class)
+public class ConfigurationDatabaseTest extends AcceptanceTest {
 
-	private ConfigurationDatabaseDao dao;
+	private ConfigurationDao dao;
 
 	private Configuration kalibroConfiguration, simpleConfiguration;
+
+	public ConfigurationDatabaseTest(SupportedDatabase databaseType) {
+		super(databaseType);
+	}
 
 	@Before
 	public void setUp() {
@@ -28,7 +39,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 		simpleConfiguration = newConfiguration("cbo", "lcom4");
 		simpleConfiguration.setName("Simple");
 		simpleConfiguration.addMetricConfiguration(new MetricConfiguration(sc()));
-		dao = daoFactory.createConfigurationDao();
+		dao = DaoFactory.getConfigurationDao();
 		dao.save(kalibroConfiguration);
 	}
 
@@ -51,7 +62,7 @@ public abstract class ConfigurationDatabaseTest extends DatabaseTestCase {
 	@Test
 	public void shouldRetrieveConfigurationForProject() {
 		Project project = ProjectFixtures.helloWorld();
-		daoFactory.createProjectDao().save(project);
+		DaoFactory.getProjectDao().save(project);
 		Configuration retrieved = dao.getConfigurationFor(project.getName());
 		kalibroConfiguration.setId(retrieved.getId());
 		assertDeepEquals(kalibroConfiguration, retrieved);

@@ -6,22 +6,34 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.kalibro.Configuration;
+import org.kalibro.SupportedDatabase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.MetricConfigurationDao;
+import org.kalibro.tests.AcceptanceTest;
 
-public abstract class MetricConfigurationDatabaseTest extends DatabaseTestCase {
+@RunWith(Parameterized.class)
+public class MetricConfigurationDatabaseTest extends AcceptanceTest {
 
 	private Configuration configuration;
 
-	private ConfigurationDatabaseDao configurationDao;
-	private MetricConfigurationDatabaseDao dao;
+	private ConfigurationDao configurationDao;
+	private MetricConfigurationDao dao;
+
+	public MetricConfigurationDatabaseTest(SupportedDatabase databaseType) {
+		super(databaseType);
+	}
 
 	@Before
 	public void setUp() {
 		configuration = newConfiguration("cbo");
-		configurationDao = daoFactory.createConfigurationDao();
-		dao = daoFactory.createMetricConfigurationDao();
+		configurationDao = DaoFactory.getConfigurationDao();
+		dao = DaoFactory.getMetricConfigurationDao();
 		configurationDao.save(configuration);
 	}
 

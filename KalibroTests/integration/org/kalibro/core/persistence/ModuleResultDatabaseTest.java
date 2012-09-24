@@ -11,18 +11,30 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
 import org.kalibro.Configuration;
+import org.kalibro.SupportedDatabase;
 import org.kalibro.core.model.*;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ModuleResultDao;
+import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
-public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
+@RunWith(Parameterized.class)
+public class ModuleResultDatabaseTest extends AcceptanceTest {
 
-	private ModuleResultDatabaseDao dao;
+	private ModuleResultDao dao;
 
 	private Date date;
 	private Project project;
 	private ModuleResult moduleResult;
 	private ProjectResult projectResult;
+
+	public ModuleResultDatabaseTest(SupportedDatabase databaseType) {
+		super(databaseType);
+	}
 
 	@Before
 	public void setUp() {
@@ -31,10 +43,10 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		project = projectResult.getProject();
 		moduleResult = newHelloWorldClassResult(date);
 		moduleResult.setConfiguration(kalibroConfiguration());
-		dao = daoFactory.createModuleResultDao();
-		daoFactory.createConfigurationDao().save(kalibroConfiguration());
-		daoFactory.createProjectDao().save(project);
-		daoFactory.createProjectResultDao().save(projectResult);
+		dao = DaoFactory.getModuleResultDao();
+		DaoFactory.getConfigurationDao().save(kalibroConfiguration());
+		DaoFactory.getProjectDao().save(project);
+		DaoFactory.getProjectResultDao().save(projectResult);
 		save();
 	}
 
@@ -66,7 +78,7 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		Configuration configuration = newConfiguration("cbo");
 		configuration.addMetricConfiguration(badCompoundMetric);
 
-		ConfigurationDatabaseDao configurationDao = daoFactory.createConfigurationDao();
+		ConfigurationDao configurationDao = DaoFactory.getConfigurationDao();
 		configuration.setId(configurationDao.getConfiguration(CONFIGURATION_NAME).getId());
 		configurationDao.save(configuration);
 
@@ -97,11 +109,11 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 
 		incrementDate();
 		moduleResult.getResultFor(loc).addDescendentResult(2.0);
-		dao.save(moduleResult, projectResult);
+		save();
 
 		incrementDate();
 		moduleResult.getResultFor(loc).addDescendentResult(3.0);
-		dao.save(moduleResult, projectResult);
+		save();
 
 		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), moduleResult.getModule().getName());
 		assertEquals(3, resultHistory.size());
@@ -114,10 +126,10 @@ public abstract class ModuleResultDatabaseTest extends DatabaseTestCase {
 		date = new Date(date.getTime() + 1);
 		Whitebox.setInternalState(moduleResult, "date", date);
 		projectResult.setDate(date);
-		daoFactory.createProjectResultDao().save(projectResult);
+		DaoFactory.getProjectResultDao().save(projectResult);
 	}
 
 	private void save() {
-		dao.save(moduleResult, projectResult);
+		((ModuleResultDatabaseDao) dao).save(moduleResult, projectResult);
 	}
 }
