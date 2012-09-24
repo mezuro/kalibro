@@ -5,6 +5,8 @@ import static org.junit.Assert.assertTrue;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.xml.ws.Endpoint;
 
@@ -39,6 +41,9 @@ public abstract class EndpointTest<ENTITY, DAO, ENDPOINT> extends IntegrationTes
 		Class<?> implementorClass = Class.forName(endpointClass().getName() + "Impl");
 		Object implementor = implementorClass.getConstructor(daoClass()).newInstance(dao);
 		endpoint = Endpoint.create(implementor);
+		Logger logger = Logger.getLogger("com.sun.xml.ws.monitoring");
+		logger.setUseParentHandlers(false);
+		logger.setLevel(Level.OFF);
 		endpoint.publish(SERVICE_ADDRESS + endpointClass().getSimpleName() + "/");
 	}
 

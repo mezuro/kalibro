@@ -33,7 +33,6 @@ public class ProjectResultEndpointTest extends EndpointTest<ProjectResult, Proje
 	public void testHasResultsFor(boolean flag) {
 		when(dao.hasResultsFor(PROJECT_NAME)).thenReturn(flag);
 		assertEquals(flag, port.hasResultsFor(PROJECT_NAME));
-		System.out.println(flag);
 	}
 
 	@Theory
