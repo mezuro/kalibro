@@ -19,9 +19,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(DaoLazyLoader.class)
 public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
-	private DataTransferObject<ENTITY> dto;
-
 	protected ENTITY entity;
+	protected DataTransferObject<ENTITY> dto;
 
 	@Before
 	public void setUp() throws Exception {

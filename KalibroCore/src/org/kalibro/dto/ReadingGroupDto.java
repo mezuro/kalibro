@@ -18,7 +18,7 @@ public abstract class ReadingGroupDto extends DataTransferObject<ReadingGroup> {
 		ReadingGroup group = new ReadingGroup();
 		group.setId(id());
 		group.setName(name());
-		group.setDescription(description());
+		group.setDescription(description() == null ? "" : description());
 		group.setReadings(readings());
 		return group;
 	}
