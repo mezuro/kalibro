@@ -4,11 +4,9 @@
 	<classpathentry kind="src" path="unit"/>
 	<classpathentry kind="src" path="integration"/>
 	<classpathentry kind="src" path="acceptance"/>
-	
-	<classpathentry kind="src" path="/KalibroCore" combineaccessrules="false"/>
-	<classpathentry kind="src" path="/KalibroDesktop" combineaccessrules="false"/>
-	<classpathentry kind="src" path="/KalibroService" combineaccessrules="false"/>
-	
+	<classpathentry combineaccessrules="false" kind="src" path="/KalibroCore"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/KalibroDesktop"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/KalibroService"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Derby 10.5"/>
@@ -19,11 +17,9 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Rhino"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SimpleJavaMail 2.0"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
-	
-	<!-- test libraries -->
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JUnit 4.8.2"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mockito 1.8.5"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PowerMock 1.4.12"/>
-	
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Log4j 1.2.17"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

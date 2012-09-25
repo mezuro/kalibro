@@ -8,7 +8,6 @@ import javax.mail.Message.RecipientType;
 import org.codemonkey.simplejavamail.Email;
 import org.codemonkey.simplejavamail.Mailer;
 import org.kalibro.KalibroSettings;
-import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
@@ -36,9 +35,12 @@ public class ProcessProjectTask extends VoidTask {
 	}
 
 	private void processProject() {
-		ProjectResult projectResult = new LoadSourceTask(project).executeSubTask();
-		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).executeSubTask();
-		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).executeSubTask();
+		ProjectResult projectResult = new LoadSourceTask(project)
+				.executeSubTask();
+		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(
+				projectResult).executeSubTask();
+		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(
+				projectResult, resultMap).executeSubTask();
 
 		DaoFactory.getProjectResultDao().save(projectResult);
 		saveModuleResults(moduleResults, projectResult);
@@ -49,17 +51,20 @@ public class ProcessProjectTask extends VoidTask {
 
 	private void sendMail() {
 		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
+		Email email = new Email();
+		email.setSubject("Project " + project.getName() + " processing results");
+		email.setText("Processing results in project " + project.getName()
+				+ " has finished succesfully.");
 		for (String mail : project.getMailsToNotify()) {
-			Email email = new Email();
 			email.addRecipient(mail, mail, RecipientType.TO);
-			email.setSubject("Project " + project.getName() + " processing results");
-			email.setText("Processing results in project " + project.getName() + " has finished succesfully.");
-			mailer.sendMail(email);
 		}
+		mailer.sendMail(email);
 	}
 
-	private void saveModuleResults(Collection<ModuleResult> moduleResults, ProjectResult projectResult) {
-		ModuleResultDatabaseDao moduleResultDao = (ModuleResultDatabaseDao) DaoFactory.getModuleResultDao();
+	private void saveModuleResults(Collection<ModuleResult> moduleResults,
+			ProjectResult projectResult) {
+		ModuleResultDatabaseDao moduleResultDao = (ModuleResultDatabaseDao) DaoFactory
+				.getModuleResultDao();
 		for (ModuleResult moduleResult : moduleResults)
 			moduleResultDao.save(moduleResult, projectResult);
 	}

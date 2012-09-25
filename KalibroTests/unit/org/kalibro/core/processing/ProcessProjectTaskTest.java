@@ -1,8 +1,10 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertSame;
 import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResults;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.core.model.ProjectFixtures.PROJECT_NAME;
+import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
 import java.util.Collection;
 import java.util.Map;
@@ -16,7 +18,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.MailSettings;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
@@ -26,10 +27,8 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.dao.ProjectResultDao;
-import org.mockito.ArgumentMatcher;
 import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -138,21 +137,13 @@ public class ProcessProjectTaskTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSendMailAfterProcess() {
+	public void shouldSendMailAfterProcess() throws Exception {
+		Email email = mock(Email.class);
+		whenNew(Email.class).withNoArguments().thenReturn(email);
 		processTask.perform();
-		Mockito.verify(mailerMock).sendMail(Matchers.argThat(createEmailMatcher("aaa@example.com")));
-		Mockito.verify(mailerMock).sendMail(Matchers.argThat(createEmailMatcher("bbb@example.com")));
-	}
-
-	private ArgumentMatcher<Email> createEmailMatcher(final String mail) {
-		return new ArgumentMatcher<Email>() {
-
-			@Override
-			public boolean matches(Object target) {
-				if (! (target instanceof Email))
-					return false;
-				return ((Email) target).getRecipients().contains(mail);
-			}
-		};
+		
+		verify(mailerMock).sendMail(email);
+		verify(email).addRecipient("aaa@example.com", "aaa@example.com", RecipientType.TO);
+		verify(email).addRecipient("bbb@example.com", "bbb@example.com", RecipientType.TO);
 	}
 }
