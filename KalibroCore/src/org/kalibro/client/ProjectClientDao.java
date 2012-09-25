@@ -11,7 +11,7 @@ import org.kalibro.service.xml.ProjectXmlRequest;
 
 class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
 
-	protected ProjectClientDao(String serviceAddress) {
+	ProjectClientDao(String serviceAddress) {
 		super(serviceAddress, ProjectEndpoint.class);
 	}
 

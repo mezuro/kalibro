@@ -8,7 +8,7 @@ import org.kalibro.service.BaseToolEndpoint;
 
 class BaseToolClientDao extends EndpointClient<BaseToolEndpoint> implements BaseToolDao {
 
-	protected BaseToolClientDao(String serviceAddress) {
+	BaseToolClientDao(String serviceAddress) {
 		super(serviceAddress, BaseToolEndpoint.class);
 	}
 
