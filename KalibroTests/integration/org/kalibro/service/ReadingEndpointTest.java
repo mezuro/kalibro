@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.kalibro.Reading;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
 

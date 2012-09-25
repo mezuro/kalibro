@@ -6,6 +6,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.kalibro.BaseTool;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.BaseToolDao;
 
 public class BaseToolEndpointTest extends EndpointTest<BaseTool, BaseToolDao, BaseToolEndpoint> {

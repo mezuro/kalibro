@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 

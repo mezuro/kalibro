@@ -8,6 +8,7 @@ import java.util.Date;
 
 import org.junit.Test;
 import org.kalibro.ModuleResult;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ModuleResultDao;
 
 public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleResultDao, ModuleResultEndpoint> {

@@ -4,6 +4,7 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfigura
 
 import org.junit.Test;
 import org.kalibro.MetricConfiguration;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.service.xml.MetricConfigurationXml;
 

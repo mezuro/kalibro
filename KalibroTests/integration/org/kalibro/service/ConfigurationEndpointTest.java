@@ -10,6 +10,7 @@ import org.kalibro.Configuration;
 import org.kalibro.Granularity;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.NativeMetric;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.service.xml.ConfigurationXml;
 
