@@ -9,14 +9,14 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.RepositoryType;
-import org.kalibro.service.xml.ProjectXml;
-import org.kalibro.service.xml.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
+import org.kalibro.service.xml.ProjectXmlResponse;
 
 @WebService(name = "ProjectEndpoint", serviceName = "ProjectEndpointService")
 public interface ProjectEndpoint {
 
 	@WebMethod
-	void saveProject(@WebParam(name = "project") RawProjectXml project);
+	void saveProject(@WebParam(name = "project") ProjectXmlRequest project);
 
 	@WebMethod
 	@WebResult(name = "projectName")
@@ -28,7 +28,7 @@ public interface ProjectEndpoint {
 
 	@WebMethod
 	@WebResult(name = "project")
-	ProjectXml getProject(@WebParam(name = "projectName") String projectName);
+	ProjectXmlResponse getProject(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
 	void removeProject(@WebParam(name = "projectName") String projectName);

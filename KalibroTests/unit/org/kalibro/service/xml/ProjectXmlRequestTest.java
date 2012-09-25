@@ -4,7 +4,7 @@ import static org.kalibro.ProjectFixtures.helloWorld;
 
 import org.kalibro.Project;
 
-public class RawProjectXmlTest extends XmlTest<Project> {
+public class ProjectXmlRequestTest extends XmlTest<Project> {
 
 	@Override
 	protected Project loadFixture() {

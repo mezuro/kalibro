@@ -7,7 +7,7 @@ import org.kalibro.Project;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.ProjectEndpoint;
-import org.kalibro.service.xml.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
 
 class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
 
@@ -17,7 +17,7 @@ class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements Projec
 
 	@Override
 	public void save(Project project) {
-		port.saveProject(new RawProjectXml(project));
+		port.saveProject(new ProjectXmlRequest(project));
 	}
 
 	@Override

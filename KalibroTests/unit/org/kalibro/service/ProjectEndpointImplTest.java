@@ -13,7 +13,7 @@ import org.kalibro.Project;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.xml.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -45,7 +45,7 @@ public class ProjectEndpointImplTest extends UnitTest {
 
 	@Test
 	public void testSaveProject() {
-		endpoint.saveProject(new RawProjectXml(project));
+		endpoint.saveProject(new ProjectXmlRequest(project));
 		Mockito.verify(dao).save(project);
 	}
 

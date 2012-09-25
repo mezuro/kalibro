@@ -1,65 +1,48 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.ProjectState.ERROR;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Project;
-import org.kalibro.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectXml extends DataTransferObject<Project> {
+public class ProjectXmlRequest extends DataTransferObject<Project> {
 
-	private Long id;
+	@XmlElement(required = true)
 	private String name;
+
 	private String license;
 	private String description;
+
+	@XmlElement(required = true)
 	private RepositoryXml repository;
 
-	private ProjectState state;
-	private ThrowableXml error;
-
+	@XmlElement(required = true)
 	private String configurationName;
 
-	public ProjectXml() {
+	public ProjectXmlRequest() {
 		super();
 	}
 
-	public ProjectXml(Project project) {
-		id = project.getId();
+	public ProjectXmlRequest(Project project) {
 		name = project.getName();
 		license = project.getLicense();
 		description = project.getDescription();
 		repository = new RepositoryXml(project.getRepository());
-		initializeState(project);
-		initializeError(project);
 		configurationName = project.getConfigurationName();
-	}
-
-	private void initializeState(Project project) {
-		state = (project.getState() == ERROR) ? project.getStateWhenErrorOcurred() : project.getState();
-	}
-
-	private void initializeError(Project project) {
-		if (project.getState() == ERROR)
-			error = new ThrowableXml(project.getError());
 	}
 
 	@Override
 	public Project convert() {
 		Project project = new Project();
-		project.setId(id);
 		project.setName(name);
 		project.setLicense(license);
 		project.setDescription(description);
 		project.setRepository(repository.convert());
-		project.setState(state);
-		if (error != null)
-			project.setError(error.convert());
 		project.setConfigurationName(configurationName);
 		return project;
 	}

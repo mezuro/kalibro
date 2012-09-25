@@ -14,7 +14,7 @@ import org.kalibro.dto.DataTransferObject;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProjectResultXml extends DataTransferObject<ProjectResult> {
 
-	private ProjectXml project;
+	private ProjectXmlResponse project;
 	private Date date;
 	private Long loadTime;
 	private Long collectTime;
@@ -26,7 +26,7 @@ public class ProjectResultXml extends DataTransferObject<ProjectResult> {
 	}
 
 	public ProjectResultXml(ProjectResult projectResult) {
-		project = new ProjectXml(projectResult.getProject());
+		project = new ProjectXmlResponse(projectResult.getProject());
 		date = projectResult.getDate();
 		loadTime = projectResult.getLoadTime();
 		collectTime = projectResult.getCollectTime();

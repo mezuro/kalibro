@@ -18,7 +18,7 @@ import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
-import org.kalibro.service.xml.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -62,7 +62,7 @@ public class ProjectPanelTest extends UnitTest {
 		descriptionField().set(project.getDescription());
 		configurationField().set(project.getConfigurationName());
 		repositoryPanel().set(project.getRepository());
-		assertDeepEquals(new RawProjectXml(project).convert(), panel.get());
+		assertDeepEquals(new ProjectXmlRequest(project).convert(), panel.get());
 	}
 
 	@Test

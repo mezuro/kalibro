@@ -47,10 +47,10 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "project")
-	public ProjectXml echoProject(@WebParam(name = "project") ProjectXml project) {
+	public ProjectXmlResponse echoProject(@WebParam(name = "project") ProjectXmlResponse project) {
 		Project entity = project.convert();
 		entity.setName("echo " + entity.getName());
-		return new ProjectXml(entity);
+		return new ProjectXmlResponse(entity);
 	}
 
 	@WebMethod
@@ -64,10 +64,10 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "project")
-	public RawProjectXml echoRawProject(@WebParam(name = "project") RawProjectXml project) {
+	public ProjectXmlRequest echoRawProject(@WebParam(name = "project") ProjectXmlRequest project) {
 		Project entity = project.convert();
 		entity.setName("echo " + entity.getName());
-		return new RawProjectXml(entity);
+		return new ProjectXmlRequest(entity);
 	}
 
 	@WebMethod

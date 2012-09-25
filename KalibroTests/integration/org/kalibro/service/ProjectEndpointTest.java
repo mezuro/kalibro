@@ -9,7 +9,7 @@ import org.kalibro.KalibroException;
 import org.kalibro.Project;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.xml.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
 
 public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, ProjectEndpoint> {
 
@@ -40,7 +40,7 @@ public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, Proje
 
 	@Test
 	public void shouldSaveProject() {
-		port.saveProject(new RawProjectXml(entity));
+		port.saveProject(new ProjectXmlRequest(entity));
 		verify(dao).save(entity);
 	}
 }
