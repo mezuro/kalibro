@@ -77,7 +77,6 @@ public class ModuleResultDatabaseTest extends AcceptanceTest {
 		configuration.addMetricConfiguration(badCompoundMetric);
 
 		ConfigurationDao configurationDao = DaoFactory.getConfigurationDao();
-		configuration.setId(configurationDao.getConfiguration(CONFIGURATION_NAME).getId());
 		configurationDao.save(configuration);
 
 		moduleResult = getSavedResult();

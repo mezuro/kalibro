@@ -1,74 +1,68 @@
 package org.kalibro.service;
 
+import static org.junit.Assert.*;
 import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.MetricFixtures.analizoMetric;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.Configuration;
-import org.kalibro.Granularity;
-import org.kalibro.MetricConfiguration;
-import org.kalibro.NativeMetric;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.service.xml.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXmlRequest;
 
 public class ConfigurationEndpointTest extends EndpointTest<Configuration, ConfigurationDao, ConfigurationEndpoint> {
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
 	@Override
-	protected Configuration loadFixture() {
-		return newConfiguration();
+	public Configuration loadFixture() {
+		Configuration fixture = newConfiguration();
+		fixture.setId(ID);
+		return fixture;
+	}
+
+	@Override
+	public List<String> fieldsThatShouldBeProxy() {
+		return Arrays.asList("metricConfigurations");
 	}
 
 	@Test
-	public void shouldListConfigurationNames() {
-		when(dao.getConfigurationNames()).thenReturn(Arrays.asList("42"));
-		assertDeepList(port.getConfigurationNames(), "42");
+	public void shouldConfirmExistence() {
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(port.configurationExists(-1L));
+		assertTrue(port.configurationExists(ID));
 	}
 
 	@Test
-	public void shouldGetConfigurationByName() {
-		when(dao.getConfiguration("42")).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.getConfiguration("42"));
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getConfiguration(ID));
 	}
 
 	@Test
-	public void shouldDeleteConfigurationById() {
-		port.deleteConfiguration(42L);
-		verify(dao).delete(42L);
+	public void shouldGetConfigurationOfProject() {
+		when(dao.configurationOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.configurationOf(ID));
 	}
 
 	@Test
-	public void shouldSaveNormalConfiguration() {
-		entity = newConfiguration("loc");
-		shouldSaveConfiguration();
+	public void shouldGetAll() {
+		when(dao.all()).thenReturn(Arrays.asList(entity));
+		assertDeepDtoList(port.allConfigurations(), entity);
 	}
 
 	@Test
-	public void shouldSaveEmptyConfiguration() {
-		entity = newConfiguration();
-		shouldSaveConfiguration();
+	public void shouldSave() {
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, port.saveConfiguration(new ConfigurationXmlRequest(entity)));
 	}
 
 	@Test
-	public void shouldSaveConfigurationWithoutRanges() {
-		entity = newConfiguration();
-		entity.addMetricConfiguration(new MetricConfiguration(analizoMetric("loc")));
-		shouldSaveConfiguration();
-	}
-
-	@Test
-	public void shouldSaveMetricWithoutLanguages() {
-		NativeMetric nativeMetric = new NativeMetric("name", Granularity.METHOD);
-		nativeMetric.setOrigin("origin");
-		entity = new Configuration();
-		entity.addMetricConfiguration(new MetricConfiguration(nativeMetric));
-		shouldSaveConfiguration();
-	}
-
-	private void shouldSaveConfiguration() {
-		port.saveConfiguration(new ConfigurationXml(entity));
-		verify(dao).save(entity);
+	public void shouldDelete() {
+		port.deleteConfiguration(ID);
+		verify(dao).delete(ID);
 	}
 }

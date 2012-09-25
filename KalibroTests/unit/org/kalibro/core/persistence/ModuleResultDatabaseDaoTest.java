@@ -67,7 +67,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 
 		ConfigurationDatabaseDao configDao = mock(ConfigurationDatabaseDao.class);
 		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configDao);
-		when(configDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
+		when(configDao.configurationOf(projectResult.getProject().getId())).thenReturn(configuration);
 	}
 
 	@Test

@@ -3,50 +3,49 @@ package org.kalibro.client;
 import java.util.List;
 
 import org.kalibro.Configuration;
-import org.kalibro.KalibroException;
 import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ConfigurationEndpoint;
-import org.kalibro.service.xml.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXmlRequest;
 
+/**
+ * {@link ConfigurationEndpoint} client implementation of {@link ConfigurationDao}.
+ * 
+ * @author Carlos Morais
+ */
 class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> implements ConfigurationDao {
 
-	protected ConfigurationClientDao(String serviceAddress) {
+	ConfigurationClientDao(String serviceAddress) {
 		super(serviceAddress, ConfigurationEndpoint.class);
 	}
 
 	@Override
-	public void save(Configuration configuration) {
-		port.saveConfiguration(new ConfigurationXml(configuration));
+	public boolean exists(Long configurationId) {
+		return port.configurationExists(configurationId);
 	}
 
 	@Override
-	public List<String> getConfigurationNames() {
-		return port.getConfigurationNames();
+	public Configuration get(Long configurationId) {
+		return port.getConfiguration(configurationId).convert();
 	}
 
 	@Override
-	public boolean hasConfiguration(String configurationName) {
-		return port.hasConfiguration(configurationName);
+	public Configuration configurationOf(Long projectId) {
+		return port.configurationOf(projectId).convert();
 	}
 
 	@Override
-	public Configuration getConfiguration(String configurationName) {
-		return port.getConfiguration(configurationName).convert();
+	public List<Configuration> all() {
+		return DataTransferObject.convert(port.allConfigurations());
 	}
 
 	@Override
-	public Configuration getConfigurationFor(String projectName) {
-		throw new KalibroException("Not available remotely");
+	public Long save(Configuration configuration) {
+		return port.saveConfiguration(new ConfigurationXmlRequest(configuration));
 	}
 
 	@Override
 	public void delete(Long configurationId) {
 		port.deleteConfiguration(configurationId);
-	}
-
-	@Override
-	public List<Configuration> all() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

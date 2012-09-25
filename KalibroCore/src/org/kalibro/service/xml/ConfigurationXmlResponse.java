@@ -1,37 +1,36 @@
-package org.kalibro.core.persistence.record;
+package org.kalibro.service.xml;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
-import javax.persistence.*;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.dto.DataTransferObject;
 
-@Entity(name = "Configuration")
-@Table(name = "\"CONFIGURATION\"")
-public class ConfigurationRecord extends DataTransferObject<Configuration> {
+@XmlRootElement(name = "configuration")
+@XmlAccessorType(XmlAccessType.FIELD)
+public class ConfigurationXmlResponse extends DataTransferObject<Configuration> {
 
-	@Id
-	@GeneratedValue
-	@Column(name = "id")
 	private Long id;
 
-	@Column(name = "name", nullable = false, unique = true)
+	@XmlElement(required = true)
 	private String name;
 
-	@Column
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "configuration", orphanRemoval = true)
-	private Collection<MetricConfigurationRecord> metricConfigurations;
+	@XmlElement(name = "metricConfiguration")
+	private Collection<MetricConfigurationXml> metricConfigurations;
 
-	public ConfigurationRecord() {
+	public ConfigurationXmlResponse() {
 		super();
 	}
 
-	public ConfigurationRecord(Configuration configuration) {
+	public ConfigurationXmlResponse(Configuration configuration) {
 		id = configuration.getId();
 		name = configuration.getName();
 		description = configuration.getDescription();
@@ -39,9 +38,9 @@ public class ConfigurationRecord extends DataTransferObject<Configuration> {
 	}
 
 	private void initializeMetrics(Configuration configuration) {
-		metricConfigurations = new ArrayList<MetricConfigurationRecord>();
+		metricConfigurations = new ArrayList<MetricConfigurationXml>();
 		for (MetricConfiguration metricConfiguration : configuration.getMetricConfigurations())
-			metricConfigurations.add(new MetricConfigurationRecord(metricConfiguration, this));
+			metricConfigurations.add(new MetricConfigurationXml(metricConfiguration));
 	}
 
 	@Override
@@ -56,16 +55,7 @@ public class ConfigurationRecord extends DataTransferObject<Configuration> {
 
 	private void convertMetrics(Configuration configuration) {
 		if (metricConfigurations != null)
-			for (MetricConfigurationRecord metricConfiguration : metricConfigurations)
+			for (MetricConfigurationXml metricConfiguration : metricConfigurations)
 				configuration.addMetricConfiguration(metricConfiguration.convert());
-	}
-
-	protected String getName() {
-		return name;
-	}
-
-	public Long id() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

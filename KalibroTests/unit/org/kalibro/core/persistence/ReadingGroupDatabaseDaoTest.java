@@ -3,6 +3,7 @@ package org.kalibro.core.persistence;
 import static org.junit.Assert.*;
 
 import java.util.List;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +18,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ReadingGroupDatabaseDao.class)
 public class ReadingGroupDatabaseDaoTest extends UnitTest {
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
 	private ReadingGroupDatabaseDao dao;
 
 	@Before
@@ -26,17 +29,18 @@ public class ReadingGroupDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldConfirmExistence() {
-		doReturn(false).when(dao).existsWithId(28L);
-		doReturn(true).when(dao).existsWithId(42L);
-		assertFalse(dao.exists(28L));
-		assertTrue(dao.exists(42L));
+		doReturn(false).when(dao).existsWithId(ID);
+		assertFalse(dao.exists(ID));
+
+		doReturn(true).when(dao).existsWithId(ID);
+		assertTrue(dao.exists(ID));
 	}
 
 	@Test
 	public void shouldGetById() {
 		ReadingGroup group = mock(ReadingGroup.class);
-		doReturn(group).when(dao).getById(42L);
-		assertSame(group, dao.get(42L));
+		doReturn(group).when(dao).getById(ID);
+		assertSame(group, dao.get(ID));
 	}
 
 	@Test
@@ -52,16 +56,16 @@ public class ReadingGroupDatabaseDaoTest extends UnitTest {
 		ReadingGroupRecord record = mock(ReadingGroupRecord.class);
 		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
 		doReturn(record).when(dao).save(record);
-		when(record.id()).thenReturn(42L);
+		when(record.id()).thenReturn(ID);
 
-		assertEquals(42L, dao.save(group).longValue());
+		assertEquals(ID, dao.save(group));
 		verify(dao).save(record);
 	}
 
 	@Test
 	public void shouldDelete() {
-		doNothing().when(dao).deleteById(42L);
-		dao.delete(42L);
-		verify(dao).deleteById(42L);
+		doNothing().when(dao).deleteById(ID);
+		dao.delete(ID);
+		verify(dao).deleteById(ID);
 	}
 }

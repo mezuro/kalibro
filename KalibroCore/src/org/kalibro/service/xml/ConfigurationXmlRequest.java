@@ -14,7 +14,7 @@ import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "configuration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConfigurationXml extends DataTransferObject<Configuration> {
+public class ConfigurationXmlRequest extends DataTransferObject<Configuration> {
 
 	private Long id;
 
@@ -26,11 +26,11 @@ public class ConfigurationXml extends DataTransferObject<Configuration> {
 	@XmlElement(name = "metricConfiguration")
 	private Collection<MetricConfigurationXml> metricConfigurations;
 
-	public ConfigurationXml() {
+	public ConfigurationXmlRequest() {
 		super();
 	}
 
-	public ConfigurationXml(Configuration configuration) {
+	public ConfigurationXmlRequest(Configuration configuration) {
 		id = configuration.getId();
 		name = configuration.getName();
 		description = configuration.getDescription();

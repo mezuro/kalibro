@@ -9,6 +9,7 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Configuration;
 import org.kalibro.Project;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.ConfigurationDao;
@@ -52,7 +53,7 @@ public class ProjectPanelTest extends UnitTest {
 		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 		when(projectDao.getSupportedRepositoryTypes()).thenReturn(types);
-		when(configurationDao.getConfigurationNames()).thenReturn(Arrays.asList(project.getConfigurationName()));
+		when(configurationDao.all()).thenReturn(Arrays.asList(new Configuration()));
 	}
 
 	@Test

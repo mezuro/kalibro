@@ -35,7 +35,7 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 		locConfiguration = metricConfiguration("loc");
 		recordManager = PowerMockito.mock(RecordManager.class);
 		configurationDao = PowerMockito.mock(ConfigurationDatabaseDao.class);
-		PowerMockito.when(configurationDao.getConfiguration(configuration.getName())).thenReturn(configuration);
+		PowerMockito.when(configurationDao.get(configuration.getId())).thenReturn(configuration);
 		PowerMockito.whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).
 			thenReturn(configurationDao);
 		dao = PowerMockito.spy(new MetricConfigurationDatabaseDao(recordManager));

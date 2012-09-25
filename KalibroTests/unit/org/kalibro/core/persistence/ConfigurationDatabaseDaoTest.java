@@ -1,20 +1,18 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ConfigurationFixtures.*;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
+
+import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.Project;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.tests.UnitTest;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -22,16 +20,45 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ConfigurationDatabaseDao.class)
 public class ConfigurationDatabaseDaoTest extends UnitTest {
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
 	private Configuration configuration;
-	private RecordManager recordManager;
+	private ConfigurationRecord record;
 
 	private ConfigurationDatabaseDao dao;
 
 	@Before
-	public void setUp() {
-		configuration = newConfiguration("cbo", "lcom4");
-		recordManager = mock(RecordManager.class);
-		dao = spy(new ConfigurationDatabaseDao(recordManager));
+	public void setUp() throws Exception {
+		configuration = mock(Configuration.class);
+		record = mock(ConfigurationRecord.class);
+		when(record.convert()).thenReturn(configuration);
+		whenNew(ConfigurationRecord.class).withArguments(configuration).thenReturn(record);
+		dao = spy(new ConfigurationDatabaseDao(null));
+	}
+
+	@Test
+	public void shouldConfirmExistence() {
+		doReturn(true).when(dao).existsWithId(ID);
+		assertTrue(dao.exists(ID));
+
+		doReturn(false).when(dao).existsWithId(ID);
+		assertFalse(dao.exists(ID));
+	}
+
+	@Test
+	public void shouldGetById() {
+		doReturn(configuration).when(dao).getById(ID);
+		assertSame(configuration, dao.get(ID));
+	}
+
+	@Test
+	public void shouldGetConfigurationOfProject() {
+		TypedQuery<ConfigurationRecord> query = mock(TypedQuery.class);
+		doReturn(query).when(dao).createRecordQuery("JOIN Project project WHERE project.id = :projectId");
+		when(query.getSingleResult()).thenReturn(record);
+
+		assertSame(configuration, dao.configurationOf(ID));
+		verify(query).setParameter("projectId", ID);
 	}
 
 	@Test
@@ -43,51 +70,17 @@ public class ConfigurationDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldSave() {
-		when(recordManager.save(any())).thenReturn(new ConfigurationRecord(configuration));
-		dao.save(configuration);
+		doReturn(record).when(dao).save(record);
+		when(record.id()).thenReturn(ID);
 
-		ArgumentCaptor<ConfigurationRecord> captor = ArgumentCaptor.forClass(ConfigurationRecord.class);
-		Mockito.verify(recordManager).save(captor.capture());
-		assertDeepEquals(configuration, captor.getValue().convert());
+		assertEquals(ID, dao.save(configuration));
+		verify(dao).save(record);
 	}
 
 	@Test
-	public void shouldListAllConfigurationNames() {
-		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepList(dao.getConfigurationNames(), "4", "2");
-	}
-
-	@Test
-	public void shouldConfirmConfiguration() {
-		doReturn(true).when(dao).hasEntity(CONFIGURATION_NAME);
-		assertTrue(dao.hasConfiguration(CONFIGURATION_NAME));
-
-		doReturn(false).when(dao).hasEntity(CONFIGURATION_NAME);
-		assertFalse(dao.hasConfiguration(CONFIGURATION_NAME));
-	}
-
-	@Test
-	public void shouldGetConfigurationByName() {
-		doReturn(configuration).when(dao).getByName("42");
-		assertSame(configuration, dao.getConfiguration("42"));
-	}
-
-	@Test
-	public void shouldRemoveConfigurationByName() {
-		doNothing().when(dao).deleteById(42L);
-		dao.delete(42L);
-		verify(dao).deleteById(42L);
-	}
-
-	@Test
-	public void shouldGetConfigurationByProjectName() throws Exception {
-		Project project = mock(Project.class);
-		ProjectDatabaseDao projectDao = mock(ProjectDatabaseDao.class);
-		whenNew(ProjectDatabaseDao.class).withArguments(recordManager).thenReturn(projectDao);
-		when(projectDao.getProject("42")).thenReturn(project);
-		when(project.getConfigurationName()).thenReturn("4242");
-		doReturn(configuration).when(dao).getByName("4242");
-
-		assertSame(configuration, dao.getConfigurationFor("42"));
+	public void shouldDelete() {
+		doNothing().when(dao).deleteById(ID);
+		dao.delete(ID);
+		verify(dao).deleteById(ID);
 	}
 }

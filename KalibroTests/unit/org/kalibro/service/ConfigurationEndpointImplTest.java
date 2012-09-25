@@ -2,17 +2,21 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.Configuration;
 import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.service.xml.ConfigurationXml;
+import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.kalibro.service.xml.ConfigurationXmlResponse;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(ConfigurationEndpointImpl.class)
 public class ConfigurationEndpointImplTest extends EndpointImplementorTest
-	<Configuration, ConfigurationXml, ConfigurationXml, ConfigurationDao, ConfigurationEndpointImpl> {
+	<Configuration, ConfigurationXmlRequest, ConfigurationXmlResponse, ConfigurationDao, ConfigurationEndpointImpl> {
+
+	private static final Long ID = Math.abs(new Random().nextLong());
 
 	@Override
 	protected Class<Configuration> entityClass() {
@@ -20,36 +24,39 @@ public class ConfigurationEndpointImplTest extends EndpointImplementorTest
 	}
 
 	@Test
-	public void testSaveConfiguration() {
-		implementor.saveConfiguration(request);
-		verify(dao).save(entity);
+	public void shouldConfirmExistence() {
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(implementor.configurationExists(-1L));
+		assertTrue(implementor.configurationExists(ID));
 	}
 
 	@Test
-	public void testGetConfigurationNames() {
-		List<String> names = mock(List.class);
-		when(dao.getConfigurationNames()).thenReturn(names);
-		assertSame(names, implementor.getConfigurationNames());
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertSame(response, implementor.getConfiguration(ID));
 	}
 
 	@Test
-	public void testConfirmConfiguration() {
-		when(dao.hasConfiguration("42")).thenReturn(true);
-		assertTrue(implementor.hasConfiguration("42"));
-
-		when(dao.hasConfiguration("42")).thenReturn(false);
-		assertFalse(implementor.hasConfiguration("42"));
+	public void shouldGetConfigurationOfProject() {
+		when(dao.configurationOf(ID)).thenReturn(entity);
+		assertSame(response, implementor.configurationOf(ID));
 	}
 
 	@Test
-	public void testGetConfiguration() {
-		when(dao.getConfiguration("42")).thenReturn(entity);
-		assertSame(response, implementor.getConfiguration("42"));
+	public void shouldGetAll() {
+		when(dao.all()).thenReturn(Arrays.asList(entity));
+		assertDeepList(implementor.allConfigurations(), response);
 	}
 
 	@Test
-	public void testRemoveConfiguration() {
-		implementor.deleteConfiguration(42L);
-		verify(dao).delete(42L);
+	public void shouldSave() {
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, implementor.saveConfiguration(request));
+	}
+
+	@Test
+	public void shouldDelete() {
+		implementor.deleteConfiguration(ID);
+		verify(dao).delete(ID);
 	}
 }

@@ -3,6 +3,7 @@ package org.kalibro.service;
 import static org.junit.Assert.*;
 
 import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
@@ -16,6 +17,8 @@ public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @fo
 	ReadingGroup, ReadingGroupXmlRequest, ReadingGroupXmlResponse,
 	ReadingGroupDao, ReadingGroupEndpointImpl> {// @formatter:on
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
 	@Override
 	protected Class<ReadingGroup> entityClass() {
 		return ReadingGroup.class;
@@ -23,15 +26,15 @@ public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @fo
 
 	@Test
 	public void shouldConfirmExistence() {
-		when(dao.exists(42L)).thenReturn(true);
-		assertFalse(implementor.readingGroupExists(28L));
-		assertTrue(implementor.readingGroupExists(42L));
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(implementor.readingGroupExists(-1L));
+		assertTrue(implementor.readingGroupExists(ID));
 	}
 
 	@Test
 	public void shouldGetById() {
-		when(dao.get(42L)).thenReturn(entity);
-		assertSame(response, implementor.getReadingGroup(42L));
+		when(dao.get(ID)).thenReturn(entity);
+		assertSame(response, implementor.getReadingGroup(ID));
 	}
 
 	@Test
@@ -42,13 +45,13 @@ public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @fo
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(entity)).thenReturn(42L);
-		assertEquals(42L, implementor.saveReadingGroup(request).longValue());
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, implementor.saveReadingGroup(request));
 	}
 
 	@Test
 	public void shouldDelete() {
-		implementor.deleteReadingGroup(42L);
-		verify(dao).delete(42L);
+		implementor.deleteReadingGroup(ID);
+		verify(dao).delete(ID);
 	}
 }

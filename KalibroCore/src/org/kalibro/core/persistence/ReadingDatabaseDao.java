@@ -14,9 +14,9 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements ReadingDao {
+class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements ReadingDao {
 
-	protected ReadingDatabaseDao(RecordManager recordManager) {
+	ReadingDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ReadingRecord.class);
 	}
 

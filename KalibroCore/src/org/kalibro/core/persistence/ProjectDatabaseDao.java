@@ -68,7 +68,7 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 	}
 
 	private ProjectRecord createRecord(Project project) {
-		Configuration configuration = configurationDao.getConfiguration(project.getConfigurationName());
+		Configuration configuration = configurationDao.configurationOf(project.getId());
 		return new ProjectRecord(project, configuration.getId());
 	}
 
@@ -110,5 +110,10 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 			processTasks.remove(projectName);
 			processPeriods.remove(projectName);
 		}
+	}
+
+	public Project get(Long projectId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

@@ -1,7 +1,10 @@
 package org.kalibro.core.persistence;
 
+import javax.persistence.TypedQuery;
+
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
+import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.core.persistence.record.MetricConfigurationRecord;
 import org.kalibro.core.persistence.record.RangeRecord;
 import org.kalibro.dao.MetricConfigurationDao;
@@ -42,6 +45,8 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 	}
 
 	private Configuration getConfiguration(String configurationName) {
-		return configurationDao.getConfiguration(configurationName);
+		TypedQuery<ConfigurationRecord> query = configurationDao.createRecordQuery("WHERE configuration.name = :name");
+		query.setParameter("name", configurationName);
+		return query.getSingleResult().convert();
 	}
 }

@@ -47,7 +47,7 @@ public class ProjectDatabaseDaoTest extends UnitTest {
 	private void mockConfigurationDao() throws Exception {
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
 		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configurationDao);
-		when(configurationDao.getConfiguration(anyString())).thenReturn(new Configuration());
+		when(configurationDao.get(anyLong())).thenReturn(new Configuration());
 	}
 
 	@Test

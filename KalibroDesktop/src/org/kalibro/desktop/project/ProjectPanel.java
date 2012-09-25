@@ -3,6 +3,7 @@ package org.kalibro.desktop.project;
 import java.awt.Component;
 import java.util.List;
 
+import org.kalibro.Configuration;
 import org.kalibro.Project;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.swingextension.Label;
@@ -17,7 +18,7 @@ public class ProjectPanel extends EditPanel<Project> {
 	private StringField nameField;
 	private StringField licenseField;
 	private TextField descriptionField;
-	private ChoiceField<String> configurationField;
+	private ChoiceField<Configuration> configurationField;
 	private RepositoryPanel repositoryPanel;
 
 	public ProjectPanel() {
@@ -26,11 +27,11 @@ public class ProjectPanel extends EditPanel<Project> {
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
-		List<String> configurationNames = DaoFactory.getConfigurationDao().getConfigurationNames();
+		List<Configuration> configurations = DaoFactory.getConfigurationDao().all();
 		nameField = new StringField("name", 20);
 		licenseField = new StringField("license", 20);
 		descriptionField = new TextField("description", 3, 20);
-		configurationField = new ChoiceField<String>("configuration", configurationNames);
+		configurationField = new ChoiceField<Configuration>("configurations", configurations);
 		repositoryPanel = new RepositoryPanel();
 	}
 
@@ -50,7 +51,7 @@ public class ProjectPanel extends EditPanel<Project> {
 		project.setName(nameField.get());
 		project.setLicense(licenseField.get());
 		project.setDescription(descriptionField.get());
-		project.setConfigurationName(configurationField.get());
+		project.setConfigurationName(configurationField.get().getName());
 		project.setRepository(repositoryPanel.get());
 		return project;
 	}
@@ -60,7 +61,9 @@ public class ProjectPanel extends EditPanel<Project> {
 		nameField.set(project.getName());
 		licenseField.set(project.getLicense());
 		descriptionField.set(project.getDescription());
-		configurationField.set(project.getConfigurationName());
+		Configuration configuration = new Configuration();
+		configuration.setName(project.getConfigurationName());
+		configurationField.set(configuration);
 		repositoryPanel.set(project.getRepository());
 	}
 }

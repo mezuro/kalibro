@@ -2,93 +2,62 @@ package org.kalibro.client;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.util.Arrays;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.service.ConfigurationEndpoint;
-import org.kalibro.service.xml.ConfigurationXml;
-import org.kalibro.tests.UnitTest;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
+import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.kalibro.service.xml.ConfigurationXmlResponse;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest({ConfigurationClientDao.class, EndpointClient.class})
-public class ConfigurationClientDaoTest extends UnitTest {
+@PrepareOnlyThisForTest(ConfigurationClientDao.class)
+public class ConfigurationClientDaoTest extends ClientTest<// @formatter:off
+	Configuration, ConfigurationXmlRequest, ConfigurationXmlResponse,
+	ConfigurationEndpoint, ConfigurationClientDao> {// @formatter:on
 
-	private Configuration configuration;
-	private ConfigurationXml configurationXml;
+	private static final Long ID = Math.abs(new Random().nextLong());
 
-	private ConfigurationClientDao dao;
-	private ConfigurationEndpoint port;
-
-	@Before
-	public void setUp() throws Exception {
-		mockConfiguration();
-		createSupressedDao();
-	}
-
-	private void mockConfiguration() throws Exception {
-		configuration = mock(Configuration.class);
-		configurationXml = mock(ConfigurationXml.class);
-		whenNew(ConfigurationXml.class).withArguments(configuration).thenReturn(configurationXml);
-		when(configurationXml.convert()).thenReturn(configuration);
-	}
-
-	private void createSupressedDao() {
-		suppress(constructor(EndpointClient.class, String.class, Class.class));
-		dao = new ConfigurationClientDao("");
-
-		port = mock(ConfigurationEndpoint.class);
-		Whitebox.setInternalState(dao, "port", port);
+	@Override
+	protected Class<Configuration> entityClass() {
+		return Configuration.class;
 	}
 
 	@Test
-	public void testSave() {
-		dao.save(configuration);
-		verify(port).saveConfiguration(configurationXml);
+	public void shouldConfirmExistence() {
+		when(port.configurationExists(ID)).thenReturn(true);
+		assertFalse(client.exists(-1L));
+		assertTrue(client.exists(ID));
 	}
 
 	@Test
-	public void testGetConfigurationNames() {
-		List<String> names = mock(List.class);
-		when(port.getConfigurationNames()).thenReturn(names);
-		assertSame(names, dao.getConfigurationNames());
+	public void shouldGetById() {
+		when(port.getConfiguration(ID)).thenReturn(response);
+		assertSame(entity, client.get(ID));
 	}
 
 	@Test
-	public void testConfirmConfiguration() {
-		when(port.hasConfiguration("42")).thenReturn(true);
-		assertTrue(dao.hasConfiguration("42"));
-
-		when(port.hasConfiguration("42")).thenReturn(false);
-		assertFalse(dao.hasConfiguration("42"));
+	public void shouldGetConfigurationOfProject() {
+		when(port.configurationOf(ID)).thenReturn(response);
+		assertSame(entity, client.configurationOf(ID));
 	}
 
 	@Test
-	public void testGetConfiguration() {
-		when(port.getConfiguration("")).thenReturn(configurationXml);
-		assertSame(configuration, dao.getConfiguration(""));
+	public void shouldGetAll() {
+		when(port.allConfigurations()).thenReturn(Arrays.asList(response));
+		assertDeepList(client.all(), entity);
 	}
 
 	@Test
-	public void testGetConfigurationFor() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				dao.getConfigurationFor("42");
-			}
-		}).throwsException().withMessage("Not available remotely");
+	public void shouldSave() {
+		when(port.saveConfiguration(request)).thenReturn(ID);
+		assertEquals(ID, client.save(entity));
 	}
 
 	@Test
-	public void testDeleteConfiguration() {
-		dao.delete(42L);
-		verify(port).deleteConfiguration(42L);
+	public void shouldDelete() {
+		client.delete(ID);
+		verify(port).deleteConfiguration(ID);
 	}
 }

@@ -50,6 +50,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	private Configuration getConfigurationFor(String projectName) {
-		return new ConfigurationDatabaseDao(recordManager).getConfigurationFor(projectName);
+		Long projectId = new ProjectDatabaseDao(recordManager).getByName(projectName).getId();
+		return new ConfigurationDatabaseDao(recordManager).configurationOf(projectId);
 	}
 }

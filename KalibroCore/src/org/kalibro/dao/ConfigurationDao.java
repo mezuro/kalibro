@@ -4,20 +4,22 @@ import java.util.List;
 
 import org.kalibro.Configuration;
 
+/**
+ * Data access object for {@link Configuration}.
+ * 
+ * @author Carlos Morais
+ */
 public interface ConfigurationDao {
+
+	boolean exists(Long configurationId);
+
+	Configuration get(Long configurationId);
+
+	Configuration configurationOf(Long projectId);
 
 	List<Configuration> all();
 
-	void save(Configuration configuration);
-
-	List<String> getConfigurationNames();
-
-	boolean hasConfiguration(String configurationName);
-
-	Configuration getConfiguration(String configurationName);
-
-	Configuration getConfigurationFor(String projectName);
+	Long save(Configuration configuration);
 
 	void delete(Long configurationId);
-
 }

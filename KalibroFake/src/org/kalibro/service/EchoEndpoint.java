@@ -21,10 +21,11 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	public ConfigurationXml echoConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration) {
+	public ConfigurationXmlRequest echoConfiguration(
+		@WebParam(name = "configuration") ConfigurationXmlRequest configuration) {
 		Configuration entity = configuration.convert();
 		entity.setName("echo " + entity.getName());
-		return new ConfigurationXml(entity);
+		return new ConfigurationXmlRequest(entity);
 	}
 
 	@WebMethod
