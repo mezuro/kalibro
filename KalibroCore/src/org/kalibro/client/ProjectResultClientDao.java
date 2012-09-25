@@ -9,7 +9,7 @@ import org.kalibro.service.ProjectResultEndpoint;
 
 class ProjectResultClientDao extends EndpointClient<ProjectResultEndpoint> implements ProjectResultDao {
 
-	protected ProjectResultClientDao(String serviceAddress) {
+	ProjectResultClientDao(String serviceAddress) {
 		super(serviceAddress, ProjectResultEndpoint.class);
 	}
 
