@@ -4,7 +4,7 @@ import static org.kalibro.ConfigurationFixtures.newConfiguration;
 
 import org.kalibro.Configuration;
 
-public class ConfigurationXmlTest extends XmlTest<Configuration> {
+public class ConfigurationXmlRequestTest extends XmlTest<Configuration> {
 
 	@Override
 	protected Configuration loadFixture() {

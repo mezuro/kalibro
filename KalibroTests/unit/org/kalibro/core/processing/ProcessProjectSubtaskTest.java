@@ -2,7 +2,6 @@ package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
 import static org.kalibro.ProjectState.COLLECTING;
-import static org.mockito.Matchers.anyLong;
 
 import org.junit.Before;
 import org.junit.Test;

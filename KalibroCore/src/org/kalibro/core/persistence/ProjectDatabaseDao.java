@@ -111,9 +111,4 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 			processPeriods.remove(projectName);
 		}
 	}
-
-	public Project get(Long projectId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
 }

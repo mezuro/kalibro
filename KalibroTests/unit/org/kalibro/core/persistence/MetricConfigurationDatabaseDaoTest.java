@@ -4,15 +4,17 @@ import static org.junit.Assert.assertFalse;
 import static org.kalibro.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.MetricConfigurationFixtures.*;
 
+import javax.persistence.TypedQuery;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -33,12 +35,16 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 		configuration = newConfiguration("cbo");
 		cboConfiguration = metricConfiguration("cbo");
 		locConfiguration = metricConfiguration("loc");
-		recordManager = PowerMockito.mock(RecordManager.class);
-		configurationDao = PowerMockito.mock(ConfigurationDatabaseDao.class);
-		PowerMockito.when(configurationDao.get(configuration.getId())).thenReturn(configuration);
-		PowerMockito.whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).
-			thenReturn(configurationDao);
-		dao = PowerMockito.spy(new MetricConfigurationDatabaseDao(recordManager));
+		recordManager = mock(RecordManager.class);
+		configurationDao = mock(ConfigurationDatabaseDao.class);
+
+		ConfigurationRecord record = mock(ConfigurationRecord.class);
+		TypedQuery<ConfigurationRecord> query = mock(TypedQuery.class);
+		when(configurationDao.createRecordQuery("WHERE configuration.name = :name")).thenReturn(query);
+		when(query.getSingleResult()).thenReturn(record);
+		when(record.convert()).thenReturn(configuration);
+		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configurationDao);
+		dao = spy(new MetricConfigurationDatabaseDao(recordManager));
 	}
 
 	@Test

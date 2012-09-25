@@ -65,7 +65,10 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		doReturn(query).when(dao).createRecordQuery(anyString());
 		when(query.getResultList()).thenReturn(records);
 
+		ProjectDatabaseDao projDao = mock(ProjectDatabaseDao.class);
 		ConfigurationDatabaseDao configDao = mock(ConfigurationDatabaseDao.class);
+		whenNew(ProjectDatabaseDao.class).withArguments(recordManager).thenReturn(projDao);
+		when(projDao.getByName(PROJECT_NAME)).thenReturn(projectResult.getProject());
 		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configDao);
 		when(configDao.configurationOf(projectResult.getProject().getId())).thenReturn(configuration);
 	}
