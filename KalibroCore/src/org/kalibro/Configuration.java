@@ -2,10 +2,7 @@ package org.kalibro;
 
 import java.util.*;
 
-import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.Ignore;
-import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.abstractentity.*;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.Metric;
 import org.kalibro.core.model.MetricConfiguration;
@@ -25,16 +22,20 @@ public class Configuration extends AbstractEntity<Configuration> {
 		return DaoFactory.getConfigurationDao();
 	}
 
+	@Print(skip = true)
 	private Long id;
 
 	@IdentityField
 	private String name;
 
 	private String description;
-
-	private SortedSet<CompoundMetric> compoundMetrics;
-	private Map<String, Set<NativeMetric>> nativeMetrics;
 	private Map<String, MetricConfiguration> metricConfigurations;
+
+	@Ignore
+	private SortedSet<CompoundMetric> compoundMetrics;
+
+	@Ignore
+	private Map<String, Set<NativeMetric>> nativeMetrics;
 
 	@Ignore
 	private ScriptValidator validator;
@@ -164,5 +165,4 @@ public class Configuration extends AbstractEntity<Configuration> {
 	public void delete() {
 		dao().delete(id);
 	}
-
 }
