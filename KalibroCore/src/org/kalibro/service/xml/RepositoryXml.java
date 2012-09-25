@@ -5,8 +5,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "repository")

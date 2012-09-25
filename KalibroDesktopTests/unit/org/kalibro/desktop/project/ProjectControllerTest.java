@@ -10,7 +10,7 @@ import javax.swing.JDesktopPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.tests.UnitTest;

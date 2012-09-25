@@ -10,7 +10,7 @@ import javax.swing.SwingWorker;
 
 import org.kalibro.Kalibro;
 import org.kalibro.Configuration;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.desktop.old.KalibroFrame;
 import org.kalibro.desktop.old.listeners.KalibroFrameListener;
 import org.kalibro.desktop.settings.SettingsDialog;

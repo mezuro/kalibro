@@ -5,10 +5,10 @@ import static org.kalibro.core.model.MetricFixtures.sc;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.CompoundMetric;
 import org.kalibro.KalibroException;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.MetricConfiguration;
 import org.kalibro.tests.UnitTest;
 import org.mozilla.javascript.EcmaError;
 

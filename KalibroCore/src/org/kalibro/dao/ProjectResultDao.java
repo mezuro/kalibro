@@ -2,7 +2,7 @@ package org.kalibro.dao;
 
 import java.util.Date;
 
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.ProjectResult;
 
 public interface ProjectResultDao {
 

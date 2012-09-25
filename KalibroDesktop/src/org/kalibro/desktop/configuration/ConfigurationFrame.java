@@ -4,7 +4,7 @@ import java.awt.event.ContainerEvent;
 import java.awt.event.ContainerListener;
 
 import org.kalibro.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 import org.kalibro.desktop.swingextension.panel.CardStackPanel;

@@ -7,9 +7,9 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.kalibro.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.NativeMetric;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.service.xml.ConfigurationXml;
 

@@ -11,7 +11,7 @@ import javax.swing.JOptionPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
 import org.kalibro.desktop.swingextension.dialog.InputDialog;

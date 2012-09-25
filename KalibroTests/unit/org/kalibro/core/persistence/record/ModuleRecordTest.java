@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import org.kalibro.core.model.Module;
+import org.kalibro.Module;
 import org.kalibro.core.model.ModuleFixtures;
 
 public class ModuleRecordTest extends RecordTest<Module> {

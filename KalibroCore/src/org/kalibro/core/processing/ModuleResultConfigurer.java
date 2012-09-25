@@ -1,7 +1,6 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Configuration;
-import org.kalibro.core.model.*;
+import org.kalibro.*;
 
 public class ModuleResultConfigurer {
 

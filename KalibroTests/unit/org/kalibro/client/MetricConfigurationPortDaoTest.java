@@ -5,7 +5,7 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.xml.MetricConfigurationXml;
 import org.kalibro.tests.UnitTest;

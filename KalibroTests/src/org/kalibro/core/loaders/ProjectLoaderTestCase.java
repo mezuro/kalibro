@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.tests.UnitTest;
 import org.powermock.reflect.Whitebox;
 

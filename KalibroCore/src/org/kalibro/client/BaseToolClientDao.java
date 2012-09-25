@@ -2,7 +2,7 @@ package org.kalibro.client;
 
 import java.util.List;
 
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.service.BaseToolEndpoint;
 

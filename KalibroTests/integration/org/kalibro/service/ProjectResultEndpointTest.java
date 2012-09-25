@@ -10,7 +10,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.ProjectResult;
 import org.kalibro.dao.ProjectResultDao;
 
 @RunWith(value = Theories.class)

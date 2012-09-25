@@ -3,8 +3,8 @@ package org.kalibro.dao;
 import java.util.List;
 import java.util.Set;
 
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 
 public interface ProjectDao {
 

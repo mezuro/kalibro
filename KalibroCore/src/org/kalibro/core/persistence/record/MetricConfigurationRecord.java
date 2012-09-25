@@ -6,8 +6,7 @@ import java.util.Collection;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.*;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "MetricConfiguration")

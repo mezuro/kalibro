@@ -2,7 +2,7 @@ package org.kalibro.service.xml;
 
 import static org.kalibro.core.model.ModuleNodeFixtures.analizoCheckstyleTree;
 
-import org.kalibro.core.model.ModuleNode;
+import org.kalibro.ModuleNode;
 
 public class ModuleNodeXmlTest extends XmlTest<ModuleNode> {
 

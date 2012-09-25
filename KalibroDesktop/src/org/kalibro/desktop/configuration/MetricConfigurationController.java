@@ -3,11 +3,7 @@ package org.kalibro.desktop.configuration;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.kalibro.Configuration;
-import org.kalibro.KalibroException;
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.Range;
+import org.kalibro.*;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;

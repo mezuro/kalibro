@@ -6,7 +6,7 @@ import java.util.Arrays;
 
 import org.junit.Test;
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.xml.RawProjectXml;
 

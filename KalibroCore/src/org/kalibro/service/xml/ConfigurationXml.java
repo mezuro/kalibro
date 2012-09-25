@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "configuration")

@@ -11,8 +11,8 @@ import javax.persistence.TypedQuery;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.Configuration;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 import org.kalibro.core.persistence.record.ProjectRecord;
 import org.kalibro.core.processing.ProcessProjectTask;
 import org.kalibro.dao.ConfigurationDao;

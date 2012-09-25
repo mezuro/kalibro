@@ -5,7 +5,7 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 import java.util.*;
 
-import org.kalibro.core.model.NativeMetric;
+import org.kalibro.NativeMetric;
 
 public class CheckstyleConfiguration implements Configuration {
 

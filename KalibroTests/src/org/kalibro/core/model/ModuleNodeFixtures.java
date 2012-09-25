@@ -1,9 +1,11 @@
 package org.kalibro.core.model;
 
+import static org.kalibro.Granularity.*;
 import static org.kalibro.core.model.ModuleFixtures.*;
-import static org.kalibro.core.model.enums.Granularity.*;
 
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
+import org.kalibro.ModuleNode;
 
 public final class ModuleNodeFixtures {
 

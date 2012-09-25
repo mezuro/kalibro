@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "ProjectResult")

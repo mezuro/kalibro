@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.MetricResult;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.Range;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.Metric;
+import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
+import org.kalibro.Range;
+import org.kalibro.Statistic;
 import org.kalibro.desktop.swingextension.list.TableModel;
 
 public class ResultTableModel extends TableModel<MetricResult> {

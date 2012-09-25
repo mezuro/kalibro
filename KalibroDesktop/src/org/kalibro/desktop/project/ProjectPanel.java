@@ -3,7 +3,7 @@ package org.kalibro.desktop.project;
 import java.awt.Component;
 import java.util.List;
 
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;

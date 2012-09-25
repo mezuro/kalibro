@@ -7,7 +7,7 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Repository;
+import org.kalibro.Repository;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;

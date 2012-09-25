@@ -3,8 +3,9 @@ package org.kalibro.core.model;
 import static org.kalibro.core.model.ConfigurationFixtures.CONFIGURATION_NAME;
 import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 
-import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Project;
+import org.kalibro.ProjectState;
+import org.kalibro.RepositoryType;
 
 public final class ProjectFixtures {
 

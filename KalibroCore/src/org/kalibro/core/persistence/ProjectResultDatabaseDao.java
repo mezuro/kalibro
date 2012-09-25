@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.ProjectResult;
 import org.kalibro.core.persistence.record.ProjectResultRecord;
 import org.kalibro.dao.ProjectResultDao;
 

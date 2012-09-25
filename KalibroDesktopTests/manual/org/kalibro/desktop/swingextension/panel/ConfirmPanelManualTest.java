@@ -3,7 +3,7 @@ package org.kalibro.desktop.swingextension.panel;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Language;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
 

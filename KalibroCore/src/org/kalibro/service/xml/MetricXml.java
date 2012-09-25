@@ -5,8 +5,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.Metric;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlAccessorType(XmlAccessType.FIELD)

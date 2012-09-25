@@ -1,6 +1,6 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 
 public class LocalDirectoryTest extends LoaderIntegrationTest {
 

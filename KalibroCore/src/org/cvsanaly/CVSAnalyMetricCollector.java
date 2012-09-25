@@ -7,10 +7,9 @@ import java.util.Set;
 import java.util.regex.Pattern;
 
 import org.cvsanaly.entities.MetricResult;
+import org.kalibro.*;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Granularity;
 
 public class CVSAnalyMetricCollector implements MetricCollector {
 

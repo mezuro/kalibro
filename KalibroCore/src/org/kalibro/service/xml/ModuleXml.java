@@ -4,8 +4,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "module")

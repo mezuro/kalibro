@@ -3,11 +3,7 @@ package org.kalibro.desktop.configuration;
 import java.awt.Component;
 import java.util.List;
 
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.*;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.*;
 import org.kalibro.desktop.swingextension.panel.EditPanel;

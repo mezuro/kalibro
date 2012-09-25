@@ -6,6 +6,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
+
 public final class MetricConfigurationFixtures {
 
 	private static Map<String, Double[]> metricThresholds;

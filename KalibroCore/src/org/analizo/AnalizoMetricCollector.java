@@ -5,11 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
+import org.kalibro.BaseTool;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.core.MetricCollector;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeModuleResult;
 
 public class AnalizoMetricCollector implements MetricCollector {
 

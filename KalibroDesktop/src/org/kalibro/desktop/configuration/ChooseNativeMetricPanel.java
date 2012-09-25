@@ -4,8 +4,8 @@ import java.awt.Component;
 
 import javax.swing.border.TitledBorder;
 
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.NativeMetric;
+import org.kalibro.BaseTool;
+import org.kalibro.NativeMetric;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.list.*;

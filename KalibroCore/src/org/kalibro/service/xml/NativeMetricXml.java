@@ -8,8 +8,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
 
 @XmlRootElement(name = "nativeMetric")
 @XmlAccessorType(XmlAccessType.FIELD)

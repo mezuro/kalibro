@@ -15,7 +15,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;

@@ -1,18 +1,13 @@
 package org.analizo;
 
-import static org.kalibro.core.model.enums.Granularity.*;
+import static org.kalibro.Granularity.*;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.*;
 
 import org.apache.commons.io.IOUtils;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricResult;
-import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.*;
 import org.yaml.snakeyaml.Yaml;
 
 class AnalizoOutputParser {

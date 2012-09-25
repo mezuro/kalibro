@@ -5,7 +5,7 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfigura
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.service.xml.MetricConfigurationXml;

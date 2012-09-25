@@ -4,9 +4,9 @@ import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.kalibro.core.model.MetricResult;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
+import org.kalibro.Statistic;
 
 public class ModuleResultCsvExporter {
 

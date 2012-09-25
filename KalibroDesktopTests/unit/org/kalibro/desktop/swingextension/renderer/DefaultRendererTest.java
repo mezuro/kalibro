@@ -10,7 +10,7 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 import org.kalibro.tests.UnitTest;

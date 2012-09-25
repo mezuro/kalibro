@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.service.BaseToolEndpoint;
 import org.kalibro.service.xml.BaseToolXml;
 import org.kalibro.tests.UnitTest;

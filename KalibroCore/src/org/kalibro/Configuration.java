@@ -3,10 +3,6 @@ package org.kalibro;
 import java.util.*;
 
 import org.kalibro.core.abstractentity.*;
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.processing.ScriptValidator;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;

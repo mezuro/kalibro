@@ -7,7 +7,7 @@ import java.util.Arrays;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;
 import org.kalibro.service.xml.ModuleResultXml;
 import org.kalibro.tests.UnitTest;

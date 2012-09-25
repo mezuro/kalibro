@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.MetricResult;
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.CompoundMetric;
+import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "moduleResult")

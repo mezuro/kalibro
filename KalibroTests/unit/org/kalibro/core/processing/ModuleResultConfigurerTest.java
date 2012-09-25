@@ -7,9 +7,7 @@ import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResu
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Configuration;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.*;
 import org.kalibro.tests.UnitTest;
 
 public class ModuleResultConfigurerTest extends UnitTest {

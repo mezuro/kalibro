@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
 import org.kalibro.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.core.persistence.record.MetricConfigurationRecord;
 import org.kalibro.core.persistence.record.RangeRecord;
 import org.kalibro.dao.MetricConfigurationDao;

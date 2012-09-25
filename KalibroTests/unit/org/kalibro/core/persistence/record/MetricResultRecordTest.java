@@ -2,7 +2,7 @@ package org.kalibro.core.persistence.record;
 
 import static org.kalibro.core.model.MetricResultFixtures.newMetricResult;
 
-import org.kalibro.core.model.MetricResult;
+import org.kalibro.MetricResult;
 
 public class MetricResultRecordTest extends RecordTest<MetricResult> {
 

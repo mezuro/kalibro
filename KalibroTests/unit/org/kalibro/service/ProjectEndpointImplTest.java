@@ -1,16 +1,16 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
+import static org.kalibro.RepositoryType.*;
 import static org.kalibro.core.model.ProjectFixtures.helloWorld;
-import static org.kalibro.core.model.enums.RepositoryType.*;
 
 import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.xml.RawProjectXml;

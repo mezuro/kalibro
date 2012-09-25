@@ -1,13 +1,14 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.enums.RepositoryType.*;
+import static org.kalibro.RepositoryType.*;
 
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.core.Environment;
-import org.kalibro.core.model.enums.RepositoryType;
 
 public final class RepositoryFixtures {
 

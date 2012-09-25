@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "projectResult")

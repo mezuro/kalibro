@@ -1,15 +1,15 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.enums.ProjectState.COLLECTING;
+import static org.kalibro.ProjectState.COLLECTING;
 import static org.mockito.Matchers.anyLong;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.Project;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.tests.UnitTest;

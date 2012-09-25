@@ -14,7 +14,7 @@ import javax.swing.ListSelectionModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;

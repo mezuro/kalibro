@@ -3,8 +3,8 @@ package org.kalibro.desktop.configuration;
 import static org.kalibro.core.model.MetricConfigurationFixtures.*;
 import static org.kalibro.core.model.MetricFixtures.*;
 
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.Range;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 

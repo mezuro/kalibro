@@ -3,8 +3,8 @@ package org.kalibro.core.persistence.record;
 import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 
 import org.junit.Test;
+import org.kalibro.BaseTool;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.BaseTool;
 import org.powermock.reflect.Whitebox;
 
 public class BaseToolRecordTest extends RecordTest<BaseTool> {

@@ -3,7 +3,7 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 
 public class CvsLoaderTest extends ProjectLoaderTestCase {
 

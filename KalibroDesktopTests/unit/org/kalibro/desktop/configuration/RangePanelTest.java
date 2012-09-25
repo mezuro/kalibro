@@ -6,7 +6,7 @@ import static org.kalibro.core.model.RangeLabel.BAD;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ColorField;
 import org.kalibro.desktop.swingextension.field.DoubleField;

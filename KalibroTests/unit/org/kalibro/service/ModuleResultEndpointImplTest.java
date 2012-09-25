@@ -10,7 +10,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.service.xml.ModuleResultXml;

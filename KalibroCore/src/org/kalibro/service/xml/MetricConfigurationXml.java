@@ -8,8 +8,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.*;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "metricConfiguration")

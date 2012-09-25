@@ -1,6 +1,6 @@
 package org.kalibro.desktop.configuration;
 
-import org.kalibro.core.model.NativeMetric;
+import org.kalibro.NativeMetric;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.ListListener;
 

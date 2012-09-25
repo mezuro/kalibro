@@ -6,7 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class ChoiceFieldManualTest extends JPanel implements ActionListener {

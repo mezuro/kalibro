@@ -5,7 +5,7 @@ import static org.junit.Assert.assertSame;
 import java.util.List;
 
 import org.junit.Test;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.service.xml.BaseToolXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;

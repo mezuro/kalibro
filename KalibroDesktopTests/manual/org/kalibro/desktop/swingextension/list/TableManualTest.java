@@ -7,7 +7,7 @@ import java.awt.GridLayout;
 
 import javax.swing.JPanel;
 
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
 

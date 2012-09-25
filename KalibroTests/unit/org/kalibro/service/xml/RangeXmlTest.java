@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.core.model.RangeFixtures;
 import org.kalibro.core.model.RangeLabel;
 

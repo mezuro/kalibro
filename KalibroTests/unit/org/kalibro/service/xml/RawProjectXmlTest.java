@@ -2,7 +2,7 @@ package org.kalibro.service.xml;
 
 import static org.kalibro.core.model.ProjectFixtures.helloWorld;
 
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 
 public class RawProjectXmlTest extends XmlTest<Project> {
 

@@ -7,10 +7,10 @@ import java.util.TreeSet;
 
 import javax.persistence.*;
 
+import org.kalibro.BaseTool;
 import org.kalibro.KalibroError;
+import org.kalibro.NativeMetric;
 import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.NativeMetric;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "BaseTool")

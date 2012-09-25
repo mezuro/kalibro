@@ -1,14 +1,16 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.enums.Granularity.*;
-import static org.kalibro.core.model.enums.Language.*;
+import static org.kalibro.Granularity.*;
+import static org.kalibro.Language.*;
 
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.CompoundMetric;
+import org.kalibro.Granularity;
+import org.kalibro.NativeMetric;
 import org.yaml.snakeyaml.Yaml;
 
 public final class MetricFixtures {

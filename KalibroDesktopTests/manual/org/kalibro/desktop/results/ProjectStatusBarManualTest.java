@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.ProjectState;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.Label;

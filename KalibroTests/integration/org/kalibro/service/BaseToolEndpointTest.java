@@ -5,7 +5,7 @@ import static org.kalibro.core.model.BaseToolFixtures.newAnalizoStub;
 import java.util.Arrays;
 
 import org.junit.Test;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
 
 public class BaseToolEndpointTest extends EndpointTest<BaseTool, BaseToolDao, BaseToolEndpoint> {

@@ -1,6 +1,6 @@
 package org.kalibro.client;
 
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.service.MetricConfigurationEndpoint;
 import org.kalibro.service.xml.MetricConfigurationXml;

@@ -1,8 +1,8 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
+import static org.kalibro.RepositoryType.*;
 import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
-import static org.kalibro.core.model.enums.RepositoryType.*;
 
 import java.util.Arrays;
 import java.util.TreeSet;
@@ -10,8 +10,8 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.desktop.ComponentFinder;

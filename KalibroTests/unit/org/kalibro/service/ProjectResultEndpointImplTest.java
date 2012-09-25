@@ -8,7 +8,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.ProjectResult;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.tests.UnitTest;

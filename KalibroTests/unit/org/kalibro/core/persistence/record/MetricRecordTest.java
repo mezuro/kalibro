@@ -3,9 +3,9 @@ package org.kalibro.core.persistence.record;
 import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
 import org.junit.Test;
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.Metric;
+import org.kalibro.NativeMetric;
 import org.kalibro.core.persistence.record.MetricRecordTest.MyMetric;
 import org.kalibro.dto.AbstractDtoTest;
 

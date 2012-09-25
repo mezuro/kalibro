@@ -4,10 +4,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
+import org.kalibro.*;
 import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
 import org.yaml.snakeyaml.Yaml;
 
 public class CheckstyleStub implements MetricCollector {

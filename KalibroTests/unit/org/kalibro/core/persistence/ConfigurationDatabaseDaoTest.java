@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;

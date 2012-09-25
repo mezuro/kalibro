@@ -10,9 +10,9 @@ import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.ModuleResult;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 import org.kalibro.tests.UnitTest;
 
 public class AnalyzeResultsTaskTest extends UnitTest {

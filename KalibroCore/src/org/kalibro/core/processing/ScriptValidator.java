@@ -1,9 +1,9 @@
 package org.kalibro.core.processing;
 
+import org.kalibro.CompoundMetric;
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.Metric;
+import org.kalibro.MetricConfiguration;
 
 public class ScriptValidator {
 

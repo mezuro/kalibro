@@ -4,7 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kalibro.core.model.Repository;
+import org.kalibro.Repository;
 
 abstract class RemoteFileLoader extends ProjectLoader {
 

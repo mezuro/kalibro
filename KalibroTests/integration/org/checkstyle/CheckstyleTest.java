@@ -5,7 +5,7 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.NativeMetric;
+import org.kalibro.NativeMetric;
 import org.kalibro.tests.IntegrationTest;
 
 public class CheckstyleTest extends IntegrationTest {

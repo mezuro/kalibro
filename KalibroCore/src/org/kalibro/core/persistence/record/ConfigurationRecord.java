@@ -6,7 +6,7 @@ import java.util.Collection;
 import javax.persistence.*;
 
 import org.kalibro.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Configuration")

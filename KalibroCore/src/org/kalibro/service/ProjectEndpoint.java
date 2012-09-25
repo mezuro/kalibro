@@ -8,7 +8,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 import org.kalibro.service.xml.ProjectXml;
 import org.kalibro.service.xml.RawProjectXml;
 

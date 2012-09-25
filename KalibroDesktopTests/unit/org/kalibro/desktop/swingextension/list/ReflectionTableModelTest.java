@@ -7,8 +7,8 @@ import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Range;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Range;
 import org.kalibro.tests.UnitTest;
 
 public class ReflectionTableModelTest extends UnitTest {

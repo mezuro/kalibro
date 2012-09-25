@@ -2,8 +2,8 @@ package org.kalibro.service.xml;
 
 import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
 
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.CompoundMetric;
+import org.kalibro.ModuleResult;
 
 public class ModuleResultXmlTest extends XmlTest<ModuleResult> {
 

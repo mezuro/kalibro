@@ -3,12 +3,8 @@ package org.kalibro.core.processing;
 import java.util.Collection;
 import java.util.Map;
 
+import org.kalibro.*;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 

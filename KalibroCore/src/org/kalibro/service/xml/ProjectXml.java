@@ -1,13 +1,13 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.enums.ProjectState.ERROR;
+import static org.kalibro.ProjectState.ERROR;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.Project;
+import org.kalibro.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "project")

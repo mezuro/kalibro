@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
 import org.kalibro.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.field.UneditableField;

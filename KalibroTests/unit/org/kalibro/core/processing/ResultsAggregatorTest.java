@@ -1,17 +1,17 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertFalse;
+import static org.kalibro.Granularity.*;
+import static org.kalibro.Language.JAVA;
 import static org.kalibro.core.model.ModuleNodeFixtures.*;
 import static org.kalibro.core.model.ModuleResultFixtures.analizoCheckstyleResultMap;
 import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
-import static org.kalibro.core.model.enums.Granularity.*;
-import static org.kalibro.core.model.enums.Language.JAVA;
 
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.*;
+import org.kalibro.*;
 import org.kalibro.tests.UnitTest;
 
 public class ResultsAggregatorTest extends UnitTest {

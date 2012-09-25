@@ -6,8 +6,8 @@ import java.io.File;
 import java.util.List;
 
 import org.kalibro.KalibroException;
+import org.kalibro.Repository;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.model.Repository;
 
 public abstract class ProjectLoader {
 

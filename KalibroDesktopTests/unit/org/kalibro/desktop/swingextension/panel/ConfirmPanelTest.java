@@ -7,7 +7,7 @@ import java.awt.event.ActionListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Language;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.tests.UnitTest;

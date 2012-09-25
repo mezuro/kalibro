@@ -9,8 +9,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.*;
 import org.kalibro.core.processing.ResultsAggregator;
 
 public final class ModuleResultFixtures {

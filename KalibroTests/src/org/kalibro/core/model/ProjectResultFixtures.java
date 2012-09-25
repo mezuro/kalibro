@@ -5,7 +5,8 @@ import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
 import java.util.Date;
 
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 
 public final class ProjectResultFixtures {
 

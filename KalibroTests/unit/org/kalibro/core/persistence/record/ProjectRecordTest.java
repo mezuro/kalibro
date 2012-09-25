@@ -3,7 +3,7 @@ package org.kalibro.core.persistence.record;
 import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 
 public class ProjectRecordTest extends RecordTest<Project> {
 

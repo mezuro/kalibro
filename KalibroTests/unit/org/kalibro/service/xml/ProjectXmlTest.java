@@ -3,7 +3,7 @@ package org.kalibro.service.xml;
 import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 
 public class ProjectXmlTest extends XmlTest<Project> {
 

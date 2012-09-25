@@ -5,8 +5,8 @@ import static org.kalibro.core.model.ProjectResultFixtures.helloWorldResult;
 import java.util.ArrayList;
 
 import org.junit.Test;
+import org.kalibro.ProjectResult;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.ProjectResult;
 import org.powermock.reflect.Whitebox;
 
 public class ProjectResultRecordTest extends RecordTest<ProjectResult> {

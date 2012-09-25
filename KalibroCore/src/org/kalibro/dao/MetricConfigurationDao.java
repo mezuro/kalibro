@@ -1,6 +1,6 @@
 package org.kalibro.dao;
 
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 
 public interface MetricConfigurationDao {
 

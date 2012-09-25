@@ -3,7 +3,7 @@ package org.kalibro.service;
 import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
 
 import org.junit.Test;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.service.xml.MetricConfigurationXml;
 

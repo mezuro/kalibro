@@ -7,9 +7,9 @@ import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
+import org.kalibro.NativeMetric;
 import org.kalibro.tests.UnitTest;
 
 public class PreModuleResultTest extends UnitTest {

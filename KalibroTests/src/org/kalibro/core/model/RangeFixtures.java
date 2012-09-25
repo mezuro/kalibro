@@ -4,6 +4,8 @@ import static org.kalibro.core.model.MetricConfigurationFixtures.thresholds;
 
 import java.util.*;
 
+import org.kalibro.Range;
+
 public final class RangeFixtures {
 
 	public static Range newRange(String code, RangeLabel type) {

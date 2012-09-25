@@ -5,7 +5,7 @@ import java.awt.Color;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Range")

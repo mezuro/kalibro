@@ -9,10 +9,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 
 public class CheckstyleOutputParser extends AuditAdapter {
 

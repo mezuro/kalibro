@@ -3,7 +3,7 @@ package org.kalibro.core.processing;
 import java.util.Date;
 import java.util.Map;
 
-import org.kalibro.core.model.*;
+import org.kalibro.*;
 
 public class ResultsAggregator {
 

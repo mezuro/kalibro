@@ -2,11 +2,11 @@ package org.kalibro.desktop.old.model;
 
 import java.util.Collections;
 
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.MetricResult;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.Range;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
+import org.kalibro.Range;
+import org.kalibro.Statistic;
 
 public class ConfiguredResultTableModel extends ResultTableModel {
 

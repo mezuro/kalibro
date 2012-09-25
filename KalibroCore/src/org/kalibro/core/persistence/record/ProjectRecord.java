@@ -1,12 +1,12 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.enums.ProjectState.ERROR;
+import static org.kalibro.ProjectState.ERROR;
 
 import javax.persistence.*;
 
 import org.kalibro.Configuration;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.Project;
+import org.kalibro.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Project")

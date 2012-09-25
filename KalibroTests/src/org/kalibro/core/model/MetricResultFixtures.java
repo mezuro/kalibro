@@ -7,6 +7,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kalibro.MetricResult;
+import org.kalibro.NativeMetricResult;
 import org.yaml.snakeyaml.Yaml;
 
 public final class MetricResultFixtures {

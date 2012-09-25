@@ -2,8 +2,8 @@ package org.kalibro.service.xml;
 
 import static org.kalibro.core.model.RepositoryFixtures.helloWorldRepository;
 
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 
 public class RepositoryXmlTest extends XmlTest<Repository> {
 

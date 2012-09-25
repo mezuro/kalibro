@@ -2,7 +2,7 @@ package org.kalibro.service.xml;
 
 import static org.kalibro.core.model.ModuleFixtures.helloWorldApplication;
 
-import org.kalibro.core.model.Module;
+import org.kalibro.Module;
 
 public class ModuleXmlTest extends XmlTest<Module> {
 

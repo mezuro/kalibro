@@ -3,7 +3,7 @@ package org.kalibro.core.persistence;
 import java.util.List;
 
 import org.kalibro.Configuration;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.dao.ConfigurationDao;
 
