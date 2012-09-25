@@ -10,12 +10,12 @@ import java.util.Arrays;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleNode;
 import org.kalibro.core.model.ProjectResult;
+import org.kalibro.tests.UnitTest;
 
-public class SourceTreeBuilderTest extends TestCase {
+public class SourceTreeBuilderTest extends UnitTest {
 
 	private ProjectResult projectResult;
 	private SourceTreeBuilder treeBuilder;

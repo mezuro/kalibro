@@ -1,17 +1,15 @@
 package org.kalibro.desktop.swingextension.menu;
 
-import static org.mockito.Matchers.any;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class MenuItemTest extends TestCase {
+public class MenuItemTest extends UnitTest {
 
 	private ActionListener listener;
 

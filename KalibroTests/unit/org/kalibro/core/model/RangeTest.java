@@ -8,10 +8,10 @@ import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class RangeTest extends TestCase {
+public class RangeTest extends UnitTest {
 
 	private Range excellent, good, regular, warning, bad;
 
@@ -109,10 +109,10 @@ public class RangeTest extends TestCase {
 	}
 
 	private void assertInvalid(final Double beginning, final Double end) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				new Range(beginning, end);
 			}
 		}).throwsException().withMessage("[" + beginning + ", " + end + "[ is not a valid range");

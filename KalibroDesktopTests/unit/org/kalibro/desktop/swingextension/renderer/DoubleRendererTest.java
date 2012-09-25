@@ -9,11 +9,11 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.DoubleField;
+import org.kalibro.tests.UnitTest;
 
-public class DoubleRendererTest extends TestCase {
+public class DoubleRendererTest extends UnitTest {
 
 	private DoubleRenderer renderer;
 

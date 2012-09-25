@@ -2,7 +2,6 @@ package org.kalibro.desktop;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -15,15 +14,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"com.*", "javax.*", "org.xml.*"})
 @PrepareOnlyThisForTest(KalibroMenu.class)
-public class ExitFromMenu extends KalibroDesktopTestCase {
+public class ExitFromMenu extends KalibroDesktopAcceptanceTest {
 
 	@Test
 	public void shouldExitFromMenu() {
-		PowerMockito.mockStatic(System.class);
+		mockStatic(System.class);
 		startKalibroFrame();
 
 		fixture.menuItem("exit").click();
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		System.exit(0);
 	}
 }

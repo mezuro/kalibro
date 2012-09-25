@@ -1,9 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-
-import java.net.MalformedURLException;
+import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -12,7 +10,7 @@ import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.dao.MetricConfigurationDaoFake;
 import org.kalibro.service.entities.MetricConfigurationXml;
 
-public class MetricConfigurationEndpointTest extends EndpointTest {
+public class MetricConfigurationEndpointTest extends OldEndpointTest {
 
 	private static final String CONFIGURATION_NAME = "MetricConfigurationEndpointTest";
 
@@ -20,7 +18,7 @@ public class MetricConfigurationEndpointTest extends EndpointTest {
 	private MetricConfigurationEndpoint port;
 
 	@Before
-	public void setUp() throws MalformedURLException {
+	public void setUp() {
 		daoFake = new MetricConfigurationDaoFake();
 		daoFake.save(metricConfiguration("cbo"), CONFIGURATION_NAME);
 		daoFake.save(metricConfiguration("loc"), CONFIGURATION_NAME);

@@ -7,9 +7,9 @@ import javax.swing.border.TitledBorder;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class TextFieldTest extends TestCase {
+public class TextFieldTest extends UnitTest {
 
 	private TextField field;
 	private JTextPane textPane;

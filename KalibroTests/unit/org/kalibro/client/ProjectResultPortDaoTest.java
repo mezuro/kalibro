@@ -7,11 +7,11 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.ProjectResult;
 import org.kalibro.service.ProjectResultEndpoint;
 import org.kalibro.service.entities.ProjectResultXml;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -19,7 +19,7 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ProjectResultClientDao.class, EndpointClient.class})
-public class ProjectResultPortDaoTest extends TestCase {
+public class ProjectResultPortDaoTest extends UnitTest {
 
 	private boolean flag;
 	private ProjectResult projectResult;
@@ -52,10 +52,10 @@ public class ProjectResultPortDaoTest extends TestCase {
 
 	@Test
 	public void shouldNotSaveResultRemotely() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.save(projectResult);
 			}
 		}).throwsException().withMessage("Cannot save project result remotely");

@@ -8,9 +8,9 @@ import javax.swing.JLabel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class StringRendererTest extends TestCase {
+public class StringRendererTest extends UnitTest {
 
 	private StringRenderer renderer;
 

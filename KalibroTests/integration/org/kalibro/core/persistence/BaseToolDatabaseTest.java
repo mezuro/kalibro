@@ -8,7 +8,7 @@ import org.analizo.AnalizoMetricCollector;
 import org.checkstyle.CheckstyleMetricCollector;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 
 public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
@@ -32,10 +32,10 @@ public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
 
 	@Test
 	public void shouldNotRetrieveInexistentBaseTool() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				dao.getBaseTool("Inexistent base tool");
 			}
 		}).throwsException().withMessage("There is no base tool named 'Inexistent base tool'")

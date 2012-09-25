@@ -1,6 +1,6 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.powermock.reflect.Whitebox;
 
 public abstract class RemoteFileLoaderIntegrationTest extends LoaderIntegrationTest {
@@ -12,11 +12,11 @@ public abstract class RemoteFileLoaderIntegrationTest extends LoaderIntegrationT
 			.withMessage("Command returned with error status: " + loader.getLoadCommands(repository, false).get(0));
 	}
 
-	private Task whenLoading() {
-		return new Task() {
+	private VoidTask whenLoading() {
+		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				load();
 			}
 		};

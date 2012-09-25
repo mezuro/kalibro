@@ -11,13 +11,13 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.mockito.verification.VerificationMode;
 import org.powermock.reflect.Whitebox;
 
-public class RecordManagerTest extends TestCase {
+public class RecordManagerTest extends UnitTest {
 
 	private static final String MERGED = "RecordManagerTest merged";
 	private static final String UNMERGED = "RecordManagerTest unmerged";

@@ -9,10 +9,11 @@ import java.util.Collection;
 
 import org.junit.Test;
 import org.kalibro.dto.DataTransferObject;
+import org.kalibro.tests.UnitTest;
 import org.powermock.reflect.Whitebox;
 
 @Deprecated
-public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends TestCase {
+public abstract class DtoTestCase<ENTITY, RECORD extends DataTransferObject<ENTITY>> extends UnitTest {
 
 	@Test
 	public void defaultConstructorShouldDoNothing() throws Exception {

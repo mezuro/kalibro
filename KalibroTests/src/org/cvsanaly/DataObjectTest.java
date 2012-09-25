@@ -1,15 +1,16 @@
 package org.cvsanaly;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.util.Identifier;
+import org.kalibro.core.Identifier;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 
-public abstract class DataObjectTest<T extends Object> extends TestCase {
+public abstract class DataObjectTest<T extends Object> extends UnitTest {
 
 	@Test
 	public void testDataObject() throws Exception {

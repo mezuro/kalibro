@@ -4,18 +4,17 @@ import static org.checkstyle.CheckstyleMetric.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.enums.Granularity.CLASS;
 import static org.kalibro.core.model.enums.Language.JAVA;
-import static org.mockito.Matchers.anyString;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.EnumerationTestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.tests.EnumerationTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class CheckstyleMetricTest extends EnumerationTestCase<CheckstyleMetric> {
+public class CheckstyleMetricTest extends EnumerationTest<CheckstyleMetric> {
 
 	@Override
 	protected Class<CheckstyleMetric> enumerationClass() {

@@ -2,7 +2,6 @@ package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
 import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
-import static org.mockito.Matchers.any;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,7 +16,6 @@ import javax.swing.ListSelectionModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.dao.BaseToolDao;
@@ -26,6 +24,7 @@ import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.RadioButton;
 import org.kalibro.desktop.swingextension.list.Table;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -35,7 +34,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareForTest(DaoFactory.class)
-public class AddMetricDialogTest extends TestCase {
+public class AddMetricDialogTest extends UnitTest {
 
 	private AddMetricDialog dialog;
 	private ComponentFinder finder;

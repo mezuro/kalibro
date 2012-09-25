@@ -1,7 +1,5 @@
 package org.kalibro.desktop.swingextension.renderer;
 
-import static org.mockito.Matchers.any;
-
 import java.awt.Color;
 import java.awt.Component;
 import java.util.Random;
@@ -10,9 +8,9 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class RendererTest extends TestCase {
+public class RendererTest extends UnitTest {
 
 	private Color color;
 	private Component component;

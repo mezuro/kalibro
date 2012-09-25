@@ -11,6 +11,7 @@
 
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
 	
 	<!-- test libraries -->
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/FEST Swing"/>

@@ -9,19 +9,19 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.entities.ProjectXml;
 import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({ProjectClientDao.class, EndpointClient.class})
-public class ProjectPortDaoTest extends TestCase {
+public class ProjectPortDaoTest extends UnitTest {
 
 	private static final String PROJECT_NAME = "ProjectPortDaoTest project";
 

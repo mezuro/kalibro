@@ -14,17 +14,17 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.core.model.NativeMetricResult;
 import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AuditEvent.class, LocalizedMessage.class})
-public class CheckstyleOutputParserTest extends TestCase {
+public class CheckstyleOutputParserTest extends UnitTest {
 
 	private static final String PATH = "/code/directory/absolute/path";
 	private static final CheckstyleMetric METRIC = CheckstyleMetric.FAN_OUT;

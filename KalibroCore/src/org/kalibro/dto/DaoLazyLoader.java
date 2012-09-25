@@ -3,8 +3,8 @@ package org.kalibro.dto;
 import net.sf.cglib.proxy.Enhancer;
 import net.sf.cglib.proxy.LazyLoader;
 
+import org.kalibro.core.reflection.MethodReflector;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.util.reflection.MethodReflector;
 
 /**
  * Creates lazy load proxies that call {@link DaoFactory} methods to load the target.

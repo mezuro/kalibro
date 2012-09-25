@@ -10,11 +10,11 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.tests.UnitTest;
 
-public class NumberFieldTest extends TestCase {
+public class NumberFieldTest extends UnitTest {
 
 	private NumberField<Byte> field;
 	private JFormattedTextField innerField;

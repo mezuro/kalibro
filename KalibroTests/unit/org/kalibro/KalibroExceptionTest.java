@@ -3,8 +3,9 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.kalibro.tests.UnitTest;
 
-public class KalibroExceptionTest extends TestCase {
+public class KalibroExceptionTest extends UnitTest {
 
 	private static final String MESSAGE = "KalibroExceptionTest message";
 	private static final Throwable CAUSE = new Exception();

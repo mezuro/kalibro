@@ -6,10 +6,10 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class EntityComparatorTest extends TestCase {
+public class EntityComparatorTest extends UnitTest {
 
 	private static final String ASSERT_MESSAGE = "Order not satisfied: carlos, paulo";
 	private static final String ERROR_MESSAGE = "Error comparing fields: org.kalibro.core.abstractentity.";
@@ -45,10 +45,10 @@ public class EntityComparatorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNull() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Throwable {
+			protected void perform() throws Throwable {
 				comparator.compare(carlos, new Person("", null, ""));
 			}
 		}).throwsError().withMessage(ERROR_MESSAGE + "Programmer.name")
@@ -57,10 +57,10 @@ public class EntityComparatorTest extends TestCase {
 
 	@Test
 	public void shouldThrowErrorWhenSortingFieldIsNotComparable() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				comparator.compare(new WeirdPerson(), new WeirdPerson());
 			}
 		}).throwsError().withMessage(ERROR_MESSAGE + "EntityComparatorTest$WeirdPerson.field")

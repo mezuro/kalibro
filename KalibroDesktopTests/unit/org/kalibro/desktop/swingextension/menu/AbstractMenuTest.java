@@ -6,9 +6,9 @@ import java.awt.Component;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class AbstractMenuTest extends TestCase {
+public class AbstractMenuTest extends UnitTest {
 
 	private AbstractMenu menu;
 

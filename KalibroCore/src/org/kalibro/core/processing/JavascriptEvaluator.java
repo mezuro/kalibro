@@ -1,31 +1,20 @@
 package org.kalibro.core.processing;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.concurrent.ConcurrentInvocationHandler;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 
-public final class JavascriptEvaluator implements ScriptEvaluator {
-
-	public static ScriptEvaluator create() {
-		return ConcurrentInvocationHandler.createProxy(new JavascriptEvaluator(), ScriptEvaluator.class);
-	}
+public final class JavascriptEvaluator {
 
 	private Context context;
 	private Scriptable script;
 
-	private JavascriptEvaluator() {
-		return;
-	}
-
-	@Override
 	public void addVariable(String name, Double value) {
 		validateIdentifier(name);
 		getScript().put(name, script, value);
 	}
 
-	@Override
 	public void addFunction(String name, String body) {
 		validateIdentifier(name);
 		Function function = getContext().compileFunction(script, "function(){\n" + body + "}", name, 0, null);
@@ -37,12 +26,10 @@ public final class JavascriptEvaluator implements ScriptEvaluator {
 			throw new KalibroException("Invalid identifier: " + identifier);
 	}
 
-	@Override
 	public void remove(String name) {
 		getScript().delete(name);
 	}
 
-	@Override
 	public Double evaluate(String name) {
 		Object result = getScript().get(name, script);
 		if (result instanceof Function)

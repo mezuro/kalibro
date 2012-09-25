@@ -4,15 +4,15 @@ import java.lang.reflect.Method;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.desktop.CrudController;
 import org.kalibro.desktop.configuration.ConfigurationController;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.reflect.Whitebox;
 
-public class ReflectionMenuTest extends TestCase {
+public class ReflectionMenuTest extends UnitTest {
 
 	private ReflectionMenuItem menuItem;
 	private ConfigurationController controller;
@@ -25,10 +25,10 @@ public class ReflectionMenuTest extends TestCase {
 
 	@Test
 	public void shouldNotAcceptInvalidMethodOnCreation() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				new ReflectionMenuItem("", "", ' ', controller, "invalidMethod");
 			}
 		}).throwsError().withMessage("ReflectionMenuItem did not found method on controller")
@@ -55,11 +55,11 @@ public class ReflectionMenuTest extends TestCase {
 			.withCause(IllegalAccessException.class);
 	}
 
-	private Task click() {
-		return new Task() {
+	private VoidTask click() {
+		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				menuItem.doClick();
 			}
 		};

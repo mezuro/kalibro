@@ -9,15 +9,16 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.service.ReadingGroupEndpoint;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
+@PrepareOnlyThisForTest(ReadingGroupClientDao.class)
 public class ReadingGroupClientDaoTest extends ClientTest<// @formatter:off
 	ReadingGroup, ReadingGroupXmlRequest, ReadingGroupXmlResponse,
 	ReadingGroupEndpoint, ReadingGroupClientDao> {// @formatter:on
 
 	@Override
-	protected Class<?>[] parameterClasses() {
-		return new Class<?>[]{ReadingGroup.class, ReadingGroupXmlRequest.class, ReadingGroupXmlResponse.class,
-			ReadingGroupEndpoint.class, ReadingGroupClientDao.class};
+	protected Class<ReadingGroup> entityClass() {
+		return ReadingGroup.class;
 	}
 
 	@Test

@@ -7,16 +7,16 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
 import org.kalibro.KalibroSettings;
-import org.kalibro.TestCase;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({KalibroSettings.class, SettingsController.class})
-public class SettingsControllerTest extends TestCase {
+public class SettingsControllerTest extends UnitTest {
 
 	private EditDialog<KalibroSettings> dialog;
 	private KalibroSettingsPanel panel;
@@ -26,26 +26,23 @@ public class SettingsControllerTest extends TestCase {
 
 	@Before
 	public void setUp() throws Exception {
-		mockPanel();
-		mockDialog();
-		mockKalibro();
+		mockComponents();
+		mockSettings();
 		SettingsController.editSettings();
 		captureController();
 	}
 
-	private void mockPanel() throws Exception {
+	private void mockComponents() throws Exception {
+		dialog = mock(EditDialog.class);
 		panel = mock(KalibroSettingsPanel.class);
 		whenNew(KalibroSettingsPanel.class).withNoArguments().thenReturn(panel);
-	}
-
-	private void mockDialog() throws Exception {
-		dialog = mock(EditDialog.class);
 		whenNew(EditDialog.class).withArguments("Kalibro Settings", panel).thenReturn(dialog);
 	}
 
-	private void mockKalibro() {
+	private void mockSettings() {
 		settings = mock(KalibroSettings.class);
 		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.exists()).thenReturn(true);
 		when(KalibroSettings.load()).thenReturn(settings);
 	}
 
@@ -56,7 +53,14 @@ public class SettingsControllerTest extends TestCase {
 	}
 
 	@Test
-	public void shouldShowCurrentSettings() {
+	public void shouldShowDefaultSettingsOnFirstTime() {
+		when(KalibroSettings.exists()).thenReturn(false);
+		SettingsController.editSettings();
+		verify(dialog).edit(new KalibroSettings());
+	}
+
+	@Test
+	public void shouldShowCurrentSettingsIfExists() {
 		verify(dialog).edit(settings);
 	}
 

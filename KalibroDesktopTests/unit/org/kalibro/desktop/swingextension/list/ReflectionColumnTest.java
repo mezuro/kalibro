@@ -10,14 +10,14 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
+import org.kalibro.tests.UnitTest;
 import org.powermock.reflect.Whitebox;
 
-public class ReflectionColumnTest extends TestCase {
+public class ReflectionColumnTest extends UnitTest {
 
 	private ReflectionColumn column;
 
@@ -53,10 +53,10 @@ public class ReflectionColumnTest extends TestCase {
 
 	@Test
 	public void checkErrorGettingMethodFromInvalidClass() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() {
 				column.getColumnClass(String.class);
 			}
 		}).throwsError().withMessage("Reflection column did not found method: java.lang.String.getColor")

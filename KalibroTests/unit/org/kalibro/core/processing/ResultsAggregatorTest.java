@@ -11,10 +11,10 @@ import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.*;
+import org.kalibro.tests.UnitTest;
 
-public class ResultsAggregatorTest extends TestCase {
+public class ResultsAggregatorTest extends UnitTest {
 
 	private Map<Module, ModuleResult> resultMap;
 	private NativeMetric classMetric, packageMetric;

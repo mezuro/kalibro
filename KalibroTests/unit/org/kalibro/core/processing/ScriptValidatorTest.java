@@ -6,13 +6,13 @@ import static org.kalibro.core.model.MetricFixtures.sc;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroException;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.CompoundMetric;
 import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.tests.UnitTest;
 import org.mozilla.javascript.EcmaError;
 
-public class ScriptValidatorTest extends TestCase {
+public class ScriptValidatorTest extends UnitTest {
 
 	private MetricConfiguration configuration;
 	private ScriptValidator validator;
@@ -61,10 +61,10 @@ public class ScriptValidatorTest extends TestCase {
 	}
 
 	private void assertInvalid(Class<? extends Exception> expectedExceptionClass) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() throws Exception {
+			protected void perform() throws Exception {
 				assertValid();
 			}
 		}).throwsException().withMessage("Metric with invalid code or script: " + configuration.getMetric())

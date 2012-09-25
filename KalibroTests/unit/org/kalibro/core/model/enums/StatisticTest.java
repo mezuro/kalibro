@@ -7,9 +7,9 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
-import org.kalibro.EnumerationTestCase;
+import org.kalibro.tests.EnumerationTest;
 
-public class StatisticTest extends EnumerationTestCase<Statistic> {
+public class StatisticTest extends EnumerationTest<Statistic> {
 
 	@Override
 	protected Class<Statistic> enumerationClass() {

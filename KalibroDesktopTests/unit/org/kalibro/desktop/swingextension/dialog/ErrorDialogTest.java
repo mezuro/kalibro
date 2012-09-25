@@ -7,14 +7,14 @@ import javax.swing.JOptionPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(JOptionPane.class)
-public class ErrorDialogTest extends TestCase {
+public class ErrorDialogTest extends UnitTest {
 
 	private static final String ERROR_MESSAGE = "ErrorDialogTest";
 	private static final Exception ERROR = new Exception(ERROR_MESSAGE);

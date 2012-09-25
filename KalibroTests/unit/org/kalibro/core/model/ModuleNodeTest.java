@@ -7,10 +7,10 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class ModuleNodeTest extends TestCase {
+public class ModuleNodeTest extends UnitTest {
 
 	private ModuleNode org, analizo, checkstyle;
 
@@ -47,10 +47,10 @@ public class ModuleNodeTest extends TestCase {
 
 	@Test
 	public void checkNoChildError() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				checkstyle.getChildFor(analizo.getModule());
 			}
 		}).throwsException().withMessage("Module org.checkstyle has no child named analizo");

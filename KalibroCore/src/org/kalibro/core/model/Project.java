@@ -6,11 +6,11 @@ import java.util.LinkedList;
 
 import org.kalibro.KalibroException;
 import org.kalibro.KalibroSettings;
+import org.kalibro.core.Identifier;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.util.Identifier;
 
 @SortingFields("name")
 public class Project extends AbstractEntity<Project> {

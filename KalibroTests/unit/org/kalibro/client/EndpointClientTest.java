@@ -1,7 +1,6 @@
 package org.kalibro.client;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,15 +11,15 @@ import javax.xml.ws.Service;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Service.class)
-public class EndpointClientTest extends TestCase {
+public class EndpointClientTest extends UnitTest {
 
 	private Service service;
 
@@ -33,14 +32,18 @@ public class EndpointClientTest extends TestCase {
 
 	@Test
 	public void shouldThrowExceptionOnMalformedUrl() {
-		assertThat(new Task() {
+		assertThat(createClientWithMalformedUrl()).throwsException().withCause(MalformedURLException.class)
+			.withMessage("Invalid service address: mal formed URL");
+	}
+
+	private VoidTask createClientWithMalformedUrl() {
+		return new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				new TestEndpointClient("mal formed URL");
 			}
-		}).throwsException().withMessage("Invalid service address: mal formed URL")
-			.withCause(MalformedURLException.class);
+		};
 	}
 
 	@Test

@@ -5,8 +5,8 @@ import java.lang.reflect.Constructor;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.EvaluatorException;
@@ -15,13 +15,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)
-public class JavascriptEvaluatorTest extends TestCase {
+public class JavascriptEvaluatorTest extends UnitTest {
 
-	private ScriptEvaluator evaluator;
+	private JavascriptEvaluator evaluator;
 
 	@Before
 	public void setUp() {
-		evaluator = JavascriptEvaluator.create();
+		evaluator = new JavascriptEvaluator();
 	}
 
 	@Test
@@ -45,10 +45,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 
 	@Test
 	public void shouldValidateVariableName() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				evaluator.addVariable("1bad.name", 13.0);
 			}
 		}).throwsException().withMessage("Invalid identifier: 1bad.name");
@@ -56,10 +56,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 
 	@Test
 	public void shouldValidateFunctionName() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				evaluator.addFunction("badFunction'sName", "return 13;");
 			}
 		}).throwsException().withMessage("Invalid identifier: badFunction'sName");
@@ -71,10 +71,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 		assertDoubleEquals(42.0, evaluator.evaluate("variable"));
 
 		evaluator.remove("variable");
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				evaluator.evaluate("variable");
 			}
 		}).doThrow(ClassCastException.class);
@@ -106,10 +106,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 	}
 
 	private void assertInvalid(final String body, Class<? extends Exception> exceptionClass) {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				addFunctionAndExecute("f", body);
 			}
 		}).doThrow(exceptionClass);
@@ -124,7 +124,7 @@ public class JavascriptEvaluatorTest extends TestCase {
 	public void shouldExitContextOnFinalize() throws Throwable {
 		evaluator = createEvaluator();
 		mockStatic(Context.class);
-		((JavascriptEvaluator) evaluator).finalize();
+		evaluator.finalize();
 		verifyStatic();
 		Context.exit();
 	}

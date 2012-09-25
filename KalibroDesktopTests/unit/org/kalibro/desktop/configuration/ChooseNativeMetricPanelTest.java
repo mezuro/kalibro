@@ -11,7 +11,6 @@ import javax.swing.JTable;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.model.NativeMetric;
 import org.kalibro.dao.BaseToolDao;
@@ -20,6 +19,7 @@ import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.list.ListListener;
 import org.kalibro.desktop.swingextension.list.Table;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -30,7 +30,7 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareForTest(DaoFactory.class)
-public class ChooseNativeMetricPanelTest extends TestCase {
+public class ChooseNativeMetricPanelTest extends UnitTest {
 
 	private BaseTool analizo;
 

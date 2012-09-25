@@ -4,9 +4,9 @@ import static org.junit.Assert.assertSame;
 import static org.kalibro.core.model.MetricFixtures.analizoMetric;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class NativeMetricResultTest extends TestCase {
+public class NativeMetricResultTest extends UnitTest {
 
 	@Test
 	public void checkInitialization() {

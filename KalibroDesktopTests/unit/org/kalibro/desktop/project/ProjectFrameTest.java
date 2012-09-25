@@ -6,11 +6,11 @@ import static org.kalibro.core.model.ProjectFixtures.helloWorld;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Project;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
 @PrepareOnlyThisForTest({DaoFactory.class, ProjectFrame.class})
-public class ProjectFrameTest extends TestCase {
+public class ProjectFrameTest extends UnitTest {
 
 	private Project project;
 	private ProjectPanel panel;

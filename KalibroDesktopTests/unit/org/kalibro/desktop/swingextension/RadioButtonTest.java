@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.any;
 
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -11,11 +10,11 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class RadioButtonTest extends TestCase {
+public class RadioButtonTest extends UnitTest {
 
 	private ActionListener listener;
 

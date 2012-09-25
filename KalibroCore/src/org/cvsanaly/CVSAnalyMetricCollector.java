@@ -31,7 +31,7 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 		Set<NativeModuleResult> result;
 		try {
 			CommandTask executor = new CommandTask(CVSANALY2_COMMAND_LINE + tempFile.getAbsolutePath(), codeDirectory);
-			executor.executeAndWait();
+			executor.execute();
 
 			CVSAnalyDatabaseFetcher databaseFetcher = new CVSAnalyDatabaseFetcher(tempFile);
 			List<MetricResult> entities = databaseFetcher.getMetricResults();

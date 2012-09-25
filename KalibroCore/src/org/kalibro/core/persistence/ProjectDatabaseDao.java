@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static org.kalibro.core.concurrent.Task.DAY;
+import static java.util.concurrent.TimeUnit.DAYS;
 
 import java.util.HashMap;
 import java.util.List;
@@ -95,7 +95,7 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 		ProcessProjectTask task = new ProcessProjectTask(projectName);
 		processTasks.put(projectName, task);
 		processPeriods.put(projectName, periodInDays);
-		task.executePeriodically(periodInDays * DAY);
+		task.executePeriodically(periodInDays, DAYS);
 	}
 
 	@Override
@@ -106,7 +106,7 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 	@Override
 	public void cancelPeriodicProcess(String projectName) {
 		if (processTasks.containsKey(projectName)) {
-			processTasks.get(projectName).cancelPeriodicExecution();
+			processTasks.get(projectName).cancelExecution();
 			processTasks.remove(projectName);
 			processPeriods.remove(projectName);
 		}

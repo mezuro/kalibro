@@ -7,11 +7,11 @@ import static org.kalibro.core.model.enums.Granularity.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.tests.UnitTest;
 
-public class AbstractModuleResultTest extends TestCase {
+public class AbstractModuleResultTest extends UnitTest {
 
 	private NativeMetric acc, dit, loc;
 	private NativeMetricResult accResult, locResult;
@@ -44,10 +44,10 @@ public class AbstractModuleResultTest extends TestCase {
 
 	@Test
 	public void checkErrorForInexistentResultMetric() {
-		assertThat(new Task() {
+		assertThat(new VoidTask() {
 
 			@Override
-			public void perform() {
+			protected void perform() {
 				moduleResult.getResultFor(dit);
 			}
 		}).throwsException().withMessage("No result found for metric: Depth of Inheritance Tree");

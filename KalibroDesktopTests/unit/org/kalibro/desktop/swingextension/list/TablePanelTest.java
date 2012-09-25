@@ -11,14 +11,14 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class TablePanelTest extends TestCase {
+public class TablePanelTest extends UnitTest {
 
 	private Table<Range> table;
 	private TablePanelListener<Range> listener;

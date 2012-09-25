@@ -9,6 +9,7 @@ import org.codemonkey.simplejavamail.Email;
 import org.codemonkey.simplejavamail.Mailer;
 import org.kalibro.KalibroSettings;
 import org.kalibro.core.concurrent.Task;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
 import org.kalibro.core.model.Project;
@@ -17,7 +18,7 @@ import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 
-public class ProcessProjectTask extends Task {
+public class ProcessProjectTask extends VoidTask {
 
 	private Project project;
 
@@ -26,7 +27,7 @@ public class ProcessProjectTask extends Task {
 	}
 
 	@Override
-	public void perform() {
+	protected void perform() {
 		try {
 			processProject();
 		} catch (Throwable error) {
@@ -35,9 +36,9 @@ public class ProcessProjectTask extends Task {
 	}
 
 	private void processProject() {
-		ProjectResult projectResult = new LoadSourceTask(project).execute();
-		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).execute();
-		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).execute();
+		ProjectResult projectResult = new LoadSourceTask(project).executeSubTask();
+		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).executeSubTask();
+		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).executeSubTask();
 
 		DaoFactory.getProjectResultDao().save(projectResult);
 		saveModuleResults(moduleResults, projectResult);

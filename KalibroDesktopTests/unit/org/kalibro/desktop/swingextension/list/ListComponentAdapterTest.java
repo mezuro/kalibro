@@ -6,12 +6,12 @@ import javax.swing.event.ListSelectionEvent;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.model.Range;
+import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ListComponentAdapterTest extends TestCase {
+public class ListComponentAdapterTest extends UnitTest {
 
 	private Range range;
 	private ListListener<Range> listener;

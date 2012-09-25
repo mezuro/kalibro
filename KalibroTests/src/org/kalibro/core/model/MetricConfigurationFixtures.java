@@ -1,6 +1,6 @@
 package org.kalibro.core.model;
 
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.core.model.MetricFixtures.newAnalizoMetric;
 
 import java.util.HashMap;
 import java.util.Map;
