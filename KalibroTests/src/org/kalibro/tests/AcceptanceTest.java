@@ -15,7 +15,7 @@ import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.SupportedDatabase;
 
-public abstract class AcceptanceTest extends UnitTest {
+public abstract class AcceptanceTest extends IntegrationTest {
 
 	@Parameters
 	public static Collection<SupportedDatabase[]> supportedDatabases() {
