@@ -15,7 +15,7 @@ import org.kalibro.service.xml.ReadingGroupXmlRequest;
  */
 class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> implements ReadingGroupDao {
 
-	public ReadingGroupClientDao(String serviceAddress) {
+	ReadingGroupClientDao(String serviceAddress) {
 		super(serviceAddress, ReadingGroupEndpoint.class);
 	}
 

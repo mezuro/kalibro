@@ -15,7 +15,7 @@ import org.kalibro.service.xml.ReadingXml;
  */
 class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements ReadingDao {
 
-	public ReadingClientDao(String serviceAddress) {
+	ReadingClientDao(String serviceAddress) {
 		super(serviceAddress, ReadingEndpoint.class);
 	}
 
