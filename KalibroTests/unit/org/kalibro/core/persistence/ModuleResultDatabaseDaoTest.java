@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.ModuleResult;
 import org.kalibro.ProjectResult;
-import org.kalibro.core.model.ProjectResultFixtures;
+import org.kalibro.ProjectResultFixtures;
 import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;

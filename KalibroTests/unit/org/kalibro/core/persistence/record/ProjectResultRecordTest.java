@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.ProjectResultFixtures.helloWorldResult;
+import static org.kalibro.ProjectResultFixtures.helloWorldResult;
 
 import java.util.ArrayList;
 

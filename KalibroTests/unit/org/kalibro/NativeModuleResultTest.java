@@ -3,7 +3,6 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
-import org.kalibro.core.model.ModuleFixtures;
 import org.kalibro.tests.UnitTest;
 
 public class NativeModuleResultTest extends UnitTest {

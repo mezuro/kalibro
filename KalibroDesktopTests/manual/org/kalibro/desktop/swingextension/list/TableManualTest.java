@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.kalibro.MetricConfigurationFixtures.*;
 
 import java.awt.Color;
 import java.awt.GridLayout;

@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.MetricResultFixtures.newMetricResult;
+import static org.kalibro.MetricResultFixtures.newMetricResult;
 
 import org.kalibro.MetricResult;
 

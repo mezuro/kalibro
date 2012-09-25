@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.kalibro.core.model.BaseToolFixtures.newAnalizoStub;
+import static org.kalibro.BaseToolFixtures.newAnalizoStub;
 
 import java.util.Arrays;
 

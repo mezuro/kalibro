@@ -1,10 +1,8 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.thresholds;
+import static org.kalibro.MetricConfigurationFixtures.thresholds;
 
 import java.util.*;
-
-import org.kalibro.Range;
 
 public final class RangeFixtures {
 

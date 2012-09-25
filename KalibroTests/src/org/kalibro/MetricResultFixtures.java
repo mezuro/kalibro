@@ -1,14 +1,12 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.MetricFixtures.newAnalizoMetric;
+import static org.kalibro.MetricFixtures.newAnalizoMetric;
 
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kalibro.MetricResult;
-import org.kalibro.NativeMetricResult;
 import org.yaml.snakeyaml.Yaml;
 
 public final class MetricResultFixtures {

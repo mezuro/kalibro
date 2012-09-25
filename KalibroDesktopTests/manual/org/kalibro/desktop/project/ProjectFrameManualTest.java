@@ -1,6 +1,6 @@
 package org.kalibro.desktop.project;
 
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.ProjectFixtures.*;
 
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;

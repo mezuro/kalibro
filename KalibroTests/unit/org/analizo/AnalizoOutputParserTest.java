@@ -1,7 +1,7 @@
 package org.analizo;
 
-import static org.kalibro.core.model.BaseToolFixtures.analizo;
-import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.kalibro.BaseToolFixtures.analizo;
+import static org.kalibro.MetricFixtures.analizoMetric;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -2,7 +2,7 @@ package org.kalibro.core.persistence;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.ProjectFixtures.*;
 
 import java.io.File;
 import java.util.ArrayList;

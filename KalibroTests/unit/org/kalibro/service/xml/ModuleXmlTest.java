@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.ModuleFixtures.helloWorldApplication;
+import static org.kalibro.ModuleFixtures.helloWorldApplication;
 
 import org.kalibro.Module;
 

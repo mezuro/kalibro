@@ -1,7 +1,7 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
+import static org.kalibro.ProjectFixtures.helloWorld;
 
 import java.util.Arrays;
 import java.util.TreeSet;

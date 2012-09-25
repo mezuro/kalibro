@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.MetricFixtures.analizoMetric;
 
 import java.util.Arrays;
 

@@ -1,8 +1,8 @@
 package org.kalibro.service.xml;
 
 import org.kalibro.Range;
-import org.kalibro.core.model.RangeFixtures;
-import org.kalibro.core.model.RangeLabel;
+import org.kalibro.RangeFixtures;
+import org.kalibro.RangeLabel;
 
 public class RangeXmlTest extends XmlTest<Range> {
 

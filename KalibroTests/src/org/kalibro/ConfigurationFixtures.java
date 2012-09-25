@@ -1,8 +1,6 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-
-import org.kalibro.Configuration;
+import static org.kalibro.MetricConfigurationFixtures.*;
 
 public final class ConfigurationFixtures {
 

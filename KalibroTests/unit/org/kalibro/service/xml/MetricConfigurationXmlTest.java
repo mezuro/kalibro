@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import org.kalibro.MetricConfiguration;
 

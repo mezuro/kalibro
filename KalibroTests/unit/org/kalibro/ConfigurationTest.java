@@ -1,9 +1,9 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.MetricConfigurationFixtures.*;
+import static org.kalibro.MetricFixtures.*;
 
 import java.util.List;
 import java.util.Map;

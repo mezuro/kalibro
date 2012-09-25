@@ -1,9 +1,9 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResultMap;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.BaseToolFixtures.analizoStub;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldResultMap;
+import static org.kalibro.ProjectFixtures.*;
 
 import java.util.HashMap;
 import java.util.Map;

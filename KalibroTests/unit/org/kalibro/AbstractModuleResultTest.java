@@ -2,8 +2,8 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 import static org.kalibro.Granularity.*;
-import static org.kalibro.core.model.MetricFixtures.analizoMetric;
-import static org.kalibro.core.model.ModuleFixtures.helloWorldClass;
+import static org.kalibro.MetricFixtures.analizoMetric;
+import static org.kalibro.ModuleFixtures.helloWorldClass;
 
 import org.junit.Before;
 import org.junit.Test;

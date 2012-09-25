@@ -1,13 +1,10 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.MetricFixtures.newAnalizoMetric;
+import static org.kalibro.MetricFixtures.newAnalizoMetric;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-
-import org.kalibro.MetricConfiguration;
-import org.kalibro.Range;
 
 public final class MetricConfigurationFixtures {
 

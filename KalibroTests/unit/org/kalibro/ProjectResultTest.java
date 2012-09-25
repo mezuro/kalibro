@@ -1,9 +1,9 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleNodeFixtures.helloWorldRoot;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ModuleNodeFixtures.helloWorldRoot;
+import static org.kalibro.ProjectFixtures.helloWorld;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Date;
 

@@ -1,9 +1,9 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.kalibro.BaseToolFixtures.analizoStub;
 import static org.kalibro.Granularity.*;
 import static org.kalibro.Language.*;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;

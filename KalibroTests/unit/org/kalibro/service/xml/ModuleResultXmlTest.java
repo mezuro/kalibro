@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
 import org.kalibro.CompoundMetric;
 import org.kalibro.ModuleResult;

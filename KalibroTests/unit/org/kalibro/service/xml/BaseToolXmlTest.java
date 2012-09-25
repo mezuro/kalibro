@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import org.kalibro.BaseTool;
 

@@ -1,8 +1,8 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
 import java.io.File;
 import java.io.IOException;

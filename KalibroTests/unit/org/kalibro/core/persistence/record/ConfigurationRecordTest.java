@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
+import static org.kalibro.ConfigurationFixtures.kalibroConfiguration;
 
 import org.kalibro.Configuration;
 

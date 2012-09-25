@@ -1,12 +1,9 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.ModuleNodeFixtures.newHelloWorldRoot;
-import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
+import static org.kalibro.ModuleNodeFixtures.newHelloWorldRoot;
+import static org.kalibro.ProjectFixtures.newHelloWorld;
 
 import java.util.Date;
-
-import org.kalibro.ProjectResult;
-import org.kalibro.ProjectState;
 
 public final class ProjectResultFixtures {
 

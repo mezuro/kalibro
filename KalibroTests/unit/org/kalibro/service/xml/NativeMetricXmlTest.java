@@ -1,7 +1,7 @@
 package org.kalibro.service.xml;
 
+import org.kalibro.MetricFixtures;
 import org.kalibro.NativeMetric;
-import org.kalibro.core.model.MetricFixtures;
 
 public class NativeMetricXmlTest extends XmlTest<NativeMetric> {
 

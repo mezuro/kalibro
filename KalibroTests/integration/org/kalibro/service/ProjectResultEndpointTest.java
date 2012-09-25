@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Date;
 

@@ -1,6 +1,6 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.ConfigurationFixtures.*;
 
 import org.kalibro.MetricConfiguration;
 import org.kalibro.desktop.ComponentWrapperDialog;

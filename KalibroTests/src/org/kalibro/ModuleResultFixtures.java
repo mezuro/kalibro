@@ -1,15 +1,14 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.ModuleFixtures.*;
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ModuleFixtures.*;
+import static org.kalibro.ModuleNodeFixtures.*;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 import java.util.TreeMap;
 
-import org.kalibro.*;
 import org.kalibro.core.processing.ResultsAggregator;
 
 public final class ModuleResultFixtures {

@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 

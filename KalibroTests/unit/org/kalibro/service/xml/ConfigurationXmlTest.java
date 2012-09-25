@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
 
 import org.kalibro.Configuration;
 

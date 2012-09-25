@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import java.util.Arrays;
 

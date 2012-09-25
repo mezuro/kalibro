@@ -1,9 +1,9 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.MetricFixtures.*;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
 import org.junit.Before;
 import org.junit.Test;

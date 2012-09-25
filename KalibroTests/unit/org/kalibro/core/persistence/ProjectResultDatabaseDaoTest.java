@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectResultFixtures.helloWorldResult;
+import static org.kalibro.ProjectResultFixtures.helloWorldResult;
 
 import java.util.Date;
 

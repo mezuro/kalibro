@@ -1,8 +1,8 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
+import static org.kalibro.RepositoryFixtures.newHelloWorldRepository;
 import static org.kalibro.RepositoryType.*;
-import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
 
 import java.util.Arrays;
 import java.util.TreeSet;

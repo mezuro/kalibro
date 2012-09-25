@@ -1,8 +1,8 @@
 package org.analizo;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.analizo;
-import static org.kalibro.core.model.NativeModuleResultFixtures.*;
+import static org.kalibro.BaseToolFixtures.analizo;
+import static org.kalibro.NativeModuleResultFixtures.*;
 
 import java.io.File;
 import java.io.IOException;

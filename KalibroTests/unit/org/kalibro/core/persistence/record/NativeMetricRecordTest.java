@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence.record;
 
+import org.kalibro.MetricFixtures;
 import org.kalibro.NativeMetric;
-import org.kalibro.core.model.MetricFixtures;
 
 public class NativeMetricRecordTest extends RecordTest<NativeMetric> {
 

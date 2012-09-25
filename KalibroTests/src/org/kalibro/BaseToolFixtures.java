@@ -1,10 +1,9 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.MetricFixtures.*;
 
 import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
-import org.kalibro.BaseTool;
 import org.kalibro.core.MetricCollector;
 
 public final class BaseToolFixtures {

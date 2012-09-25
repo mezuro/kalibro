@@ -1,8 +1,8 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
+import static org.kalibro.ProjectFixtures.helloWorld;
 import static org.kalibro.RepositoryType.*;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
 
 import java.util.*;
 

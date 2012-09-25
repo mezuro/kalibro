@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.kalibro.MetricFixtures.analizoMetric;
 
 import org.junit.Test;
 import org.kalibro.Granularity;

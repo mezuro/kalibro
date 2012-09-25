@@ -1,8 +1,6 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
 import java.awt.Color;
-
-import org.kalibro.Range;
 
 public enum RangeLabel {
 

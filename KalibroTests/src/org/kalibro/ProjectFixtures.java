@@ -1,11 +1,7 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.ConfigurationFixtures.CONFIGURATION_NAME;
-import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
-
-import org.kalibro.Project;
-import org.kalibro.ProjectState;
-import org.kalibro.RepositoryType;
+import static org.kalibro.ConfigurationFixtures.CONFIGURATION_NAME;
+import static org.kalibro.RepositoryFixtures.newHelloWorldRepository;
 
 public final class ProjectFixtures {
 

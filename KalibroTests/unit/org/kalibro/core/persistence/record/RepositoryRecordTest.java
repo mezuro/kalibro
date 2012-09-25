@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.RepositoryFixtures.helloWorldRepository;
+import static org.kalibro.RepositoryFixtures.helloWorldRepository;
 
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;

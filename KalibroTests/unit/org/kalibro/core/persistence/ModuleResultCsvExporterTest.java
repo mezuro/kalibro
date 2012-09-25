@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.ModuleResultFixtures.helloWorldClassResult;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.ModuleResultFixtures.helloWorldClassResult;
 
 import java.io.File;
 import java.io.IOException;

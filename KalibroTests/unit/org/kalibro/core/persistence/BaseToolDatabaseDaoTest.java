@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.assertSame;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import java.util.ArrayList;
 import java.util.Arrays;

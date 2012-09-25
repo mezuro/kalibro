@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.ConfigurationFixtures.*;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

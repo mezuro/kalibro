@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
 
 import javax.swing.JPanel;
 import javax.swing.JTable;

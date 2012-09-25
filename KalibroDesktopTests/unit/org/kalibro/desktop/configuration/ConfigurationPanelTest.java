@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
 
 import org.junit.Before;
 import org.junit.Test;

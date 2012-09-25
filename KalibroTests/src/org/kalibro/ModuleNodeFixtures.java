@@ -1,11 +1,7 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
 import static org.kalibro.Granularity.*;
-import static org.kalibro.core.model.ModuleFixtures.*;
-
-import org.kalibro.Granularity;
-import org.kalibro.Module;
-import org.kalibro.ModuleNode;
+import static org.kalibro.ModuleFixtures.*;
 
 public final class ModuleNodeFixtures {
 

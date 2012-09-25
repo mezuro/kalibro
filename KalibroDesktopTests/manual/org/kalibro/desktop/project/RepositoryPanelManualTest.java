@@ -1,7 +1,7 @@
 package org.kalibro.desktop.project;
 
+import static org.kalibro.RepositoryFixtures.*;
 import static org.kalibro.RepositoryType.*;
-import static org.kalibro.core.model.RepositoryFixtures.*;
 
 import org.kalibro.desktop.ComponentWrapperDialog;
 

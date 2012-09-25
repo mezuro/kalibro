@@ -3,9 +3,9 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.assertFalse;
 import static org.kalibro.Granularity.*;
 import static org.kalibro.Language.JAVA;
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.analizoCheckstyleResultMap;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ModuleNodeFixtures.*;
+import static org.kalibro.ModuleResultFixtures.analizoCheckstyleResultMap;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Map;
 

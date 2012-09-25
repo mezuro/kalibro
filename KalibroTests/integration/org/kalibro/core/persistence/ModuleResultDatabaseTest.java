@@ -1,10 +1,10 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.analizoMetric;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ConfigurationFixtures.*;
+import static org.kalibro.MetricFixtures.analizoMetric;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Date;
 import java.util.List;

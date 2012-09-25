@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.ModuleNodeFixtures.analizoCheckstyleTree;
+import static org.kalibro.ModuleNodeFixtures.analizoCheckstyleTree;
 
 import org.kalibro.ModuleNode;
 

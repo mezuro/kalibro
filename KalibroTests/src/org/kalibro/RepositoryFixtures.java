@@ -1,4 +1,4 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
 import static org.kalibro.RepositoryType.*;
 
@@ -6,8 +6,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.kalibro.Repository;
-import org.kalibro.RepositoryType;
 import org.kalibro.core.Environment;
 
 public final class RepositoryFixtures {

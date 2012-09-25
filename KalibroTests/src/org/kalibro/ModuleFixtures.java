@@ -1,9 +1,6 @@
-package org.kalibro.core.model;
+package org.kalibro;
 
-import static org.kalibro.core.model.ProjectFixtures.PROJECT_NAME;
-
-import org.kalibro.Granularity;
-import org.kalibro.Module;
+import static org.kalibro.ProjectFixtures.PROJECT_NAME;
 
 public final class ModuleFixtures {
 

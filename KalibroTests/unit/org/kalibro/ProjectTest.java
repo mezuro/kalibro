@@ -1,8 +1,8 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.kalibro.ProjectFixtures.newHelloWorld;
 import static org.kalibro.ProjectState.*;
-import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
 
 import java.util.ArrayList;
 import java.util.Arrays;

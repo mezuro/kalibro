@@ -1,6 +1,6 @@
 package org.kalibro.desktop.results;
 
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.ProjectFixtures.*;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;

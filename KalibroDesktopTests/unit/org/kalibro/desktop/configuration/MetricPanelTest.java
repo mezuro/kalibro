@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.MetricFixtures.*;
 
 import java.util.List;
 

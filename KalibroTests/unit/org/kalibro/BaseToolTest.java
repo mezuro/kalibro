@@ -1,7 +1,7 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.*;
+import static org.kalibro.BaseToolFixtures.*;
 
 import java.util.Arrays;
 

@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.ModuleResultFixtures.helloWorldApplicationResult;
+import static org.kalibro.ModuleResultFixtures.helloWorldApplicationResult;
 
 import java.util.Arrays;
 import java.util.Date;

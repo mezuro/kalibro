@@ -1,8 +1,8 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResults;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldResults;
+import static org.kalibro.ProjectFixtures.*;
 
 import java.util.Collection;
 import java.util.Map;

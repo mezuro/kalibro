@@ -1,8 +1,8 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricResultFixtures.*;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.MetricResultFixtures.*;
 
 import java.util.Arrays;
 

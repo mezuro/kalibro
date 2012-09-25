@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
+import static org.kalibro.ProjectFixtures.newHelloWorld;
 
 import org.kalibro.KalibroException;
 import org.kalibro.Project;

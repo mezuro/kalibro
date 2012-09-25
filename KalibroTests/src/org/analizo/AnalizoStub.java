@@ -1,7 +1,7 @@
 package org.analizo;
 
-import static org.kalibro.core.model.BaseToolFixtures.newAnalizoStub;
-import static org.kalibro.core.model.NativeModuleResultFixtures.*;
+import static org.kalibro.BaseToolFixtures.newAnalizoStub;
+import static org.kalibro.NativeModuleResultFixtures.*;
 
 import java.io.File;
 import java.util.HashSet;

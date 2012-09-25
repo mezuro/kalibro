@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.MetricConfigurationFixtures.*;
+import static org.kalibro.MetricFixtures.*;
 
 import org.kalibro.MetricConfiguration;
 import org.kalibro.Range;

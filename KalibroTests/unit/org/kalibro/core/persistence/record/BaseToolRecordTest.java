@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import org.junit.Test;
 import org.kalibro.BaseTool;

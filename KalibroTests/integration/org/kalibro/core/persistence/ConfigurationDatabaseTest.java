@@ -1,8 +1,8 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.ConfigurationFixtures.*;
+import static org.kalibro.MetricFixtures.*;
 
 import javax.persistence.NoResultException;
 
@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.kalibro.*;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.ProjectFixtures;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.tests.AcceptanceTest;

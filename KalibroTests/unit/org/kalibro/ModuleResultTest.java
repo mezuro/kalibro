@@ -1,11 +1,11 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.kalibro.ConfigurationFixtures.kalibroConfiguration;
 import static org.kalibro.Granularity.*;
-import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.MetricResultFixtures.analizoResult;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.kalibro.MetricFixtures.*;
+import static org.kalibro.MetricResultFixtures.analizoResult;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
 import java.util.Arrays;
 import java.util.Date;
