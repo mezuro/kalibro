@@ -11,7 +11,7 @@ import org.kalibro.service.xml.ModuleResultXml;
 
 class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> implements ModuleResultDao {
 
-	protected ModuleResultClientDao(String serviceAddress) {
+	ModuleResultClientDao(String serviceAddress) {
 		super(serviceAddress, ModuleResultEndpoint.class);
 	}
 

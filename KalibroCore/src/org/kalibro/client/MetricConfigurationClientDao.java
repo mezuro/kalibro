@@ -8,7 +8,7 @@ import org.kalibro.service.xml.MetricConfigurationXml;
 class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEndpoint> implements
 	MetricConfigurationDao {
 
-	protected MetricConfigurationClientDao(String serviceAddress) {
+	MetricConfigurationClientDao(String serviceAddress) {
 		super(serviceAddress, MetricConfigurationEndpoint.class);
 	}
 
