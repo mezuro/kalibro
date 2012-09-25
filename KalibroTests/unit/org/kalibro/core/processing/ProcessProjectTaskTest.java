@@ -7,9 +7,15 @@ import static org.kalibro.core.model.ProjectFixtures.*;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.mail.Message.RecipientType;
+
+import org.codemonkey.simplejavamail.Email;
+import org.codemonkey.simplejavamail.Mailer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.KalibroSettings;
+import org.kalibro.MailSettings;
 import org.kalibro.TestCase;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
@@ -20,13 +26,15 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.dao.ProjectResultDao;
+import org.mockito.ArgumentMatcher;
 import org.mockito.InOrder;
+import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DaoFactory.class, ProcessProjectTask.class})
+@PrepareForTest({DaoFactory.class, ProcessProjectTask.class, KalibroSettings.class})
 public class ProcessProjectTaskTest extends TestCase {
 
 	private Project project;
@@ -42,6 +50,7 @@ public class ProcessProjectTaskTest extends TestCase {
 	private AnalyzeResultsTask analyzeTask;
 
 	private ProcessProjectTask processTask;
+	private Mailer mailerMock;
 
 	@Before
 	public void setUp() throws Exception {
@@ -50,7 +59,18 @@ public class ProcessProjectTaskTest extends TestCase {
 		moduleResults = newHelloWorldResults();
 		mockKalibro();
 		mockSubtasks();
+		mockMailer();
 		processTask = new ProcessProjectTask(PROJECT_NAME);
+	}
+
+	private void mockMailer() {
+		KalibroSettings kalibroSettingsMock = mock(KalibroSettings.class);
+		MailSettings mailSettingsMock = mock(MailSettings.class);
+		mailerMock = mock(Mailer.class);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(kalibroSettingsMock);
+		when(kalibroSettingsMock.getMailSettings()).thenReturn(mailSettingsMock);
+		when(mailSettingsMock.createMailer()).thenReturn(mailerMock);
 	}
 
 	private void mockKalibro() {
@@ -114,5 +134,24 @@ public class ProcessProjectTaskTest extends TestCase {
 		assertEquals(ProjectState.ERROR, project.getState());
 		assertSame(error, project.getError());
 		Mockito.verify(projectDao).save(project);
+	}
+
+	@Test
+	public void shouldSendMailAfterProcess() {
+		processTask.perform();
+		Mockito.verify(mailerMock).sendMail(Matchers.argThat(createEmailMatcher("aaa@example.com")));
+		Mockito.verify(mailerMock).sendMail(Matchers.argThat(createEmailMatcher("bbb@example.com")));
+	}
+
+	private ArgumentMatcher<Email> createEmailMatcher(final String mail) {
+		return new ArgumentMatcher<Email>() {
+
+			@Override
+			public boolean matches(Object target) {
+				if (! (target instanceof Email))
+					return false;
+				return ((Email) target).getRecipients().contains(mail);
+			}
+		};
 	}
 }

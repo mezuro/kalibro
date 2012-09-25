@@ -3,6 +3,11 @@ package org.kalibro.core.processing;
 import java.util.Collection;
 import java.util.Map;
 
+import javax.mail.Message.RecipientType;
+
+import org.codemonkey.simplejavamail.Email;
+import org.codemonkey.simplejavamail.Mailer;
+import org.kalibro.KalibroSettings;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.core.model.Module;
 import org.kalibro.core.model.ModuleResult;
@@ -38,6 +43,18 @@ public class ProcessProjectTask extends Task {
 		saveModuleResults(moduleResults, projectResult);
 		project.setState(ProjectState.READY);
 		DaoFactory.getProjectDao().save(project);
+		sendMail();
+	}
+
+	private void sendMail() {
+		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
+		for (String mail : project.getMailsToNotify()) {
+			Email email = new Email();
+			email.addRecipient(mail, mail, RecipientType.TO);
+			email.setSubject("Project " + project.getName() + " processing results");
+			email.setText("Processing results in project " + project.getName() + " has finished succesfully.");
+			mailer.sendMail(email);
+		}
 	}
 
 	private void saveModuleResults(Collection<ModuleResult> moduleResults, ProjectResult projectResult) {
