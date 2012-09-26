@@ -6,7 +6,6 @@ import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.table.TableCellRenderer;
@@ -41,7 +40,7 @@ public class TableModelTest extends UnitTest {
 
 	@Test
 	public void shouldNotifyDataChanged() {
-		model.setData(Arrays.asList(new Range()));
+		model.setData(asList(new Range()));
 		verify(model, atLeastOnce()).fireTableDataChanged();
 	}
 

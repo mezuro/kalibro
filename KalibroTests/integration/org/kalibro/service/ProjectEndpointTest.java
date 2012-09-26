@@ -2,8 +2,6 @@ package org.kalibro.service;
 
 import static org.kalibro.ProjectFixtures.newHelloWorld;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.kalibro.KalibroException;
 import org.kalibro.Project;
@@ -22,8 +20,8 @@ public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, Proje
 
 	@Test
 	public void shouldListProjectNames() {
-		when(dao.getProjectNames()).thenReturn(Arrays.asList("42"));
-		assertDeepList(port.getProjectNames(), "42");
+		when(dao.getProjectNames()).thenReturn(asList("42"));
+		assertDeepEquals(asList("42"), port.getProjectNames());
 	}
 
 	@Test

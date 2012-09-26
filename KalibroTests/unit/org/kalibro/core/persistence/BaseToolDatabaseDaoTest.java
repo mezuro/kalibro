@@ -4,7 +4,6 @@ import static org.junit.Assert.assertSame;
 import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.analizo.AnalizoMetricCollector;
@@ -27,7 +26,7 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(BaseToolDatabaseDao.class)
 public class BaseToolDatabaseDaoTest extends UnitTest {
 
-	private static final List<String> BASE_TOOL_NAMES = Arrays.asList("Analizo", "Checkstyle");
+	private static final List<String> BASE_TOOL_NAMES = asList("Analizo", "Checkstyle");
 
 	private BaseTool baseTool;
 	private RecordManager recordManager;

@@ -2,7 +2,6 @@ package org.kalibro.client;
 
 import static org.junit.Assert.assertSame;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import org.junit.Test;
@@ -32,7 +31,7 @@ public class ModuleResultClientDaoTest extends
 
 	@Test
 	public void testResultHistory() {
-		when(port.getResultHistory(PROJECT_NAME, MODULE_NAME)).thenReturn(Arrays.asList(response));
-		assertDeepList(client.getResultHistory(PROJECT_NAME, MODULE_NAME), entity);
+		when(port.getResultHistory(PROJECT_NAME, MODULE_NAME)).thenReturn(asList(response));
+		assertDeepEquals(asList(entity), client.getResultHistory(PROJECT_NAME, MODULE_NAME));
 	}
 }

@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 import static org.kalibro.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.MetricResultFixtures.*;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
@@ -47,15 +45,15 @@ public class MetricResultTest extends UnitTest {
 	@Test
 	public void shouldAddSingleDescendentResult() {
 		result.addDescendentResult(0.0);
-		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0);
+		assertDeepEquals(asList(2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0), result.getDescendentResults());
 		result.addDescendentResult(14.0);
-		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
+		assertDeepEquals(asList(2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0), result.getDescendentResults());
 	}
 
 	@Test
 	public void shouldAddMultipleDescendentResults() {
-		result.addDescendentResults(Arrays.asList(0.0, 14.0));
-		assertDeepCollection(result.getDescendentResults(), 2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0);
+		result.addDescendentResults(asList(0.0, 14.0));
+		assertDeepEquals(asList(2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0), result.getDescendentResults());
 	}
 
 	@Test

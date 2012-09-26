@@ -3,7 +3,6 @@ package org.kalibro.desktop.swingextension.list;
 import static org.junit.Assert.*;
 import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
-import java.util.Arrays;
 import java.util.SortedSet;
 
 import javax.swing.DefaultListSelectionModel;
@@ -70,8 +69,8 @@ public class ListTest extends UnitTest {
 		PowerMockito.whenNew(ListComponentAdapter.class).withArguments(listener, list).thenReturn(adapter);
 
 		list.addListListener(listener);
-		assertTrue(Arrays.asList(innerList.getMouseListeners()).contains(adapter));
+		assertTrue(asList(innerList.getMouseListeners()).contains(adapter));
 		DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) innerList.getSelectionModel();
-		assertTrue(Arrays.asList(selectionModel.getListSelectionListeners()).contains(adapter));
+		assertTrue(asList(selectionModel.getListSelectionListeners()).contains(adapter));
 	}
 }

@@ -3,7 +3,6 @@ package org.kalibro.service;
 import static org.junit.Assert.assertEquals;
 import static org.kalibro.ModuleResultFixtures.helloWorldApplicationResult;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -48,7 +47,7 @@ public class ModuleResultEndpointImplTest extends UnitTest {
 
 	@Test
 	public void testResultHistory() {
-		List<ModuleResult> resultHistory = Arrays.asList(moduleResult);
+		List<ModuleResult> resultHistory = asList(moduleResult);
 		PowerMockito.when(dao.getResultHistory("4", "2")).thenReturn(resultHistory);
 
 		List<ModuleResultXml> resultHistoryXml = endpoint.getResultHistory("4", "2");

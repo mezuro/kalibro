@@ -3,7 +3,6 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -69,8 +68,8 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldSetGroupOnReadings() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(Arrays.asList(reading));
-		assertDeepList(group.getReadings(), reading);
+		group.setReadings(asList(reading));
+		assertDeepEquals(asList(reading), group.getReadings());
 		verify(reading).setGroup(group);
 	}
 
@@ -112,12 +111,12 @@ public class ReadingGroupTest extends UnitTest {
 		ReadingDao readingDao = mock(ReadingDao.class);
 		when(dao.save(group)).thenReturn(42L);
 		when(DaoFactory.getReadingDao()).thenReturn(readingDao);
-		when(readingDao.readingsOf(42L)).thenReturn(Arrays.asList(reading));
+		when(readingDao.readingsOf(42L)).thenReturn(asList(reading));
 
 		assertFalse(group.hasId());
 		group.save();
 		assertEquals(42L, group.getId().longValue());
-		assertDeepList(group.getReadings(), reading);
+		assertDeepEquals(asList(reading), group.getReadings());
 	}
 
 	@Test
@@ -153,7 +152,7 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldRemoveReadingIdsOnDelete() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(Arrays.asList(reading));
+		group.setReadings(asList(reading));
 		group.setId(42L);
 
 		group.delete();

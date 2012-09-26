@@ -2,7 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -57,7 +56,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		records = mock(List.class);
 		mockStatic(MetricResultRecord.class);
 		when(MetricResultRecord.createRecords(moduleResult, projectResult)).thenReturn(records);
-		when(MetricResultRecord.convertIntoModuleResults(records)).thenReturn(Arrays.asList(moduleResult));
+		when(MetricResultRecord.convertIntoModuleResults(records)).thenReturn(asList(moduleResult));
 	}
 
 	private void mockQueries() throws Exception {

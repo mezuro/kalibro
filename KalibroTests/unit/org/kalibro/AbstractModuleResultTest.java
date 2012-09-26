@@ -5,6 +5,9 @@ import static org.kalibro.Granularity.*;
 import static org.kalibro.MetricFixtures.analizoMetric;
 import static org.kalibro.ModuleFixtures.helloWorldClass;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
@@ -54,11 +57,15 @@ public class AbstractModuleResultTest extends UnitTest {
 
 	@Test
 	public void testAddMetricResult() {
-		assertDeepCollection(moduleResult.getMetricResults(), accResult, locResult);
+		assertDeepEquals(asSet(accResult, locResult), metricResults());
 
 		NativeMetricResult ditResult = new NativeMetricResult(dit, 0.42);
 		moduleResult.addMetricResult(ditResult);
-		assertDeepCollection(moduleResult.getMetricResults(), accResult, ditResult, locResult);
+		assertDeepEquals(asSet(accResult, ditResult, locResult), metricResults());
+	}
+
+	private Set<NativeMetricResult> metricResults() {
+		return new HashSet<NativeMetricResult>(moduleResult.getMetricResults());
 	}
 
 	@Test

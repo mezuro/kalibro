@@ -6,7 +6,6 @@ import static org.kalibro.ProjectFixtures.*;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Set;
 
 import javax.persistence.TypedQuery;
@@ -64,8 +63,8 @@ public class ProjectDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldListAllProjectNames() {
-		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepList(dao.getProjectNames(), "4", "2");
+		doReturn(asList("4", "2")).when(dao).getAllNames();
+		assertDeepEquals(asList("4", "2"), dao.getProjectNames());
 	}
 
 	@Test

@@ -2,8 +2,6 @@ package org.kalibro.service;
 
 import static org.kalibro.BaseToolFixtures.newAnalizoStub;
 
-import java.util.Arrays;
-
 import org.junit.Test;
 import org.kalibro.BaseTool;
 import org.kalibro.client.EndpointTest;
@@ -20,8 +18,8 @@ public class BaseToolEndpointTest extends EndpointTest<BaseTool, BaseToolDao, Ba
 
 	@Test
 	public void shouldListBaseToolNames() {
-		when(dao.getBaseToolNames()).thenReturn(Arrays.asList("42"));
-		assertDeepList(port.getBaseToolNames(), "42");
+		when(dao.getBaseToolNames()).thenReturn(asList("42"));
+		assertDeepEquals(asList("42"), port.getBaseToolNames());
 	}
 
 	@Test

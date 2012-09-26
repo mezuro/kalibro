@@ -2,7 +2,6 @@ package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class ReadingEndpointTest extends EndpointTest<Reading, ReadingDao, Readi
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(ID)).thenReturn(Arrays.asList(entity));
+		when(dao.readingsOf(ID)).thenReturn(asList(entity));
 		assertDeepDtoList(port.readingsOf(ID), entity);
 	}
 

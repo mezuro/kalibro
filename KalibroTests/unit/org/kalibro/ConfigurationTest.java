@@ -80,7 +80,7 @@ public class ConfigurationTest extends UnitTest {
 	@Test
 	public void shouldRetrieveCompoundMetrics() {
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-		assertDeepSet(configuration.getCompoundMetrics(), sc);
+		assertDeepEquals(asSet(sc), configuration.getCompoundMetrics());
 
 		configuration.removeMetric(scName);
 		assertTrue(configuration.getCompoundMetrics().isEmpty());

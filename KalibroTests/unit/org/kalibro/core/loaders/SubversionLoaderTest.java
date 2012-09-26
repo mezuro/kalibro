@@ -1,6 +1,5 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.kalibro.RepositoryType;
@@ -14,7 +13,7 @@ public class SubversionLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("svn --version");
+		return asList("svn --version");
 	}
 
 	@Override
@@ -26,7 +25,7 @@ public class SubversionLoaderTest extends ProjectLoaderTestCase {
 	protected List<String> expectedLoadCommands(boolean update) {
 		String authentication = "--username USERNAME --password PASSWORD";
 		if (update)
-			return Arrays.asList("svn update " + authentication);
-		return Arrays.asList("svn checkout " + authentication + " " + repository.getAddress() + " .");
+			return asList("svn update " + authentication);
+		return asList("svn checkout " + authentication + " " + repository.getAddress() + " .");
 	}
 }

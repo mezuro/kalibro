@@ -32,7 +32,7 @@ public class BaseToolDatabaseTest extends AcceptanceTest {
 
 	@Test
 	public void shouldListSavedBaseToolNames() {
-		assertDeepList(dao.getBaseToolNames(), "Analizo", "Checkstyle", "CVSAnaly");
+		assertDeepEquals(asList("Analizo", "Checkstyle", "CVSAnaly"), dao.getBaseToolNames());
 	}
 
 	@Test

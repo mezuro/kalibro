@@ -56,7 +56,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepList(Configuration.all(), configuration);
+		assertDeepEquals(asList(configuration), Configuration.all());
 	}
 
 	private void assertNotSaved() {

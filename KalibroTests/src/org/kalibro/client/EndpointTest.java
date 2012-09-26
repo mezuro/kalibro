@@ -68,7 +68,7 @@ public abstract class EndpointTest<ENTITY, DAO, ENDPOINT> extends IntegrationTes
 	}
 
 	protected void assertDeepDtoList(List<? extends DataTransferObject<ENTITY>> dtoList, ENTITY... expected) {
-		assertDeepList(convert(dtoList), expected);
+		assertDeepEquals(asList(expected), convert(dtoList));
 	}
 
 	private List<ENTITY> convert(Collection<? extends DataTransferObject<ENTITY>> dtos) {

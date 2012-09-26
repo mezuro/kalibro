@@ -3,7 +3,6 @@ package org.kalibro.desktop.swingextension.dialog;
 import static org.junit.Assert.*;
 
 import java.awt.Component;
-import java.util.Arrays;
 
 import javax.swing.JOptionPane;
 
@@ -51,7 +50,7 @@ public class ChoiceDialogTest extends UnitTest {
 	@Test
 	public void shouldChooseFromCollection() throws Exception {
 		mockJOptionPane(Language.JAVA);
-		assertTrue(dialog.choose(MESSAGE, Arrays.asList(OPTIONS)));
+		assertTrue(dialog.choose(MESSAGE, asList(OPTIONS)));
 		assertEquals(Language.JAVA, dialog.getChoice());
 	}
 

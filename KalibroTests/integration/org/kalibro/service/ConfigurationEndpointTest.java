@@ -3,7 +3,6 @@ package org.kalibro.service;
 import static org.junit.Assert.*;
 import static org.kalibro.ConfigurationFixtures.newConfiguration;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -26,7 +25,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 
 	@Override
 	public List<String> fieldsThatShouldBeProxy() {
-		return Arrays.asList("metricConfigurations");
+		return asList("metricConfigurations");
 	}
 
 	@Test
@@ -50,7 +49,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(Arrays.asList(entity));
+		when(dao.all()).thenReturn(asList(entity));
 		assertDeepDtoList(port.allConfigurations(), entity);
 	}
 

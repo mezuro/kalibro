@@ -2,7 +2,10 @@ package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.junit.Before;
@@ -56,6 +59,6 @@ public class ListEqualityTest extends UnitTest {
 	}
 
 	private List<String> newList(String... elements) {
-		return Arrays.asList(elements);
+		return asList(elements);
 	}
 }

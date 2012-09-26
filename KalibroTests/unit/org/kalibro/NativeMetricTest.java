@@ -15,7 +15,7 @@ public class NativeMetricTest extends UnitTest {
 		NativeMetric metric = new NativeMetric("", CLASS, JAVA, CPP);
 		assertEquals("", metric.getName());
 		assertEquals(CLASS, metric.getScope());
-		assertDeepList(metric.getLanguages(), JAVA, CPP);
+		assertDeepEquals(asList(JAVA, CPP), metric.getLanguages());
 		assertEquals("", metric.getDescription());
 	}
 

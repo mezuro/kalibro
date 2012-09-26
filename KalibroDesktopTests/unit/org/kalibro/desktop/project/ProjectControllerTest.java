@@ -2,7 +2,6 @@ package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JDesktopPane;
@@ -24,7 +23,7 @@ import org.powermock.reflect.Whitebox;
 public class ProjectControllerTest extends UnitTest {
 
 	private static final String NAME = "ProjectControllerTest name";
-	private static final List<String> NAMES = Arrays.asList(NAME);
+	private static final List<String> NAMES = asList(NAME);
 
 	private JDesktopPane desktopPane;
 	private Project project;

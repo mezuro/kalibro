@@ -40,7 +40,7 @@ public class RepositoryTypeTest extends EnumerationTest<RepositoryType> {
 		RepositoryType unsupported = mockType(false);
 		spy(RepositoryType.class);
 		when(RepositoryType.values()).thenReturn(new RepositoryType[]{supported, unsupported});
-		assertDeepSet(RepositoryType.supportedTypes(), supported);
+		assertDeepEquals(asSet(supported), RepositoryType.supportedTypes());
 	}
 
 	private RepositoryType mockType(boolean supported) {

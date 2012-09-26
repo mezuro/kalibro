@@ -2,8 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
@@ -71,7 +69,7 @@ public class RecordManagerTest extends UnitTest {
 
 	@Test
 	public void shouldMergeAndSaveCollection() throws Exception {
-		recordManager.saveAll(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
+		recordManager.saveAll(asList(UNMERGED, UNMERGED, UNMERGED));
 		verifyWithinTransaction(entityManager, times(3), "persist", MERGED);
 	}
 

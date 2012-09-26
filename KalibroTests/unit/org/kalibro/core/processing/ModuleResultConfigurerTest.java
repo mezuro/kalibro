@@ -96,7 +96,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	public void shouldAddCompoundMetricsWithError() {
 		addCompoundMetricWithError();
 		configurer.configure();
-		assertDeepSet(result.getCompoundMetricsWithError(), invalid);
+		assertDeepEquals(asSet(invalid), result.getCompoundMetricsWithError());
 		assertClassEquals(NullPointerException.class, result.getErrorFor(invalid));
 	}
 

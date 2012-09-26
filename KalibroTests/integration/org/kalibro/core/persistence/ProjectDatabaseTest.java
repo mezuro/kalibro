@@ -47,10 +47,10 @@ public class ProjectDatabaseTest extends AcceptanceTest {
 		assertTrue(dao.getProjectNames().isEmpty());
 
 		dao.save(helloWorld);
-		assertDeepList(dao.getProjectNames(), helloWorld.getName());
+		assertDeepEquals(asList(helloWorld.getName()), dao.getProjectNames());
 
 		dao.save(helloWorld2);
-		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
+		assertDeepEquals(asList(helloWorld.getName(), helloWorld2.getName()), dao.getProjectNames());
 	}
 
 	@Test
@@ -65,10 +65,10 @@ public class ProjectDatabaseTest extends AcceptanceTest {
 	public void shouldRemoveProjectByName() {
 		dao.save(helloWorld);
 		dao.save(helloWorld2);
-		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
+		assertDeepEquals(asList(helloWorld.getName(), helloWorld2.getName()), dao.getProjectNames());
 
 		dao.removeProject(helloWorld.getName());
-		assertDeepList(dao.getProjectNames(), helloWorld2.getName());
+		assertDeepEquals(asList(helloWorld2.getName()), dao.getProjectNames());
 
 		dao.removeProject(helloWorld2.getName());
 		assertTrue(dao.getProjectNames().isEmpty());

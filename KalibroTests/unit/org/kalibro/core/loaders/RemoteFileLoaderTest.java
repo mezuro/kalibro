@@ -3,8 +3,6 @@ package org.kalibro.core.loaders;
 import static org.junit.Assert.*;
 import static org.mockito.Matchers.anyBoolean;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Repository;
@@ -32,14 +30,14 @@ public class RemoteFileLoaderTest extends UnitTest {
 
 	private void mockLocalLoader() {
 		localLoader = mock(ProjectLoader.class);
-		when(localLoader.getValidationCommands()).thenReturn(Arrays.asList(LOCAL_VALIDATION_COMMAND));
+		when(localLoader.getValidationCommands()).thenReturn(asList(LOCAL_VALIDATION_COMMAND));
 		when(localLoader.getLoadCommands(any(Repository.class), anyBoolean()))
-			.thenReturn(Arrays.asList(LOCAL_LOAD_COMMAND));
+			.thenReturn(asList(LOCAL_LOAD_COMMAND));
 	}
 
 	@Test
 	public void checkValidationCommands() {
-		assertDeepList(remoteLoader.getValidationCommands(), "wget --version", LOCAL_VALIDATION_COMMAND);
+		assertDeepEquals(asList("wget --version", LOCAL_VALIDATION_COMMAND), remoteLoader.getValidationCommands());
 	}
 
 	@Test
@@ -49,9 +47,10 @@ public class RemoteFileLoaderTest extends UnitTest {
 
 	@Test
 	public void checkLoadCommands() {
-		assertDeepList(remoteLoader.getLoadCommands(repository, false),
+		assertDeepEquals(asList(
 			"wget -N --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
-			LOCAL_LOAD_COMMAND);
+			LOCAL_LOAD_COMMAND),
+			remoteLoader.getLoadCommands(repository, false));
 	}
 
 	@Test

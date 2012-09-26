@@ -2,7 +2,6 @@ package org.kalibro.client;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
@@ -45,8 +44,8 @@ public class ConfigurationClientDaoTest extends ClientTest<// @formatter:off
 
 	@Test
 	public void shouldGetAll() {
-		when(port.allConfigurations()).thenReturn(Arrays.asList(response));
-		assertDeepList(client.all(), entity);
+		when(port.allConfigurations()).thenReturn(asList(response));
+		assertDeepEquals(asList(entity), client.all());
 	}
 
 	@Test

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 
 import org.junit.Before;
@@ -22,7 +21,7 @@ public class CollectionRendererTest extends UnitTest {
 
 	@Test
 	public void shouldRenderCollection() {
-		assertTrue(renderer.canRender(Arrays.asList("42")));
+		assertTrue(renderer.canRender(asList("42")));
 	}
 
 	@Test
@@ -35,7 +34,7 @@ public class CollectionRendererTest extends UnitTest {
 
 	@Test
 	public void shouldRenderListString() {
-		assertEquals("My, list", render(Arrays.asList("My", "list")));
+		assertEquals("My, list", render(asList("My", "list")));
 		assertEquals("", render(new ArrayList<String>()));
 	}
 

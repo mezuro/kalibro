@@ -4,7 +4,9 @@ import static org.junit.Assert.*;
 import static org.kalibro.ProjectFixtures.helloWorld;
 import static org.kalibro.RepositoryType.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -79,10 +81,9 @@ public class ProjectEndpointImplTest extends UnitTest {
 
 	@Test
 	public void testSupportedRepositoryTypes() {
-		Set<RepositoryType> repositoryTypes = new HashSet<RepositoryType>();
-		repositoryTypes.addAll(Arrays.asList(LOCAL_ZIP, GIT, SUBVERSION));
+		Set<RepositoryType> repositoryTypes = asSet(LOCAL_ZIP, GIT, SUBVERSION);
 		PowerMockito.when(dao.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
-		assertDeepSet(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
+		assertDeepEquals(asSet(GIT, SUBVERSION), endpoint.getSupportedRepositoryTypes());
 	}
 
 	@Test

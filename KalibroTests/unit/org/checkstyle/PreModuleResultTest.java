@@ -2,8 +2,7 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -22,7 +21,7 @@ public class PreModuleResultTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		HashSet<NativeMetric> wantedMetrics = new HashSet<NativeMetric>(Arrays.asList(NATIVE_METRIC));
+		Set<NativeMetric> wantedMetrics = asSet(NATIVE_METRIC);
 		result = new PreModuleResult(MODULE, wantedMetrics);
 	}
 

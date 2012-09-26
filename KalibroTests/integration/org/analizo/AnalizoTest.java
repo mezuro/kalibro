@@ -50,7 +50,7 @@ public class AnalizoTest extends IntegrationTest {
 	public void shouldCollectMetrics() throws IOException {
 		File codeDirectory = new File(samplesDirectory(), "analizo");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
-		assertDeepSet(analizo.collectMetrics(codeDirectory, metrics),
-			helloWorldApplicationResult(), helloWorldClassResult());
+		assertDeepEquals(asList(helloWorldApplicationResult(), helloWorldClassResult()),
+			analizo.collectMetrics(codeDirectory, metrics));
 	}
 }

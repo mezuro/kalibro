@@ -7,7 +7,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.util.Arrays;
 
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -50,7 +49,7 @@ public class AddMetricDialogTest extends UnitTest {
 		BaseToolDao dao = PowerMockito.mock(BaseToolDao.class);
 		PowerMockito.mockStatic(DaoFactory.class);
 		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
-		PowerMockito.when(dao.getBaseToolNames()).thenReturn(Arrays.asList("Analizo"));
+		PowerMockito.when(dao.getBaseToolNames()).thenReturn(asList("Analizo"));
 		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(analizoStub());
 	}
 

@@ -3,8 +3,6 @@ package org.kalibro.desktop.configuration;
 import static org.junit.Assert.*;
 import static org.kalibro.BaseToolFixtures.analizoStub;
 
-import java.util.Arrays;
-
 import javax.swing.JList;
 import javax.swing.JTable;
 
@@ -51,7 +49,7 @@ public class ChooseNativeMetricPanelTest extends UnitTest {
 		BaseToolDao dao = PowerMockito.mock(BaseToolDao.class);
 		PowerMockito.mockStatic(DaoFactory.class);
 		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
-		PowerMockito.when(dao.getBaseToolNames()).thenReturn(Arrays.asList("Analizo"));
+		PowerMockito.when(dao.getBaseToolNames()).thenReturn(asList("Analizo"));
 		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(analizo);
 	}
 
@@ -72,7 +70,7 @@ public class ChooseNativeMetricPanelTest extends UnitTest {
 		assertTrue(table.getData().isEmpty());
 
 		baseToolList().setSelectedIndex(0);
-		assertDeepSet(analizo.getSupportedMetrics(), table.getData().toArray(new NativeMetric[0]));
+		assertDeepEquals(table.getData(), analizo.getSupportedMetrics());
 	}
 
 	@Test

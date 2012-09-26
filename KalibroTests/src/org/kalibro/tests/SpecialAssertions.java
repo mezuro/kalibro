@@ -31,30 +31,26 @@ public abstract class SpecialAssertions extends MockitoProxy {
 			assertTrue("Element " + i + " is greater than its successor.", elements[i].compareTo(elements[++i]) <= 0);
 	}
 
-	public static <T> void assertDeepCollection(Collection<T> actual, T... expected) {
-		List<T> expectedList = Arrays.asList(expected);
-		if (actual instanceof List)
-			assertDeepEquals(expectedList, actual);
-		else
-			assertDeepEquals(new HashSet<T>(expectedList), new HashSet<T>(actual));
+	public static TaskMatcher assertThat(Task<?> task) {
+		return new TaskMatcher(task);
 	}
 
-	public static <T> void assertDeepList(List<T> actual, T... expected) {
-		assertDeepEquals(Arrays.asList(expected), actual);
-	}
-
-	public static <T> void assertDeepSet(Set<T> actual, T... expected) {
-		assertDeepEquals(new HashSet<T>(Arrays.asList(expected)), actual);
-	}
-
-	public static <T> void assertDeepEquals(Object expected, Object actual) {
+	public static <T> void assertDeepEquals(T expected, T actual) {
 		if (!Equality.areDeepEqual(expected, actual)) {
 			assertEquals(Printer.print(expected), Printer.print(actual));
 			fail("Print is the same but they are not deep equal");
 		}
 	}
 
-	public static TaskMatcher assertThat(Task<?> task) {
-		return new TaskMatcher(task);
+	public static <T> List<T> asList(T... elements) {
+		return new ArrayList<T>(Arrays.asList(elements));
+	}
+
+	public static <T> Set<T> asSet(T... elements) {
+		return new HashSet<T>(Arrays.asList(elements));
+	}
+
+	public static <T> SortedSet<T> asSortedSet(T... elements) {
+		return new TreeSet<T>(Arrays.asList(elements));
 	}
 }

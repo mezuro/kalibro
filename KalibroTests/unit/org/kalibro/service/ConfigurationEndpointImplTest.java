@@ -2,7 +2,6 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.Random;
 
 import org.junit.Test;
@@ -44,8 +43,8 @@ public class ConfigurationEndpointImplTest extends EndpointImplementorTest
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(Arrays.asList(entity));
-		assertDeepList(implementor.allConfigurations(), response);
+		when(dao.all()).thenReturn(asList(entity));
+		assertDeepEquals(asList(response), implementor.allConfigurations());
 	}
 
 	@Test

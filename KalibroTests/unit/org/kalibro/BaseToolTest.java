@@ -3,8 +3,6 @@ package org.kalibro;
 import static org.junit.Assert.*;
 import static org.kalibro.BaseToolFixtures.*;
 
-import java.util.Arrays;
-
 import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +33,7 @@ public class BaseToolTest extends UnitTest {
 		assertNull(metric1.getOrigin());
 		assertNull(metric2.getOrigin());
 
-		analizo.setSupportedMetrics(Arrays.asList(metric1, metric2));
+		analizo.setSupportedMetrics(asList(metric1, metric2));
 		assertEquals(analizo.getName(), metric1.getOrigin());
 		assertEquals(analizo.getName(), metric2.getOrigin());
 	}

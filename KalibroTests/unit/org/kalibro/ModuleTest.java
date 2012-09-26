@@ -50,10 +50,10 @@ public class ModuleTest extends UnitTest {
 	@Test
 	public void shouldInferAncestry() {
 		assertTrue(org.inferAncestry().isEmpty());
-		assertDeepList(kalibro.inferAncestry(), org);
-		assertDeepList(core.inferAncestry(), org, kalibro);
-		assertDeepList(model.inferAncestry(), org, kalibro, core);
-		assertDeepList(module.inferAncestry(), org, kalibro, core, model);
+		assertDeepEquals(asList(org), kalibro.inferAncestry());
+		assertDeepEquals(asList(org, kalibro), core.inferAncestry());
+		assertDeepEquals(asList(org, kalibro, core), model.inferAncestry());
+		assertDeepEquals(asList(org, kalibro, core, model), module.inferAncestry());
 	}
 
 	@Test

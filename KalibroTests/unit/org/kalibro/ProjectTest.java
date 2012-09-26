@@ -4,8 +4,6 @@ import static org.junit.Assert.*;
 import static org.kalibro.ProjectFixtures.newHelloWorld;
 import static org.kalibro.ProjectState.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
@@ -83,7 +81,7 @@ public class ProjectTest extends UnitTest {
 
 	@Test
 	public void shouldRetrieveStateWhenErrorOcurred() {
-		List<ProjectState> normalStates = new ArrayList<ProjectState>(Arrays.asList(ProjectState.values()));
+		List<ProjectState> normalStates = asList(ProjectState.values());
 		normalStates.remove(ERROR);
 		for (ProjectState state : normalStates) {
 			project.setState(state);

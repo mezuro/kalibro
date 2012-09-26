@@ -3,7 +3,6 @@ package org.kalibro.service;
 import static org.kalibro.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import org.junit.Test;
@@ -32,7 +31,7 @@ public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleR
 
 	@Test
 	public void shouldRetrieveResultHistory() {
-		when(dao.getResultHistory(PROJECT_NAME, MODULE_NAME)).thenReturn(Arrays.asList(entity));
+		when(dao.getResultHistory(PROJECT_NAME, MODULE_NAME)).thenReturn(asList(entity));
 		assertDeepDtoList(port.getResultHistory(PROJECT_NAME, MODULE_NAME), entity);
 	}
 }

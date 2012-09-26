@@ -3,7 +3,6 @@ package org.kalibro;
 import static org.kalibro.Statistic.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -30,7 +29,7 @@ public class StatisticTest extends EnumerationTest<Statistic> {
 	private void testCalculate(Statistic statistic, Double resultEmpty, Double result2to10, Double result0to10) {
 		assertDoubleEquals(resultEmpty, statistic.calculate(new ArrayList<Double>()));
 
-		List<Double> values = new ArrayList<Double>(Arrays.asList(2.0, 4.0, 6.0, 8.0, 10.0));
+		List<Double> values = new ArrayList<Double>(asList(2.0, 4.0, 6.0, 8.0, 10.0));
 		assertDoubleEquals(result2to10, statistic.calculate(values));
 
 		values.add(0.0);

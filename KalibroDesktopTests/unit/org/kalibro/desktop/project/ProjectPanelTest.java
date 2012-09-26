@@ -3,8 +3,7 @@ package org.kalibro.desktop.project;
 import static org.junit.Assert.assertEquals;
 import static org.kalibro.ProjectFixtures.helloWorld;
 
-import java.util.Arrays;
-import java.util.TreeSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -44,7 +43,7 @@ public class ProjectPanelTest extends UnitTest {
 	}
 
 	private void mockDaoFactory() {
-		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
+		Set<RepositoryType> types = asSet(RepositoryType.values());
 
 		ProjectDao projectDao = mock(ProjectDao.class);
 		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
@@ -53,7 +52,7 @@ public class ProjectPanelTest extends UnitTest {
 		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 		when(projectDao.getSupportedRepositoryTypes()).thenReturn(types);
-		when(configurationDao.all()).thenReturn(Arrays.asList(new Configuration()));
+		when(configurationDao.all()).thenReturn(asList(new Configuration()));
 	}
 
 	@Test

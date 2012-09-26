@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
@@ -123,9 +122,9 @@ public class TableTest extends UnitTest {
 		whenNew(ListComponentAdapter.class).withArguments(listener, table).thenReturn(adapter);
 
 		table.addListListener(listener);
-		assertTrue(Arrays.asList(innerTable.getMouseListeners()).contains(adapter));
+		assertTrue(asList(innerTable.getMouseListeners()).contains(adapter));
 		DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) innerTable.getSelectionModel();
-		assertTrue(Arrays.asList(selectionModel.getListSelectionListeners()).contains(adapter));
+		assertTrue(asList(selectionModel.getListSelectionListeners()).contains(adapter));
 	}
 
 	private class MyModel extends TableModel<Range> {

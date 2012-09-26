@@ -78,6 +78,6 @@ public class ResultsAggregatorTest extends UnitTest {
 	private void checkResult(ModuleResult result, NativeMetric metric, Double value, Double... descendentResults) {
 		MetricResult metricResult = result.getResultFor(metric);
 		assertDoubleEquals(value, metricResult.getValue());
-		assertDeepCollection(metricResult.getDescendentResults(), descendentResults);
+		assertDeepEquals(asList(descendentResults), metricResult.getDescendentResults());
 	}
 }

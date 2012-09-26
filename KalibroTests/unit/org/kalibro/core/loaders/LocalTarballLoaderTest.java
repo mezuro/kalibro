@@ -1,6 +1,5 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.kalibro.RepositoryType;
@@ -14,7 +13,7 @@ public class LocalTarballLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("tar --version");
+		return asList("tar --version");
 	}
 
 	@Override
@@ -24,6 +23,6 @@ public class LocalTarballLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedLoadCommands(boolean update) {
-		return Arrays.asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C .");
+		return asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C .");
 	}
 }

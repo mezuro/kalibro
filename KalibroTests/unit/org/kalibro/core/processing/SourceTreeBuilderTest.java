@@ -6,8 +6,6 @@ import static org.kalibro.ModuleFixtures.*;
 import static org.kalibro.ModuleNodeFixtures.*;
 import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Module;
@@ -49,7 +47,7 @@ public class SourceTreeBuilderTest extends UnitTest {
 
 	private ModuleNode getSourceTree(Module... modules) {
 		assertFalse(projectResult.isProcessed());
-		treeBuilder.buildSourceTree(Arrays.asList(modules));
+		treeBuilder.buildSourceTree(asList(modules));
 		return projectResult.getSourceTree();
 	}
 }

@@ -7,7 +7,6 @@ import static org.kalibro.MetricFixtures.*;
 import static org.kalibro.MetricResultFixtures.analizoResult;
 import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
-import java.util.Arrays;
 import java.util.Date;
 
 import org.junit.Before;
@@ -57,7 +56,7 @@ public class ModuleResultTest extends UnitTest {
 
 	@Test
 	public void shouldAddMultipleNativeMetricResults() {
-		result.addMetricResults(Arrays.asList(analizoResult("sc")));
+		result.addMetricResults(asList(analizoResult("sc")));
 		assertTrue(result.hasResultFor(analizoMetric("sc")));
 	}
 
@@ -74,7 +73,7 @@ public class ModuleResultTest extends UnitTest {
 
 		Exception error = new Exception();
 		result.addCompoundMetricWithError(sc, error);
-		assertDeepSet(result.getCompoundMetricsWithError(), sc);
+		assertDeepEquals(asSet(sc), result.getCompoundMetricsWithError());
 		assertSame(error, result.getErrorFor(sc));
 	}
 

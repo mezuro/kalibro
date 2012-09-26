@@ -2,8 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
-
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
@@ -36,9 +34,9 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 	public void shouldGetReadingsOfGroup() {
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
-		when(query.getResultList()).thenReturn(Arrays.asList(record));
+		when(query.getResultList()).thenReturn(asList(record));
 
-		assertDeepList(dao.readingsOf(42L), reading);
+		assertDeepEquals(asList(reading), dao.readingsOf(42L));
 		verify(query).setParameter("groupId", 42L);
 	}
 

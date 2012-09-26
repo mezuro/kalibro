@@ -3,7 +3,6 @@ package org.kalibro.core.persistence;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -37,7 +36,7 @@ public class DatabaseDaoTest extends UnitTest {
 		Query query = mock(Query.class);
 		when(recordManager.createQuery("SELECT 1 FROM Person WHERE id = :id")).thenReturn(query);
 
-		when(query.getResultList()).thenReturn(Arrays.asList(1));
+		when(query.getResultList()).thenReturn(asList(1));
 		assertTrue(dao.existsWithId(42L));
 		verify(query).setParameter("id", 42L);
 
@@ -57,9 +56,9 @@ public class DatabaseDaoTest extends UnitTest {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
 		String queryString = "SELECT person FROM Person person ORDER BY lower(person.name)";
 		when(recordManager.createQuery(queryString, PersonRecord.class)).thenReturn(query);
-		when(query.getResultList()).thenReturn(Arrays.asList(record));
+		when(query.getResultList()).thenReturn(asList(record));
 
-		assertDeepList(dao.allOrderedByName(), person);
+		assertDeepEquals(asList(person), dao.allOrderedByName());
 	}
 
 	@Test
