@@ -31,9 +31,9 @@ public class ModuleResultConfigurer {
 
 	private void configureNativeResults() {
 		for (MetricResult metricResult : moduleResult.getMetricResults()) {
-			String metricName = metricResult.getMetric().getName();
-			if (configuration.containsMetric(metricName)) {
-				MetricConfiguration metricConfiguration = configuration.getConfigurationFor(metricName);
+			Metric metric = metricResult.getMetric();
+			if (configuration.containsMetric(metric)) {
+				MetricConfiguration metricConfiguration = configuration.getConfigurationFor(metric);
 				metricResult.setConfiguration(metricConfiguration);
 				include(metricConfiguration);
 				computeGrade(metricResult);
@@ -44,7 +44,7 @@ public class ModuleResultConfigurer {
 	private void computeCompoundMetrics() {
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics())
 			if (isScopeCompatible(compoundMetric))
-				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()));
+				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric));
 	}
 
 	private boolean isScopeCompatible(Metric metric) {
@@ -80,7 +80,7 @@ public class ModuleResultConfigurer {
 
 	private void computeGrade(MetricResult metricResult) {
 		if (metricResult.hasRange()) {
-			Double weight = configuration.getConfigurationFor(metricResult.getMetric().getName()).getWeight();
+			Double weight = configuration.getConfigurationFor(metricResult.getMetric()).getWeight();
 			gradeSum += metricResult.getGrade() * weight;
 			weightSum += weight;
 		}

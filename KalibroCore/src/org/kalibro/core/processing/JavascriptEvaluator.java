@@ -5,20 +5,24 @@ import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 
-public final class JavascriptEvaluator {
+public class JavascriptEvaluator {
 
 	private Context context;
 	private Scriptable script;
 
+	public JavascriptEvaluator() {
+		context = Context.enter();
+		script = context.initStandardObjects();
+	}
+
 	public void addVariable(String name, Double value) {
 		validateIdentifier(name);
-		getScript().put(name, script, value);
+		script.put(name, script, value);
 	}
 
 	public void addFunction(String name, String body) {
 		validateIdentifier(name);
-		Function function = getContext().compileFunction(script, "function(){\n" + body + "}", name, 0, null);
-		script.put(name, script, function);
+		script.put(name, script, compileFunction(name, body));
 	}
 
 	private void validateIdentifier(String identifier) {
@@ -26,41 +30,30 @@ public final class JavascriptEvaluator {
 			throw new KalibroException("Invalid identifier: " + identifier);
 	}
 
-	public void remove(String name) {
-		getScript().delete(name);
+	private Function compileFunction(String name, String body) {
+		try {
+			return context.compileFunction(script, "function(){\n" + body + "}", name, 0, null);
+		} catch (Exception exception) {
+			throw new KalibroException("Error compiling Javascript for: " + name, exception);
+		}
 	}
 
 	public Double evaluate(String name) {
-		Object result = getScript().get(name, script);
-		if (result instanceof Function)
-			result = ((Function) result).call(context, script, null, null);
-		return toDouble(result);
+		try {
+			return doEvaluate(name);
+		} catch (Exception exception) {
+			throw new KalibroException("Error evaluating Javascript for: " + name, exception);
+		}
 	}
 
-	private Double toDouble(Object result) {
+	private Double doEvaluate(String name) {
+		Object result = script.get(name, script);
+		if (result instanceof Function)
+			result = ((Function) result).call(context, script, null, null);
 		return ((Number) result).doubleValue();
 	}
 
-	private Context getContext() {
-		if (context == null)
-			initialize();
-		return context;
-	}
-
-	private Scriptable getScript() {
-		if (script == null)
-			initialize();
-		return script;
-	}
-
-	private void initialize() {
-		context = Context.enter();
-		script = context.initStandardObjects();
-	}
-
-	@Override
-	protected void finalize() throws Throwable {
+	public void close() {
 		Context.exit();
-		super.finalize();
 	}
 }

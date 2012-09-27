@@ -48,11 +48,11 @@ public class ModuleResultConfigurerTest extends UnitTest {
 
 	@Test
 	public void checkGrade() {
-		configuration.removeMetric(sc.getName());
+		configuration.removeMetricConfiguration(new MetricConfiguration(sc));
 
 		NativeMetric cbo = analizoMetric("cbo");
 		MetricResult cboResult = result.getResultFor(cbo);
-		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo.getName());
+		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
 
 		for (Double weight : new Double[]{0.0, 1.0, 2.0, 3.0, 4.0}) {
 			cboConfiguration.setWeight(weight);
@@ -87,7 +87,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	}
 
 	private void changeScScope() {
-		configuration.removeMetric(sc.getName());
+		configuration.removeMetricConfiguration(new MetricConfiguration(sc));
 		sc.setScope(Granularity.PACKAGE);
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 	}
@@ -97,7 +97,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 		addCompoundMetricWithError();
 		configurer.configure();
 		assertDeepEquals(asSet(invalid), result.getCompoundMetricsWithError());
-		assertClassEquals(NullPointerException.class, result.getErrorFor(invalid));
+		assertClassEquals(KalibroException.class, result.getErrorFor(invalid));
 	}
 
 	private void addCompoundMetricWithError() {

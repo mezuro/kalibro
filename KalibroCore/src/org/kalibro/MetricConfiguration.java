@@ -109,4 +109,14 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	public boolean removeRange(Range range) {
 		return ranges.remove(range);
 	}
+
+	public void setConfiguration(Configuration configuration) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void setId(Long id) {
+		// TODO Auto-generated method stub
+
+	}
 }

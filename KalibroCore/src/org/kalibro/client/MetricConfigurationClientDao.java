@@ -1,5 +1,7 @@
 package org.kalibro.client;
 
+import java.util.SortedSet;
+
 import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.service.MetricConfigurationEndpoint;
@@ -25,5 +27,11 @@ class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEnd
 	@Override
 	public void removeMetricConfiguration(String configurationName, String metricName) {
 		port.removeMetricConfiguration(configurationName, metricName);
+	}
+
+	@Override
+	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

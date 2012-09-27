@@ -2,40 +2,42 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.MetricConfigurationFixtures.*;
+import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 import static org.kalibro.MetricFixtures.*;
 
-import java.util.Map;
-import java.util.Set;
+import java.io.File;
 import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoFactory.class)
+@PrepareForTest({AbstractEntity.class, DaoFactory.class})
 public class ConfigurationTest extends UnitTest {
 
+	private NativeMetric cbo, lcom4;
 	private CompoundMetric sc;
-	private Configuration configuration;
-
-	private String cboName, lcomName, scName;
 	private ConfigurationDao dao;
+
+	private Configuration configuration;
 
 	@Before
 	public void setUp() {
 		sc = newSc();
+		cbo = analizoMetric("cbo");
+		lcom4 = analizoMetric("lcom4");
 		configuration = newConfiguration("cbo", "lcom4");
-		cboName = analizoMetric("cbo").getName();
-		lcomName = analizoMetric("lcom4").getName();
-		scName = sc.getName();
 		mockDao();
 	}
 
@@ -46,19 +48,50 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetAll() {
+	public void shouldSortByName() {
+		assertSorted(new Configuration("A"), new Configuration("B"), new Configuration("X"), new Configuration("Z"));
+	}
+
+	@Test
+	public void shouldImportFromFile() throws Exception {
+		File file = mock(File.class);
+		mockStatic(AbstractEntity.class);
+		when(AbstractEntity.class, "importFrom", file, Configuration.class).thenReturn(configuration);
+
+		assertSame(configuration, Configuration.importFrom(file));
+		verifyPrivate(AbstractEntity.class).invoke("importFrom", file, Configuration.class);
+	}
+
+	@Test
+	public void shouldGetAllConfigurations() {
 		SortedSet<Configuration> configurations = mock(SortedSet.class);
 		when(dao.all()).thenReturn(configurations);
 		assertSame(configurations, Configuration.all());
 	}
 
 	@Test
-	public void checkDefaultAttributes() {
+	public void checkDefaultConfiguration() {
 		configuration = new Configuration();
-		assertNull(configuration.getId());
+		assertFalse(configuration.hasId());
 		assertEquals("", configuration.getName());
 		assertEquals("", configuration.getDescription());
 		assertTrue(configuration.getMetricConfigurations().isEmpty());
+	}
+
+	@Test
+	public void shouldSetConfigurationOnMetricConfigurations() {
+		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
+		configuration.setMetricConfigurations(asSortedSet(metricConfiguration));
+		assertDeepEquals(asSet(metricConfiguration), configuration.getMetricConfigurations());
+		verify(metricConfiguration).setConfiguration(configuration);
+	}
+
+	@Test
+	public void shouldSetMetricConfigurationsWithoutTouchingThem() {
+		// required for lazy loading
+		SortedSet<MetricConfiguration> metricConfigurations = mock(SortedSet.class);
+		configuration.setMetricConfigurations(metricConfigurations);
+		verifyZeroInteractions(metricConfigurations);
 	}
 
 	@Test
@@ -67,144 +100,104 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void testContains() {
-		assertFalse(configuration.containsMetric("Unknown"));
-		assertTrue(configuration.containsMetric(cboName));
-		assertTrue(configuration.containsMetric(lcomName));
-		assertFalse(configuration.containsMetric(scName));
+	public void shouldAddMetricConfigurationIfItDoesNotConflictWithExistingOnes() {
+		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
+		SortedSet<MetricConfiguration> existents = configuration.getMetricConfigurations();
+		configuration.addMetricConfiguration(metricConfiguration);
 
-		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-		assertTrue(configuration.containsMetric(scName));
+		InOrder order = Mockito.inOrder(metricConfiguration);
+		for (MetricConfiguration existent : existents)
+			order.verify(metricConfiguration).assertNoConflictWith(existent);
+		order.verify(metricConfiguration).setConfiguration(configuration);
+
+		assertTrue(configuration.getMetricConfigurations().contains(metricConfiguration));
 	}
 
 	@Test
-	public void shouldRetrieveCompoundMetrics() {
+	public void shouldRemoveMetricConfiguration() {
+		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
+		SortedSet<MetricConfiguration> metricConfigurations = spy(asSortedSet(metricConfiguration));
+		configuration.setMetricConfigurations(metricConfigurations);
+
+		configuration.removeMetricConfiguration(metricConfiguration);
+		verify(metricConfigurations).remove(metricConfiguration);
+		verify(metricConfiguration).setConfiguration(null);
+	}
+
+	@Test
+	public void shouldGetCompoundMetrics() {
+		assertTrue(configuration.getCompoundMetrics().isEmpty());
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 		assertDeepEquals(asSet(sc), configuration.getCompoundMetrics());
-
-		configuration.removeMetric(scName);
-		assertTrue(configuration.getCompoundMetrics().isEmpty());
 	}
 
 	@Test
-	public void shouldRetrieveNativeMetricsPerOrigin() {
-		Map<String, Set<NativeMetric>> nativeMetrics = configuration.getNativeMetrics();
-		assertEquals(1, nativeMetrics.size());
-		assertEquals(2, nativeMetrics.get("Analizo").size());
+	public void shouldRetrieveNativeMetricsPerBaseTool() {
+		assertDeepEquals(asMap("Analizo", asSet(cbo, lcom4)), configuration.getNativeMetrics());
 	}
 
 	@Test
-	public void shouldRetrieveConfigurationForMetric() {
-		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(cboName));
-		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(lcomName));
+	public void shouldAnswerIfContainsMetric() {
+		assertTrue(configuration.containsMetric(cbo));
+		assertTrue(configuration.containsMetric(lcom4));
+		assertFalse(configuration.containsMetric(sc));
 	}
 
 	@Test
-	public void checkNoConfigurationFoundForMetricError() {
-		assertThat(new VoidTask() {
+	public void shouldGetConfigurationForMetric() {
+		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(cbo));
+		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(lcom4));
+		assertThat(getScConfiguration()).throwsException()
+			.withMessage("No configuration found for metric: Structural complexity");
+	}
+
+	private VoidTask getScConfiguration() {
+		return new VoidTask() {
 
 			@Override
 			protected void perform() {
-				configuration.getConfigurationFor("Unknown");
+				configuration.getConfigurationFor(sc);
 			}
-		}).throwsException().withMessage("No configuration found for metric: Unknown");
+		};
 	}
 
 	@Test
-	public void verifyErrorAddingConflictingMetricConfiguration() {
-		assertThat(new VoidTask() {
+	public void shouldValidateScripts() {
+		MetricConfiguration scConfiguration = new MetricConfiguration(sc);
+		configuration.addMetricConfiguration(scConfiguration);
+		configuration.validateScripts();
 
-			@Override
-			protected void perform() {
-				configuration.addMetricConfiguration(metricConfiguration("cbo"));
-			}
-		}).throwsException().withMessage("A metric configuration with code 'cbo' already exists");
-	}
-
-	@Test
-	public void shouldReplaceExistingMetricConfiguration() {
-		MetricConfiguration newMetricConfiguration = metricConfiguration("cbo");
-		configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
-		assertSame(newMetricConfiguration, configuration.getConfigurationFor(cboName));
-	}
-
-	@Test
-	public void checkErrorReplacingInexistentMetricConfiguration() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws Exception {
-				configuration.replaceMetricConfiguration("Unknown", metricConfiguration("noa"));
-			}
-		}).throwsException().withMessage("No configuration found for metric: Unknown");
-	}
-
-	@Test
-	public void checkErrorForConflictingMetricConfigurationReplace() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws Exception {
-				MetricConfiguration newMetricConfiguration = newMetricConfiguration("cbo");
-				newMetricConfiguration.setCode("lcom4");
-				configuration.replaceMetricConfiguration(cboName, newMetricConfiguration);
-			}
-		}).throwsException().withMessage("A metric configuration with code 'lcom4' already exists");
-		assertTrue(configuration.containsMetric(cboName));
-	}
-
-	@Test
-	public void testRemoveMetric() {
-		configuration.removeMetric(cboName);
-		configuration.removeMetric(lcomName);
-		assertFalse(configuration.containsMetric(cboName));
-		assertFalse(configuration.containsMetric(lcomName));
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.removeMetric(cboName);
-			}
-		}).throwsException().withMessage("No configuration found for metric: " + cboName);
-	}
-
-	@Test
-	public void shouldValidateCompoundMetric() {
-		configuration.addMetricConfiguration(new MetricConfiguration(sc));
-	}
-
-	@Test
-	public void shouldValidateMetricConfiguration() {
 		sc.setScript("return null;");
-		assertThat(new VoidTask() {
+		assertThat(validateScripts()).throwsException()
+			.withMessage("Error evaluating Javascript for: structuralComplexity");
+	}
+
+	private VoidTask validateScripts() {
+		return new VoidTask() {
 
 			@Override
 			protected void perform() throws Exception {
-				configuration.addMetricConfiguration(new MetricConfiguration(sc));
+				configuration.validateScripts();
 			}
-		}).throwsException().withCause(NullPointerException.class)
-			.withMessage("Metric with invalid code or script: Structural complexity");
+		};
 	}
 
 	@Test
-	public void shouldSortByName() {
-		assertSorted(createConfiguration("A"), createConfiguration("B"), createConfiguration("C"), configuration);
-	}
+	public void shouldUpdateIdAndMetricConfigurationsOnSave() {
+		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
+		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
+		when(dao.save(configuration)).thenReturn(42L);
+		when(DaoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
+		when(metricConfigurationDao.metricConfigurationsOf(42L)).thenReturn(asSortedSet(metricConfiguration));
 
-	private Configuration createConfiguration(String name) {
-		Configuration newConfiguration = new Configuration();
-		newConfiguration.setName(name);
-		return newConfiguration;
-	}
-
-	@Test
-	public void shouldSave() {
+		assertFalse(configuration.hasId());
 		configuration.save();
-		verify(dao).save(configuration);
+		assertEquals(42L, configuration.getId().longValue());
+		assertDeepEquals(asSet(metricConfiguration), configuration.getMetricConfigurations());
 	}
 
 	@Test
-	public void shouldRequireNameToSave() {
+	public void shouldRequiredNameToSave() {
 		configuration.setName(" ");
 		assertThat(save()).throwsException().withMessage("Configuration requires name.");
 	}
@@ -220,8 +213,31 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldDelete() {
+	public void shouldDeleteIfHasId() {
+		assertFalse(configuration.hasId());
 		configuration.delete();
-		verify(dao).delete(configuration.getId());
+		verify(dao, never()).delete(any(Long.class));
+
+		configuration.setId(42L);
+
+		assertTrue(configuration.hasId());
+		configuration.delete();
+		verify(dao).delete(42L);
+		assertFalse(configuration.hasId());
+	}
+
+	@Test
+	public void shouldRemoveMetricConfigurationIdsOnDelete() {
+		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
+		configuration.setMetricConfigurations(asSortedSet(metricConfiguration));
+		configuration.setId(42L);
+
+		configuration.delete();
+		verify(metricConfiguration).setId(null);
+	}
+
+	@Test
+	public void toStringShouldBeName() {
+		assertEquals(configuration.getName(), "" + configuration);
 	}
 }

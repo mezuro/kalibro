@@ -1,12 +1,15 @@
 package org.kalibro.core.persistence;
 
+import java.util.SortedSet;
+
 import javax.persistence.TypedQuery;
 
 import org.kalibro.Configuration;
+import org.kalibro.Granularity;
 import org.kalibro.MetricConfiguration;
+import org.kalibro.NativeMetric;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.core.persistence.record.MetricConfigurationRecord;
-import org.kalibro.core.persistence.record.RangeRecord;
 import org.kalibro.dao.MetricConfigurationDao;
 
 class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord> implements
@@ -21,26 +24,20 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 
 	@Override
 	public void save(MetricConfiguration metricConfiguration, String configurationName) {
-		Configuration configuration = getConfiguration(configurationName);
-		String metricName = metricConfiguration.getMetric().getName();
-		if (configuration.containsMetric(metricName))
-			configuration.replaceMetricConfiguration(metricName, metricConfiguration);
-		else
-			configuration.addMetricConfiguration(metricConfiguration);
-		recordManager().evictFromCache(RangeRecord.class);
-		configurationDao.save(configuration);
+		save(new MetricConfigurationRecord(metricConfiguration));
 	}
 
 	@Override
 	public MetricConfiguration getMetricConfiguration(String configurationName, String metricName) {
 		Configuration configuration = getConfiguration(configurationName);
-		return configuration.getConfigurationFor(metricName);
+		return configuration.getConfigurationFor(new NativeMetric(metricName, Granularity.CLASS));
 	}
 
 	@Override
 	public void removeMetricConfiguration(String configurationName, String metricName) {
 		Configuration configuration = getConfiguration(configurationName);
-		configuration.removeMetric(metricName);
+		configuration
+			.removeMetricConfiguration(new MetricConfiguration(new NativeMetric(metricName, Granularity.CLASS)));
 		configurationDao.save(configuration);
 	}
 
@@ -48,5 +45,11 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 		TypedQuery<ConfigurationRecord> query = configurationDao.createRecordQuery("WHERE configuration.name = :name");
 		query.setParameter("name", configurationName);
 		return query.getSingleResult().convert();
+	}
+
+	@Override
+	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

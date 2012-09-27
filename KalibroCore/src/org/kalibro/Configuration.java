@@ -1,14 +1,27 @@
 package org.kalibro;
 
+import java.io.File;
 import java.util.*;
 
-import org.kalibro.core.abstractentity.*;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Print;
+import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.processing.ScriptValidator;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 
+/**
+ * A configuration is a set of {@link MetricConfiguration} used to evaluate and compare source code bases.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("name")
 public class Configuration extends AbstractEntity<Configuration> {
+
+	public static Configuration importFrom(File file) {
+		return importFrom(file, Configuration.class);
+	}
 
 	public static SortedSet<Configuration> all() {
 		return dao().all();
@@ -25,34 +38,25 @@ public class Configuration extends AbstractEntity<Configuration> {
 	private String name;
 
 	private String description;
-	private Map<String, MetricConfiguration> metricConfigurations;
-
-	@Ignore
-	private SortedSet<CompoundMetric> compoundMetrics;
-
-	@Ignore
-	private Map<String, Set<NativeMetric>> nativeMetrics;
-
-	@Ignore
-	private ScriptValidator validator;
+	private Set<MetricConfiguration> metricConfigurations;
 
 	public Configuration() {
-		setId(null);
-		setName("");
-		setDescription("");
-		compoundMetrics = new TreeSet<CompoundMetric>();
-		nativeMetrics = new TreeMap<String, Set<NativeMetric>>();
-		metricConfigurations = new TreeMap<String, MetricConfiguration>();
-		validator = new ScriptValidator();
+		this("");
 	}
 
-	@Override
-	public String toString() {
-		return name;
+	public Configuration(String name) {
+		setId(null);
+		setName(name);
+		setDescription("");
+		setMetricConfigurations(new TreeSet<MetricConfiguration>());
 	}
 
 	public Long getId() {
 		return id;
+	}
+
+	public boolean hasId() {
+		return id != null;
 	}
 
 	public void setId(Long id) {
@@ -75,90 +79,90 @@ public class Configuration extends AbstractEntity<Configuration> {
 		this.description = description;
 	}
 
-	public Collection<MetricConfiguration> getMetricConfigurations() {
-		return metricConfigurations.values();
+	public SortedSet<MetricConfiguration> getMetricConfigurations() {
+		for (MetricConfiguration each : metricConfigurations)
+			each.setConfiguration(this);
+		return new TreeSet<MetricConfiguration>(metricConfigurations);
 	}
 
-	public boolean containsMetric(String metricName) {
-		return metricConfigurations.containsKey(metricName);
+	public void setMetricConfigurations(SortedSet<MetricConfiguration> metricConfigurations) {
+		this.metricConfigurations = metricConfigurations;
+	}
+
+	public void addMetricConfiguration(MetricConfiguration metricConfiguration) {
+		for (MetricConfiguration each : metricConfigurations)
+			metricConfiguration.assertNoConflictWith(each);
+		metricConfiguration.setConfiguration(this);
+		metricConfigurations.add(metricConfiguration);
+	}
+
+	public void removeMetricConfiguration(MetricConfiguration metricConfiguration) {
+		metricConfigurations.remove(metricConfiguration);
+		metricConfiguration.setConfiguration(null);
+	}
+
+	public void validateScripts() {
+		ScriptValidator.validate(this);
 	}
 
 	public SortedSet<CompoundMetric> getCompoundMetrics() {
+		SortedSet<CompoundMetric> compoundMetrics = new TreeSet<CompoundMetric>();
+		for (MetricConfiguration each : metricConfigurations)
+			if (each.getMetric().isCompound())
+				compoundMetrics.add((CompoundMetric) each.getMetric());
 		return compoundMetrics;
 	}
 
 	public Map<String, Set<NativeMetric>> getNativeMetrics() {
+		Map<String, Set<NativeMetric>> nativeMetrics = new HashMap<String, Set<NativeMetric>>();
+		for (MetricConfiguration each : metricConfigurations)
+			if (!each.getMetric().isCompound())
+				addNativeMetricTo(nativeMetrics, (NativeMetric) each.getMetric());
 		return nativeMetrics;
 	}
 
-	public MetricConfiguration getConfigurationFor(String metricName) {
-		if (!containsMetric(metricName))
-			throw new KalibroException("No configuration found for metric: " + metricName);
-		return metricConfigurations.get(metricName);
-	}
-
-	public void addMetricConfiguration(MetricConfiguration metricConfiguration) {
-		for (MetricConfiguration configuration : metricConfigurations.values())
-			configuration.assertNoConflictWith(metricConfiguration);
-		validator.add(metricConfiguration);
-		Metric metric = metricConfiguration.getMetric();
-		addMetric(metric);
-		metricConfigurations.put(metric.getName(), metricConfiguration);
-	}
-
-	private void addMetric(Metric metric) {
-		if (metric.isCompound())
-			compoundMetrics.add((CompoundMetric) metric);
-		else
-			addNativeMetric((NativeMetric) metric);
-	}
-
-	private void addNativeMetric(NativeMetric metric) {
-		String origin = metric.getOrigin();
+	private void addNativeMetricTo(Map<String, Set<NativeMetric>> nativeMetrics, NativeMetric nativeMetric) {
+		String origin = nativeMetric.getOrigin();
 		if (!nativeMetrics.containsKey(origin))
-			nativeMetrics.put(origin, new TreeSet<NativeMetric>());
-		nativeMetrics.get(origin).add(metric);
+			nativeMetrics.put(origin, new HashSet<NativeMetric>());
+		nativeMetrics.get(origin).add(nativeMetric);
 	}
 
-	public void replaceMetricConfiguration(String metricName, MetricConfiguration newMetricConfiguration) {
-		MetricConfiguration oldConfiguration = getConfigurationFor(metricName);
-		removeMetric(metricName);
-		try {
-			addMetricConfiguration(newMetricConfiguration);
-		} catch (KalibroException exception) {
-			addMetricConfiguration(oldConfiguration);
-			throw exception;
-		}
+	public boolean containsMetric(Metric metric) {
+		return findConfigurationFor(metric) != null;
 	}
 
-	public void removeMetric(String metricName) {
-		MetricConfiguration metricConfiguration = getConfigurationFor(metricName);
-		validator.remove(metricConfiguration);
-		removeMetric(metricConfiguration.getMetric());
-		metricConfigurations.remove(metricName);
+	public MetricConfiguration getConfigurationFor(Metric metric) {
+		MetricConfiguration metricConfiguration = findConfigurationFor(metric);
+		if (metricConfiguration == null)
+			throw new KalibroException("No configuration found for metric: " + metric);
+		return metricConfiguration;
 	}
 
-	private void removeMetric(Metric metric) {
-		if (metric.isCompound())
-			compoundMetrics.remove(metric);
-		else
-			removeNativeMetric((NativeMetric) metric);
-	}
-
-	private void removeNativeMetric(NativeMetric metric) {
-		String origin = metric.getOrigin();
-		nativeMetrics.get(origin).remove(metric);
-		if (nativeMetrics.get(origin).isEmpty())
-			nativeMetrics.remove(origin);
+	private MetricConfiguration findConfigurationFor(Metric metric) {
+		for (MetricConfiguration metricConfiguration : metricConfigurations)
+			if (metricConfiguration.getMetric().equals(metric))
+				return metricConfiguration;
+		return null;
 	}
 
 	public void save() {
 		if (name.trim().isEmpty())
 			throw new KalibroException("Configuration requires name.");
-		dao().save(this);
+		id = dao().save(this);
+		metricConfigurations = DaoFactory.getMetricConfigurationDao().metricConfigurationsOf(id);
 	}
 
 	public void delete() {
-		dao().delete(id);
+		if (hasId())
+			dao().delete(id);
+		for (MetricConfiguration metricConfiguration : metricConfigurations)
+			metricConfiguration.setId(null);
+		id = null;
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

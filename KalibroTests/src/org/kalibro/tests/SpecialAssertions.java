@@ -53,4 +53,11 @@ public abstract class SpecialAssertions extends MockitoProxy {
 	public static <T> SortedSet<T> asSortedSet(T... elements) {
 		return new TreeSet<T>(Arrays.asList(elements));
 	}
+
+	public static Map<Object, Object> asMap(Object... elements) {
+		Map<Object, Object> map = new HashMap<Object, Object>();
+		for (int i = 0; i < elements.length; i += 2)
+			map.put(elements[i], elements[i + 1]);
+		return map;
+	}
 }

@@ -1,8 +1,7 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertFalse;
 import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.MetricConfigurationFixtures.*;
+import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import javax.persistence.TypedQuery;
 
@@ -14,7 +13,6 @@ import org.kalibro.MetricConfiguration;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -48,39 +46,10 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldAddMetricConfiguration() {
-		dao.save(locConfiguration, configuration.getName());
-
-		String locName = locConfiguration.getMetric().getName();
-		assertDeepEquals(locConfiguration, configuration.getConfigurationFor(locName));
-		Mockito.verify(configurationDao).save(configuration);
-	}
-
-	@Test
-	public void shouldReplaceMetricConfiguration() {
-		cboConfiguration = newMetricConfiguration("cbo");
-		cboConfiguration.setWeight(42.0);
-		dao.save(cboConfiguration, configuration.getName());
-
-		String cboName = cboConfiguration.getMetric().getName();
-		assertDeepEquals(cboConfiguration, configuration.getConfigurationFor(cboName));
-		Mockito.verify(configurationDao).save(configuration);
-	}
-
-	@Test
 	public void shouldGetMetricConfiguration() {
 		String configurationName = configuration.getName();
 		String metricName = cboConfiguration.getMetric().getName();
 		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
-	}
-
-	@Test
-	public void shouldRemoveMetricConfiguration() {
-		String cboName = cboConfiguration.getMetric().getName();
-		dao.removeMetricConfiguration(configuration.getName(), cboName);
-
-		assertFalse(configuration.containsMetric(cboName));
-		Mockito.verify(configurationDao).save(configuration);
 	}
 
 	@Test

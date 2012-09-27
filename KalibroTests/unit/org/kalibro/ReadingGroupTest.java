@@ -23,8 +23,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({AbstractEntity.class, DaoFactory.class})
 public class ReadingGroupTest extends UnitTest {
 
-	private ReadingGroup group;
 	private ReadingGroupDao dao;
+	private ReadingGroup group;
 
 	@Before
 	public void setUp() {
