@@ -1,12 +1,15 @@
 package org.kalibro;
 
-
 public class CompoundMetric extends Metric {
 
 	private String script;
 
 	public CompoundMetric() {
-		super(true, "New metric", Granularity.CLASS);
+		this("New metric");
+	}
+
+	public CompoundMetric(String name) {
+		super(true, name, Granularity.CLASS);
 		setScript("return 1;");
 	}
 

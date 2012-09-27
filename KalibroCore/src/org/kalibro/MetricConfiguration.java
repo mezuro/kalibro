@@ -19,6 +19,10 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	private Statistic aggregationForm;
 	private SortedSet<Range> ranges;
 
+	public MetricConfiguration() {
+		// TODO Auto-generated method stub
+	}
+
 	public MetricConfiguration(Metric metric) {
 		setCode(Identifier.fromText(metric.getName()).asVariable());
 		setMetric(metric);
@@ -112,11 +116,9 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 
 	public void setConfiguration(Configuration configuration) {
 		// TODO Auto-generated method stub
-
 	}
 
 	void deleted() {
 		// TODO Auto-generated method stub
-
 	}
 }
