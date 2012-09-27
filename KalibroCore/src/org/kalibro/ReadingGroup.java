@@ -98,7 +98,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		readings.add(reading);
 	}
 
-	protected void removeReading(Reading reading) {
+	void removeReading(Reading reading) {
 		readings.remove(reading);
 		reading.setGroup(null);
 	}
@@ -113,8 +113,12 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	public void delete() {
 		if (hasId())
 			dao().delete(id);
+		deleted();
+	}
+
+	private void deleted() {
 		for (Reading reading : readings)
-			reading.setId(null);
+			reading.deleted();
 		id = null;
 	}
 

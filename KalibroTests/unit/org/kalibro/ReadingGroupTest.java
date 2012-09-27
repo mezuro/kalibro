@@ -151,13 +151,13 @@ public class ReadingGroupTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRemoveReadingIdsOnDelete() {
+	public void shouldNotifyReadingsOfDeletion() {
 		Reading reading = mock(Reading.class);
 		group.setReadings(asSortedSet(reading));
 		group.setId(42L);
 
 		group.delete();
-		verify(reading).setId(null);
+		verify(reading).deleted();
 	}
 
 	@Test

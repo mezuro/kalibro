@@ -74,7 +74,7 @@ public class Reading extends AbstractEntity<Reading> {
 		this.color = color;
 	}
 
-	protected void assertNoConflictWith(Reading other) {
+	void assertNoConflictWith(Reading other) {
 		if (getLabel().equals(other.getLabel()))
 			throw new KalibroException("Reading with label \"" + getLabel() + "\" already exists in the group.");
 		if (getGrade().equals(other.getGrade()))
@@ -85,7 +85,7 @@ public class Reading extends AbstractEntity<Reading> {
 		return group.getId();
 	}
 
-	protected void setGroup(ReadingGroup group) {
+	void setGroup(ReadingGroup group) {
 		this.group = group;
 	}
 
@@ -102,6 +102,10 @@ public class Reading extends AbstractEntity<Reading> {
 			dao().delete(id);
 		if (group != null)
 			group.removeReading(this);
+		deleted();
+	}
+
+	void deleted() {
 		id = null;
 	}
 
