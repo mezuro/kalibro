@@ -47,7 +47,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		group.save();
 		assertSaved();
 
-		group.addReading(newReading());
+		group.setDescription("Another description");
 		assertFalse(ReadingGroup.all().first().deepEquals(group));
 
 		group.save();
@@ -89,26 +89,24 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void readingsInSameGroupShouldNotHaveDuplicateLabelsOrGrade() {
-		Reading reading, existent = group.getReadings().first();
-		String label = existent.getLabel();
-		Double grade = existent.getGrade();
-
-		reading = newReading();
-		reading.setLabel(label);
-		assertThat(addReading(reading)).throwsException()
-			.withMessage("Reading with label \"" + label + "\" already exists in the group.");
-
-		reading = newReading();
-		reading.setGrade(grade);
-		assertThat(addReading(reading)).throwsException()
-			.withMessage("Reading with grade " + grade + " already exists in the group.");
+		Reading existent = group.getReadings().first();
+		existent.setLabel("label");
+		existent.setGrade(-1.0);
+		assertThat(add(reading("label"))).throwsException()
+			.withMessage("Reading with label \"label\" already exists in the group.");
+		assertThat(add(reading(-1.0))).throwsException()
+			.withMessage("Reading with grade -1.0 already exists in the group.");
 	}
 
-	private Reading newReading() {
-		return new Reading("ReadingGroupAcceptanceTest label", 42.0, Color.MAGENTA);
+	private Reading reading(String label) {
+		return new Reading(label, 42.0, Color.MAGENTA);
 	}
 
-	private VoidTask addReading(final Reading reading) {
+	private Reading reading(Double grade) {
+		return new Reading("ReadingGroupAcceptanceTest label", grade, Color.MAGENTA);
+	}
+
+	private VoidTask add(final Reading reading) {
 		return new VoidTask() {
 
 			@Override

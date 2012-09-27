@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
@@ -58,10 +58,10 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void readingIsRequiredToBeInGroup() {
-		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
+		assertThat(saveNew()).throwsException().withMessage("Reading is not in any group.");
 	}
 
-	private VoidTask save() {
+	private VoidTask saveNew() {
 		return new VoidTask() {
 
 			@Override
@@ -69,5 +69,25 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 				new Reading().save();
 			}
 		};
+	}
+
+	@Test
+	public void shouldNotSetConflictingLabelOrGrade() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.setLabel("Excellent");
+			}
+		}).throwsException().withMessage("Reading with label \"Excellent\" already exists in the group.");
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.setGrade(10.0);
+			}
+		}).throwsException().withMessage("Reading with grade 10.0 already exists in the group.");
+		assertEquals("Terrible", reading.getLabel());
+		assertDoubleEquals(0.0, reading.getGrade());
 	}
 }

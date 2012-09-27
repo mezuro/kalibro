@@ -46,7 +46,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		configuration.save();
 		assertSaved();
 
-		configuration.setDescription("Another test description");
+		configuration.setDescription("Another description");
 		assertFalse(Configuration.all().first().deepEquals(configuration));
 
 		configuration.save();

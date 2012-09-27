@@ -44,15 +44,41 @@ public class ReadingTest extends UnitTest {
 	}
 
 	@Test
-	public void readingsWithSameLabelShouldConflict() {
-		String label = reading.getLabel();
-		shouldConflictWith(reading(label), "Reading with label \"" + label + "\" already exists in the group.");
+	public void shouldNotSetConflictingLabel() {
+		ReadingGroup group = new ReadingGroup();
+		group.addReading(reading);
+		group.addReading(reading("label"));
+		reading.setLabel("original");
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.setLabel("label");
+			}
+		}).throwsException().withMessage("Reading with label \"label\" already exists in the group.");
+		assertEquals("original", reading.getLabel());
 	}
 
 	@Test
-	public void readingsWithSameGradeShouldConflict() {
-		Double grade = reading.getGrade();
-		shouldConflictWith(reading(grade), "Reading with grade " + grade + " already exists in the group.");
+	public void shouldNotSetConflictingGrade() {
+		ReadingGroup group = new ReadingGroup();
+		group.addReading(reading);
+		group.addReading(reading(-1.0));
+		reading.setGrade(42.0);
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.setGrade(-1.0);
+			}
+		}).throwsException().withMessage("Reading with grade -1.0 already exists in the group.");
+		assertDoubleEquals(42.0, reading.getGrade());
+	}
+
+	@Test
+	public void shouldAssertNoConflictWithOtherReading() {
+		reading.assertNoConflictWith(reading("label"));
+		reading.assertNoConflictWith(reading(-1.0));
 	}
 
 	private Reading reading(String label) {
@@ -61,16 +87,6 @@ public class ReadingTest extends UnitTest {
 
 	private Reading reading(Double grade) {
 		return new Reading("ReadingTest label", grade, Color.MAGENTA);
-	}
-
-	private void shouldConflictWith(final Reading other, String message) {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				reading.assertNoConflictWith(other);
-			}
-		}).throwsException().withMessage(message);
 	}
 
 	@Test
