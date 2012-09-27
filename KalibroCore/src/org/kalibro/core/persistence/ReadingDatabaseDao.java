@@ -24,7 +24,7 @@ class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements 
 	public List<Reading> readingsOf(Long groupId) {
 		TypedQuery<ReadingRecord> query = createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
 		query.setParameter("groupId", groupId);
-		return DataTransferObject.convert(query.getResultList());
+		return DataTransferObject.toList(query.getResultList());
 	}
 
 	@Override

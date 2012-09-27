@@ -31,7 +31,7 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 
 	@Override
 	public List<ReadingGroup> all() {
-		return DataTransferObject.convert(port.allReadingGroups());
+		return DataTransferObject.toList(port.allReadingGroups());
 	}
 
 	@Override

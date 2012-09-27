@@ -38,7 +38,7 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	protected List<ENTITY> allOrderedByName() {
 		TypedQuery<RECORD> query = createRecordQuery("ORDER BY lower(" + alias() + ".name)");
-		return DataTransferObject.convert(query.getResultList());
+		return DataTransferObject.toList(query.getResultList());
 	}
 
 	protected RECORD save(RECORD record) {

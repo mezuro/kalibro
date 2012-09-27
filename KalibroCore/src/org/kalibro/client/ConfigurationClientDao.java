@@ -36,7 +36,7 @@ class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> imple
 
 	@Override
 	public List<Configuration> all() {
-		return DataTransferObject.convert(port.allConfigurations());
+		return DataTransferObject.toList(port.allConfigurations());
 	}
 
 	@Override

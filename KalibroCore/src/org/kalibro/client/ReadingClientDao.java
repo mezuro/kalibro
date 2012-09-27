@@ -21,7 +21,7 @@ class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements Readin
 
 	@Override
 	public List<Reading> readingsOf(Long groupId) {
-		return DataTransferObject.convert(port.readingsOf(groupId));
+		return DataTransferObject.toList(port.readingsOf(groupId));
 	}
 
 	@Override

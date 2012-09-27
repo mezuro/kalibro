@@ -68,6 +68,6 @@ public class ReadingGroupXmlRequest extends ReadingGroupDto {
 
 	@Override
 	public List<Reading> readings() {
-		return readings == null ? new ArrayList<Reading>() : convert(readings);
+		return readings == null ? new ArrayList<Reading>() : toList(readings);
 	}
 }
