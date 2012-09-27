@@ -1,7 +1,7 @@
 package org.kalibro.desktop.project;
 
 import java.awt.Component;
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.Configuration;
 import org.kalibro.Project;
@@ -27,7 +27,7 @@ public class ProjectPanel extends EditPanel<Project> {
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
-		List<Configuration> configurations = DaoFactory.getConfigurationDao().all();
+		SortedSet<Configuration> configurations = DaoFactory.getConfigurationDao().all();
 		nameField = new StringField("name", 20);
 		licenseField = new StringField("license", 20);
 		descriptionField = new TextField("description", 3, 20);

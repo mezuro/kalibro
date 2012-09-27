@@ -22,7 +22,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	public void save(ModuleResult moduleResult, ProjectResult projectResult) {
-		recordManager.saveAll(MetricResultRecord.createRecords(moduleResult, projectResult));
+		recordManager().saveAll(MetricResultRecord.createRecords(moduleResult, projectResult));
 	}
 
 	@Override
@@ -50,7 +50,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	private Configuration getConfigurationFor(String projectName) {
-		Long projectId = new ProjectDatabaseDao(recordManager).getByName(projectName).getId();
-		return new ConfigurationDatabaseDao(recordManager).configurationOf(projectId);
+		Long projectId = new ProjectDatabaseDao(recordManager()).getByName(projectName).getId();
+		return new ConfigurationDatabaseDao(recordManager()).configurationOf(projectId);
 	}
 }

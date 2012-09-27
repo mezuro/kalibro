@@ -1,6 +1,6 @@
 package org.kalibro.client;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.Configuration;
 import org.kalibro.dao.ConfigurationDao;
@@ -35,8 +35,8 @@ class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> imple
 	}
 
 	@Override
-	public List<Configuration> all() {
-		return DataTransferObject.toList(port.allConfigurations());
+	public SortedSet<Configuration> all() {
+		return DataTransferObject.toSortedSet(port.allConfigurations());
 	}
 
 	@Override

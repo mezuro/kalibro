@@ -3,6 +3,7 @@ package org.kalibro.core.persistence;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -14,6 +15,8 @@ import org.kalibro.core.persistence.PersonDatabaseDao.PersonRecord;
 import org.kalibro.tests.UnitTest;
 
 public class DatabaseDaoTest extends UnitTest {
+
+	private static final Long ID = Math.abs(new Random().nextLong());
 
 	private Person person;
 	private PersonRecord record;
@@ -37,28 +40,26 @@ public class DatabaseDaoTest extends UnitTest {
 		when(recordManager.createQuery("SELECT 1 FROM Person WHERE id = :id")).thenReturn(query);
 
 		when(query.getResultList()).thenReturn(asList(1));
-		assertTrue(dao.existsWithId(42L));
-		verify(query).setParameter("id", 42L);
+		assertTrue(dao.exists(ID));
+		verify(query).setParameter("id", ID);
 
 		when(query.getResultList()).thenReturn(new ArrayList<Integer>());
-		assertFalse(dao.existsWithId(28L));
-		verify(query).setParameter("id", 28L);
+		assertFalse(dao.exists(-1L));
+		verify(query).setParameter("id", -1L);
 	}
 
 	@Test
 	public void shouldGetById() {
-		when(recordManager.getById(42L, PersonRecord.class)).thenReturn(record);
-		assertSame(person, dao.getById(42L));
+		when(recordManager.getById(ID, PersonRecord.class)).thenReturn(record);
+		assertSame(person, dao.get(ID));
 	}
 
 	@Test
-	public void shouldGetAllOrderedByName() {
+	public void shouldGetAll() {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
-		String queryString = "SELECT person FROM Person person ORDER BY lower(person.name)";
-		when(recordManager.createQuery(queryString, PersonRecord.class)).thenReturn(query);
+		when(recordManager.createQuery("SELECT person FROM Person person ", PersonRecord.class)).thenReturn(query);
 		when(query.getResultList()).thenReturn(asList(record));
-
-		assertDeepEquals(asList(person), dao.allOrderedByName());
+		assertDeepEquals(asSet(person), dao.all());
 	}
 
 	@Test
@@ -70,10 +71,9 @@ public class DatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldDeleteById() {
 		Query query = mock(Query.class);
-		String queryString = "DELETE FROM Person WHERE id = :id";
-		when(recordManager.createQuery(queryString)).thenReturn(query);
+		when(recordManager.createQuery("DELETE FROM Person WHERE id = :id")).thenReturn(query);
 
-		dao.deleteById(42L);
+		dao.delete(ID);
 		verify(recordManager).executeUpdate(query);
 	}
 }

@@ -10,7 +10,7 @@ import org.kalibro.dao.DaoFactory;
 @SortingFields("name")
 public class Configuration extends AbstractEntity<Configuration> {
 
-	public static List<Configuration> all() {
+	public static SortedSet<Configuration> all() {
 		return dao().all();
 	}
 

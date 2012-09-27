@@ -27,7 +27,7 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 			configuration.replaceMetricConfiguration(metricName, metricConfiguration);
 		else
 			configuration.addMetricConfiguration(metricConfiguration);
-		recordManager.evictFromCache(RangeRecord.class);
+		recordManager().evictFromCache(RangeRecord.class);
 		configurationDao.save(configuration);
 	}
 

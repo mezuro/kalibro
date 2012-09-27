@@ -1,6 +1,6 @@
 package org.kalibro.dao;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.Configuration;
 
@@ -17,7 +17,7 @@ public interface ConfigurationDao {
 
 	Configuration configurationOf(Long projectId);
 
-	List<Configuration> all();
+	SortedSet<Configuration> all();
 
 	Long save(Configuration configuration);
 

@@ -8,7 +8,7 @@ import org.kalibro.dto.DataTransferObject;
 
 class PersonDatabaseDao extends DatabaseDao<Person, PersonRecord> {
 
-	public PersonDatabaseDao(RecordManager recordManager) {
+	PersonDatabaseDao(RecordManager recordManager) {
 		super(recordManager, PersonRecord.class);
 	}
 

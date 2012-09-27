@@ -45,7 +45,7 @@ public class ConfigurationClientDaoTest extends ClientTest<// @formatter:off
 	@Test
 	public void shouldGetAll() {
 		when(port.allConfigurations()).thenReturn(asList(response));
-		assertDeepEquals(asList(entity), client.all());
+		assertDeepEquals(asSet(entity), client.all());
 	}
 
 	@Test

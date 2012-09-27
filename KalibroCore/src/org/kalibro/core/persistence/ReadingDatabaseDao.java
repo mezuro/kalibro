@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import javax.persistence.TypedQuery;
 
@@ -21,20 +21,15 @@ class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements 
 	}
 
 	@Override
-	public List<Reading> readingsOf(Long groupId) {
-		TypedQuery<ReadingRecord> query = createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
+	public SortedSet<Reading> readingsOf(Long groupId) {
+		TypedQuery<ReadingRecord> query = createRecordQuery("WHERE reading.group.id = :groupId");
 		query.setParameter("groupId", groupId);
-		return DataTransferObject.toList(query.getResultList());
+		return DataTransferObject.toSortedSet(query.getResultList());
 	}
 
 	@Override
 	public Long save(Reading reading) {
 		ReadingRecord record = new ReadingRecord(reading, reading.getGroupId());
 		return save(record).id();
-	}
-
-	@Override
-	public void delete(Long readingId) {
-		deleteById(readingId);
 	}
 }

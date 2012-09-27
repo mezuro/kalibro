@@ -1,6 +1,6 @@
 package org.kalibro.client;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingGroupDao;
@@ -30,8 +30,8 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 	}
 
 	@Override
-	public List<ReadingGroup> all() {
-		return DataTransferObject.toList(port.allReadingGroups());
+	public SortedSet<ReadingGroup> all() {
+		return DataTransferObject.toSortedSet(port.allReadingGroups());
 	}
 
 	@Override

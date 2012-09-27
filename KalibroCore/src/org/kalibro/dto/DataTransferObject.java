@@ -40,7 +40,8 @@ public abstract class DataTransferObject<ENTITY> {
 
 	private static <ENTITY, DTO extends DataTransferObject<ENTITY>> DTO createDto(ENTITY entity, Class<DTO> dtoClass) {
 		try {
-			return dtoClass.getDeclaredConstructor(entity.getClass()).newInstance(entity);
+			Class<?> entityClass = dtoClass.getMethod("convert").getReturnType();
+			return dtoClass.getDeclaredConstructor(entityClass).newInstance(entity);
 		} catch (Exception exception) {
 			throw new KalibroError("Could not create DTO.", exception);
 		}

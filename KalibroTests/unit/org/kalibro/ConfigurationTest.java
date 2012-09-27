@@ -5,9 +5,9 @@ import static org.kalibro.ConfigurationFixtures.newConfiguration;
 import static org.kalibro.MetricConfigurationFixtures.*;
 import static org.kalibro.MetricFixtures.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -47,9 +47,9 @@ public class ConfigurationTest extends UnitTest {
 
 	@Test
 	public void shouldGetAll() {
-		List<Configuration> configurationList = mock(List.class);
-		when(dao.all()).thenReturn(configurationList);
-		assertSame(configurationList, Configuration.all());
+		SortedSet<Configuration> configurations = mock(SortedSet.class);
+		when(dao.all()).thenReturn(configurations);
+		assertSame(configurations, Configuration.all());
 	}
 
 	@Test

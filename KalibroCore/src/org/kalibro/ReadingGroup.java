@@ -1,8 +1,9 @@
 package org.kalibro;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
@@ -24,7 +25,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		return importFrom(file, ReadingGroup.class);
 	}
 
-	public static List<ReadingGroup> all() {
+	public static SortedSet<ReadingGroup> all() {
 		return dao().all();
 	}
 
@@ -39,7 +40,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	private String name;
 
 	private String description;
-	private List<Reading> readings;
+	private Set<Reading> readings;
 
 	public ReadingGroup() {
 		this("");
@@ -49,7 +50,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		setId(null);
 		setName(name);
 		setDescription("");
-		setReadings(new ArrayList<Reading>());
+		setReadings(new TreeSet<Reading>());
 	}
 
 	public Long getId() {
@@ -80,13 +81,13 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		this.description = description;
 	}
 
-	public List<Reading> getReadings() {
+	public SortedSet<Reading> getReadings() {
 		for (Reading reading : readings)
 			reading.setGroup(this);
-		return new ArrayList<Reading>(readings);
+		return new TreeSet<Reading>(readings);
 	}
 
-	public void setReadings(List<Reading> readings) {
+	public void setReadings(SortedSet<Reading> readings) {
 		this.readings = readings;
 	}
 

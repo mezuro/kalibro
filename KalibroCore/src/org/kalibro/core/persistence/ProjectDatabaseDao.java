@@ -58,12 +58,12 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 	public void removeProject(String projectName) {
 		Project project = getByName(projectName);
 		ProjectRecord record = createRecord(project);
-		recordManager.beginTransaction();
+		recordManager().beginTransaction();
 		delete("MetricResult", "module.projectResult.project.name", projectName);
 		delete("Module", "projectResult.project.name", projectName);
 		delete("ProjectResult", "project.name", projectName);
-		recordManager.remove(record);
-		recordManager.commitTransaction();
+		recordManager().remove(record);
+		recordManager().commitTransaction();
 		FileUtils.deleteQuietly(project.getDirectory());
 	}
 

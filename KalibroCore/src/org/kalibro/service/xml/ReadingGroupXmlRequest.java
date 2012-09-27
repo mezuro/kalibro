@@ -1,8 +1,8 @@
 package org.kalibro.service.xml;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -42,13 +42,7 @@ public class ReadingGroupXmlRequest extends ReadingGroupDto {
 		id = group.getId();
 		name = group.getName();
 		description = group.getDescription();
-		setReadings(group.getReadings());
-	}
-
-	private void setReadings(List<Reading> readings) {
-		this.readings = new ArrayList<ReadingXml>();
-		for (Reading reading : readings)
-			this.readings.add(new ReadingXml(reading));
+		readings = createDtos(group.getReadings(), ReadingXml.class);
 	}
 
 	@Override
@@ -67,7 +61,7 @@ public class ReadingGroupXmlRequest extends ReadingGroupDto {
 	}
 
 	@Override
-	public List<Reading> readings() {
-		return readings == null ? new ArrayList<Reading>() : toList(readings);
+	public SortedSet<Reading> readings() {
+		return readings == null ? new TreeSet<Reading>() : toSortedSet(readings);
 	}
 }

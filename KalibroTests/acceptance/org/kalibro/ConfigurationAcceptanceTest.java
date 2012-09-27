@@ -46,7 +46,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		assertSaved();
 
 		configuration.setDescription("Another test description");
-		assertFalse(Configuration.all().get(0).deepEquals(configuration));
+		assertFalse(Configuration.all().first().deepEquals(configuration));
 
 		configuration.save();
 		assertSaved();
@@ -56,7 +56,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(asList(configuration), Configuration.all());
+		assertDeepEquals(asSet(configuration), Configuration.all());
 	}
 
 	private void assertNotSaved() {

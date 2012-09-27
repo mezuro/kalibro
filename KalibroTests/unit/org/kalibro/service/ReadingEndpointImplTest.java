@@ -23,7 +23,7 @@ public class ReadingEndpointImplTest extends
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(ID)).thenReturn(asList(entity));
+		when(dao.readingsOf(ID)).thenReturn(asSortedSet(entity));
 		assertDeepEquals(asList(response), implementor.readingsOf(ID));
 	}
 

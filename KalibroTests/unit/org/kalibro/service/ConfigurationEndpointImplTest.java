@@ -43,7 +43,7 @@ public class ConfigurationEndpointImplTest extends EndpointImplementorTest
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asList(entity));
+		when(dao.all()).thenReturn(asSortedSet(entity));
 		assertDeepEquals(asList(response), implementor.allConfigurations());
 	}
 

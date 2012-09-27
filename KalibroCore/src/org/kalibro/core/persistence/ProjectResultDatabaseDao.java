@@ -21,14 +21,14 @@ class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultR
 
 	@Override
 	public boolean hasResultsFor(String projectName) {
-		TypedQuery<Long> query = recordManager.createQuery(getCountQuery(), Long.class);
+		TypedQuery<Long> query = recordManager().createQuery(getCountQuery(), Long.class);
 		query.setParameter("projectName", projectName);
 		return query.getSingleResult() > 0;
 	}
 
 	@Override
 	public boolean hasResultsBefore(Date date, String projectName) {
-		TypedQuery<Long> query = recordManager.createQuery(getCountQuery("result.date < :date"), Long.class);
+		TypedQuery<Long> query = recordManager().createQuery(getCountQuery("result.date < :date"), Long.class);
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
 		return query.getSingleResult() > 0;
@@ -36,7 +36,7 @@ class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultR
 
 	@Override
 	public boolean hasResultsAfter(Date date, String projectName) {
-		TypedQuery<Long> query = recordManager.createQuery(getCountQuery("result.date > :date"), Long.class);
+		TypedQuery<Long> query = recordManager().createQuery(getCountQuery("result.date > :date"), Long.class);
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
 		return query.getSingleResult() > 0;

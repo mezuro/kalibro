@@ -42,7 +42,7 @@ public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, Reading
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asList(entity));
+		when(dao.all()).thenReturn(asSortedSet(entity));
 		assertDeepDtoList(port.allReadingGroups(), entity);
 	}
 

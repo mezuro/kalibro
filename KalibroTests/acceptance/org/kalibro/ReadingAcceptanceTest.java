@@ -24,7 +24,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 	public void setUp() {
 		group = loadFixture("scholar", ReadingGroup.class);
 		group.save();
-		reading = group.getReadings().get(0);
+		reading = group.getReadings().first();
 	}
 
 	@After
@@ -44,15 +44,15 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 		reading.delete();
 		assertFalse(group.getReadings().contains(reading));
-		assertFalse(ReadingGroup.all().get(0).getReadings().contains(reading));
+		assertFalse(ReadingGroup.all().first().getReadings().contains(reading));
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(reading, ReadingGroup.all().get(0).getReadings().get(0));
+		assertDeepEquals(reading, ReadingGroup.all().first().getReadings().first());
 	}
 
 	private void assertDifferentFromSaved() {
-		Reading saved = ReadingGroup.all().get(0).getReadings().get(0);
+		Reading saved = ReadingGroup.all().first().getReadings().first();
 		assertFalse(reading.deepEquals(saved));
 	}
 

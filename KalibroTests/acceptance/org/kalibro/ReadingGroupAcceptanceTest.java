@@ -48,7 +48,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		assertSaved();
 
 		group.addReading(newReading());
-		assertFalse(ReadingGroup.all().get(0).deepEquals(group));
+		assertFalse(ReadingGroup.all().first().deepEquals(group));
 
 		group.save();
 		assertSaved();
@@ -62,7 +62,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(asList(group), ReadingGroup.all());
+		assertDeepEquals(asSet(group), ReadingGroup.all());
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void readingsInSameGroupShouldNotHaveDuplicateLabelsOrGrade() {
-		Reading reading, existent = group.getReadings().get(0);
+		Reading reading, existent = group.getReadings().first();
 		String label = existent.getLabel();
 		Double grade = existent.getGrade();
 

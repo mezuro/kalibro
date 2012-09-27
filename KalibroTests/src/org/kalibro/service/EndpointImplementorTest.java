@@ -12,7 +12,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoFactory.class)
+@PrepareForTest({DaoFactory.class, DataTransferObject.class})
 public abstract class EndpointImplementorTest<// @formatter:off
 	ENTITY,
 	REQUEST extends DataTransferObject<ENTITY>,
@@ -39,8 +39,10 @@ public abstract class EndpointImplementorTest<// @formatter:off
 		entity = mock(entityClass());
 		request = mock(requestClass());
 		response = mock(responseClass());
+		mockStatic(DataTransferObject.class);
 		when(request.convert()).thenReturn(entity);
 		whenNew(responseClass()).withArguments(entity).thenReturn(response);
+		when(DataTransferObject.createDtos(asSortedSet(entity), responseClass())).thenReturn(asList(response));
 	}
 
 	private void mockDao() throws Exception {

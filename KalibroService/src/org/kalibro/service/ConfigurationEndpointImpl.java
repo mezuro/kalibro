@@ -1,15 +1,14 @@
 package org.kalibro.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.Configuration;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.xml.ConfigurationXmlRequest;
 import org.kalibro.service.xml.ConfigurationXmlResponse;
 
@@ -52,10 +51,7 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 	@Override
 	@WebResult(name = "configuration")
 	public List<ConfigurationXmlResponse> allConfigurations() {
-		List<ConfigurationXmlResponse> configurations = new ArrayList<ConfigurationXmlResponse>();
-		for (Configuration configuration : dao.all())
-			configurations.add(new ConfigurationXmlResponse(configuration));
-		return configurations;
+		return DataTransferObject.createDtos(dao.all(), ConfigurationXmlResponse.class);
 	}
 
 	@Override

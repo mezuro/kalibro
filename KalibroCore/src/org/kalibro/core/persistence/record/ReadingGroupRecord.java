@@ -1,6 +1,7 @@
 package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.*;
@@ -47,7 +48,7 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 		setReadings(readingGroup.getReadings());
 	}
 
-	private void setReadings(List<Reading> readings) {
+	private void setReadings(Collection<Reading> readings) {
 		this.readings = new ArrayList<ReadingRecord>();
 		for (Reading reading : readings)
 			this.readings.add(new ReadingRecord(reading, this));

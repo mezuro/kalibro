@@ -49,7 +49,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asList(entity));
+		when(dao.all()).thenReturn(asSortedSet(entity));
 		assertDeepDtoList(port.allConfigurations(), entity);
 	}
 

@@ -1,6 +1,6 @@
 package org.kalibro.dto;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
@@ -29,7 +29,7 @@ public abstract class ReadingGroupDto extends DataTransferObject<ReadingGroup> {
 
 	public abstract String description();
 
-	public List<Reading> readings() {
-		return (List<Reading>) DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", id());
+	public SortedSet<Reading> readings() {
+		return (SortedSet<Reading>) DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", id());
 	}
 }

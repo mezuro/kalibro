@@ -2,7 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
 import java.util.Random;
 
 import javax.persistence.TypedQuery;
@@ -31,24 +30,10 @@ public class ConfigurationDatabaseDaoTest extends UnitTest {
 	public void setUp() throws Exception {
 		configuration = mock(Configuration.class);
 		record = mock(ConfigurationRecord.class);
-		when(record.convert()).thenReturn(configuration);
 		whenNew(ConfigurationRecord.class).withArguments(configuration).thenReturn(record);
+		when(record.convert()).thenReturn(configuration);
+		when(record.id()).thenReturn(ID);
 		dao = spy(new ConfigurationDatabaseDao(null));
-	}
-
-	@Test
-	public void shouldConfirmExistence() {
-		doReturn(true).when(dao).existsWithId(ID);
-		assertTrue(dao.exists(ID));
-
-		doReturn(false).when(dao).existsWithId(ID);
-		assertFalse(dao.exists(ID));
-	}
-
-	@Test
-	public void shouldGetById() {
-		doReturn(configuration).when(dao).getById(ID);
-		assertSame(configuration, dao.get(ID));
 	}
 
 	@Test
@@ -62,25 +47,9 @@ public class ConfigurationDatabaseDaoTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetAll() {
-		List<Configuration> all = mock(List.class);
-		doReturn(all).when(dao).allOrderedByName();
-		assertSame(all, dao.all());
-	}
-
-	@Test
 	public void shouldSave() {
 		doReturn(record).when(dao).save(record);
-		when(record.id()).thenReturn(ID);
-
 		assertEquals(ID, dao.save(configuration));
 		verify(dao).save(record);
-	}
-
-	@Test
-	public void shouldDelete() {
-		doNothing().when(dao).deleteById(ID);
-		dao.delete(ID);
-		verify(dao).deleteById(ID);
 	}
 }

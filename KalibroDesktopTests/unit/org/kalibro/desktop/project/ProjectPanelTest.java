@@ -52,7 +52,7 @@ public class ProjectPanelTest extends UnitTest {
 		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 		when(projectDao.getSupportedRepositoryTypes()).thenReturn(types);
-		when(configurationDao.all()).thenReturn(asList(new Configuration()));
+		when(configurationDao.all()).thenReturn(asSortedSet(new Configuration()));
 	}
 
 	@Test
