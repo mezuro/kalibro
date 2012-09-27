@@ -227,13 +227,13 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRemoveMetricConfigurationIdsOnDelete() {
+	public void shouldNotifyMetricConfigurationsOfDeletion() {
 		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
 		configuration.setMetricConfigurations(asSortedSet(metricConfiguration));
 		configuration.setId(42L);
 
 		configuration.delete();
-		verify(metricConfiguration).setId(null);
+		verify(metricConfiguration).deleted();
 	}
 
 	@Test

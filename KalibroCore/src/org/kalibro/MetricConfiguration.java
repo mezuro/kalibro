@@ -115,7 +115,7 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 
 	}
 
-	public void setId(Long id) {
+	void deleted() {
 		// TODO Auto-generated method stub
 
 	}

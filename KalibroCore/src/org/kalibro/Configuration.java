@@ -156,8 +156,12 @@ public class Configuration extends AbstractEntity<Configuration> {
 	public void delete() {
 		if (hasId())
 			dao().delete(id);
+		deleted();
+	}
+
+	private void deleted() {
 		for (MetricConfiguration metricConfiguration : metricConfigurations)
-			metricConfiguration.setId(null);
+			metricConfiguration.deleted();
 		id = null;
 	}
 
