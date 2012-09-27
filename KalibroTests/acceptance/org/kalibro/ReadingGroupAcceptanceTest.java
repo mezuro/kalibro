@@ -70,10 +70,10 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		group.setName(" ");
 		assertThat(save()).throwsException().withMessage("Reading group requires name.");
 
-		group.setName("Scholar");
+		group.setName("Unique");
 		group.save();
 
-		group = new ReadingGroup("Scholar");
+		group = new ReadingGroup("Unique");
 		assertThat(save()).doThrow(RollbackException.class);
 	}
 

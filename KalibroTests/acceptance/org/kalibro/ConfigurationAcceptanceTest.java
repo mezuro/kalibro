@@ -27,7 +27,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		configuration = loadFixture("default", Configuration.class);
+		configuration = loadFixture("analizo", Configuration.class);
 		file = new File(Environment.dotKalibro(), "Configuration-exported.yml");
 		file.deleteOnExit();
 	}
@@ -55,12 +55,12 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		assertNotSaved();
 	}
 
-	private void assertSaved() {
-		assertDeepEquals(asSet(configuration), Configuration.all());
-	}
-
 	private void assertNotSaved() {
 		assertTrue(Configuration.all().isEmpty());
+	}
+
+	private void assertSaved() {
+		assertDeepEquals(asSet(configuration), Configuration.all());
 	}
 
 	@Test
@@ -68,11 +68,10 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		configuration.setName(" ");
 		assertThat(save()).throwsException().withMessage("Configuration requires name.");
 
-		configuration.setName("Sample Configuration");
+		configuration.setName("Unique");
 		configuration.save();
 
-		configuration = new Configuration();
-		configuration.setName("Sample Configuration");
+		configuration = new Configuration("Unique");
 		assertThat(save()).doThrow(RollbackException.class);
 	}
 
