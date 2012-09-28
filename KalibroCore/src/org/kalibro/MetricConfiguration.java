@@ -121,4 +121,14 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	void deleted() {
 		// TODO Auto-generated method stub
 	}
+
+	public void save() {
+		// TODO Auto-generated method stub
+
+	}
+
+	public void delete() {
+		// TODO Auto-generated method stub
+
+	}
 }
