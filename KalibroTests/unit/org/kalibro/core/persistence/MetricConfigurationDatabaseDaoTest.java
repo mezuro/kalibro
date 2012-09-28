@@ -1,17 +1,16 @@
 package org.kalibro.core.persistence;
 
-import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
+import static org.junit.Assert.assertEquals;
+
+import java.util.Random;
 
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
-import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.persistence.record.ConfigurationRecord;
+import org.kalibro.core.persistence.record.MetricConfigurationRecord;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -20,47 +19,40 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(MetricConfigurationDatabaseDao.class)
 public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 
-	private Configuration configuration;
-	private MetricConfiguration cboConfiguration, locConfiguration;
+	private static final Long METRIC_CONFIGURATION_ID = new Random().nextLong();
+	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
-	private RecordManager recordManager;
-	private ConfigurationDatabaseDao configurationDao;
+	private MetricConfiguration metricConfiguration;
+	private MetricConfigurationRecord record;
 
 	private MetricConfigurationDatabaseDao dao;
 
 	@Before
 	public void setUp() throws Exception {
-		configuration = newConfiguration("cbo");
-		cboConfiguration = metricConfiguration("cbo");
-		locConfiguration = metricConfiguration("loc");
-		recordManager = mock(RecordManager.class);
-		configurationDao = mock(ConfigurationDatabaseDao.class);
-
-		ConfigurationRecord record = mock(ConfigurationRecord.class);
-		TypedQuery<ConfigurationRecord> query = mock(TypedQuery.class);
-		when(configurationDao.createRecordQuery("WHERE configuration.name = :name")).thenReturn(query);
-		when(query.getSingleResult()).thenReturn(record);
-		when(record.convert()).thenReturn(configuration);
-		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configurationDao);
-		dao = spy(new MetricConfigurationDatabaseDao(recordManager));
+		metricConfiguration = mock(MetricConfiguration.class);
+		record = mock(MetricConfigurationRecord.class);
+		when(metricConfiguration.getConfigurationId()).thenReturn(CONFIGURATION_ID);
+		whenNew(MetricConfigurationRecord.class).withArguments(metricConfiguration, CONFIGURATION_ID)
+			.thenReturn(record);
+		when(record.convert()).thenReturn(metricConfiguration);
+		when(record.id()).thenReturn(METRIC_CONFIGURATION_ID);
+		dao = spy(new MetricConfigurationDatabaseDao(null));
 	}
 
 	@Test
-	public void shouldGetMetricConfiguration() {
-		String configurationName = configuration.getName();
-		String metricName = cboConfiguration.getMetric().getName();
-		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
+	public void shouldGetMetricConfigurationsOfConfiguration() {
+		TypedQuery<MetricConfigurationRecord> query = mock(TypedQuery.class);
+		doReturn(query).when(dao).createRecordQuery("WHERE metricConfiguration.configuration.id = :configurationId");
+		when(query.getResultList()).thenReturn(asList(record));
+
+		assertDeepEquals(asSet(metricConfiguration), dao.metricConfigurationsOf(CONFIGURATION_ID));
+		verify(query).setParameter("configurationId", CONFIGURATION_ID);
 	}
 
 	@Test
-	public void shouldThrowExceptionForMetricConfigurationNotFound() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				String metricName = locConfiguration.getMetric().getName();
-				dao.getMetricConfiguration(configuration.getName(), metricName);
-			}
-		}).throwsException().withMessage("No configuration found for metric: Lines of Code");
+	public void shouldSave() {
+		doReturn(record).when(dao).save(record);
+		assertEquals(METRIC_CONFIGURATION_ID, dao.save(metricConfiguration));
+		verify(dao).save(record);
 	}
 }

@@ -4,7 +4,7 @@ import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import org.kalibro.MetricConfiguration;
 
-public class MetricConfigurationXmlTest extends XmlTest<MetricConfiguration> {
+public class MetricConfigurationXmlResponseTest extends XmlTest<MetricConfiguration> {
 
 	@Override
 	protected MetricConfiguration loadFixture() {

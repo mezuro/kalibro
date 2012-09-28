@@ -30,11 +30,11 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "metricConfiguration")
-	public MetricConfigurationXml echoMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXml metricConfiguration) {
+	public MetricConfigurationXmlRequest echoMetricConfiguration(
+		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration) {
 		MetricConfiguration entity = metricConfiguration.convert();
 		entity.setCode("echo_" + entity.getCode());
-		return new MetricConfigurationXml(entity);
+		return new MetricConfigurationXmlRequest(entity);
 	}
 
 	@WebMethod

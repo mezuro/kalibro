@@ -131,4 +131,14 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		// TODO Auto-generated method stub
 
 	}
+
+	public void setId(Long id) {
+		// TODO Auto-generated method stub
+
+	}
+
+	public Long getConfigurationId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -13,7 +13,7 @@ import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "metricConfiguration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricConfigurationXml extends DataTransferObject<MetricConfiguration> {
+public class MetricConfigurationXmlResponse extends DataTransferObject<MetricConfiguration> {
 
 	@XmlElement(required = true)
 	private MetricXml<?> metric;
@@ -27,11 +27,11 @@ public class MetricConfigurationXml extends DataTransferObject<MetricConfigurati
 	@XmlElement(name = "range")
 	private Collection<RangeXml> ranges;
 
-	public MetricConfigurationXml() {
+	public MetricConfigurationXmlResponse() {
 		super();
 	}
 
-	public MetricConfigurationXml(MetricConfiguration metricConfiguration) {
+	public MetricConfigurationXmlResponse(MetricConfiguration metricConfiguration) {
 		initializeMetric(metricConfiguration);
 		code = metricConfiguration.getCode();
 		weight = metricConfiguration.getWeight();

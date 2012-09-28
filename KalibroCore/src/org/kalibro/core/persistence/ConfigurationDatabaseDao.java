@@ -26,7 +26,6 @@ class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationR
 
 	@Override
 	public Long save(Configuration configuration) {
-		ConfigurationRecord record = new ConfigurationRecord(configuration);
-		return save(record).id();
+		return save(new ConfigurationRecord(configuration)).id();
 	}
 }

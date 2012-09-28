@@ -4,9 +4,15 @@ import java.util.SortedSet;
 
 import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.MetricConfigurationDao;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.MetricConfigurationEndpoint;
-import org.kalibro.service.xml.MetricConfigurationXml;
+import org.kalibro.service.xml.MetricConfigurationXmlRequest;
 
+/**
+ * {@link MetricConfigurationEndpoint} client implementation of {@link MetricConfigurationDao}.
+ * 
+ * @author Carlos Morais
+ */
 class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEndpoint> implements
 	MetricConfigurationDao {
 
@@ -15,23 +21,17 @@ class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEnd
 	}
 
 	@Override
-	public void save(MetricConfiguration metricConfiguration, String configurationName) {
-		port.saveMetricConfiguration(new MetricConfigurationXml(metricConfiguration), configurationName);
-	}
-
-	@Override
-	public MetricConfiguration getMetricConfiguration(String configurationName, String metricName) {
-		return port.getMetricConfiguration(configurationName, metricName).convert();
-	}
-
-	@Override
-	public void removeMetricConfiguration(String configurationName, String metricName) {
-		port.removeMetricConfiguration(configurationName, metricName);
-	}
-
-	@Override
 	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
-		// TODO Auto-generated method stub
-		return null;
+		return DataTransferObject.toSortedSet(port.metricConfigurationsOf(configurationId));
+	}
+
+	@Override
+	public Long save(MetricConfiguration metricConfiguration) {
+		return port.saveMetricConfiguration(new MetricConfigurationXmlRequest(metricConfiguration));
+	}
+
+	@Override
+	public void delete(Long metricConfigurationId) {
+		port.deleteMetricConfiguration(metricConfigurationId);
 	}
 }

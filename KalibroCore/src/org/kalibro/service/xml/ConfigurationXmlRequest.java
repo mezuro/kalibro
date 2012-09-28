@@ -32,7 +32,7 @@ public class ConfigurationXmlRequest extends ConfigurationDto {
 	private String description;
 
 	@XmlElement(name = "metricConfiguration")
-	private Collection<MetricConfigurationXml> metricConfigurations;
+	private Collection<MetricConfigurationXmlRequest> metricConfigurations;
 
 	public ConfigurationXmlRequest() {
 		super();
@@ -42,7 +42,7 @@ public class ConfigurationXmlRequest extends ConfigurationDto {
 		id = configuration.getId();
 		name = configuration.getName();
 		description = configuration.getDescription();
-		metricConfigurations = createDtos(configuration.getMetricConfigurations(), MetricConfigurationXml.class);
+		metricConfigurations = createDtos(configuration.getMetricConfigurations(), MetricConfigurationXmlRequest.class);
 	}
 
 	@Override

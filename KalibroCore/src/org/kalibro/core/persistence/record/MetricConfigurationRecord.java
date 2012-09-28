@@ -52,7 +52,7 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 	}
 
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
-		this(metricConfiguration, null);
+		this(metricConfiguration, (Long) null);
 	}
 
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, ConfigurationRecord configuration) {
@@ -62,6 +62,10 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 		weight = Double.doubleToLongBits(metricConfiguration.getWeight());
 		aggregationForm = metricConfiguration.getAggregationForm().name();
 		initializeRanges(metricConfiguration);
+	}
+
+	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, Long configurationId) {
+		// TODO Auto-generated constructor stub
 	}
 
 	private void initializeMetric(MetricConfiguration metricConfiguration) {
@@ -96,5 +100,10 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 	private void convertRanges(MetricConfiguration metricConfiguration) {
 		for (RangeRecord range : ranges)
 			metricConfiguration.addRange(range.convert());
+	}
+
+	public Long id() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
