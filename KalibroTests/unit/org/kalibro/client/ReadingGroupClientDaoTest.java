@@ -37,6 +37,12 @@ public class ReadingGroupClientDaoTest extends ClientTest<// @formatter:off
 	}
 
 	@Test
+	public void shouldGetReadingGroupOfMetricConfiguration() {
+		when(port.readingGroupOf(ID)).thenReturn(response);
+		assertSame(entity, client.readingGroupOf(ID));
+	}
+
+	@Test
 	public void shouldGetAll() {
 		when(port.allReadingGroups()).thenReturn(asList(response));
 		assertDeepEquals(asSet(entity), client.all());

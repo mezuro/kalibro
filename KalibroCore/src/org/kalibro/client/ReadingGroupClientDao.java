@@ -30,6 +30,11 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 	}
 
 	@Override
+	public ReadingGroup readingGroupOf(Long metricConfigurationId) {
+		return port.readingGroupOf(metricConfigurationId).convert();
+	}
+
+	@Override
 	public SortedSet<ReadingGroup> all() {
 		return DataTransferObject.toSortedSet(port.allReadingGroups());
 	}

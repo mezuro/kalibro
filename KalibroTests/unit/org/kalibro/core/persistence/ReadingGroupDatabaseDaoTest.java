@@ -1,8 +1,10 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
+
+import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -29,7 +31,18 @@ public class ReadingGroupDatabaseDaoTest extends UnitTest {
 		record = mock(ReadingGroupRecord.class);
 		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
 		when(record.id()).thenReturn(ID);
+		when(record.convert()).thenReturn(group);
 		dao = spy(new ReadingGroupDatabaseDao(null));
+	}
+
+	@Test
+	public void shouldGetReadingGroupOfMetricConfiguration() {
+		TypedQuery<ReadingGroupRecord> query = mock(TypedQuery.class);
+		doReturn(query).when(dao).createRecordQuery("JOIN MetricConfiguration mConf WHERE mConf.id = :id");
+		when(query.getSingleResult()).thenReturn(record);
+
+		assertSame(group, dao.readingGroupOf(ID));
+		verify(query).setParameter("id", ID);
 	}
 
 	@Test

@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence;
 
+import javax.persistence.TypedQuery;
+
 import org.kalibro.ReadingGroup;
 import org.kalibro.core.persistence.record.ReadingGroupRecord;
 import org.kalibro.dao.ReadingGroupDao;
@@ -13,6 +15,13 @@ class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGroupReco
 
 	ReadingGroupDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ReadingGroupRecord.class);
+	}
+
+	@Override
+	public ReadingGroup readingGroupOf(Long metricConfigurationId) {
+		TypedQuery<ReadingGroupRecord> query = createRecordQuery("JOIN MetricConfiguration mConf WHERE mConf.id = :id");
+		query.setParameter("id", metricConfigurationId);
+		return query.getSingleResult().convert();
 	}
 
 	@Override
