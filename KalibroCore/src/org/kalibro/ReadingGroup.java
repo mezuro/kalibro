@@ -37,9 +37,13 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	private Long id;
 
 	@IdentityField
+	@Print(order = 1)
 	private String name;
 
+	@Print(order = 2)
 	private String description;
+
+	@Print(order = 3)
 	private Set<Reading> readings;
 
 	public ReadingGroup() {

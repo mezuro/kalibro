@@ -85,7 +85,7 @@ public class ProjectRecord extends DataTransferObject<Project> {
 		project.setLicense(license);
 		project.setDescription(description);
 		project.setRepository(repository.convert());
-		project.setConfigurationName(configuration.getName());
+		project.setConfigurationName(configuration.name());
 		project.setState(ProjectState.valueOf(state));
 		project.setError(error);
 		return project;

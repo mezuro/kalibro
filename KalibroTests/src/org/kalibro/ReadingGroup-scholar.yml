@@ -1,6 +1,6 @@
 ---
-description: "This group imitates school grades and attributes generic labels from 'Terrible' (grade 0) to 'Excellent' (grade 10).\nThe colors vary in wave length with the grades, ranging from red to green (between them are tones of orange and yellow)."
 name: "Scholar"
+description: "This group imitates school grades and attributes generic labels from 'Terrible' (grade 0) to 'Excellent' (grade 10).\nThe colors vary in wave length with the grades, ranging from red to green (between them are tones of orange and yellow)."
 readings:
   -
     color: 0xff0000
