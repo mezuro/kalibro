@@ -10,21 +10,15 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.experimental.theories.Theory;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
-@RunWith(Parameterized.class)
 public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	private File file;
 	private Configuration configuration;
-
-	public ConfigurationAcceptanceTest(SupportedDatabase databaseType) {
-		super(databaseType);
-	}
 
 	@Before
 	public void setUp() {
@@ -39,8 +33,9 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 			each.delete();
 	}
 
-	@Test
-	public void testCrud() {
+	@Theory
+	public void testCrud(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
 		assertNotSaved();
 
 		configuration.save();
@@ -64,8 +59,9 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		assertDeepEquals(asSet(configuration), Configuration.all());
 	}
 
-	@Test
-	public void nameShouldBeRequiredAndUnique() {
+	@Theory
+	public void nameShouldBeRequiredAndUnique(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
 		configuration.setName(" ");
 		assertThat(save()).throwsException().withMessage("Configuration requires name.");
 

@@ -8,22 +8,14 @@ import org.analizo.AnalizoMetricCollector;
 import org.checkstyle.CheckstyleMetricCollector;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.kalibro.SupportedDatabase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.tests.AcceptanceTest;
 
-@RunWith(Parameterized.class)
 public class BaseToolDatabaseTest extends AcceptanceTest {
 
 	private BaseToolDao dao;
-
-	public BaseToolDatabaseTest(SupportedDatabase databaseType) {
-		super(databaseType);
-	}
 
 	@Before
 	public void setUp() {

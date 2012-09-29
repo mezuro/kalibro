@@ -11,21 +11,15 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.experimental.theories.Theory;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
-@RunWith(Parameterized.class)
 public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	private File file;
 	private ReadingGroup group;
-
-	public ReadingGroupAcceptanceTest(SupportedDatabase databaseType) {
-		super(databaseType);
-	}
 
 	@Before
 	public void setUp() {
@@ -40,8 +34,9 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 			each.delete();
 	}
 
-	@Test
-	public void testCrud() {
+	@Theory
+	public void testCrud(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
 		assertNotSaved();
 
 		group.save();
@@ -65,8 +60,9 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		assertDeepEquals(asSet(group), ReadingGroup.all());
 	}
 
-	@Test
-	public void nameShouldBeRequiredAndUnique() {
+	@Theory
+	public void nameShouldBeRequiredAndUnique(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
 		group.setName(" ");
 		assertThat(save()).throwsException().withMessage("Reading group requires name.");
 

@@ -5,17 +5,20 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.*;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "MetricConfiguration")
 @Table(name = "\"METRIC_CONFIGURATION\"")
-@PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName")})
 public class MetricConfigurationRecord extends DataTransferObject<MetricConfiguration> {
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "id")
+	@Id
+	@GeneratedValue
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ConfigurationRecord configuration;
 
@@ -51,21 +54,18 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 		super();
 	}
 
-	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
-		this(metricConfiguration, (Long) null);
+	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, Long configurationId) {
+		this(metricConfiguration, new ConfigurationRecord(configurationId));
 	}
 
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, ConfigurationRecord configuration) {
 		this.configuration = configuration;
 		initializeMetric(metricConfiguration);
+		id = metricConfiguration.getId();
 		code = metricConfiguration.getCode();
 		weight = Double.doubleToLongBits(metricConfiguration.getWeight());
 		aggregationForm = metricConfiguration.getAggregationForm().name();
 		initializeRanges(metricConfiguration);
-	}
-
-	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, Long configurationId) {
-		// TODO Auto-generated constructor stub
 	}
 
 	private void initializeMetric(MetricConfiguration metricConfiguration) {
@@ -103,7 +103,6 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 	}
 
 	public Long id() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 }

@@ -6,7 +6,10 @@ import java.util.TreeSet;
 import org.kalibro.core.Identifier;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Ignore;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.MetricConfigurationDao;
 
 @SortingFields("code")
 public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
@@ -114,31 +117,40 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		return ranges.remove(range);
 	}
 
+	private Long id;
+
+	@Ignore
+	private Configuration configuration;
+
 	public void setConfiguration(Configuration configuration) {
-		// TODO Auto-generated method stub
+		this.configuration = configuration;
 	}
 
 	void deleted() {
-		// TODO Auto-generated method stub
+		id = null;
 	}
 
 	public void save() {
-		// TODO Auto-generated method stub
-
+		dao().save(this);
 	}
 
 	public void delete() {
-		// TODO Auto-generated method stub
+		dao().delete(id);
+	}
 
+	private MetricConfigurationDao dao() {
+		return DaoFactory.getMetricConfigurationDao();
 	}
 
 	public void setId(Long id) {
-		// TODO Auto-generated method stub
-
+		this.id = id;
 	}
 
 	public Long getConfigurationId() {
-		// TODO Auto-generated method stub
-		return null;
+		return configuration.getId();
+	}
+
+	public Long getId() {
+		return id;
 	}
 }

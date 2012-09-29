@@ -9,28 +9,20 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.kalibro.Project;
 import org.kalibro.ProjectResult;
-import org.kalibro.SupportedDatabase;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.tests.AcceptanceTest;
 
-@RunWith(Parameterized.class)
 public class ProjectDatabaseTest extends AcceptanceTest {
 
 	private ProjectDao dao;
 
 	private Project helloWorld, helloWorld2;
 	private ProjectResult projectResult;
-
-	public ProjectDatabaseTest(SupportedDatabase databaseType) {
-		super(databaseType);
-	}
 
 	@Before
 	public void setUp() {

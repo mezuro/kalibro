@@ -4,42 +4,41 @@ import static org.kalibro.SupportedDatabase.APACHE_DERBY;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
-import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
 import org.junit.rules.Timeout;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.SupportedDatabase;
 
+@RunWith(Theories.class)
 public abstract class AcceptanceTest extends IntegrationTest {
 
-	@Parameters
-	public static Collection<SupportedDatabase[]> supportedDatabases() {
-		new File(System.getProperty("user.dir") + "/derby.log").deleteOnExit();
-		List<SupportedDatabase[]> parameters = new ArrayList<SupportedDatabase[]>();
-		for (SupportedDatabase databaseType : SupportedDatabase.values())
-			parameters.add(new SupportedDatabase[]{databaseType});
-		return parameters;
+	@DataPoints
+	public static SupportedDatabase[] supportedDatabases() {
+		return SupportedDatabase.values();
 	}
 
-	public AcceptanceTest() {
-		this(APACHE_DERBY);
+	@BeforeClass
+	public static void prepareSettings() {
+		changeDatabase(APACHE_DERBY);
 	}
 
-	public AcceptanceTest(SupportedDatabase databaseType) {
+	@AfterClass
+	public static void deleteSettings() {
+		new File(System.getProperty("user.dir") + "/derby.log").delete();
+		new File(dotKalibro(), "kalibro.settings").delete();
+	}
+
+	protected static void changeDatabase(SupportedDatabase databaseType) {
 		KalibroSettings settings = new KalibroSettings();
 		DatabaseSettings databaseSettigs = loadFixture(databaseType.name(), DatabaseSettings.class);
 		settings.getServerSettings().setDatabaseSettings(databaseSettigs);
 		settings.save();
-	}
-
-	@After
-	public void deleteSettings() {
-		new File(dotKalibro(), "kalibro.settings").delete();
 	}
 
 	@Override

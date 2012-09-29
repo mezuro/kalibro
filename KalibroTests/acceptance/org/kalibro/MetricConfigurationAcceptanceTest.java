@@ -5,26 +5,18 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
-@RunWith(Parameterized.class)
 public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 
 	private MetricConfiguration metricConfiguration;
 	private Configuration configuration;
 
-	public MetricConfigurationAcceptanceTest(SupportedDatabase databaseType) {
-		super(databaseType);
-	}
-
 	@Before
 	public void setUp() {
 		configuration = loadFixture("analizo", Configuration.class);
-		configuration.save();
-		metricConfiguration = configuration.getMetricConfigurations().first();
 	}
 
 	@After
@@ -32,8 +24,12 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 		configuration.delete();
 	}
 
-	@Test
-	public void testCrud() {
+	@Theory
+	public void testCrud(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
+		configuration.save();
+		metricConfiguration = configuration.getMetricConfigurations().first();
+
 		assertSaved();
 
 		metricConfiguration.setWeight(0.0);
@@ -73,6 +69,7 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldNotSetConflictingCode() {
+		metricConfiguration = configuration.getMetricConfigurations().first();
 		assertThat(new VoidTask() {
 
 			@Override

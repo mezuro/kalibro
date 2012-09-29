@@ -11,8 +11,6 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
 import org.kalibro.*;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
@@ -20,7 +18,6 @@ import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
-@RunWith(Parameterized.class)
 public class ModuleResultDatabaseTest extends AcceptanceTest {
 
 	private ModuleResultDao dao;
@@ -29,10 +26,6 @@ public class ModuleResultDatabaseTest extends AcceptanceTest {
 	private Project project;
 	private ModuleResult moduleResult;
 	private ProjectResult projectResult;
-
-	public ModuleResultDatabaseTest(SupportedDatabase databaseType) {
-		super(databaseType);
-	}
 
 	@Before
 	public void setUp() {

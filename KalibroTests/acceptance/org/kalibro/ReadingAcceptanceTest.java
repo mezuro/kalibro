@@ -5,25 +5,18 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
+import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
-@RunWith(Parameterized.class)
 public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	private Reading reading;
 	private ReadingGroup group;
 
-	public ReadingAcceptanceTest(SupportedDatabase databaseType) {
-		super(databaseType);
-	}
-
 	@Before
 	public void setUp() {
 		group = loadFixture("scholar", ReadingGroup.class);
-		group.save();
 		reading = group.getReadings().first();
 	}
 
@@ -32,8 +25,9 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 		group.delete();
 	}
 
-	@Test
-	public void testCrud() {
+	@Theory
+	public void testCrud(SupportedDatabase databaseType) {
+		saveGroup(databaseType);
 		assertSaved();
 
 		reading.setLabel("ReadingAcceptanceTest label");
@@ -45,6 +39,12 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 		reading.delete();
 		assertFalse(group.getReadings().contains(reading));
 		assertFalse(ReadingGroup.all().first().getReadings().contains(reading));
+	}
+
+	private void saveGroup(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
+		group.save();
+		reading = group.getReadings().first();
 	}
 
 	private void assertSaved() {
