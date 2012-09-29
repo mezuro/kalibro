@@ -1,4 +1,4 @@
----
+ !!org.kalibro.core.abstractentity.Person
 name: "Paulo Meirelles" # name comes first
 identityNumber: "PM"
 relatives: {}

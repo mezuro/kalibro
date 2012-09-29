@@ -54,6 +54,10 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 		super();
 	}
 
+	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
+		this(metricConfiguration, (Long) null);
+	}
+
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, Long configurationId) {
 		this(metricConfiguration, new ConfigurationRecord(configurationId));
 	}

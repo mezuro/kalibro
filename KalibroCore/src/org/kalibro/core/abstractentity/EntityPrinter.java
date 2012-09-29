@@ -16,6 +16,7 @@ class EntityPrinter extends Printer<AbstractEntity<?>> {
 
 	@Override
 	protected void doPrint(AbstractEntity<?> object, String comment) {
+		printString(" !!" + object.getClass().getName());
 		printComment(comment);
 		reflector = new EntityReflector(object);
 		for (String field : reflector.listPrintFields())

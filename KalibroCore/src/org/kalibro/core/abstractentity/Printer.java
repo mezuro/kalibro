@@ -8,7 +8,7 @@ package org.kalibro.core.abstractentity;
 public abstract class Printer<T> {
 
 	public static String print(Object object) {
-		StringBuffer buffer = new StringBuffer("---");
+		StringBuffer buffer = new StringBuffer();
 		print(object, buffer, 0, "");
 		return buffer.toString();
 	}

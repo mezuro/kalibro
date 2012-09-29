@@ -1,13 +1,13 @@
----
+ !!org.kalibro.core.abstractentity.Person
 name: "Carlos Morais" # name comes first
 identityNumber: "CM"
 relatives:
-  mother:
+  mother: !!org.kalibro.core.abstractentity.Person
     name: "Cristina Nascimento" # name comes first
     identityNumber: "CN"
     relatives: {}
     sex: "Female"
-  sister:
+  sister: !!org.kalibro.core.abstractentity.Person
     name: "Isis Nascimento" # name comes first
     identityNumber: "IN"
     relatives: {}

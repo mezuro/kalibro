@@ -32,7 +32,7 @@ public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 
 	@Test
 	public void shouldPrintAsYaml() throws Exception {
-		assertEquals(loadResource("Programmer-carlos.yml").replace("---", ""), print(programmer, ""));
+		assertEquals(loadResource("Programmer-carlos.yml"), print(programmer, ""));
 	}
 
 	@Test
