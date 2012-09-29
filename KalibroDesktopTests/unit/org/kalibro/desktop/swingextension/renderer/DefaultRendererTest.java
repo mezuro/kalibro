@@ -3,14 +3,13 @@ package org.kalibro.desktop.swingextension.renderer;
 import static org.junit.Assert.*;
 
 import java.awt.Component;
-import java.util.Arrays;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.BooleanField;
 import org.kalibro.tests.UnitTest;
@@ -37,7 +36,7 @@ public class DefaultRendererTest extends UnitTest {
 		assertClassEquals(JPanel.class, render(null));
 		assertClassEquals(JLabel.class, render("My string"));
 		assertClassEquals(JLabel.class, render(this));
-		assertClassEquals(JLabel.class, render(Arrays.asList("My", "list")));
+		assertClassEquals(JLabel.class, render(asList("My", "list")));
 	}
 
 	private Component render(Object value) {

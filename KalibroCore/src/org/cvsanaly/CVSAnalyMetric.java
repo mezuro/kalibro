@@ -1,10 +1,10 @@
 package org.cvsanaly;
 
 import org.cvsanaly.entities.MetricResult;
+import org.kalibro.Granularity;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
 import org.kalibro.core.Identifier;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
 import org.kalibro.core.reflection.FieldReflector;
 
 public enum CVSAnalyMetric {

@@ -1,9 +1,8 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 
 public class BazaarLoaderTest extends ProjectLoaderTestCase {
 
@@ -14,7 +13,7 @@ public class BazaarLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("bzr --version");
+		return asList("bzr --version");
 	}
 
 	@Override
@@ -25,7 +24,7 @@ public class BazaarLoaderTest extends ProjectLoaderTestCase {
 	@Override
 	protected List<String> expectedLoadCommands(boolean update) {
 		if (update)
-			return Arrays.asList("bzr pull --overwrite");
-		return Arrays.asList("bzr branch --use-existing-dir " + repository.getAddress() + " .");
+			return asList("bzr pull --overwrite");
+		return asList("bzr branch --use-existing-dir " + repository.getAddress() + " .");
 	}
 }

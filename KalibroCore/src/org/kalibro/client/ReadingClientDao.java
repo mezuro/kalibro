@@ -1,6 +1,6 @@
 package org.kalibro.client;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.Reading;
 import org.kalibro.dao.ReadingDao;
@@ -15,13 +15,13 @@ import org.kalibro.service.xml.ReadingXml;
  */
 class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements ReadingDao {
 
-	public ReadingClientDao(String serviceAddress) {
+	ReadingClientDao(String serviceAddress) {
 		super(serviceAddress, ReadingEndpoint.class);
 	}
 
 	@Override
-	public List<Reading> readingsOf(Long groupId) {
-		return DataTransferObject.convert(port.readingsOf(groupId));
+	public SortedSet<Reading> readingsOf(Long groupId) {
+		return DataTransferObject.toSortedSet(port.readingsOf(groupId));
 	}
 
 	@Override

@@ -1,10 +1,9 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.assertSame;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.analizo.AnalizoMetricCollector;
@@ -13,8 +12,8 @@ import org.checkstyle.CheckstyleMetricCollector;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.BaseTool;
 import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.BaseTool;
 import org.kalibro.core.persistence.record.BaseToolRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
@@ -27,7 +26,7 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(BaseToolDatabaseDao.class)
 public class BaseToolDatabaseDaoTest extends UnitTest {
 
-	private static final List<String> BASE_TOOL_NAMES = Arrays.asList("Analizo", "Checkstyle");
+	private static final List<String> BASE_TOOL_NAMES = asList("Analizo", "Checkstyle");
 
 	private BaseTool baseTool;
 	private RecordManager recordManager;

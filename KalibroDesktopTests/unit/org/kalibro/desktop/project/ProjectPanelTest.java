@@ -1,16 +1,16 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
+import static org.kalibro.ProjectFixtures.helloWorld;
 
-import java.util.Arrays;
-import java.util.TreeSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Configuration;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
@@ -18,7 +18,7 @@ import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -43,7 +43,7 @@ public class ProjectPanelTest extends UnitTest {
 	}
 
 	private void mockDaoFactory() {
-		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
+		Set<RepositoryType> types = asSet(RepositoryType.values());
 
 		ProjectDao projectDao = mock(ProjectDao.class);
 		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
@@ -52,7 +52,7 @@ public class ProjectPanelTest extends UnitTest {
 		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 		when(projectDao.getSupportedRepositoryTypes()).thenReturn(types);
-		when(configurationDao.getConfigurationNames()).thenReturn(Arrays.asList(project.getConfigurationName()));
+		when(configurationDao.all()).thenReturn(asSortedSet(new Configuration()));
 	}
 
 	@Test
@@ -62,7 +62,7 @@ public class ProjectPanelTest extends UnitTest {
 		descriptionField().set(project.getDescription());
 		configurationField().set(project.getConfigurationName());
 		repositoryPanel().set(project.getRepository());
-		assertDeepEquals(new RawProjectXml(project).convert(), panel.get());
+		assertDeepEquals(new ProjectXmlRequest(project).convert(), panel.get());
 	}
 
 	@Test

@@ -1,10 +1,11 @@
 package org.kalibro;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
@@ -16,8 +17,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 	@Before
 	public void setUp() {
 		group = loadFixture("scholar", ReadingGroup.class);
-		group.save();
-		reading = group.getReadings().get(0);
+		reading = group.getReadings().first();
 	}
 
 	@After
@@ -25,8 +25,9 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 		group.delete();
 	}
 
-	@Test
-	public void testCrud() {
+	@Theory
+	public void testCrud(SupportedDatabase databaseType) {
+		saveGroup(databaseType);
 		assertSaved();
 
 		reading.setLabel("ReadingAcceptanceTest label");
@@ -37,24 +38,30 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 		reading.delete();
 		assertFalse(group.getReadings().contains(reading));
-		assertFalse(ReadingGroup.all().get(0).getReadings().contains(reading));
+		assertFalse(ReadingGroup.all().first().getReadings().contains(reading));
+	}
+
+	private void saveGroup(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
+		group.save();
+		reading = group.getReadings().first();
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(reading, ReadingGroup.all().get(0).getReadings().get(0));
+		assertDeepEquals(reading, ReadingGroup.all().first().getReadings().first());
 	}
 
 	private void assertDifferentFromSaved() {
-		Reading saved = ReadingGroup.all().get(0).getReadings().get(0);
+		Reading saved = ReadingGroup.all().first().getReadings().first();
 		assertFalse(reading.deepEquals(saved));
 	}
 
 	@Test
 	public void readingIsRequiredToBeInGroup() {
-		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
+		assertThat(saveNew()).throwsException().withMessage("Reading is not in any group.");
 	}
 
-	private VoidTask save() {
+	private VoidTask saveNew() {
 		return new VoidTask() {
 
 			@Override
@@ -62,5 +69,25 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 				new Reading().save();
 			}
 		};
+	}
+
+	@Test
+	public void shouldNotSetConflictingLabelOrGrade() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.setLabel("Excellent");
+			}
+		}).throwsException().withMessage("Reading with label \"Excellent\" already exists in the group.");
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.setGrade(10.0);
+			}
+		}).throwsException().withMessage("Reading with grade 10.0 already exists in the group.");
+		assertEquals("Terrible", reading.getLabel());
+		assertDoubleEquals(0.0, reading.getGrade());
 	}
 }

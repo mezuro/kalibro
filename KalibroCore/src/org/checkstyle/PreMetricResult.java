@@ -3,8 +3,8 @@ package org.checkstyle;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricResult;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeMetricResult;
 
 class PreMetricResult {
 

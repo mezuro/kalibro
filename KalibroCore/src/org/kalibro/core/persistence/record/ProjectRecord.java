@@ -1,17 +1,18 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.enums.ProjectState.*;
+import static org.kalibro.ProjectState.ERROR;
 
 import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.Configuration;
+import org.kalibro.Project;
+import org.kalibro.ProjectState;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Project")
+@Table(name = "\"PROJECT\"")
 public class ProjectRecord extends DataTransferObject<Project> {
 
 	@Id
@@ -46,6 +47,10 @@ public class ProjectRecord extends DataTransferObject<Project> {
 
 	public ProjectRecord() {
 		super();
+	}
+
+	public ProjectRecord(Project project) {
+		this(project, null);
 	}
 
 	public ProjectRecord(Project project, Long configurationId) {
@@ -87,7 +92,7 @@ public class ProjectRecord extends DataTransferObject<Project> {
 		project.setDescription(description);
 		project.setRepository(repository.convert());
 		project.setMailsToNotify(mailsToNotify);
-		project.setConfigurationName(configuration.getName());
+		project.setConfigurationName(configuration.name());
 		project.setState(ProjectState.valueOf(state));
 		project.setError(error);
 		return project;

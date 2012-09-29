@@ -3,8 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,8 +23,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({AbstractEntity.class, DaoFactory.class})
 public class ReadingGroupTest extends UnitTest {
 
-	private ReadingGroup group;
 	private ReadingGroupDao dao;
+	private ReadingGroup group;
 
 	@Before
 	public void setUp() {
@@ -51,10 +50,10 @@ public class ReadingGroupTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetAllReadings() {
-		List<ReadingGroup> list = mock(List.class);
-		when(dao.all()).thenReturn(list);
-		assertSame(list, ReadingGroup.all());
+	public void shouldGetAllReadingGroups() {
+		SortedSet<ReadingGroup> groups = mock(SortedSet.class);
+		when(dao.all()).thenReturn(groups);
+		assertSame(groups, ReadingGroup.all());
 	}
 
 	@Test
@@ -69,15 +68,15 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldSetGroupOnReadings() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(Arrays.asList(reading));
-		assertDeepList(group.getReadings(), reading);
+		group.setReadings(asSortedSet(reading));
+		assertDeepEquals(asSet(reading), group.getReadings());
 		verify(reading).setGroup(group);
 	}
 
 	@Test
 	public void shouldSetReadingsWithoutTouchingThem() {
 		// required for lazy loading
-		List<Reading> readings = mock(List.class);
+		SortedSet<Reading> readings = mock(SortedSet.class);
 		group.setReadings(readings);
 		verifyZeroInteractions(readings);
 	}
@@ -85,7 +84,7 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldAddReadingIfItDoesNotConflictWithExistingOnes() {
 		Reading reading = mock(Reading.class);
-		List<Reading> existents = group.getReadings();
+		SortedSet<Reading> existents = group.getReadings();
 		group.addReading(reading);
 
 		InOrder order = Mockito.inOrder(reading);
@@ -99,10 +98,11 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldRemoveReading() {
 		Reading reading = mock(Reading.class);
-		group.addReading(reading);
-		group.removeReading(reading);
+		SortedSet<Reading> readings = spy(asSortedSet(reading));
+		group.setReadings(readings);
 
-		assertFalse(group.getReadings().contains(reading));
+		group.removeReading(reading);
+		verify(readings).remove(reading);
 		verify(reading).setGroup(null);
 	}
 
@@ -112,12 +112,12 @@ public class ReadingGroupTest extends UnitTest {
 		ReadingDao readingDao = mock(ReadingDao.class);
 		when(dao.save(group)).thenReturn(42L);
 		when(DaoFactory.getReadingDao()).thenReturn(readingDao);
-		when(readingDao.readingsOf(42L)).thenReturn(Arrays.asList(reading));
+		when(readingDao.readingsOf(42L)).thenReturn(asSortedSet(reading));
 
 		assertFalse(group.hasId());
 		group.save();
 		assertEquals(42L, group.getId().longValue());
-		assertDeepList(group.getReadings(), reading);
+		assertDeepEquals(asSet(reading), group.getReadings());
 	}
 
 	@Test
@@ -151,12 +151,17 @@ public class ReadingGroupTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRemoveReadingIdsOnDelete() {
+	public void shouldNotifyReadingsOfDeletion() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(Arrays.asList(reading));
+		group.setReadings(asSortedSet(reading));
 		group.setId(42L);
 
 		group.delete();
-		verify(reading).setId(null);
+		verify(reading).deleted();
+	}
+
+	@Test
+	public void toStringShouldBeName() {
+		assertEquals(group.getName(), "" + group);
 	}
 }

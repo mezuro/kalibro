@@ -1,9 +1,8 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 
 public class MercurialLoaderTest extends ProjectLoaderTestCase {
 
@@ -14,7 +13,7 @@ public class MercurialLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("hg --version");
+		return asList("hg --version");
 	}
 
 	@Override
@@ -25,7 +24,7 @@ public class MercurialLoaderTest extends ProjectLoaderTestCase {
 	@Override
 	protected List<String> expectedLoadCommands(boolean update) {
 		if (update)
-			return Arrays.asList("hg pull -u");
-		return Arrays.asList("hg clone " + repository.getAddress() + " .");
+			return asList("hg pull -u");
+		return asList("hg clone " + repository.getAddress() + " .");
 	}
 }

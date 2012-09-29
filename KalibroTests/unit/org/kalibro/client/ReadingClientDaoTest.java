@@ -2,7 +2,7 @@ package org.kalibro.client;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.Reading;
@@ -14,6 +14,8 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 public class ReadingClientDaoTest extends
 	ClientTest<Reading, ReadingXml, ReadingXml, ReadingEndpoint, ReadingClientDao> {
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
 	@Override
 	protected Class<Reading> entityClass() {
 		return Reading.class;
@@ -21,19 +23,19 @@ public class ReadingClientDaoTest extends
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(port.readingsOf(42L)).thenReturn(Arrays.asList(response));
-		assertDeepList(client.readingsOf(42L), entity);
+		when(port.readingsOf(ID)).thenReturn(asList(response));
+		assertDeepEquals(asSet(entity), client.readingsOf(ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		when(port.saveReading(request)).thenReturn(42L);
-		assertEquals(42L, client.save(entity).longValue());
+		when(port.saveReading(request)).thenReturn(ID);
+		assertEquals(ID, client.save(entity));
 	}
 
 	@Test
 	public void shouldDelete() {
-		client.delete(42L);
-		verify(port).deleteReading(42L);
+		client.delete(ID);
+		verify(port).deleteReading(ID);
 	}
 }

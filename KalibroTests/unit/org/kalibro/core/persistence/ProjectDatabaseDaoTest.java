@@ -2,11 +2,10 @@ package org.kalibro.core.persistence;
 
 import static java.util.concurrent.TimeUnit.DAYS;
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.ProjectFixtures.*;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Set;
 
 import javax.persistence.TypedQuery;
@@ -15,9 +14,9 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Configuration;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 import org.kalibro.core.persistence.record.ProjectRecord;
 import org.kalibro.core.processing.ProcessProjectTask;
 import org.kalibro.tests.UnitTest;
@@ -47,7 +46,7 @@ public class ProjectDatabaseDaoTest extends UnitTest {
 	private void mockConfigurationDao() throws Exception {
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
 		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configurationDao);
-		when(configurationDao.getConfiguration(anyString())).thenReturn(new Configuration());
+		when(configurationDao.configurationOf(anyLong())).thenReturn(new Configuration());
 	}
 
 	@Test
@@ -64,8 +63,8 @@ public class ProjectDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldListAllProjectNames() {
-		doReturn(Arrays.asList("4", "2")).when(dao).getAllNames();
-		assertDeepList(dao.getProjectNames(), "4", "2");
+		doReturn(asList("4", "2")).when(dao).getAllNames();
+		assertDeepEquals(asList("4", "2"), dao.getProjectNames());
 	}
 
 	@Test

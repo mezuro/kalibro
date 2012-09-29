@@ -1,16 +1,16 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.MetricFixtures.*;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.CompoundMetric;
+import org.kalibro.Granularity;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.MaybeEditableField;
 import org.kalibro.desktop.swingextension.field.TextField;

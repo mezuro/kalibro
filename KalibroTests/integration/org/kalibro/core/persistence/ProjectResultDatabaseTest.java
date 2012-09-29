@@ -1,9 +1,9 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ConfigurationFixtures.kalibroConfiguration;
+import static org.kalibro.ProjectFixtures.helloWorld;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Date;
 
@@ -11,12 +11,14 @@ import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Project;
+import org.kalibro.ProjectResult;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.tests.AcceptanceTest;
 
-public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
+public class ProjectResultDatabaseTest extends AcceptanceTest {
 
 	private ProjectResultDao dao;
 
@@ -32,9 +34,9 @@ public abstract class ProjectResultDatabaseTest extends DatabaseTestCase {
 		first.setProject(project);
 		second.setProject(project);
 		third.setProject(project);
-		dao = daoFactory.createProjectResultDao();
-		daoFactory.createConfigurationDao().save(kalibroConfiguration());
-		daoFactory.createProjectDao().save(project);
+		dao = DaoFactory.getProjectResultDao();
+		DaoFactory.getConfigurationDao().save(kalibroConfiguration());
+		DaoFactory.getProjectDao().save(project);
 	}
 
 	@Test

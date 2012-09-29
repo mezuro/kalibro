@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.core.model.MetricFixtures.*;
+import static org.kalibro.MetricFixtures.*;
 
-import org.kalibro.core.model.Metric;
+import org.kalibro.Metric;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class MetricPanelManualTest {

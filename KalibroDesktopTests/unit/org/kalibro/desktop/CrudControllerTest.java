@@ -2,7 +2,6 @@ package org.kalibro.desktop;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.JDesktopPane;
@@ -11,7 +10,7 @@ import javax.swing.JOptionPane;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
 import org.kalibro.desktop.swingextension.dialog.InputDialog;
@@ -28,7 +27,7 @@ import org.powermock.reflect.Whitebox;
 public class CrudControllerTest extends UnitTest {
 
 	private static final String NAME = "CrudControllerTest name";
-	private static final List<String> NAMES = Arrays.asList(NAME);
+	private static final List<String> NAMES = asList(NAME);
 
 	private InternalFrame<BaseTool> frame;
 	private JDesktopPane desktopPane;

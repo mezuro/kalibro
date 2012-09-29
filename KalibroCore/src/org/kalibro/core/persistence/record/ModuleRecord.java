@@ -6,14 +6,11 @@ import java.util.Collection;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleNode;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.*;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Module")
+@Table(name = "\"MODULE\"")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date"), @Column(name = "name")})
 public class ModuleRecord extends DataTransferObject<ModuleNode> {
 
@@ -41,6 +38,10 @@ public class ModuleRecord extends DataTransferObject<ModuleNode> {
 
 	public ModuleRecord() {
 		super();
+	}
+
+	public ModuleRecord(Module module) {
+		this(new ModuleNode(module), new ProjectResultRecord(), new ModuleRecord());
 	}
 
 	public ModuleRecord(ModuleNode moduleNode, ProjectResult projectResult) {

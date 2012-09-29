@@ -1,12 +1,12 @@
 package org.cvsanaly;
 
-import static org.kalibro.core.model.enums.Granularity.CLASS;
+import static org.kalibro.Granularity.CLASS;
 
 import org.cvsanaly.entities.MetricResult;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
 import org.kalibro.tests.EnumerationTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;

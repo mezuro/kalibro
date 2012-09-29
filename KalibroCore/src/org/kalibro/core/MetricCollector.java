@@ -3,10 +3,10 @@ package org.kalibro.core;
 import java.io.File;
 import java.util.Set;
 
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.BaseTool;
+import org.kalibro.Granularity;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 
 /**
  * Interface between Kalibro and the metric collector tool.

@@ -8,8 +8,8 @@ import javax.swing.JComponent;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;

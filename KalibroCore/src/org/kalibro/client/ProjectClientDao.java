@@ -3,21 +3,21 @@ package org.kalibro.client;
 import java.util.List;
 import java.util.Set;
 
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.ProjectEndpoint;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
 
 class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
 
-	protected ProjectClientDao(String serviceAddress) {
+	ProjectClientDao(String serviceAddress) {
 		super(serviceAddress, ProjectEndpoint.class);
 	}
 
 	@Override
 	public void save(Project project) {
-		port.saveProject(new RawProjectXml(project));
+		port.saveProject(new ProjectXmlRequest(project));
 	}
 
 	@Override

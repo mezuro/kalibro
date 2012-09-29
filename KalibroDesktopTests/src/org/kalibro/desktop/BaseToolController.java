@@ -4,7 +4,7 @@ import java.util.List;
 
 import javax.swing.JDesktopPane;
 
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.desktop.swingextension.InternalFrame;
 
 class BaseToolController extends CrudController<BaseTool> {

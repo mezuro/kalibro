@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.ConfigurationFixtures.*;
 
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
 

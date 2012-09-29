@@ -6,11 +6,12 @@ import java.util.List;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Granularity;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
 
 @Entity(name = "NativeMetric")
+@Table(name = "\"NATIVE_METRIC\"")
 @PrimaryKey(columns = {@Column(name = "name"), @Column(name = "origin")})
 public class NativeMetricRecord extends MetricRecord<NativeMetric> {
 

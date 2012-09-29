@@ -8,8 +8,15 @@ import javax.jws.WebService;
 
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.dto.DataTransferObject;
+import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.kalibro.service.xml.ConfigurationXmlResponse;
 
+/**
+ * Implementation of {@link ConfigurationEndpoint}.
+ * 
+ * @author Carlos Morais
+ */
 @WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
@@ -19,35 +26,42 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 		this(DaoFactory.getConfigurationDao());
 	}
 
-	protected ConfigurationEndpointImpl(ConfigurationDao configurationDao) {
+	public ConfigurationEndpointImpl(ConfigurationDao configurationDao) {
 		dao = configurationDao;
 	}
 
 	@Override
-	public void saveConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration) {
-		dao.save(configuration.convert());
-	}
-
-	@Override
-	@WebResult(name = "configurationName")
-	public List<String> getConfigurationNames() {
-		return dao.getConfigurationNames();
-	}
-
-	@Override
-	@WebResult(name = "hasConfiguration")
-	public boolean hasConfiguration(@WebParam(name = "configurationName") String configurationName) {
-		return dao.hasConfiguration(configurationName);
+	@WebResult(name = "exists")
+	public boolean configurationExists(@WebParam(name = "configurationId") Long configurationId) {
+		return dao.exists(configurationId);
 	}
 
 	@Override
 	@WebResult(name = "configuration")
-	public ConfigurationXml getConfiguration(@WebParam(name = "configurationName") String configurationName) {
-		return new ConfigurationXml(dao.getConfiguration(configurationName));
+	public ConfigurationXmlResponse getConfiguration(@WebParam(name = "configurationId") Long configurationId) {
+		return new ConfigurationXmlResponse(dao.get(configurationId));
 	}
 
 	@Override
-	public void removeConfiguration(@WebParam(name = "configurationName") String configurationName) {
-		dao.removeConfiguration(configurationName);
+	@WebResult(name = "configuration")
+	public ConfigurationXmlResponse configurationOf(@WebParam(name = "projectId") Long projectId) {
+		return new ConfigurationXmlResponse(dao.configurationOf(projectId));
+	}
+
+	@Override
+	@WebResult(name = "configuration")
+	public List<ConfigurationXmlResponse> allConfigurations() {
+		return DataTransferObject.createDtos(dao.all(), ConfigurationXmlResponse.class);
+	}
+
+	@Override
+	@WebResult(name = "configurationId")
+	public Long saveConfiguration(@WebParam(name = "configuration") ConfigurationXmlRequest configuration) {
+		return dao.save(configuration.convert());
+	}
+
+	@Override
+	public void deleteConfiguration(@WebParam(name = "configurationId") Long configurationId) {
+		dao.delete(configurationId);
 	}
 }

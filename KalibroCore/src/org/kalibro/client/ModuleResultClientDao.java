@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.service.ModuleResultEndpoint;
-import org.kalibro.service.entities.ModuleResultXml;
+import org.kalibro.service.xml.ModuleResultXml;
 
 class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> implements ModuleResultDao {
 
-	protected ModuleResultClientDao(String serviceAddress) {
+	ModuleResultClientDao(String serviceAddress) {
 		super(serviceAddress, ModuleResultEndpoint.class);
 	}
 

@@ -1,20 +1,23 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
-import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ConfigurationFixtures.kalibroConfiguration;
+import static org.kalibro.ProjectFixtures.newHelloWorld;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import javax.persistence.NoResultException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Project;
+import org.kalibro.ProjectResult;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
+import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.tests.AcceptanceTest;
 
-public abstract class ProjectDatabaseTest extends DatabaseTestCase {
+public class ProjectDatabaseTest extends AcceptanceTest {
 
 	private ProjectDao dao;
 
@@ -27,8 +30,8 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		helloWorld = projectResult.getProject();
 		helloWorld2 = newHelloWorld();
 		helloWorld2.setName("HelloWorld-2.0");
-		daoFactory.createConfigurationDao().save(kalibroConfiguration());
-		dao = daoFactory.createProjectDao();
+		DaoFactory.getConfigurationDao().save(kalibroConfiguration());
+		dao = DaoFactory.getProjectDao();
 	}
 
 	@Test
@@ -36,10 +39,10 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 		assertTrue(dao.getProjectNames().isEmpty());
 
 		dao.save(helloWorld);
-		assertDeepList(dao.getProjectNames(), helloWorld.getName());
+		assertDeepEquals(asList(helloWorld.getName()), dao.getProjectNames());
 
 		dao.save(helloWorld2);
-		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
+		assertDeepEquals(asList(helloWorld.getName(), helloWorld2.getName()), dao.getProjectNames());
 	}
 
 	@Test
@@ -54,10 +57,10 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 	public void shouldRemoveProjectByName() {
 		dao.save(helloWorld);
 		dao.save(helloWorld2);
-		assertDeepList(dao.getProjectNames(), helloWorld.getName(), helloWorld2.getName());
+		assertDeepEquals(asList(helloWorld.getName(), helloWorld2.getName()), dao.getProjectNames());
 
 		dao.removeProject(helloWorld.getName());
-		assertDeepList(dao.getProjectNames(), helloWorld2.getName());
+		assertDeepEquals(asList(helloWorld2.getName()), dao.getProjectNames());
 
 		dao.removeProject(helloWorld2.getName());
 		assertTrue(dao.getProjectNames().isEmpty());
@@ -66,7 +69,7 @@ public abstract class ProjectDatabaseTest extends DatabaseTestCase {
 	@Test
 	public void projectRemovalShouldCascadeToResults() {
 		String projectName = helloWorld.getName();
-		ProjectResultDatabaseDao projectResultDao = daoFactory.createProjectResultDao();
+		ProjectResultDao projectResultDao = DaoFactory.getProjectResultDao();
 
 		dao.save(helloWorld);
 		projectResultDao.save(projectResult);

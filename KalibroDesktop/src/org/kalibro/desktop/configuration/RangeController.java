@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.Range;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.EditDialogListener;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;

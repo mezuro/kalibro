@@ -8,10 +8,10 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ModuleResultDao;
-import org.kalibro.service.entities.ModuleResultXml;
+import org.kalibro.service.xml.ModuleResultXml;
 
 @WebService(name = "ModuleResultEndpoint", serviceName = "ModuleResultEndpointService")
 public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
@@ -22,7 +22,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 		this(DaoFactory.getModuleResultDao());
 	}
 
-	protected ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {
+	public ModuleResultEndpointImpl(ModuleResultDao moduleResultDao) {
 		dao = moduleResultDao;
 	}
 

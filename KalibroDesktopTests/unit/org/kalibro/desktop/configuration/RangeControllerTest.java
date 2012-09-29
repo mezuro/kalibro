@@ -1,16 +1,16 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
-import static org.kalibro.core.model.RangeFixtures.newRange;
-import static org.kalibro.core.model.RangeLabel.*;
+import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.RangeFixtures.newRange;
+import static org.kalibro.RangeLabel.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.Range;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.dialog.EditDialog;
 import org.kalibro.desktop.swingextension.dialog.ErrorDialog;
 import org.kalibro.tests.UnitTest;

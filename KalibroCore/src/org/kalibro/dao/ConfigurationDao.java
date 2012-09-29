@@ -1,20 +1,25 @@
 package org.kalibro.dao;
 
-import java.util.List;
+import java.util.SortedSet;
 
-import org.kalibro.core.model.Configuration;
+import org.kalibro.Configuration;
 
+/**
+ * Data access object for {@link Configuration}.
+ * 
+ * @author Carlos Morais
+ */
 public interface ConfigurationDao {
 
-	void save(Configuration configuration);
+	boolean exists(Long configurationId);
 
-	List<String> getConfigurationNames();
+	Configuration get(Long configurationId);
 
-	boolean hasConfiguration(String configurationName);
+	Configuration configurationOf(Long projectId);
 
-	Configuration getConfiguration(String configurationName);
+	SortedSet<Configuration> all();
 
-	Configuration getConfigurationFor(String projectName);
+	Long save(Configuration configuration);
 
-	void removeConfiguration(String configurationName);
+	void delete(Long configurationId);
 }

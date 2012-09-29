@@ -1,4 +1,4 @@
----
+ &id1 !!org.kalibro.Reading
 color: 0x00ff00
 grade: 10.0
 label: "Excellent"

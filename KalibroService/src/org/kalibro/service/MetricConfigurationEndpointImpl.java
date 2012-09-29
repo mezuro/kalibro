@@ -1,13 +1,22 @@
 package org.kalibro.service;
 
+import java.util.List;
+
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.dto.DataTransferObject;
+import org.kalibro.service.xml.MetricConfigurationXmlRequest;
+import org.kalibro.service.xml.MetricConfigurationXmlResponse;
 
+/**
+ * Implementation of {@link MetricConfigurationEndpoint}.
+ * 
+ * @author Carlos Morais
+ */
 @WebService(name = "MetricConfigurationEndpoint", serviceName = "MetricConfigurationEndpointService")
 public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpoint {
 
@@ -22,24 +31,22 @@ public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpo
 	}
 
 	@Override
-	public void saveMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXml metricConfiguration,
-		@WebParam(name = "configurationName") String configurationName) {
-		dao.save(metricConfiguration.convert(), configurationName);
-	}
-
-	@Override
 	@WebResult(name = "metricConfiguration")
-	public MetricConfigurationXml getMetricConfiguration(
-		@WebParam(name = "configurationName") String configurationName,
-		@WebParam(name = "metricName") String metricName) {
-		return new MetricConfigurationXml(dao.getMetricConfiguration(configurationName, metricName));
+	public List<MetricConfigurationXmlResponse> metricConfigurationsOf(
+		@WebParam(name = "configurationId") Long configurationId) {
+		return DataTransferObject.createDtos(
+			dao.metricConfigurationsOf(configurationId), MetricConfigurationXmlResponse.class);
 	}
 
 	@Override
-	public void removeMetricConfiguration(
-		@WebParam(name = "configurationName") String configurationName,
-		@WebParam(name = "metricName") String metricName) {
-		dao.removeMetricConfiguration(configurationName, metricName);
+	@WebResult(name = "metricConfigurationId")
+	public Long saveMetricConfiguration(
+		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration) {
+		return dao.save(metricConfiguration.convert());
+	}
+
+	@Override
+	public void deleteMetricConfiguration(@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
+		dao.delete(metricConfigurationId);
 	}
 }

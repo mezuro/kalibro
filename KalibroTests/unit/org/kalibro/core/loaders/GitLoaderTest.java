@@ -1,9 +1,8 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 
 public class GitLoaderTest extends ProjectLoaderTestCase {
 
@@ -14,7 +13,7 @@ public class GitLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	public List<String> expectedValidationCommands() {
-		return Arrays.asList("git --version");
+		return asList("git --version");
 	}
 
 	@Override
@@ -25,7 +24,7 @@ public class GitLoaderTest extends ProjectLoaderTestCase {
 	@Override
 	public List<String> expectedLoadCommands(boolean update) {
 		if (update)
-			return Arrays.asList("git pull origin master");
-		return Arrays.asList("git clone " + repository.getAddress() + " .");
+			return asList("git pull origin master");
+		return asList("git clone " + repository.getAddress() + " .");
 	}
 }

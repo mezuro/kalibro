@@ -1,17 +1,16 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
-import static org.kalibro.core.model.enums.RepositoryType.*;
+import static org.kalibro.RepositoryFixtures.newHelloWorldRepository;
+import static org.kalibro.RepositoryType.*;
 
-import java.util.Arrays;
 import java.util.TreeSet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.desktop.ComponentFinder;
@@ -45,7 +44,7 @@ public class RepositoryPanelTest extends UnitTest {
 
 	private void mockDaoFactory() {
 		ProjectDao dao = mock(ProjectDao.class);
-		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(Arrays.asList(RepositoryType.values()));
+		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(asList(RepositoryType.values()));
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getProjectDao()).thenReturn(dao);
 		when(dao.getSupportedRepositoryTypes()).thenReturn(types);

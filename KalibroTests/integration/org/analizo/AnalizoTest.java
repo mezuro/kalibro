@@ -1,8 +1,8 @@
 package org.analizo;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.BaseToolFixtures.analizo;
-import static org.kalibro.core.model.NativeModuleResultFixtures.*;
+import static org.kalibro.BaseToolFixtures.analizo;
+import static org.kalibro.NativeModuleResultFixtures.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kalibro.NativeMetric;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.model.NativeMetric;
 import org.kalibro.tests.IntegrationTest;
 
 public class AnalizoTest extends IntegrationTest {
@@ -50,7 +50,7 @@ public class AnalizoTest extends IntegrationTest {
 	public void shouldCollectMetrics() throws IOException {
 		File codeDirectory = new File(samplesDirectory(), "analizo");
 		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
-		assertDeepSet(analizo.collectMetrics(codeDirectory, metrics),
-			helloWorldApplicationResult(), helloWorldClassResult());
+		assertDeepEquals(asList(helloWorldApplicationResult(), helloWorldClassResult()),
+			analizo.collectMetrics(codeDirectory, metrics));
 	}
 }

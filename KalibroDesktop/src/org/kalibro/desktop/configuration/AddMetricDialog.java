@@ -7,9 +7,9 @@ import java.awt.event.ActionListener;
 import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
 
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.Metric;
-import org.kalibro.core.model.NativeMetric;
+import org.kalibro.CompoundMetric;
+import org.kalibro.Metric;
+import org.kalibro.NativeMetric;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.RadioButton;
 import org.kalibro.desktop.swingextension.dialog.AbstractDialog;

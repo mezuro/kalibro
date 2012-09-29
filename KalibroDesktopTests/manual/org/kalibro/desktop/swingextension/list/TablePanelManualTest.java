@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class TablePanelManualTest extends TablePanel<Range> implements TablePanelListener<Range> {

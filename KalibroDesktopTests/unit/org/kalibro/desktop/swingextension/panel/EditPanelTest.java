@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.panel;
 
 import org.junit.Test;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Language;
 import org.kalibro.tests.UnitTest;
 
 public class EditPanelTest extends UnitTest {

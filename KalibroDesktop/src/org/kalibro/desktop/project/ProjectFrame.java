@@ -1,6 +1,6 @@
 package org.kalibro.desktop.project;
 
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.desktop.swingextension.InternalFrame;
 
 public class ProjectFrame extends InternalFrame<Project> {

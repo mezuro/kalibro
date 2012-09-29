@@ -1,51 +1,31 @@
 package org.kalibro.core.persistence;
 
-import java.util.List;
+import javax.persistence.TypedQuery;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Project;
+import org.kalibro.Configuration;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.dao.ConfigurationDao;
 
+/**
+ * Database access implementation for {@link ConfigurationDao}.
+ * 
+ * @author Carlos Morais
+ */
 class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements ConfigurationDao {
 
-	protected ConfigurationDatabaseDao(RecordManager recordManager) {
+	ConfigurationDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ConfigurationRecord.class);
 	}
 
 	@Override
-	public void save(Configuration configuration) {
-		ConfigurationRecord record = new ConfigurationRecord(configuration);
-		record = recordManager.save(record);
-		configuration.setId(record.convert().getId());
+	public Configuration configurationOf(Long projectId) {
+		TypedQuery<ConfigurationRecord> query = createRecordQuery("JOIN Project project WHERE project.id = :projectId");
+		query.setParameter("projectId", projectId);
+		return query.getSingleResult().convert();
 	}
 
 	@Override
-	public List<String> getConfigurationNames() {
-		return getAllNames();
-	}
-
-	@Override
-	public boolean hasConfiguration(String configurationName) {
-		return hasEntity(configurationName);
-	}
-
-	@Override
-	public Configuration getConfiguration(String configurationName) {
-		return getByName(configurationName);
-	}
-
-	@Override
-	public Configuration getConfigurationFor(String projectName) {
-		Project project = new ProjectDatabaseDao(recordManager).getProject(projectName);
-		return getByName(project.getConfigurationName());
-	}
-
-	@Override
-	public void removeConfiguration(String configurationName) {
-		ConfigurationRecord record = new ConfigurationRecord(getByName(configurationName));
-		recordManager.beginTransaction();
-		recordManager.remove(record);
-		recordManager.commitTransaction();
+	public Long save(Configuration configuration) {
+		return save(new ConfigurationRecord(configuration)).id();
 	}
 }

@@ -9,19 +9,22 @@ import org.checkstyle.CheckstyleMetricCollector;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.tests.AcceptanceTest;
 
-public abstract class BaseToolDatabaseTest extends DatabaseTestCase {
+public class BaseToolDatabaseTest extends AcceptanceTest {
 
-	private BaseToolDatabaseDao dao;
+	private BaseToolDao dao;
 
 	@Before
 	public void setUp() {
-		dao = daoFactory.createBaseToolDao();
+		dao = DaoFactory.getBaseToolDao();
 	}
 
 	@Test
 	public void shouldListSavedBaseToolNames() {
-		assertDeepList(dao.getBaseToolNames(), "Analizo", "Checkstyle", "CVSAnaly");
+		assertDeepEquals(asList("Analizo", "Checkstyle", "CVSAnaly"), dao.getBaseToolNames());
 	}
 
 	@Test

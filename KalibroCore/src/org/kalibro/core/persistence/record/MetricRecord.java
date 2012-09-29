@@ -3,7 +3,7 @@ package org.kalibro.core.persistence.record;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 
-import org.kalibro.core.model.Metric;
+import org.kalibro.Metric;
 import org.kalibro.dto.DataTransferObject;
 
 @MappedSuperclass

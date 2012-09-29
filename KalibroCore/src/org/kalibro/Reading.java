@@ -2,10 +2,7 @@ package org.kalibro;
 
 import java.awt.Color;
 
-import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.Ignore;
-import org.kalibro.core.abstractentity.Print;
-import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.abstractentity.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 
@@ -21,7 +18,9 @@ public class Reading extends AbstractEntity<Reading> {
 	@Print(skip = true)
 	private Long id;
 
+	@IdentityField
 	private String label;
+
 	private Double grade;
 	private Color color;
 
@@ -56,6 +55,9 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public void setLabel(String label) {
+		if (group != null)
+			for (Reading other : group.getReadings())
+				assertNoLabelConflict(other, label);
 		this.label = label;
 	}
 
@@ -64,6 +66,9 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public void setGrade(Double grade) {
+		if (group != null)
+			for (Reading other : group.getReadings())
+				assertNoGradeConflict(other, grade);
 		this.grade = grade;
 	}
 
@@ -75,18 +80,26 @@ public class Reading extends AbstractEntity<Reading> {
 		this.color = color;
 	}
 
-	protected void assertNoConflictWith(Reading other) {
-		if (getLabel().equals(other.getLabel()))
-			throw new KalibroException("Reading with label \"" + getLabel() + "\" already exists in the group.");
-		if (getGrade().equals(other.getGrade()))
-			throw new KalibroException("Reading with grade " + getGrade() + " already exists in the group.");
+	void assertNoConflictWith(Reading other) {
+		assertNoLabelConflict(other, label);
+		assertNoGradeConflict(other, grade);
+	}
+
+	private void assertNoLabelConflict(Reading other, String theLabel) {
+		if (other.label.equals(theLabel))
+			throw new KalibroException("Reading with label \"" + theLabel + "\" already exists in the group.");
+	}
+
+	private void assertNoGradeConflict(Reading other, Double theGrade) {
+		if (other.grade.equals(theGrade))
+			throw new KalibroException("Reading with grade " + theGrade + " already exists in the group.");
 	}
 
 	public Long getGroupId() {
 		return group.getId();
 	}
 
-	protected void setGroup(ReadingGroup group) {
+	void setGroup(ReadingGroup group) {
 		this.group = group;
 	}
 
@@ -103,10 +116,19 @@ public class Reading extends AbstractEntity<Reading> {
 			dao().delete(id);
 		if (group != null)
 			group.removeReading(this);
+		deleted();
+	}
+
+	void deleted() {
 		id = null;
 	}
 
 	private ReadingDao dao() {
 		return DaoFactory.getReadingDao();
+	}
+
+	@Override
+	public String toString() {
+		return grade + " - " + label;
 	}
 }

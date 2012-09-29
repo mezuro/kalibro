@@ -1,19 +1,21 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
-import static org.kalibro.core.model.enums.RepositoryType.*;
+import static org.kalibro.ProjectFixtures.helloWorld;
+import static org.kalibro.RepositoryType.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -45,7 +47,7 @@ public class ProjectEndpointImplTest extends UnitTest {
 
 	@Test
 	public void testSaveProject() {
-		endpoint.saveProject(new RawProjectXml(project));
+		endpoint.saveProject(new ProjectXmlRequest(project));
 		Mockito.verify(dao).save(project);
 	}
 
@@ -79,10 +81,9 @@ public class ProjectEndpointImplTest extends UnitTest {
 
 	@Test
 	public void testSupportedRepositoryTypes() {
-		Set<RepositoryType> repositoryTypes = new HashSet<RepositoryType>();
-		repositoryTypes.addAll(Arrays.asList(LOCAL_ZIP, GIT, SUBVERSION));
+		Set<RepositoryType> repositoryTypes = asSet(LOCAL_ZIP, GIT, SUBVERSION);
 		PowerMockito.when(dao.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
-		assertDeepSet(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
+		assertDeepEquals(asSet(GIT, SUBVERSION), endpoint.getSupportedRepositoryTypes());
 	}
 
 	@Test

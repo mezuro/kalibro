@@ -11,18 +11,12 @@ import java.util.Date;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
-import org.junit.After;
 import org.junit.Test;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.IntegrationTest;
 
 public class CommandExecutionTest extends IntegrationTest {
-
-	@After
-	public void tearDown() throws IOException {
-		FileUtils.cleanDirectory(logsDirectory());
-	}
 
 	@Test
 	public void shouldThrowExceptionWhenExecutingInvalidCommand() {

@@ -1,17 +1,17 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertFalse;
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.analizoCheckstyleResultMap;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
-import static org.kalibro.core.model.enums.Granularity.*;
-import static org.kalibro.core.model.enums.Language.JAVA;
+import static org.kalibro.Granularity.*;
+import static org.kalibro.Language.JAVA;
+import static org.kalibro.ModuleNodeFixtures.*;
+import static org.kalibro.ModuleResultFixtures.analizoCheckstyleResultMap;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.*;
+import org.kalibro.*;
 import org.kalibro.tests.UnitTest;
 
 public class ResultsAggregatorTest extends UnitTest {
@@ -78,6 +78,6 @@ public class ResultsAggregatorTest extends UnitTest {
 	private void checkResult(ModuleResult result, NativeMetric metric, Double value, Double... descendentResults) {
 		MetricResult metricResult = result.getResultFor(metric);
 		assertDoubleEquals(value, metricResult.getValue());
-		assertDeepCollection(metricResult.getDescendentResults(), descendentResults);
+		assertDeepEquals(asList(descendentResults), metricResult.getDescendentResults());
 	}
 }

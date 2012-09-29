@@ -1,9 +1,9 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResultMap;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.kalibro.BaseToolFixtures.analizoStub;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldResultMap;
+import static org.kalibro.ProjectFixtures.helloWorld;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -12,13 +12,7 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroSettings;
-import org.kalibro.ServerSettings;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.*;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
@@ -60,7 +54,7 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
-		when(configurationDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
+		when(configurationDao.configurationOf(projectResult.getProject().getId())).thenReturn(configuration);
 		when(configuration.getNativeMetrics()).thenReturn(metricsMap);
 	}
 

@@ -21,8 +21,8 @@ import org.powermock.reflect.Whitebox;
 public class DaoFactoryTest extends UnitTest {
 
 	@BeforeClass
-	public static void constructorCoverage() {
-		new DummyDaoFactory();
+	public static void constructorCoverage() throws Exception {
+		mock(DaoFactory.class).getClass().getConstructor().newInstance();
 	}
 
 	private DaoFactory daoFactory;

@@ -1,8 +1,8 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.newRange;
-import static org.kalibro.core.model.RangeLabel.*;
+import static org.kalibro.RangeFixtures.newRange;
+import static org.kalibro.RangeLabel.*;
 
 import java.awt.Color;
 
@@ -10,8 +10,8 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.Range;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
 import org.kalibro.tests.UnitTest;

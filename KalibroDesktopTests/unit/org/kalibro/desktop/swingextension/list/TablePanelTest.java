@@ -1,7 +1,7 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -11,7 +11,7 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.tests.UnitTest;

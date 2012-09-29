@@ -1,12 +1,12 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.core.model.enums.Granularity.*;
+import static org.kalibro.Granularity.SOFTWARE;
 
 import java.util.Collection;
 
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleNode;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.Module;
+import org.kalibro.ModuleNode;
+import org.kalibro.ProjectResult;
 
 class SourceTreeBuilder {
 

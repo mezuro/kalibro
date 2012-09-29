@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.core.model.RangeFixtures.*;
-import static org.kalibro.core.model.RangeLabel.*;
+import static org.kalibro.RangeFixtures.*;
+import static org.kalibro.RangeLabel.*;
 
 import org.kalibro.desktop.ComponentWrapperDialog;
 

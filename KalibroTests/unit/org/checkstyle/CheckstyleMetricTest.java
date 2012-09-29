@@ -2,13 +2,13 @@ package org.checkstyle;
 
 import static org.checkstyle.CheckstyleMetric.*;
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.enums.Granularity.CLASS;
-import static org.kalibro.core.model.enums.Language.JAVA;
+import static org.kalibro.Granularity.CLASS;
+import static org.kalibro.Language.JAVA;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.NativeMetric;
+import org.kalibro.Statistic;
 import org.kalibro.tests.EnumerationTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;

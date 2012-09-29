@@ -5,10 +5,10 @@ import java.util.List;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.MetricResult;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.Configuration;
+import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
+import org.kalibro.ProjectResult;
 import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.kalibro.dao.ModuleResultDao;
 
@@ -22,7 +22,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	public void save(ModuleResult moduleResult, ProjectResult projectResult) {
-		recordManager.saveAll(MetricResultRecord.createRecords(moduleResult, projectResult));
+		recordManager().saveAll(MetricResultRecord.createRecords(moduleResult, projectResult));
 	}
 
 	@Override
@@ -50,6 +50,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	private Configuration getConfigurationFor(String projectName) {
-		return new ConfigurationDatabaseDao(recordManager).getConfigurationFor(projectName);
+		Long projectId = new ProjectDatabaseDao(recordManager()).getByName(projectName).getId();
+		return new ConfigurationDatabaseDao(recordManager()).configurationOf(projectId);
 	}
 }

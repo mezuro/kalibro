@@ -2,7 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -11,10 +10,10 @@ import javax.persistence.TypedQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.ProjectResultFixtures;
+import org.kalibro.Configuration;
+import org.kalibro.ModuleResult;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectResultFixtures;
 import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
@@ -57,7 +56,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		records = mock(List.class);
 		mockStatic(MetricResultRecord.class);
 		when(MetricResultRecord.createRecords(moduleResult, projectResult)).thenReturn(records);
-		when(MetricResultRecord.convertIntoModuleResults(records)).thenReturn(Arrays.asList(moduleResult));
+		when(MetricResultRecord.convertIntoModuleResults(records)).thenReturn(asList(moduleResult));
 	}
 
 	private void mockQueries() throws Exception {
@@ -65,9 +64,12 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		doReturn(query).when(dao).createRecordQuery(anyString());
 		when(query.getResultList()).thenReturn(records);
 
+		ProjectDatabaseDao projDao = mock(ProjectDatabaseDao.class);
 		ConfigurationDatabaseDao configDao = mock(ConfigurationDatabaseDao.class);
+		whenNew(ProjectDatabaseDao.class).withArguments(recordManager).thenReturn(projDao);
+		when(projDao.getByName(PROJECT_NAME)).thenReturn(projectResult.getProject());
 		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configDao);
-		when(configDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
+		when(configDao.configurationOf(projectResult.getProject().getId())).thenReturn(configuration);
 	}
 
 	@Test

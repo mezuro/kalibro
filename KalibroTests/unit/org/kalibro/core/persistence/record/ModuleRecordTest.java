@@ -1,54 +1,12 @@
 package org.kalibro.core.persistence.record;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleFixtures.helloWorldClass;
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
+import org.kalibro.Module;
+import org.kalibro.ModuleFixtures;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Date;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.*;
-
-public class ModuleRecordTest extends DtoTestCase<ModuleNode, ModuleRecord> {
-
-	private ProjectResult projectResult;
-
-	@Before
-	public void setUp() {
-		projectResult = ProjectResultFixtures.helloWorldResult();
-	}
+public class ModuleRecordTest extends RecordTest<Module> {
 
 	@Override
-	protected ModuleRecord newDtoUsingDefaultConstructor() {
-		return new ModuleRecord();
-	}
-
-	@Override
-	protected Collection<ModuleNode> entitiesForTestingConversion() {
-		return Arrays.asList(helloWorldRoot(), analizoCheckstyleTree());
-	}
-
-	@Override
-	protected ModuleRecord createDto(ModuleNode moduleNode) {
-		return new ModuleRecord(moduleNode, projectResult);
-	}
-
-	@Test
-	public void shouldRetrieveIfIsRoot() {
-		assertTrue(createDto(helloWorldRoot()).isRoot());
-		assertFalse(new ModuleRecord(helloWorldLeaf(), null, new ModuleRecord()).isRoot());
-	}
-
-	@Test
-	public void shouldConvertIntoModuleResult() {
-		Date date = projectResult.getDate();
-		Module module = helloWorldClass();
-		ModuleNode moduleNode = new ModuleNode(module);
-		ModuleRecord record = new ModuleRecord(moduleNode, projectResult);
-		assertDeepEquals(new ModuleResult(module, date), record.convertIntoModuleResult());
+	protected Module loadFixture() {
+		return ModuleFixtures.helloWorldClass();
 	}
 }

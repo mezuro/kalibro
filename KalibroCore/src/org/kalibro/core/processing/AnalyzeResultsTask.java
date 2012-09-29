@@ -3,10 +3,10 @@ package org.kalibro.core.processing;
 import java.util.Collection;
 import java.util.Map;
 
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.Module;
+import org.kalibro.ModuleResult;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 
 class AnalyzeResultsTask extends ProcessProjectSubtask<Collection<ModuleResult>> {
 

@@ -6,10 +6,11 @@ import java.util.List;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.*;
+import org.kalibro.*;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "MetricResult")
+@Table(name = "\"METRIC_RESULT\"")
 @PrimaryKey(columns = {
 	@Column(name = "project"),
 	@Column(name = "date"),
@@ -63,11 +64,15 @@ public class MetricResultRecord extends DataTransferObject<MetricResult> {
 		super();
 	}
 
-	public MetricResultRecord(MetricResult metricResult, Module module, ProjectResult projectResult) {
-		initializeModule(module, projectResult);
+	public MetricResultRecord(MetricResult metricResult) {
 		metric = new NativeMetricRecord((NativeMetric) metricResult.getMetric());
 		value = Double.doubleToLongBits(metricResult.getValue());
 		initializeDescendentResults(metricResult);
+	}
+
+	public MetricResultRecord(MetricResult metricResult, Module module, ProjectResult projectResult) {
+		this(metricResult);
+		initializeModule(module, projectResult);
 	}
 
 	private void initializeModule(Module entity, ProjectResult projectResult) {

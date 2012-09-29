@@ -5,9 +5,8 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.service.entities.*;
+import org.kalibro.*;
+import org.kalibro.service.xml.*;
 
 @WebService
 public class EchoEndpoint {
@@ -22,19 +21,20 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	public ConfigurationXml echoConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration) {
+	public ConfigurationXmlRequest echoConfiguration(
+		@WebParam(name = "configuration") ConfigurationXmlRequest configuration) {
 		Configuration entity = configuration.convert();
 		entity.setName("echo " + entity.getName());
-		return new ConfigurationXml(entity);
+		return new ConfigurationXmlRequest(entity);
 	}
 
 	@WebMethod
 	@WebResult(name = "metricConfiguration")
-	public MetricConfigurationXml echoMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXml metricConfiguration) {
+	public MetricConfigurationXmlRequest echoMetricConfiguration(
+		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration) {
 		MetricConfiguration entity = metricConfiguration.convert();
 		entity.setCode("echo_" + entity.getCode());
-		return new MetricConfigurationXml(entity);
+		return new MetricConfigurationXmlRequest(entity);
 	}
 
 	@WebMethod
@@ -48,10 +48,10 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "project")
-	public ProjectXml echoProject(@WebParam(name = "project") ProjectXml project) {
+	public ProjectXmlResponse echoProject(@WebParam(name = "project") ProjectXmlResponse project) {
 		Project entity = project.convert();
 		entity.setName("echo " + entity.getName());
-		return new ProjectXml(entity);
+		return new ProjectXmlResponse(entity);
 	}
 
 	@WebMethod
@@ -65,10 +65,10 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "project")
-	public RawProjectXml echoRawProject(@WebParam(name = "project") RawProjectXml project) {
+	public ProjectXmlRequest echoRawProject(@WebParam(name = "project") ProjectXmlRequest project) {
 		Project entity = project.convert();
 		entity.setName("echo " + entity.getName());
-		return new RawProjectXml(entity);
+		return new ProjectXmlRequest(entity);
 	}
 
 	@WebMethod

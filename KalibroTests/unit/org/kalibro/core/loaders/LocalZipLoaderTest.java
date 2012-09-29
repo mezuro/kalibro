@@ -1,9 +1,8 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 
 public class LocalZipLoaderTest extends ProjectLoaderTestCase {
 
@@ -14,7 +13,7 @@ public class LocalZipLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("unzip -v");
+		return asList("unzip -v");
 	}
 
 	@Override
@@ -24,6 +23,6 @@ public class LocalZipLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedLoadCommands(boolean update) {
-		return Arrays.asList("unzip -u -o -P PASSWORD " + repository.getAddress() + " -d .");
+		return asList("unzip -u -o -P PASSWORD " + repository.getAddress() + " -d .");
 	}
 }

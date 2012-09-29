@@ -5,17 +5,20 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.*;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "MetricConfiguration")
-@PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName")})
+@Table(name = "\"METRIC_CONFIGURATION\"")
 public class MetricConfigurationRecord extends DataTransferObject<MetricConfiguration> {
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "id")
+	@Id
+	@GeneratedValue
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
+
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ConfigurationRecord configuration;
 
@@ -51,9 +54,18 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 		super();
 	}
 
+	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
+		this(metricConfiguration, (Long) null);
+	}
+
+	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, Long configurationId) {
+		this(metricConfiguration, new ConfigurationRecord(configurationId));
+	}
+
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, ConfigurationRecord configuration) {
 		this.configuration = configuration;
 		initializeMetric(metricConfiguration);
+		id = metricConfiguration.getId();
 		code = metricConfiguration.getCode();
 		weight = Double.doubleToLongBits(metricConfiguration.getWeight());
 		aggregationForm = metricConfiguration.getAggregationForm().name();
@@ -92,5 +104,9 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 	private void convertRanges(MetricConfiguration metricConfiguration) {
 		for (RangeRecord range : ranges)
 			metricConfiguration.addRange(range.convert());
+	}
+
+	public Long id() {
+		return id;
 	}
 }

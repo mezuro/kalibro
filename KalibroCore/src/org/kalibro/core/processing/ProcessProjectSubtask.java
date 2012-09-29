@@ -1,9 +1,9 @@
 package org.kalibro.core.processing;
 
+import org.kalibro.Project;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.dao.DaoFactory;
 
 abstract class ProcessProjectSubtask<T> extends Task<T> {

@@ -1,7 +1,7 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RepositoryFixtures.newHelloWorldRepository;
+import static org.kalibro.RepositoryFixtures.newHelloWorldRepository;
 
 import java.io.File;
 import java.util.Iterator;
@@ -10,8 +10,8 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.tests.IntegrationTest;
 
 public abstract class LoaderIntegrationTest extends IntegrationTest {

@@ -1,12 +1,19 @@
 package org.kalibro.dao;
 
-import org.kalibro.core.model.MetricConfiguration;
+import java.util.SortedSet;
 
+import org.kalibro.MetricConfiguration;
+
+/**
+ * Data access object for {@link MetricConfiguration}.
+ * 
+ * @author Carlos Morais
+ */
 public interface MetricConfigurationDao {
 
-	void save(MetricConfiguration metricConfiguration, String configurationName);
+	SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId);
 
-	MetricConfiguration getMetricConfiguration(String configurationName, String metricName);
+	Long save(MetricConfiguration metricConfiguration);
 
-	void removeMetricConfiguration(String configurationName, String metricName);
+	void delete(Long metricConfigurationId);
 }

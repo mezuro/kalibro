@@ -3,16 +3,11 @@ package org.kalibro.service.xml;
 import org.junit.Test;
 import org.kalibro.Reading;
 
-public class ReadingXmlTest extends XmlTest<Reading, ReadingXml> {
+public class ReadingXmlTest extends XmlTest<Reading> {
 
 	@Override
 	protected Reading loadFixture() {
 		return loadFixture("excellent", Reading.class);
-	}
-
-	@Override
-	protected Class<ReadingXml> dtoClass() {
-		return ReadingXml.class;
 	}
 
 	@Test

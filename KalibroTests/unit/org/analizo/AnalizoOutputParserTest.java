@@ -1,7 +1,7 @@
 package org.analizo;
 
-import static org.kalibro.core.model.BaseToolFixtures.analizo;
-import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.kalibro.BaseToolFixtures.analizo;
+import static org.kalibro.MetricFixtures.analizoMetric;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,8 +9,8 @@ import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.tests.UnitTest;
 
 public class AnalizoOutputParserTest extends UnitTest {

@@ -1,8 +1,8 @@
 package org.kalibro.desktop.swingextension;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.RangeFixtures.newRange;
-import static org.kalibro.core.model.RangeLabel.REGULAR;
+import static org.kalibro.RangeFixtures.newRange;
+import static org.kalibro.RangeLabel.REGULAR;
 
 import java.beans.PropertyVetoException;
 
@@ -11,8 +11,8 @@ import javax.swing.WindowConstants;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.Range;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Range;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;

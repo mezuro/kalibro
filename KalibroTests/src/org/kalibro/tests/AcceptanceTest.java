@@ -1,54 +1,44 @@
 package org.kalibro.tests;
 
+import static org.kalibro.SupportedDatabase.APACHE_DERBY;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
 import org.junit.rules.Timeout;
+import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.SupportedDatabase;
 
-public abstract class AcceptanceTest extends UnitTest {
+@RunWith(Theories.class)
+public abstract class AcceptanceTest extends IntegrationTest {
 
-	private static final SupportedDatabase DATABASE = SupportedDatabase.APACHE_DERBY;
-
-	protected static File settingsFile;
+	@DataPoints
+	public static SupportedDatabase[] supportedDatabases() {
+		return SupportedDatabase.values();
+	}
 
 	@BeforeClass
 	public static void prepareSettings() {
-		KalibroSettings settings = new KalibroSettings();
-		settings.getServerSettings().setDatabaseSettings(getTestSetttings());
-		settings.save();
-
-		settingsFile = new File(dotKalibro(), "kalibro.settings");
+		changeDatabase(APACHE_DERBY);
 	}
 
 	@AfterClass
 	public static void deleteSettings() {
-		settingsFile.delete();
+		new File(System.getProperty("user.dir") + "/derby.log").delete();
+		new File(dotKalibro(), "kalibro.settings").delete();
 	}
 
-	private static DatabaseSettings getTestSetttings() {
-		switch (DATABASE) {
-			case APACHE_DERBY:
-				new File(System.getProperty("user.dir") + "/derby.log").deleteOnExit();
-				return newSettings("jdbc:derby:memory:kalibro_test;create=true", false);
-			case MYSQL:
-				return newSettings("jdbc:mysql://localhost:3306/kalibro_test", true);
-		}
-		return null;
-	}
-
-	private static DatabaseSettings newSettings(String jdbcUrl, boolean hasUser) {
-		DatabaseSettings settings = new DatabaseSettings();
-		settings.setDatabaseType(DATABASE);
-		settings.setJdbcUrl(jdbcUrl);
-		settings.setUsername(hasUser ? "kalibro" : "");
-		settings.setPassword(hasUser ? "kalibro" : "");
-		return settings;
+	protected static void changeDatabase(SupportedDatabase databaseType) {
+		KalibroSettings settings = new KalibroSettings();
+		DatabaseSettings databaseSettigs = loadFixture(databaseType.name(), DatabaseSettings.class);
+		settings.getServerSettings().setDatabaseSettings(databaseSettigs);
+		settings.save();
 	}
 
 	@Override

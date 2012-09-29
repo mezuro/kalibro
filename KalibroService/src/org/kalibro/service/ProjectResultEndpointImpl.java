@@ -8,7 +8,7 @@ import javax.jws.WebService;
 
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectResultDao;
-import org.kalibro.service.entities.ProjectResultXml;
+import org.kalibro.service.xml.ProjectResultXml;
 
 @WebService(name = "ProjectResultEndpoint", serviceName = "ProjectResultEndpointService")
 public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
@@ -19,7 +19,7 @@ public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 		this(DaoFactory.getProjectResultDao());
 	}
 
-	protected ProjectResultEndpointImpl(ProjectResultDao projectResultDao) {
+	public ProjectResultEndpointImpl(ProjectResultDao projectResultDao) {
 		dao = projectResultDao;
 	}
 

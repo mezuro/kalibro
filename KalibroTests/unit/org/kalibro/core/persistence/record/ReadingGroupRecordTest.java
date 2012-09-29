@@ -3,16 +3,11 @@ package org.kalibro.core.persistence.record;
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
 
-public class ReadingGroupRecordTest extends RecordTest<ReadingGroup, ReadingGroupRecord> {
+public class ReadingGroupRecordTest extends RecordTest<ReadingGroup> {
 
 	@Override
 	protected ReadingGroup loadFixture() {
 		return loadFixture("scholar", ReadingGroup.class);
-	}
-
-	@Override
-	protected Class<ReadingGroupRecord> dtoClass() {
-		return ReadingGroupRecord.class;
 	}
 
 	@Test

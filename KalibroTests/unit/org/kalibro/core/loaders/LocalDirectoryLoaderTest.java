@@ -1,9 +1,8 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 
 public class LocalDirectoryLoaderTest extends ProjectLoaderTestCase {
 
@@ -14,7 +13,7 @@ public class LocalDirectoryLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("cp --version");
+		return asList("cp --version");
 	}
 
 	@Override
@@ -24,6 +23,6 @@ public class LocalDirectoryLoaderTest extends ProjectLoaderTestCase {
 
 	@Override
 	protected List<String> expectedLoadCommands(boolean update) {
-		return Arrays.asList("cp -ru " + repository.getAddress() + " .");
+		return asList("cp -ru " + repository.getAddress() + " .");
 	}
 }

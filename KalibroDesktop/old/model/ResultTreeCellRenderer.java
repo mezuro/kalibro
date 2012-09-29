@@ -1,6 +1,6 @@
 package org.kalibro.desktop.old.model;
 
-import static org.kalibro.core.model.enums.Granularity.*;
+import static org.kalibro.Granularity.*;
 
 import java.awt.Component;
 
@@ -8,7 +8,7 @@ import javax.swing.JLabel;
 import javax.swing.JTree;
 import javax.swing.tree.DefaultTreeCellRenderer;
 
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
 import org.kalibro.desktop.swingextension.icon.MethodIcon;
 import org.kalibro.desktop.swingextension.renderer.Renderer;
 

@@ -7,7 +7,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.service.entities.BaseToolXml;
+import org.kalibro.service.xml.BaseToolXml;
 
 @WebService(name = "BaseToolEndpoint", serviceName = "BaseToolEndpointService")
 public interface BaseToolEndpoint {

@@ -72,11 +72,6 @@ class RecordManager {
 		entityManager.getTransaction().commit();
 	}
 
-	@Deprecated
-	protected void evictFromCache(Class<?> classToEvict) {
-		entityManager.getEntityManagerFactory().getCache().evict(classToEvict);
-	}
-
 	@Override
 	protected void finalize() throws Throwable {
 		entityManager.close();

@@ -11,6 +11,7 @@ import org.apache.commons.io.FileUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.Theory;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
@@ -23,7 +24,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	@Before
 	public void setUp() {
 		group = loadFixture("scholar", ReadingGroup.class);
-		file = new File(Environment.dotKalibro(), "scholar.yml");
+		file = new File(Environment.dotKalibro(), "ReadingGroup-exported.yml");
 		file.deleteOnExit();
 	}
 
@@ -33,15 +34,16 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 			each.delete();
 	}
 
-	@Test
-	public void testCrud() {
+	@Theory
+	public void testCrud(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
 		assertNotSaved();
 
 		group.save();
 		assertSaved();
 
-		group.addReading(newReading());
-		assertFalse(ReadingGroup.all().get(0).deepEquals(group));
+		group.setDescription("Another description");
+		assertFalse(ReadingGroup.all().first().deepEquals(group));
 
 		group.save();
 		assertSaved();
@@ -55,18 +57,19 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepList(ReadingGroup.all(), group);
+		assertDeepEquals(asSet(group), ReadingGroup.all());
 	}
 
-	@Test
-	public void nameShouldBeRequiredAndUnique() {
+	@Theory
+	public void nameShouldBeRequiredAndUnique(SupportedDatabase databaseType) {
+		changeDatabase(databaseType);
 		group.setName(" ");
 		assertThat(save()).throwsException().withMessage("Reading group requires name.");
 
-		group.setName("Scholar");
+		group.setName("Unique");
 		group.save();
 
-		group = new ReadingGroup("Scholar");
+		group = new ReadingGroup("Unique");
 		assertThat(save()).doThrow(RollbackException.class);
 	}
 
@@ -82,26 +85,24 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void readingsInSameGroupShouldNotHaveDuplicateLabelsOrGrade() {
-		Reading reading, existent = group.getReadings().get(0);
-		String label = existent.getLabel();
-		Double grade = existent.getGrade();
-
-		reading = newReading();
-		reading.setLabel(label);
-		assertThat(addReading(reading)).throwsException()
-			.withMessage("Reading with label \"" + label + "\" already exists in the group.");
-
-		reading = newReading();
-		reading.setGrade(grade);
-		assertThat(addReading(reading)).throwsException()
-			.withMessage("Reading with grade " + grade + " already exists in the group.");
+		Reading existent = group.getReadings().first();
+		existent.setLabel("label");
+		existent.setGrade(-1.0);
+		assertThat(add(reading("label"))).throwsException()
+			.withMessage("Reading with label \"label\" already exists in the group.");
+		assertThat(add(reading(-1.0))).throwsException()
+			.withMessage("Reading with grade -1.0 already exists in the group.");
 	}
 
-	private Reading newReading() {
-		return new Reading("ReadingGroupAcceptanceTest label", 42.0, Color.MAGENTA);
+	private Reading reading(String label) {
+		return new Reading(label, 42.0, Color.MAGENTA);
 	}
 
-	private VoidTask addReading(final Reading reading) {
+	private Reading reading(Double grade) {
+		return new Reading("ReadingGroupAcceptanceTest label", grade, Color.MAGENTA);
+	}
+
+	private VoidTask add(final Reading reading) {
 		return new VoidTask() {
 
 			@Override

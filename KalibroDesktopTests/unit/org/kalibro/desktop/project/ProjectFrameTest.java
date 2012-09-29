@@ -1,12 +1,12 @@
 package org.kalibro.desktop.project;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
+import static org.kalibro.ProjectFixtures.helloWorld;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.Project;
+import org.kalibro.Project;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;

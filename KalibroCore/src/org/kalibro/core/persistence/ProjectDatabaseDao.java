@@ -10,9 +10,9 @@ import java.util.Set;
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.io.FileUtils;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Configuration;
+import org.kalibro.Project;
+import org.kalibro.RepositoryType;
 import org.kalibro.core.persistence.record.ProjectRecord;
 import org.kalibro.core.processing.ProcessProjectTask;
 import org.kalibro.dao.ConfigurationDao;
@@ -35,7 +35,7 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 	@Override
 	public void save(Project project) {
 		ProjectRecord record = createRecord(project);
-		record = recordManager.save(record);
+		record = save(record);
 		project.setId(record.convert().getId());
 	}
 
@@ -58,17 +58,17 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 	public void removeProject(String projectName) {
 		Project project = getByName(projectName);
 		ProjectRecord record = createRecord(project);
-		recordManager.beginTransaction();
+		recordManager().beginTransaction();
 		delete("MetricResult", "module.projectResult.project.name", projectName);
 		delete("Module", "projectResult.project.name", projectName);
 		delete("ProjectResult", "project.name", projectName);
-		recordManager.remove(record);
-		recordManager.commitTransaction();
+		recordManager().remove(record);
+		recordManager().commitTransaction();
 		FileUtils.deleteQuietly(project.getDirectory());
 	}
 
 	private ProjectRecord createRecord(Project project) {
-		Configuration configuration = configurationDao.getConfiguration(project.getConfigurationName());
+		Configuration configuration = configurationDao.configurationOf(project.getId());
 		return new ProjectRecord(project, configuration.getId());
 	}
 

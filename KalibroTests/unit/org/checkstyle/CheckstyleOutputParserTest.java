@@ -6,17 +6,15 @@ import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.LocalizedMessage;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricResult;
-import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeMetricResult;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -38,7 +36,7 @@ public class CheckstyleOutputParserTest extends UnitTest {
 	public void setUp() {
 		codeDirectory = mock(File.class);
 		when(codeDirectory.getAbsolutePath()).thenReturn(PATH);
-		Set<NativeMetric> wantedMetrics = new HashSet<NativeMetric>(Arrays.asList(NATIVE_METRIC));
+		Set<NativeMetric> wantedMetrics = asSet(NATIVE_METRIC);
 		parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
 	}
 

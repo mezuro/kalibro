@@ -1,18 +1,18 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.ModuleNodeFixtures.helloWorldRoot;
-import static org.kalibro.core.model.ModuleResultFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.ModuleNodeFixtures.helloWorldRoot;
+import static org.kalibro.ModuleResultFixtures.*;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Collection;
 import java.util.HashSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.ModuleResult;
+import org.kalibro.ProjectResult;
+import org.kalibro.ProjectState;
 import org.kalibro.tests.UnitTest;
 
 public class AnalyzeResultsTaskTest extends UnitTest {

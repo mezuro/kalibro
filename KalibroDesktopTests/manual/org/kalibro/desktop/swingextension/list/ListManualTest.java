@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.kalibro.core.model.ConfigurationFixtures.*;
+import static org.kalibro.ConfigurationFixtures.*;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -10,7 +10,7 @@ import java.util.Collection;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
 

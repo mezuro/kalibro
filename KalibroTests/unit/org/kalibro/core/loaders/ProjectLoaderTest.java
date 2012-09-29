@@ -4,15 +4,14 @@ import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroException;
+import org.kalibro.Repository;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.model.Repository;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -84,12 +83,12 @@ public class ProjectLoaderTest extends UnitTest {
 
 		@Override
 		protected List<String> getValidationCommands() {
-			return Arrays.asList(VALIDATION_COMMAND);
+			return asList(VALIDATION_COMMAND);
 		}
 
 		@Override
 		protected List<String> getLoadCommands(Repository repo, boolean update) {
-			return Arrays.asList(update ? UPDATE_COMMAND : LOAD_COMMAND);
+			return asList(update ? UPDATE_COMMAND : LOAD_COMMAND);
 		}
 	}
 }

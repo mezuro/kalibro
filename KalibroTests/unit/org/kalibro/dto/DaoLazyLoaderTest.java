@@ -2,7 +2,7 @@ package org.kalibro.dto;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,16 +19,16 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class DaoLazyLoaderTest extends UnitTest {
 
 	private ReadingDao dao;
-	private List<Reading> real, proxy;
+	private SortedSet<Reading> real, proxy;
 
 	@Before
 	public void setUp() {
 		dao = mock(ReadingDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getReadingDao()).thenReturn(dao);
-		real = mock(List.class);
+		real = mock(SortedSet.class);
 		when(dao.readingsOf(42L)).thenReturn(real);
-		proxy = (List<Reading>) DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", 42L);
+		proxy = (SortedSet<Reading>) DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", 42L);
 	}
 
 	@Test
@@ -57,7 +57,7 @@ public class DaoLazyLoaderTest extends UnitTest {
 		assertEquals(42, proxy.size());
 
 		Reading reading = mock(Reading.class);
-		when(real.get(42)).thenReturn(reading);
-		assertSame(reading, proxy.get(42));
+		when(real.first()).thenReturn(reading);
+		assertSame(reading, proxy.first());
 	}
 }

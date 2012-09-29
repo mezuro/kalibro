@@ -1,11 +1,21 @@
 package org.kalibro.tests;
 
-import java.io.File;
+import static org.kalibro.core.Environment.logsDirectory;
 
+import java.io.File;
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.AfterClass;
 import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
 
 public abstract class IntegrationTest extends UnitTest {
+
+	@AfterClass
+	public static void cleanLogs() throws IOException {
+		FileUtils.cleanDirectory(logsDirectory());
+	}
 
 	@Override
 	protected Timeout testTimeout() {

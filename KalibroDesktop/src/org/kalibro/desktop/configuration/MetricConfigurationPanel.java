@@ -5,9 +5,9 @@ import java.awt.Component;
 import javax.swing.JPanel;
 import javax.swing.border.TitledBorder;
 
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.Range;
-import org.kalibro.core.model.enums.Statistic;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
+import org.kalibro.Statistic;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.DoubleField;

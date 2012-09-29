@@ -2,14 +2,13 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
+import org.kalibro.NativeMetric;
 import org.kalibro.tests.UnitTest;
 
 public class PreModuleResultTest extends UnitTest {
@@ -22,7 +21,7 @@ public class PreModuleResultTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		HashSet<NativeMetric> wantedMetrics = new HashSet<NativeMetric>(Arrays.asList(NATIVE_METRIC));
+		Set<NativeMetric> wantedMetrics = asSet(NATIVE_METRIC);
 		result = new PreModuleResult(MODULE, wantedMetrics);
 	}
 

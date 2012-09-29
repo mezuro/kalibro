@@ -1,6 +1,7 @@
 package org.kalibro.desktop.reading;
 
 import java.awt.Component;
+import java.util.TreeSet;
 
 import javax.swing.border.TitledBorder;
 
@@ -54,7 +55,7 @@ public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
 	public ReadingGroup get() {
 		model.setName(nameField.get());
 		model.setDescription(descriptionField.get());
-		model.setReadings(readingsPanel.get());
+		model.setReadings(new TreeSet<Reading>(readingsPanel.get()));
 		return model;
 	}
 

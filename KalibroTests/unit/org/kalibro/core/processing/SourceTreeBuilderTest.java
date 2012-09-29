@@ -1,18 +1,16 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ModuleFixtures.*;
-import static org.kalibro.core.model.ModuleNodeFixtures.*;
-import static org.kalibro.core.model.ProjectResultFixtures.newHelloWorldResult;
-import static org.kalibro.core.model.enums.Granularity.*;
-
-import java.util.Arrays;
+import static org.kalibro.Granularity.*;
+import static org.kalibro.ModuleFixtures.*;
+import static org.kalibro.ModuleNodeFixtures.*;
+import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleNode;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.Module;
+import org.kalibro.ModuleNode;
+import org.kalibro.ProjectResult;
 import org.kalibro.tests.UnitTest;
 
 public class SourceTreeBuilderTest extends UnitTest {
@@ -49,7 +47,7 @@ public class SourceTreeBuilderTest extends UnitTest {
 
 	private ModuleNode getSourceTree(Module... modules) {
 		assertFalse(projectResult.isProcessed());
-		treeBuilder.buildSourceTree(Arrays.asList(modules));
+		treeBuilder.buildSourceTree(asList(modules));
 		return projectResult.getSourceTree();
 	}
 }

@@ -1,15 +1,15 @@
 package org.checkstyle;
 
-import static org.kalibro.core.model.enums.Statistic.*;
+import static org.kalibro.Statistic.*;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kalibro.Granularity;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
+import org.kalibro.Statistic;
 import org.kalibro.core.Identifier;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
-import org.kalibro.core.model.enums.Statistic;
 
 public enum CheckstyleMetric {
 

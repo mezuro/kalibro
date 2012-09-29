@@ -2,11 +2,12 @@ package org.kalibro.core.persistence.record;
 
 import javax.persistence.*;
 
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Repository")
+@Table(name = "\"REPOSITORY\"")
 public class RepositoryRecord extends DataTransferObject<Repository> {
 
 	@Id
@@ -29,6 +30,10 @@ public class RepositoryRecord extends DataTransferObject<Repository> {
 
 	public RepositoryRecord() {
 		super();
+	}
+
+	public RepositoryRecord(Repository repository) {
+		this(repository, null);
 	}
 
 	public RepositoryRecord(Repository repository, ProjectRecord project) {

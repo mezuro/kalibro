@@ -10,7 +10,6 @@ import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.configuration.ConfigurationMenu;
 import org.kalibro.desktop.project.ProjectMenu;
 import org.kalibro.desktop.swingextension.icon.Icon;
 import org.kalibro.tests.UnitTest;
@@ -54,7 +53,6 @@ public class KalibroFrameTest extends UnitTest {
 		JMenuBar menuBar = frame.getJMenuBar();
 		assertEquals(3, menuBar.getMenuCount());
 		assertTrue(menuBar.getMenu(0) instanceof KalibroMenu);
-		assertTrue(menuBar.getMenu(1) instanceof ConfigurationMenu);
-		assertTrue(menuBar.getMenu(2) instanceof ProjectMenu);
+		assertTrue(menuBar.getMenu(1) instanceof ProjectMenu);
 	}
 }

@@ -1,14 +1,13 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.kalibro.ConfigurationFixtures.newConfiguration;
+import static org.kalibro.MetricFixtures.*;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.*;
 import org.kalibro.tests.UnitTest;
 
 public class ModuleResultConfigurerTest extends UnitTest {
@@ -49,11 +48,11 @@ public class ModuleResultConfigurerTest extends UnitTest {
 
 	@Test
 	public void checkGrade() {
-		configuration.removeMetric(sc.getName());
+		configuration.removeMetricConfiguration(new MetricConfiguration(sc));
 
 		NativeMetric cbo = analizoMetric("cbo");
 		MetricResult cboResult = result.getResultFor(cbo);
-		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo.getName());
+		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
 
 		for (Double weight : new Double[]{0.0, 1.0, 2.0, 3.0, 4.0}) {
 			cboConfiguration.setWeight(weight);
@@ -88,7 +87,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	}
 
 	private void changeScScope() {
-		configuration.removeMetric(sc.getName());
+		configuration.removeMetricConfiguration(new MetricConfiguration(sc));
 		sc.setScope(Granularity.PACKAGE);
 		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 	}
@@ -97,8 +96,8 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	public void shouldAddCompoundMetricsWithError() {
 		addCompoundMetricWithError();
 		configurer.configure();
-		assertDeepSet(result.getCompoundMetricsWithError(), invalid);
-		assertClassEquals(NullPointerException.class, result.getErrorFor(invalid));
+		assertDeepEquals(asSet(invalid), result.getCompoundMetricsWithError());
+		assertClassEquals(KalibroException.class, result.getErrorFor(invalid));
 	}
 
 	private void addCompoundMetricWithError() {

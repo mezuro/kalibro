@@ -13,11 +13,11 @@ import org.kalibro.KalibroException;
  * 
  * @author Carlos Morais
  */
-public abstract class EndpointClient<ENDPOINT> {
+abstract class EndpointClient<ENDPOINT> {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 
-	public static <ENDPOINT> ENDPOINT getPort(String serviceAddress, Class<ENDPOINT> endpointClass) {
+	static <ENDPOINT> ENDPOINT getPort(String serviceAddress, Class<ENDPOINT> endpointClass) {
 		String endpointName = endpointClass.getSimpleName();
 		URL wsdlLocation = wsdlLocation(endpointName, serviceAddress);
 		QName serviceName = new QName(NAMESPACE, endpointName + "Service");

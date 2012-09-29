@@ -2,11 +2,9 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.NativeMetric;
+import org.kalibro.NativeMetric;
 import org.kalibro.tests.UnitTest;
 
 public class CheckstyleConfigurationTest extends UnitTest {
@@ -58,7 +56,7 @@ public class CheckstyleConfigurationTest extends UnitTest {
 	@Test
 	public void shouldCreateCheckerConfigurationFilteringMetrics() {
 		NativeMetric numberOfMethods = CheckstyleMetric.NUMBER_OF_METHODS.getNativeMetric();
-		configuration = CheckstyleConfiguration.checkerConfiguration(Arrays.asList(numberOfMethods));
+		configuration = CheckstyleConfiguration.checkerConfiguration(asList(numberOfMethods));
 
 		assertEquals(1, configuration.getChildren().length);
 

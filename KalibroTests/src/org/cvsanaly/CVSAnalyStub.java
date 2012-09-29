@@ -6,9 +6,7 @@ import org.cvsanaly.entities.Commit;
 import org.cvsanaly.entities.FileLink;
 import org.cvsanaly.entities.MetricResult;
 import org.cvsanaly.entities.RepositoryFile;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.*;
 
 public final class CVSAnalyStub {
 

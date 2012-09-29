@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectResultFixtures.helloWorldResult;
+import static org.kalibro.ProjectResultFixtures.helloWorldResult;
 
 import java.util.Date;
 
@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.ProjectResult;
 import org.kalibro.core.persistence.record.ProjectResultRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;

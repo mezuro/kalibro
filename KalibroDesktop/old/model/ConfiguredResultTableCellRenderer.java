@@ -10,8 +10,8 @@ import javax.swing.JProgressBar;
 import javax.swing.JTable;
 import javax.swing.table.TableCellRenderer;
 
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.Range;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 
 public class ConfiguredResultTableCellRenderer implements TableCellRenderer {

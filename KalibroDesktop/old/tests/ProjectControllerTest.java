@@ -32,9 +32,9 @@ import org.fest.swing.timing.Timeout;
 import org.fest.swing.util.Platform;
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.CompoundMetric;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.CompoundMetric;
+import org.kalibro.Granularity;
+import org.kalibro.ProjectState;
 import org.kalibro.desktop.DialogTester;
 
 public class ProjectControllerTest extends PersistenceDependentTest implements ProjectStateListener {

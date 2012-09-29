@@ -2,15 +2,19 @@ package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.Reading;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
+@PrepareForTest(ReadingEndpointImpl.class)
 public class ReadingEndpointImplTest extends
 	EndpointImplementorTest<Reading, ReadingXml, ReadingXml, ReadingDao, ReadingEndpointImpl> {
+
+	private static final Long ID = Math.abs(new Random().nextLong());
 
 	@Override
 	protected Class<Reading> entityClass() {
@@ -19,19 +23,19 @@ public class ReadingEndpointImplTest extends
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(entity));
-		assertDeepList(implementor.readingsOf(42L), response);
+		when(dao.readingsOf(ID)).thenReturn(asSortedSet(entity));
+		assertDeepEquals(asList(response), implementor.readingsOf(ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(entity)).thenReturn(42L);
-		assertEquals(42L, implementor.saveReading(request).longValue());
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, implementor.saveReading(request));
 	}
 
 	@Test
 	public void shouldDeleteReading() {
-		implementor.deleteReading(42L);
-		verify(dao).delete(42L);
+		implementor.deleteReading(ID);
+		verify(dao).delete(ID);
 	}
 }

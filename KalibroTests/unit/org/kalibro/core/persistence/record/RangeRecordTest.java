@@ -1,28 +1,13 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.SortedSet;
+import org.kalibro.Range;
+import org.kalibro.RangeFixtures;
+import org.kalibro.RangeLabel;
 
-import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.MetricConfigurationFixtures;
-import org.kalibro.core.model.Range;
-
-public class RangeRecordTest extends DtoTestCase<Range, RangeRecord> {
+public class RangeRecordTest extends RecordTest<Range> {
 
 	@Override
-	protected RangeRecord newDtoUsingDefaultConstructor() {
-		return new RangeRecord();
-	}
-
-	@Override
-	protected Collection<Range> entitiesForTestingConversion() {
-		SortedSet<Range> ranges = MetricConfigurationFixtures.metricConfiguration("amloc").getRanges();
-		return new ArrayList<Range>(ranges);
-	}
-
-	@Override
-	protected RangeRecord createDto(Range range) {
-		return new RangeRecord(range, null);
+	protected Range loadFixture() {
+		return RangeFixtures.newRange("amloc", RangeLabel.REGULAR);
 	}
 }

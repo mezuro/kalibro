@@ -8,7 +8,6 @@ import javax.swing.JInternalFrame;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.desktop.configuration.ConfigurationFrame;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -42,7 +41,6 @@ public class ProjectMenuTest extends UnitTest {
 	@Test
 	public void shouldValidateEntityFrame() {
 		assertFalse(menu.isEntityFrame(new JInternalFrame()));
-		assertFalse(menu.isEntityFrame(mock(ConfigurationFrame.class)));
 		assertTrue(menu.isEntityFrame(mock(ProjectFrame.class)));
 	}
 }

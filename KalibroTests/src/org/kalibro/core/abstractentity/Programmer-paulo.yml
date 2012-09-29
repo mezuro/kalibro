@@ -1,4 +1,4 @@
----
+ &id1 !!org.kalibro.core.abstractentity.Programmer
 name: "Paulo Meirelles" # name comes first
 colleagues: []
 identityNumber: "PM"

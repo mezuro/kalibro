@@ -4,7 +4,7 @@ import java.util.Date;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.model.ProjectResult;
+import org.kalibro.ProjectResult;
 import org.kalibro.core.persistence.record.ProjectResultRecord;
 import org.kalibro.dao.ProjectResultDao;
 
@@ -16,19 +16,19 @@ class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultR
 
 	@Override
 	public void save(ProjectResult projectResult) {
-		recordManager.save(new ProjectResultRecord(projectResult));
+		save(new ProjectResultRecord(projectResult));
 	}
 
 	@Override
 	public boolean hasResultsFor(String projectName) {
-		TypedQuery<Long> query = recordManager.createQuery(getCountQuery(), Long.class);
+		TypedQuery<Long> query = recordManager().createQuery(getCountQuery(), Long.class);
 		query.setParameter("projectName", projectName);
 		return query.getSingleResult() > 0;
 	}
 
 	@Override
 	public boolean hasResultsBefore(Date date, String projectName) {
-		TypedQuery<Long> query = recordManager.createQuery(getCountQuery("result.date < :date"), Long.class);
+		TypedQuery<Long> query = recordManager().createQuery(getCountQuery("result.date < :date"), Long.class);
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
 		return query.getSingleResult() > 0;
@@ -36,7 +36,7 @@ class ProjectResultDatabaseDao extends DatabaseDao<ProjectResult, ProjectResultR
 
 	@Override
 	public boolean hasResultsAfter(Date date, String projectName) {
-		TypedQuery<Long> query = recordManager.createQuery(getCountQuery("result.date > :date"), Long.class);
+		TypedQuery<Long> query = recordManager().createQuery(getCountQuery("result.date > :date"), Long.class);
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
 		return query.getSingleResult() > 0;

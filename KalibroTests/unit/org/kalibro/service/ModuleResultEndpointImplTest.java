@@ -1,19 +1,18 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.ModuleResultFixtures.helloWorldApplicationResult;
+import static org.kalibro.ModuleResultFixtures.helloWorldApplicationResult;
 
-import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ModuleResultDao;
-import org.kalibro.service.entities.ModuleResultXml;
+import org.kalibro.service.xml.ModuleResultXml;
 import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -48,7 +47,7 @@ public class ModuleResultEndpointImplTest extends UnitTest {
 
 	@Test
 	public void testResultHistory() {
-		List<ModuleResult> resultHistory = Arrays.asList(moduleResult);
+		List<ModuleResult> resultHistory = asList(moduleResult);
 		PowerMockito.when(dao.getResultHistory("4", "2")).thenReturn(resultHistory);
 
 		List<ModuleResultXml> resultHistoryXml = endpoint.getResultHistory("4", "2");

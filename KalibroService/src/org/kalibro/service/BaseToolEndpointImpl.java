@@ -8,7 +8,7 @@ import javax.jws.WebService;
 
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.service.entities.BaseToolXml;
+import org.kalibro.service.xml.BaseToolXml;
 
 @WebService(name = "BaseToolEndpoint", serviceName = "BaseToolEndpointService")
 public class BaseToolEndpointImpl implements BaseToolEndpoint {
@@ -19,7 +19,7 @@ public class BaseToolEndpointImpl implements BaseToolEndpoint {
 		this(DaoFactory.getBaseToolDao());
 	}
 
-	protected BaseToolEndpointImpl(BaseToolDao baseToolDao) {
+	public BaseToolEndpointImpl(BaseToolDao baseToolDao) {
 		dao = baseToolDao;
 	}
 

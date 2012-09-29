@@ -21,10 +21,10 @@ import javax.swing.table.TableColumnModel;
 import javax.swing.tree.DefaultTreeModel;
 
 import org.kalibro.Kalibro;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.Range;
+import org.kalibro.Configuration;
+import org.kalibro.ModuleResult;
+import org.kalibro.ProjectResult;
+import org.kalibro.Range;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.desktop.old.listeners.ResultPanelListener;
 import org.kalibro.desktop.old.model.ConfiguredResultTableCellRenderer;

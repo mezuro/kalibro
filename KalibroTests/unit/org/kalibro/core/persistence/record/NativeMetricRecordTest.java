@@ -1,26 +1,12 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
+import org.kalibro.MetricFixtures;
+import org.kalibro.NativeMetric;
 
-import java.util.Collection;
-
-import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.NativeMetric;
-
-public class NativeMetricRecordTest extends DtoTestCase<NativeMetric, NativeMetricRecord> {
+public class NativeMetricRecordTest extends RecordTest<NativeMetric> {
 
 	@Override
-	protected NativeMetricRecord newDtoUsingDefaultConstructor() {
-		return new NativeMetricRecord();
-	}
-
-	@Override
-	protected Collection<NativeMetric> entitiesForTestingConversion() {
-		return analizoStub().getSupportedMetrics();
-	}
-
-	@Override
-	protected NativeMetricRecord createDto(NativeMetric nativeMetric) {
-		return new NativeMetricRecord(nativeMetric);
+	protected NativeMetric loadFixture() {
+		return MetricFixtures.analizoMetric("loc");
 	}
 }

@@ -1,5 +1,8 @@
 package org.kalibro.dto;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,20 +10,22 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
+import org.mockito.Mockito;
+import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoLazyLoader.class)
-public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends UnitTest {
+public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
-	protected DTO dto;
 	protected ENTITY entity;
+	protected DataTransferObject<ENTITY> dto;
 
 	@Before
 	public void setUp() throws Exception {
 		entity = loadFixture();
-		dto = createDtoStub();
+		createDto();
 		mockStatic(DaoLazyLoader.class);
 		for (LazyLoadExpectation e : lazyLoadExpectations())
 			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.stub);
@@ -28,10 +33,23 @@ public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENT
 
 	protected abstract ENTITY loadFixture();
 
-	private DTO createDtoStub() throws Exception {
-		Class<?> entityClass = entity.getClass();
-		Class<?> stubClass = Class.forName("org.kalibro.dto." + entityClass.getSimpleName() + "DtoStub");
-		return (DTO) stubClass.getDeclaredConstructor(entityClass).newInstance(entity);
+	private void createDto() throws Exception {
+		Class<?> dtoClass = Class.forName(getClass().getName().replace("Test", ""));
+		dto = (DataTransferObject<ENTITY>) mock(dtoClass, Mockito.CALLS_REAL_METHODS);
+		for (Method method : dtoClass.getDeclaredMethods())
+			if (Modifier.isAbstract(method.getModifiers()))
+				doReturn(entityField(method.getName())).when(dto, method).withNoArguments();
+	}
+
+	private Object entityField(String field) {
+		return Whitebox.getInternalState(entity, field);
+	}
+
+	@Test
+	public void shouldHavePublicDefaultConstructor() throws Exception {
+		Constructor<?> constructor = dto.getClass().getConstructor();
+		Modifier.isPublic(constructor.getModifiers());
+		constructor.newInstance();
 	}
 
 	@Test

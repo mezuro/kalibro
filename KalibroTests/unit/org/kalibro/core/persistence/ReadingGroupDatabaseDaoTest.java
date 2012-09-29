@@ -2,7 +2,9 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
+import java.util.Random;
+
+import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,51 +19,36 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ReadingGroupDatabaseDao.class)
 public class ReadingGroupDatabaseDaoTest extends UnitTest {
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
+	private ReadingGroup group;
+	private ReadingGroupRecord record;
 	private ReadingGroupDatabaseDao dao;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
+		group = mock(ReadingGroup.class);
+		record = mock(ReadingGroupRecord.class);
+		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
+		when(record.id()).thenReturn(ID);
+		when(record.convert()).thenReturn(group);
 		dao = spy(new ReadingGroupDatabaseDao(null));
 	}
 
 	@Test
-	public void shouldConfirmExistence() {
-		doReturn(false).when(dao).existsWithId(28L);
-		doReturn(true).when(dao).existsWithId(42L);
-		assertFalse(dao.exists(28L));
-		assertTrue(dao.exists(42L));
+	public void shouldGetReadingGroupOfMetricConfiguration() {
+		TypedQuery<ReadingGroupRecord> query = mock(TypedQuery.class);
+		doReturn(query).when(dao).createRecordQuery("JOIN MetricConfiguration mConf WHERE mConf.id = :id");
+		when(query.getSingleResult()).thenReturn(record);
+
+		assertSame(group, dao.readingGroupOf(ID));
+		verify(query).setParameter("id", ID);
 	}
 
 	@Test
-	public void shouldGetById() {
-		ReadingGroup group = mock(ReadingGroup.class);
-		doReturn(group).when(dao).getById(42L);
-		assertSame(group, dao.get(42L));
-	}
-
-	@Test
-	public void shouldGetAll() {
-		List<ReadingGroup> all = mock(List.class);
-		doReturn(all).when(dao).allOrderedByName();
-		assertSame(all, dao.all());
-	}
-
-	@Test
-	public void shouldSave() throws Exception {
-		ReadingGroup group = mock(ReadingGroup.class);
-		ReadingGroupRecord record = mock(ReadingGroupRecord.class);
-		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
+	public void shouldSave() {
 		doReturn(record).when(dao).save(record);
-		when(record.id()).thenReturn(42L);
-
-		assertEquals(42L, dao.save(group).longValue());
+		assertEquals(ID, dao.save(group));
 		verify(dao).save(record);
-	}
-
-	@Test
-	public void shouldDelete() {
-		doNothing().when(dao).deleteById(42L);
-		dao.delete(42L);
-		verify(dao).deleteById(42L);
 	}
 }

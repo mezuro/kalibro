@@ -36,6 +36,10 @@ public abstract class MockitoProxy extends PowerMockito {
 		return Matchers.anyString();
 	}
 
+	public static long anyLong() {
+		return Matchers.anyLong();
+	}
+
 	public static <T> T any(Class<T> type) {
 		return Matchers.any(type);
 	}

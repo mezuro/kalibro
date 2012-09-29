@@ -8,7 +8,7 @@ import javax.swing.JMenuItem;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.desktop.swingextension.InternalFrame;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;

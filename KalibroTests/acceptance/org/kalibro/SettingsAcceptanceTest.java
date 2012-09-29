@@ -16,11 +16,13 @@ import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class SettingsAcceptanceTest extends AcceptanceTest {
 
+	private File settingsFile;
 	private KalibroSettings settings;
 
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings();
+		settingsFile = new File(dotKalibro(), "kalibro.settings");
 		settingsFile.delete();
 	}
 
@@ -74,18 +76,12 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenLoadingInexistentSettings() {
+	public void shouldThrowExceptionWhenCannotLoadSettings() throws IOException {
 		shouldLoadWithError(FileNotFoundException.class);
-	}
 
-	@Test
-	public void shouldThrowExceptionWhenLoadingFromCorruptedSettingsFile() throws IOException {
 		FileUtils.writeStringToFile(settingsFile, "something weird");
 		shouldLoadWithError(ConstructorException.class);
-	}
 
-	@Test
-	public void shouldThrowExceptionWhenLoadingFromNotReadableSettingsFile() {
 		settings.save();
 		settingsFile.setReadable(false);
 		shouldLoadWithError(FileNotFoundException.class);

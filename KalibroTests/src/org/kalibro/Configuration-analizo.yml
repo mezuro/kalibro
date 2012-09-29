@@ -1,0 +1,4 @@
+ &id1 !!org.kalibro.Configuration
+name: "Analizo SourceForge 2012"
+description: "Thresholds obtained using average and standard deviation from results collected by Analizo running for all C, C++ and Java projects hosted at SourceForge.net in October of 2012."
+metricConfigurations: []

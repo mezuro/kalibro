@@ -7,13 +7,8 @@ import javax.mail.Message.RecipientType;
 
 import org.codemonkey.simplejavamail.Email;
 import org.codemonkey.simplejavamail.Mailer;
-import org.kalibro.KalibroSettings;
+import org.kalibro.*;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 
@@ -36,11 +31,11 @@ public class ProcessProjectTask extends VoidTask {
 
 	private void processProject() {
 		ProjectResult projectResult = new LoadSourceTask(project)
-				.executeSubTask();
+			.executeSubTask();
 		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(
-				projectResult).executeSubTask();
+			projectResult).executeSubTask();
 		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(
-				projectResult, resultMap).executeSubTask();
+			projectResult, resultMap).executeSubTask();
 
 		DaoFactory.getProjectResultDao().save(projectResult);
 		saveModuleResults(moduleResults, projectResult);
@@ -53,8 +48,7 @@ public class ProcessProjectTask extends VoidTask {
 		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
 		Email email = new Email();
 		email.setSubject("Project " + project.getName() + " processing results");
-		email.setText("Processing results in project " + project.getName()
-				+ " has finished succesfully.");
+		email.setText("Processing results in project " + project.getName() + " has finished succesfully.");
 		for (String mail : project.getMailsToNotify()) {
 			email.addRecipient(mail, mail, RecipientType.TO);
 		}
@@ -62,9 +56,9 @@ public class ProcessProjectTask extends VoidTask {
 	}
 
 	private void saveModuleResults(Collection<ModuleResult> moduleResults,
-			ProjectResult projectResult) {
+		ProjectResult projectResult) {
 		ModuleResultDatabaseDao moduleResultDao = (ModuleResultDatabaseDao) DaoFactory
-				.getModuleResultDao();
+			.getModuleResultDao();
 		for (ModuleResult moduleResult : moduleResults)
 			moduleResultDao.save(moduleResult, projectResult);
 	}

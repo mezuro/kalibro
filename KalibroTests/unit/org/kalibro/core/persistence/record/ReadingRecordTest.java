@@ -3,16 +3,11 @@ package org.kalibro.core.persistence.record;
 import org.junit.Test;
 import org.kalibro.Reading;
 
-public class ReadingRecordTest extends RecordTest<Reading, ReadingRecord> {
+public class ReadingRecordTest extends RecordTest<Reading> {
 
 	@Override
 	protected Reading loadFixture() {
 		return loadFixture("excellent", Reading.class);
-	}
-
-	@Override
-	protected Class<ReadingRecord> dtoClass() {
-		return ReadingRecord.class;
 	}
 
 	@Test

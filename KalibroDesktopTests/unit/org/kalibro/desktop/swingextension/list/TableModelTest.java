@@ -1,12 +1,11 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.metricConfiguration;
+import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.table.TableCellRenderer;
@@ -15,7 +14,7 @@ import javax.swing.table.TableColumnModel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
@@ -41,7 +40,7 @@ public class TableModelTest extends UnitTest {
 
 	@Test
 	public void shouldNotifyDataChanged() {
-		model.setData(Arrays.asList(new Range()));
+		model.setData(asList(new Range()));
 		verify(model, atLeastOnce()).fireTableDataChanged();
 	}
 

@@ -2,13 +2,13 @@ package org.kalibro.client;
 
 import java.util.List;
 
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.service.BaseToolEndpoint;
 
 class BaseToolClientDao extends EndpointClient<BaseToolEndpoint> implements BaseToolDao {
 
-	protected BaseToolClientDao(String serviceAddress) {
+	BaseToolClientDao(String serviceAddress) {
 		super(serviceAddress, BaseToolEndpoint.class);
 	}
 

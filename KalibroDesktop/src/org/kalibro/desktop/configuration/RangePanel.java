@@ -2,7 +2,7 @@ package org.kalibro.desktop.configuration;
 
 import java.awt.Component;
 
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ColorField;
 import org.kalibro.desktop.swingextension.field.DoubleField;

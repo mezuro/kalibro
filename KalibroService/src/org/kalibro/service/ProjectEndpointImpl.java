@@ -8,11 +8,11 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.entities.ProjectXml;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.service.xml.ProjectXmlRequest;
+import org.kalibro.service.xml.ProjectXmlResponse;
 
 @WebService(name = "ProjectEndpoint", serviceName = "ProjectEndpointService")
 public class ProjectEndpointImpl implements ProjectEndpoint {
@@ -23,12 +23,12 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 		this(DaoFactory.getProjectDao());
 	}
 
-	protected ProjectEndpointImpl(ProjectDao projectDao) {
+	public ProjectEndpointImpl(ProjectDao projectDao) {
 		dao = projectDao;
 	}
 
 	@Override
-	public void saveProject(@WebParam(name = "project") RawProjectXml project) {
+	public void saveProject(@WebParam(name = "project") ProjectXmlRequest project) {
 		dao.save(project.convert());
 	}
 
@@ -46,8 +46,8 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 
 	@Override
 	@WebResult(name = "project")
-	public ProjectXml getProject(@WebParam(name = "projectName") String projectName) {
-		return new ProjectXml(dao.getProject(projectName));
+	public ProjectXmlResponse getProject(@WebParam(name = "projectName") String projectName) {
+		return new ProjectXmlResponse(dao.getProject(projectName));
 	}
 
 	@Override

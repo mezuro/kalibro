@@ -2,7 +2,7 @@ package org.kalibro.desktop.configuration;
 
 import java.awt.Component;
 
-import org.kalibro.core.model.Range;
+import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 
 public class RangeFieldRenderer extends DefaultRenderer {

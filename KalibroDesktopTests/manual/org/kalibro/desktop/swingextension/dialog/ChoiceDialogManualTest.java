@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Language;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class ChoiceDialogManualTest extends JLabel {

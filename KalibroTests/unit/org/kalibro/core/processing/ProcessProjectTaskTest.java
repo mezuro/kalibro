@@ -1,10 +1,8 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResults;
-import static org.kalibro.core.model.ProjectFixtures.PROJECT_NAME;
-import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
+import static org.junit.Assert.*;
+import static org.kalibro.ModuleResultFixtures.newHelloWorldResults;
+import static org.kalibro.ProjectFixtures.*;
 
 import java.util.Collection;
 import java.util.Map;
@@ -16,13 +14,7 @@ import org.codemonkey.simplejavamail.Mailer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroSettings;
-import org.kalibro.MailSettings;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
+import org.kalibro.*;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
@@ -141,7 +133,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 		Email email = mock(Email.class);
 		whenNew(Email.class).withNoArguments().thenReturn(email);
 		processTask.perform();
-		
+
 		verify(mailerMock).sendMail(email);
 		verify(email).addRecipient("aaa@example.com", "aaa@example.com", RecipientType.TO);
 		verify(email).addRecipient("bbb@example.com", "bbb@example.com", RecipientType.TO);

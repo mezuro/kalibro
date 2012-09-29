@@ -3,7 +3,7 @@ package org.kalibro.dao;
 import java.util.Date;
 import java.util.List;
 
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 
 public interface ModuleResultDao {
 

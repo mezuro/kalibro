@@ -8,7 +8,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.service.entities.ModuleResultXml;
+import org.kalibro.service.xml.ModuleResultXml;
 
 @WebService(name = "ModuleResultEndpoint", serviceName = "ModuleResultEndpointService")
 public interface ModuleResultEndpoint {

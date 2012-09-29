@@ -4,9 +4,9 @@ import java.util.*;
 
 import javax.swing.tree.TreeNode;
 
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.ModuleNode;
-import org.kalibro.core.model.enums.Granularity;
+import org.kalibro.Module;
+import org.kalibro.ModuleNode;
+import org.kalibro.Granularity;
 
 public class SourceTreeNode implements TreeNode {
 
