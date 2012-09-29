@@ -2,6 +2,7 @@ package org.kalibro;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
@@ -60,7 +61,7 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	}
 
 	public void addSupportedMetric(NativeMetric supportedMetric) {
-		supportedMetric.setOrigin(name);
+		supportedMetric.setOrigin(this);
 		supportedMetrics.add(supportedMetric);
 	}
 
@@ -84,5 +85,15 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 		} catch (Exception exception) {
 			throw new KalibroException("Could not create metric collector of base tool '" + name + "'", exception);
 		}
+	}
+
+	public static SortedSet<BaseTool> all() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	public String getCollectorClassName() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

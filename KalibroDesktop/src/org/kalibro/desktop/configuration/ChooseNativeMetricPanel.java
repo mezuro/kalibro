@@ -14,7 +14,7 @@ import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
 public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 
-	private List<String> baseToolList;
+	private List<BaseTool> baseToolList;
 	private Table<NativeMetric> metricTable;
 	private TextField descriptionField;
 
@@ -30,7 +30,7 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 	}
 
 	private void createBaseToolList() {
-		baseToolList = new List<String>("baseTools", DaoFactory.getBaseToolDao().getBaseToolNames(), 5);
+		baseToolList = new List<BaseTool>("baseTools", DaoFactory.getBaseToolDao().all(), 5);
 		baseToolList.setBorder(new TitledBorder("Base tool"));
 		baseToolList.addListListener(new BaseToolListListener());
 	}
@@ -65,11 +65,10 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 		metricTable.addListListener(listener);
 	}
 
-	private class BaseToolListListener extends ListAdapter<String> {
+	private class BaseToolListListener extends ListAdapter<BaseTool> {
 
 		@Override
-		public void selected(String baseToolName) {
-			BaseTool baseTool = DaoFactory.getBaseToolDao().getBaseTool(baseToolName);
+		public void selected(BaseTool baseTool) {
 			metricTable.setData(baseTool.getSupportedMetrics());
 			descriptionField.set(baseTool.getDescription());
 		}

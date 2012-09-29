@@ -1,7 +1,5 @@
 package org.kalibro.core.persistence;
 
-import java.util.List;
-
 import org.analizo.AnalizoMetricCollector;
 import org.checkstyle.CheckstyleMetricCollector;
 import org.cvsanaly.CVSAnalyMetricCollector;
@@ -35,17 +33,7 @@ class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implemen
 		BaseTool baseTool = new BaseTool(collector.name(), collector.description());
 		baseTool.setSupportedMetrics(collector.supportedMetrics());
 		baseTool.setCollectorClass(collectorClass);
-		if (!getBaseToolNames().contains(baseTool.getName()))
+		if (!all().contains(baseTool.getName()))
 			save(new BaseToolRecord(baseTool));
-	}
-
-	@Override
-	public List<String> getBaseToolNames() {
-		return getAllNames();
-	}
-
-	@Override
-	public BaseTool getBaseTool(String baseToolName) {
-		return getByName(baseToolName);
 	}
 }

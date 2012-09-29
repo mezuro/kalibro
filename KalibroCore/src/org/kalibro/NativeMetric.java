@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-
 /**
  * A metric provided by a base tool.
  * 
@@ -13,7 +12,7 @@ import java.util.List;
  */
 public final class NativeMetric extends Metric {
 
-	private String origin;
+	private BaseTool origin;
 	private List<Language> languages;
 
 	/**
@@ -44,11 +43,11 @@ public final class NativeMetric extends Metric {
 		return false;
 	}
 
-	public String getOrigin() {
+	public BaseTool getOrigin() {
 		return origin;
 	}
 
-	public void setOrigin(String origin) {
+	public void setOrigin(BaseTool origin) {
 		this.origin = origin;
 	}
 

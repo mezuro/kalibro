@@ -30,9 +30,8 @@ public enum CVSAnalyMetric {
 	}
 
 	protected NativeMetric getNativeMetric() {
-		NativeMetric nativeMetric = new NativeMetric(toString(), Granularity.CLASS, 
+		NativeMetric nativeMetric = new NativeMetric(toString(), Granularity.CLASS,
 			Language.C, Language.CPP, Language.JAVA, Language.PYTHON);
-		nativeMetric.setOrigin("CVSAnaly");
 		return nativeMetric;
 	}
 }

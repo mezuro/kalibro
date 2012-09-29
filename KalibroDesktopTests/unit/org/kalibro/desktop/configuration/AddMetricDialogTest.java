@@ -49,8 +49,7 @@ public class AddMetricDialogTest extends UnitTest {
 		BaseToolDao dao = PowerMockito.mock(BaseToolDao.class);
 		PowerMockito.mockStatic(DaoFactory.class);
 		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
-		PowerMockito.when(dao.getBaseToolNames()).thenReturn(asList("Analizo"));
-		PowerMockito.when(dao.getBaseTool("Analizo")).thenReturn(analizoStub());
+		PowerMockito.when(dao.all()).thenReturn(asSortedSet(analizoStub()));
 	}
 
 	@Test

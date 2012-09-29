@@ -46,7 +46,6 @@ public class NativeMetricRecord extends MetricRecord<NativeMetric> {
 	public NativeMetric convert() {
 		NativeMetric nativeMetric = new NativeMetric(name, Granularity.valueOf(scope), convertLanguages());
 		nativeMetric.setDescription(description);
-		nativeMetric.setOrigin(origin.getName());
 		return nativeMetric;
 	}
 

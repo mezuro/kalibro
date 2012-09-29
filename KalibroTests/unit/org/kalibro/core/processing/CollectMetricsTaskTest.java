@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.*;
-import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.tests.UnitTest;
@@ -43,25 +42,18 @@ public class CollectMetricsTaskTest extends UnitTest {
 		when(KalibroSettings.load()).thenReturn(settings);
 		when(settings.getServerSettings()).thenReturn(mock(ServerSettings.class));
 		mockConfiguration();
-		mockBaseTool();
 	}
 
 	private void mockConfiguration() {
 		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
 		Configuration configuration = mock(Configuration.class);
-		Map<String, Set<NativeMetric>> metricsMap = new HashMap<String, Set<NativeMetric>>();
-		metricsMap.put("Analizo", baseTool.getSupportedMetrics());
+		Map<BaseTool, Set<NativeMetric>> metricsMap = new HashMap<BaseTool, Set<NativeMetric>>();
+		metricsMap.put(baseTool, baseTool.getSupportedMetrics());
 
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
 		when(configurationDao.configurationOf(projectResult.getProject().getId())).thenReturn(configuration);
 		when(configuration.getNativeMetrics()).thenReturn(metricsMap);
-	}
-
-	private void mockBaseTool() {
-		BaseToolDao baseToolDao = mock(BaseToolDao.class);
-		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
-		when(baseToolDao.getBaseTool(baseTool.getName())).thenReturn(baseTool);
 	}
 
 	@Test

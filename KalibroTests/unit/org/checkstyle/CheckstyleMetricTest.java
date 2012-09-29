@@ -43,7 +43,6 @@ public class CheckstyleMetricTest extends EnumerationTest<CheckstyleMetric> {
 
 	private void verifyNativeMetric(CheckstyleMetric metric) {
 		NativeMetric expected = new NativeMetric("" + metric, CLASS, JAVA);
-		expected.setOrigin("Checkstyle");
 		assertDeepEquals(expected, metric.getNativeMetric());
 	}
 

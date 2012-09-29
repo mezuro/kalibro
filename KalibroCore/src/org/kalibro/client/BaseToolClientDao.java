@@ -1,11 +1,17 @@
 package org.kalibro.client;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.BaseToolEndpoint;
 
+/**
+ * {@link BaseToolEndpoint} client implementation of {@link BaseToolDao}.
+ * 
+ * @author Carlos Morais
+ */
 class BaseToolClientDao extends EndpointClient<BaseToolEndpoint> implements BaseToolDao {
 
 	BaseToolClientDao(String serviceAddress) {
@@ -13,12 +19,7 @@ class BaseToolClientDao extends EndpointClient<BaseToolEndpoint> implements Base
 	}
 
 	@Override
-	public List<String> getBaseToolNames() {
-		return port.getBaseToolNames();
-	}
-
-	@Override
-	public BaseTool getBaseTool(String baseToolName) {
-		return port.getBaseTool(baseToolName).convert();
+	public SortedSet<BaseTool> all() {
+		return DataTransferObject.toSortedSet(port.allBaseTools());
 	}
 }

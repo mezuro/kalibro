@@ -24,7 +24,6 @@ public class CVSAnalyMetricTest extends EnumerationTest<CVSAnalyMetric> {
 	public void checkNativeMetrics() {
 		for (CVSAnalyMetric metric : CVSAnalyMetric.values()) {
 			NativeMetric expected = new NativeMetric("" + metric, CLASS, Language.values());
-			expected.setOrigin("CVSAnaly");
 			assertDeepEquals(expected, metric.getNativeMetric());
 		}
 	}

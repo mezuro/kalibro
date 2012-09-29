@@ -14,7 +14,7 @@ public class MetricPanel extends EditPanel<Metric> {
 	private MaybeEditableField<String> nameField;
 	private MaybeEditableField<Granularity> scopeField;
 	private TextField descriptionField;
-	private UneditableField<String> originField;
+	private UneditableField<BaseTool> originField;
 	private LanguagesField languagesField;
 	private TextField scriptField;
 
@@ -27,7 +27,7 @@ public class MetricPanel extends EditPanel<Metric> {
 		nameField = new MaybeEditableField<String>(new StringField("name", 30));
 		scopeField = new MaybeEditableField<Granularity>(new ChoiceField<Granularity>("scope", Granularity.values()));
 		descriptionField = new TextField("description", 1, 1, "Description");
-		originField = new UneditableField<String>("origin");
+		originField = new UneditableField<BaseTool>("origin");
 		languagesField = new LanguagesField();
 		scriptField = new TextField("script", 4, 25, "Script");
 	}

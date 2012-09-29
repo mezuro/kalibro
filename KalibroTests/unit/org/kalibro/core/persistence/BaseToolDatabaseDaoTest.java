@@ -1,10 +1,8 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertSame;
 import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
@@ -25,8 +23,6 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(BaseToolDatabaseDao.class)
 public class BaseToolDatabaseDaoTest extends UnitTest {
-
-	private static final List<String> BASE_TOOL_NAMES = asList("Analizo", "Checkstyle");
 
 	private BaseTool baseTool;
 	private RecordManager recordManager;
@@ -50,7 +46,7 @@ public class BaseToolDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldSaveBaseToolByClass() throws Exception {
-		doReturn(new ArrayList<String>()).when(dao).getAllNames();
+		doReturn(new ArrayList<BaseTool>()).when(dao).all();
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
 
 		ArgumentCaptor<BaseToolRecord> captor = ArgumentCaptor.forClass(BaseToolRecord.class);
@@ -60,27 +56,15 @@ public class BaseToolDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldNotSaveIfCannotInstantiateBaseTool() throws Exception {
-		doReturn(new ArrayList<String>()).when(dao).getAllNames();
+		doReturn(new ArrayList<BaseTool>()).when(dao).all();
 		Whitebox.invokeMethod(dao, "save", MetricCollector.class);
 		Mockito.verify(recordManager, never()).save(any());
 	}
 
 	@Test
 	public void shouldNotSaveIfBaseToolAlreadyExists() throws Exception {
-		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
+		doReturn(asSortedSet(analizoStub())).when(dao).all();
 		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
 		Mockito.verify(recordManager, never()).save(any());
-	}
-
-	@Test
-	public void shouldListAllBaseToolNames() {
-		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
-		assertDeepEquals(BASE_TOOL_NAMES, dao.getBaseToolNames());
-	}
-
-	@Test
-	public void shouldGetBaseToolByName() {
-		doReturn(baseTool).when(dao).getByName("Analizo");
-		assertSame(baseTool, dao.getBaseTool("Analizo"));
 	}
 }

@@ -25,19 +25,19 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	protected Map<Module, ModuleResult> compute() throws Exception {
 		resultMap = new HashMap<Module, ModuleResult>();
 		Configuration configuration = DaoFactory.getConfigurationDao().configurationOf(project.getId());
-		Map<String, Set<NativeMetric>> metricsMap = configuration.getNativeMetrics();
-		for (String baseToolName : metricsMap.keySet())
-			collectMetrics(baseToolName, metricsMap.get(baseToolName));
+		Map<BaseTool, Set<NativeMetric>> metricsMap = configuration.getNativeMetrics();
+		for (BaseTool baseTool : metricsMap.keySet())
+			collectMetrics(baseTool, metricsMap.get(baseTool));
 		return resultMap;
 	}
 
-	private void collectMetrics(String baseToolName, Set<NativeMetric> metrics) throws Exception {
+	private void collectMetrics(BaseTool baseTool, Set<NativeMetric> metrics) throws Exception {
 		File codeDirectory = project.getDirectory();
-		MetricCollector metricCollector = DaoFactory.getBaseToolDao().getBaseTool(baseToolName).createMetricCollector();
+		MetricCollector metricCollector = baseTool.createMetricCollector();
 		Set<NativeModuleResult> nativeResults = metricCollector.collectMetrics(codeDirectory, metrics);
 		for (NativeModuleResult nativeResult : nativeResults) {
 			for (NativeMetricResult metricResult : nativeResult.getMetricResults())
-				((NativeMetric) metricResult.getMetric()).setOrigin(baseToolName);
+				((NativeMetric) metricResult.getMetric()).setOrigin(baseTool);
 			putResult(nativeResult);
 		}
 	}

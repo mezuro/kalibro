@@ -29,9 +29,5 @@ public class NativeMetricTest extends UnitTest {
 	public void testOrigin() {
 		NativeMetric metric = new NativeMetric("", PACKAGE, C);
 		assertNull(metric.getOrigin());
-
-		String origin = "Analizo";
-		metric.setOrigin(origin);
-		assertSame(origin, metric.getOrigin());
 	}
 }

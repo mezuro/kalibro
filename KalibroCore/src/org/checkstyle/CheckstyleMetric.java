@@ -85,7 +85,6 @@ public enum CheckstyleMetric {
 
 	protected NativeMetric getNativeMetric() {
 		NativeMetric nativeMetric = new NativeMetric(toString(), Granularity.CLASS, Language.JAVA);
-		nativeMetric.setOrigin("Checkstyle");
 		return nativeMetric;
 	}
 

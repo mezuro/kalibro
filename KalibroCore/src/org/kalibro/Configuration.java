@@ -117,16 +117,16 @@ public class Configuration extends AbstractEntity<Configuration> {
 		return compoundMetrics;
 	}
 
-	public Map<String, Set<NativeMetric>> getNativeMetrics() {
-		Map<String, Set<NativeMetric>> nativeMetrics = new HashMap<String, Set<NativeMetric>>();
+	public Map<BaseTool, Set<NativeMetric>> getNativeMetrics() {
+		Map<BaseTool, Set<NativeMetric>> nativeMetrics = new HashMap<BaseTool, Set<NativeMetric>>();
 		for (MetricConfiguration each : metricConfigurations)
 			if (!each.getMetric().isCompound())
 				addNativeMetricTo(nativeMetrics, (NativeMetric) each.getMetric());
 		return nativeMetrics;
 	}
 
-	private void addNativeMetricTo(Map<String, Set<NativeMetric>> nativeMetrics, NativeMetric nativeMetric) {
-		String origin = nativeMetric.getOrigin();
+	private void addNativeMetricTo(Map<BaseTool, Set<NativeMetric>> nativeMetrics, NativeMetric nativeMetric) {
+		BaseTool origin = nativeMetric.getOrigin();
 		if (!nativeMetrics.containsKey(origin))
 			nativeMetrics.put(origin, new HashSet<NativeMetric>());
 		nativeMetrics.get(origin).add(nativeMetric);

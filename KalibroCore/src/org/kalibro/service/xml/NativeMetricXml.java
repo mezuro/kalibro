@@ -15,9 +15,6 @@ import org.kalibro.NativeMetric;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class NativeMetricXml extends MetricXml<NativeMetric> {
 
-	@XmlElement(required = true)
-	private String origin;
-
 	@XmlElement(name = "language")
 	private Collection<Language> languages;
 
@@ -27,7 +24,6 @@ public class NativeMetricXml extends MetricXml<NativeMetric> {
 
 	public NativeMetricXml(NativeMetric nativeMetric) {
 		super(nativeMetric);
-		this.origin = nativeMetric.getOrigin();
 		this.languages = nativeMetric.getLanguages();
 	}
 
@@ -36,7 +32,6 @@ public class NativeMetricXml extends MetricXml<NativeMetric> {
 		Collection<Language> convertedLanguages = languages == null ? new ArrayList<Language>() : languages;
 		NativeMetric nativeMetric = new NativeMetric(name, scope, convertedLanguages);
 		nativeMetric.setDescription(description == null ? "" : description);
-		nativeMetric.setOrigin(origin);
 		return nativeMetric;
 	}
 }
