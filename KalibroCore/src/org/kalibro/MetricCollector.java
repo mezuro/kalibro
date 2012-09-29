@@ -11,8 +11,14 @@ import java.util.Set;
  */
 public interface MetricCollector {
 
-	/** Returns the {@link BaseTool} describing the metric collector tool. */
-	BaseTool getBaseTool();
+	/** Returns the collector tool name. */
+	String name();
+
+	/** Returns the collector tool description. */
+	String description();
+
+	/** Returns the metrics supported by the collector. */
+	Set<NativeMetric> supportedMetrics();
 
 	/**
 	 * Collect metric results for a software project.<br/>

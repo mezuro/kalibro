@@ -21,7 +21,6 @@ public class BaseToolTest extends UnitTest {
 	@Test
 	public void checkInitialization() {
 		assertEquals("Analizo", analizo.getName());
-		assertEquals("", analizo.getDescription());
 		assertEquals(AnalizoStub.class, analizo.getCollectorClass());
 		assertEquals(analizoStub().getSupportedMetrics(), analizo.getSupportedMetrics());
 	}

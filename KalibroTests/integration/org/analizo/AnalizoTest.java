@@ -13,6 +13,7 @@ import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kalibro.BaseTool;
 import org.kalibro.NativeMetric;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.tests.IntegrationTest;
@@ -43,7 +44,11 @@ public class AnalizoTest extends IntegrationTest {
 
 	@Test
 	public void checkBaseTool() {
-		assertDeepEquals(analizo(), analizo.getBaseTool());
+		BaseTool baseTool = analizo();
+		assertEquals(baseTool.getName(), analizo.name());
+		assertEquals(baseTool.getDescription(), analizo.description());
+		assertDeepEquals(baseTool.getSupportedMetrics(), analizo.supportedMetrics());
+		assertEquals(baseTool.getCollectorClass(), analizo.getClass());
 	}
 
 	@Test

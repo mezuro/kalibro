@@ -15,12 +15,21 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 	private static final String CVSANALY2_COMMAND_LINE = "cvsanaly2 -q --extensions=Metrics --db-driver=sqlite -d ";
 
 	@Override
-	public BaseTool getBaseTool() {
-		BaseTool baseTool = new BaseTool("CVSAnaly");
-		baseTool.setCollectorClass(CVSAnalyMetricCollector.class);
+	public String name() {
+		return "CVSAnalY";
+	}
+
+	@Override
+	public String description() {
+		return "";
+	}
+
+	@Override
+	public Set<NativeMetric> supportedMetrics() {
+		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
 		for (CVSAnalyMetric metric : CVSAnalyMetric.values())
-			baseTool.addSupportedMetric(metric.getNativeMetric());
-		return baseTool;
+			supportedMetrics.add(metric.getNativeMetric());
+		return supportedMetrics;
 	}
 
 	@Override
@@ -65,5 +74,4 @@ public class CVSAnalyMetricCollector implements MetricCollector {
 				nativeModuleResult.addMetricResult(new NativeMetricResult(nativeMetric, metric.getMetricValue(entity)));
 		}
 	}
-
 }

@@ -68,7 +68,7 @@ public class CheckstyleMetricCollectorTest extends UnitTest {
 
 	@Test
 	public void checkSupportedMetrics() {
-		assertDeepEquals(METRICS, collector.getBaseTool().getSupportedMetrics());
+		assertDeepEquals(METRICS, collector.supportedMetrics());
 	}
 
 	@Test

@@ -9,7 +9,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.BaseTool;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.core.command.CommandTask;
@@ -36,10 +35,8 @@ public class AnalizoMetricCollectorTest extends UnitTest {
 
 	@Test
 	public void checkBaseTool() {
-		BaseTool baseTool = analizo.getBaseTool();
-		assertEquals("Analizo", baseTool.getName());
-		assertEquals(AnalizoMetricCollector.class, baseTool.getCollectorClass());
-		assertTrue(baseTool.getSupportedMetrics().isEmpty());
+		assertEquals("Analizo", analizo.name());
+		assertTrue(analizo.supportedMetrics().isEmpty());
 	}
 
 	@Test

@@ -1,13 +1,12 @@
 package org.analizo;
 
-import static org.kalibro.BaseToolFixtures.newAnalizoStub;
+import static org.kalibro.MetricFixtures.*;
 import static org.kalibro.NativeModuleResultFixtures.*;
 
 import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.kalibro.BaseTool;
 import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
@@ -15,8 +14,23 @@ import org.kalibro.NativeModuleResult;
 public class AnalizoStub implements MetricCollector {
 
 	@Override
-	public BaseTool getBaseTool() {
-		return newAnalizoStub();
+	public String name() {
+		return "Analizo";
+	}
+
+	@Override
+	public String description() {
+		return "Analizo is a suite of source code analysis tools, aimed at being language-independent and " +
+			"extensible. Analizo Metrics the tool which analyzes source code in the directories passed as arguments " +
+			"and procudes a metrics report written to the standard output in the YAML format.";
+	}
+
+	@Override
+	public Set<NativeMetric> supportedMetrics() {
+		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
+		for (String code : analizoMetricCodes())
+			supportedMetrics.add(newAnalizoMetric(code));
+		return supportedMetrics;
 	}
 
 	@Override

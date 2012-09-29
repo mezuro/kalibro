@@ -21,7 +21,7 @@ public class CVSAnalyTest extends IntegrationTest {
 	@Test
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = new File(samplesDirectory(), "cvsanaly");
-		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
+		Set<NativeMetric> metrics = cvsanaly.supportedMetrics();
 		assertDeepEquals(CVSAnalyStub.results(), cvsanaly.collectMetrics(codeDirectory, metrics));
 	}
 

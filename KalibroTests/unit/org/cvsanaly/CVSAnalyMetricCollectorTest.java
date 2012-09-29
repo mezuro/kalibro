@@ -36,14 +36,14 @@ public class CVSAnalyMetricCollectorTest extends UnitTest {
 
 	@Test
 	public void checkBaseTool() {
-		assertDeepEquals(CVSAnalyStub.getBaseTool(), cvsanaly.getBaseTool());
+		assertDeepEquals(CVSAnalyStub.getBaseTool().getSupportedMetrics(), cvsanaly.supportedMetrics());
 	}
 
 	@Test
 	public void shouldDeleteFileIfAnExceptionOccurs() throws Exception {
 		File codeDirectory = new File("/");
 		File databaseFileSpy = mockDatabaseFile();
-		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
+		Set<NativeMetric> metrics = cvsanaly.supportedMetrics();
 
 		mockCommandToThrowException();
 		mockFetcher();
@@ -59,7 +59,7 @@ public class CVSAnalyMetricCollectorTest extends UnitTest {
 	@Test
 	public void shouldCollectAllMetrics() throws Exception {
 		File codeDirectory = new File("/");
-		Set<NativeMetric> metrics = cvsanaly.getBaseTool().getSupportedMetrics();
+		Set<NativeMetric> metrics = cvsanaly.supportedMetrics();
 
 		mockCommand();
 		mockFetcher();

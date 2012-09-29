@@ -31,7 +31,9 @@ class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implemen
 	}
 
 	private void doSave(Class<? extends MetricCollector> collectorClass) throws Exception {
-		BaseTool baseTool = collectorClass.newInstance().getBaseTool();
+		MetricCollector collector = collectorClass.newInstance();
+		BaseTool baseTool = new BaseTool(collector.name(), collector.description());
+		baseTool.setSupportedMetrics(collector.supportedMetrics());
 		baseTool.setCollectorClass(collectorClass);
 		if (!getBaseToolNames().contains(baseTool.getName()))
 			save(new BaseToolRecord(baseTool));

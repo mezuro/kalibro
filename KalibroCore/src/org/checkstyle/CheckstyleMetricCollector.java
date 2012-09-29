@@ -5,11 +5,11 @@ import com.puppycrawl.tools.checkstyle.api.AuditListener;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 import java.io.File;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
-import org.kalibro.BaseTool;
 import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
@@ -17,11 +17,21 @@ import org.kalibro.NativeModuleResult;
 public class CheckstyleMetricCollector implements MetricCollector {
 
 	@Override
-	public BaseTool getBaseTool() {
-		BaseTool baseTool = new BaseTool("Checkstyle");
+	public String name() {
+		return "Checkstyle";
+	}
+
+	@Override
+	public String description() {
+		return "";
+	}
+
+	@Override
+	public Set<NativeMetric> supportedMetrics() {
+		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
 		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			baseTool.addSupportedMetric(metric.getNativeMetric());
-		return baseTool;
+			supportedMetrics.add(metric.getNativeMetric());
+		return supportedMetrics;
 	}
 
 	@Override

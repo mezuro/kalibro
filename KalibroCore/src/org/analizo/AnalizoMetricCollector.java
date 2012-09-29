@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Set;
 
-import org.kalibro.BaseTool;
 import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
@@ -23,11 +22,20 @@ public class AnalizoMetricCollector implements MetricCollector {
 	}
 
 	@Override
-	public BaseTool getBaseTool() {
-		BaseTool baseTool = new BaseTool("Analizo");
-		baseTool.setCollectorClass(AnalizoMetricCollector.class);
-		baseTool.setSupportedMetrics(outputParser.getSupportedMetrics());
-		return baseTool;
+	public String name() {
+		return "Analizo";
+	}
+
+	@Override
+	public String description() {
+		return "Analizo is a suite of source code analysis tools, aimed at being language-independent and " +
+			"extensible. Analizo Metrics the tool which analyzes source code in the directories passed as arguments " +
+			"and procudes a metrics report written to the standard output in the YAML format.";
+	}
+
+	@Override
+	public Set<NativeMetric> supportedMetrics() {
+		return outputParser.getSupportedMetrics();
 	}
 
 	@Override

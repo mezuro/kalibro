@@ -59,8 +59,18 @@ public class CheckstyleStub implements MetricCollector {
 	}
 
 	@Override
-	public BaseTool getBaseTool() {
-		return baseTool;
+	public String name() {
+		return "Checkstyle";
+	}
+
+	@Override
+	public String description() {
+		return "";
+	}
+
+	@Override
+	public Set<NativeMetric> supportedMetrics() {
+		return nativeMetrics;
 	}
 
 	@Override

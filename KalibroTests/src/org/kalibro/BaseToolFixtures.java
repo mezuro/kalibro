@@ -29,6 +29,7 @@ public final class BaseToolFixtures {
 	private static BaseTool newAnalizoBaseTool(Class<? extends MetricCollector> collectorClass) {
 		BaseTool baseTool = new BaseTool("Analizo");
 		baseTool.setCollectorClass(collectorClass);
+		baseTool.setDescription(baseTool.createMetricCollector().description());
 		for (String code : analizoMetricCodes())
 			baseTool.addSupportedMetric(newAnalizoMetric(code));
 		return baseTool;

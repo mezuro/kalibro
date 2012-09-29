@@ -21,7 +21,7 @@ public class CheckstyleTest extends IntegrationTest {
 	public void shouldCollectMetrics() throws Exception {
 		File samplesDirectory = new File(samplesDirectory(), "checkstyle");
 		File codeDirectory = new File(samplesDirectory, "Fibonacci");
-		Set<NativeMetric> metrics = checkstyle.getBaseTool().getSupportedMetrics();
+		Set<NativeMetric> metrics = checkstyle.supportedMetrics();
 		assertDeepEquals(CheckstyleStub.results(), checkstyle.collectMetrics(codeDirectory, metrics));
 	}
 }
