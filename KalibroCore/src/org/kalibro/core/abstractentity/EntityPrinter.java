@@ -1,11 +1,16 @@
 package org.kalibro.core.abstractentity;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Printer for entities.
  * 
  * @author Carlos Morais
  */
 class EntityPrinter extends Printer<AbstractEntity<?>> {
+
+	static final List<AbstractEntity<?>> PRINTED = new ArrayList<AbstractEntity<?>>();
 
 	private EntityReflector reflector;
 
@@ -16,7 +21,13 @@ class EntityPrinter extends Printer<AbstractEntity<?>> {
 
 	@Override
 	protected void doPrint(AbstractEntity<?> object, String comment) {
-		printString(" !!" + object.getClass().getName());
+		for (int id = 1; id <= PRINTED.size(); id++)
+			if (PRINTED.get(id - 1) == object) {
+				printString(" *id" + id);
+				return;
+			}
+		PRINTED.add(object);
+		printString(" &id" + PRINTED.size() + " !!" + object.getClass().getName());
 		printComment(comment);
 		reflector = new EntityReflector(object);
 		for (String field : reflector.listPrintFields())

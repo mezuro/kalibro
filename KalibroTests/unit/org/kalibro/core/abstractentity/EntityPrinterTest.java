@@ -32,7 +32,12 @@ public class EntityPrinterTest extends PrinterTestCase<AbstractEntity<?>> {
 
 	@Test
 	public void shouldPrintAsYaml() throws Exception {
+		EntityPrinter.PRINTED.clear();
 		assertEquals(loadResource("Programmer-carlos.yml"), print(programmer, ""));
+
+		EntityPrinter.PRINTED.clear();
+		programmer.getRelatives().put("himself", programmer);
+		assertTrue(print(programmer, "").contains("\n  himself: *id1\n"));
 	}
 
 	@Test

@@ -7,7 +7,8 @@ package org.kalibro.core.abstractentity;
  */
 public abstract class Printer<T> {
 
-	public static String print(Object object) {
+	public static synchronized String print(Object object) {
+		EntityPrinter.PRINTED.clear();
 		StringBuffer buffer = new StringBuffer();
 		print(object, buffer, 0, "");
 		return buffer.toString();

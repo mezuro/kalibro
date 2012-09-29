@@ -1,10 +1,10 @@
- !!org.kalibro.KalibroSettings
+ &id1 !!org.kalibro.KalibroSettings
 serviceSide: SERVER # CLIENT to connect to Kalibro Service; SERVER if the service is running on this machine
 
-clientSettings: !!org.kalibro.ClientSettings
+clientSettings: &id2 !!org.kalibro.ClientSettings
   serviceAddress: "http://localhost:8080/KalibroService/" # Address of the remote Kalibro Service
 
-serverSettings: !!org.kalibro.ServerSettings
+serverSettings: &id3 !!org.kalibro.ServerSettings
   loadDirectory: ~/.kalibro/repositories # Source code will be loaded in this directory before analysis
   databaseSettings: !!org.kalibro.DatabaseSettings
     databaseType: MYSQL # Possibilities: APACHE_DERBY, MYSQL

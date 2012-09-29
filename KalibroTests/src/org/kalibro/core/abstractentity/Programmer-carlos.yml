@@ -1,7 +1,7 @@
- !!org.kalibro.core.abstractentity.Programmer
+ &id1 !!org.kalibro.core.abstractentity.Programmer
 name: "Carlos Morais" # name comes first
 colleagues:
-  - !!org.kalibro.core.abstractentity.Programmer
+  - &id2 !!org.kalibro.core.abstractentity.Programmer
     name: "Paulo Meirelles" # name comes first
     colleagues: []
     identityNumber: "PM"
@@ -10,12 +10,12 @@ colleagues:
     useMetrics: true
 identityNumber: "CM"
 relatives:
-  mother: !!org.kalibro.core.abstractentity.Person
+  mother: &id3 !!org.kalibro.core.abstractentity.Person
     name: "Cristina Nascimento" # name comes first
     identityNumber: "CN"
     relatives: {}
     sex: "Female"
-  sister: !!org.kalibro.core.abstractentity.Person
+  sister: &id4 !!org.kalibro.core.abstractentity.Person
     name: "Isis Nascimento" # name comes first
     identityNumber: "IN"
     relatives: {}
