@@ -6,7 +6,7 @@ import org.analizo.AnalizoMetricCollector;
 import org.checkstyle.CheckstyleMetricCollector;
 import org.cvsanaly.CVSAnalyMetricCollector;
 import org.kalibro.BaseTool;
-import org.kalibro.core.MetricCollector;
+import org.kalibro.MetricCollector;
 import org.kalibro.core.persistence.record.BaseToolRecord;
 import org.kalibro.dao.BaseToolDao;
 

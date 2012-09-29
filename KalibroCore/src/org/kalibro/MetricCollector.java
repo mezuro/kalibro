@@ -1,12 +1,7 @@
-package org.kalibro.core;
+package org.kalibro;
 
 import java.io.File;
 import java.util.Set;
-
-import org.kalibro.BaseTool;
-import org.kalibro.Granularity;
-import org.kalibro.NativeMetric;
-import org.kalibro.NativeModuleResult;
 
 /**
  * Interface between Kalibro and the metric collector tool.

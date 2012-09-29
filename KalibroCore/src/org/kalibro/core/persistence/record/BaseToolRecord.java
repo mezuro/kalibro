@@ -9,8 +9,8 @@ import javax.persistence.*;
 
 import org.kalibro.BaseTool;
 import org.kalibro.KalibroError;
+import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
-import org.kalibro.core.MetricCollector;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "BaseTool")

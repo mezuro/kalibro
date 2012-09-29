@@ -4,7 +4,6 @@ import static org.kalibro.MetricFixtures.*;
 
 import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
-import org.kalibro.core.MetricCollector;
 
 public final class BaseToolFixtures {
 

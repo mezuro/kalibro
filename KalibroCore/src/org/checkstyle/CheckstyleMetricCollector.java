@@ -10,9 +10,9 @@ import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.BaseTool;
+import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
-import org.kalibro.core.MetricCollector;
 
 public class CheckstyleMetricCollector implements MetricCollector {
 

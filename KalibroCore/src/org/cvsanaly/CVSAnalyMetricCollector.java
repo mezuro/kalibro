@@ -8,7 +8,6 @@ import java.util.regex.Pattern;
 
 import org.cvsanaly.entities.MetricResult;
 import org.kalibro.*;
-import org.kalibro.core.MetricCollector;
 import org.kalibro.core.command.CommandTask;
 
 public class CVSAnalyMetricCollector implements MetricCollector {

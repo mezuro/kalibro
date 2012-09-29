@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.*;
 
 import org.kalibro.*;
-import org.kalibro.core.MetricCollector;
 import org.yaml.snakeyaml.Yaml;
 
 public class CheckstyleStub implements MetricCollector {

@@ -13,7 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.BaseTool;
-import org.kalibro.core.MetricCollector;
+import org.kalibro.MetricCollector;
 import org.kalibro.core.persistence.record.BaseToolRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;

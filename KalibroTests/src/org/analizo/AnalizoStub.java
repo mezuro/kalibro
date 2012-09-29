@@ -8,9 +8,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.kalibro.BaseTool;
+import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
-import org.kalibro.core.MetricCollector;
 
 public class AnalizoStub implements MetricCollector {
 
