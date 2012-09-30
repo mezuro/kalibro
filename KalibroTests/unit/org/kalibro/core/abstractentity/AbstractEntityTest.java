@@ -31,7 +31,7 @@ public class AbstractEntityTest extends UnitTest {
 
 	@Test
 	public void shouldImportFromFile() throws Exception {
-		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("Person-carlos.yml"), Person.class));
+		assertDeepEquals(entity, AbstractEntity.importFrom(getFile("Person-carlos.yml"), Person.class));
 	}
 
 	@Test

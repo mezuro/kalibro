@@ -32,7 +32,7 @@ public class SourceTreeBuilderTest extends UnitTest {
 			new Module(CLASS, "org.checkstyle.CheckstyleOutputParser"),
 			new Module(PACKAGE, "org.checkstyle"),
 			new Module(CLASS, "org.analizo.AnalizoMetricCollector"),
-			new Module(CLASS, "org.analizo.AnalizoOutputParser"));
+			new Module(CLASS, "org.analizo.AnalizoResultParser"));
 
 		String projectName = projectResult.getProject().getName();
 		assertDeepEquals(new Module(SOFTWARE, projectName), sourceTree.getModule());

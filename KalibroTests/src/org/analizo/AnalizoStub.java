@@ -11,6 +11,7 @@ import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
 
+@Deprecated
 public class AnalizoStub implements MetricCollector {
 
 	@Override

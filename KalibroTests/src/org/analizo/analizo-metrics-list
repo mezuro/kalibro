@@ -1,0 +1,7 @@
+Global Metrics:
+total_cof - Total Coupling Factor
+total_loc - Total Lines of Code
+
+Module Metrics:
+cbo - Coupling Between Objects
+lcom4 - Lack of Cohesion of Methods 

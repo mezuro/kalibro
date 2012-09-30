@@ -25,8 +25,8 @@ public interface MetricCollector {
 	 * At most one result should have a module with granularity = {@link Granularity}.APPLICATION
 	 * 
 	 * @param codeDirectory Directory where the source code is located.
-	 * @param metrics Set of metrics Kalibro wants from the collector.
+	 * @param wantedMetrics Set of metrics Kalibro wants from the collector.
 	 * @return Set of {@link NativeModuleResult}s obtained.
 	 */
-	Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception;
+	Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> wantedMetrics) throws Exception;
 }

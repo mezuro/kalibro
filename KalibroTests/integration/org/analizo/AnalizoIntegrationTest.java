@@ -1,30 +1,29 @@
 package org.analizo;
 
 import static org.junit.Assert.*;
-import static org.kalibro.BaseToolFixtures.analizo;
-import static org.kalibro.NativeModuleResultFixtures.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import org.kalibro.BaseTool;
 import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.tests.IntegrationTest;
 
-public class AnalizoTest extends IntegrationTest {
+public class AnalizoIntegrationTest extends IntegrationTest {
 
 	@BeforeClass
 	public static void checkAnalizoVersion() {
 		try {
 			String message = "The Analizo version installed is not the expected for this test.";
-			assertEquals(message, "1.16.0", getAnalizoVersion());
+			assertEquals(message, "analizo version 1.16.0", getAnalizoVersion());
 		} catch (IOException exception) {
 			fail("Analizo is not installed but is required for this test.");
 		}
@@ -32,30 +31,32 @@ public class AnalizoTest extends IntegrationTest {
 
 	private static String getAnalizoVersion() throws IOException {
 		InputStream output = new CommandTask("analizo --version").executeAndGetOuput();
-		return IOUtils.toString(output).replace("analizo version", "").trim();
+		return IOUtils.toString(output).trim();
 	}
 
+	private Map<NativeMetric, String> supportedMetrics;
 	private AnalizoMetricCollector analizo;
 
 	@Before
 	public void setUp() throws IOException {
+		InputStream metricListOutput = getStream("analizo-metrics-list-complete");
+		supportedMetrics = new AnalizoMetricListParser(metricListOutput).getSupportedMetrics();
 		analizo = new AnalizoMetricCollector();
 	}
 
 	@Test
-	public void checkBaseTool() {
-		BaseTool baseTool = analizo();
-		assertEquals(baseTool.getName(), analizo.name());
-		assertEquals(baseTool.getDescription(), analizo.description());
-		assertDeepEquals(baseTool.getSupportedMetrics(), analizo.supportedMetrics());
-		assertEquals(baseTool.getCollectorClass(), analizo.getClass());
+	public void shouldGetSupportedMetrics() {
+		assertDeepEquals(supportedMetrics.keySet(), analizo.supportedMetrics());
 	}
 
 	@Test
 	public void shouldCollectMetrics() throws IOException {
 		File codeDirectory = new File(samplesDirectory(), "analizo");
-		Set<NativeMetric> metrics = analizo().getSupportedMetrics();
-		assertDeepEquals(asList(helloWorldApplicationResult(), helloWorldClassResult()),
-			analizo.collectMetrics(codeDirectory, metrics));
+		Set<NativeMetric> wantedMetrics = supportedMetrics.keySet();
+
+		InputStream analizoOutput = getStream("analizo-metrics-HelloWorld-complete");
+		Set<NativeModuleResult> results = new AnalizoResultParser(supportedMetrics, wantedMetrics).parse(analizoOutput);
+
+		assertDeepEquals(results, analizo.collectMetrics(codeDirectory, wantedMetrics));
 	}
 }

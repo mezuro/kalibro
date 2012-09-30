@@ -80,7 +80,7 @@ public final class ModuleNodeFixtures {
 	}
 
 	public static ModuleNode newAnalizoOutputParserNode() {
-		return newNode(CLASS, "org.analizo.AnalizoOutputParser");
+		return newNode(CLASS, "org.analizo.AnalizoResultParser");
 	}
 
 	public static ModuleNode checkstyleMetricCollectorNode() {

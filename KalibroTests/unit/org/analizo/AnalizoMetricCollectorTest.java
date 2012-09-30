@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Set;
 
 import org.junit.Before;
@@ -20,40 +21,58 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(AnalizoMetricCollector.class)
 public class AnalizoMetricCollectorTest extends UnitTest {
 
-	private CommandTask executor;
-	private AnalizoOutputParser parser;
-
-	private AnalizoMetricCollector analizo;
+	private Map<NativeMetric, String> supportedMetrics;
+	private AnalizoMetricCollector collector;
 
 	@Before
 	public void setUp() throws Exception {
-		executor = mock(CommandTask.class);
-		parser = mock(AnalizoOutputParser.class);
-		mockOutput("analizo metrics --list");
-		analizo = new AnalizoMetricCollector();
+		mockSupportedMetrics();
+		collector = new AnalizoMetricCollector();
+	}
+
+	private void mockSupportedMetrics() throws Exception {
+		supportedMetrics = mock(Map.class);
+		CommandTask metricListTask = mock(CommandTask.class);
+		InputStream metricListOutput = mock(InputStream.class);
+		AnalizoMetricListParser metricListParser = mock(AnalizoMetricListParser.class);
+		whenNew(CommandTask.class).withArguments("analizo metrics --list").thenReturn(metricListTask);
+		when(metricListTask.executeAndGetOuput()).thenReturn(metricListOutput);
+		whenNew(AnalizoMetricListParser.class).withArguments(metricListOutput).thenReturn(metricListParser);
+		when(metricListParser.getSupportedMetrics()).thenReturn(supportedMetrics);
 	}
 
 	@Test
-	public void checkBaseTool() {
-		assertEquals("Analizo", analizo.name());
-		assertTrue(analizo.supportedMetrics().isEmpty());
+	public void shouldHaveNameAndDescription() {
+		assertEquals("Analizo", collector.name());
+		assertEquals("Analizo is a suite of source code analysis tools, aimed at being language-independent and " +
+			"extensible. Analizo Metrics is the tool which analyzes source code in the directories passed as " +
+			"arguments and produces a metrics report written to the standard output in the YAML format.",
+			collector.description());
+	}
+
+	@Test
+	public void shouldGetSupportedMetrics() {
+		Set<NativeMetric> metrics = mock(Set.class);
+		when(supportedMetrics.keySet()).thenReturn(metrics);
+		assertSame(metrics, collector.supportedMetrics());
 	}
 
 	@Test
 	public void shouldCollectMetrics() throws Exception {
-		File codeDirectory = new File("/");
-		Set<NativeMetric> metrics = mock(Set.class);
-		InputStream output = mockOutput("analizo metrics /");
+		File codeDirectory = mock(File.class);
+		Set<NativeMetric> wantedMetrics = mock(Set.class);
 		Set<NativeModuleResult> results = mock(Set.class);
-		when(parser.parseResults(output, metrics)).thenReturn(results);
-		assertSame(results, analizo.collectMetrics(codeDirectory, metrics));
-	}
 
-	private InputStream mockOutput(String command) throws Exception {
-		InputStream output = mock(InputStream.class);
-		whenNew(CommandTask.class).withArguments(command).thenReturn(executor);
-		when(executor.executeAndGetOuput()).thenReturn(output);
-		whenNew(AnalizoOutputParser.class).withArguments(output).thenReturn(parser);
-		return output;
+		CommandTask analizoTask = mock(CommandTask.class);
+		InputStream analizoOutput = mock(InputStream.class);
+		AnalizoResultParser resultParser = mock(AnalizoResultParser.class);
+
+		when(codeDirectory.getAbsolutePath()).thenReturn("~");
+		whenNew(CommandTask.class).withArguments("analizo metrics ~").thenReturn(analizoTask);
+		when(analizoTask.executeAndGetOuput()).thenReturn(analizoOutput);
+		whenNew(AnalizoResultParser.class).withArguments(supportedMetrics, wantedMetrics).thenReturn(resultParser);
+		when(resultParser.parse(analizoOutput)).thenReturn(results);
+
+		assertSame(results, collector.collectMetrics(codeDirectory, wantedMetrics));
 	}
 }
