@@ -3,6 +3,7 @@ package org.analizo;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
@@ -42,12 +43,9 @@ public class AnalizoMetricCollectorTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldHaveNameAndDescription() {
+	public void shouldHaveNameAndDescription() throws IOException {
 		assertEquals("Analizo", collector.name());
-		assertEquals("Analizo is a suite of source code analysis tools, aimed at being language-independent and " +
-			"extensible. Analizo Metrics is the tool which analyzes source code in the directories passed as " +
-			"arguments and produces a metrics report written to the standard output in the YAML format.",
-			collector.description());
+		assertEquals(loadResource("description"), collector.description());
 	}
 
 	@Test

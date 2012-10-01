@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.commons.io.IOUtils;
 import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
@@ -18,9 +19,11 @@ import org.kalibro.core.command.CommandTask;
  */
 public class AnalizoMetricCollector implements MetricCollector {
 
+	private String description;
 	private Map<NativeMetric, String> supportedMetrics;
 
 	public AnalizoMetricCollector() throws IOException {
+		description = IOUtils.toString(getClass().getResourceAsStream("description"));
 		supportedMetrics = new AnalizoMetricListParser(executeAnalizo("--list")).getSupportedMetrics();
 	}
 
@@ -31,9 +34,7 @@ public class AnalizoMetricCollector implements MetricCollector {
 
 	@Override
 	public String description() {
-		return "Analizo is a suite of source code analysis tools, aimed at being language-independent and " +
-			"extensible. Analizo Metrics is the tool which analyzes source code in the directories passed as " +
-			"arguments and produces a metrics report written to the standard output in the YAML format.";
+		return description;
 	}
 
 	@Override

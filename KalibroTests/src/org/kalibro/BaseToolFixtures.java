@@ -5,6 +5,7 @@ import static org.kalibro.MetricFixtures.*;
 import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
 
+@Deprecated
 public final class BaseToolFixtures {
 
 	private static BaseTool analizo = newAnalizo();
