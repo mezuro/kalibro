@@ -49,10 +49,8 @@ public class NativeMetricRecord extends MetricRecord<NativeMetric> {
 		return nativeMetric;
 	}
 
-	private List<Language> convertLanguages() {
-		List<Language> converted = new ArrayList<Language>();
-		for (String language : languages)
-			converted.add(Language.valueOf(language));
-		return converted;
+	private Language[] convertLanguages() {
+		Language[] convertedLanguages = new Language[0];
+		return languages == null ? convertedLanguages : languages.toArray(convertedLanguages);
 	}
 }

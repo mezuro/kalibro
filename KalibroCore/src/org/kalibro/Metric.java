@@ -31,7 +31,7 @@ public abstract class Metric extends AbstractEntity<Metric> {
 		setDescription("");
 	}
 
-	public boolean isCompound() {
+	public final boolean isCompound() {
 		return compound;
 	}
 

@@ -96,4 +96,9 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	public Long getId() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

@@ -1,7 +1,7 @@
 package org.kalibro.desktop.configuration;
 
 import java.awt.Component;
-import java.util.List;
+import java.util.Collection;
 
 import org.kalibro.*;
 import org.kalibro.desktop.swingextension.Label;
@@ -92,7 +92,7 @@ public class MetricPanel extends EditPanel<Metric> {
 	private NativeMetric retrieveNativeMetric() {
 		String name = nameField.get();
 		Granularity scope = scopeField.get();
-		List<Language> languages = languagesField.get();
+		Language[] languages = languagesField.get().toArray(new Language[0]);
 		NativeMetric metric = new NativeMetric(name, scope, languages);
 		metric.setOrigin(originField.get());
 		return metric;
@@ -106,14 +106,14 @@ public class MetricPanel extends EditPanel<Metric> {
 		return metric;
 	}
 
-	private class LanguagesField extends UneditableField<List<Language>> {
+	private class LanguagesField extends UneditableField<Collection<Language>> {
 
 		LanguagesField() {
 			super("languages");
 		}
 
 		@Override
-		public void set(List<Language> languages) {
+		public void set(Collection<Language> languages) {
 			super.set(languages);
 			setText(languages.toString().replaceAll("[\\[\\]]", ""));
 		}
