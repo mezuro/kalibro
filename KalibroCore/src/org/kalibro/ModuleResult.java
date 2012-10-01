@@ -33,13 +33,9 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	public void removeCompoundMetrics() {
 		compoundMetricsWithError.clear();
-		for (Metric metric : metricResults.keySet())
+		for (Metric metric : getMetrics())
 			if (metric.isCompound())
 				removeResultFor(metric);
-	}
-
-	public void removeResultFor(Metric metric) {
-		metricResults.remove(metric);
 	}
 
 	public Date getDate() {

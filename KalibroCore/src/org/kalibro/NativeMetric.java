@@ -13,6 +13,11 @@ public final class NativeMetric extends Metric {
 
 	private SortedSet<Language> languages;
 
+	@SuppressWarnings("unused" /* used by SnakeYaml */)
+	private NativeMetric() {
+		this("New metric", Granularity.CLASS);
+	}
+
 	/**
 	 * Creates an instance of NativeMetric with empty description, which can be set after construction.
 	 * 

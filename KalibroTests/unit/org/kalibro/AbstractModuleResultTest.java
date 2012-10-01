@@ -1,12 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.Granularity.*;
-import static org.kalibro.MetricFixtures.analizoMetric;
-import static org.kalibro.ModuleFixtures.helloWorldClass;
-
-import java.util.HashSet;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,75 +9,81 @@ import org.kalibro.tests.UnitTest;
 
 public class AbstractModuleResultTest extends UnitTest {
 
-	private NativeMetric acc, dit, loc;
-	private NativeMetricResult accResult, locResult;
-	private MyModuleResult moduleResult;
+	private Module module;
+	private NativeMetric cbo, lcom4;
+	private NativeMetricResult cboResult, lcom4Result;
+
+	private AbstractModuleResult<NativeMetricResult> moduleResult;
 
 	@Before
 	public void setUp() {
-		acc = analizoMetric("acc");
-		dit = analizoMetric("dit");
-		loc = analizoMetric("loc");
-		accResult = new NativeMetricResult(acc, 4.2);
-		locResult = new NativeMetricResult(loc, 42.0);
-		moduleResult = new MyModuleResult(helloWorldClass());
-		moduleResult.addMetricResult(accResult);
-		moduleResult.addMetricResult(locResult);
-	}
-
-	@Test
-	public void testHasResultFor() {
-		assertTrue(moduleResult.hasResultFor(acc));
-		assertTrue(moduleResult.hasResultFor(loc));
-		assertFalse(moduleResult.hasResultFor(dit));
-	}
-
-	@Test
-	public void testGetResultFor() {
-		assertSame(accResult, moduleResult.getResultFor(acc));
-		assertSame(locResult, moduleResult.getResultFor(loc));
-	}
-
-	@Test
-	public void checkErrorForInexistentResultMetric() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				moduleResult.getResultFor(dit);
-			}
-		}).throwsException().withMessage("No result found for metric: Depth of Inheritance Tree");
-	}
-
-	@Test
-	public void testAddMetricResult() {
-		assertDeepEquals(asSet(accResult, locResult), metricResults());
-
-		NativeMetricResult ditResult = new NativeMetricResult(dit, 0.42);
-		moduleResult.addMetricResult(ditResult);
-		assertDeepEquals(asSet(accResult, ditResult, locResult), metricResults());
-	}
-
-	private Set<NativeMetricResult> metricResults() {
-		return new HashSet<NativeMetricResult>(moduleResult.getMetricResults());
+		module = mock(Module.class);
+		cbo = loadFixture("cbo", NativeMetric.class);
+		lcom4 = loadFixture("lcom4", NativeMetric.class);
+		cboResult = new NativeMetricResult(cbo, 28.0);
+		lcom4Result = new NativeMetricResult(lcom4, 42.0);
+		moduleResult = moduleResult(module);
 	}
 
 	@Test
 	public void shouldSortByModule() {
-		assertSorted(newResult(SOFTWARE, "G"), newResult(SOFTWARE, "H"),
-			newResult(PACKAGE, "E"), newResult(PACKAGE, "F"),
-			newResult(CLASS, "C"), newResult(CLASS, "D"),
-			newResult(METHOD, "A"), newResult(METHOD, "B"));
+		Module second = mock(Module.class);
+		when(module.compareTo(second)).thenReturn(-1);
+		when(second.compareTo(module)).thenReturn(1);
+		assertSorted(moduleResult, moduleResult(second));
 	}
 
-	private MyModuleResult newResult(Granularity granularity, String name) {
-		return new MyModuleResult(new Module(granularity, name));
+	@Test
+	public void shouldIdentifyByModule() {
+		AbstractModuleResult<NativeMetricResult> other = moduleResult(module);
+		other.addMetricResult(cboResult);
+		other.addMetricResult(lcom4Result);
+		assertEquals(moduleResult, other);
 	}
 
-	private class MyModuleResult extends AbstractModuleResult<NativeMetricResult> {
+	@Test
+	public void checkConstruction() {
+		assertSame(module, moduleResult.getModule());
+		assertTrue(moduleResult.getMetrics().isEmpty());
+		assertTrue(moduleResult.getMetricResults().isEmpty());
+	}
 
-		public MyModuleResult(Module module) {
-			super(module);
-		}
+	@Test
+	public void shouldAnswerIfHasResultForMetric() {
+		moduleResult.addMetricResult(cboResult);
+		assertTrue(moduleResult.hasResultFor(cbo));
+		assertFalse(moduleResult.hasResultFor(lcom4));
+	}
+
+	@Test
+	public void shouldGetResultForMetric() {
+		moduleResult.addMetricResult(cboResult);
+		assertSame(cboResult, moduleResult.getResultFor(cbo));
+		assertThat(getResultFor(lcom4)).throwsException().withMessage("No result found for metric: " + lcom4);
+	}
+
+	private VoidTask getResultFor(final Metric metric) {
+		return new VoidTask() {
+
+			@Override
+			protected void perform() {
+				moduleResult.getResultFor(metric);
+			}
+		};
+	}
+
+	@Test
+	public void shouldAddAndRemoveMetricResult() {
+		moduleResult.addMetricResult(cboResult);
+		moduleResult.addMetricResult(lcom4Result);
+		assertDeepEquals(asSet(cbo, lcom4), moduleResult.getMetrics());
+		assertDeepEquals(asSet(cboResult, lcom4Result), moduleResult.getMetricResults());
+
+		moduleResult.removeResultFor(cbo);
+		assertFalse(moduleResult.hasResultFor(cbo));
+	}
+
+	private AbstractModuleResult<NativeMetricResult> moduleResult(Module theModule) {
+		return new AbstractModuleResult<NativeMetricResult>(theModule) {/* just for test */};
 	}
 }

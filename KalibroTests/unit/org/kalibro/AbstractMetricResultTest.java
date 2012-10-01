@@ -13,7 +13,6 @@ public class AbstractMetricResultTest extends UnitTest {
 	@Before
 	public void setUp() {
 		metric = mock(Metric.class);
-
 	}
 
 	@Test
@@ -25,7 +24,7 @@ public class AbstractMetricResultTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldIdentityByMetric() {
+	public void shouldIdentifyByMetric() {
 		assertEquals(result(42.0), result(28.0));
 	}
 

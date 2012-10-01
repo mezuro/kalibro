@@ -1,46 +1,60 @@
 package org.kalibro;
 
-import java.util.Collection;
 import java.util.Map;
+import java.util.SortedSet;
 import java.util.TreeMap;
+import java.util.TreeSet;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 
+/**
+ * Abstract representation of a set of metric results collected from the same instance of a {@link Module}.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("module")
 public abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 	extends AbstractEntity<AbstractModuleResult<METRIC_RESULT>> {
 
 	@IdentityField
-	protected Module module;
+	private Module module;
 
-	protected Map<Metric, METRIC_RESULT> metricResults;
+	private Map<Metric, METRIC_RESULT> metricResults;
 
-	public AbstractModuleResult(Module module) {
+	protected AbstractModuleResult(Module module) {
 		this.module = module;
 		metricResults = new TreeMap<Metric, METRIC_RESULT>();
 	}
 
-	public Module getModule() {
+	public final Module getModule() {
 		return module;
 	}
 
-	public Collection<METRIC_RESULT> getMetricResults() {
-		return metricResults.values();
-	}
-
-	public boolean hasResultFor(Metric metric) {
+	public final boolean hasResultFor(Metric metric) {
 		return metricResults.containsKey(metric);
 	}
 
-	public METRIC_RESULT getResultFor(Metric metric) {
+	public final METRIC_RESULT getResultFor(Metric metric) {
 		if (!hasResultFor(metric))
 			throw new KalibroException("No result found for metric: " + metric);
 		return metricResults.get(metric);
 	}
 
-	public void addMetricResult(METRIC_RESULT metricResult) {
+	public final SortedSet<Metric> getMetrics() {
+		return new TreeSet<Metric>(metricResults.keySet());
+	}
+
+	public final SortedSet<METRIC_RESULT> getMetricResults() {
+		return new TreeSet<METRIC_RESULT>(metricResults.values());
+	}
+
+	public final void addMetricResult(METRIC_RESULT metricResult) {
 		metricResults.put(metricResult.getMetric(), metricResult);
+	}
+
+	public final void removeResultFor(Metric metric) {
+		metricResults.remove(metric);
 	}
 }
