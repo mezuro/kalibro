@@ -13,6 +13,16 @@ public class CompoundMetric extends Metric {
 		setScript("return 1;");
 	}
 
+	@Override
+	public void setName(String name) {
+		super.setName(name);
+	}
+
+	@Override
+	public void setScope(Granularity scope) {
+		super.setScope(scope);
+	}
+
 	public String getScript() {
 		return script;
 	}
