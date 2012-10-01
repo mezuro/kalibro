@@ -11,17 +11,7 @@ public abstract class AuditAdapter implements AuditListener {
 	}
 
 	@Override
-	public void auditFinished(AuditEvent event) {
-		return;
-	}
-
-	@Override
 	public void fileStarted(AuditEvent event) {
-		return;
-	}
-
-	@Override
-	public void fileFinished(AuditEvent event) {
 		return;
 	}
 
@@ -32,6 +22,16 @@ public abstract class AuditAdapter implements AuditListener {
 
 	@Override
 	public void addException(AuditEvent event, Throwable exception) {
+		return;
+	}
+
+	@Override
+	public void fileFinished(AuditEvent event) {
+		return;
+	}
+
+	@Override
+	public void auditFinished(AuditEvent event) {
 		return;
 	}
 }

@@ -1,66 +1,28 @@
 package org.checkstyle;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
+import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(AuditEvent.class)
 public class AuditAdapterTest extends UnitTest {
 
-	private AuditAdapter adapter;
-
-	@Before
-	public void setUp() {
-		adapter = PowerMockito.spy(new MyAuditAdapter());
-	}
-
 	@Test
-	public void shouldDoNothingOnAuditStarted() {
-		adapter.auditStarted(null);
-		Mockito.verify(adapter).auditStarted(null);
-		Mockito.verifyNoMoreInteractions(adapter);
-	}
-
-	@Test
-	public void shouldDoNothingOnAuditFinished() {
-		adapter.auditFinished(null);
-		Mockito.verify(adapter).auditFinished(null);
-		Mockito.verifyNoMoreInteractions(adapter);
-	}
-
-	@Test
-	public void shouldDoNothingOnFileStarted() {
-		adapter.fileStarted(null);
-		Mockito.verify(adapter).fileStarted(null);
-		Mockito.verifyNoMoreInteractions(adapter);
-	}
-
-	@Test
-	public void shouldDoNothingOnFileFinished() {
-		adapter.fileFinished(null);
-		Mockito.verify(adapter).fileFinished(null);
-		Mockito.verifyNoMoreInteractions(adapter);
-	}
-
-	@Test
-	public void shouldDoNothingOnAddError() {
-		adapter.addError(null);
-		Mockito.verify(adapter).addError(null);
-		Mockito.verifyNoMoreInteractions(adapter);
-	}
-
-	@Test
-	public void shouldDoNothingOnAddException() {
-		adapter.addException(null, null);
-		Mockito.verify(adapter).addException(null, null);
-		Mockito.verifyNoMoreInteractions(adapter);
-	}
-
-	private class MyAuditAdapter extends AuditAdapter {
-
-		protected MyAuditAdapter() {
-			super();
-		}
+	public void shouldDoNothing() {
+		AuditEvent event = mock(AuditEvent.class);
+		Throwable exception = mock(Throwable.class);
+		AuditAdapter adapter = new AuditAdapter() {/* just for test */};
+		adapter.auditStarted(event);
+		adapter.fileStarted(event);
+		adapter.addError(event);
+		adapter.addException(event, exception);
+		adapter.fileFinished(event);
+		adapter.auditFinished(event);
+		verifyZeroInteractions(event);
 	}
 }
