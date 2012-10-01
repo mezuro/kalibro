@@ -66,7 +66,7 @@ public class MetricResultTest extends UnitTest {
 	@Test
 	public void shouldSetValueFromAggregationFormIfValueIsNaN() {
 		for (Statistic statistic : Statistic.values()) {
-			result.value = Double.NaN;
+			result.setValue(Double.NaN);
 			configuration.setAggregationForm(statistic);
 			result.setConfiguration(configuration);
 			assertDoubleEquals(result.getStatistic(statistic), result.getValue());

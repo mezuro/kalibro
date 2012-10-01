@@ -3,7 +3,6 @@ package org.kalibro;
 import java.util.ArrayList;
 import java.util.Collection;
 
-
 public class MetricResult extends AbstractMetricResult {
 
 	private Range range;
@@ -19,10 +18,10 @@ public class MetricResult extends AbstractMetricResult {
 	}
 
 	public void setConfiguration(MetricConfiguration configuration) {
-		if (value.isNaN() && hasStatistics())
-			value = getStatistic(configuration.getAggregationForm());
-		if (configuration.hasRangeFor(value))
-			setRange(configuration.getRangeFor(value));
+		if (getValue().isNaN() && hasStatistics())
+			setValue(getStatistic(configuration.getAggregationForm()));
+		if (configuration.hasRangeFor(getValue()))
+			setRange(configuration.getRangeFor(getValue()));
 		setWeight(configuration.getWeight());
 	}
 
@@ -36,7 +35,7 @@ public class MetricResult extends AbstractMetricResult {
 
 	public Range getRange() {
 		if (range == null)
-			throw new KalibroException("No range found for metric '" + metric + "' and value " + value);
+			throw new KalibroException("No range found for metric '" + getMetric() + "' and value " + getValue());
 		return range;
 	}
 
