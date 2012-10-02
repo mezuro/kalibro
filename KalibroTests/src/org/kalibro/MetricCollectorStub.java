@@ -10,6 +10,7 @@ class MetricCollectorStub implements MetricCollector {
 
 	static final String NAME = "Metric collector stub";
 	static final String DESCRIPTION = "A MetricCollector for testing";
+	static final String CLASS_NAME = MetricCollectorStub.class.getName();
 	static final NativeMetric SUPPORTED_METRIC = mock(NativeMetric.class);
 	static final NativeModuleResult RESULT = mock(NativeModuleResult.class);
 

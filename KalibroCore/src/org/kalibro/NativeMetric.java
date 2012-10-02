@@ -5,7 +5,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 /**
- * A metric provided by a base tool.
+ * Metric provided by a base tool.
  * 
  * @author Carlos Morais
  */

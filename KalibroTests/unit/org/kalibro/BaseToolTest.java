@@ -23,7 +23,7 @@ public class BaseToolTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		baseTool = new BaseTool(MetricCollectorStub.class.getName());
+		baseTool = new BaseTool(CLASS_NAME);
 	}
 
 	@Test
@@ -48,26 +48,21 @@ public class BaseToolTest extends UnitTest {
 	}
 
 	private BaseTool baseTool(String name) {
-		return new BaseTool(name, null, null);
+		return new BaseTool(name, null, null, null);
 	}
 
 	@Test
-	public void checkAttributesConstruction() {
-		baseTool = new BaseTool(NAME, DESCRIPTION, asSet(SUPPORTED_METRIC));
-		checkConstruction(null);
+	public void checkConstruction() {
+		check();
+		baseTool = new BaseTool(NAME, DESCRIPTION, asSet(SUPPORTED_METRIC), CLASS_NAME);
+		check();
 	}
 
-	@Test
-	public void checkCollectorClassNameContruction() {
-		checkConstruction(MetricCollectorStub.class.getName());
-	}
-
-	private void checkConstruction(String collectorClassName) {
-		assertNull(baseTool.getId());
+	private void check() {
 		assertEquals(NAME, baseTool.getName());
 		assertEquals(DESCRIPTION, baseTool.getDescription());
 		assertEquals(asSet(SUPPORTED_METRIC), baseTool.getSupportedMetrics());
-		assertEquals(collectorClassName, baseTool.getCollectorClassName());
+		assertEquals(CLASS_NAME, baseTool.getCollectorClassName());
 	}
 
 	@Test

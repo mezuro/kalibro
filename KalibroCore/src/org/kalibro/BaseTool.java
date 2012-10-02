@@ -22,8 +22,6 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 		return DaoFactory.getBaseToolDao().all();
 	}
 
-	private Long id;
-
 	@IdentityField
 	private String name;
 
@@ -31,10 +29,11 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	private String collectorClassName;
 	private Set<NativeMetric> supportedMetrics;
 
-	public BaseTool(String name, String description, Set<NativeMetric> supportedMetrics) {
+	public BaseTool(String name, String description, Set<NativeMetric> supportedMetrics, String collectorClassName) {
 		this.name = name;
 		this.description = description;
 		this.supportedMetrics = supportedMetrics;
+		this.collectorClassName = collectorClassName;
 	}
 
 	public BaseTool(String collectorClassName) {
@@ -43,10 +42,6 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 		name = collector.name();
 		description = collector.description();
 		supportedMetrics = collector.supportedMetrics();
-	}
-
-	Long getId() {
-		return id;
 	}
 
 	public String getName() {

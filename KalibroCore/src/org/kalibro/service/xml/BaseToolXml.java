@@ -40,6 +40,6 @@ public class BaseToolXml extends DataTransferObject<BaseTool> {
 
 	@Override
 	public BaseTool convert() {
-		return new BaseTool(name, description, toSet(supportedMetrics));
+		return new BaseTool(name, description, toSet(supportedMetrics), "");
 	}
 }

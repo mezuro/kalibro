@@ -1,5 +1,10 @@
 package org.kalibro;
 
+/**
+ * Metric calculated based on the results of other metrics, using a script.
+ * 
+ * @author Carlos Morais.
+ */
 public class CompoundMetric extends Metric {
 
 	private String script;

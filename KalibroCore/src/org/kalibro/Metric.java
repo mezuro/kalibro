@@ -6,7 +6,7 @@ import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 
 /**
- * Abstract representation of source code metrics.
+ * Abstract representation of source code metric.
  * 
  * @author Carlos Morais.
  */
