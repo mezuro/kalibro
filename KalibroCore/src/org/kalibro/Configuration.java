@@ -19,7 +19,6 @@ import org.kalibro.dao.DaoFactory;
 @SortingFields("name")
 public class Configuration extends AbstractEntity<Configuration> {
 
-//TODO
 	public static Configuration importFrom(File file) {
 		return importFrom(file, Configuration.class);
 	}
@@ -117,15 +116,16 @@ public class Configuration extends AbstractEntity<Configuration> {
 		Map<BaseTool, Set<NativeMetric>> nativeMetrics = new HashMap<BaseTool, Set<NativeMetric>>();
 		for (MetricConfiguration each : metricConfigurations)
 			if (!each.getMetric().isCompound())
-				addNativeMetricTo(nativeMetrics, (NativeMetric) each.getMetric());
+				addNativeMetricTo(nativeMetrics, each);
 		return nativeMetrics;
 	}
 
-	private void addNativeMetricTo(Map<BaseTool, Set<NativeMetric>> nativeMetrics, NativeMetric nativeMetric) {
-		BaseTool origin = nativeMetric.getOrigin();
+	private void addNativeMetricTo(Map<BaseTool, Set<NativeMetric>> nativeMetrics,
+		MetricConfiguration nativeConfiguration) {
+		BaseTool origin = nativeConfiguration.getBaseTool();
 		if (!nativeMetrics.containsKey(origin))
 			nativeMetrics.put(origin, new HashSet<NativeMetric>());
-		nativeMetrics.get(origin).add(nativeMetric);
+		nativeMetrics.get(origin).add((NativeMetric) nativeConfiguration.getMetric());
 	}
 
 	public boolean containsMetric(Metric metric) {
@@ -168,9 +168,5 @@ public class Configuration extends AbstractEntity<Configuration> {
 	@Override
 	public String toString() {
 		return name;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 }

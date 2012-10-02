@@ -1,9 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
-import static org.kalibro.MetricFixtures.*;
 
 import java.io.File;
 import java.util.SortedSet;
@@ -13,12 +10,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.tests.UnitTest;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -26,30 +22,21 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({AbstractEntity.class, DaoFactory.class})
 public class ConfigurationTest extends UnitTest {
 
-	private NativeMetric cbo, lcom4;
-	private CompoundMetric sc;
 	private ConfigurationDao dao;
 
+	private CompoundMetric sc;
+	private NativeMetric cbo, lcom4;
 	private Configuration configuration;
 
 	@Before
 	public void setUp() {
-		sc = newSc();
-		cbo = analizoMetric("cbo");
-		lcom4 = analizoMetric("lcom4");
-		configuration = newConfiguration("cbo", "lcom4");
-		mockDao();
-	}
-
-	private void mockDao() {
 		dao = mock(ConfigurationDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getConfigurationDao()).thenReturn(dao);
-	}
-
-	@Test
-	public void shouldSortByName() {
-		assertSorted(new Configuration("A"), new Configuration("B"), new Configuration("X"), new Configuration("Z"));
+		sc = loadFixture("sc", CompoundMetric.class);
+		cbo = loadFixture("cbo", NativeMetric.class);
+		lcom4 = loadFixture("lcom4", NativeMetric.class);
+		configuration = loadFixture("sc", Configuration.class);
 	}
 
 	@Test
@@ -70,10 +57,24 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void checkDefaultConfiguration() {
+	public void shouldSortByName() {
+		assertSorted(withName("A"), withName("B"), withName("C"), withName("X"), withName("Y"), withName("Z"));
+	}
+
+	@Test
+	public void shouldIdentifyByName() {
+		assertEquals(configuration, withName(configuration.getName()));
+	}
+
+	private Configuration withName(String name) {
+		return new Configuration(name);
+	}
+
+	@Test
+	public void checkConstruction() {
 		configuration = new Configuration();
 		assertFalse(configuration.hasId());
-		assertEquals("", configuration.getName());
+		assertEquals("New configuration", configuration.getName());
 		assertEquals("", configuration.getDescription());
 		assertTrue(configuration.getMetricConfigurations().isEmpty());
 	}
@@ -95,22 +96,15 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void toStringShouldBeConfigurationName() {
-		assertEquals(configuration.getName(), "" + configuration);
-	}
-
-	@Test
 	public void shouldAddMetricConfigurationIfItDoesNotConflictWithExistingOnes() {
-		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
-		SortedSet<MetricConfiguration> existents = configuration.getMetricConfigurations();
-		configuration.addMetricConfiguration(metricConfiguration);
+		configuration.addMetricConfiguration(new MetricConfiguration());
+		assertThat(new VoidTask() {
 
-		InOrder order = Mockito.inOrder(metricConfiguration);
-		for (MetricConfiguration existent : existents)
-			order.verify(metricConfiguration).assertNoConflictWith(existent);
-		order.verify(metricConfiguration).setConfiguration(configuration);
-
-		assertTrue(configuration.getMetricConfigurations().contains(metricConfiguration));
+			@Override
+			protected void perform() throws Throwable {
+				configuration.addMetricConfiguration(new MetricConfiguration(new CompoundMetric("sc")));
+			}
+		}).throwsException().withMessage("Metric with code 'sc' already exists in the configuration.");
 	}
 
 	@Test
@@ -126,37 +120,38 @@ public class ConfigurationTest extends UnitTest {
 
 	@Test
 	public void shouldGetCompoundMetrics() {
-		assertTrue(configuration.getCompoundMetrics().isEmpty());
-		configuration.addMetricConfiguration(new MetricConfiguration(sc));
 		assertDeepEquals(asSet(sc), configuration.getCompoundMetrics());
 	}
 
 	@Test
 	public void shouldRetrieveNativeMetricsPerBaseTool() {
-		assertDeepEquals(asMap("Analizo", asSet(cbo, lcom4)), configuration.getNativeMetrics());
+		BaseTool baseTool = loadFixture("inexistent", BaseTool.class);
+		assertDeepEquals(asMap(baseTool, asSet(cbo, lcom4)), configuration.getNativeMetrics());
 	}
 
 	@Test
 	public void shouldAnswerIfContainsMetric() {
 		assertTrue(configuration.containsMetric(cbo));
 		assertTrue(configuration.containsMetric(lcom4));
-		assertFalse(configuration.containsMetric(sc));
+		assertTrue(configuration.containsMetric(sc));
+		assertFalse(configuration.containsMetric(new CompoundMetric()));
 	}
 
 	@Test
 	public void shouldGetConfigurationForMetric() {
-		assertDeepEquals(metricConfiguration("cbo"), configuration.getConfigurationFor(cbo));
-		assertDeepEquals(metricConfiguration("lcom4"), configuration.getConfigurationFor(lcom4));
-		assertThat(getScConfiguration()).throwsException()
-			.withMessage("No configuration found for metric: Structural complexity");
+		assertDeepEquals(cbo, configuration.getConfigurationFor(cbo).getMetric());
+		assertDeepEquals(lcom4, configuration.getConfigurationFor(lcom4).getMetric());
+		assertDeepEquals(sc, configuration.getConfigurationFor(sc).getMetric());
+		assertThat(getConfigurationFor(new CompoundMetric())).throwsException()
+			.withMessage("No configuration found for metric: New metric");
 	}
 
-	private VoidTask getScConfiguration() {
+	private VoidTask getConfigurationFor(final Metric metric) {
 		return new VoidTask() {
 
 			@Override
 			protected void perform() {
-				configuration.getConfigurationFor(sc);
+				configuration.getConfigurationFor(metric);
 			}
 		};
 	}
@@ -183,20 +178,6 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldUpdateIdAndMetricConfigurationsOnSave() {
-		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
-		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
-		when(dao.save(configuration)).thenReturn(42L);
-		when(DaoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
-		when(metricConfigurationDao.metricConfigurationsOf(42L)).thenReturn(asSortedSet(metricConfiguration));
-
-		assertFalse(configuration.hasId());
-		configuration.save();
-		assertEquals(42L, configuration.getId().longValue());
-		assertDeepEquals(asSet(metricConfiguration), configuration.getMetricConfigurations());
-	}
-
-	@Test
 	public void shouldRequiredNameToSave() {
 		configuration.setName(" ");
 		assertThat(save()).throwsException().withMessage("Configuration requires name.");
@@ -213,14 +194,34 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldUpdateIdAndMetricConfigurationsOnSave() {
+		Long id = mock(Long.class);
+		MetricConfiguration metricConfiguration = mockMetricConfiguration(id);
+		when(dao.save(configuration)).thenReturn(id);
+
+		assertFalse(configuration.hasId());
+		configuration.save();
+		assertSame(id, configuration.getId());
+		assertDeepEquals(asSet(metricConfiguration), configuration.getMetricConfigurations());
+	}
+
+	private MetricConfiguration mockMetricConfiguration(Long id) {
+		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
+		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
+		when(DaoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
+		when(metricConfigurationDao.metricConfigurationsOf(id)).thenReturn(asSortedSet(metricConfiguration));
+		return metricConfiguration;
+	}
+
+	@Test
 	public void shouldDeleteIfHasId() {
 		assertFalse(configuration.hasId());
 		configuration.delete();
 		verify(dao, never()).delete(any(Long.class));
 
-		configuration.setId(42L);
-
+		new FieldReflector(configuration).set("id", 42L);
 		assertTrue(configuration.hasId());
+
 		configuration.delete();
 		verify(dao).delete(42L);
 		assertFalse(configuration.hasId());
@@ -230,7 +231,6 @@ public class ConfigurationTest extends UnitTest {
 	public void shouldNotifyMetricConfigurationsOfDeletion() {
 		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
 		configuration.setMetricConfigurations(asSortedSet(metricConfiguration));
-		configuration.setId(42L);
 
 		configuration.delete();
 		verify(metricConfiguration).deleted();

@@ -10,7 +10,7 @@ import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 
 /**
- * Configuration for a metric. Contains weight, aggregation form and a set of evalutation ranges.
+ * Configuration for a metric. Contains weight, aggregation form and a set of evaluation ranges.
  * 
  * @author Carlos Morais
  */

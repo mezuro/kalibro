@@ -3,6 +3,8 @@ package org.kalibro;
 import static org.junit.Assert.*;
 import static org.kalibro.MetricCollectorStub.*;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 import java.util.SortedSet;
 
 import org.junit.Before;
@@ -49,6 +51,14 @@ public class BaseToolTest extends UnitTest {
 
 	private BaseTool baseTool(String name) {
 		return new BaseTool(name, null, null, null);
+	}
+
+	@Test
+	public void shouldHaveDefaultConstructorForYamlLoading() throws Exception {
+		Constructor<BaseTool> constructor = BaseTool.class.getDeclaredConstructor();
+		assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+		constructor.setAccessible(true);
+		assertDeepEquals(new BaseTool(null, null, null, null), constructor.newInstance());
 	}
 
 	@Test

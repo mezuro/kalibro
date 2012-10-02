@@ -18,9 +18,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 
 	@Override
 	public Configuration loadFixture() {
-		Configuration fixture = newConfiguration();
-		fixture.setId(ID);
-		return fixture;
+		return newConfiguration();
 	}
 
 	@Override

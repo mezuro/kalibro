@@ -1,0 +1,58 @@
+name: "SC configuration"
+description: "Sample configuration with natives cbo, lcom4 and compound sc."
+metricConfigurations:
+  -
+    code: "sc"
+    metric: !!org.kalibro.CompoundMetric
+      name: "Structural Complexity"
+      scope: CLASS
+      script: "return cbo * lcom4"
+    weight: 1.0
+    aggregationForm: AVERAGE
+    ranges: []
+  -
+    code: "cbo"
+    metric: &id1 !!org.kalibro.NativeMetric
+      name: "Coupling Between Objects"
+      scope: CLASS
+      languages: {C, CPP, JAVA}
+    baseTool: &id2
+      name: "Inexistent"
+      description: "Base tool for testing"
+      collectorClassName: "inexistent.Class"
+      supportedMetrics:
+        - *id1
+        - &id3 !!org.kalibro.NativeMetric
+          name: "Lack of Cohesion of Methods"
+          scope: CLASS
+          languages: {C, CPP, JAVA}
+    weight: 1.0
+    aggregationForm: AVERAGE
+    ranges: []
+  -
+    code: lcom4
+    metric: *id3
+    baseTool: *id2
+    weight: 1.0
+    aggregationForm: AVERAGE
+    readingGroup:
+      name: "Extremes"
+      description: "All or nothing group."
+      readings:
+        - &id4
+          color: 0xff0000
+          grade: 0.0
+          label: "Bad"
+        - &id5
+          color: 0x00ff00
+          grade: 10.0
+          label: "Good"
+    ranges:
+      -
+        beginning: 0.0
+        end: 1.0
+        reading: *id5
+      -
+        beginning: 1.0
+        end: .inf
+        reading: *id4

@@ -61,7 +61,7 @@ public class ProjectRecord extends DataTransferObject<Project> {
 
 	private void initializeConfiguration(Long configurationId) {
 		Configuration entity = new Configuration();
-		entity.setId(configurationId);
+		setId(entity, configurationId);
 		configuration = new ConfigurationRecord(entity);
 	}
 

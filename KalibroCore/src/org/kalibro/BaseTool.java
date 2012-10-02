@@ -29,6 +29,11 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	private String collectorClassName;
 	private Set<NativeMetric> supportedMetrics;
 
+	@SuppressWarnings("unused" /* used by SnakeYaml */)
+	private BaseTool() {
+		super();
+	}
+
 	public BaseTool(String name, String description, Set<NativeMetric> supportedMetrics, String collectorClassName) {
 		this.name = name;
 		this.description = description;

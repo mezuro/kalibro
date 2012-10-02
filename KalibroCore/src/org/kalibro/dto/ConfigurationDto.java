@@ -15,9 +15,8 @@ public abstract class ConfigurationDto extends DataTransferObject<Configuration>
 
 	@Override
 	public Configuration convert() {
-		Configuration configuration = new Configuration();
-		configuration.setId(id());
-		configuration.setName(name());
+		Configuration configuration = new Configuration(name());
+		setId(configuration, id());
 		configuration.setDescription(description() == null ? "" : description());
 		configuration.setMetricConfigurations(metricConfigurations());
 		return configuration;

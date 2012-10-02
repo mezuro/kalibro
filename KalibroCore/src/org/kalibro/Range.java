@@ -13,9 +13,9 @@ public class Range extends AbstractEntity<Range> {
 	private Double beginning = Double.NEGATIVE_INFINITY;
 
 	private Double end = Double.POSITIVE_INFINITY;
-	private String label;
-	private Double grade;
-	private Color color;
+
+	private Reading reading;
+
 	private String comments;
 
 	public Range() {
@@ -29,9 +29,7 @@ public class Range extends AbstractEntity<Range> {
 	public Range(Double beginning, Double end, String label, Double grade, Color color) {
 		validate(beginning, end);
 		setBeginning(beginning);
-		setEnd(end);
-		setColor(color);
-		setLabel(label);
+		reading = new Reading(label, grade, color);
 		setGrade(grade);
 		setComments("");
 	}
@@ -77,27 +75,27 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	public String getLabel() {
-		return label;
+		return reading.getLabel();
 	}
 
 	public void setLabel(String label) {
-		this.label = label;
+		reading.setLabel(label);
 	}
 
 	public Double getGrade() {
-		return grade;
+		return reading.getGrade();
 	}
 
 	public void setGrade(Double grade) {
-		this.grade = grade;
+		reading.setGrade(grade);
 	}
 
 	public Color getColor() {
-		return color;
+		return reading.getColor();
 	}
 
 	public void setColor(Color color) {
-		this.color = color;
+		reading.setColor(color);
 	}
 
 	public String getComments() {
