@@ -2,7 +2,6 @@ package org.kalibro;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 
 /**
@@ -14,9 +13,6 @@ import org.kalibro.core.abstractentity.SortingFields;
 public abstract class Metric extends AbstractEntity<Metric> {
 
 	private final boolean compound;
-
-	@Print(skip = true)
-	private Long id;
 
 	@IdentityField
 	private String name;
@@ -33,10 +29,6 @@ public abstract class Metric extends AbstractEntity<Metric> {
 
 	public final boolean isCompound() {
 		return compound;
-	}
-
-	public Long getId() {
-		return id;
 	}
 
 	public String getName() {

@@ -25,7 +25,6 @@ public class MetricTest extends UnitTest {
 	@Test
 	public void checkConstruction() {
 		Metric metric = metric(false, "MetricTest name", PACKAGE);
-		assertNull(metric.getId());
 		assertFalse(metric.isCompound());
 		assertEquals("MetricTest name", metric.getName());
 		assertEquals(PACKAGE, metric.getScope());
