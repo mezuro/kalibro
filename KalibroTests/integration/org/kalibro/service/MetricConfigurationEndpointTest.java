@@ -18,9 +18,7 @@ public class MetricConfigurationEndpointTest extends
 
 	@Override
 	protected MetricConfiguration loadFixture() {
-		MetricConfiguration fixture = metricConfiguration("cbo");
-		fixture.setId(ID);
-		return fixture;
+		return metricConfiguration("cbo");
 	}
 
 	@Test

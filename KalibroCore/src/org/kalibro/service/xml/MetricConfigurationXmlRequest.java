@@ -55,7 +55,7 @@ public class MetricConfigurationXmlRequest extends DataTransferObject<MetricConf
 
 	@Override
 	public MetricConfiguration convert() {
-		MetricConfiguration metricConfiguration = new MetricConfiguration(metric.convert());
+		MetricConfiguration metricConfiguration = new MetricConfiguration();
 		metricConfiguration.setCode(code);
 		metricConfiguration.setWeight(weight == null ? 1.0 : weight);
 		metricConfiguration.setAggregationForm(aggregationForm == null ? Statistic.AVERAGE : aggregationForm);

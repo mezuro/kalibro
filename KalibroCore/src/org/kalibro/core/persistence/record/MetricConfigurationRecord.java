@@ -89,7 +89,7 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 
 	@Override
 	public MetricConfiguration convert() {
-		MetricConfiguration metricConfiguration = new MetricConfiguration(convertMetric());
+		MetricConfiguration metricConfiguration = new MetricConfiguration();
 		metricConfiguration.setCode(code);
 		metricConfiguration.setWeight(Double.longBitsToDouble(weight));
 		metricConfiguration.setAggregationForm(Statistic.valueOf(aggregationForm));

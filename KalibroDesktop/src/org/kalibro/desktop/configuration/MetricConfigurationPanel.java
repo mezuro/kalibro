@@ -70,7 +70,7 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 
 	@Override
 	public MetricConfiguration get() {
-		MetricConfiguration configuration = new MetricConfiguration(metricPanel.get());
+		MetricConfiguration configuration = new MetricConfiguration();
 		configuration.setCode(codeField.get());
 		configuration.setWeight(weightField.get());
 		configuration.setAggregationForm(aggregationFormField.get());

@@ -20,8 +20,7 @@ public class MetricResult extends AbstractMetricResult {
 	public void setConfiguration(MetricConfiguration configuration) {
 		if (getValue().isNaN() && hasStatistics())
 			setValue(getStatistic(configuration.getAggregationForm()));
-		if (configuration.hasRangeFor(getValue()))
-			setRange(configuration.getRangeFor(getValue()));
+		setRange(configuration.getRangeFor(getValue()));
 		setWeight(configuration.getWeight());
 	}
 

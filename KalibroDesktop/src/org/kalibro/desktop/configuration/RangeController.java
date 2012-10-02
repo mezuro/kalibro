@@ -43,9 +43,7 @@ public class RangeController implements EditDialogListener<Range> {
 	}
 
 	private void confirmRange(Range newRange) {
-		if (range == null)
-			configuration.addRange(newRange);
-		else
-			configuration.replaceRange(range.getBeginning(), newRange);
+		configuration.removeRange(range);
+		configuration.addRange(newRange);
 	}
 }

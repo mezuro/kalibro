@@ -107,4 +107,14 @@ public class Range extends AbstractEntity<Range> {
 	public void setComments(String comments) {
 		this.comments = comments;
 	}
+
+	public void setConfiguration(MetricConfiguration metricConfiguration) {
+		// TODO Auto-generated method stub
+
+	}
+
+	void deleted() {
+		// TODO Auto-generated method stub
+
+	}
 }

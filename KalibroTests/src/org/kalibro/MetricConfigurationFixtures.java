@@ -1,7 +1,5 @@
 package org.kalibro;
 
-import static org.kalibro.MetricFixtures.newAnalizoMetric;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -45,7 +43,7 @@ public final class MetricConfigurationFixtures {
 	}
 
 	public static MetricConfiguration newMetricConfiguration(String code) {
-		MetricConfiguration configuration = new MetricConfiguration(newAnalizoMetric(code));
+		MetricConfiguration configuration = new MetricConfiguration();
 		configuration.setCode(code);
 		Double[] thresholds = metricThresholds.get(code);
 		if (thresholds != null)

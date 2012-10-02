@@ -37,6 +37,11 @@ public abstract class DaoFactory {
 		return getFactory().createProjectResultDao();
 	}
 
+	public static RangeDao getRangeDao() {
+		// TODO
+		return null;
+	}
+
 	public static ReadingDao getReadingDao() {
 		return getFactory().createReadingDao();
 	}

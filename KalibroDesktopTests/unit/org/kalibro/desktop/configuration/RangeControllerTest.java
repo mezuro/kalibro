@@ -88,7 +88,7 @@ public class RangeControllerTest extends UnitTest {
 		Range newRange = new Range(0.0, 5.0);
 		controller.editRange(oldRange);
 		assertTrue(controller.dialogConfirm(newRange));
-		assertFalse(configuration.hasRangeFor(6.0));
+		assertNull(configuration.getRangeFor(6.0));
 		assertSame(newRange, configuration.getRangeFor(0.0));
 	}
 
