@@ -44,7 +44,7 @@ public class ModuleNode extends AbstractEntity<ModuleNode> {
 	public ModuleNode getChildFor(Module childModule) {
 		ModuleNode child = findChildFor(childModule);
 		if (child == null)
-			throw new KalibroException("Module " + module.getName() + " has no child named " + childModule);
+			throw new KalibroException("Module " + module.getLongName() + " has no child named " + childModule);
 		return child;
 	}
 

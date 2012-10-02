@@ -37,7 +37,27 @@ class EntityComparator<T extends Comparable<? super T>> {
 	}
 
 	private int doCompare(Object value, Object other) throws Exception {
-		Method compareTo = value.getClass().getMethod("compareTo", Object.class);
+		Class<? extends Object> valueClass = value.getClass();
+		if (valueClass.isArray())
+			return arrayCompare((Object[]) value, (Object[]) other);
+		Method compareTo = valueClass.getMethod("compareTo", Object.class);
 		return (Integer) compareTo.invoke(value, other);
+	}
+
+	private int arrayCompare(Object[] array, Object[] other) throws Exception {
+		int index, compare = 0;
+		for (index = 0; index < array.length && index < other.length && compare == 0; index++)
+			compare = doCompare(array[index], other[index]);
+		return arrayComparison(compare, index, array.length, other.length);
+	}
+
+	private int arrayComparison(int compare, int indexReached, int arrayLength, int otherLength) {
+		if (compare != 0)
+			return compare;
+		if (arrayLength > indexReached)
+			return 1;
+		if (otherLength > indexReached)
+			return -1;
+		return 0;
 	}
 }

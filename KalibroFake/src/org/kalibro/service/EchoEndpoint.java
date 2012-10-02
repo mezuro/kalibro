@@ -40,7 +40,7 @@ public class EchoEndpoint {
 	public ModuleResultXml echoModuleResult(@WebParam(name = "moduleResult") ModuleResultXml moduleResult) {
 		ModuleResult entity = moduleResult.convert();
 		Module module = entity.getModule();
-		module.setName("echo." + module.getName());
+		module.setName("echo." + module.getLongName());
 		return new ModuleResultXml(entity);
 	}
 

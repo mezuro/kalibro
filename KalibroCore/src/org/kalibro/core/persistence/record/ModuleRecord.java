@@ -55,7 +55,7 @@ public class ModuleRecord extends DataTransferObject<ModuleNode> {
 	private void initialize(ModuleNode moduleNode, ProjectResultRecord result, ModuleRecord parentModule) {
 		projectResult = result;
 		parent = parentModule;
-		name = moduleNode.getModule().getName();
+		name = moduleNode.getModule().getLongName();
 		granularity = moduleNode.getModule().getGranularity().name();
 		initializeChildren(moduleNode);
 	}

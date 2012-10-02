@@ -20,7 +20,7 @@ public class ModuleXml extends DataTransferObject<Module> {
 	}
 
 	public ModuleXml(Module module) {
-		name = module.getName();
+		name = module.getLongName();
 		granularity = module.getGranularity();
 	}
 

@@ -87,7 +87,7 @@ public class ModuleResultDatabaseTest extends AcceptanceTest {
 
 	private ModuleResult getSavedResult() {
 		String projectName = project.getName();
-		String moduleName = moduleResult.getModule().getName();
+		String moduleName = moduleResult.getModule().getLongName();
 		return dao.getModuleResult(projectName, moduleName, date);
 	}
 
@@ -105,7 +105,8 @@ public class ModuleResultDatabaseTest extends AcceptanceTest {
 		moduleResult.getResultFor(loc).addDescendentResult(3.0);
 		save();
 
-		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), moduleResult.getModule().getName());
+		List<ModuleResult> resultHistory = dao.getResultHistory(project.getName(), moduleResult.getModule()
+			.getLongName());
 		assertEquals(3, resultHistory.size());
 		assertDeepEquals(asList(1.0), resultHistory.get(0).getResultFor(loc).getDescendentResults());
 		assertDeepEquals(asList(1.0, 2.0), resultHistory.get(1).getResultFor(loc).getDescendentResults());
