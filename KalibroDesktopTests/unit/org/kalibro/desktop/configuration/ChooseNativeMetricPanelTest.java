@@ -74,7 +74,6 @@ public class ChooseNativeMetricPanelTest extends UnitTest {
 
 	@Test
 	public void shouldShowBaseToolDescription() {
-		analizo.setDescription("This is the description of Analizo");
 		baseToolList().setSelectedIndex(0);
 		assertTrue(descriptionPane().get().contains(analizo.getDescription()));
 	}

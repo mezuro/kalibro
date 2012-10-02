@@ -5,7 +5,7 @@ package org.kalibro;
  * 
  * @author Carlos Morais
  */
-public final class NativeMetricResult extends AbstractMetricResult {
+public class NativeMetricResult extends AbstractMetricResult {
 
 	/**
 	 * Creates an instance of NativeMetricResult.

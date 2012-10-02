@@ -49,6 +49,10 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		recordManager.executeUpdate(query);
 	}
 
+	protected Query createQuery(String queryString) {
+		return recordManager.createQuery(queryString);
+	}
+
 	protected TypedQuery<RECORD> createRecordQuery(String clauses) {
 		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias() + " " + clauses;
 		return recordManager.createQuery(queryString, recordClass);

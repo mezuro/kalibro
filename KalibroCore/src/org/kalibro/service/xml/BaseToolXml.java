@@ -2,8 +2,6 @@ package org.kalibro.service.xml;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -42,16 +40,6 @@ public class BaseToolXml extends DataTransferObject<BaseTool> {
 
 	@Override
 	public BaseTool convert() {
-		BaseTool baseTool = new BaseTool(name);
-		baseTool.setDescription(description);
-		convertSupportedMetrics(baseTool);
-		return baseTool;
-	}
-
-	private void convertSupportedMetrics(BaseTool baseTool) {
-		Set<NativeMetric> metrics = new TreeSet<NativeMetric>();
-		for (NativeMetricXml supportedMetric : supportedMetrics)
-			metrics.add(supportedMetric.convert());
-		baseTool.setSupportedMetrics(metrics);
+		return new BaseTool(name, description, toSet(supportedMetrics));
 	}
 }

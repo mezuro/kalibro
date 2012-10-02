@@ -1,62 +1,94 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.BaseToolFixtures.*;
+import static org.kalibro.MetricCollectorStub.*;
 
-import org.analizo.AnalizoStub;
+import java.util.SortedSet;
+
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
 public class BaseToolTest extends UnitTest {
 
-	private BaseTool analizo;
+	private BaseTool baseTool;
 
 	@Before
 	public void setUp() {
-		analizo = newAnalizoStub();
+		baseTool = new BaseTool(MetricCollectorStub.class.getName());
 	}
 
 	@Test
-	public void checkInitialization() {
-		assertEquals("Analizo", analizo.getName());
-		assertEquals(AnalizoStub.class, analizo.getCollectorClass());
-		assertEquals(analizoStub().getSupportedMetrics(), analizo.getSupportedMetrics());
+	public void shoouldGetAllBaseTools() {
+		BaseToolDao dao = mock(BaseToolDao.class);
+		SortedSet<BaseTool> baseTools = mock(SortedSet.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getBaseToolDao()).thenReturn(dao);
+		when(dao.all()).thenReturn(baseTools);
+
+		assertSame(baseTools, BaseTool.all());
 	}
 
 	@Test
-	public void shouldSetOriginOnSupportedMetrics() {
-		NativeMetric metric1 = new NativeMetric("Metric 1", Granularity.CLASS, Language.JAVA);
-		NativeMetric metric2 = new NativeMetric("Metric 2", Granularity.METHOD, Language.C);
-		assertNull(metric1.getOrigin());
-		assertNull(metric2.getOrigin());
-
-		analizo.setSupportedMetrics(asList(metric1, metric2));
-		assertEquals(analizo.getName(), metric1.getOrigin());
-		assertEquals(analizo.getName(), metric2.getOrigin());
+	public void shouldSortByName() {
+		assertSorted(baseTool("A"), baseTool("B"), baseTool("C"), baseTool("X"), baseTool("Y"), baseTool("Z"));
 	}
 
 	@Test
-	public void toStringShouldBeName() {
-		assertEquals("Analizo", "" + analizo);
+	public void shouldIdentifyByName() {
+		assertEquals(baseTool, baseTool(baseTool.getName()));
+	}
+
+	private BaseTool baseTool(String name) {
+		return new BaseTool(name, null, null);
 	}
 
 	@Test
-	public void testCollectorCreation() {
-		analizo.createMetricCollector();
+	public void checkAttributesConstruction() {
+		baseTool = new BaseTool(NAME, DESCRIPTION, asSet(SUPPORTED_METRIC));
+		checkConstruction(null);
 	}
 
 	@Test
-	public void checkErrorCreatingCollector() {
-		analizo.setCollectorClass(null);
+	public void checkCollectorClassNameContruction() {
+		checkConstruction(MetricCollectorStub.class.getName());
+	}
+
+	private void checkConstruction(String collectorClassName) {
+		assertNull(baseTool.getId());
+		assertEquals(NAME, baseTool.getName());
+		assertEquals(DESCRIPTION, baseTool.getDescription());
+		assertEquals(asSet(SUPPORTED_METRIC), baseTool.getSupportedMetrics());
+		assertEquals(collectorClassName, baseTool.getCollectorClassName());
+	}
+
+	@Test
+	public void shouldCollectMetrics() throws Exception {
+		assertEquals(asSet(RESULT), baseTool.collectMetrics(null, null));
+	}
+
+	@Test
+	public void shouldThrowExceptionIfCannotCreateCollector() {
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				analizo.createMetricCollector();
+				new BaseTool("invalid.Class");
 			}
-		}).throwsException().withMessage("Could not create metric collector of base tool 'Analizo'")
-			.withCause(NullPointerException.class);
+		}).throwsException().withMessage("Could not create metric collector: invalid.Class")
+			.withCause(ClassNotFoundException.class);
+	}
+
+	@Test
+	public void toStringShouldBeName() {
+		assertEquals(baseTool.getName(), "" + baseTool);
 	}
 }

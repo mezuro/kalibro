@@ -5,7 +5,7 @@ package org.kalibro;
  * 
  * @author Carlos Morais
  */
-public final class NativeModuleResult extends AbstractModuleResult<NativeMetricResult> {
+public class NativeModuleResult extends AbstractModuleResult<NativeMetricResult> {
 
 	/**
 	 * Creates a new NativeModuleResult with no metric results.

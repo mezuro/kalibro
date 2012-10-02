@@ -9,13 +9,10 @@ import org.yaml.snakeyaml.Yaml;
 
 public class CheckstyleStub implements MetricCollector {
 
-	private static BaseTool baseTool;
 	private static Set<NativeMetric> nativeMetrics;
 	private static NativeModuleResult result = initializeResult();
 
 	private static NativeModuleResult initializeResult() {
-		baseTool = new BaseTool("Checkstyle");
-		baseTool.setCollectorClass(CheckstyleStub.class);
 		nativeMetrics = new TreeSet<NativeMetric>();
 
 		Module module = new Module(Granularity.CLASS, "org", "fibonacci", "Fibonacci");
@@ -33,7 +30,6 @@ public class CheckstyleStub implements MetricCollector {
 
 	private static void addMetricResult(CheckstyleMetric metric, String valueExpression) {
 		NativeMetric nativeMetric = new NativeMetric(metric.toString(), Granularity.CLASS, Language.JAVA);
-		baseTool.addSupportedMetric(nativeMetric);
 		nativeMetrics.add(nativeMetric);
 		Double value = evaluateExpression(valueExpression);
 		result.addMetricResult(new NativeMetricResult(nativeMetric, value));

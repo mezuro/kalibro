@@ -1,7 +1,5 @@
 package org.kalibro;
 
-import static org.kalibro.MetricFixtures.*;
-
 import org.analizo.AnalizoMetricCollector;
 import org.analizo.AnalizoStub;
 
@@ -28,12 +26,7 @@ public final class BaseToolFixtures {
 	}
 
 	private static BaseTool newAnalizoBaseTool(Class<? extends MetricCollector> collectorClass) {
-		BaseTool baseTool = new BaseTool("Analizo");
-		baseTool.setCollectorClass(collectorClass);
-		baseTool.setDescription(baseTool.createMetricCollector().description());
-		for (String code : analizoMetricCodes())
-			baseTool.addSupportedMetric(newAnalizoMetric(code));
-		return baseTool;
+		return new BaseTool(collectorClass.getName());
 	}
 
 	private BaseToolFixtures() {

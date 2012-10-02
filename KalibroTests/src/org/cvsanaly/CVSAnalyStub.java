@@ -13,14 +13,14 @@ public final class CVSAnalyStub {
 	private static Set<NativeModuleResult> result = generateResult();
 	private static Set<NativeModuleResult> limitedResult = generateLimitedResult();
 
-	private CVSAnalyStub() { }
+	private CVSAnalyStub() {}
 
 	private static Map<CVSAnalyMetric, Double> generateHelloWorldResultMap(boolean limited) {
 		Map<CVSAnalyMetric, Double> helloWorldResultMap;
 		helloWorldResultMap = new HashMap<CVSAnalyMetric, Double>(CVSAnalyMetric.values().length);
 		helloWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
 		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 13.0);
-		if (! limited) {
+		if (!limited) {
 			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
 			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
 			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
@@ -37,7 +37,7 @@ public final class CVSAnalyStub {
 		byeWorldResultMap = new HashMap<CVSAnalyMetric, Double>(CVSAnalyMetric.values().length);
 		byeWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
 		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 8.0);
-		if (! limited) {
+		if (!limited) {
 			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
 			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
 			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
@@ -74,7 +74,7 @@ public final class CVSAnalyStub {
 	}
 
 	private static NativeModuleResult createNativeModuleResult(String name, Map<CVSAnalyMetric, Double> metricValues) {
-		NativeModuleResult nativeModuleResult = new NativeModuleResult(new Module(Granularity.CLASS, 
+		NativeModuleResult nativeModuleResult = new NativeModuleResult(new Module(Granularity.CLASS,
 			"aaa", "bbb", name));
 		for (Map.Entry<CVSAnalyMetric, Double> entry : metricValues.entrySet())
 			nativeModuleResult.addMetricResult(
@@ -83,11 +83,7 @@ public final class CVSAnalyStub {
 	}
 
 	public static BaseTool getBaseTool() {
-		BaseTool baseTool = new BaseTool("CVSAnaly");
-		baseTool.setCollectorClass(CVSAnalyMetricCollector.class);
-		for (NativeMetric metric : getSupportedMetrics())
-			baseTool.addSupportedMetric(metric);
-		return baseTool;
+		return new BaseTool(CVSAnalyMetricCollector.class.getName());
 	}
 
 	public static Set<NativeMetric> getSupportedMetrics() {

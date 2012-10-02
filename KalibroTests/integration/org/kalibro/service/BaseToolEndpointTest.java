@@ -12,7 +12,6 @@ public class BaseToolEndpointTest extends EndpointTest<BaseTool, BaseToolDao, Ba
 	@Override
 	protected BaseTool loadFixture() {
 		BaseTool fixture = newAnalizoStub();
-		fixture.setCollectorClass(null);
 		return fixture;
 	}
 

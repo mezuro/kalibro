@@ -9,7 +9,7 @@ import java.util.TreeSet;
  * 
  * @author Carlos Morais
  */
-public final class NativeMetric extends Metric {
+public class NativeMetric extends Metric {
 
 	private SortedSet<Language> languages;
 
@@ -30,7 +30,7 @@ public final class NativeMetric extends Metric {
 		this.languages = new TreeSet<Language>(Arrays.asList(languages));
 	}
 
-	public SortedSet<Language> getLanguages() {
+	public final SortedSet<Language> getLanguages() {
 		return languages;
 	}
 

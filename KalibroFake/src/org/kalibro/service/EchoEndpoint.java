@@ -14,9 +14,7 @@ public class EchoEndpoint {
 	@WebMethod
 	@WebResult(name = "baseTool")
 	public BaseToolXml echoBaseTool(@WebParam(name = "baseTool") BaseToolXml baseTool) {
-		BaseTool entity = baseTool.convert();
-		entity.setName("echo " + entity.getName());
-		return new BaseToolXml(entity);
+		return baseTool;
 	}
 
 	@WebMethod

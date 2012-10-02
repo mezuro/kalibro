@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import java.util.Collection;
+import java.io.File;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.dao.DaoFactory;
 
 /**
  * A base tool to provide metric results for Kalibro.
@@ -17,88 +18,68 @@ import org.kalibro.core.abstractentity.SortingFields;
 @SortingFields("name")
 public class BaseTool extends AbstractEntity<BaseTool> {
 
+	public static SortedSet<BaseTool> all() {
+		return DaoFactory.getBaseToolDao().all();
+	}
+
+	private Long id;
+
 	@IdentityField
 	private String name;
 
 	private String description;
+	private String collectorClassName;
 	private Set<NativeMetric> supportedMetrics;
 
-	private Class<? extends MetricCollector> collectorClass;
-
-	public BaseTool(String name) {
-		this(name, "");
+	public BaseTool(String name, String description, Set<NativeMetric> supportedMetrics) {
+		this.name = name;
+		this.description = description;
+		this.supportedMetrics = supportedMetrics;
 	}
 
-	public BaseTool(String name, String description) {
-		setName(name);
-		setDescription(description);
-		supportedMetrics = new TreeSet<NativeMetric>();
+	public BaseTool(String collectorClassName) {
+		this.collectorClassName = collectorClassName;
+		MetricCollector collector = createMetricCollector();
+		name = collector.name();
+		description = collector.description();
+		supportedMetrics = collector.supportedMetrics();
 	}
 
-	@Override
-	public String toString() {
-		return name;
+	Long getId() {
+		return id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
-	public Set<NativeMetric> getSupportedMetrics() {
-		return supportedMetrics;
-	}
-
-	public void addSupportedMetric(NativeMetric supportedMetric) {
-		supportedMetric.setOrigin(this);
-		supportedMetrics.add(supportedMetric);
-	}
-
-	public void setSupportedMetrics(Collection<NativeMetric> supportedMetrics) {
-		this.supportedMetrics = new TreeSet<NativeMetric>();
-		for (NativeMetric supportedMetric : supportedMetrics)
-			addSupportedMetric(supportedMetric);
-	}
-
-	public Class<? extends MetricCollector> getCollectorClass() {
-		return collectorClass;
-	}
-
-	public void setCollectorClass(Class<? extends MetricCollector> collectorClass) {
-		this.collectorClass = collectorClass;
-	}
-
-	public MetricCollector createMetricCollector() {
-		try {
-			return collectorClass.newInstance();
-		} catch (Exception exception) {
-			throw new KalibroException("Could not create metric collector of base tool '" + name + "'", exception);
-		}
-	}
-
-	public static SortedSet<BaseTool> all() {
-		// TODO Auto-generated method stub
-		return null;
+	public SortedSet<NativeMetric> getSupportedMetrics() {
+		return new TreeSet<NativeMetric>(supportedMetrics);
 	}
 
 	public String getCollectorClassName() {
-		// TODO Auto-generated method stub
-		return null;
+		return collectorClassName;
 	}
 
-	public Long getId() {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> wantedMetrics)
+		throws Exception {
+		return createMetricCollector().collectMetrics(codeDirectory, wantedMetrics);
+	}
+
+	private MetricCollector createMetricCollector() {
+		try {
+			return (MetricCollector) Class.forName(collectorClassName).newInstance();
+		} catch (Exception exception) {
+			throw new KalibroException("Could not create metric collector: " + collectorClassName, exception);
+		}
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }
