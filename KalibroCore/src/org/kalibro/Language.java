@@ -3,7 +3,7 @@ package org.kalibro;
 import org.kalibro.core.Identifier;
 
 /**
- * Represents a software language.
+ * Software languages.
  * 
  * @author Carlos Morais
  */

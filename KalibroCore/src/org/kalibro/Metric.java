@@ -37,7 +37,7 @@ public abstract class Metric extends AbstractEntity<Metric> {
 		return compound;
 	}
 
-	public String getName() {
+	public final String getName() {
 		return name;
 	}
 
@@ -45,7 +45,7 @@ public abstract class Metric extends AbstractEntity<Metric> {
 		this.name = name;
 	}
 
-	public Granularity getScope() {
+	public final Granularity getScope() {
 		return scope;
 	}
 
@@ -53,11 +53,11 @@ public abstract class Metric extends AbstractEntity<Metric> {
 		this.scope = scope;
 	}
 
-	public String getDescription() {
+	public final String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public final void setDescription(String description) {
 		this.description = description;
 	}
 
