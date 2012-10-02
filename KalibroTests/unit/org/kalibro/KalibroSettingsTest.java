@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,7 +26,6 @@ public class KalibroSettingsTest extends UnitTest {
 	public void setUp() throws Exception {
 		settingsFile = mock(File.class);
 		whenNew(File.class).withArguments(dotKalibro(), "kalibro.settings").thenReturn(settingsFile);
-		mockStatic(AbstractEntity.class);
 		settings = spy(new KalibroSettings());
 	}
 
@@ -40,6 +40,7 @@ public class KalibroSettingsTest extends UnitTest {
 
 	@Test
 	public void shouldLoadFromSettingsFile() throws Exception {
+		mockStatic(AbstractEntity.class);
 		when(AbstractEntity.class, "importFrom", settingsFile, KalibroSettings.class).thenReturn(settings);
 		assertSame(settings, KalibroSettings.load());
 	}
@@ -63,5 +64,12 @@ public class KalibroSettingsTest extends UnitTest {
 		doNothing().when(settings).exportTo(settingsFile);
 		settings.save();
 		verify(settings).exportTo(settingsFile);
+	}
+
+	@Test
+	public void printingShouldBeHumanReadable() throws IOException {
+		String expected = loadResource("KalibroSettings-default.yml");
+		expected = expected.replace("~/.kalibro", dotKalibro().getPath());
+		assertEquals(expected, new KalibroSettings().toString());
 	}
 }

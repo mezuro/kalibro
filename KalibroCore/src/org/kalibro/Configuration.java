@@ -169,4 +169,8 @@ public class Configuration extends AbstractEntity<Configuration> {
 	public String toString() {
 		return name;
 	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 }

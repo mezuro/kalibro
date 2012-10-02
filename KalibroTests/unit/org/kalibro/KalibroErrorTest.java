@@ -18,14 +18,14 @@ public class KalibroErrorTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldContructWithMessage() {
+	public void checkMessageContruction() {
 		error = new KalibroError(MESSAGE);
 		assertSame(MESSAGE, error.getMessage());
 		assertNull(error.getCause());
 	}
 
 	@Test
-	public void shouldConstructWithMessageAndCause() {
+	public void checkMessageAndCauseConstruction() {
 		error = new KalibroError(MESSAGE, CAUSE);
 		assertSame(MESSAGE, error.getMessage());
 		assertSame(CAUSE, error.getCause());
