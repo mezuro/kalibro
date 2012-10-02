@@ -3,7 +3,7 @@ package org.kalibro;
 import org.kalibro.core.Identifier;
 
 /**
- * Each granularity represents the type of a {@link Module} which contains modules of the same or next type.
+ * Granularity of the measured {@link Module}.
  * 
  * @author Carlos Morais
  */
