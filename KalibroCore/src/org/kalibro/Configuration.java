@@ -19,6 +19,7 @@ import org.kalibro.dao.DaoFactory;
 @SortingFields("name")
 public class Configuration extends AbstractEntity<Configuration> {
 
+//TODO
 	public static Configuration importFrom(File file) {
 		return importFrom(file, Configuration.class);
 	}
@@ -45,11 +46,10 @@ public class Configuration extends AbstractEntity<Configuration> {
 	private Set<MetricConfiguration> metricConfigurations;
 
 	public Configuration() {
-		this("");
+		this("New configuration");
 	}
 
 	public Configuration(String name) {
-		setId(null);
 		setName(name);
 		setDescription("");
 		setMetricConfigurations(new TreeSet<MetricConfiguration>());
@@ -61,10 +61,6 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public boolean hasId() {
 		return id != null;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {

@@ -2,6 +2,7 @@ package org.kalibro;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 
 /**
@@ -12,12 +13,17 @@ import org.kalibro.core.abstractentity.SortingFields;
 @SortingFields({"compound", "scope", "name"})
 public abstract class Metric extends AbstractEntity<Metric> {
 
+	@Print(skip = true)
 	private final boolean compound;
 
 	@IdentityField
+	@Print(order = 1)
 	private String name;
 
+	@Print(order = 2)
 	private Granularity scope;
+
+	@Print(order = 3)
 	private String description;
 
 	protected Metric(boolean compound, String name, Granularity scope) {

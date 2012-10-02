@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
 
@@ -23,10 +24,16 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	}
 
 	@IdentityField
+	@Print(order = 1)
 	private String name;
 
+	@Print(order = 2)
 	private String description;
+
+	@Print(order = 3)
 	private String collectorClassName;
+
+	@Print(order = 4)
 	private Set<NativeMetric> supportedMetrics;
 
 	public BaseTool(String name, String description, Set<NativeMetric> supportedMetrics, String collectorClassName) {
