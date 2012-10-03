@@ -11,9 +11,9 @@ import org.kalibro.tests.UnitTest;
 public class ServerSettingsTest extends UnitTest {
 
 	@Test
-	public void checkDefaultSettings() {
+	public void checkConstruction() {
 		ServerSettings settings = new ServerSettings();
-		assertEquals(new File(Environment.dotKalibro(), "repositories"), settings.getLoadDirectory());
+		assertEquals(new File(Environment.dotKalibro(), "projects"), settings.getLoadDirectory());
 		assertDeepEquals(new DatabaseSettings(), settings.getDatabaseSettings());
 	}
 }

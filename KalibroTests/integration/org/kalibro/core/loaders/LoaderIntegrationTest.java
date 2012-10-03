@@ -33,7 +33,7 @@ public abstract class LoaderIntegrationTest extends IntegrationTest {
 
 	@After
 	public void tearDown() {
-		FileUtils.deleteQuietly(repositoriesDirectory());
+		FileUtils.deleteQuietly(projectsDirectory());
 	}
 
 	@Test

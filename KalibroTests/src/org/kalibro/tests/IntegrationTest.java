@@ -26,11 +26,11 @@ public abstract class IntegrationTest extends UnitTest {
 		return new File(Environment.dotKalibro(), "samples");
 	}
 
-	protected File repositoriesDirectory() {
-		return new File(Environment.dotKalibro(), "repositories");
+	protected File projectsDirectory() {
+		return new File(Environment.dotKalibro(), "projects");
 	}
 
 	protected File helloWorldDirectory() {
-		return new File(repositoriesDirectory(), "HelloWorld-1.0");
+		return new File(projectsDirectory(), "HelloWorld-1.0");
 	}
 }
