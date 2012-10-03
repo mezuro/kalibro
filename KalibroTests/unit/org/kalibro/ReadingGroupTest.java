@@ -18,6 +18,7 @@ import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, DaoFactory.class})
@@ -142,11 +143,12 @@ public class ReadingGroupTest extends UnitTest {
 		group.delete();
 		verify(dao, never()).delete(any(Long.class));
 
-		group.setId(42L);
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(group, "id", id);
 
 		assertTrue(group.hasId());
 		group.delete();
-		verify(dao).delete(42L);
+		verify(dao).delete(id);
 		assertFalse(group.hasId());
 	}
 

@@ -14,7 +14,7 @@ public abstract class ReadingDto extends DataTransferObject<Reading> {
 	@Override
 	public Reading convert() {
 		Reading reading = new Reading(label(), grade(), color());
-		reading.setId(id());
+		setId(reading, id());
 		return reading;
 	}
 

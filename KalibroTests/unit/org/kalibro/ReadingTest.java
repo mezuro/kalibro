@@ -1,5 +1,6 @@
 package org.kalibro;
 
+import static java.lang.Double.*;
 import static org.junit.Assert.*;
 
 import java.awt.Color;
@@ -13,13 +14,15 @@ import org.kalibro.dao.ReadingDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
 public class ReadingTest extends UnitTest {
 
-	private Reading reading;
 	private ReadingDao dao;
+
+	private Reading reading;
 
 	@Before
 	public void setUp() {
@@ -31,11 +34,16 @@ public class ReadingTest extends UnitTest {
 
 	@Test
 	public void shouldSortByGrade() {
-		assertSorted(reading(Double.NEGATIVE_INFINITY), reading(0.0), reading(42.0), reading(Double.POSITIVE_INFINITY));
+		assertSorted(withGrade(NEGATIVE_INFINITY), withGrade(0.0), withGrade(42.0), withGrade(POSITIVE_INFINITY));
 	}
 
 	@Test
-	public void checkDefaultReading() {
+	public void shouldIdentifyByLabel() {
+		assertEquals(reading, withLabel(reading.getLabel()));
+	}
+
+	@Test
+	public void checkConstruction() {
 		reading = new Reading();
 		assertFalse(reading.hasId());
 		assertEquals("", reading.getLabel());
@@ -47,7 +55,7 @@ public class ReadingTest extends UnitTest {
 	public void shouldNotSetConflictingLabel() {
 		ReadingGroup group = new ReadingGroup();
 		group.addReading(reading);
-		group.addReading(reading("label"));
+		group.addReading(withLabel("label"));
 		reading.setLabel("original");
 		assertThat(new VoidTask() {
 
@@ -63,7 +71,7 @@ public class ReadingTest extends UnitTest {
 	public void shouldNotSetConflictingGrade() {
 		ReadingGroup group = new ReadingGroup();
 		group.addReading(reading);
-		group.addReading(reading(-1.0));
+		group.addReading(withGrade(-1.0));
 		reading.setGrade(42.0);
 		assertThat(new VoidTask() {
 
@@ -77,21 +85,16 @@ public class ReadingTest extends UnitTest {
 
 	@Test
 	public void shouldAssertNoConflictWithOtherReading() {
-		reading.assertNoConflictWith(reading("label"));
-		reading.assertNoConflictWith(reading(-1.0));
+		reading.assertNoConflictWith(new Reading());
+		reading.assertNoConflictWith(new Reading("", 0.0, reading.getColor()));
 	}
 
-	private Reading reading(String label) {
-		return new Reading(label, 42.0, Color.MAGENTA);
+	private Reading withLabel(String label) {
+		return new Reading(label, 0.0, Color.WHITE);
 	}
 
-	private Reading reading(Double grade) {
-		return new Reading("ReadingTest label", grade, Color.MAGENTA);
-	}
-
-	@Test
-	public void readingsWithSameColorShouldNotConflict() {
-		reading.assertNoConflictWith(new Reading("", 42.0, reading.getColor()));
+	private Reading withGrade(Double grade) {
+		return new Reading("", grade, Color.WHITE);
 	}
 
 	@Test
@@ -102,34 +105,32 @@ public class ReadingTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotSaveIfNotGrouped() {
-		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
-	}
+	public void shouldRequiredSavedGroupToSave() {
+		saveShouldThrowExceptionWithMessage("Reading is not in any group.");
 
-	@Test
-	public void shouldNotSaveIfGroupHasNoId() {
 		setReadingGroupWithId(null);
-		assertThat(save()).throwsException().withMessage("Group is not saved. Save group instead");
+		saveShouldThrowExceptionWithMessage("Group is not saved. Save group instead");
 	}
 
-	private VoidTask save() {
-		return new VoidTask() {
+	private void saveShouldThrowExceptionWithMessage(String message) {
+		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				reading.save();
 			}
-		};
+		}).throwsException().withMessage(message);
 	}
 
 	@Test
 	public void shouldUpdateIdOnSave() {
-		setReadingGroupWithId(28L);
-		when(dao.save(reading)).thenReturn(42L);
+		Long id = mock(Long.class);
+		setReadingGroupWithId(id);
+		when(dao.save(reading)).thenReturn(id);
 
 		assertFalse(reading.hasId());
 		reading.save();
-		assertEquals(42L, reading.getId().longValue());
+		assertSame(id, reading.getId());
 	}
 
 	@Test
@@ -138,11 +139,12 @@ public class ReadingTest extends UnitTest {
 		reading.delete();
 		verify(dao, never()).delete(any(Long.class));
 
-		reading.setId(42L);
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(reading, "id", id);
 
 		assertTrue(reading.hasId());
 		reading.delete();
-		verify(dao).delete(42L);
+		verify(dao).delete(id);
 		assertFalse(reading.hasId());
 	}
 

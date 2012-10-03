@@ -16,9 +16,7 @@ public class ReadingEndpointTest extends EndpointTest<Reading, ReadingDao, Readi
 
 	@Override
 	protected Reading loadFixture() {
-		Reading fixture = loadFixture("excellent", Reading.class);
-		fixture.setId(ID);
-		return fixture;
+		return loadFixture("excellent", Reading.class);
 	}
 
 	@Test

@@ -32,7 +32,6 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public Reading(String label, Double grade, Color color) {
-		setId(null);
 		setLabel(label);
 		setGrade(grade);
 		setColor(color);
@@ -44,10 +43,6 @@ public class Reading extends AbstractEntity<Reading> {
 
 	public boolean hasId() {
 		return id != null;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getLabel() {
@@ -72,14 +67,6 @@ public class Reading extends AbstractEntity<Reading> {
 		this.grade = grade;
 	}
 
-	public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-	}
-
 	void assertNoConflictWith(Reading other) {
 		assertNoLabelConflict(other, label);
 		assertNoGradeConflict(other, grade);
@@ -93,6 +80,14 @@ public class Reading extends AbstractEntity<Reading> {
 	private void assertNoGradeConflict(Reading other, Double theGrade) {
 		if (other.grade.equals(theGrade))
 			throw new KalibroException("Reading with grade " + theGrade + " already exists in the group.");
+	}
+
+	public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
 	}
 
 	public Long getGroupId() {

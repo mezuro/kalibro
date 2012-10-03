@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.dao.RangeDao;
@@ -16,6 +15,7 @@ import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
@@ -214,11 +214,12 @@ public class MetricConfigurationTest extends UnitTest {
 		metricConfiguration.delete();
 		verify(dao, never()).delete(any(Long.class));
 
-		new FieldReflector(metricConfiguration).set("id", 42L);
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(metricConfiguration, "id", id);
 		assertTrue(metricConfiguration.hasId());
 
 		metricConfiguration.delete();
-		verify(dao).delete(42L);
+		verify(dao).delete(id);
 		assertFalse(metricConfiguration.hasId());
 	}
 
