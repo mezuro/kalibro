@@ -5,11 +5,11 @@ import java.util.Set;
 import java.util.TreeSet;
 
 import org.kalibro.core.Identifier;
-import org.kalibro.core.loaders.ProjectLoader;
+import org.kalibro.core.loaders.RepositoryLoader;
 
 public enum RepositoryType {
 
-	LOCAL_DIRECTORY, LOCAL_TARBALL, LOCAL_ZIP, BAZAAR, CVS("CVS"), GIT, MERCURIAL, REMOTE_ZIP, REMOTE_TARBALL,
+	BAZAAR, CVS("CVS"), GIT, LOCAL_DIRECTORY, LOCAL_TARBALL, LOCAL_ZIP, MERCURIAL, REMOTE_ZIP, REMOTE_TARBALL,
 	SUBVERSION;
 
 	public static Set<RepositoryType> supportedTypes() {
@@ -21,7 +21,7 @@ public enum RepositoryType {
 	}
 
 	private String name;
-	private ProjectLoader loader;
+	private RepositoryLoader loader;
 
 	private RepositoryType() {
 		this("");
@@ -36,7 +36,7 @@ public enum RepositoryType {
 	private void initializeLoader() {
 		String className = Identifier.fromConstant(name()).asClassName() + "Loader";
 		try {
-			loader = (ProjectLoader) Class.forName("org.kalibro.core.loaders." + className).newInstance();
+			loader = (RepositoryLoader) Class.forName("org.kalibro.core.loaders." + className).newInstance();
 		} catch (Exception exception) {
 			throw new KalibroError("Error creating loader for " + this, exception);
 		}

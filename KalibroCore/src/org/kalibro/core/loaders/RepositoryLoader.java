@@ -9,7 +9,7 @@ import org.kalibro.KalibroException;
 import org.kalibro.Repository;
 import org.kalibro.core.command.CommandTask;
 
-public abstract class ProjectLoader {
+public abstract class RepositoryLoader {
 
 	public boolean validate() {
 		try {

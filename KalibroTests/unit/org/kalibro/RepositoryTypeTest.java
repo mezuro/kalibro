@@ -31,7 +31,7 @@ public class RepositoryTypeTest extends EnumerationTest<RepositoryType> {
 
 	@After
 	public void setUp() {
-		setInternalState(GIT, ProjectLoader.class, new GitLoader());
+		setInternalState(GIT, RepositoryLoader.class, new GitLoader());
 	}
 
 	@Test
@@ -79,13 +79,13 @@ public class RepositoryTypeTest extends EnumerationTest<RepositoryType> {
 		assertClassEquals(SubversionLoader.class, getLoader(SUBVERSION));
 	}
 
-	private ProjectLoader getLoader(RepositoryType type) {
+	private RepositoryLoader getLoader(RepositoryType type) {
 		return getInternalState(type, "loader");
 	}
 
 	@Test
 	public void shouldRetrieveAuthenticationSupport() {
-		ProjectLoader loader = mockGitLoader();
+		RepositoryLoader loader = mockGitLoader();
 		when(loader.supportsAuthentication()).thenReturn(false);
 		assertFalse(GIT.supportsAuthentication());
 
@@ -95,7 +95,7 @@ public class RepositoryTypeTest extends EnumerationTest<RepositoryType> {
 
 	@Test
 	public void shouldValidateProjectLoader() {
-		ProjectLoader loader = mockGitLoader();
+		RepositoryLoader loader = mockGitLoader();
 		when(loader.validate()).thenReturn(true);
 		assertTrue(GIT.isSupported());
 		when(loader.validate()).thenReturn(false);
@@ -106,15 +106,15 @@ public class RepositoryTypeTest extends EnumerationTest<RepositoryType> {
 	public void shouldLoadRepository() {
 		File directory = mock(File.class);
 		Repository repository = mock(Repository.class);
-		ProjectLoader loader = mockGitLoader();
+		RepositoryLoader loader = mockGitLoader();
 
 		GIT.load(repository, directory);
 		verify(loader).load(repository, directory);
 	}
 
-	private ProjectLoader mockGitLoader() {
-		ProjectLoader loader = mock(ProjectLoader.class);
-		setInternalState(GIT, ProjectLoader.class, loader);
+	private RepositoryLoader mockGitLoader() {
+		RepositoryLoader loader = mock(RepositoryLoader.class);
+		setInternalState(GIT, RepositoryLoader.class, loader);
 		return loader;
 	}
 

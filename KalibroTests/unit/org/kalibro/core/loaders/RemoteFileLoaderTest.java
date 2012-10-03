@@ -17,7 +17,7 @@ public class RemoteFileLoaderTest extends UnitTest {
 	private static final String LOCAL_VALIDATION_COMMAND = "RemoteFileLoaderTest local validation command";
 
 	private Repository repository;
-	private ProjectLoader localLoader;
+	private RepositoryLoader localLoader;
 
 	private RemoteFileLoader remoteLoader;
 
@@ -29,7 +29,7 @@ public class RemoteFileLoaderTest extends UnitTest {
 	}
 
 	private void mockLocalLoader() {
-		localLoader = mock(ProjectLoader.class);
+		localLoader = mock(RepositoryLoader.class);
 		when(localLoader.getValidationCommands()).thenReturn(asList(LOCAL_VALIDATION_COMMAND));
 		when(localLoader.getLoadCommands(any(Repository.class), anyBoolean()))
 			.thenReturn(asList(LOCAL_LOAD_COMMAND));
@@ -69,7 +69,7 @@ public class RemoteFileLoaderTest extends UnitTest {
 	private class FakeRemoteLoader extends RemoteFileLoader {
 
 		@Override
-		protected ProjectLoader createLocalLoader() {
+		protected RepositoryLoader createLocalLoader() {
 			return localLoader;
 		}
 	}

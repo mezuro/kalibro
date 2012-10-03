@@ -6,11 +6,11 @@ import java.util.List;
 
 import org.kalibro.Repository;
 
-abstract class RemoteFileLoader extends ProjectLoader {
+abstract class RemoteFileLoader extends RepositoryLoader {
 
-	private ProjectLoader localLoader = createLocalLoader();
+	private RepositoryLoader localLoader = createLocalLoader();
 
-	protected abstract ProjectLoader createLocalLoader();
+	protected abstract RepositoryLoader createLocalLoader();
 
 	@Override
 	public List<String> getValidationCommands() {

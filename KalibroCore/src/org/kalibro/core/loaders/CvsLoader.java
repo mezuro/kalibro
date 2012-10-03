@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.Repository;
 
-public class CvsLoader extends ProjectLoader {
+public class CvsLoader extends RepositoryLoader {
 
 	@Override
 	public List<String> getValidationCommands() {

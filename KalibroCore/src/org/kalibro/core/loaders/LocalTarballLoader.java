@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.Repository;
 
-public class LocalTarballLoader extends ProjectLoader {
+public class LocalTarballLoader extends RepositoryLoader {
 
 	@Override
 	public List<String> getValidationCommands() {

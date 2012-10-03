@@ -10,7 +10,7 @@ public class RemoteTarballLoaderTest extends RemoteFileLoaderTestCase {
 	}
 
 	@Override
-	protected ProjectLoader expectedLocalLoader() {
+	protected RepositoryLoader expectedLocalLoader() {
 		return new LocalTarballLoader();
 	}
 }

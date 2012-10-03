@@ -10,7 +10,7 @@ public class RemoteZipLoaderTest extends RemoteFileLoaderTestCase {
 	}
 
 	@Override
-	protected ProjectLoader expectedLocalLoader() {
+	protected RepositoryLoader expectedLocalLoader() {
 		return new LocalZipLoader();
 	}
 }

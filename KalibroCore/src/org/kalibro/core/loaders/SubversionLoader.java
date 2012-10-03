@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.Repository;
 
-public class SubversionLoader extends ProjectLoader {
+public class SubversionLoader extends RepositoryLoader {
 
 	@Override
 	public List<String> getValidationCommands() {

@@ -18,18 +18,18 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(ProjectLoader.class)
-public class ProjectLoaderTest extends UnitTest {
+@PrepareForTest(RepositoryLoader.class)
+public class RepositoryLoaderTest extends UnitTest {
 
-	private static final String LOAD_COMMAND = "ProjectLoaderTest load command";
-	private static final String UPDATE_COMMAND = "ProjectLoaderTest update command";
-	private static final String VALIDATION_COMMAND = "ProjectLoaderTest validation command";
+	private static final String LOAD_COMMAND = "RepositoryLoaderTest load command";
+	private static final String UPDATE_COMMAND = "RepositoryLoaderTest update command";
+	private static final String VALIDATION_COMMAND = "RepositoryLoaderTest validation command";
 
 	private File loadDirectory;
 	private Repository repository;
 	private CommandTask commandTask;
 
-	private ProjectLoader loader;
+	private RepositoryLoader loader;
 
 	@Before
 	public void setUp() throws Exception {
@@ -74,7 +74,7 @@ public class ProjectLoaderTest extends UnitTest {
 		Mockito.verify(commandTask).execute(1, HOURS);
 	}
 
-	private class FakeLoader extends ProjectLoader {
+	private class FakeLoader extends RepositoryLoader {
 
 		@Override
 		public boolean supportsAuthentication() {

@@ -14,13 +14,13 @@ import org.powermock.reflect.Whitebox;
 
 public abstract class ProjectLoaderTestCase extends UnitTest {
 
-	protected ProjectLoader loader;
+	protected RepositoryLoader loader;
 	protected Repository repository;
 
 	@Before
 	public void setUp() {
 		RepositoryType repositoryType = getRepositoryType();
-		loader = Whitebox.getInternalState(repositoryType, ProjectLoader.class);
+		loader = Whitebox.getInternalState(repositoryType, RepositoryLoader.class);
 		repository = helloWorldRepository(repositoryType);
 		if (loader.supportsAuthentication()) {
 			repository.setUsername("USERNAME");

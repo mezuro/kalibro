@@ -32,5 +32,5 @@ public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 		return expectedLoadCommands;
 	}
 
-	protected abstract ProjectLoader expectedLocalLoader();
+	protected abstract RepositoryLoader expectedLocalLoader();
 }

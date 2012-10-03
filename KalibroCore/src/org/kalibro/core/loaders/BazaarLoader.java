@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.Repository;
 
-public class BazaarLoader extends ProjectLoader {
+public class BazaarLoader extends RepositoryLoader {
 
 	@Override
 	public List<String> getValidationCommands() {
