@@ -1,7 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.assertSame;
-import static org.kalibro.MetricFixtures.analizoMetric;
 
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;
@@ -9,9 +8,9 @@ import org.kalibro.tests.UnitTest;
 public class NativeMetricResultTest extends UnitTest {
 
 	@Test
-	public void checkInitialization() {
-		NativeMetric metric = analizoMetric("dit");
-		Double value = Math.random();
+	public void checkConstruction() {
+		NativeMetric metric = mock(NativeMetric.class);
+		Double value = mock(Double.class);
 		NativeMetricResult result = new NativeMetricResult(metric, value);
 		assertSame(metric, result.getMetric());
 		assertSame(value, result.getValue());
