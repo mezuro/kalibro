@@ -7,6 +7,11 @@ import java.util.List;
 
 import org.kalibro.core.Identifier;
 
+/**
+ * Rules to extract a result from a collection of values.
+ * 
+ * @author Carlos Morais
+ */
 public enum Statistic {
 
 	AVERAGE {
@@ -29,8 +34,7 @@ public enum Statistic {
 		public Double calculate(Collection<Double> values) {
 			Double maximum = Double.NEGATIVE_INFINITY;
 			for (Double value : values)
-				if (value > maximum)
-					maximum = value;
+				maximum = Math.max(maximum, value);
 			return maximum;
 		}
 	},
@@ -58,8 +62,7 @@ public enum Statistic {
 		public Double calculate(Collection<Double> values) {
 			Double minimum = Double.POSITIVE_INFINITY;
 			for (Double value : values)
-				if (value < minimum)
-					minimum = value;
+				minimum = Math.min(minimum, value);
 			return minimum;
 		}
 	},
