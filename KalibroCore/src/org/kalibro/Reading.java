@@ -52,7 +52,8 @@ public class Reading extends AbstractEntity<Reading> {
 	public void setLabel(String label) {
 		if (group != null)
 			for (Reading other : group.getReadings())
-				assertNoLabelConflict(other, label);
+				if (other != this)
+					assertNoLabelConflict(other, label);
 		this.label = label;
 	}
 
@@ -63,7 +64,8 @@ public class Reading extends AbstractEntity<Reading> {
 	public void setGrade(Double grade) {
 		if (group != null)
 			for (Reading other : group.getReadings())
-				assertNoGradeConflict(other, grade);
+				if (other != this)
+					assertNoGradeConflict(other, grade);
 		this.grade = grade;
 	}
 

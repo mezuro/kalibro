@@ -41,15 +41,15 @@ public class BaseToolTest extends UnitTest {
 
 	@Test
 	public void shouldSortByName() {
-		assertSorted(baseTool("A"), baseTool("B"), baseTool("C"), baseTool("X"), baseTool("Y"), baseTool("Z"));
+		assertSorted(withName("A"), withName("B"), withName("C"), withName("X"), withName("Y"), withName("Z"));
 	}
 
 	@Test
 	public void shouldIdentifyByName() {
-		assertEquals(baseTool, baseTool(baseTool.getName()));
+		assertEquals(baseTool, withName(baseTool.getName()));
 	}
 
-	private BaseTool baseTool(String name) {
+	private BaseTool withName(String name) {
 		return new BaseTool(name, null, null, null);
 	}
 
