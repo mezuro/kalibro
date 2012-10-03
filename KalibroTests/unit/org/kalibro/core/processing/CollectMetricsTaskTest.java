@@ -1,7 +1,6 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.BaseToolFixtures.analizoStub;
 import static org.kalibro.ModuleResultFixtures.newHelloWorldResultMap;
 import static org.kalibro.ProjectFixtures.helloWorld;
 
@@ -9,6 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +30,7 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		baseTool = analizoStub();
+		baseTool = new BaseTool(AnalizoStub.class.getName());
 		projectResult = new ProjectResult(helloWorld());
 		mockKalibro();
 		collectTask = new CollectMetricsTask(projectResult);

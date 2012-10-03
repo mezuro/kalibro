@@ -1,7 +1,6 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import javax.swing.JList;
 import javax.swing.JTable;
@@ -38,7 +37,7 @@ public class ChooseNativeMetricPanelTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		analizo = analizoStub();
+		analizo = loadFixture("inexistent", BaseTool.class);
 		mockDaoFactory();
 		panel = new ChooseNativeMetricPanel();
 		finder = new ComponentFinder(panel);

@@ -1,7 +1,6 @@
 package org.kalibro.desktop.configuration;
 
 import static org.junit.Assert.*;
-import static org.kalibro.BaseToolFixtures.analizoStub;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +14,7 @@ import javax.swing.ListSelectionModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.BaseTool;
 import org.kalibro.CompoundMetric;
 import org.kalibro.NativeMetric;
 import org.kalibro.dao.BaseToolDao;
@@ -49,7 +49,7 @@ public class AddMetricDialogTest extends UnitTest {
 		BaseToolDao dao = PowerMockito.mock(BaseToolDao.class);
 		PowerMockito.mockStatic(DaoFactory.class);
 		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
-		PowerMockito.when(dao.all()).thenReturn(asSortedSet(analizoStub()));
+		PowerMockito.when(dao.all()).thenReturn(asSortedSet(loadFixture("inexistent", BaseTool.class)));
 	}
 
 	@Test
