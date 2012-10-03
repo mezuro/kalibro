@@ -36,29 +36,21 @@ public class RangeXml extends DataTransferObject<Range> {
 	public RangeXml(Range range) {
 		beginning = range.getBeginning();
 		end = range.getEnd();
-		label = range.getLabel();
-		grade = range.getGrade();
-		color = Integer.toHexString(range.getColor().getRGB());
+		label = range.getReading().getLabel();
+		grade = range.getReading().getGrade();
+		color = Integer.toHexString(range.getReading().getColor().getRGB());
 		comments = range.getComments();
 	}
 
 	@Override
 	public Range convert() {
-		Range range = new Range();
-		range.setBeginning(beginning);
-		range.setEnd(end);
-		range.setLabel(label);
-		if (grade != null)
-			range.setGrade(grade);
-		if (color != null)
-			convertColor(range);
-		if (comments != null)
-			range.setComments(comments);
+		Range range = new Range(beginning, end);
+		convertColor(range);
 		return range;
 	}
 
 	private void convertColor(Range range) {
 		int rgb = (int) Long.parseLong(color, 16);
-		range.setColor(new Color(rgb, true));
+		range.getReading().setColor(new Color(rgb, true));
 	}
 }

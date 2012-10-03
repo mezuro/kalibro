@@ -24,12 +24,12 @@ public class RangeFieldRendererTest extends UnitTest {
 	@Test
 	public void shouldRenderStringWithRangeColorAsBackground() {
 		for (Range range : ranges)
-			assertEquals(range.getColor(), renderer.render("Label", range).getBackground());
+			assertEquals(range.getReading().getColor(), renderer.render("Label", range).getBackground());
 	}
 
 	@Test
 	public void shouldRenderDoubleWithRangeColorAsBackground() {
 		for (Range range : ranges)
-			assertEquals(range.getColor(), renderer.render(42.0, range).getBackground());
+			assertEquals(range.getReading().getColor(), renderer.render(42.0, range).getBackground());
 	}
 }

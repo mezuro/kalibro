@@ -97,7 +97,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	public void addReading(Reading reading) {
 		for (Reading each : readings)
-			reading.assertNoConflictWith(each);
+			each.assertNoConflictWith(reading);
 		reading.setGroup(this);
 		readings.add(reading);
 	}

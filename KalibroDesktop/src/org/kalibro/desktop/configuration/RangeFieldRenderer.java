@@ -11,7 +11,7 @@ public class RangeFieldRenderer extends DefaultRenderer {
 	public Component render(Object value, Object context) {
 		Range range = (Range) context;
 		Component component = super.render(value, context);
-		component.setBackground(range.getColor());
+		component.setBackground(range.getReading().getColor());
 		return component;
 	}
 }

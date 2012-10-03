@@ -133,7 +133,7 @@ public class MetricConfigurationTest extends UnitTest {
 			protected void perform() throws Throwable {
 				metricConfiguration.addRange(new Range(4.0, 6.0));
 			}
-		}).throwsException().withMessage("New range [4.0, 6.0[ would conflict with [0.0, 5.0[");
+		}).throwsException().withMessage("Range [4.0, 6.0[ would conflict with [0.0, 5.0[");
 	}
 
 	@Test

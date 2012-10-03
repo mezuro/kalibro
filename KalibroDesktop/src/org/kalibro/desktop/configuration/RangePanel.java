@@ -51,9 +51,9 @@ public class RangePanel extends EditPanel<Range> {
 	@Override
 	public Range get() {
 		Range range = new Range(beginningField.get(), endField.get());
-		range.setLabel(labelField.getText());
-		range.setGrade(gradeField.get());
-		range.setColor(colorField.get());
+		range.getReading().setLabel(labelField.getText());
+		range.getReading().setGrade(gradeField.get());
+		range.getReading().setColor(colorField.get());
 		range.setComments(commentsField.get());
 		return range;
 	}
@@ -62,9 +62,9 @@ public class RangePanel extends EditPanel<Range> {
 	public void set(Range range) {
 		beginningField.set(range.getBeginning());
 		endField.set(range.getEnd());
-		labelField.setText(range.getLabel());
-		gradeField.set(range.getGrade());
-		colorField.set(range.getColor());
+		labelField.setText(range.getReading().getLabel());
+		gradeField.set(range.getReading().getGrade());
+		colorField.set(range.getReading().getColor());
 		commentsField.set(range.getComments());
 	}
 }

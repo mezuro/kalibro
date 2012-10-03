@@ -50,9 +50,9 @@ public class RangeRecord extends DataTransferObject<Range> {
 		this.metricConfiguration = metricConfiguration;
 		beginning = Double.doubleToLongBits(range.getBeginning());
 		end = Double.doubleToLongBits(range.getEnd());
-		label = range.getLabel();
-		grade = Double.doubleToLongBits(range.getGrade());
-		color = range.getColor().getRGB();
+		label = range.getReading().getLabel();
+		grade = Double.doubleToLongBits(range.getReading().getGrade());
+		color = range.getReading().getColor().getRGB();
 		comments = range.getComments();
 	}
 
@@ -61,9 +61,9 @@ public class RangeRecord extends DataTransferObject<Range> {
 		Range range = new Range();
 		range.setBeginning(Double.longBitsToDouble(beginning));
 		range.setEnd(Double.longBitsToDouble(end));
-		range.setLabel(label);
-		range.setGrade(Double.longBitsToDouble(grade));
-		range.setColor(new Color(color, true));
+		range.getReading().setLabel(label);
+		range.getReading().setGrade(Double.longBitsToDouble(grade));
+		range.getReading().setColor(new Color(color, true));
 		range.setComments(comments);
 		return range;
 	}

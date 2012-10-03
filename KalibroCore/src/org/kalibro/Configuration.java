@@ -90,7 +90,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public void addMetricConfiguration(MetricConfiguration metricConfiguration) {
 		for (MetricConfiguration each : metricConfigurations)
-			metricConfiguration.assertNoConflictWith(each);
+			each.assertNoConflictWith(metricConfiguration);
 		metricConfiguration.setConfiguration(this);
 		metricConfigurations.add(metricConfiguration);
 	}

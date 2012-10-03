@@ -8,4 +8,7 @@ public interface RangeDao {
 
 	SortedSet<Range> rangesOf(Long configurationId);
 
+	Long save(Range range, Long configurationId);
+
+	void delete(Long rangeId);
 }

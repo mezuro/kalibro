@@ -29,7 +29,7 @@ public class MetricResult extends AbstractMetricResult {
 	}
 
 	public Double getGrade() {
-		return getRange().getGrade();
+		return getRange().getReading().getGrade();
 	}
 
 	public Range getRange() {

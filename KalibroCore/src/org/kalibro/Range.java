@@ -1,55 +1,48 @@
 package org.kalibro;
 
-import java.awt.Color;
+import org.kalibro.core.abstractentity.*;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.RangeDao;
 
-import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingFields;
-
+/**
+ * Evaluation range to be associated with a metric result. Contains {@link Reading} and comments.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("beginning")
 public class Range extends AbstractEntity<Range> {
 
+	@Print(skip = true)
+	private Long id;
+
 	@IdentityField
-	private Double beginning = Double.NEGATIVE_INFINITY;
+	private Double beginning;
 
-	private Double end = Double.POSITIVE_INFINITY;
-
+	private Double end;
 	private Reading reading;
-
 	private String comments;
+
+	@Ignore
+	private MetricConfiguration configuration;
 
 	public Range() {
 		this(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	}
 
 	public Range(Double beginning, Double end) {
-		this(beginning, end, "", 0.0, Color.WHITE);
-	}
-
-	public Range(Double beginning, Double end, String label, Double grade, Color color) {
 		validate(beginning, end);
-		setBeginning(beginning);
-		setEnd(end);
-		reading = new Reading(label, grade, color);
-		setGrade(grade);
+		this.beginning = beginning;
+		this.end = end;
+		setReading(null);
 		setComments("");
 	}
 
-	@Override
-	public String toString() {
-		return "[" + beginning + ", " + end + "[";
+	public Long getId() {
+		return id;
 	}
 
-	public boolean isFinite() {
-		return beginning != Double.NEGATIVE_INFINITY && end != Double.POSITIVE_INFINITY;
-	}
-
-	public boolean contains(Double value) {
-		return beginning <= value && value < end;
-	}
-
-	public boolean intersectsWith(Range other) {
-		return this.contains(other.beginning) || other.contains(this.beginning);
+	public boolean hasId() {
+		return id != null;
 	}
 
 	public Double getBeginning() {
@@ -70,33 +63,38 @@ public class Range extends AbstractEntity<Range> {
 		this.end = end;
 	}
 
-	private void validate(Double leftPoint, Double rightPoint) {
-		if (!(leftPoint < rightPoint))
-			throw new KalibroException("[" + leftPoint + ", " + rightPoint + "[ is not a valid range");
+	void assertNoIntersectionWith(Range other) {
+		assertNoIntersection(this, other);
 	}
 
-	public String getLabel() {
-		return reading.getLabel();
+	private void validate(Double theBeginning, Double theEnd) {
+		if (!(theBeginning < theEnd))
+			throw new KalibroException("[" + theBeginning + ", " + theEnd + "[ is not a valid range");
+		if (configuration != null)
+			for (Range other : configuration.getRanges())
+				if (other != this)
+					assertNoIntersection(other, new Range(theBeginning, theEnd));
 	}
 
-	public void setLabel(String label) {
-		reading.setLabel(label);
+	private void assertNoIntersection(Range range, Range other) {
+		if (range.contains(other.beginning) || other.contains(range.beginning))
+			throw new KalibroException("Range " + other + " would conflict with " + range);
 	}
 
-	public Double getGrade() {
-		return reading.getGrade();
+	public boolean isFinite() {
+		return beginning != Double.NEGATIVE_INFINITY && end != Double.POSITIVE_INFINITY;
 	}
 
-	public void setGrade(Double grade) {
-		reading.setGrade(grade);
+	public boolean contains(Double value) {
+		return beginning <= value && value < end;
 	}
 
-	public Color getColor() {
-		return reading.getColor();
+	public Reading getReading() {
+		return reading;
 	}
 
-	public void setColor(Color color) {
-		reading.setColor(color);
+	public void setReading(Reading reading) {
+		this.reading = reading;
 	}
 
 	public String getComments() {
@@ -107,13 +105,36 @@ public class Range extends AbstractEntity<Range> {
 		this.comments = comments;
 	}
 
-	public void setConfiguration(MetricConfiguration metricConfiguration) {
-		// TODO Auto-generated method stub
+	void setConfiguration(MetricConfiguration configuration) {
+		this.configuration = configuration;
+	}
 
+	public void save() {
+		if (configuration == null)
+			throw new KalibroException("Range is not in any configuration.");
+		if (!configuration.hasId())
+			throw new KalibroException("Configuration is not saved. Save configuration instead");
+		id = dao().save(this, configuration.getId());
+	}
+
+	public void delete() {
+		if (hasId())
+			dao().delete(id);
+		if (configuration != null)
+			configuration.removeRange(this);
+		deleted();
 	}
 
 	void deleted() {
-		// TODO Auto-generated method stub
+		id = null;
+	}
 
+	private RangeDao dao() {
+		return DaoFactory.getRangeDao();
+	}
+
+	@Override
+	public String toString() {
+		return "[" + beginning + ", " + end + "[";
 	}
 }

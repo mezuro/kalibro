@@ -32,9 +32,9 @@ public class RangePanelTest extends UnitTest {
 	public void shouldGet() {
 		doubleField("beginning").set(range.getBeginning());
 		doubleField("end").set(range.getEnd());
-		labelField().set(range.getLabel());
-		doubleField("grade").set(range.getGrade());
-		colorField().set(range.getColor());
+		labelField().set(range.getReading().getLabel());
+		doubleField("grade").set(range.getReading().getGrade());
+		colorField().set(range.getReading().getColor());
 		commentsField().set(range.getComments());
 		assertDeepEquals(range, panel.get());
 	}
@@ -44,9 +44,9 @@ public class RangePanelTest extends UnitTest {
 		panel.set(range);
 		assertDoubleEquals(range.getBeginning(), doubleField("beginning").get());
 		assertDoubleEquals(range.getEnd(), doubleField("end").get());
-		assertEquals(range.getLabel(), labelField().get());
-		assertDoubleEquals(range.getGrade(), doubleField("grade").get());
-		assertEquals(range.getColor(), colorField().get());
+		assertEquals(range.getReading().getLabel(), labelField().get());
+		assertDoubleEquals(range.getReading().getGrade(), doubleField("grade").get());
+		assertEquals(range.getReading().getColor(), colorField().get());
 		assertEquals(range.getComments(), commentsField().get());
 	}
 

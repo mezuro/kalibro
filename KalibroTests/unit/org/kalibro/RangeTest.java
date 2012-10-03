@@ -1,114 +1,68 @@
 package org.kalibro;
 
+import static java.lang.Double.*;
 import static org.junit.Assert.*;
-import static org.kalibro.RangeFixtures.newRange;
-import static org.kalibro.RangeLabel.*;
-
-import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.RangeDao;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
 public class RangeTest extends UnitTest {
 
-	private Range excellent, good, regular, warning, bad;
+	private RangeDao dao;
+
+	private Range range;
 
 	@Before
 	public void setUp() {
-		excellent = newRange("amloc", EXCELLENT);
-		good = newRange("amloc", GOOD);
-		regular = newRange("amloc", REGULAR);
-		warning = newRange("amloc", WARNING);
-		bad = newRange("amloc", BAD);
-	}
-
-	@Test
-	public void checkDefaultValues() {
-		Range range = new Range();
-		assertDoubleEquals(Double.NEGATIVE_INFINITY, range.getBeginning());
-		assertDoubleEquals(Double.POSITIVE_INFINITY, range.getEnd());
-		assertEquals("", range.getLabel());
-		assertDoubleEquals(0.0, range.getGrade());
-		assertEquals(Color.WHITE, range.getColor());
-		assertEquals("", range.getComments());
-	}
-
-	@Test
-	public void testToString() {
-		assertEquals("[0.0, 7.0[", "" + excellent);
-		assertEquals("[7.0, 10.0[", "" + good);
-		assertEquals("[10.0, 13.0[", "" + regular);
-		assertEquals("[13.0, 19.5[", "" + warning);
-		assertEquals("[19.5, " + Double.POSITIVE_INFINITY + "[", "" + bad);
-	}
-
-	@Test
-	public void testIsFinite() {
-		assertTrue(excellent.isFinite());
-		assertTrue(good.isFinite());
-		assertTrue(regular.isFinite());
-		assertTrue(warning.isFinite());
-		assertFalse(bad.isFinite());
-	}
-
-	@Test
-	public void testContains() {
-		assertFalse(excellent.contains(-0.1));
-		assertTrue(excellent.contains(0.0));
-		assertTrue(excellent.contains(1.0));
-		assertFalse(excellent.contains(7.0));
-		assertTrue(good.contains(7.0));
-	}
-
-	@Test
-	public void testIntersectsWith() {
-		assertFalse(excellent.intersectsWith(good));
-		assertFalse(good.intersectsWith(excellent));
-
-		Range range6to8 = new Range(6.0, 8.0);
-		assertTrue(excellent.intersectsWith(range6to8));
-		assertTrue(good.intersectsWith(range6to8));
-	}
-
-	@Test
-	public void shouldEvaluateEqualsByBeginning() {
-		assertEquals(excellent, new Range(excellent.getBeginning(), Double.POSITIVE_INFINITY));
-		assertEquals(good, new Range(good.getBeginning(), Double.POSITIVE_INFINITY));
-		assertEquals(regular, new Range(regular.getBeginning(), Double.POSITIVE_INFINITY));
-		assertEquals(warning, new Range(warning.getBeginning(), Double.POSITIVE_INFINITY));
-		assertEquals(bad, new Range(bad.getBeginning(), Double.POSITIVE_INFINITY));
+		dao = mock(RangeDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getRangeDao()).thenReturn(dao);
+		range = new Range();
 	}
 
 	@Test
 	public void shouldSortByBeginning() {
-		assertSorted(excellent, good, regular, warning, bad);
+		assertSorted(withBeginning(NEGATIVE_INFINITY), withBeginning(0.0), withBeginning(28.0), withBeginning(496.0));
 	}
 
 	@Test
-	public void testValidation() {
-		assertValid(1.0, 5.0);
-		assertValid(Double.NEGATIVE_INFINITY, 0.0);
-		assertValid(0.0, Double.POSITIVE_INFINITY);
-		assertValid(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
-
-		assertInvalid(5.0, 5.0);
-		assertInvalid(5.0, 1.0);
-		assertInvalid(5.0, 4.99);
-
-		assertInvalid(Double.NaN, 0.0);
-		assertInvalid(0.0, Double.NaN);
-		assertInvalid(Double.NaN, Double.NaN);
-
-		assertInvalid(Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY);
+	public void shouldIdentifyByBeginning() {
+		assertEquals(range, withBeginning(range.getBeginning()));
 	}
 
-	private void assertValid(Double beginning, Double end) {
-		new Range(beginning, end);
+	private Range withBeginning(Double beginning) {
+		return new Range(beginning, POSITIVE_INFINITY);
 	}
 
-	private void assertInvalid(final Double beginning, final Double end) {
+	@Test
+	public void checkConstruction() {
+		assertDoubleEquals(NEGATIVE_INFINITY, range.getBeginning());
+		assertDoubleEquals(POSITIVE_INFINITY, range.getEnd());
+		assertNull(range.getReading());
+		assertEquals("", range.getComments());
+	}
+
+	@Test
+	public void shouldNotCreateInvalidRange() {
+		new Range(1.0, 5.0);
+		shouldNotCreate(5.0, 5.0);
+		shouldNotCreate(5.0, 1.0);
+		shouldNotCreate(NaN, 0.0);
+		shouldNotCreate(0.0, NaN);
+		shouldNotCreate(NaN, NaN);
+	}
+
+	private void shouldNotCreate(final Double beginning, final Double end) {
 		assertThat(new VoidTask() {
 
 			@Override
@@ -116,5 +70,150 @@ public class RangeTest extends UnitTest {
 				new Range(beginning, end);
 			}
 		}).throwsException().withMessage("[" + beginning + ", " + end + "[ is not a valid range");
+	}
+
+	@Test
+	public void shouldNotSetInvalidBeginning() {
+		range = new Range(1.0, 5.0);
+		range.setBeginning(0.0);
+		assertThat(setBeginning(6.0)).throwsException().withMessage("[6.0, 5.0[ is not a valid range");
+		assertDoubleEquals(0.0, range.getBeginning());
+	}
+
+	@Test
+	public void shouldNotSetConflictingBeginning() {
+		range = new Range(6.0, 10.0);
+		MetricConfiguration configuration = new MetricConfiguration();
+		configuration.addRange(new Range(0.0, 5.0));
+		configuration.addRange(range);
+
+		range.setBeginning(5.0);
+		assertThat(setBeginning(4.0)).throwsException().withMessage("Range [4.0, 10.0[ would conflict with [0.0, 5.0[");
+		assertDoubleEquals(5.0, range.getBeginning());
+	}
+
+	private VoidTask setBeginning(final Double beginning) {
+		return new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				range.setBeginning(beginning);
+			}
+		};
+	}
+
+	@Test
+	public void shouldNotSetInvalidEnd() {
+		range = new Range(0.0, 4.0);
+		range.setEnd(5.0);
+		assertThat(setEnd(-1.0)).throwsException().withMessage("[0.0, -1.0[ is not a valid range");
+		assertDoubleEquals(5.0, range.getEnd());
+	}
+
+	@Test
+	public void shouldNotSetConflictingEnd() {
+		range = new Range(0.0, 4.0);
+		MetricConfiguration configuration = new MetricConfiguration();
+		configuration.addRange(range);
+		configuration.addRange(new Range(5.0, 10.0));
+
+		range.setEnd(5.0);
+		assertThat(setEnd(6.0)).throwsException().withMessage("Range [0.0, 6.0[ would conflict with [5.0, 10.0[");
+		assertDoubleEquals(5.0, range.getEnd());
+	}
+
+	private VoidTask setEnd(final Double end) {
+		return new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				range.setEnd(end);
+			}
+		};
+	}
+
+	@Test
+	public void shouldAssertNoIntersectionWithOtherRange() {
+		new Range(0.0, 1.0).assertNoIntersectionWith(new Range(1.0, 2.0));
+		new Range(-1.0, 0.0).assertNoIntersectionWith(new Range(0.0, 1.0));
+	}
+
+	@Test
+	public void shouldAnswerIfIsFinite() {
+		assertFalse(range.isFinite());
+		assertFalse(new Range(NEGATIVE_INFINITY, 0.0).isFinite());
+		assertFalse(new Range(0.0, POSITIVE_INFINITY).isFinite());
+		assertTrue(new Range(0.0, MAX_VALUE).isFinite());
+	}
+
+	@Test
+	public void shouldAnswerIfContainsValue() {
+		assertTrue(range.contains(0.0));
+		assertTrue(new Range(0.0, 2.0).contains(1.0));
+		assertTrue(new Range(0.0, POSITIVE_INFINITY).contains(MAX_VALUE));
+
+		assertFalse(range.contains(NaN));
+		assertFalse(new Range(NEGATIVE_INFINITY, 0.0).contains(MIN_VALUE));
+		assertFalse(new Range(0.0, 3.0).contains(3.0));
+	}
+
+	@Test
+	public void shouldRequiredSavedConfigurationToSave() {
+		saveShouldThrowExceptionWithMessage("Range is not in any configuration.");
+
+		setConfigurationWithId(null);
+		saveShouldThrowExceptionWithMessage("Configuration is not saved. Save configuration instead");
+	}
+
+	private void saveShouldThrowExceptionWithMessage(String message) {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() {
+				range.save();
+			}
+		}).throwsException().withMessage(message);
+	}
+
+	@Test
+	public void shouldUpdateIdOnSave() {
+		Long id = mock(Long.class);
+		Long configurationId = mock(Long.class);
+		setConfigurationWithId(configurationId);
+		when(dao.save(range, configurationId)).thenReturn(id);
+
+		assertFalse(range.hasId());
+		range.save();
+		assertSame(id, range.getId());
+	}
+
+	@Test
+	public void shouldDeleteIfHasId() {
+		assertFalse(range.hasId());
+		range.delete();
+		verify(dao, never()).delete(any(Long.class));
+
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(range, "id", id);
+
+		assertTrue(range.hasId());
+		range.delete();
+		verify(dao).delete(id);
+		assertFalse(range.hasId());
+	}
+
+	@Test
+	public void shouldRemoveFromGroupOnDelete() {
+		MetricConfiguration configuration = setConfigurationWithId(42L);
+		range.delete();
+		verify(configuration).removeRange(range);
+	}
+
+	private MetricConfiguration setConfigurationWithId(Long id) {
+		MetricConfiguration configuration = mock(MetricConfiguration.class);
+		when(configuration.hasId()).thenReturn(id != null);
+		when(configuration.getId()).thenReturn(id);
+		range.setConfiguration(configuration);
+		return configuration;
 	}
 }

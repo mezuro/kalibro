@@ -134,12 +134,11 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		return null;
 	}
 
-	public void addRange(Range newRange) {
-		for (Range range : ranges)
-			if (range.intersectsWith(newRange))
-				throw new KalibroException("New range " + newRange + " would conflict with " + range);
-		newRange.setConfiguration(this);
-		ranges.add(newRange);
+	public void addRange(Range range) {
+		for (Range each : ranges)
+			each.assertNoIntersectionWith(range);
+		range.setConfiguration(this);
+		ranges.add(range);
 	}
 
 	public void removeRange(Range range) {

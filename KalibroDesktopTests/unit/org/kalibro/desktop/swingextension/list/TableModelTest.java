@@ -112,7 +112,7 @@ public class TableModelTest extends UnitTest {
 
 		@Override
 		public String getValueAt(int row, int column) {
-			return getObjectAt(row).getLabel();
+			return getObjectAt(row).getReading().getLabel();
 		}
 	}
 }

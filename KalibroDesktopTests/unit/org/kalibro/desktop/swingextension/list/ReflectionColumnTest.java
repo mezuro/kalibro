@@ -11,6 +11,7 @@ import javax.swing.JPanel;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Range;
+import org.kalibro.Reading;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
@@ -68,7 +69,7 @@ public class ReflectionColumnTest extends UnitTest {
 		assertNull(column.getValue(new Range() {
 
 			@Override
-			public Color getColor() {
+			public Reading getReading() {
 				throw new RuntimeException();
 			}
 		}));

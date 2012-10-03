@@ -97,7 +97,7 @@ public class MetricResultTest extends UnitTest {
 	@Test
 	public void shouldGetGradeFromRange() {
 		result.setConfiguration(configuration);
-		assertDoubleEquals(result.getRange().getGrade(), result.getGrade());
+		assertDoubleEquals(result.getRange().getReading().getGrade(), result.getGrade());
 	}
 
 	@Test
