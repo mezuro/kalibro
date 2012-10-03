@@ -8,7 +8,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
-import org.analizo.AnalizoStub;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -30,7 +29,7 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		baseTool = new BaseTool(AnalizoStub.class.getName());
+		baseTool = new BaseTool(MetricCollectorStub.CLASS_NAME);
 		projectResult = new ProjectResult(helloWorld());
 		mockKalibro();
 		collectTask = new CollectMetricsTask(projectResult);
