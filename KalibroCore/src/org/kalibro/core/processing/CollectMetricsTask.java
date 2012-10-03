@@ -34,11 +34,8 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	private void collectMetrics(BaseTool baseTool, Set<NativeMetric> metrics) throws Exception {
 		File codeDirectory = project.getDirectory();
 		Set<NativeModuleResult> nativeResults = baseTool.collectMetrics(codeDirectory, metrics);
-		for (NativeModuleResult nativeResult : nativeResults) {
-			for (NativeMetricResult metricResult : nativeResult.getMetricResults())
-				((NativeMetric) metricResult.getMetric()).setOrigin(baseTool);
+		for (NativeModuleResult nativeResult : nativeResults)
 			putResult(nativeResult);
-		}
 	}
 
 	private void putResult(NativeModuleResult nativeResult) {

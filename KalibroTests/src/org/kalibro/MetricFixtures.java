@@ -35,7 +35,6 @@ public final class MetricFixtures {
 	public static NativeMetric newAnalizoMetric(String code) {
 		Granularity scope = code.startsWith("total") ? SOFTWARE : CLASS;
 		NativeMetric metric = new NativeMetric(analizoMetricNames.get(code), scope, C, CPP, JAVA);
-		metric.setOrigin(BaseToolFixtures.newAnalizo());
 		return metric;
 	}
 

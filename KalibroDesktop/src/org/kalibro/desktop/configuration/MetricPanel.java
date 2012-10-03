@@ -74,7 +74,7 @@ public class MetricPanel extends EditPanel<Metric> {
 	}
 
 	private void showNativeMetric(NativeMetric metric) {
-		originField.set(metric.getOrigin());
+//		originField.set(metric.getOrigin());
 		languagesField.set(metric.getLanguages());
 	}
 
@@ -94,7 +94,7 @@ public class MetricPanel extends EditPanel<Metric> {
 		Granularity scope = scopeField.get();
 		Language[] languages = languagesField.get().toArray(new Language[0]);
 		NativeMetric metric = new NativeMetric(name, scope, languages);
-		metric.setOrigin(originField.get());
+//		metric.setOrigin(originField.get());
 		return metric;
 	}
 

@@ -27,7 +27,7 @@ public class NativeMetricRecord extends MetricRecord<NativeMetric> {
 	}
 
 	public NativeMetricRecord(NativeMetric nativeMetric) {
-		this(nativeMetric, new BaseToolRecord(nativeMetric.getOrigin()));
+		this(nativeMetric, null);
 	}
 
 	public NativeMetricRecord(NativeMetric nativeMetric, BaseToolRecord origin) {

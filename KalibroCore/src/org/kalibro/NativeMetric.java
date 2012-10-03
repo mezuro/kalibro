@@ -15,7 +15,7 @@ public class NativeMetric extends Metric {
 
 	@SuppressWarnings("unused" /* used by SnakeYaml */)
 	private NativeMetric() {
-		this("New metric", Granularity.CLASS);
+		this("", Granularity.CLASS);
 	}
 
 	/**
@@ -32,17 +32,5 @@ public class NativeMetric extends Metric {
 
 	public final SortedSet<Language> getLanguages() {
 		return languages;
-	}
-
-	private BaseTool origin;
-
-	@Deprecated
-	public BaseTool getOrigin() {
-		return origin;
-	}
-
-	@Deprecated
-	public void setOrigin(BaseTool origin) {
-		this.origin = origin;
 	}
 }
