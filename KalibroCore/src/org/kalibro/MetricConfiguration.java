@@ -147,10 +147,6 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		range.setConfiguration(null);
 	}
 
-	public Long getConfigurationId() {
-		return configuration.getId();
-	}
-
 	void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
@@ -162,7 +158,7 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 			throw new KalibroException("Metric is not in any configuration.");
 		if (!configuration.hasId())
 			throw new KalibroException("Configuration is not saved. Save configuration instead");
-		id = dao().save(this);
+		id = dao().save(this, configuration.getId());
 		readingGroup = DaoFactory.getReadingGroupDao().readingGroupOf(id);
 		ranges = DaoFactory.getRangeDao().rangesOf(id);
 	}

@@ -31,8 +31,9 @@ public class MetricConfigurationEndpointImplTest extends EndpointImplementorTest
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, implementor.saveMetricConfiguration(request));
+		Long configurationId = mock(Long.class);
+		when(dao.save(entity, configurationId)).thenReturn(ID);
+		assertEquals(ID, implementor.saveMetricConfiguration(request, configurationId));
 	}
 
 	@Test

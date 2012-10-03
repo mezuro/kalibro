@@ -27,8 +27,9 @@ public class ReadingEndpointTest extends EndpointTest<Reading, ReadingDao, Readi
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, port.saveReading(new ReadingXml(entity)));
+		Long groupId = mock(Long.class);
+		when(dao.save(entity, groupId)).thenReturn(ID);
+		assertEquals(ID, port.saveReading(new ReadingXml(entity), groupId));
 	}
 
 	@Test

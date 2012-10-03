@@ -98,13 +98,6 @@ public class ReadingTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetGroupId() {
-		// required for proper saving
-		setReadingGroupWithId(42L);
-		assertEquals(42L, reading.getGroupId().longValue());
-	}
-
-	@Test
 	public void shouldRequiredSavedGroupToSave() {
 		saveShouldThrowExceptionWithMessage("Reading is not in any group.");
 
@@ -125,8 +118,9 @@ public class ReadingTest extends UnitTest {
 	@Test
 	public void shouldUpdateIdOnSave() {
 		Long id = mock(Long.class);
-		setReadingGroupWithId(id);
-		when(dao.save(reading)).thenReturn(id);
+		Long groupId = mock(Long.class);
+		setReadingGroupWithId(groupId);
+		when(dao.save(reading, groupId)).thenReturn(id);
 
 		assertFalse(reading.hasId());
 		reading.save();

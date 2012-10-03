@@ -29,8 +29,9 @@ public class ReadingEndpointImplTest extends
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, implementor.saveReading(request));
+		Long groupId = mock(Long.class);
+		when(dao.save(entity, groupId)).thenReturn(ID);
+		assertEquals(ID, implementor.saveReading(request, groupId));
 	}
 
 	@Test

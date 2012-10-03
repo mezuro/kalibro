@@ -148,14 +148,6 @@ public class MetricConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetConfigurationId() {
-		// required for proper saving
-		Long id = mock(Long.class);
-		setConfigurationWithId(id);
-		assertSame(id, metricConfiguration.getConfigurationId());
-	}
-
-	@Test
 	public void shouldRequiredCodeAndSavedConfigurationToSave() {
 		metricConfiguration.setCode(" ");
 		saveShouldThrowExceptionWithMessage("Metric configuration requires code.");
@@ -180,10 +172,11 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void shouldUpdateIdReadingGroupAndRangesOnSave() {
 		Long id = mock(Long.class);
+		Long configurationId = mock(Long.class);
 		ReadingGroup readingGroup = mockReadingGroup(id);
 		Range range = mockRange(id);
-		setConfigurationWithId(id);
-		when(dao.save(metricConfiguration)).thenReturn(id);
+		setConfigurationWithId(configurationId);
+		when(dao.save(metricConfiguration, configurationId)).thenReturn(id);
 
 		assertFalse(metricConfiguration.hasId());
 		metricConfiguration.save();

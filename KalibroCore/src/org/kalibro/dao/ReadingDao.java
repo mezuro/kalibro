@@ -13,7 +13,7 @@ public interface ReadingDao {
 
 	SortedSet<Reading> readingsOf(Long groupId);
 
-	Long save(Reading reading);
+	Long save(Reading reading, Long groupId);
 
 	void delete(Long readingId);
 }

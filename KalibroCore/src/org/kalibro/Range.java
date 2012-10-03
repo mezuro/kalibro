@@ -29,6 +29,7 @@ public class Range extends AbstractEntity<Range> {
 	public Range(Double beginning, Double end, String label, Double grade, Color color) {
 		validate(beginning, end);
 		setBeginning(beginning);
+		setEnd(end);
 		reading = new Reading(label, grade, color);
 		setGrade(grade);
 		setComments("");

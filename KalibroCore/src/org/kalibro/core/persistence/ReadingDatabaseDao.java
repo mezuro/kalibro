@@ -28,7 +28,7 @@ class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements 
 	}
 
 	@Override
-	public Long save(Reading reading) {
-		return save(new ReadingRecord(reading, reading.getGroupId())).id();
+	public Long save(Reading reading, Long groupId) {
+		return save(new ReadingRecord(reading, groupId)).id();
 	}
 }

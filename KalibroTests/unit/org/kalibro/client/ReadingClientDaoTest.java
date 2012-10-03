@@ -29,8 +29,9 @@ public class ReadingClientDaoTest extends
 
 	@Test
 	public void shouldSave() {
-		when(port.saveReading(request)).thenReturn(ID);
-		assertEquals(ID, client.save(entity));
+		Long groupId = mock(Long.class);
+		when(port.saveReading(request, groupId)).thenReturn(ID);
+		assertEquals(ID, client.save(entity, groupId));
 	}
 
 	@Test

@@ -24,7 +24,7 @@ public interface ReadingEndpoint {
 
 	@WebMethod
 	@WebResult(name = "readingId")
-	Long saveReading(@WebParam(name = "reading") ReadingXml reading);
+	Long saveReading(@WebParam(name = "reading") ReadingXml reading, @WebParam(name = "groupId") Long groupId);
 
 	@WebMethod
 	void deleteReading(@WebParam(name = "readingId") Long readingId);

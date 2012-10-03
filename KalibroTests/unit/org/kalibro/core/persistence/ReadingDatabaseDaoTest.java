@@ -31,7 +31,6 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 	public void setUp() throws Exception {
 		reading = mock(Reading.class);
 		record = mock(ReadingRecord.class);
-		when(reading.getGroupId()).thenReturn(GROUP_ID);
 		whenNew(ReadingRecord.class).withArguments(reading, GROUP_ID).thenReturn(record);
 		when(record.convert()).thenReturn(reading);
 		when(record.id()).thenReturn(READING_ID);
@@ -51,7 +50,7 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldSave() {
 		doReturn(record).when(dao).save(record);
-		assertEquals(READING_ID, dao.save(reading));
+		assertEquals(READING_ID, dao.save(reading, GROUP_ID));
 		verify(dao).save(record);
 	}
 }

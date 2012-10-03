@@ -31,7 +31,6 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 	public void setUp() throws Exception {
 		metricConfiguration = mock(MetricConfiguration.class);
 		record = mock(MetricConfigurationRecord.class);
-		when(metricConfiguration.getConfigurationId()).thenReturn(CONFIGURATION_ID);
 		whenNew(MetricConfigurationRecord.class).withArguments(metricConfiguration, CONFIGURATION_ID)
 			.thenReturn(record);
 		when(record.convert()).thenReturn(metricConfiguration);
@@ -52,7 +51,7 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldSave() {
 		doReturn(record).when(dao).save(record);
-		assertEquals(METRIC_CONFIGURATION_ID, dao.save(metricConfiguration));
+		assertEquals(METRIC_CONFIGURATION_ID, dao.save(metricConfiguration, CONFIGURATION_ID));
 		verify(dao).save(record);
 	}
 }

@@ -90,10 +90,6 @@ public class Reading extends AbstractEntity<Reading> {
 		this.color = color;
 	}
 
-	public Long getGroupId() {
-		return group.getId();
-	}
-
 	void setGroup(ReadingGroup group) {
 		this.group = group;
 	}
@@ -103,7 +99,7 @@ public class Reading extends AbstractEntity<Reading> {
 			throw new KalibroException("Reading is not in any group.");
 		if (!group.hasId())
 			throw new KalibroException("Group is not saved. Save group instead");
-		id = dao().save(this);
+		id = dao().save(this, group.getId());
 	}
 
 	public void delete() {

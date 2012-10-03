@@ -37,8 +37,8 @@ public class ReadingEndpointImpl implements ReadingEndpoint {
 
 	@Override
 	@WebResult(name = "readingId")
-	public Long saveReading(@WebParam(name = "reading") ReadingXml reading) {
-		return dao.save(reading.convert());
+	public Long saveReading(@WebParam(name = "reading") ReadingXml reading, @WebParam(name = "groupId") Long groupId) {
+		return dao.save(reading.convert(), groupId);
 	}
 
 	@Override

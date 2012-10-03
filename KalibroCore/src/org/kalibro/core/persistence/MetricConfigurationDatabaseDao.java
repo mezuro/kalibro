@@ -30,7 +30,7 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 	}
 
 	@Override
-	public Long save(MetricConfiguration metricConfiguration) {
-		return save(new MetricConfigurationRecord(metricConfiguration, metricConfiguration.getConfigurationId())).id();
+	public Long save(MetricConfiguration metricConfiguration, Long configurationId) {
+		return save(new MetricConfigurationRecord(metricConfiguration, configurationId)).id();
 	}
 }

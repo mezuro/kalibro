@@ -26,8 +26,8 @@ class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEnd
 	}
 
 	@Override
-	public Long save(MetricConfiguration metricConfiguration) {
-		return port.saveMetricConfiguration(new MetricConfigurationXmlRequest(metricConfiguration));
+	public Long save(MetricConfiguration metricConfiguration, Long configurationId) {
+		return port.saveMetricConfiguration(new MetricConfigurationXmlRequest(metricConfiguration), configurationId);
 	}
 
 	@Override
