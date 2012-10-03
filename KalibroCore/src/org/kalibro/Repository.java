@@ -27,11 +27,11 @@ public class Repository extends AbstractEntity<Repository> {
 	}
 
 	public boolean hasAuthentication() {
-		return ! (username.isEmpty() && password.isEmpty());
+		return !(username.isEmpty() && password.isEmpty());
 	}
 
 	public void load(File loadDirectory) {
-		type.load(this, loadDirectory);
+//		TODO type.load(this, loadDirectory);
 	}
 
 	public RepositoryType getType() {
