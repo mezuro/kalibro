@@ -15,7 +15,7 @@ import org.kalibro.core.abstractentity.SortingFields;
  * @author Carlos Morais
  */
 @SortingFields("module")
-public abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
+abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 	extends AbstractEntity<AbstractModuleResult<METRIC_RESULT>> {
 
 	@IdentityField
@@ -23,7 +23,7 @@ public abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricR
 
 	private Map<Metric, METRIC_RESULT> metricResults;
 
-	protected AbstractModuleResult(Module module) {
+	AbstractModuleResult(Module module) {
 		this.module = module;
 		metricResults = new TreeMap<Metric, METRIC_RESULT>();
 	}

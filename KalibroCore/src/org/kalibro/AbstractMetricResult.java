@@ -10,14 +10,14 @@ import org.kalibro.core.abstractentity.SortingFields;
  * @author Carlos Morais.
  */
 @SortingFields("metric")
-public abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult> {
+abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult> {
 
 	@IdentityField
 	private Metric metric;
 
 	private Double value;
 
-	protected AbstractMetricResult(Metric metric, Double value) {
+	AbstractMetricResult(Metric metric, Double value) {
 		this.metric = metric;
 		setValue(value);
 	}
