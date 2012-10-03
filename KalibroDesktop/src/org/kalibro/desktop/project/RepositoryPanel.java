@@ -33,7 +33,7 @@ public class RepositoryPanel extends EditPanel<Repository> implements ActionList
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
-		typeField = new ChoiceField<RepositoryType>("type", DaoFactory.getProjectDao().getSupportedRepositoryTypes());
+		typeField = new ChoiceField<RepositoryType>("type", DaoFactory.getRepositoryDao().supportedTypes());
 		addressField = new StringField("address", 20);
 		usernameLabel = new Label("Username:");
 		usernameField = new StringField("username", 10);

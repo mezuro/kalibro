@@ -4,11 +4,9 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 
 import org.junit.Test;
 import org.kalibro.Project;
-import org.kalibro.RepositoryType;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.xml.ProjectXmlRequest;
 import org.kalibro.service.xml.ProjectXmlResponse;
@@ -56,13 +54,6 @@ public class ProjectClientDaoTest extends
 	public void testRemoveProject() {
 		client.removeProject(PROJECT_NAME);
 		verify(port).removeProject(PROJECT_NAME);
-	}
-
-	@Test
-	public void testSupportedRepositoryTypes() {
-		Set<RepositoryType> repositoryTypes = mock(Set.class);
-		when(port.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
-		assertSame(repositoryTypes, client.getSupportedRepositoryTypes());
 	}
 
 	@Test

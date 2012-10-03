@@ -1,10 +1,8 @@
 package org.kalibro.client;
 
 import java.util.List;
-import java.util.Set;
 
 import org.kalibro.Project;
-import org.kalibro.RepositoryType;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.xml.ProjectXmlRequest;
@@ -38,11 +36,6 @@ class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements Projec
 	@Override
 	public void removeProject(String projectName) {
 		port.removeProject(projectName);
-	}
-
-	@Override
-	public Set<RepositoryType> getSupportedRepositoryTypes() {
-		return port.getSupportedRepositoryTypes();
 	}
 
 	@Override

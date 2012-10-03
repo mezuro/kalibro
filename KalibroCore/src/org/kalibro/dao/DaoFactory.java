@@ -50,6 +50,11 @@ public abstract class DaoFactory {
 		return getFactory().createReadingGroupDao();
 	}
 
+	public static RepositoryDao getRepositoryDao() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 	private static DaoFactory getFactory() {
 		KalibroSettings settings = KalibroSettings.load();
 		String serviceAddress = settings.getClientSettings().getServiceAddress();

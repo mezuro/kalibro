@@ -5,14 +5,12 @@ import static java.util.concurrent.TimeUnit.DAYS;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.TypedQuery;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.Configuration;
 import org.kalibro.Project;
-import org.kalibro.RepositoryType;
 import org.kalibro.core.persistence.record.ProjectRecord;
 import org.kalibro.core.processing.ProcessProjectTask;
 import org.kalibro.dao.ConfigurationDao;
@@ -77,11 +75,6 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 		TypedQuery<ProjectRecord> query = createRecordQuery(queryText);
 		query.setParameter("projectName", projectName);
 		query.executeUpdate();
-	}
-
-	@Override
-	public Set<RepositoryType> getSupportedRepositoryTypes() {
-		return RepositoryType.supportedTypes();
 	}
 
 	@Override

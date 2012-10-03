@@ -2,17 +2,14 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 import static org.kalibro.ProjectFixtures.helloWorld;
-import static org.kalibro.RepositoryType.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Project;
-import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.xml.ProjectXmlRequest;
@@ -77,13 +74,6 @@ public class ProjectEndpointImplTest extends UnitTest {
 	public void testRemoveProject() {
 		endpoint.removeProject("42");
 		Mockito.verify(dao).removeProject("42");
-	}
-
-	@Test
-	public void testSupportedRepositoryTypes() {
-		Set<RepositoryType> repositoryTypes = asSet(LOCAL_ZIP, GIT, SUBVERSION);
-		PowerMockito.when(dao.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
-		assertDeepEquals(asSet(GIT, SUBVERSION), endpoint.getSupportedRepositoryTypes());
 	}
 
 	@Test

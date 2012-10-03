@@ -3,7 +3,7 @@ package org.kalibro.desktop.project;
 import static org.junit.Assert.assertEquals;
 import static org.kalibro.ProjectFixtures.helloWorld;
 
-import java.util.Set;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -13,7 +13,7 @@ import org.kalibro.Project;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProjectDao;
+import org.kalibro.dao.RepositoryDao;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.StringField;
@@ -43,15 +43,15 @@ public class ProjectPanelTest extends UnitTest {
 	}
 
 	private void mockDaoFactory() {
-		Set<RepositoryType> types = asSet(RepositoryType.values());
+		SortedSet<RepositoryType> types = asSortedSet(RepositoryType.values());
 
-		ProjectDao projectDao = mock(ProjectDao.class);
+		RepositoryDao repositoryDao = mock(RepositoryDao.class);
 		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
 
 		mockStatic(DaoFactory.class);
-		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
+		when(DaoFactory.getRepositoryDao()).thenReturn(repositoryDao);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
-		when(projectDao.getSupportedRepositoryTypes()).thenReturn(types);
+		when(repositoryDao.supportedTypes()).thenReturn(types);
 		when(configurationDao.all()).thenReturn(asSortedSet(new Configuration()));
 	}
 

@@ -12,7 +12,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProjectDao;
+import org.kalibro.dao.RepositoryDao;
 import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.PasswordField;
@@ -43,11 +43,11 @@ public class RepositoryPanelTest extends UnitTest {
 	}
 
 	private void mockDaoFactory() {
-		ProjectDao dao = mock(ProjectDao.class);
+		RepositoryDao dao = mock(RepositoryDao.class);
 		TreeSet<RepositoryType> types = new TreeSet<RepositoryType>(asList(RepositoryType.values()));
 		mockStatic(DaoFactory.class);
-		when(DaoFactory.getProjectDao()).thenReturn(dao);
-		when(dao.getSupportedRepositoryTypes()).thenReturn(types);
+		when(DaoFactory.getRepositoryDao()).thenReturn(dao);
+		when(dao.supportedTypes()).thenReturn(types);
 	}
 
 	@Test

@@ -6,7 +6,6 @@ import static org.kalibro.ProjectFixtures.*;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Set;
 
 import javax.persistence.TypedQuery;
 
@@ -131,14 +130,6 @@ public class ProjectDatabaseDaoTest extends UnitTest {
 		doReturn(directory).when(project).getDirectory();
 		mockStatic(FileUtils.class);
 		return directory;
-	}
-
-	@Test
-	public void shouldRetrieveSupportedRepositoryTypes() {
-		Set<RepositoryType> supportedTypes = mock(Set.class);
-		mockStatic(RepositoryType.class);
-		when(RepositoryType.supportedTypes()).thenReturn(supportedTypes);
-		assertSame(supportedTypes, dao.getSupportedRepositoryTypes());
 	}
 
 	@Test

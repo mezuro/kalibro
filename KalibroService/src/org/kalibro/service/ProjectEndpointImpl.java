@@ -1,14 +1,11 @@
 package org.kalibro.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.xml.ProjectXmlRequest;
@@ -53,16 +50,6 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 	@Override
 	public void removeProject(@WebParam(name = "projectName") String projectName) {
 		dao.removeProject(projectName);
-	}
-
-	@Override
-	@WebResult(name = "repositoryType")
-	public Set<RepositoryType> getSupportedRepositoryTypes() {
-		Set<RepositoryType> types = new TreeSet<RepositoryType>();
-		for (RepositoryType type : dao.getSupportedRepositoryTypes())
-			if (!type.isLocal())
-				types.add(type);
-		return types;
 	}
 
 	@Override

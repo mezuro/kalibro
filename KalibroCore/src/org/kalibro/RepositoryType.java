@@ -1,23 +1,19 @@
 package org.kalibro;
 
 import java.io.File;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.SortedSet;
 
 import org.kalibro.core.Identifier;
 import org.kalibro.core.loaders.RepositoryLoader;
+import org.kalibro.dao.DaoFactory;
 
 public enum RepositoryType {
 
 	BAZAAR, CVS("CVS"), GIT, LOCAL_DIRECTORY, LOCAL_TARBALL, LOCAL_ZIP, MERCURIAL, REMOTE_ZIP, REMOTE_TARBALL,
 	SUBVERSION;
 
-	public static Set<RepositoryType> supportedTypes() {
-		Set<RepositoryType> supported = new TreeSet<RepositoryType>();
-		for (RepositoryType type : values())
-			if (type.isSupported())
-				supported.add(type);
-		return supported;
+	public static SortedSet<RepositoryType> supportedTypes() {
+		return DaoFactory.getRepositoryDao().supportedTypes();
 	}
 
 	private String name;
