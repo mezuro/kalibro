@@ -1,14 +1,14 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.ResultState.COLLECTING;
+import static org.kalibro.ProcessState.COLLECTING;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Project;
 import org.kalibro.RepositoryResult;
-import org.kalibro.ResultState;
+import org.kalibro.ProcessState;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.tests.UnitTest;
@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private static final String TASK_RESULT = "ProcessProjectSubtaskTest result";
-	private static final ResultState TASK_STATE = COLLECTING;
+	private static final ProcessState TASK_STATE = COLLECTING;
 
 	private Project project;
 	private ProjectDao projectDao;
@@ -79,7 +79,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 		}
 
 		@Override
-		protected ResultState getTaskState() {
+		protected ProcessState getTaskState() {
 			return TASK_STATE;
 		}
 

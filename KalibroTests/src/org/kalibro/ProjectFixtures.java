@@ -19,7 +19,7 @@ public final class ProjectFixtures {
 		project.setLicense("Creative Commons");
 		project.setRepository(newHelloWorldRepository(RepositoryType.LOCAL_DIRECTORY));
 		project.setConfigurationName(CONFIGURATION_NAME);
-		project.setState(ResultState.READY);
+		project.setState(ProcessState.READY);
 		return project;
 	}
 

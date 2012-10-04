@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.RepositoryResult;
-import org.kalibro.ResultState;
+import org.kalibro.ProcessState;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "repositoryResult")
@@ -38,9 +38,9 @@ public class ProjectResultXml extends DataTransferObject<RepositoryResult> {
 	public RepositoryResult convert() {
 		RepositoryResult repositoryResult = new RepositoryResult(project.convert());
 		repositoryResult.setDate(date);
-		repositoryResult.setStateTime(ResultState.LOADING, loadTime);
-		repositoryResult.setStateTime(ResultState.COLLECTING, collectTime);
-		repositoryResult.setStateTime(ResultState.ANALYZING, analysisTime);
+		repositoryResult.setStateTime(ProcessState.LOADING, loadTime);
+		repositoryResult.setStateTime(ProcessState.COLLECTING, collectTime);
+		repositoryResult.setStateTime(ProcessState.ANALYZING, analysisTime);
 		repositoryResult.setSourceTree(sourceTree.convert());
 		return repositoryResult;
 	}

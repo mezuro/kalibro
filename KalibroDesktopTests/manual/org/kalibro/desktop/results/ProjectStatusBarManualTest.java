@@ -8,7 +8,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import org.kalibro.ResultState;
+import org.kalibro.ProcessState;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.Label;
@@ -22,12 +22,12 @@ public final class ProjectStatusBarManualTest extends JPanel implements ActionLi
 		System.exit(0);
 	}
 
-	private ChoiceField<ResultState> stateField;
+	private ChoiceField<ProcessState> stateField;
 	private ProjectStatusBar statusBar;
 	private Button changeButton;
 
 	private ProjectStatusBarManualTest() {
-		stateField = new ChoiceField<ResultState>("", ResultState.values());
+		stateField = new ChoiceField<ProcessState>("", ProcessState.values());
 		statusBar = new ProjectStatusBar(helloWorld());
 		changeButton = new Button("", "Change", this);
 		buildPanel();

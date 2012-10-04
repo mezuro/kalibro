@@ -57,7 +57,7 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 	@Test
 	public void checkTaskState() {
-		assertEquals(ResultState.COLLECTING, collectTask.getTaskState());
+		assertEquals(ProcessState.COLLECTING, collectTask.getTaskState());
 	}
 
 	@Test

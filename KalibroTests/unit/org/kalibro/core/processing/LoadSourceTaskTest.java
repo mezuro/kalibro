@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Project;
-import org.kalibro.ResultState;
+import org.kalibro.ProcessState;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 
@@ -23,7 +23,7 @@ public class LoadSourceTaskTest extends UnitTest {
 
 	@Test
 	public void checkTaskState() {
-		assertEquals(ResultState.LOADING, loadTask.getTaskState());
+		assertEquals(ProcessState.LOADING, loadTask.getTaskState());
 	}
 
 	@Test

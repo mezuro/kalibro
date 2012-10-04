@@ -7,9 +7,8 @@ import org.kalibro.core.Identifier;
  * 
  * @author Carlos Morais
  */
-public enum ResultState {
+public enum ProcessState {
 
-	NEW("Repository $name was not processed"),
 	LOADING("Loading $name from repository"),
 	COLLECTING("Collecting metric values for $name"),
 	ANALYZING("Processing metric results for $name"),
@@ -18,7 +17,7 @@ public enum ResultState {
 
 	private String messageTemplate;
 
-	private ResultState(String messageTemplate) {
+	private ProcessState(String messageTemplate) {
 		this.messageTemplate = messageTemplate;
 	}
 

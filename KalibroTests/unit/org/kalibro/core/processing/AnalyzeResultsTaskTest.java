@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.ModuleResult;
 import org.kalibro.RepositoryResult;
-import org.kalibro.ResultState;
+import org.kalibro.ProcessState;
 import org.kalibro.tests.UnitTest;
 
 public class AnalyzeResultsTaskTest extends UnitTest {
@@ -29,7 +29,7 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 
 	@Test
 	public void checkTaskState() {
-		assertEquals(ResultState.ANALYZING, analyzeTask.getTaskState());
+		assertEquals(ProcessState.ANALYZING, analyzeTask.getTaskState());
 	}
 
 	@Test

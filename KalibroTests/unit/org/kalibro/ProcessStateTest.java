@@ -1,21 +1,20 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ResultState.*;
+import static org.kalibro.ProcessState.*;
 
 import org.junit.Test;
 import org.kalibro.tests.EnumerationTest;
 
-public class ResultStateTest extends EnumerationTest<ResultState> {
+public class ProcessStateTest extends EnumerationTest<ProcessState> {
 
 	@Override
-	protected Class<ResultState> enumerationClass() {
-		return ResultState.class;
+	protected Class<ProcessState> enumerationClass() {
+		return ProcessState.class;
 	}
 
 	@Test
 	public void shouldAnswerIfIsTemporary() {
-		assertFalse(NEW.isTemporary());
 		assertTrue(LOADING.isTemporary());
 		assertTrue(COLLECTING.isTemporary());
 		assertTrue(ANALYZING.isTemporary());
@@ -26,7 +25,6 @@ public class ResultStateTest extends EnumerationTest<ResultState> {
 	@Test
 	public void shouldProvideExplainingMessage() {
 		String projectName = "HelloWorld-1.0";
-		assertEquals("Repository HelloWorld-1.0 was not processed", NEW.getMessage(projectName));
 		assertEquals("Loading HelloWorld-1.0 from repository", LOADING.getMessage(projectName));
 		assertEquals("Collecting metric values for HelloWorld-1.0", COLLECTING.getMessage(projectName));
 		assertEquals("Processing metric results for HelloWorld-1.0", ANALYZING.getMessage(projectName));

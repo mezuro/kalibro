@@ -34,7 +34,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.CompoundMetric;
 import org.kalibro.Granularity;
-import org.kalibro.ResultState;
+import org.kalibro.ProcessState;
 import org.kalibro.desktop.DialogTester;
 
 public class ProjectControllerTest extends PersistenceDependentTest implements ProjectStateListener {
