@@ -20,9 +20,9 @@ public final class ProjectResultFixtures {
 	public static RepositoryResult newHelloWorldResult(Date date) {
 		RepositoryResult result = new RepositoryResult(newHelloWorld());
 		result.setDate(date);
-		result.setStateTime(RepositoryState.LOADING, 0);
-		result.setStateTime(RepositoryState.COLLECTING, 0);
-		result.setStateTime(RepositoryState.ANALYZING, 0);
+		result.setStateTime(ResultState.LOADING, 0);
+		result.setStateTime(ResultState.COLLECTING, 0);
+		result.setStateTime(ResultState.ANALYZING, 0);
 		result.setSourceTree(newHelloWorldRoot());
 		return result;
 	}

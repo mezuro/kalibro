@@ -1,16 +1,16 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.RepositoryState.*;
+import static org.kalibro.ResultState.*;
 
 import org.junit.Test;
 import org.kalibro.tests.EnumerationTest;
 
-public class RepositoryStateTest extends EnumerationTest<RepositoryState> {
+public class ResultStateTest extends EnumerationTest<ResultState> {
 
 	@Override
-	protected Class<RepositoryState> enumerationClass() {
-		return RepositoryState.class;
+	protected Class<ResultState> enumerationClass() {
+		return ResultState.class;
 	}
 
 	@Test

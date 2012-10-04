@@ -104,4 +104,17 @@ public class AbstractEntityTest extends UnitTest {
 		when(comparator.compare(entity, entity)).thenReturn(42);
 		assertEquals(42, entity.compareTo(entity));
 	}
+
+	@Test
+	public void shouldThrowExceptionForCondition() {
+		final String message = "AbstractEntityTest message";
+		entity.throwExceptionIf(false, message);
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				entity.throwExceptionIf(true, message);
+			}
+		}).throwsException().withMessage(message);
+	}
 }

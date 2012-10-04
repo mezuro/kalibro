@@ -81,8 +81,8 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	}
 
 	private void assertNoCodeConflict(MetricConfiguration other, String theCode) {
-		if (other.code.equals(theCode))
-			throw new KalibroException("Metric with code '" + theCode + "' already exists in the configuration.");
+		throwExceptionIf(other.code.equals(theCode),
+			"Metric with code '" + theCode + "' already exists in the configuration.");
 	}
 
 	public Metric getMetric() {
@@ -151,12 +151,9 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	}
 
 	public void save() {
-		if (code.trim().isEmpty())
-			throw new KalibroException("Metric configuration requires code.");
-		if (configuration == null)
-			throw new KalibroException("Metric is not in any configuration.");
-		if (!configuration.hasId())
-			throw new KalibroException("Configuration is not saved. Save configuration instead");
+		throwExceptionIf(code.trim().isEmpty(), "Metric configuration requires code.");
+		throwExceptionIf(configuration == null, "Metric is not in any configuration.");
+		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
 		id = dao().save(this, configuration.getId());
 		readingGroup = DaoFactory.getReadingGroupDao().readingGroupOf(id);
 		ranges = DaoFactory.getRangeDao().rangesOf(id);

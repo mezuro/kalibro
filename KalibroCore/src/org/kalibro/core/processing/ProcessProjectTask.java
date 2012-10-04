@@ -32,7 +32,7 @@ public class ProcessProjectTask extends VoidTask {
 
 		DaoFactory.getProjectResultDao().save(repositoryResult);
 		saveModuleResults(moduleResults, repositoryResult);
-		project.setState(RepositoryState.READY);
+		project.setState(ResultState.READY);
 		DaoFactory.getProjectDao().save(project);
 	}
 

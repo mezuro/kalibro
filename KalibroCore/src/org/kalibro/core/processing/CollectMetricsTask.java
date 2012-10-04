@@ -17,8 +17,8 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 	}
 
 	@Override
-	protected RepositoryState getTaskState() {
-		return RepositoryState.COLLECTING;
+	protected ResultState getTaskState() {
+		return ResultState.COLLECTING;
 	}
 
 	@Override

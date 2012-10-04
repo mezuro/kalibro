@@ -3,11 +3,11 @@ package org.kalibro;
 import org.kalibro.core.Identifier;
 
 /**
- * State of the project in the process of automatically loading, analyzing and evaluating source code.
+ * State of the process of automatically loading, analyzing and evaluating source code.
  * 
  * @author Carlos Morais
  */
-public enum RepositoryState {
+public enum ResultState {
 
 	NEW("Repository $name was not processed"),
 	LOADING("Loading $name from repository"),
@@ -18,7 +18,7 @@ public enum RepositoryState {
 
 	private String messageTemplate;
 
-	private RepositoryState(String messageTemplate) {
+	private ResultState(String messageTemplate) {
 		this.messageTemplate = messageTemplate;
 	}
 

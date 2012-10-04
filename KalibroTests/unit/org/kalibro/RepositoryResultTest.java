@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 import static org.kalibro.ModuleNodeFixtures.helloWorldRoot;
 import static org.kalibro.ProjectFixtures.helloWorld;
 import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
-import static org.kalibro.RepositoryState.*;
+import static org.kalibro.ResultState.*;
 
 import java.util.Date;
 

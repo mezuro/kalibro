@@ -6,7 +6,7 @@ import static org.kalibro.ProjectFixtures.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Project;
-import org.kalibro.RepositoryState;
+import org.kalibro.ResultState;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.tests.UnitTest;
 
@@ -23,11 +23,11 @@ public class ProjectStatusBarTest extends UnitTest {
 
 	@Test
 	public void shouldChangeMessageOnStateChange() {
-		for (RepositoryState state : RepositoryState.values())
+		for (ResultState state : ResultState.values())
 			verifyStateText(state);
 	}
 
-	private void verifyStateText(RepositoryState state) {
+	private void verifyStateText(ResultState state) {
 		statusBar.setProjectState(state);
 		Label label = (Label) statusBar.getComponent(0);
 		assertEquals(state.getMessage(PROJECT_NAME), label.getText());

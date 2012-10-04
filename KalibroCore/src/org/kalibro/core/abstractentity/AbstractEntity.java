@@ -71,4 +71,9 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 	public int compareTo(T other) {
 		return new EntityComparator<T>().compare(this, other);
 	}
+
+	protected void throwExceptionIf(boolean condition, String message) {
+		if (condition)
+			throw new KalibroException(message);
+	}
 }

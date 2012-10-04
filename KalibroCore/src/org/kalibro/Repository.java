@@ -75,8 +75,8 @@ public class Repository extends AbstractEntity<Repository> {
 	}
 
 	private void assertNoNameConflict(Repository other, String theName) {
-		if (other.name.equals(theName))
-			throw new KalibroException("Repository named \"" + theName + "\" already exists in the project.");
+		throwExceptionIf(other.name.equals(theName),
+			"Repository named \"" + theName + "\" already exists in the project.");
 	}
 
 	public String getDescription() {
@@ -139,11 +139,6 @@ public class Repository extends AbstractEntity<Repository> {
 		throwExceptionIf(configuration == null, "A configuration should be associated with the repository.");
 		throwExceptionIf(!configuration.hasId(), "The configuration associated with the repository is not saved.");
 		id = dao().save(this, project.getId());
-	}
-
-	private void throwExceptionIf(boolean condition, String message) {
-		if (condition)
-			throw new KalibroException(message);
 	}
 
 	public void process() {

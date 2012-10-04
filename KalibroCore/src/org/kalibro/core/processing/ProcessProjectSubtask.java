@@ -2,7 +2,7 @@ package org.kalibro.core.processing;
 
 import org.kalibro.Project;
 import org.kalibro.RepositoryResult;
-import org.kalibro.RepositoryState;
+import org.kalibro.ResultState;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.dao.DaoFactory;
 
@@ -28,7 +28,7 @@ abstract class ProcessProjectSubtask<T> extends Task<T> {
 		super.reportTaskFinished();
 	}
 
-	protected abstract RepositoryState getTaskState();
+	protected abstract ResultState getTaskState();
 
 	@Override
 	public String toString() {

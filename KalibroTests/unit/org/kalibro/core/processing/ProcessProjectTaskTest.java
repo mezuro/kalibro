@@ -42,7 +42,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		project = newHelloWorld();
-		project.setState(RepositoryState.NEW);
+		project.setState(ResultState.NEW);
 		moduleResults = newHelloWorldResults();
 		mockKalibro();
 		mockSubtasks();
@@ -87,7 +87,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 	@Test
 	public void shouldSaveProjectWithUpdatedState() {
 		processTask.perform();
-		assertEquals(RepositoryState.READY, project.getState());
+		assertEquals(ResultState.READY, project.getState());
 		Mockito.verify(projectDao).save(project);
 	}
 
@@ -107,7 +107,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 		when(loadTask.executeSubTask()).thenThrow(error);
 
 		processTask.perform();
-		assertEquals(RepositoryState.ERROR, project.getState());
+		assertEquals(ResultState.ERROR, project.getState());
 		assertSame(error, project.getError());
 		Mockito.verify(projectDao).save(project);
 	}

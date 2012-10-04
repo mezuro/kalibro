@@ -75,13 +75,13 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	private void assertNoLabelConflict(Reading other, String theLabel) {
-		if (other.label.equals(theLabel))
-			throw new KalibroException("Reading with label \"" + theLabel + "\" already exists in the group.");
+		throwExceptionIf(other.label.equals(theLabel),
+			"Reading with label \"" + theLabel + "\" already exists in the group.");
 	}
 
 	private void assertNoGradeConflict(Reading other, Double theGrade) {
-		if (other.grade.equals(theGrade))
-			throw new KalibroException("Reading with grade " + theGrade + " already exists in the group.");
+		throwExceptionIf(other.grade.equals(theGrade),
+			"Reading with grade " + theGrade + " already exists in the group.");
 	}
 
 	public Color getColor() {
@@ -97,10 +97,8 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public void save() {
-		if (group == null)
-			throw new KalibroException("Reading is not in any group.");
-		if (!group.hasId())
-			throw new KalibroException("Group is not saved. Save group instead");
+		throwExceptionIf(group == null, "Reading is not in any group.");
+		throwExceptionIf(!group.hasId(), "Group is not saved. Save group instead");
 		id = dao().save(this, group.getId());
 	}
 

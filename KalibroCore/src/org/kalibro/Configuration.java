@@ -134,8 +134,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public MetricConfiguration getConfigurationFor(Metric metric) {
 		MetricConfiguration metricConfiguration = findConfigurationFor(metric);
-		if (metricConfiguration == null)
-			throw new KalibroException("No configuration found for metric: " + metric);
+		throwExceptionIf(metricConfiguration == null, "No configuration found for metric: " + metric);
 		return metricConfiguration;
 	}
 
@@ -147,8 +146,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public void save() {
-		if (name.trim().isEmpty())
-			throw new KalibroException("Configuration requires name.");
+		throwExceptionIf(name.trim().isEmpty(), "Configuration requires name.");
 		id = dao().save(this);
 		metricConfigurations = DaoFactory.getMetricConfigurationDao().metricConfigurationsOf(id);
 	}

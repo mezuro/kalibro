@@ -22,17 +22,17 @@ public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 	@IdentityField
 	private Date date;
 
-	private RepositoryState state;
+	private ResultState state;
 	private Throwable error;
 
-	private Map<RepositoryState, Long> stateTimes;
+	private Map<ResultState, Long> stateTimes;
 	private ModuleNode sourceTree;
 
 	public RepositoryResult(Project project) {
 		setProject(project);
 		setDate(new Date());
-		setState(RepositoryState.NEW);
-		stateTimes = new HashMap<RepositoryState, Long>();
+		setState(ResultState.NEW);
+		stateTimes = new HashMap<ResultState, Long>();
 	}
 
 	public Project getProject() {
@@ -51,9 +51,9 @@ public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 		this.date = date;
 	}
 
-	public RepositoryState getState() {
+	public ResultState getState() {
 		if (error != null)
-			return RepositoryState.ERROR;
+			return ResultState.ERROR;
 		return state;
 	}
 
@@ -61,13 +61,13 @@ public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 		return getState().getMessage(repository.getCompleteName());
 	}
 
-	public RepositoryState getStateWhenErrorOcurred() {
+	public ResultState getStateWhenErrorOcurred() {
 		assertHasError();
 		return state;
 	}
 
-	public void setState(RepositoryState state) {
-		if (state == RepositoryState.ERROR)
+	public void setState(ResultState state) {
+		if (state == ResultState.ERROR)
 			throw new KalibroException("Use setError(Throwable) to put repository in error state");
 		error = null;
 		this.state = state;
@@ -89,20 +89,20 @@ public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 
 	public Long getLoadTime() {
 		assertProcessed();
-		return stateTimes.get(RepositoryState.LOADING);
+		return stateTimes.get(ResultState.LOADING);
 	}
 
 	public Long getCollectTime() {
 		assertProcessed();
-		return stateTimes.get(RepositoryState.COLLECTING);
+		return stateTimes.get(ResultState.COLLECTING);
 	}
 
 	public Long getAnalysisTime() {
 		assertProcessed();
-		return stateTimes.get(RepositoryState.ANALYZING);
+		return stateTimes.get(ResultState.ANALYZING);
 	}
 
-	public void setStateTime(RepositoryState state, long time) {
+	public void setStateTime(ResultState state, long time) {
 		stateTimes.put(state, time);
 	}
 

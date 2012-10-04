@@ -68,8 +68,7 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	private void validate(Double theBeginning, Double theEnd) {
-		if (!(theBeginning < theEnd))
-			throw new KalibroException("[" + theBeginning + ", " + theEnd + "[ is not a valid range");
+		throwExceptionIf(!(theBeginning < theEnd), "[" + theBeginning + ", " + theEnd + "[ is not a valid range");
 		if (configuration != null)
 			for (Range other : configuration.getRanges())
 				if (other != this)
@@ -77,8 +76,8 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	private void assertNoIntersection(Range range, Range other) {
-		if (range.contains(other.beginning) || other.contains(range.beginning))
-			throw new KalibroException("Range " + other + " would conflict with " + range);
+		throwExceptionIf(range.contains(other.beginning) || other.contains(range.beginning),
+			"Range " + other + " would conflict with " + range);
 	}
 
 	public boolean isFinite() {
@@ -110,10 +109,8 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	public void save() {
-		if (configuration == null)
-			throw new KalibroException("Range is not in any configuration.");
-		if (!configuration.hasId())
-			throw new KalibroException("Configuration is not saved. Save configuration instead");
+		throwExceptionIf(configuration == null, "Range is not in any configuration.");
+		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
 		id = dao().save(this, configuration.getId());
 	}
 

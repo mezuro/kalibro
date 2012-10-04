@@ -1,12 +1,12 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.RepositoryState.ERROR;
+import static org.kalibro.ResultState.ERROR;
 
 import javax.persistence.*;
 
 import org.kalibro.Configuration;
 import org.kalibro.Project;
-import org.kalibro.RepositoryState;
+import org.kalibro.ResultState;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Project")
@@ -66,10 +66,10 @@ public class ProjectRecord extends DataTransferObject<Project> {
 	}
 
 	private void initializeState(Project project) {
-		RepositoryState repositoryState = project.getState();
-		if (repositoryState == ERROR)
-			repositoryState = project.getStateWhenErrorOcurred();
-		state = repositoryState.name();
+		ResultState resultState = project.getState();
+		if (resultState == ERROR)
+			resultState = project.getStateWhenErrorOcurred();
+		state = resultState.name();
 	}
 
 	private void initializeError(Project project) {
@@ -86,7 +86,7 @@ public class ProjectRecord extends DataTransferObject<Project> {
 		project.setDescription(description);
 		project.setRepository(repository.convert());
 		project.setConfigurationName(configuration.name());
-		project.setState(RepositoryState.valueOf(state));
+		project.setState(ResultState.valueOf(state));
 		project.setError(error);
 		return project;
 	}

@@ -91,8 +91,7 @@ public class Project extends AbstractEntity<Project> {
 	}
 
 	public void save() {
-		if (name.trim().isEmpty())
-			throw new KalibroException("Project requires name.");
+		throwExceptionIf(name.trim().isEmpty(), "Project requires name.");
 		id = dao().save(this);
 		repositories = DaoFactory.getRepositoryDao().repositoriesOf(id);
 	}

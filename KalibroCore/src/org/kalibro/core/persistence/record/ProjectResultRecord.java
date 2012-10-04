@@ -9,7 +9,7 @@ import javax.persistence.*;
 import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.KalibroException;
 import org.kalibro.RepositoryResult;
-import org.kalibro.RepositoryState;
+import org.kalibro.ResultState;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "RepositoryResult")
@@ -67,9 +67,9 @@ public class ProjectResultRecord extends DataTransferObject<RepositoryResult> {
 	public RepositoryResult convert() {
 		RepositoryResult repositoryResult = new RepositoryResult(project.convert());
 		repositoryResult.setDate(new Date(date));
-		repositoryResult.setStateTime(RepositoryState.LOADING, loadTime);
-		repositoryResult.setStateTime(RepositoryState.COLLECTING, collectTime);
-		repositoryResult.setStateTime(RepositoryState.ANALYZING, analysisTime);
+		repositoryResult.setStateTime(ResultState.LOADING, loadTime);
+		repositoryResult.setStateTime(ResultState.COLLECTING, collectTime);
+		repositoryResult.setStateTime(ResultState.ANALYZING, analysisTime);
 		convertSourceTree(repositoryResult);
 		return repositoryResult;
 	}

@@ -6,7 +6,7 @@ import java.util.Map;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.RepositoryResult;
-import org.kalibro.RepositoryState;
+import org.kalibro.ResultState;
 
 class AnalyzeResultsTask extends ProcessProjectSubtask<Collection<ModuleResult>> {
 
@@ -18,8 +18,8 @@ class AnalyzeResultsTask extends ProcessProjectSubtask<Collection<ModuleResult>>
 	}
 
 	@Override
-	protected RepositoryState getTaskState() {
-		return RepositoryState.ANALYZING;
+	protected ResultState getTaskState() {
+		return ResultState.ANALYZING;
 	}
 
 	@Override

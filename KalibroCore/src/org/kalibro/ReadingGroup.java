@@ -108,8 +108,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public void save() {
-		if (name.trim().isEmpty())
-			throw new KalibroException("Reading group requires name.");
+		throwExceptionIf(name.trim().isEmpty(), "Reading group requires name.");
 		id = dao().save(this);
 		readings = DaoFactory.getReadingDao().readingsOf(id);
 	}
