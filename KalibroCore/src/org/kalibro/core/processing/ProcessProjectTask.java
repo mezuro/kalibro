@@ -26,20 +26,20 @@ public class ProcessProjectTask extends VoidTask {
 	}
 
 	private void processProject() {
-		ProjectResult projectResult = new LoadSourceTask(project).executeSubTask();
-		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(projectResult).executeSubTask();
-		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(projectResult, resultMap).executeSubTask();
+		RepositoryResult repositoryResult = new LoadSourceTask(project).executeSubTask();
+		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(repositoryResult).executeSubTask();
+		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(repositoryResult, resultMap).executeSubTask();
 
-		DaoFactory.getProjectResultDao().save(projectResult);
-		saveModuleResults(moduleResults, projectResult);
-		project.setState(ProjectState.READY);
+		DaoFactory.getProjectResultDao().save(repositoryResult);
+		saveModuleResults(moduleResults, repositoryResult);
+		project.setState(RepositoryState.READY);
 		DaoFactory.getProjectDao().save(project);
 	}
 
-	private void saveModuleResults(Collection<ModuleResult> moduleResults, ProjectResult projectResult) {
+	private void saveModuleResults(Collection<ModuleResult> moduleResults, RepositoryResult repositoryResult) {
 		ModuleResultDatabaseDao moduleResultDao = (ModuleResultDatabaseDao) DaoFactory.getModuleResultDao();
 		for (ModuleResult moduleResult : moduleResults)
-			moduleResultDao.save(moduleResult, projectResult);
+			moduleResultDao.save(moduleResult, repositoryResult);
 	}
 
 	private void reportError(Throwable error) {

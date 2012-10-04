@@ -6,23 +6,23 @@ import java.util.Collection;
 
 import org.kalibro.Module;
 import org.kalibro.ModuleNode;
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 
 class SourceTreeBuilder {
 
 	private ModuleNode sourceRoot;
-	private ProjectResult projectResult;
+	private RepositoryResult repositoryResult;
 
-	protected SourceTreeBuilder(ProjectResult projectResult) {
-		this.projectResult = projectResult;
+	protected SourceTreeBuilder(RepositoryResult repositoryResult) {
+		this.repositoryResult = repositoryResult;
 	}
 
 	protected void buildSourceTree(Collection<Module> modules) {
-		String projectName = projectResult.getProject().getName();
+		String projectName = repositoryResult.getProject().getName();
 		sourceRoot = new ModuleNode(new Module(SOFTWARE, projectName));
 		for (Module module : modules)
 			addModule(module);
-		projectResult.setSourceTree(sourceRoot);
+		repositoryResult.setSourceTree(sourceRoot);
 	}
 
 	private void addModule(Module module) {

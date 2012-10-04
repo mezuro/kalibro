@@ -12,13 +12,13 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 
 	private Map<Module, ModuleResult> resultMap;
 
-	protected CollectMetricsTask(ProjectResult projectResult) {
-		super(projectResult);
+	protected CollectMetricsTask(RepositoryResult repositoryResult) {
+		super(repositoryResult);
 	}
 
 	@Override
-	protected ProjectState getTaskState() {
-		return ProjectState.COLLECTING;
+	protected RepositoryState getTaskState() {
+		return RepositoryState.COLLECTING;
 	}
 
 	@Override
@@ -42,7 +42,7 @@ public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, Module
 		Module module = nativeResult.getModule();
 		changeModuleNameIfRoot(module);
 		if (!resultMap.containsKey(module))
-			resultMap.put(module, new ModuleResult(module, projectResult.getDate()));
+			resultMap.put(module, new ModuleResult(module, repositoryResult.getDate()));
 		resultMap.get(module).addMetricResults(nativeResult.getMetricResults());
 	}
 

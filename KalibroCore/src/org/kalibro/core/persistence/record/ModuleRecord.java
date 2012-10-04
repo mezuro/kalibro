@@ -44,8 +44,8 @@ public class ModuleRecord extends DataTransferObject<ModuleNode> {
 		this(new ModuleNode(module), new ProjectResultRecord(), new ModuleRecord());
 	}
 
-	public ModuleRecord(ModuleNode moduleNode, ProjectResult projectResult) {
-		initialize(moduleNode, new ProjectResultRecord(projectResult), null);
+	public ModuleRecord(ModuleNode moduleNode, RepositoryResult repositoryResult) {
+		initialize(moduleNode, new ProjectResultRecord(repositoryResult), null);
 	}
 
 	public ModuleRecord(ModuleNode moduleNode, ProjectResultRecord projectResult, ModuleRecord parent) {

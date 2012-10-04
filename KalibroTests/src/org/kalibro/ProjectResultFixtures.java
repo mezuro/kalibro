@@ -7,22 +7,22 @@ import java.util.Date;
 
 public final class ProjectResultFixtures {
 
-	private static ProjectResult helloWorldResult = newHelloWorldResult();
+	private static RepositoryResult helloWorldResult = newHelloWorldResult();
 
-	public static ProjectResult helloWorldResult() {
+	public static RepositoryResult helloWorldResult() {
 		return helloWorldResult;
 	}
 
-	public static ProjectResult newHelloWorldResult() {
+	public static RepositoryResult newHelloWorldResult() {
 		return newHelloWorldResult(new Date());
 	}
 
-	public static ProjectResult newHelloWorldResult(Date date) {
-		ProjectResult result = new ProjectResult(newHelloWorld());
+	public static RepositoryResult newHelloWorldResult(Date date) {
+		RepositoryResult result = new RepositoryResult(newHelloWorld());
 		result.setDate(date);
-		result.setStateTime(ProjectState.LOADING, 0);
-		result.setStateTime(ProjectState.COLLECTING, 0);
-		result.setStateTime(ProjectState.ANALYZING, 0);
+		result.setStateTime(RepositoryState.LOADING, 0);
+		result.setStateTime(RepositoryState.COLLECTING, 0);
+		result.setStateTime(RepositoryState.ANALYZING, 0);
 		result.setSourceTree(newHelloWorldRoot());
 		return result;
 	}

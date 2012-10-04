@@ -26,7 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ProcessProjectTaskTest extends UnitTest {
 
 	private Project project;
-	private ProjectResult projectResult;
+	private RepositoryResult repositoryResult;
 	private Collection<ModuleResult> moduleResults;
 
 	private ProjectDao projectDao;
@@ -42,7 +42,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		project = newHelloWorld();
-		project.setState(ProjectState.NEW);
+		project.setState(RepositoryState.NEW);
 		moduleResults = newHelloWorldResults();
 		mockKalibro();
 		mockSubtasks();
@@ -64,13 +64,13 @@ public class ProcessProjectTaskTest extends UnitTest {
 		loadTask = mock(LoadSourceTask.class);
 		collectTask = mock(CollectMetricsTask.class);
 		analyzeTask = mock(AnalyzeResultsTask.class);
-		projectResult = mock(ProjectResult.class);
+		repositoryResult = mock(RepositoryResult.class);
 		Map<Module, ModuleResult> resultMap = mock(Map.class);
 		whenNew(LoadSourceTask.class).withArguments(project).thenReturn(loadTask);
-		when(loadTask.executeSubTask()).thenReturn(projectResult);
-		whenNew(CollectMetricsTask.class).withArguments(projectResult).thenReturn(collectTask);
+		when(loadTask.executeSubTask()).thenReturn(repositoryResult);
+		whenNew(CollectMetricsTask.class).withArguments(repositoryResult).thenReturn(collectTask);
 		when(collectTask.executeSubTask()).thenReturn(resultMap);
-		whenNew(AnalyzeResultsTask.class).withArguments(projectResult, resultMap).thenReturn(analyzeTask);
+		whenNew(AnalyzeResultsTask.class).withArguments(repositoryResult, resultMap).thenReturn(analyzeTask);
 		when(analyzeTask.executeSubTask()).thenReturn(moduleResults);
 	}
 
@@ -87,7 +87,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 	@Test
 	public void shouldSaveProjectWithUpdatedState() {
 		processTask.perform();
-		assertEquals(ProjectState.READY, project.getState());
+		assertEquals(RepositoryState.READY, project.getState());
 		Mockito.verify(projectDao).save(project);
 	}
 
@@ -96,9 +96,9 @@ public class ProcessProjectTaskTest extends UnitTest {
 		processTask.perform();
 
 		InOrder order = Mockito.inOrder(projectResultDao, moduleResultDao);
-		order.verify(projectResultDao).save(projectResult);
+		order.verify(projectResultDao).save(repositoryResult);
 		for (ModuleResult moduleResult : moduleResults)
-			order.verify(moduleResultDao).save(moduleResult, projectResult);
+			order.verify(moduleResultDao).save(moduleResult, repositoryResult);
 	}
 
 	@Test
@@ -107,7 +107,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 		when(loadTask.executeSubTask()).thenThrow(error);
 
 		processTask.perform();
-		assertEquals(ProjectState.ERROR, project.getState());
+		assertEquals(RepositoryState.ERROR, project.getState());
 		assertSame(error, project.getError());
 		Mockito.verify(projectDao).save(project);
 	}

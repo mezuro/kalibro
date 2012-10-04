@@ -113,8 +113,8 @@ public class ProjectDatabaseDaoTest extends UnitTest {
 		doReturn(project).when(dao).getByName(projectName);
 		TypedQuery<?> query = mock(TypedQuery.class);
 		mockQuery("MetricResult", "module.projectResult.project.name", query);
-		mockQuery("Module", "projectResult.project.name", query);
-		mockQuery("ProjectResult", "project.name", query);
+		mockQuery("Module", "repositoryResult.project.name", query);
+		mockQuery("RepositoryResult", "project.name", query);
 		return query;
 	}
 

@@ -1,14 +1,14 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.ProjectState.COLLECTING;
+import static org.kalibro.RepositoryState.COLLECTING;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Project;
-import org.kalibro.ProjectResult;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryResult;
+import org.kalibro.RepositoryState;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.tests.UnitTest;
@@ -21,11 +21,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private static final String TASK_RESULT = "ProcessProjectSubtaskTest result";
-	private static final ProjectState TASK_STATE = COLLECTING;
+	private static final RepositoryState TASK_STATE = COLLECTING;
 
 	private Project project;
 	private ProjectDao projectDao;
-	private ProjectResult projectResult;
+	private RepositoryResult repositoryResult;
 
 	private FakeSubtask subtask;
 
@@ -33,7 +33,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 	public void setUp() {
 		mockDaoFactory();
 		mockProjectResult();
-		subtask = new FakeSubtask(projectResult);
+		subtask = new FakeSubtask(repositoryResult);
 	}
 
 	private void mockDaoFactory() {
@@ -44,8 +44,8 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private void mockProjectResult() {
 		project = mock(Project.class);
-		projectResult = mock(ProjectResult.class);
-		when(projectResult.getProject()).thenReturn(project);
+		repositoryResult = mock(RepositoryResult.class);
+		when(repositoryResult.getProject()).thenReturn(project);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 	@Test
 	public void shouldSetStateTime() {
 		subtask.executeSubTask();
-		Mockito.verify(projectResult).setStateTime(eq(TASK_STATE), anyLong());
+		Mockito.verify(repositoryResult).setStateTime(eq(TASK_STATE), anyLong());
 	}
 
 	@Test
@@ -74,12 +74,12 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private final class FakeSubtask extends ProcessProjectSubtask<String> {
 
-		private FakeSubtask(ProjectResult result) {
+		private FakeSubtask(RepositoryResult result) {
 			super(result);
 		}
 
 		@Override
-		protected ProjectState getTaskState() {
+		protected RepositoryState getTaskState() {
 			return TASK_STATE;
 		}
 

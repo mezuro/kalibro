@@ -8,14 +8,14 @@ import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.KalibroException;
-import org.kalibro.ProjectResult;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryResult;
+import org.kalibro.RepositoryState;
 import org.kalibro.dto.DataTransferObject;
 
-@Entity(name = "ProjectResult")
+@Entity(name = "RepositoryResult")
 @Table(name = "\"PROJECT_RESULT\"")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date")})
-public class ProjectResultRecord extends DataTransferObject<ProjectResult> {
+public class ProjectResultRecord extends DataTransferObject<RepositoryResult> {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "project", nullable = false, referencedColumnName = "id")
@@ -33,27 +33,27 @@ public class ProjectResultRecord extends DataTransferObject<ProjectResult> {
 	@Column(nullable = false)
 	private Long analysisTime;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "projectResult", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "repositoryResult", orphanRemoval = true)
 	private Collection<ModuleRecord> sourceTree;
 
 	public ProjectResultRecord() {
 		super();
 	}
 
-	public ProjectResultRecord(ProjectResult projectResult) {
-		project = new ProjectRecord(projectResult.getProject(), null);
-		date = projectResult.getDate().getTime();
-		if (projectResult.isProcessed()) {
-			loadTime = projectResult.getLoadTime();
-			collectTime = projectResult.getCollectTime();
-			analysisTime = projectResult.getAnalysisTime();
-			initializeSourceTree(projectResult);
+	public ProjectResultRecord(RepositoryResult repositoryResult) {
+		project = new ProjectRecord(repositoryResult.getProject(), null);
+		date = repositoryResult.getDate().getTime();
+		if (repositoryResult.isProcessed()) {
+			loadTime = repositoryResult.getLoadTime();
+			collectTime = repositoryResult.getCollectTime();
+			analysisTime = repositoryResult.getAnalysisTime();
+			initializeSourceTree(repositoryResult);
 		}
 	}
 
-	private void initializeSourceTree(ProjectResult projectResult) {
+	private void initializeSourceTree(RepositoryResult repositoryResult) {
 		sourceTree = new ArrayList<ModuleRecord>();
-		ModuleRecord root = new ModuleRecord(projectResult.getSourceTree(), this, null);
+		ModuleRecord root = new ModuleRecord(repositoryResult.getSourceTree(), this, null);
 		addToSourceTree(root);
 	}
 
@@ -64,23 +64,23 @@ public class ProjectResultRecord extends DataTransferObject<ProjectResult> {
 	}
 
 	@Override
-	public ProjectResult convert() {
-		ProjectResult projectResult = new ProjectResult(project.convert());
-		projectResult.setDate(new Date(date));
-		projectResult.setStateTime(ProjectState.LOADING, loadTime);
-		projectResult.setStateTime(ProjectState.COLLECTING, collectTime);
-		projectResult.setStateTime(ProjectState.ANALYZING, analysisTime);
-		convertSourceTree(projectResult);
-		return projectResult;
+	public RepositoryResult convert() {
+		RepositoryResult repositoryResult = new RepositoryResult(project.convert());
+		repositoryResult.setDate(new Date(date));
+		repositoryResult.setStateTime(RepositoryState.LOADING, loadTime);
+		repositoryResult.setStateTime(RepositoryState.COLLECTING, collectTime);
+		repositoryResult.setStateTime(RepositoryState.ANALYZING, analysisTime);
+		convertSourceTree(repositoryResult);
+		return repositoryResult;
 	}
 
-	private void convertSourceTree(ProjectResult projectResult) {
+	private void convertSourceTree(RepositoryResult repositoryResult) {
 		for (ModuleRecord node : sourceTree)
 			if (node.isRoot()) {
-				projectResult.setSourceTree(node.convert());
+				repositoryResult.setSourceTree(node.convert());
 				return;
 			}
-		String projectName = projectResult.getProject().getName();
+		String projectName = repositoryResult.getProject().getName();
 		throw new KalibroException("No source tree root found in result for project: " + projectName);
 	}
 

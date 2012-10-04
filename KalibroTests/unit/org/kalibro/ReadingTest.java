@@ -98,7 +98,7 @@ public class ReadingTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRequiredSavedGroupToSave() {
+	public void shouldRequireSavedGroupToSave() {
 		saveShouldThrowExceptionWithMessage("Reading is not in any group.");
 
 		setReadingGroupWithId(null);

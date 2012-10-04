@@ -2,12 +2,12 @@ package org.kalibro.service.xml;
 
 import static org.kalibro.ProjectResultFixtures.helloWorldResult;
 
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 
-public class ProjectResultXmlTest extends XmlTest<ProjectResult> {
+public class ProjectResultXmlTest extends XmlTest<RepositoryResult> {
 
 	@Override
-	protected ProjectResult loadFixture() {
+	protected RepositoryResult loadFixture() {
 		return helloWorldResult();
 	}
 }

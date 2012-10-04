@@ -11,8 +11,8 @@ public class ResultsAggregator {
 	private ModuleNode node;
 	private Map<Module, ModuleResult> resultMap;
 
-	public ResultsAggregator(ProjectResult projectResult, Map<Module, ModuleResult> resultMap) {
-		this(projectResult.getDate(), projectResult.getSourceTree(), resultMap);
+	public ResultsAggregator(RepositoryResult repositoryResult, Map<Module, ModuleResult> resultMap) {
+		this(repositoryResult.getDate(), repositoryResult.getSourceTree(), resultMap);
 	}
 
 	private ResultsAggregator(Date date, ModuleNode node, Map<Module, ModuleResult> resultMap) {

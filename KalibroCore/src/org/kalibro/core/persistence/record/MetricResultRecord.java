@@ -18,11 +18,11 @@ import org.kalibro.dto.DataTransferObject;
 	@Column(name = "metricName")})
 public class MetricResultRecord extends DataTransferObject<MetricResult> {
 
-	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, ProjectResult projectResult) {
+	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, RepositoryResult repositoryResult) {
 		List<MetricResultRecord> records = new ArrayList<MetricResultRecord>();
 		for (MetricResult metricResult : moduleResult.getMetricResults())
 			if (!metricResult.getMetric().isCompound())
-				records.add(new MetricResultRecord(metricResult, moduleResult.getModule(), projectResult));
+				records.add(new MetricResultRecord(metricResult, moduleResult.getModule(), repositoryResult));
 		return records;
 	}
 
@@ -70,14 +70,14 @@ public class MetricResultRecord extends DataTransferObject<MetricResult> {
 		initializeDescendentResults(metricResult);
 	}
 
-	public MetricResultRecord(MetricResult metricResult, Module module, ProjectResult projectResult) {
+	public MetricResultRecord(MetricResult metricResult, Module module, RepositoryResult repositoryResult) {
 		this(metricResult);
-		initializeModule(module, projectResult);
+		initializeModule(module, repositoryResult);
 	}
 
-	private void initializeModule(Module entity, ProjectResult projectResult) {
+	private void initializeModule(Module entity, RepositoryResult repositoryResult) {
 		ModuleNode moduleNode = new ModuleNode(entity);
-		module = new ModuleRecord(moduleNode, projectResult);
+		module = new ModuleRecord(moduleNode, repositoryResult);
 	}
 
 	private void initializeDescendentResults(MetricResult metricResult) {

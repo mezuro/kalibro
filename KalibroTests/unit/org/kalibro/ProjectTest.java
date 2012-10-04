@@ -1,150 +1,167 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ProjectFixtures.newHelloWorld;
-import static org.kalibro.ProjectState.*;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProjectDao;
+import org.kalibro.dao.RepositoryDao;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(KalibroSettings.class)
+@PrepareForTest(DaoFactory.class)
 public class ProjectTest extends UnitTest {
 
-	private KalibroSettings settings;
-	private Project project = newHelloWorld();
+	private ProjectDao dao;
+
+	private Project project;
 
 	@Before
 	public void setUp() {
-		settings = new KalibroSettings();
-		mockStatic(KalibroSettings.class);
-		when(KalibroSettings.load()).thenReturn(settings);
-	}
-
-	@Test
-	public void checkInitializationAttributes() {
+		dao = mock(ProjectDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getProjectDao()).thenReturn(dao);
 		project = new Project();
-		assertNull(project.getId());
-		assertEquals("", project.getName());
-		assertEquals("", project.getLicense());
-		assertEquals("", project.getDescription());
-		assertDeepEquals(new Repository(), project.getRepository());
-		assertEquals("", project.getConfigurationName());
-		assertEquals(NEW, project.getState());
-		assertNoError();
 	}
 
 	@Test
-	public void toStringShouldBeProjectName() {
-		assertEquals(project.getName(), "" + project);
-	}
-
-	@Test
-	public void shouldLoadRepository() {
-		Repository repository = PowerMockito.mock(Repository.class);
-		project.setRepository(repository);
-		project.load();
-		Mockito.verify(repository).load(project.getDirectory());
-	}
-
-	@Test
-	public void shouldBeInErrorStateAfterSettingError() {
-		Exception error = new Exception();
-		project.setError(error);
-		assertSame(error, project.getError());
-		assertEquals(ERROR, project.getState());
-	}
-
-	@Test
-	public void shouldGetStateMessageFromState() {
-		for (ProjectState state : ProjectState.values()) {
-			setState(state);
-			assertEquals(state.getMessage(project.getName()), project.getStateMessage());
-		}
-	}
-
-	private void setState(ProjectState state) {
-		if (state == ERROR)
-			project.setError(new Exception());
-		else
-			project.setState(state);
-	}
-
-	@Test
-	public void shouldRetrieveStateWhenErrorOcurred() {
-		List<ProjectState> normalStates = asList(ProjectState.values());
-		normalStates.remove(ERROR);
-		for (ProjectState state : normalStates) {
-			project.setState(state);
-			project.setError(new Exception());
-			assertEquals(state, project.getStateWhenErrorOcurred());
-		}
-	}
-
-	@Test
-	public void shouldThrowExceptionWhenGettingStateWhenErrorOcurredWithoutError() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				project.getStateWhenErrorOcurred();
-			}
-		}).throwsException().withMessage("Project " + project + " has no error");
-	}
-
-	@Test
-	public void shouldNotAllowErrorStateWithoutException() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				project.setState(ERROR);
-			}
-		}).throwsException().withMessage("Use setError(Throwable) to put project in error state");
-	}
-
-	@Test
-	public void shouldClearErrorWhenSettingNormalState() {
-		project.setError(new Exception());
-		project.setState(ANALYZING);
-		assertNoError();
-	}
-
-	private void assertNoError() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				project.getError();
-			}
-		}).throwsException().withMessage("Project " + project + " has no error");
-	}
-
-	@Test
-	public void shouldRetrieveProjectDirectory() {
-		project.setId(42L);
-		project.setName("Testing camel case++");
-		assertEquals("42-testingCamelCase", project.getDirectory().getName());
-		assertEquals(settings.getServerSettings().getLoadDirectory(), project.getDirectory().getParentFile());
+	public void shouldGetAllProjects() {
+		SortedSet<Project> projects = mock(SortedSet.class);
+		when(dao.all()).thenReturn(projects);
+		assertSame(projects, Project.all());
 	}
 
 	@Test
 	public void shouldSortByName() {
-		assertSorted(newProject(""), newProject("Abc"), newProject("Def"), newProject("Xyz"));
+		assertSorted(withName("A"), withName("B"), withName("C"), withName("X"), withName("Y"), withName("Z"));
 	}
 
-	private Project newProject(String name) {
-		Project newProject = new Project();
-		newProject.setName(name);
-		return newProject;
+	@Test
+	public void shouldIdentifyByName() {
+		assertEquals(project, withName(project.getName()));
+	}
+
+	private Project withName(String name) {
+		return new Project(name);
+	}
+
+	@Test
+	public void checkConstruction() {
+		assertFalse(project.hasId());
+		assertEquals("New project", project.getName());
+		assertEquals("", project.getDescription());
+		assertTrue(project.getRepositories().isEmpty());
+	}
+
+	@Test
+	public void shouldSetProjectOnRepositories() {
+		Repository repository = mock(Repository.class);
+		project.setRepositories(asSortedSet(repository));
+		assertDeepEquals(asSet(repository), project.getRepositories());
+		verify(repository).setProject(project);
+	}
+
+	@Test
+	public void shouldSetRepositoriesWithoutTouchingThem() {
+		// required for lazy loading
+		SortedSet<Repository> repositories = mock(SortedSet.class);
+		project.setRepositories(repositories);
+		verifyZeroInteractions(repositories);
+	}
+
+	@Test
+	public void shouldAddRepositoryIfItDoesNotConflictWithExistingOnes() {
+		project.addRepository(new Repository("name", RepositoryType.LOCAL_DIRECTORY, ""));
+		project.addRepository(new Repository("other name", RepositoryType.LOCAL_DIRECTORY, ""));
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				project.addRepository(new Repository("name", RepositoryType.LOCAL_DIRECTORY, ""));
+			}
+		}).throwsException().withMessage("Repository named \"name\" already exists in the project.");
+	}
+
+	@Test
+	public void shouldRemoveRepository() {
+		Repository repository = mock(Repository.class);
+		SortedSet<Repository> repositories = spy(asSortedSet(repository));
+		project.setRepositories(repositories);
+
+		project.removeRepository(repository);
+		verify(repositories).remove(repository);
+		verify(repository).setProject(null);
+	}
+
+	@Test
+	public void shouldRequiredNameToSave() {
+		project.setName(" ");
+		assertThat(save()).throwsException().withMessage("Project requires name.");
+	}
+
+	private VoidTask save() {
+		return new VoidTask() {
+
+			@Override
+			protected void perform() {
+				project.save();
+			}
+		};
+	}
+
+	@Test
+	public void shouldUpdateIdAndRepositoriesOnSave() {
+		Long id = mock(Long.class);
+		Repository repository = mockRepository(id);
+		when(dao.save(project)).thenReturn(id);
+
+		assertFalse(project.hasId());
+		project.save();
+		assertSame(id, project.getId());
+		assertDeepEquals(asSet(repository), project.getRepositories());
+	}
+
+	private Repository mockRepository(Long id) {
+		Repository repository = mock(Repository.class);
+		RepositoryDao repositoryDao = mock(RepositoryDao.class);
+		when(DaoFactory.getRepositoryDao()).thenReturn(repositoryDao);
+		when(repositoryDao.repositoriesOf(id)).thenReturn(asSortedSet(repository));
+		return repository;
+	}
+
+	@Test
+	public void shouldDeleteIfHasId() {
+		assertFalse(project.hasId());
+		project.delete();
+		verify(dao, never()).delete(any(Long.class));
+
+		Whitebox.setInternalState(project, "id", 42L);
+		assertTrue(project.hasId());
+
+		project.delete();
+		verify(dao).delete(42L);
+		assertFalse(project.hasId());
+	}
+
+	@Test
+	public void shouldNotifyRepositoriesOfDeletion() {
+		Repository repository = mock(Repository.class);
+		project.setRepositories(asSortedSet(repository));
+
+		project.delete();
+		verify(repository).deleted();
+	}
+
+	@Test
+	public void toStringShouldBeName() {
+		assertEquals(project.getName(), "" + project);
 	}
 }

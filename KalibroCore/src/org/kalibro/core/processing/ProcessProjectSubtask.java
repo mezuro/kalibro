@@ -1,19 +1,19 @@
 package org.kalibro.core.processing;
 
 import org.kalibro.Project;
-import org.kalibro.ProjectResult;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryResult;
+import org.kalibro.RepositoryState;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.dao.DaoFactory;
 
 abstract class ProcessProjectSubtask<T> extends Task<T> {
 
 	protected Project project;
-	protected ProjectResult projectResult;
+	protected RepositoryResult repositoryResult;
 
-	protected ProcessProjectSubtask(ProjectResult projectResult) {
-		this.projectResult = projectResult;
-		project = projectResult.getProject();
+	protected ProcessProjectSubtask(RepositoryResult repositoryResult) {
+		this.repositoryResult = repositoryResult;
+		project = repositoryResult.getProject();
 	}
 
 	T executeSubTask() {
@@ -24,11 +24,11 @@ abstract class ProcessProjectSubtask<T> extends Task<T> {
 
 	@Override
 	public void reportTaskFinished() {
-		projectResult.setStateTime(getTaskState(), getReport().getExecutionTime());
+		repositoryResult.setStateTime(getTaskState(), getReport().getExecutionTime());
 		super.reportTaskFinished();
 	}
 
-	protected abstract ProjectState getTaskState();
+	protected abstract RepositoryState getTaskState();
 
 	@Override
 	public String toString() {

@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
 
 import org.kalibro.Project;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryState;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.icon.Icon;
 
@@ -23,9 +23,9 @@ public class ProjectStatusBar extends JPanel {
 		setProjectState(project.getState());
 	}
 
-	public void setProjectState(ProjectState newProjectState) {
+	public void setProjectState(RepositoryState newProjectState) {
 		String icon = "";
-		if (newProjectState == ProjectState.ERROR)
+		if (newProjectState == RepositoryState.ERROR)
 			icon = "error.gif";
 		else if (newProjectState.isTemporary())
 			icon = "waiting.gif";

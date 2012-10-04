@@ -8,8 +8,13 @@ import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 
+/**
+ * Results of processing a {@link Repository}.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields({"project", "date"})
-public class ProjectResult extends AbstractEntity<ProjectResult> {
+public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 
 	@IdentityField
 	private Project project;
@@ -17,13 +22,13 @@ public class ProjectResult extends AbstractEntity<ProjectResult> {
 	@IdentityField
 	private Date date;
 
-	private Map<ProjectState, Long> stateTimes;
+	private Map<RepositoryState, Long> stateTimes;
 	private ModuleNode sourceTree;
 
-	public ProjectResult(Project project) {
+	public RepositoryResult(Project project) {
 		setProject(project);
 		setDate(new Date());
-		stateTimes = new HashMap<ProjectState, Long>();
+		stateTimes = new HashMap<RepositoryState, Long>();
 	}
 
 	public Project getProject() {
@@ -44,20 +49,20 @@ public class ProjectResult extends AbstractEntity<ProjectResult> {
 
 	public Long getLoadTime() {
 		assertProcessed();
-		return stateTimes.get(ProjectState.LOADING);
+		return stateTimes.get(RepositoryState.LOADING);
 	}
 
 	public Long getCollectTime() {
 		assertProcessed();
-		return stateTimes.get(ProjectState.COLLECTING);
+		return stateTimes.get(RepositoryState.COLLECTING);
 	}
 
 	public Long getAnalysisTime() {
 		assertProcessed();
-		return stateTimes.get(ProjectState.ANALYZING);
+		return stateTimes.get(RepositoryState.ANALYZING);
 	}
 
-	public void setStateTime(ProjectState state, long time) {
+	public void setStateTime(RepositoryState state, long time) {
 		stateTimes.put(state, time);
 	}
 

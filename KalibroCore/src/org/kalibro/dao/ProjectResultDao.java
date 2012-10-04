@@ -2,11 +2,11 @@ package org.kalibro.dao;
 
 import java.util.Date;
 
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 
 public interface ProjectResultDao {
 
-	void save(ProjectResult projectResult);
+	void save(RepositoryResult repositoryResult);
 
 	boolean hasResultsFor(String projectName);
 
@@ -14,11 +14,11 @@ public interface ProjectResultDao {
 
 	boolean hasResultsAfter(Date date, String projectName);
 
-	ProjectResult getFirstResultOf(String projectName);
+	RepositoryResult getFirstResultOf(String projectName);
 
-	ProjectResult getLastResultOf(String projectName);
+	RepositoryResult getLastResultOf(String projectName);
 
-	ProjectResult getLastResultBefore(Date date, String projectName);
+	RepositoryResult getLastResultBefore(Date date, String projectName);
 
-	ProjectResult getFirstResultAfter(Date date, String projectName);
+	RepositoryResult getFirstResultAfter(Date date, String projectName);
 }

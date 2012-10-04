@@ -1,13 +1,13 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.ProjectState.ERROR;
+import static org.kalibro.RepositoryState.ERROR;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Project;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryState;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "project")
@@ -20,7 +20,7 @@ public class ProjectXmlResponse extends DataTransferObject<Project> {
 	private String description;
 	private RepositoryXml repository;
 
-	private ProjectState state;
+	private RepositoryState state;
 	private ThrowableXml error;
 
 	private String configurationName;

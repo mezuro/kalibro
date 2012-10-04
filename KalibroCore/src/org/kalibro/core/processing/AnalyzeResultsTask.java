@@ -5,27 +5,27 @@ import java.util.Map;
 
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
-import org.kalibro.ProjectResult;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryResult;
+import org.kalibro.RepositoryState;
 
 class AnalyzeResultsTask extends ProcessProjectSubtask<Collection<ModuleResult>> {
 
 	private Map<Module, ModuleResult> resultMap;
 
-	protected AnalyzeResultsTask(ProjectResult projectResult, Map<Module, ModuleResult> resultMap) {
-		super(projectResult);
+	protected AnalyzeResultsTask(RepositoryResult repositoryResult, Map<Module, ModuleResult> resultMap) {
+		super(repositoryResult);
 		this.resultMap = resultMap;
 	}
 
 	@Override
-	protected ProjectState getTaskState() {
-		return ProjectState.ANALYZING;
+	protected RepositoryState getTaskState() {
+		return RepositoryState.ANALYZING;
 	}
 
 	@Override
 	protected Collection<ModuleResult> compute() {
-		new SourceTreeBuilder(projectResult).buildSourceTree(resultMap.keySet());
-		new ResultsAggregator(projectResult, resultMap).aggregate();
+		new SourceTreeBuilder(repositoryResult).buildSourceTree(resultMap.keySet());
+		new ResultsAggregator(repositoryResult, resultMap).aggregate();
 		return resultMap.values();
 	}
 }

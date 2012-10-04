@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.ProjectResult;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryResult;
+import org.kalibro.RepositoryState;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "projectResult")
+@XmlRootElement(name = "repositoryResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectResultXml extends DataTransferObject<ProjectResult> {
+public class ProjectResultXml extends DataTransferObject<RepositoryResult> {
 
 	private ProjectXmlResponse project;
 	private Date date;
@@ -25,23 +25,23 @@ public class ProjectResultXml extends DataTransferObject<ProjectResult> {
 		super();
 	}
 
-	public ProjectResultXml(ProjectResult projectResult) {
-		project = new ProjectXmlResponse(projectResult.getProject());
-		date = projectResult.getDate();
-		loadTime = projectResult.getLoadTime();
-		collectTime = projectResult.getCollectTime();
-		analysisTime = projectResult.getAnalysisTime();
-		sourceTree = new ModuleNodeXml(projectResult.getSourceTree());
+	public ProjectResultXml(RepositoryResult repositoryResult) {
+		project = new ProjectXmlResponse(repositoryResult.getProject());
+		date = repositoryResult.getDate();
+		loadTime = repositoryResult.getLoadTime();
+		collectTime = repositoryResult.getCollectTime();
+		analysisTime = repositoryResult.getAnalysisTime();
+		sourceTree = new ModuleNodeXml(repositoryResult.getSourceTree());
 	}
 
 	@Override
-	public ProjectResult convert() {
-		ProjectResult projectResult = new ProjectResult(project.convert());
-		projectResult.setDate(date);
-		projectResult.setStateTime(ProjectState.LOADING, loadTime);
-		projectResult.setStateTime(ProjectState.COLLECTING, collectTime);
-		projectResult.setStateTime(ProjectState.ANALYZING, analysisTime);
-		projectResult.setSourceTree(sourceTree.convert());
-		return projectResult;
+	public RepositoryResult convert() {
+		RepositoryResult repositoryResult = new RepositoryResult(project.convert());
+		repositoryResult.setDate(date);
+		repositoryResult.setStateTime(RepositoryState.LOADING, loadTime);
+		repositoryResult.setStateTime(RepositoryState.COLLECTING, collectTime);
+		repositoryResult.setStateTime(RepositoryState.ANALYZING, analysisTime);
+		repositoryResult.setSourceTree(sourceTree.convert());
+		return repositoryResult;
 	}
 }

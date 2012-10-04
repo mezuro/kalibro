@@ -29,21 +29,21 @@ public interface ProjectResultEndpoint {
 		@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	@WebResult(name = "projectResult")
+	@WebResult(name = "repositoryResult")
 	ProjectResultXml getFirstResultOf(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	@WebResult(name = "projectResult")
+	@WebResult(name = "repositoryResult")
 	ProjectResultXml getLastResultOf(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	@WebResult(name = "projectResult")
+	@WebResult(name = "repositoryResult")
 	ProjectResultXml getLastResultBefore(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
-	@WebResult(name = "projectResult")
+	@WebResult(name = "repositoryResult")
 	ProjectResultXml getFirstResultAfter(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName);

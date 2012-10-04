@@ -10,7 +10,7 @@ import javax.persistence.NoResultException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Project;
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
@@ -22,12 +22,12 @@ public class ProjectDatabaseTest extends AcceptanceTest {
 	private ProjectDao dao;
 
 	private Project helloWorld, helloWorld2;
-	private ProjectResult projectResult;
+	private RepositoryResult repositoryResult;
 
 	@Before
 	public void setUp() {
-		projectResult = newHelloWorldResult();
-		helloWorld = projectResult.getProject();
+		repositoryResult = newHelloWorldResult();
+		helloWorld = repositoryResult.getProject();
 		helloWorld2 = newHelloWorld();
 		helloWorld2.setName("HelloWorld-2.0");
 		DaoFactory.getConfigurationDao().save(kalibroConfiguration());
@@ -72,7 +72,7 @@ public class ProjectDatabaseTest extends AcceptanceTest {
 		ProjectResultDao projectResultDao = DaoFactory.getProjectResultDao();
 
 		dao.save(helloWorld);
-		projectResultDao.save(projectResult);
+		projectResultDao.save(repositoryResult);
 		assertTrue(projectResultDao.hasResultsFor(projectName));
 
 		dao.removeProject(projectName);

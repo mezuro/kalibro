@@ -8,7 +8,7 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.tests.UnitTest;
@@ -22,14 +22,14 @@ public class ProjectResultEndpointImplTest extends UnitTest {
 
 	private boolean flag;
 	private ProjectResultDao dao;
-	private ProjectResult projectResult;
+	private RepositoryResult repositoryResult;
 	private ProjectResultEndpointImpl endpoint;
 
 	@Before
 	public void setUp() {
 		mockDao();
 		flag = new Random(System.currentTimeMillis()).nextBoolean();
-		projectResult = helloWorldResult();
+		repositoryResult = helloWorldResult();
 		endpoint = new ProjectResultEndpointImpl();
 	}
 
@@ -59,25 +59,25 @@ public class ProjectResultEndpointImplTest extends UnitTest {
 
 	@Test
 	public void testGetFirstResultOf() {
-		PowerMockito.when(dao.getFirstResultOf("")).thenReturn(projectResult);
-		assertDeepEquals(projectResult, endpoint.getFirstResultOf("").convert());
+		PowerMockito.when(dao.getFirstResultOf("")).thenReturn(repositoryResult);
+		assertDeepEquals(repositoryResult, endpoint.getFirstResultOf("").convert());
 	}
 
 	@Test
 	public void testGetLastResultOf() {
-		PowerMockito.when(dao.getLastResultOf("")).thenReturn(projectResult);
-		assertDeepEquals(projectResult, endpoint.getLastResultOf("").convert());
+		PowerMockito.when(dao.getLastResultOf("")).thenReturn(repositoryResult);
+		assertDeepEquals(repositoryResult, endpoint.getLastResultOf("").convert());
 	}
 
 	@Test
 	public void testGetLastResultBefore() {
-		PowerMockito.when(dao.getLastResultBefore(null, "")).thenReturn(projectResult);
-		assertDeepEquals(projectResult, endpoint.getLastResultBefore(null, "").convert());
+		PowerMockito.when(dao.getLastResultBefore(null, "")).thenReturn(repositoryResult);
+		assertDeepEquals(repositoryResult, endpoint.getLastResultBefore(null, "").convert());
 	}
 
 	@Test
 	public void testGetFirstResultAfter() {
-		PowerMockito.when(dao.getFirstResultAfter(null, "")).thenReturn(projectResult);
-		assertDeepEquals(projectResult, endpoint.getFirstResultAfter(null, "").convert());
+		PowerMockito.when(dao.getFirstResultAfter(null, "")).thenReturn(repositoryResult);
+		assertDeepEquals(repositoryResult, endpoint.getFirstResultAfter(null, "").convert());
 	}
 }

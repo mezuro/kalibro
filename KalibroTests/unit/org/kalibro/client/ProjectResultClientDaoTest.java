@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.Random;
 
 import org.junit.Test;
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.service.ProjectResultEndpoint;
 import org.kalibro.service.xml.ProjectResultXml;
@@ -15,15 +15,15 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(ProjectResultClientDao.class)
 public class ProjectResultClientDaoTest extends
-	ClientTest<ProjectResult, ProjectResultXml, ProjectResultXml, ProjectResultEndpoint, ProjectResultClientDao> {
+	ClientTest<RepositoryResult, ProjectResultXml, ProjectResultXml, ProjectResultEndpoint, ProjectResultClientDao> {
 
 	private static final boolean HAS_RESULTS = new Random().nextBoolean();
 	private static final String PROJECT_NAME = "ProjectResultClientDaoTest project name";
 	private static final Date DATE = new Date();
 
 	@Override
-	protected Class<ProjectResult> entityClass() {
-		return ProjectResult.class;
+	protected Class<RepositoryResult> entityClass() {
+		return RepositoryResult.class;
 	}
 
 	@Test

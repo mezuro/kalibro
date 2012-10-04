@@ -8,7 +8,7 @@ import javax.persistence.TypedQuery;
 import org.kalibro.Configuration;
 import org.kalibro.MetricResult;
 import org.kalibro.ModuleResult;
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.kalibro.dao.ModuleResultDao;
 
@@ -21,8 +21,8 @@ public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 		super(recordManager, MetricResultRecord.class);
 	}
 
-	public void save(ModuleResult moduleResult, ProjectResult projectResult) {
-		recordManager().saveAll(MetricResultRecord.createRecords(moduleResult, projectResult));
+	public void save(ModuleResult moduleResult, RepositoryResult repositoryResult) {
+		recordManager().saveAll(MetricResultRecord.createRecords(moduleResult, repositoryResult));
 	}
 
 	@Override

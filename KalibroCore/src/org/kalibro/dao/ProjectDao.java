@@ -1,12 +1,13 @@
 package org.kalibro.dao;
 
 import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.Project;
 
 public interface ProjectDao {
 
-	void save(Project project);
+	Long save(Project project);
 
 	List<String> getProjectNames();
 
@@ -23,4 +24,8 @@ public interface ProjectDao {
 	Integer getProcessPeriod(String projectName);
 
 	void cancelPeriodicProcess(String projectName);
+
+	SortedSet<Project> all();
+
+	void delete(Long projectId);
 }

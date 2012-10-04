@@ -3,7 +3,7 @@ package org.kalibro.client;
 import java.util.Date;
 
 import org.kalibro.KalibroException;
-import org.kalibro.ProjectResult;
+import org.kalibro.RepositoryResult;
 import org.kalibro.dao.ProjectResultDao;
 import org.kalibro.service.ProjectResultEndpoint;
 
@@ -14,7 +14,7 @@ class ProjectResultClientDao extends EndpointClient<ProjectResultEndpoint> imple
 	}
 
 	@Override
-	public void save(ProjectResult result) {
+	public void save(RepositoryResult result) {
 		throw new KalibroException("Cannot save project result remotely");
 	}
 
@@ -34,22 +34,22 @@ class ProjectResultClientDao extends EndpointClient<ProjectResultEndpoint> imple
 	}
 
 	@Override
-	public ProjectResult getFirstResultOf(String projectName) {
+	public RepositoryResult getFirstResultOf(String projectName) {
 		return port.getFirstResultOf(projectName).convert();
 	}
 
 	@Override
-	public ProjectResult getLastResultOf(String projectName) {
+	public RepositoryResult getLastResultOf(String projectName) {
 		return port.getLastResultOf(projectName).convert();
 	}
 
 	@Override
-	public ProjectResult getLastResultBefore(Date date, String projectName) {
+	public RepositoryResult getLastResultBefore(Date date, String projectName) {
 		return port.getLastResultBefore(date, projectName).convert();
 	}
 
 	@Override
-	public ProjectResult getFirstResultAfter(Date date, String projectName) {
+	public RepositoryResult getFirstResultAfter(Date date, String projectName) {
 		return port.getFirstResultAfter(date, projectName).convert();
 	}
 }

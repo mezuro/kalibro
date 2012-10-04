@@ -23,16 +23,16 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class CollectMetricsTaskTest extends UnitTest {
 
 	private BaseTool baseTool;
-	private ProjectResult projectResult;
+	private RepositoryResult repositoryResult;
 
 	private CollectMetricsTask collectTask;
 
 	@Before
 	public void setUp() {
 		baseTool = new BaseTool(MetricCollectorStub.CLASS_NAME);
-		projectResult = new ProjectResult(helloWorld());
+		repositoryResult = new RepositoryResult(helloWorld());
 		mockKalibro();
-		collectTask = new CollectMetricsTask(projectResult);
+		collectTask = new CollectMetricsTask(repositoryResult);
 	}
 
 	private void mockKalibro() {
@@ -51,17 +51,17 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
-		when(configurationDao.configurationOf(projectResult.getProject().getId())).thenReturn(configuration);
+		when(configurationDao.configurationOf(repositoryResult.getProject().getId())).thenReturn(configuration);
 		when(configuration.getNativeMetrics()).thenReturn(metricsMap);
 	}
 
 	@Test
 	public void checkTaskState() {
-		assertEquals(ProjectState.COLLECTING, collectTask.getTaskState());
+		assertEquals(RepositoryState.COLLECTING, collectTask.getTaskState());
 	}
 
 	@Test
 	public void shouldReturnCollectedResults() throws Exception {
-		assertDeepEquals(newHelloWorldResultMap(projectResult.getDate()), collectTask.compute());
+		assertDeepEquals(newHelloWorldResultMap(repositoryResult.getDate()), collectTask.compute());
 	}
 }

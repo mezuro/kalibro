@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Project;
-import org.kalibro.ProjectState;
+import org.kalibro.RepositoryState;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 
@@ -23,7 +23,7 @@ public class LoadSourceTaskTest extends UnitTest {
 
 	@Test
 	public void checkTaskState() {
-		assertEquals(ProjectState.LOADING, loadTask.getTaskState());
+		assertEquals(RepositoryState.LOADING, loadTask.getTaskState());
 	}
 
 	@Test
@@ -34,6 +34,6 @@ public class LoadSourceTaskTest extends UnitTest {
 
 	@Test
 	public void shouldReturnProjectResult() {
-		assertSame(loadTask.projectResult, loadTask.compute());
+		assertSame(loadTask.repositoryResult, loadTask.compute());
 	}
 }
