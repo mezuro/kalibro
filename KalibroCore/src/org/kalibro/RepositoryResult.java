@@ -22,12 +22,16 @@ public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 	@IdentityField
 	private Date date;
 
+	private RepositoryState state;
+	private Throwable error;
+
 	private Map<RepositoryState, Long> stateTimes;
 	private ModuleNode sourceTree;
 
 	public RepositoryResult(Project project) {
 		setProject(project);
 		setDate(new Date());
+		setState(RepositoryState.NEW);
 		stateTimes = new HashMap<RepositoryState, Long>();
 	}
 
@@ -45,6 +49,42 @@ public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 
 	public void setDate(Date date) {
 		this.date = date;
+	}
+
+	public RepositoryState getState() {
+		if (error != null)
+			return RepositoryState.ERROR;
+		return state;
+	}
+
+	public String getStateMessage() {
+		return getState().getMessage(repository.getCompleteName());
+	}
+
+	public RepositoryState getStateWhenErrorOcurred() {
+		assertHasError();
+		return state;
+	}
+
+	public void setState(RepositoryState state) {
+		if (state == RepositoryState.ERROR)
+			throw new KalibroException("Use setError(Throwable) to put repository in error state");
+		error = null;
+		this.state = state;
+	}
+
+	public Throwable getError() {
+		assertHasError();
+		return error;
+	}
+
+	private void assertHasError() {
+		if (error == null)
+			throw new KalibroException("Repository " + repository.getCompleteName() + " has no error.");
+	}
+
+	public void setError(Throwable error) {
+		this.error = error;
 	}
 
 	public Long getLoadTime() {

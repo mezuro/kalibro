@@ -25,11 +25,9 @@ public class Repository extends AbstractEntity<Repository> {
 	private String license;
 	private String address;
 	private RepositoryType type;
+	private Integer processPeriod;
 
 	private Configuration configuration;
-
-	private RepositoryState state;
-	private Throwable error;
 
 	@Ignore
 	private Project project;
@@ -44,7 +42,7 @@ public class Repository extends AbstractEntity<Repository> {
 		setLicense("");
 		setAddress(address);
 		setType(type);
-		setState(RepositoryState.NEW);
+		setProcessPeriod(0);
 	}
 
 	public Long getId() {
@@ -113,48 +111,20 @@ public class Repository extends AbstractEntity<Repository> {
 		this.type = type;
 	}
 
+	public Integer getProcessPeriod() {
+		return processPeriod;
+	}
+
+	public void setProcessPeriod(Integer processPeriod) {
+		this.processPeriod = processPeriod;
+	}
+
 	public Configuration getConfiguration() {
 		return configuration;
 	}
 
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
-	}
-
-	public RepositoryState getState() {
-		if (error != null)
-			return RepositoryState.ERROR;
-		return state;
-	}
-
-	public String getStateMessage() {
-		return getState().getMessage(getCompleteName());
-	}
-
-	public RepositoryState getStateWhenErrorOcurred() {
-		assertHasError();
-		return state;
-	}
-
-	public void setState(RepositoryState state) {
-		if (state == RepositoryState.ERROR)
-			throw new KalibroException("Use setError(Throwable) to put repository in error state");
-		error = null;
-		this.state = state;
-	}
-
-	public Throwable getError() {
-		assertHasError();
-		return error;
-	}
-
-	private void assertHasError() {
-		if (error == null)
-			throw new KalibroException("Repository " + getCompleteName() + " has no error.");
-	}
-
-	public void setError(Throwable error) {
-		this.error = error;
 	}
 
 	void setProject(Project project) {

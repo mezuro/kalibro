@@ -1,7 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.RepositoryState.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,8 +50,8 @@ public class RepositoryTest extends UnitTest {
 		assertEquals("", repository.getLicense());
 		assertEquals("", repository.getAddress());
 		assertEquals(RepositoryType.LOCAL_DIRECTORY, repository.getType());
+		assertEquals(0, repository.getProcessPeriod().intValue());
 		assertNull(repository.getConfiguration());
-		assertEquals(NEW, repository.getState());
 	}
 
 	@Test
@@ -85,46 +84,6 @@ public class RepositoryTest extends UnitTest {
 	@Test
 	public void shouldAssertNoConflictWithOtherRepository() {
 		repository.assertNoConflictWith(new Repository("a", RepositoryType.LOCAL_DIRECTORY, ""));
-	}
-
-	@Test
-	public void shouldBeInErrorStateAfterSettingError() {
-		Throwable error = mock(Throwable.class);
-		repository.setError(error);
-		assertSame(error, repository.getError());
-		assertEquals(ERROR, repository.getState());
-	}
-
-	@Test
-	public void shouldGetStateMessageFromState() {
-		assertEquals(NEW.getMessage(repository.getCompleteName()), repository.getStateMessage());
-		repository.setState(ANALYZING);
-		assertEquals(ANALYZING.getMessage(repository.getCompleteName()), repository.getStateMessage());
-	}
-
-	@Test
-	public void shouldGetStateWhenErrorOcurred() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws Throwable {
-				repository.getStateWhenErrorOcurred();
-			}
-		}).throwsException().withMessage("Repository " + repository.getCompleteName() + " has no error.");
-		repository.setState(ANALYZING);
-		repository.setError(mock(Throwable.class));
-		assertEquals(ANALYZING, repository.getStateWhenErrorOcurred());
-	}
-
-	@Test
-	public void shouldNotAllowErrorStateWithoutException() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				repository.setState(ERROR);
-			}
-		}).throwsException().withMessage("Use setError(Throwable) to put repository in error state");
 	}
 
 	@Test

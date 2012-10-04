@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.kalibro.ModuleNodeFixtures.helloWorldRoot;
 import static org.kalibro.ProjectFixtures.helloWorld;
 import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
+import static org.kalibro.RepositoryState.*;
 
 import java.util.Date;
 
@@ -31,6 +32,7 @@ public class RepositoryResultTest extends UnitTest {
 		assertEquals(0, result.getCollectTime().longValue());
 		assertEquals(0, result.getAnalysisTime().longValue());
 		assertDeepEquals(helloWorldRoot(), result.getSourceTree());
+		assertEquals(NEW, result.getState());
 	}
 
 	@Test
@@ -42,6 +44,46 @@ public class RepositoryResultTest extends UnitTest {
 		RepositoryResult result2 = new RepositoryResult(new Project());
 
 		assertSorted(result1, result2, result3, result4);
+	}
+
+	@Test
+	public void shouldBeInErrorStateAfterSettingError() {
+		Throwable error = mock(Throwable.class);
+		result.setError(error);
+		assertSame(error, result.getError());
+		assertEquals(ERROR, result.getState());
+	}
+
+	@Test
+	public void shouldGetStateMessageFromState() {
+		assertEquals(NEW.getMessage(repository.getCompleteName()), result.getStateMessage());
+		result.setState(ANALYZING);
+		assertEquals(ANALYZING.getMessage(repository.getCompleteName()), result.getStateMessage());
+	}
+
+	@Test
+	public void shouldGetStateWhenErrorOcurred() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				result.getStateWhenErrorOcurred();
+			}
+		}).throwsException().withMessage("Repository " + repository.getCompleteName() + " has no error.");
+		result.setState(ANALYZING);
+		result.setError(mock(Throwable.class));
+		assertEquals(ANALYZING, result.getStateWhenErrorOcurred());
+	}
+
+	@Test
+	public void shouldNotAllowErrorStateWithoutException() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() {
+				result.setState(ERROR);
+			}
+		}).throwsException().withMessage("Use setError(Throwable) to put repository in error state");
 	}
 
 	@Test
