@@ -34,6 +34,6 @@ public class LoadSourceTaskTest extends UnitTest {
 
 	@Test
 	public void shouldReturnProjectResult() {
-		assertSame(loadTask.repositoryResult, loadTask.compute());
+		assertSame(loadTask.processing, loadTask.compute());
 	}
 }

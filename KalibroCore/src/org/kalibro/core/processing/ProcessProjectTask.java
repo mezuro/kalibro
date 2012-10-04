@@ -26,20 +26,20 @@ public class ProcessProjectTask extends VoidTask {
 	}
 
 	private void processProject() {
-		RepositoryResult repositoryResult = new LoadSourceTask(project).executeSubTask();
-		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(repositoryResult).executeSubTask();
-		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(repositoryResult, resultMap).executeSubTask();
+		Processing processing = new LoadSourceTask(project).executeSubTask();
+		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(processing).executeSubTask();
+		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(processing, resultMap).executeSubTask();
 
-		DaoFactory.getProjectResultDao().save(repositoryResult);
-		saveModuleResults(moduleResults, repositoryResult);
+		DaoFactory.getProjectResultDao().save(processing);
+		saveModuleResults(moduleResults, processing);
 		project.setState(ProcessState.READY);
 		DaoFactory.getProjectDao().save(project);
 	}
 
-	private void saveModuleResults(Collection<ModuleResult> moduleResults, RepositoryResult repositoryResult) {
+	private void saveModuleResults(Collection<ModuleResult> moduleResults, Processing processing) {
 		ModuleResultDatabaseDao moduleResultDao = (ModuleResultDatabaseDao) DaoFactory.getModuleResultDao();
 		for (ModuleResult moduleResult : moduleResults)
-			moduleResultDao.save(moduleResult, repositoryResult);
+			moduleResultDao.save(moduleResult, processing);
 	}
 
 	private void reportError(Throwable error) {

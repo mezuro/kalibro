@@ -11,20 +11,20 @@ import java.util.HashSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.ModuleResult;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.ProcessState;
 import org.kalibro.tests.UnitTest;
 
 public class AnalyzeResultsTaskTest extends UnitTest {
 
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 	private AnalyzeResultsTask analyzeTask;
 
 	@Before
 	public void setUp() {
-		repositoryResult = newHelloWorldResult();
-		repositoryResult.setSourceTree(null);
-		analyzeTask = new AnalyzeResultsTask(repositoryResult, newHelloWorldResultMap(repositoryResult.getDate()));
+		processing = newHelloWorldResult();
+		processing.setSourceTree(null);
+		analyzeTask = new AnalyzeResultsTask(processing, newHelloWorldResultMap(processing.getDate()));
 	}
 
 	@Test
@@ -35,12 +35,12 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	@Test
 	public void shouldSetSourceTreeOnProjectResult() {
 		analyzeTask.compute();
-		assertDeepEquals(helloWorldRoot(), repositoryResult.getSourceTree());
+		assertDeepEquals(helloWorldRoot(), processing.getSourceTree());
 	}
 
 	@Test
 	public void shouldReturnResults() {
-		Collection<ModuleResult> expected = newHelloWorldResults(repositoryResult.getDate());
+		Collection<ModuleResult> expected = newHelloWorldResults(processing.getDate());
 		Collection<ModuleResult> actual = analyzeTask.compute();
 		assertDeepEquals(new HashSet<ModuleResult>(expected), new HashSet<ModuleResult>(actual));
 	}

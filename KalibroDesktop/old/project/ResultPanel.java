@@ -23,7 +23,7 @@ import javax.swing.tree.DefaultTreeModel;
 import org.kalibro.Kalibro;
 import org.kalibro.Configuration;
 import org.kalibro.ModuleResult;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.Range;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.desktop.old.listeners.ResultPanelListener;

@@ -9,7 +9,7 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.core.persistence.record.ProjectResultRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
@@ -18,15 +18,15 @@ import org.powermock.api.mockito.PowerMockito;
 
 public class ProjectResultDatabaseDaoTest extends UnitTest {
 
-	private static final String COUNT_QUERY = "SELECT count(result) FROM RepositoryResult result " +
+	private static final String COUNT_QUERY = "SELECT count(result) FROM Processing result " +
 		"WHERE result.project.name = :projectName";
-	private static final String LAST_QUERY = "SELECT r FROM RepositoryResult r " +
+	private static final String LAST_QUERY = "SELECT r FROM Processing r " +
 		"WHERE r.project.name = :projectName AND r.date = " +
-		"(SELECT max(result.date) FROM RepositoryResult result WHERE result.project.name = :projectName AND ";
+		"(SELECT max(result.date) FROM Processing result WHERE result.project.name = :projectName AND ";
 	private static final String FIRST_QUERY = LAST_QUERY.replace("SELECT max", "SELECT min");
 
 	private RecordManager recordManager;
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 	private String projectName;
 	private Date date;
 
@@ -34,16 +34,16 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		repositoryResult = helloWorldResult();
-		projectName = repositoryResult.getProject().getName();
-		date = repositoryResult.getDate();
+		processing = helloWorldResult();
+		projectName = processing.getProject().getName();
+		date = processing.getDate();
 		recordManager = PowerMockito.mock(RecordManager.class);
 		dao = PowerMockito.spy(new ProjectResultDatabaseDao(recordManager));
 	}
 
 	@Test
 	public void testSave() {
-		dao.save(repositoryResult);
+		dao.save(processing);
 
 		ArgumentCaptor<ProjectResultRecord> captor = ArgumentCaptor.forClass(ProjectResultRecord.class);
 		Mockito.verify(recordManager).save(captor.capture());
@@ -130,15 +130,15 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 		Mockito.verify(query).setParameter("date", date.getTime());
 	}
 
-	private void assertExpected(RepositoryResult actual) {
-		actual.setSourceTree(repositoryResult.getSourceTree());
-		actual.getProject().setConfigurationName(repositoryResult.getProject().getConfigurationName());
-		assertDeepEquals(repositoryResult, actual);
+	private void assertExpected(Processing actual) {
+		actual.setSourceTree(processing.getSourceTree());
+		actual.getProject().setConfigurationName(processing.getProject().getConfigurationName());
+		assertDeepEquals(processing, actual);
 	}
 
 	private TypedQuery<ProjectResultRecord> prepareResultQuery(String queryText) {
 		TypedQuery<ProjectResultRecord> query = PowerMockito.mock(TypedQuery.class);
-		ProjectResultRecord record = new ProjectResultRecord(repositoryResult);
+		ProjectResultRecord record = new ProjectResultRecord(processing);
 		PowerMockito.doReturn(query).when(dao).createRecordQuery(queryText);
 		PowerMockito.when(query.getSingleResult()).thenReturn(record);
 		return query;

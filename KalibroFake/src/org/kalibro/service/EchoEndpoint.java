@@ -53,9 +53,9 @@ public class EchoEndpoint {
 	}
 
 	@WebMethod
-	@WebResult(name = "repositoryResult")
-	public ProjectResultXml echoProjectResult(@WebParam(name = "repositoryResult") ProjectResultXml projectResult) {
-		RepositoryResult entity = projectResult.convert();
+	@WebResult(name = "processing")
+	public ProjectResultXml echoProjectResult(@WebParam(name = "processing") ProjectResultXml projectResult) {
+		Processing entity = projectResult.convert();
 		Project project = entity.getProject();
 		project.setName("echo " + project.getName());
 		return new ProjectResultXml(entity);

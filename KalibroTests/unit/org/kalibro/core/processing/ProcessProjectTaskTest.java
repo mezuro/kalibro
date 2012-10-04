@@ -26,7 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ProcessProjectTaskTest extends UnitTest {
 
 	private Project project;
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 	private Collection<ModuleResult> moduleResults;
 
 	private ProjectDao projectDao;
@@ -64,13 +64,13 @@ public class ProcessProjectTaskTest extends UnitTest {
 		loadTask = mock(LoadSourceTask.class);
 		collectTask = mock(CollectMetricsTask.class);
 		analyzeTask = mock(AnalyzeResultsTask.class);
-		repositoryResult = mock(RepositoryResult.class);
+		processing = mock(Processing.class);
 		Map<Module, ModuleResult> resultMap = mock(Map.class);
 		whenNew(LoadSourceTask.class).withArguments(project).thenReturn(loadTask);
-		when(loadTask.executeSubTask()).thenReturn(repositoryResult);
-		whenNew(CollectMetricsTask.class).withArguments(repositoryResult).thenReturn(collectTask);
+		when(loadTask.executeSubTask()).thenReturn(processing);
+		whenNew(CollectMetricsTask.class).withArguments(processing).thenReturn(collectTask);
 		when(collectTask.executeSubTask()).thenReturn(resultMap);
-		whenNew(AnalyzeResultsTask.class).withArguments(repositoryResult, resultMap).thenReturn(analyzeTask);
+		whenNew(AnalyzeResultsTask.class).withArguments(processing, resultMap).thenReturn(analyzeTask);
 		when(analyzeTask.executeSubTask()).thenReturn(moduleResults);
 	}
 
@@ -96,9 +96,9 @@ public class ProcessProjectTaskTest extends UnitTest {
 		processTask.perform();
 
 		InOrder order = Mockito.inOrder(projectResultDao, moduleResultDao);
-		order.verify(projectResultDao).save(repositoryResult);
+		order.verify(projectResultDao).save(processing);
 		for (ModuleResult moduleResult : moduleResults)
-			order.verify(moduleResultDao).save(moduleResult, repositoryResult);
+			order.verify(moduleResultDao).save(moduleResult, processing);
 	}
 
 	@Test

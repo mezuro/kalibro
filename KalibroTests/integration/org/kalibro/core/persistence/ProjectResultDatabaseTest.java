@@ -12,7 +12,7 @@ import javax.persistence.NoResultException;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Project;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectResultDao;
@@ -23,7 +23,7 @@ public class ProjectResultDatabaseTest extends AcceptanceTest {
 	private ProjectResultDao dao;
 
 	private Project project;
-	private RepositoryResult first, second, third;
+	private Processing first, second, third;
 
 	@Before
 	public void setUp() {

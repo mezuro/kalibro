@@ -1,13 +1,13 @@
 package org.kalibro.core.processing;
 
 import org.kalibro.Project;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.ProcessState;
 
-class LoadSourceTask extends ProcessProjectSubtask<RepositoryResult> {
+class LoadSourceTask extends ProcessProjectSubtask<Processing> {
 
 	protected LoadSourceTask(Project project) {
-		super(new RepositoryResult(project));
+		super(new Processing(project));
 	}
 
 	@Override
@@ -16,8 +16,8 @@ class LoadSourceTask extends ProcessProjectSubtask<RepositoryResult> {
 	}
 
 	@Override
-	protected RepositoryResult compute() {
+	protected Processing compute() {
 		project.load();
-		return repositoryResult;
+		return processing;
 	}
 }

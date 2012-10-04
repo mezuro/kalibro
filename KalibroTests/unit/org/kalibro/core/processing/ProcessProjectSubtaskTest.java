@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Project;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.ProcessState;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
@@ -25,7 +25,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private Project project;
 	private ProjectDao projectDao;
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 
 	private FakeSubtask subtask;
 
@@ -33,7 +33,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 	public void setUp() {
 		mockDaoFactory();
 		mockProjectResult();
-		subtask = new FakeSubtask(repositoryResult);
+		subtask = new FakeSubtask(processing);
 	}
 
 	private void mockDaoFactory() {
@@ -44,8 +44,8 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private void mockProjectResult() {
 		project = mock(Project.class);
-		repositoryResult = mock(RepositoryResult.class);
-		when(repositoryResult.getProject()).thenReturn(project);
+		processing = mock(Processing.class);
+		when(processing.getProject()).thenReturn(project);
 	}
 
 	@Test
@@ -63,7 +63,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 	@Test
 	public void shouldSetStateTime() {
 		subtask.executeSubTask();
-		Mockito.verify(repositoryResult).setStateTime(eq(TASK_STATE), anyLong());
+		Mockito.verify(processing).setStateTime(eq(TASK_STATE), anyLong());
 	}
 
 	@Test
@@ -74,7 +74,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 
 	private final class FakeSubtask extends ProcessProjectSubtask<String> {
 
-		private FakeSubtask(RepositoryResult result) {
+		private FakeSubtask(Processing result) {
 			super(result);
 		}
 

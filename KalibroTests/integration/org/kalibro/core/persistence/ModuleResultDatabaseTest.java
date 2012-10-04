@@ -25,19 +25,19 @@ public class ModuleResultDatabaseTest extends AcceptanceTest {
 	private Date date;
 	private Project project;
 	private ModuleResult moduleResult;
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 
 	@Before
 	public void setUp() {
 		date = new Date();
-		repositoryResult = newHelloWorldResult(date);
-		project = repositoryResult.getProject();
+		processing = newHelloWorldResult(date);
+		project = processing.getProject();
 		moduleResult = newHelloWorldClassResult(date);
 		moduleResult.setConfiguration(kalibroConfiguration());
 		dao = DaoFactory.getModuleResultDao();
 		DaoFactory.getConfigurationDao().save(kalibroConfiguration());
 		DaoFactory.getProjectDao().save(project);
-		DaoFactory.getProjectResultDao().save(repositoryResult);
+		DaoFactory.getProjectResultDao().save(processing);
 		save();
 	}
 
@@ -116,11 +116,11 @@ public class ModuleResultDatabaseTest extends AcceptanceTest {
 	private void incrementDate() {
 		date = new Date(date.getTime() + 1);
 		Whitebox.setInternalState(moduleResult, "date", date);
-		repositoryResult.setDate(date);
-		DaoFactory.getProjectResultDao().save(repositoryResult);
+		processing.setDate(date);
+		DaoFactory.getProjectResultDao().save(processing);
 	}
 
 	private void save() {
-		((ModuleResultDatabaseDao) dao).save(moduleResult, repositoryResult);
+		((ModuleResultDatabaseDao) dao).save(moduleResult, processing);
 	}
 }

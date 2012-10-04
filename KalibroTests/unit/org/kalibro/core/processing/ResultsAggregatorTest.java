@@ -23,10 +23,10 @@ public class ResultsAggregatorTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		RepositoryResult repositoryResult = newHelloWorldResult();
-		repositoryResult.setSourceTree(analizoCheckstyleTree());
+		Processing processing = newHelloWorldResult();
+		processing.setSourceTree(analizoCheckstyleTree());
 		resultMap = analizoCheckstyleResultMap();
-		aggregator = new ResultsAggregator(repositoryResult, resultMap);
+		aggregator = new ResultsAggregator(processing, resultMap);
 		classMetric = new NativeMetric("Class_name_length", CLASS, JAVA);
 		packageMetric = new NativeMetric("Package_name_length", PACKAGE, JAVA);
 	}

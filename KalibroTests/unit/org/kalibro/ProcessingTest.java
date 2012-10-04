@@ -13,10 +13,10 @@ import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.UnitTest;
 
-public class RepositoryResultTest extends UnitTest {
+public class ProcessingTest extends UnitTest {
 
 	private Date date;
-	private RepositoryResult result;
+	private Processing result;
 
 	@Before
 	public void setUp() {
@@ -37,11 +37,11 @@ public class RepositoryResultTest extends UnitTest {
 
 	@Test
 	public void shouldSortByProjectThenDate() {
-		RepositoryResult result3 = new RepositoryResult(helloWorld());
-		RepositoryResult result4 = new RepositoryResult(helloWorld());
+		Processing result3 = new Processing(helloWorld());
+		Processing result4 = new Processing(helloWorld());
 
-		RepositoryResult result1 = new RepositoryResult(new Project());
-		RepositoryResult result2 = new RepositoryResult(new Project());
+		Processing result1 = new Processing(new Project());
+		Processing result2 = new Processing(new Project());
 
 		assertSorted(result1, result2, result3, result4);
 	}
@@ -89,7 +89,7 @@ public class RepositoryResultTest extends UnitTest {
 	@Test
 	public void shouldRetrieveIfIsProcessed() {
 		assertTrue(result.isProcessed());
-		assertFalse(new RepositoryResult(helloWorld()).isProcessed());
+		assertFalse(new Processing(helloWorld()).isProcessed());
 	}
 
 	@Test
@@ -98,7 +98,7 @@ public class RepositoryResultTest extends UnitTest {
 
 			@Override
 			protected void perform() throws Throwable {
-				new RepositoryResult(helloWorld()).getSourceTree();
+				new Processing(helloWorld()).getSourceTree();
 			}
 		}).throwsException().withMessage("Project not yet processed: " + result.getProject().getName());
 	}

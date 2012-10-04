@@ -6,13 +6,13 @@ import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.ProcessState;
 import org.kalibro.dto.DataTransferObject;
 
-@XmlRootElement(name = "repositoryResult")
+@XmlRootElement(name = "processing")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectResultXml extends DataTransferObject<RepositoryResult> {
+public class ProjectResultXml extends DataTransferObject<Processing> {
 
 	private ProjectXmlResponse project;
 	private Date date;
@@ -25,23 +25,23 @@ public class ProjectResultXml extends DataTransferObject<RepositoryResult> {
 		super();
 	}
 
-	public ProjectResultXml(RepositoryResult repositoryResult) {
-		project = new ProjectXmlResponse(repositoryResult.getProject());
-		date = repositoryResult.getDate();
-		loadTime = repositoryResult.getLoadTime();
-		collectTime = repositoryResult.getCollectTime();
-		analysisTime = repositoryResult.getAnalysisTime();
-		sourceTree = new ModuleNodeXml(repositoryResult.getSourceTree());
+	public ProjectResultXml(Processing processing) {
+		project = new ProjectXmlResponse(processing.getProject());
+		date = processing.getDate();
+		loadTime = processing.getLoadTime();
+		collectTime = processing.getCollectTime();
+		analysisTime = processing.getAnalysisTime();
+		sourceTree = new ModuleNodeXml(processing.getSourceTree());
 	}
 
 	@Override
-	public RepositoryResult convert() {
-		RepositoryResult repositoryResult = new RepositoryResult(project.convert());
-		repositoryResult.setDate(date);
-		repositoryResult.setStateTime(ProcessState.LOADING, loadTime);
-		repositoryResult.setStateTime(ProcessState.COLLECTING, collectTime);
-		repositoryResult.setStateTime(ProcessState.ANALYZING, analysisTime);
-		repositoryResult.setSourceTree(sourceTree.convert());
-		return repositoryResult;
+	public Processing convert() {
+		Processing processing = new Processing(project.convert());
+		processing.setDate(date);
+		processing.setStateTime(ProcessState.LOADING, loadTime);
+		processing.setStateTime(ProcessState.COLLECTING, collectTime);
+		processing.setStateTime(ProcessState.ANALYZING, analysisTime);
+		processing.setSourceTree(sourceTree.convert());
+		return processing;
 	}
 }

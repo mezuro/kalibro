@@ -46,19 +46,19 @@ public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 	}
 
 	@Override
-	@WebResult(name = "repositoryResult")
+	@WebResult(name = "processing")
 	public ProjectResultXml getFirstResultOf(@WebParam(name = "projectName") String projectName) {
 		return new ProjectResultXml(dao.getFirstResultOf(projectName));
 	}
 
 	@Override
-	@WebResult(name = "repositoryResult")
+	@WebResult(name = "processing")
 	public ProjectResultXml getLastResultOf(@WebParam(name = "projectName") String projectName) {
 		return new ProjectResultXml(dao.getLastResultOf(projectName));
 	}
 
 	@Override
-	@WebResult(name = "repositoryResult")
+	@WebResult(name = "processing")
 	public ProjectResultXml getLastResultBefore(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName) {
@@ -66,7 +66,7 @@ public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
 	}
 
 	@Override
-	@WebResult(name = "repositoryResult")
+	@WebResult(name = "processing")
 	public ProjectResultXml getFirstResultAfter(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName) {

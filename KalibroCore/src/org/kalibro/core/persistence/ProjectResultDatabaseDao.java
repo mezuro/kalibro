@@ -47,7 +47,7 @@ class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResu
 	}
 
 	private String getCountQuery(String condition) {
-		return "SELECT count(result) FROM RepositoryResult result " +
+		return "SELECT count(result) FROM Processing result " +
 			"WHERE result.project.name = :projectName AND " + condition;
 	}
 
@@ -94,8 +94,8 @@ class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResu
 	}
 
 	private String getLastQuery(String loadDateCondition) {
-		return "SELECT r FROM RepositoryResult r WHERE r.project.name = :projectName AND r.date = " +
-			"(SELECT max(result.date) FROM RepositoryResult result WHERE result.project.name = :projectName " +
+		return "SELECT r FROM Processing r WHERE r.project.name = :projectName AND r.date = " +
+			"(SELECT max(result.date) FROM Processing result WHERE result.project.name = :projectName " +
 			"AND " + loadDateCondition + ")";
 	}
 

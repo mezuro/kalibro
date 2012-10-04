@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.ModuleResult;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.ProjectResultFixtures;
 import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.kalibro.tests.UnitTest;
@@ -31,7 +31,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		"WHERE result.module.projectResult.project.name = :projectName AND result.module.name = :moduleName";
 
 	private ModuleResult moduleResult;
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 	private Configuration configuration;
 	private List<MetricResultRecord> records;
 
@@ -42,8 +42,8 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		repositoryResult = ProjectResultFixtures.newHelloWorldResult(DATE);
-		repositoryResult.getProject().setName(PROJECT_NAME);
+		processing = ProjectResultFixtures.newHelloWorldResult(DATE);
+		processing.getProject().setName(PROJECT_NAME);
 		mockRecords();
 		recordManager = mock(RecordManager.class);
 		dao = spy(new ModuleResultDatabaseDao(recordManager));
@@ -55,7 +55,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		configuration = mock(Configuration.class);
 		records = mock(List.class);
 		mockStatic(MetricResultRecord.class);
-		when(MetricResultRecord.createRecords(moduleResult, repositoryResult)).thenReturn(records);
+		when(MetricResultRecord.createRecords(moduleResult, processing)).thenReturn(records);
 		when(MetricResultRecord.convertIntoModuleResults(records)).thenReturn(asList(moduleResult));
 	}
 
@@ -67,14 +67,14 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		ProjectDatabaseDao projDao = mock(ProjectDatabaseDao.class);
 		ConfigurationDatabaseDao configDao = mock(ConfigurationDatabaseDao.class);
 		whenNew(ProjectDatabaseDao.class).withArguments(recordManager).thenReturn(projDao);
-		when(projDao.getByName(PROJECT_NAME)).thenReturn(repositoryResult.getProject());
+		when(projDao.getByName(PROJECT_NAME)).thenReturn(processing.getProject());
 		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configDao);
-		when(configDao.configurationOf(repositoryResult.getProject().getId())).thenReturn(configuration);
+		when(configDao.configurationOf(processing.getProject().getId())).thenReturn(configuration);
 	}
 
 	@Test
 	public void testSave() {
-		dao.save(moduleResult, repositoryResult);
+		dao.save(moduleResult, processing);
 		Mockito.verify(recordManager).saveAll(records);
 	}
 

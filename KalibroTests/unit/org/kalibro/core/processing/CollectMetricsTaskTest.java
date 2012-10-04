@@ -23,16 +23,16 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class CollectMetricsTaskTest extends UnitTest {
 
 	private BaseTool baseTool;
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 
 	private CollectMetricsTask collectTask;
 
 	@Before
 	public void setUp() {
 		baseTool = new BaseTool(MetricCollectorStub.CLASS_NAME);
-		repositoryResult = new RepositoryResult(helloWorld());
+		processing = new Processing(helloWorld());
 		mockKalibro();
-		collectTask = new CollectMetricsTask(repositoryResult);
+		collectTask = new CollectMetricsTask(processing);
 	}
 
 	private void mockKalibro() {
@@ -51,7 +51,7 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
-		when(configurationDao.configurationOf(repositoryResult.getProject().getId())).thenReturn(configuration);
+		when(configurationDao.configurationOf(processing.getProject().getId())).thenReturn(configuration);
 		when(configuration.getNativeMetrics()).thenReturn(metricsMap);
 	}
 
@@ -62,6 +62,6 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 	@Test
 	public void shouldReturnCollectedResults() throws Exception {
-		assertDeepEquals(newHelloWorldResultMap(repositoryResult.getDate()), collectTask.compute());
+		assertDeepEquals(newHelloWorldResultMap(processing.getDate()), collectTask.compute());
 	}
 }

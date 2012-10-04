@@ -9,12 +9,13 @@ import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 
 /**
- * Results of processing a {@link Repository}.
+ * Processing is automatically loading, analyzing and evaluating source code from a {@link Repository}. The processing
+ * contains the state of the processing. If the processing is finished, contains also results or an error.
  * 
  * @author Carlos Morais
  */
 @SortingFields({"project", "date"})
-public class RepositoryResult extends AbstractEntity<RepositoryResult> {
+public class Processing extends AbstractEntity<Processing> {
 
 	@IdentityField
 	private Project project;
@@ -28,7 +29,7 @@ public class RepositoryResult extends AbstractEntity<RepositoryResult> {
 	private Map<ProcessState, Long> stateTimes;
 	private ModuleNode sourceTree;
 
-	public RepositoryResult(Project project) {
+	public Processing(Project project) {
 		setProject(project);
 		setDate(new Date());
 		setState(ProcessState.NEW);

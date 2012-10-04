@@ -5,14 +5,14 @@ import static org.kalibro.ProjectResultFixtures.helloWorldResult;
 import java.util.ArrayList;
 
 import org.junit.Test;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.core.concurrent.VoidTask;
 import org.powermock.reflect.Whitebox;
 
-public class ProjectResultRecordTest extends RecordTest<RepositoryResult> {
+public class ProjectResultRecordTest extends RecordTest<Processing> {
 
 	@Override
-	protected RepositoryResult loadFixture() {
+	protected Processing loadFixture() {
 		return helloWorldResult();
 	}
 

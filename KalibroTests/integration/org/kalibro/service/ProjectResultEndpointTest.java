@@ -10,12 +10,12 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ProjectResultDao;
 
 @RunWith(value = Theories.class)
-public class ProjectResultEndpointTest extends EndpointTest<RepositoryResult, ProjectResultDao, ProjectResultEndpoint> {
+public class ProjectResultEndpointTest extends EndpointTest<Processing, ProjectResultDao, ProjectResultEndpoint> {
 
 	private static final String PROJECT_NAME = "ProjectResultEndpointTest project name";
 	private static final Date DATE = new Date();
@@ -26,7 +26,7 @@ public class ProjectResultEndpointTest extends EndpointTest<RepositoryResult, Pr
 	}
 
 	@Override
-	protected RepositoryResult loadFixture() {
+	protected Processing loadFixture() {
 		return newHelloWorldResult(DATE);
 	}
 

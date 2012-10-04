@@ -10,19 +10,19 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Module;
 import org.kalibro.ModuleNode;
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.tests.UnitTest;
 
 public class SourceTreeBuilderTest extends UnitTest {
 
-	private RepositoryResult repositoryResult;
+	private Processing processing;
 	private SourceTreeBuilder treeBuilder;
 
 	@Before
 	public void setUp() {
-		repositoryResult = newHelloWorldResult();
-		repositoryResult.setSourceTree(null);
-		treeBuilder = new SourceTreeBuilder(repositoryResult);
+		processing = newHelloWorldResult();
+		processing.setSourceTree(null);
+		treeBuilder = new SourceTreeBuilder(processing);
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class SourceTreeBuilderTest extends UnitTest {
 			new Module(CLASS, "org.analizo.AnalizoMetricCollector"),
 			new Module(CLASS, "org.analizo.AnalizoResultParser"));
 
-		String projectName = repositoryResult.getProject().getName();
+		String projectName = processing.getProject().getName();
 		assertDeepEquals(new Module(SOFTWARE, projectName), sourceTree.getModule());
 		assertEquals(1, sourceTree.getChildren().size());
 		assertDeepEquals(analizoCheckstyleTree(), sourceTree.getChildren().iterator().next());
@@ -46,8 +46,8 @@ public class SourceTreeBuilderTest extends UnitTest {
 	}
 
 	private ModuleNode getSourceTree(Module... modules) {
-		assertFalse(repositoryResult.isProcessed());
+		assertFalse(processing.isProcessed());
 		treeBuilder.buildSourceTree(asList(modules));
-		return repositoryResult.getSourceTree();
+		return processing.getSourceTree();
 	}
 }

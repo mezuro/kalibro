@@ -7,18 +7,18 @@ import java.util.Date;
 
 public final class ProjectResultFixtures {
 
-	private static RepositoryResult helloWorldResult = newHelloWorldResult();
+	private static Processing helloWorldResult = newHelloWorldResult();
 
-	public static RepositoryResult helloWorldResult() {
+	public static Processing helloWorldResult() {
 		return helloWorldResult;
 	}
 
-	public static RepositoryResult newHelloWorldResult() {
+	public static Processing newHelloWorldResult() {
 		return newHelloWorldResult(new Date());
 	}
 
-	public static RepositoryResult newHelloWorldResult(Date date) {
-		RepositoryResult result = new RepositoryResult(newHelloWorld());
+	public static Processing newHelloWorldResult(Date date) {
+		Processing result = new Processing(newHelloWorld());
 		result.setDate(date);
 		result.setStateTime(ProcessState.LOADING, 0);
 		result.setStateTime(ProcessState.COLLECTING, 0);
