@@ -2,10 +2,10 @@ package org.kalibro.desktop.swingextension.menu;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.kalibro.KalibroError;
+import org.kalibro.KalibroException;
 
 public class ReflectionMenuItem extends MenuItem implements ActionListener {
 
@@ -31,10 +31,8 @@ public class ReflectionMenuItem extends MenuItem implements ActionListener {
 	public void actionPerformed(ActionEvent event) {
 		try {
 			method.invoke(controller);
-		} catch (IllegalAccessException exception) {
-			throw new KalibroError("Could not access controller method", exception);
-		} catch (InvocationTargetException exception) {
-			throw (RuntimeException) exception.getTargetException();
+		} catch (Exception exception) {
+			throw new KalibroException("Error invoking controller method.", exception);
 		}
 	}
 }

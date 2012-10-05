@@ -14,7 +14,6 @@ public class MetricPanel extends EditPanel<Metric> {
 	private MaybeEditableField<String> nameField;
 	private MaybeEditableField<Granularity> scopeField;
 	private TextField descriptionField;
-	private UneditableField<BaseTool> originField;
 	private LanguagesField languagesField;
 	private TextField scriptField;
 
@@ -27,7 +26,6 @@ public class MetricPanel extends EditPanel<Metric> {
 		nameField = new MaybeEditableField<String>(new StringField("name", 30));
 		scopeField = new MaybeEditableField<Granularity>(new ChoiceField<Granularity>("scope", Granularity.values()));
 		descriptionField = new TextField("description", 1, 1, "Description");
-		originField = new UneditableField<BaseTool>("origin");
 		languagesField = new LanguagesField();
 		scriptField = new TextField("script", 4, 25, "Script");
 	}
@@ -54,7 +52,6 @@ public class MetricPanel extends EditPanel<Metric> {
 			builder.add(descriptionField, 1, 3, false);
 			builder.newLine();
 			builder.addSimpleLine(new Label("Languages:"), languagesField);
-			builder.addSimpleLine(new Label("Origin:"), originField);
 		}
 	}
 
@@ -74,7 +71,6 @@ public class MetricPanel extends EditPanel<Metric> {
 	}
 
 	private void showNativeMetric(NativeMetric metric) {
-//		originField.set(metric.getOrigin());
 		languagesField.set(metric.getLanguages());
 	}
 
@@ -94,7 +90,6 @@ public class MetricPanel extends EditPanel<Metric> {
 		Granularity scope = scopeField.get();
 		Language[] languages = languagesField.get().toArray(new Language[0]);
 		NativeMetric metric = new NativeMetric(name, scope, languages);
-//		metric.setOrigin(originField.get());
 		return metric;
 	}
 

@@ -54,7 +54,6 @@ public class MetricPanelTest extends UnitTest {
 		assertEquals(nativeMetric.getName(), nameField().get());
 		assertEquals(nativeMetric.getScope(), scopeField().get());
 		assertEquals(nativeMetric.getDescription(), textField("description").get());
-//		assertEquals(nativeMetric.getOrigin(), originField().get());
 		assertEquals(nativeMetric.getLanguages(), languagesField().get());
 
 		assertFalse(nameField().isEditable());
@@ -82,10 +81,6 @@ public class MetricPanelTest extends UnitTest {
 
 	private MaybeEditableField<Granularity> scopeField() {
 		return finder.find("scope", MaybeEditableField.class);
-	}
-
-	private UneditableField<String> originField() {
-		return finder.find("origin", UneditableField.class);
 	}
 
 	private UneditableField<List<Language>> languagesField() {
