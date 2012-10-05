@@ -31,7 +31,7 @@ public class Module extends AbstractEntity<Module> {
 	 */
 	public Module(Granularity granularity, String... name) {
 		this.granularity = granularity;
-		setName(name);
+		this.name = name;
 	}
 
 	public String[] getName() {
@@ -47,10 +47,6 @@ public class Module extends AbstractEntity<Module> {
 		for (String namePart : name)
 			longName += "." + namePart;
 		return longName.substring(1);
-	}
-
-	public void setName(String... name) {
-		this.name = name;
 	}
 
 	public Granularity getGranularity() {

@@ -1,82 +1,50 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ConfigurationFixtures.kalibroConfiguration;
-import static org.kalibro.MetricFixtures.*;
-import static org.kalibro.MetricResultFixtures.analizoResult;
-import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
 
-import java.util.Date;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.kalibro.core.processing.ModuleResultConfigurer;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(ModuleResult.class)
 public class ModuleResultTest extends UnitTest {
 
-	private ModuleResult result;
-	private CompoundMetric sc;
+	private Module module;
+	private ModuleResult parent, result;
 
 	@Before
 	public void setUp() {
-		result = newHelloWorldClassResult();
-		result.removeResultFor(analizoMetric("sc"));
-		sc = sc();
+		parent = mock(ModuleResult.class);
+		module = new Module(Granularity.CLASS, "ModuleResult");
+		result = new ModuleResult(parent, module);
 	}
 
 	@Test
-	public void testInitialization() {
-		Module module = result.getModule();
-		Date date = new Date();
-		result = new ModuleResult(module, date);
+	public void checkConstruction() {
 		assertSame(module, result.getModule());
-		assertSame(date, result.getDate());
-		assertTrue(result.getMetricResults().isEmpty());
-		assertTrue(result.getCompoundMetricsWithError().isEmpty());
-		assertNull(result.getGrade());
+		assertSame(parent, result.getParent());
+		assertTrue(result.getChildren().isEmpty());
 	}
 
 	@Test
-	public void shouldConfigure() throws Exception {
-		Configuration configuration = kalibroConfiguration();
-		ModuleResultConfigurer configurer = mock(ModuleResultConfigurer.class);
-		whenNew(ModuleResultConfigurer.class).withArguments(result, configuration).thenReturn(configurer);
-
-		result.setConfiguration(configuration);
-		Mockito.verify(configurer).configure();
+	public void shouldSetParentOnChildren() {
+		ModuleResult child = new ModuleResult(null, new Module(Granularity.METHOD, "getParent"));
+		result.setChildren(asSortedSet(child));
+		assertDeepEquals(asSet(child), result.getChildren());
+		assertSame(result, child.getParent());
 	}
 
 	@Test
-	public void shouldAddMultipleNativeMetricResults() {
-		result.addMetricResults(asList(analizoResult("sc")));
-		assertTrue(result.hasResultFor(analizoMetric("sc")));
+	public void shouldSetChildrenWithoutTouchingThem() {
+		// required for lazy loading
+		SortedSet<ModuleResult> children = mock(SortedSet.class);
+		result.setChildren(children);
+		verifyZeroInteractions(children);
 	}
 
 	@Test
-	public void shouldRemoveCompoundMetrics() {
-		result.addMetricResult(new MetricResult(sc, 42.0));
-		result.removeCompoundMetrics();
-		assertFalse(result.hasResultFor(sc));
-	}
-
-	@Test
-	public void shouldAddCompoundMetricWithError() {
-		assertTrue(result.getCompoundMetricsWithError().isEmpty());
-
-		Exception error = new Exception();
-		result.addCompoundMetricWithError(sc, error);
-		assertDeepEquals(asSet(sc), result.getCompoundMetricsWithError());
-		assertSame(error, result.getErrorFor(sc));
-	}
-
-	private ModuleResult newResult(long date, Granularity granularity, String... name) {
-		return new ModuleResult(new Module(granularity, name), new Date(date));
+	public void toStringShouldPrintModule() {
+		assertEquals(result.getModule().toString(), "" + result);
 	}
 }
