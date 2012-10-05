@@ -27,6 +27,8 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	}
 
 	public SortedSet<ModuleResult> getChildren() {
+		for (ModuleResult child : children)
+			child.parent = this;
 		return new TreeSet<ModuleResult>(children);
 	}
 

@@ -2,7 +2,6 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 import static org.kalibro.ConfigurationFixtures.kalibroConfiguration;
-import static org.kalibro.Granularity.*;
 import static org.kalibro.MetricFixtures.*;
 import static org.kalibro.MetricResultFixtures.analizoResult;
 import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
@@ -75,14 +74,6 @@ public class ModuleResultTest extends UnitTest {
 		result.addCompoundMetricWithError(sc, error);
 		assertDeepEquals(asSet(sc), result.getCompoundMetricsWithError());
 		assertSame(error, result.getErrorFor(sc));
-	}
-
-	@Test
-	public void shouldSortByDateThenModule() {
-		assertSorted(newResult(0, CLASS, "C"), newResult(0, CLASS, "D"),
-			newResult(0, METHOD, "A"), newResult(0, METHOD, "B"),
-			newResult(1, SOFTWARE, "G"), newResult(1, SOFTWARE, "H"),
-			newResult(1, PACKAGE, "E"), newResult(1, PACKAGE, "F"));
 	}
 
 	private ModuleResult newResult(long date, Granularity granularity, String... name) {
