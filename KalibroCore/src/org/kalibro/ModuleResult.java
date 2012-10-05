@@ -53,4 +53,9 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 				compoundMetricsWithError.put((CompoundMetric) metricResult.getMetric(), metricResult.getError());
 		return compoundMetricsWithError;
 	}
+
+	@Override
+	public String toString() {
+		return getModule().toString();
+	}
 }

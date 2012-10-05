@@ -31,16 +31,16 @@ public class AbstractMetricResultTest extends UnitTest {
 	@Test
 	public void checkConstruction() {
 		Double value = mock(Double.class);
-		MetricResult metricResult = result(value);
+		AbstractMetricResult metricResult = result(value);
 		assertSame(metric, metricResult.getMetric());
 		assertSame(value, metricResult.getValue());
 	}
 
-	private MetricResult result(Double value) {
+	private AbstractMetricResult result(Double value) {
 		return result(metric, value);
 	}
 
-	private MetricResult result(Metric theMetric, Double value) {
-		return new MetricResult(theMetric, value) {/* just for test */};
+	private AbstractMetricResult result(Metric theMetric, Double value) {
+		return new AbstractMetricResult(theMetric, value) {/* just for test */};
 	}
 }

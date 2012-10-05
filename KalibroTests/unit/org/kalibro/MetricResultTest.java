@@ -1,109 +1,90 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.MetricResultFixtures.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.UnitTest;
 
 public class MetricResultTest extends UnitTest {
 
-	private MetricResult result;
+	private static final Double VALUE = mock(Double.class);
+
+	private Metric metric;
 	private MetricConfiguration configuration;
+
+	private MetricResult result;
 
 	@Before
 	public void setUp() {
-		result = newMetricResult("amloc", 4.2, 2.0, 4.0, 6.0, 8.0, 10.0, 12.0);
-		configuration = newConfiguration("amloc").getConfigurationFor(result.getMetric());
+		metric = mock(Metric.class);
+		configuration = mock(MetricConfiguration.class);
+		when(configuration.getMetric()).thenReturn(metric);
+		result = new MetricResult(configuration, VALUE);
 	}
 
 	@Test
-	public void shouldInitializeWithNativeMetricResult() {
-		NativeMetricResult nativeResult = analizoResult("loc");
-		result = new MetricResult(nativeResult);
-		assertSame(nativeResult.getMetric(), result.getMetric());
-		assertSame(nativeResult.getValue(), result.getValue());
+	public void checkNormalConstruction() {
+		assertSame(configuration.getMetric(), result.getMetric());
+		assertSame(VALUE, result.getValue());
+		assertFalse(result.hasError());
+		assertTrue(result.getDescendentResults().isEmpty());
 	}
 
 	@Test
-	public void shouldHaveStatisticsWhenHasDescendentResults() {
-		assertTrue(result.hasStatistics());
-
-		result = new MetricResult(analizoResult("nom"));
-		assertFalse(result.hasStatistics());
+	public void checkCompoundMetricWithErrorConstruction() {
+		metric = mock(CompoundMetric.class);
+		Throwable error = mock(Throwable.class);
+		result = new MetricResult((CompoundMetric) metric, error);
+		assertSame(metric, result.getMetric());
+		assertDoubleEquals(Double.NaN, result.getValue());
+		assertTrue(result.hasError());
+		assertSame(error, result.getError());
+		assertNull(result.getDescendentResults());
 	}
 
 	@Test
-	public void shouldGetStatisticFromDescendentResults() {
-		for (Statistic statistic : Statistic.values())
-			assertEquals(statistic.calculate(result.getDescendentResults()), result.getStatistic(statistic));
+	public void shouldGetAggregatedValue() {
+		assertSame(VALUE, result.getAggregatedValue());
+
+		result = new MetricResult(configuration, Double.NaN);
+		result.addDescendentResult(1.0);
+		result.addDescendentResult(2.0);
+
+		when(configuration.getAggregationForm()).thenReturn(Statistic.AVERAGE);
+		assertDoubleEquals(1.5, result.getAggregatedValue());
+
+		when(configuration.getAggregationForm()).thenReturn(Statistic.SUM);
+		assertDoubleEquals(3.0, result.getAggregatedValue());
 	}
 
 	@Test
-	public void shouldAddSingleDescendentResult() {
-		result.addDescendentResult(0.0);
-		assertDeepEquals(asList(2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0), result.getDescendentResults());
-		result.addDescendentResult(14.0);
-		assertDeepEquals(asList(2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0), result.getDescendentResults());
+	public void shouldAnswerIfHasGrade() {
+		assertFalse(result.hasGrade());
+		mockGrade();
+		assertTrue(result.hasGrade());
 	}
 
 	@Test
-	public void shouldAddMultipleDescendentResults() {
-		result.addDescendentResults(asList(0.0, 14.0));
-		assertDeepEquals(asList(2.0, 4.0, 6.0, 8.0, 10.0, 12.0, 0.0, 14.0), result.getDescendentResults());
+	public void shouldGetGrade() {
+		Double grade = mockGrade();
+		assertSame(grade, result.getGrade());
+	}
+
+	private Double mockGrade() {
+		Range range = mock(Range.class);
+		Double grade = mock(Double.class);
+		Reading reading = mock(Reading.class);
+		when(configuration.getRangeFor(VALUE)).thenReturn(range);
+		when(range.getReading()).thenReturn(reading);
+		when(reading.getGrade()).thenReturn(grade);
+		return grade;
 	}
 
 	@Test
-	public void shouldNotChangeValueWhenSettingConfiguration() {
-		assertDoubleEquals(4.2, result.getValue());
-		result.setConfiguration(configuration);
-		assertDoubleEquals(4.2, result.getValue());
-	}
-
-	@Test
-	public void shouldSetValueFromAggregationFormIfValueIsNaN() {
-		for (Statistic statistic : Statistic.values()) {
-			result.setValue(Double.NaN);
-			configuration.setAggregationForm(statistic);
-			result.setConfiguration(configuration);
-			assertDoubleEquals(result.getStatistic(statistic), result.getValue());
-		}
-	}
-
-	@Test
-	public void shouldFindRangeInConfiguration() {
-		assertFalse(result.hasRange());
-
-		result.setConfiguration(configuration);
-		assertTrue(result.hasRange());
-		assertDeepEquals(configuration.getRangeFor(result.getValue()), result.getRange());
-	}
-
-	@Test
-	public void checkErrorForInexistentRange() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				result.getRange();
-			}
-		}).throwsException()
-			.withMessage("No range found for metric '" + result.getMetric() + "' and value " + result.getValue());
-	}
-
-	@Test
-	public void shouldGetGradeFromRange() {
-		result.setConfiguration(configuration);
-		assertDoubleEquals(result.getRange().getReading().getGrade(), result.getGrade());
-	}
-
-	@Test
-	public void shouldGetWeightFromConfiguration() {
-		configuration.setWeight(42.0);
-		result.setConfiguration(configuration);
-		assertDoubleEquals(configuration.getWeight(), result.getWeight());
+	public void shouldGetWeight() {
+		Double weight = mock(Double.class);
+		when(configuration.getWeight()).thenReturn(weight);
+		assertSame(weight, result.getWeight());
 	}
 }

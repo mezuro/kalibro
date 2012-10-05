@@ -19,7 +19,7 @@ abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult>
 
 	AbstractMetricResult(Metric metric, Double value) {
 		this.metric = metric;
-		setValue(value);
+		this.value = value;
 	}
 
 	public final Metric getMetric() {
@@ -28,9 +28,5 @@ abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult>
 
 	public final Double getValue() {
 		return value;
-	}
-
-	protected final void setValue(Double value) {
-		this.value = value;
 	}
 }

@@ -81,7 +81,7 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	public boolean isFinite() {
-		return beginning != Double.NEGATIVE_INFINITY && end != Double.POSITIVE_INFINITY;
+		return !(beginning.isInfinite() || end.isInfinite());
 	}
 
 	public boolean contains(Double value) {
