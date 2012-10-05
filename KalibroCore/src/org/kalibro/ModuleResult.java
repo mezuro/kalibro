@@ -2,63 +2,55 @@ package org.kalibro;
 
 import java.util.*;
 
-import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingFields;
-import org.kalibro.core.processing.ModuleResultConfigurer;
+import org.kalibro.core.abstractentity.Ignore;
 
-@SortingFields({"date", "module"})
+/**
+ * Result of processing a {@link Module}. Represents a node in the source tree with the results associated.
+ * 
+ * @author Carlos Morais
+ */
 public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
-	@IdentityField
-	private Date date;
+	@Ignore
+	private ModuleResult parent;
 
-	private Double grade;
-	private Map<CompoundMetric, Throwable> compoundMetricsWithError;
+	private Set<ModuleResult> children;
 
-	public ModuleResult(Module module, Date date) {
+	public ModuleResult(ModuleResult parent, Module module) {
 		super(module);
-		this.date = date;
-		this.compoundMetricsWithError = new TreeMap<CompoundMetric, Throwable>();
-		setGrade(null);
+		this.parent = parent;
+		setChildren(new TreeSet<ModuleResult>());
 	}
 
-	public void setConfiguration(Configuration configuration) {
-		new ModuleResultConfigurer(this, configuration).configure();
+	public ModuleResult getParent() {
+		return parent;
 	}
 
-	public void addMetricResults(Collection<NativeMetricResult> nativeResults) {
-		for (NativeMetricResult metricResult : nativeResults)
-			addMetricResult(new MetricResult(metricResult));
+	public SortedSet<ModuleResult> getChildren() {
+		return new TreeSet<ModuleResult>(children);
 	}
 
-	public void removeCompoundMetrics() {
-		compoundMetricsWithError.clear();
-		for (Metric metric : getMetrics())
-			if (metric.isCompound())
-				removeResultFor(metric);
-	}
-
-	public Date getDate() {
-		return date;
+	public void setChildren(SortedSet<ModuleResult> children) {
+		this.children = children;
 	}
 
 	public Double getGrade() {
-		return grade;
+		double gradeSum = 0.0;
+		double weightSum = 0.0;
+		for (MetricResult metricResult : getMetricResults())
+			if (metricResult.hasGrade()) {
+				Double weight = metricResult.getWeight();
+				gradeSum += metricResult.getGrade() * weight;
+				weightSum += weight;
+			}
+		return gradeSum / weightSum;
 	}
 
-	public void setGrade(Double grade) {
-		this.grade = grade;
-	}
-
-	public Set<CompoundMetric> getCompoundMetricsWithError() {
-		return compoundMetricsWithError.keySet();
-	}
-
-	public Throwable getErrorFor(CompoundMetric metric) {
-		return compoundMetricsWithError.get(metric);
-	}
-
-	public void addCompoundMetricWithError(CompoundMetric metric, Throwable error) {
-		compoundMetricsWithError.put(metric, error);
+	public Map<CompoundMetric, Throwable> getCompoundMetricsWithError() {
+		Map<CompoundMetric, Throwable> compoundMetricsWithError = new TreeMap<CompoundMetric, Throwable>();
+		for (MetricResult metricResult : getMetricResults())
+			if (metricResult.hasError())
+				compoundMetricsWithError.put((CompoundMetric) metricResult.getMetric(), metricResult.getError());
+		return compoundMetricsWithError;
 	}
 }

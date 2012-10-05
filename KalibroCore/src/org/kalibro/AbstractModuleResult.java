@@ -1,8 +1,7 @@
 package org.kalibro;
 
-import java.util.Map;
+import java.util.Set;
 import java.util.SortedSet;
-import java.util.TreeMap;
 import java.util.TreeSet;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
@@ -21,11 +20,11 @@ abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 	@IdentityField
 	private Module module;
 
-	private Map<Metric, METRIC_RESULT> metricResults;
+	private Set<METRIC_RESULT> metricResults;
 
 	AbstractModuleResult(Module module) {
 		this.module = module;
-		metricResults = new TreeMap<Metric, METRIC_RESULT>();
+		setMetricResults(new TreeSet<METRIC_RESULT>());
 	}
 
 	public final Module getModule() {
@@ -33,28 +32,31 @@ abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 	}
 
 	public final boolean hasResultFor(Metric metric) {
-		return metricResults.containsKey(metric);
+		return findResultFor(metric) != null;
 	}
 
 	public final METRIC_RESULT getResultFor(Metric metric) {
-		if (!hasResultFor(metric))
-			throw new KalibroException("No result found for metric: " + metric);
-		return metricResults.get(metric);
+		METRIC_RESULT metricResult = findResultFor(metric);
+		throwExceptionIf(metricResult == null, "No result found for metric: " + metric);
+		return metricResult;
 	}
 
-	public final SortedSet<Metric> getMetrics() {
-		return new TreeSet<Metric>(metricResults.keySet());
+	private METRIC_RESULT findResultFor(Metric metric) {
+		for (METRIC_RESULT metricResult : metricResults)
+			if (metricResult.getMetric().equals(metric))
+				return metricResult;
+		return null;
 	}
 
 	public final SortedSet<METRIC_RESULT> getMetricResults() {
-		return new TreeSet<METRIC_RESULT>(metricResults.values());
+		return new TreeSet<METRIC_RESULT>(metricResults);
+	}
+
+	public final void setMetricResults(SortedSet<METRIC_RESULT> metricResults) {
+		this.metricResults = metricResults;
 	}
 
 	public final void addMetricResult(METRIC_RESULT metricResult) {
-		metricResults.put(metricResult.getMetric(), metricResult);
-	}
-
-	public final void removeResultFor(Metric metric) {
-		metricResults.remove(metric);
+		metricResults.add(metricResult);
 	}
 }

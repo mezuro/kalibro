@@ -44,7 +44,6 @@ public class AbstractModuleResultTest extends UnitTest {
 	@Test
 	public void checkConstruction() {
 		assertSame(module, moduleResult.getModule());
-		assertTrue(moduleResult.getMetrics().isEmpty());
 		assertTrue(moduleResult.getMetricResults().isEmpty());
 	}
 
@@ -73,14 +72,10 @@ public class AbstractModuleResultTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldAddAndRemoveMetricResult() {
+	public void shouldAddMetricResult() {
 		moduleResult.addMetricResult(cboResult);
 		moduleResult.addMetricResult(lcom4Result);
-		assertDeepEquals(asSet(cbo, lcom4), moduleResult.getMetrics());
 		assertDeepEquals(asSet(cboResult, lcom4Result), moduleResult.getMetricResults());
-
-		moduleResult.removeResultFor(cbo);
-		assertFalse(moduleResult.hasResultFor(cbo));
 	}
 
 	private AbstractModuleResult<NativeMetricResult> moduleResult(Module theModule) {

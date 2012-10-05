@@ -69,4 +69,19 @@ public class MetricResult extends AbstractMetricResult {
 	public void addDescendentResults(Collection<Double> results) {
 		descendentResults.addAll(results);
 	}
+
+	public boolean hasGrade() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public boolean hasError() {
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	public Throwable getError() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
