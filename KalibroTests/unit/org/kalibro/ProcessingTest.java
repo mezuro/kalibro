@@ -1,9 +1,6 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ModuleNodeFixtures.helloWorldRoot;
-import static org.kalibro.ProjectFixtures.helloWorld;
-import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 import static org.kalibro.ProcessState.*;
 
 import java.util.Date;
@@ -15,91 +12,103 @@ import org.kalibro.tests.UnitTest;
 
 public class ProcessingTest extends UnitTest {
 
-	private Date date;
-	private Processing result;
+	private Repository repository;
+	private Processing processing;
 
 	@Before
 	public void setUp() {
-		date = new Date();
-		result = newHelloWorldResult(date);
+		repository = mock(Repository.class);
+		processing = new Processing(repository);
 	}
 
 	@Test
-	public void checkAttributes() {
-		assertDeepEquals(helloWorld(), result.getRepository());
-		assertSame(date, result.getDate());
-		assertEquals(0, result.getLoadTime().longValue());
-		assertEquals(0, result.getCollectTime().longValue());
-		assertEquals(0, result.getAnalysisTime().longValue());
-		assertDeepEquals(helloWorldRoot(), result.getResultsRoot());
-		assertEquals(NEW, result.getState());
+	public void shouldSortByRepositoryThenDate() {
+		Processing first = withRepositoryDate("A", 3);
+		Processing second = withRepositoryDate("A", 4);
+		Processing third = withRepositoryDate("Z", 1);
+		Processing fourth = withRepositoryDate("Z", 2);
+		assertSorted(first, second, third, fourth);
+	}
+
+	private Processing withRepositoryDate(String repositoryName, long date) {
+		Processing other = new Processing(new Repository(repositoryName, null, ""));
+		other.setDate(new Date(date));
+		return other;
 	}
 
 	@Test
-	public void shouldSortByProjectThenDate() {
-		Processing result3 = new Processing(helloWorld());
-		Processing result4 = new Processing(helloWorld());
+	public void shouldIdentifyByRepositoryAndDate() {
+		Processing other = new Processing(null);
+		assertFalse(other.equals(processing));
 
-		Processing result1 = new Processing(new Project());
-		Processing result2 = new Processing(new Project());
+		other = new Processing(repository);
+		assertFalse(other.equals(processing));
 
-		assertSorted(result1, result2, result3, result4);
+		other.setDate(processing.getDate());
+		assertEquals(processing, other);
+	}
+
+	@Test
+	public void checkConstruction() {
+		assertSame(repository, processing.getRepository());
+		assertEquals(new Date().getTime(), processing.getDate().getTime(), 100);
+		assertEquals(LOADING, processing.getState());
+		for (ProcessState state : ProcessState.values())
+			assertNull(processing.getStateTime(state));
+		assertNull(processing.getResultsRoot());
 	}
 
 	@Test
 	public void shouldBeInErrorStateAfterSettingError() {
 		Throwable error = mock(Throwable.class);
-		result.setError(error);
-		assertSame(error, result.getError());
-		assertEquals(ERROR, result.getState());
+		processing.setError(error);
+		assertSame(error, processing.getError());
+		assertEquals(ERROR, processing.getState());
 	}
 
 	@Test
-	public void shouldGetStateMessageFromState() {
-		assertEquals(NEW.getMessage(repository.getCompleteName()), result.getStateMessage());
-		result.setState(ANALYZING);
-		assertEquals(ANALYZING.getMessage(repository.getCompleteName()), result.getStateMessage());
+	public void shouldGetStateMessage() {
+		String name = "ProcessingTest repository complete name";
+		when(repository.getCompleteName()).thenReturn(name);
+
+		assertEquals(LOADING.getMessage(name), processing.getStateMessage());
+		processing.setState(ANALYZING);
+		assertEquals(ANALYZING.getMessage(name), processing.getStateMessage());
 	}
 
 	@Test
 	public void shouldGetStateWhenErrorOcurred() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws Throwable {
-				result.getStateWhenErrorOcurred();
-			}
-		}).throwsException().withMessage("Repository " + repository.getCompleteName() + " has no error.");
-		result.setState(ANALYZING);
-		result.setError(mock(Throwable.class));
-		assertEquals(ANALYZING, result.getStateWhenErrorOcurred());
+		assertNull(processing.getStateWhenErrorOcurred());
+		processing.setState(ANALYZING);
+		processing.setError(mock(Throwable.class));
+		assertEquals(ANALYZING, processing.getStateWhenErrorOcurred());
 	}
 
 	@Test
-	public void shouldNotAllowErrorStateWithoutException() {
+	public void shouldNotAllowErrorStateWithoutError() {
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				result.setState(ERROR);
+				processing.setState(ERROR);
 			}
 		}).throwsException().withMessage("Use setError(Throwable) to put repository in error state");
 	}
 
 	@Test
-	public void shouldRetrieveIfIsProcessed() {
-		assertTrue(result.isProcessed());
-		assertFalse(new Processing(helloWorld()).isProcessed());
+	public void shouldSetStateTimes() {
+		processing.setStateTime(LOADING, 6);
+		processing.setStateTime(COLLECTING, 28);
+		processing.setStateTime(ANALYZING, 496);
+		assertEquals(6, processing.getStateTime(LOADING).longValue());
+		assertEquals(28, processing.getStateTime(COLLECTING).longValue());
+		assertEquals(496, processing.getStateTime(ANALYZING).longValue());
 	}
 
 	@Test
-	public void shouldValidateProjectProcessedOnRetrievingProcessData() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws Throwable {
-				new Processing(helloWorld()).getResultsRoot();
-			}
-		}).throwsException().withMessage("Project not yet processed: " + result.getRepository().getName());
+	public void shouldSetResultsRoot() {
+		ModuleResult resultsRoot = mock(ModuleResult.class);
+		processing.setResultsRoot(resultsRoot);
+		assertSame(resultsRoot, processing.getResultsRoot());
 	}
 }

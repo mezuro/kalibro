@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.kalibro.core.Environment;
 
+@Deprecated
 public final class RepositoryFixtures {
 
 	private static Map<RepositoryType, String> addresses;
