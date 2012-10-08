@@ -18,11 +18,11 @@ class SourceTreeBuilder {
 	}
 
 	protected void buildSourceTree(Collection<Module> modules) {
-		String projectName = repositoryResult.getProject().getName();
+		String projectName = repositoryResult.getRepository().getName();
 		sourceRoot = new ModuleNode(new Module(SOFTWARE, projectName));
 		for (Module module : modules)
 			addModule(module);
-		repositoryResult.setSourceTree(sourceRoot);
+		repositoryResult.setResultsRoot(sourceRoot);
 	}
 
 	private void addModule(Module module) {

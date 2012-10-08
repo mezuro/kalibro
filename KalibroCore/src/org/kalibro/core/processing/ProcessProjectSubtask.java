@@ -13,7 +13,7 @@ abstract class ProcessProjectSubtask<T> extends Task<T> {
 
 	protected ProcessProjectSubtask(Processing processing) {
 		this.processing = processing;
-		project = processing.getProject();
+		project = processing.getRepository();
 	}
 
 	T executeSubTask() {

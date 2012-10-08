@@ -35,7 +35,7 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 	@Before
 	public void setUp() {
 		processing = helloWorldResult();
-		projectName = processing.getProject().getName();
+		projectName = processing.getRepository().getName();
 		date = processing.getDate();
 		recordManager = PowerMockito.mock(RecordManager.class);
 		dao = PowerMockito.spy(new ProjectResultDatabaseDao(recordManager));
@@ -131,8 +131,8 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 	}
 
 	private void assertExpected(Processing actual) {
-		actual.setSourceTree(processing.getSourceTree());
-		actual.getProject().setConfigurationName(processing.getProject().getConfigurationName());
+		actual.setResultsRoot(processing.getResultsRoot());
+		actual.getRepository().setConfigurationName(processing.getRepository().getConfigurationName());
 		assertDeepEquals(processing, actual);
 	}
 

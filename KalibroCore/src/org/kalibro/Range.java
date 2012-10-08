@@ -88,6 +88,10 @@ public class Range extends AbstractEntity<Range> {
 		return beginning <= value && value < end;
 	}
 
+	public boolean hasReading() {
+		return reading != null;
+	}
+
 	public Reading getReading() {
 		return reading;
 	}

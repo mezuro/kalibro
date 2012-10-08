@@ -46,7 +46,6 @@ public class CompoundMetricCalculator {
 
 	private void doComputeCompoundMetric(MetricConfiguration metricConfiguration) {
 		Double calculatedResult = scriptEvaluator.evaluate(metricConfiguration.getCode());
-		MetricResult metricResult = new MetricResult(metricConfiguration, calculatedResult);
-		moduleResult.addMetricResult(metricResult);
+		moduleResult.addMetricResult(new MetricResult(metricConfiguration, calculatedResult));
 	}
 }

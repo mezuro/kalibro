@@ -26,12 +26,12 @@ public class ProcessingTest extends UnitTest {
 
 	@Test
 	public void checkAttributes() {
-		assertDeepEquals(helloWorld(), result.getProject());
+		assertDeepEquals(helloWorld(), result.getRepository());
 		assertSame(date, result.getDate());
 		assertEquals(0, result.getLoadTime().longValue());
 		assertEquals(0, result.getCollectTime().longValue());
 		assertEquals(0, result.getAnalysisTime().longValue());
-		assertDeepEquals(helloWorldRoot(), result.getSourceTree());
+		assertDeepEquals(helloWorldRoot(), result.getResultsRoot());
 		assertEquals(NEW, result.getState());
 	}
 
@@ -98,8 +98,8 @@ public class ProcessingTest extends UnitTest {
 
 			@Override
 			protected void perform() throws Throwable {
-				new Processing(helloWorld()).getSourceTree();
+				new Processing(helloWorld()).getResultsRoot();
 			}
-		}).throwsException().withMessage("Project not yet processed: " + result.getProject().getName());
+		}).throwsException().withMessage("Project not yet processed: " + result.getRepository().getName());
 	}
 }

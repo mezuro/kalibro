@@ -25,7 +25,7 @@ public class MetricConfigurationXmlRequest extends DataTransferObject<MetricConf
 	private Statistic aggregationForm;
 
 	@XmlElement(name = "range")
-	private Collection<RangeXml> ranges;
+	private Collection<RangeXmlRequest> ranges;
 
 	public MetricConfigurationXmlRequest() {
 		super();
@@ -48,9 +48,9 @@ public class MetricConfigurationXmlRequest extends DataTransferObject<MetricConf
 	}
 
 	private void initializeRanges(MetricConfiguration metricConfiguration) {
-		ranges = new ArrayList<RangeXml>();
+		ranges = new ArrayList<RangeXmlRequest>();
 		for (Range range : metricConfiguration.getRanges())
-			ranges.add(new RangeXml(range));
+			ranges.add(new RangeXmlRequest(range));
 	}
 
 	@Override
@@ -65,7 +65,7 @@ public class MetricConfigurationXmlRequest extends DataTransferObject<MetricConf
 
 	private void convertRanges(MetricConfiguration metricConfiguration) {
 		if (ranges != null)
-			for (RangeXml range : ranges)
+			for (RangeXmlRequest range : ranges)
 				metricConfiguration.addRange(range.convert());
 	}
 }

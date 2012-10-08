@@ -43,7 +43,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		processing = ProjectResultFixtures.newHelloWorldResult(DATE);
-		processing.getProject().setName(PROJECT_NAME);
+		processing.getRepository().setName(PROJECT_NAME);
 		mockRecords();
 		recordManager = mock(RecordManager.class);
 		dao = spy(new ModuleResultDatabaseDao(recordManager));
@@ -67,9 +67,9 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		ProjectDatabaseDao projDao = mock(ProjectDatabaseDao.class);
 		ConfigurationDatabaseDao configDao = mock(ConfigurationDatabaseDao.class);
 		whenNew(ProjectDatabaseDao.class).withArguments(recordManager).thenReturn(projDao);
-		when(projDao.getByName(PROJECT_NAME)).thenReturn(processing.getProject());
+		when(projDao.getByName(PROJECT_NAME)).thenReturn(processing.getRepository());
 		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configDao);
-		when(configDao.configurationOf(processing.getProject().getId())).thenReturn(configuration);
+		when(configDao.configurationOf(processing.getRepository().getId())).thenReturn(configuration);
 	}
 
 	@Test

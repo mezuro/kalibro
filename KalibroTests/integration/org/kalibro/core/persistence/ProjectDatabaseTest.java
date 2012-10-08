@@ -27,7 +27,7 @@ public class ProjectDatabaseTest extends AcceptanceTest {
 	@Before
 	public void setUp() {
 		processing = newHelloWorldResult();
-		helloWorld = processing.getProject();
+		helloWorld = processing.getRepository();
 		helloWorld2 = newHelloWorld();
 		helloWorld2.setName("HelloWorld-2.0");
 		DaoFactory.getConfigurationDao().save(kalibroConfiguration());

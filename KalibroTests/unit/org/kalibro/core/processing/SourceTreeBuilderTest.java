@@ -21,7 +21,7 @@ public class SourceTreeBuilderTest extends UnitTest {
 	@Before
 	public void setUp() {
 		processing = newHelloWorldResult();
-		processing.setSourceTree(null);
+		processing.setResultsRoot(null);
 		treeBuilder = new SourceTreeBuilder(processing);
 	}
 
@@ -34,7 +34,7 @@ public class SourceTreeBuilderTest extends UnitTest {
 			new Module(CLASS, "org.analizo.AnalizoMetricCollector"),
 			new Module(CLASS, "org.analizo.AnalizoResultParser"));
 
-		String projectName = processing.getProject().getName();
+		String projectName = processing.getRepository().getName();
 		assertDeepEquals(new Module(SOFTWARE, projectName), sourceTree.getModule());
 		assertEquals(1, sourceTree.getChildren().size());
 		assertDeepEquals(analizoCheckstyleTree(), sourceTree.getChildren().iterator().next());
@@ -48,6 +48,6 @@ public class SourceTreeBuilderTest extends UnitTest {
 	private ModuleNode getSourceTree(Module... modules) {
 		assertFalse(processing.isProcessed());
 		treeBuilder.buildSourceTree(asList(modules));
-		return processing.getSourceTree();
+		return processing.getResultsRoot();
 	}
 }

@@ -31,7 +31,7 @@ public class ModuleResultDatabaseTest extends AcceptanceTest {
 	public void setUp() {
 		date = new Date();
 		processing = newHelloWorldResult(date);
-		project = processing.getProject();
+		project = processing.getRepository();
 		moduleResult = newHelloWorldClassResult(date);
 		moduleResult.setConfiguration(kalibroConfiguration());
 		dao = DaoFactory.getModuleResultDao();

@@ -11,9 +11,9 @@ import org.kalibro.dao.DaoFactory;
  * 
  * @author Carlos Morais
  */
-final class DaoLazyLoader implements LazyLoader {
+public final class DaoLazyLoader implements LazyLoader {
 
-	static <T> T createProxy(Class<?> daoClass, String methodName, Object... arguments) {
+	public static <T> T createProxy(Class<?> daoClass, String methodName, Object... arguments) {
 		DaoLazyLoader loader = new DaoLazyLoader(daoClass, methodName, arguments);
 		return (T) Enhancer.create(loader.getTargetClass(), loader);
 	}

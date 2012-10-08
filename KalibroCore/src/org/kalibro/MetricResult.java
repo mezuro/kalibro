@@ -3,8 +3,6 @@ package org.kalibro;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kalibro.core.abstractentity.Ignore;
-
 /**
  * Result of processing a {@link Metric} for a {@link Module}. Contains the associated {@link MetricConfiguration}
  * snapshot.
@@ -13,9 +11,7 @@ import org.kalibro.core.abstractentity.Ignore;
  */
 public class MetricResult extends AbstractMetricResult {
 
-	@Ignore
 	private MetricConfiguration configuration;
-
 	private Throwable error;
 	private List<Double> descendentResults;
 
@@ -38,6 +34,10 @@ public class MetricResult extends AbstractMetricResult {
 		return error;
 	}
 
+	public MetricConfiguration getConfiguration() {
+		return configuration;
+	}
+
 	public List<Double> getDescendentResults() {
 		return descendentResults;
 	}
@@ -56,13 +56,20 @@ public class MetricResult extends AbstractMetricResult {
 		return getValue();
 	}
 
+	public boolean hasRange() {
+		return configuration.getRangeFor(getAggregatedValue()) != null;
+	}
+
+	public Range getRange() {
+		return configuration.getRangeFor(getAggregatedValue());
+	}
+
 	public boolean hasGrade() {
-		Range range = configuration.getRangeFor(getValue());
-		return range != null && range.getReading() != null;
+		return hasRange() && getRange().hasReading();
 	}
 
 	public Double getGrade() {
-		return configuration.getRangeFor(getValue()).getReading().getGrade();
+		return getRange().getReading().getGrade();
 	}
 
 	public Double getWeight() {

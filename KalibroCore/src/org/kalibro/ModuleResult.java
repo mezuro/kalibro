@@ -1,6 +1,8 @@
 package org.kalibro;
 
-import java.util.*;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.kalibro.core.abstractentity.Ignore;
 
@@ -11,15 +13,33 @@ import org.kalibro.core.abstractentity.Ignore;
  */
 public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
+	private Double grade;
+
 	@Ignore
 	private ModuleResult parent;
-
 	private Set<ModuleResult> children;
 
 	public ModuleResult(ModuleResult parent, Module module) {
 		super(module);
+		this.grade = Double.NaN;
 		this.parent = parent;
 		setChildren(new TreeSet<ModuleResult>());
+	}
+
+	public void calculateGrade() {
+		double gradeSum = 0.0;
+		double weightSum = 0.0;
+		for (MetricResult metricResult : getMetricResults())
+			if (metricResult.hasGrade()) {
+				Double weight = metricResult.getWeight();
+				gradeSum += metricResult.getGrade() * weight;
+				weightSum += weight;
+			}
+		grade = gradeSum / weightSum;
+	}
+
+	public Double getGrade() {
+		return grade;
 	}
 
 	public ModuleResult getParent() {
@@ -34,26 +54,6 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	public void setChildren(SortedSet<ModuleResult> children) {
 		this.children = children;
-	}
-
-	public Double getGrade() {
-		double gradeSum = 0.0;
-		double weightSum = 0.0;
-		for (MetricResult metricResult : getMetricResults())
-			if (metricResult.hasGrade()) {
-				Double weight = metricResult.getWeight();
-				gradeSum += metricResult.getGrade() * weight;
-				weightSum += weight;
-			}
-		return gradeSum / weightSum;
-	}
-
-	public Map<CompoundMetric, Throwable> getCompoundMetricsWithError() {
-		Map<CompoundMetric, Throwable> compoundMetricsWithError = new TreeMap<CompoundMetric, Throwable>();
-		for (MetricResult metricResult : getMetricResults())
-			if (metricResult.hasError())
-				compoundMetricsWithError.put((CompoundMetric) metricResult.getMetric(), metricResult.getError());
-		return compoundMetricsWithError;
 	}
 
 	@Override

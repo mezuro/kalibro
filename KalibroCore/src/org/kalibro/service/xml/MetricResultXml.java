@@ -23,7 +23,7 @@ public class MetricResultXml extends DataTransferObject<MetricResult> {
 
 	private Double weight;
 
-	private RangeXml range;
+	private RangeXmlRequest range;
 
 	@XmlElement(name = "descendentResult")
 	private Collection<Double> descendentResults;
@@ -50,7 +50,7 @@ public class MetricResultXml extends DataTransferObject<MetricResult> {
 
 	private void initializeRange(MetricResult metricResult) {
 		if (metricResult.hasRange())
-			range = new RangeXml(metricResult.getRange());
+			range = new RangeXmlRequest(metricResult.getRange());
 	}
 
 	@Override

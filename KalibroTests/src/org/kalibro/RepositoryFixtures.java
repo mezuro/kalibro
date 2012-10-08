@@ -41,7 +41,7 @@ public final class RepositoryFixtures {
 	}
 
 	public static Repository newHelloWorldRepository(RepositoryType type) {
-		return new Repository(type, addresses.get(type));
+		return new Repository("" + type, type, addresses.get(type));
 	}
 
 	private RepositoryFixtures() {

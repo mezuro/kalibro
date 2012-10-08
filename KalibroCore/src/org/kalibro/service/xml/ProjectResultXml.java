@@ -26,12 +26,12 @@ public class ProjectResultXml extends DataTransferObject<Processing> {
 	}
 
 	public ProjectResultXml(Processing processing) {
-		project = new ProjectXmlResponse(processing.getProject());
+		project = new ProjectXmlResponse(processing.getRepository());
 		date = processing.getDate();
 		loadTime = processing.getLoadTime();
 		collectTime = processing.getCollectTime();
 		analysisTime = processing.getAnalysisTime();
-		sourceTree = new ModuleNodeXml(processing.getSourceTree());
+		sourceTree = new ModuleNodeXml(processing.getResultsRoot());
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class ProjectResultXml extends DataTransferObject<Processing> {
 		processing.setStateTime(ProcessState.LOADING, loadTime);
 		processing.setStateTime(ProcessState.COLLECTING, collectTime);
 		processing.setStateTime(ProcessState.ANALYZING, analysisTime);
-		processing.setSourceTree(sourceTree.convert());
+		processing.setResultsRoot(sourceTree.convert());
 		return processing;
 	}
 }

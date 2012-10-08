@@ -51,7 +51,7 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
-		when(configurationDao.configurationOf(processing.getProject().getId())).thenReturn(configuration);
+		when(configurationDao.configurationOf(processing.getRepository().getId())).thenReturn(configuration);
 		when(configuration.getNativeMetrics()).thenReturn(metricsMap);
 	}
 

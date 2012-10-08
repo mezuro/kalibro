@@ -2,13 +2,16 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;
 
 public class MetricResultTest extends UnitTest {
 
-	private static final Double VALUE = mock(Double.class);
+	private static final Double VALUE = new Random().nextDouble();
 
 	private Metric metric;
 	private MetricConfiguration configuration;
@@ -28,18 +31,20 @@ public class MetricResultTest extends UnitTest {
 		assertSame(configuration.getMetric(), result.getMetric());
 		assertSame(VALUE, result.getValue());
 		assertFalse(result.hasError());
+		assertSame(configuration, result.getConfiguration());
 		assertTrue(result.getDescendentResults().isEmpty());
 	}
 
 	@Test
 	public void checkCompoundMetricWithErrorConstruction() {
-		metric = mock(CompoundMetric.class);
+		CompoundMetric compoundMetric = mock(CompoundMetric.class);
 		Throwable error = mock(Throwable.class);
-		result = new MetricResult((CompoundMetric) metric, error);
-		assertSame(metric, result.getMetric());
+		result = new MetricResult(compoundMetric, error);
+		assertSame(compoundMetric, result.getMetric());
 		assertDoubleEquals(Double.NaN, result.getValue());
 		assertTrue(result.hasError());
 		assertSame(error, result.getError());
+		assertNull(result.getConfiguration());
 		assertNull(result.getDescendentResults());
 	}
 
@@ -59,25 +64,19 @@ public class MetricResultTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldAnswerIfHasGrade() {
+	public void shouldGetGradeFromRange() {
 		assertFalse(result.hasGrade());
-		mockGrade();
-		assertTrue(result.hasGrade());
-	}
 
-	@Test
-	public void shouldGetGrade() {
 		Double grade = mockGrade();
+		assertTrue(result.hasGrade());
 		assertSame(grade, result.getGrade());
 	}
 
 	private Double mockGrade() {
-		Range range = mock(Range.class);
-		Double grade = mock(Double.class);
-		Reading reading = mock(Reading.class);
+		Double grade = new Random().nextDouble();
+		Range range = new Range(grade - 1.0, grade + 1.0);
+		range.setReading(new Reading("label", grade, Color.MAGENTA));
 		when(configuration.getRangeFor(VALUE)).thenReturn(range);
-		when(range.getReading()).thenReturn(reading);
-		when(reading.getGrade()).thenReturn(grade);
 		return grade;
 	}
 

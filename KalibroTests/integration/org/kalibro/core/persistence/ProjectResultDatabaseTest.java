@@ -31,9 +31,9 @@ public class ProjectResultDatabaseTest extends AcceptanceTest {
 		first = newHelloWorldResult(new Date(1));
 		second = newHelloWorldResult(new Date(2));
 		third = newHelloWorldResult(new Date(3));
-		first.setProject(project);
-		second.setProject(project);
-		third.setProject(project);
+		first.setRepository(project);
+		second.setRepository(project);
+		third.setRepository(project);
 		dao = DaoFactory.getProjectResultDao();
 		DaoFactory.getConfigurationDao().save(kalibroConfiguration());
 		DaoFactory.getProjectDao().save(project);

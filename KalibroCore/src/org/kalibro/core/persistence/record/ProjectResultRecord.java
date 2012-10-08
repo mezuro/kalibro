@@ -41,7 +41,7 @@ public class ProjectResultRecord extends DataTransferObject<Processing> {
 	}
 
 	public ProjectResultRecord(Processing processing) {
-		project = new ProjectRecord(processing.getProject(), null);
+		project = new ProjectRecord(processing.getRepository(), null);
 		date = processing.getDate().getTime();
 		if (processing.isProcessed()) {
 			loadTime = processing.getLoadTime();
@@ -53,7 +53,7 @@ public class ProjectResultRecord extends DataTransferObject<Processing> {
 
 	private void initializeSourceTree(Processing processing) {
 		sourceTree = new ArrayList<ModuleRecord>();
-		ModuleRecord root = new ModuleRecord(processing.getSourceTree(), this, null);
+		ModuleRecord root = new ModuleRecord(processing.getResultsRoot(), this, null);
 		addToSourceTree(root);
 	}
 
@@ -77,10 +77,10 @@ public class ProjectResultRecord extends DataTransferObject<Processing> {
 	private void convertSourceTree(Processing processing) {
 		for (ModuleRecord node : sourceTree)
 			if (node.isRoot()) {
-				processing.setSourceTree(node.convert());
+				processing.setResultsRoot(node.convert());
 				return;
 			}
-		String projectName = processing.getProject().getName();
+		String projectName = processing.getRepository().getName();
 		throw new KalibroException("No source tree root found in result for project: " + projectName);
 	}
 

@@ -23,7 +23,7 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	@Before
 	public void setUp() {
 		processing = newHelloWorldResult();
-		processing.setSourceTree(null);
+		processing.setResultsRoot(null);
 		analyzeTask = new AnalyzeResultsTask(processing, newHelloWorldResultMap(processing.getDate()));
 	}
 
@@ -35,7 +35,7 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	@Test
 	public void shouldSetSourceTreeOnProjectResult() {
 		analyzeTask.compute();
-		assertDeepEquals(helloWorldRoot(), processing.getSourceTree());
+		assertDeepEquals(helloWorldRoot(), processing.getResultsRoot());
 	}
 
 	@Test

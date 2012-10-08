@@ -24,7 +24,7 @@ public class ResultsAggregatorTest extends UnitTest {
 	@Before
 	public void setUp() {
 		Processing processing = newHelloWorldResult();
-		processing.setSourceTree(analizoCheckstyleTree());
+		processing.setResultsRoot(analizoCheckstyleTree());
 		resultMap = analizoCheckstyleResultMap();
 		aggregator = new ResultsAggregator(processing, resultMap);
 		classMetric = new NativeMetric("Class_name_length", CLASS, JAVA);

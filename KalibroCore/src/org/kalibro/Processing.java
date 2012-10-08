@@ -14,11 +14,11 @@ import org.kalibro.core.abstractentity.SortingFields;
  * 
  * @author Carlos Morais
  */
-@SortingFields({"project", "date"})
+@SortingFields({"repository", "date"})
 public class Processing extends AbstractEntity<Processing> {
 
 	@IdentityField
-	private Project project;
+	private Repository repository;
 
 	@IdentityField
 	private Date date;
@@ -27,21 +27,21 @@ public class Processing extends AbstractEntity<Processing> {
 	private Throwable error;
 
 	private Map<ProcessState, Long> stateTimes;
-	private ModuleNode sourceTree;
+	private ModuleResult resultsRoot;
 
-	public Processing(Project project) {
-		setProject(project);
+	public Processing(Repository repository) {
+		setRepository(repository);
 		setDate(new Date());
-		setState(ProcessState.NEW);
+		setState(ProcessState.LOADING);
 		stateTimes = new HashMap<ProcessState, Long>();
 	}
 
-	public Project getProject() {
-		return project;
+	public Repository getRepository() {
+		return repository;
 	}
 
-	public void setProject(Project project) {
-		this.project = project;
+	public void setRepository(Repository repository) {
+		this.repository = repository;
 	}
 
 	public Date getDate() {
@@ -63,65 +63,37 @@ public class Processing extends AbstractEntity<Processing> {
 	}
 
 	public ProcessState getStateWhenErrorOcurred() {
-		assertHasError();
-		return state;
+		return (error == null) ? null : state;
 	}
 
 	public void setState(ProcessState state) {
 		if (state == ProcessState.ERROR)
 			throw new KalibroException("Use setError(Throwable) to put repository in error state");
-		error = null;
 		this.state = state;
+		error = null;
 	}
 
 	public Throwable getError() {
-		assertHasError();
 		return error;
-	}
-
-	private void assertHasError() {
-		if (error == null)
-			throw new KalibroException("Repository " + repository.getCompleteName() + " has no error.");
 	}
 
 	public void setError(Throwable error) {
 		this.error = error;
 	}
 
-	public Long getLoadTime() {
-		assertProcessed();
-		return stateTimes.get(ProcessState.LOADING);
+	public Long getStateTime(ProcessState passedState) {
+		return stateTimes.get(passedState);
 	}
 
-	public Long getCollectTime() {
-		assertProcessed();
-		return stateTimes.get(ProcessState.COLLECTING);
+	public void setStateTime(ProcessState passedState, long time) {
+		stateTimes.put(passedState, time);
 	}
 
-	public Long getAnalysisTime() {
-		assertProcessed();
-		return stateTimes.get(ProcessState.ANALYZING);
+	public ModuleResult getResultsRoot() {
+		return resultsRoot;
 	}
 
-	public void setStateTime(ProcessState state, long time) {
-		stateTimes.put(state, time);
-	}
-
-	public ModuleNode getSourceTree() {
-		assertProcessed();
-		return sourceTree;
-	}
-
-	public void setSourceTree(ModuleNode sourceTree) {
-		this.sourceTree = sourceTree;
-	}
-
-	private void assertProcessed() {
-		if (!isProcessed())
-			throw new KalibroException("Project not yet processed: " + project.getName());
-	}
-
-	public boolean isProcessed() {
-		return sourceTree != null;
+	public void setResultsRoot(ModuleResult resultsRoot) {
+		this.resultsRoot = resultsRoot;
 	}
 }

@@ -45,7 +45,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 	private void mockProjectResult() {
 		project = mock(Project.class);
 		processing = mock(Processing.class);
-		when(processing.getProject()).thenReturn(project);
+		when(processing.getRepository()).thenReturn(project);
 	}
 
 	@Test

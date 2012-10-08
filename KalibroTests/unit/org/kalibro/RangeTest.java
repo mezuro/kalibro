@@ -48,7 +48,7 @@ public class RangeTest extends UnitTest {
 	public void checkConstruction() {
 		assertDoubleEquals(NEGATIVE_INFINITY, range.getBeginning());
 		assertDoubleEquals(POSITIVE_INFINITY, range.getEnd());
-		assertNull(range.getReading());
+		assertFalse(range.hasReading());
 		assertEquals("", range.getComments());
 	}
 
@@ -155,6 +155,17 @@ public class RangeTest extends UnitTest {
 		assertFalse(range.contains(NaN));
 		assertFalse(new Range(NEGATIVE_INFINITY, 0.0).contains(MIN_VALUE));
 		assertFalse(new Range(0.0, 3.0).contains(3.0));
+	}
+
+	@Test
+	public void shouldAcceptAnyReading() {
+		assertFalse(range.hasReading());
+
+		Reading reading = mock(Reading.class);
+		range.setReading(reading);
+
+		assertTrue(range.hasReading());
+		assertSame(reading, range.getReading());
 	}
 
 	@Test
