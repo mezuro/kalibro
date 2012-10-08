@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Processing;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class ProjectResultEndpointImplTest extends UnitTest {
 
 	private boolean flag;
-	private ProjectResultDao dao;
+	private ProcessingDao dao;
 	private Processing processing;
 	private ProjectResultEndpointImpl endpoint;
 
@@ -34,7 +34,7 @@ public class ProjectResultEndpointImplTest extends UnitTest {
 	}
 
 	private void mockDao() {
-		dao = PowerMockito.mock(ProjectResultDao.class);
+		dao = PowerMockito.mock(ProcessingDao.class);
 		PowerMockito.mockStatic(DaoFactory.class);
 		PowerMockito.when(DaoFactory.getProjectResultDao()).thenReturn(dao);
 	}

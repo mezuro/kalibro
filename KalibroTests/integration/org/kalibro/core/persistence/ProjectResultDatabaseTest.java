@@ -15,12 +15,12 @@ import org.kalibro.Project;
 import org.kalibro.Processing;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.AcceptanceTest;
 
 public class ProjectResultDatabaseTest extends AcceptanceTest {
 
-	private ProjectResultDao dao;
+	private ProcessingDao dao;
 
 	private Project project;
 	private Processing first, second, third;

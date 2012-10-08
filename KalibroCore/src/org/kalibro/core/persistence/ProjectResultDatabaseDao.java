@@ -6,9 +6,9 @@ import javax.persistence.TypedQuery;
 
 import org.kalibro.RepositoryResult;
 import org.kalibro.core.persistence.record.ProjectResultRecord;
-import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProcessingDao;
 
-class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResultRecord> implements ProjectResultDao {
+class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResultRecord> implements ProcessingDao {
 
 	protected ProjectResultDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ProjectResultRecord.class);

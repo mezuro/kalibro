@@ -12,10 +12,10 @@ import org.junit.experimental.theories.Theory;
 import org.junit.runner.RunWith;
 import org.kalibro.Processing;
 import org.kalibro.client.EndpointTest;
-import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProcessingDao;
 
 @RunWith(value = Theories.class)
-public class ProjectResultEndpointTest extends EndpointTest<Processing, ProjectResultDao, ProjectResultEndpoint> {
+public class ProjectResultEndpointTest extends EndpointTest<Processing, ProcessingDao, ProjectResultEndpoint> {
 
 	private static final String PROJECT_NAME = "ProjectResultEndpointTest project name";
 	private static final Date DATE = new Date();

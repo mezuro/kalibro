@@ -14,7 +14,7 @@ import org.kalibro.Processing;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.AcceptanceTest;
 
 public class ProjectDatabaseTest extends AcceptanceTest {
@@ -69,14 +69,14 @@ public class ProjectDatabaseTest extends AcceptanceTest {
 	@Test
 	public void projectRemovalShouldCascadeToResults() {
 		String projectName = helloWorld.getName();
-		ProjectResultDao projectResultDao = DaoFactory.getProjectResultDao();
+		ProcessingDao processingDao = DaoFactory.getProjectResultDao();
 
 		dao.save(helloWorld);
-		projectResultDao.save(processing);
-		assertTrue(projectResultDao.hasResultsFor(projectName));
+		processingDao.save(processing);
+		assertTrue(processingDao.hasResultsFor(projectName));
 
 		dao.removeProject(projectName);
-		assertFalse(projectResultDao.hasResultsFor(projectName));
+		assertFalse(processingDao.hasResultsFor(projectName));
 	}
 
 	@Test

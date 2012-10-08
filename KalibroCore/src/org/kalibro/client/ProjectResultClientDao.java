@@ -4,10 +4,10 @@ import java.util.Date;
 
 import org.kalibro.KalibroException;
 import org.kalibro.RepositoryResult;
-import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProcessingDao;
 import org.kalibro.service.ProjectResultEndpoint;
 
-class ProjectResultClientDao extends EndpointClient<ProjectResultEndpoint> implements ProjectResultDao {
+class ProjectResultClientDao extends EndpointClient<ProjectResultEndpoint> implements ProcessingDao {
 
 	ProjectResultClientDao(String serviceAddress) {
 		super(serviceAddress, ProjectResultEndpoint.class);

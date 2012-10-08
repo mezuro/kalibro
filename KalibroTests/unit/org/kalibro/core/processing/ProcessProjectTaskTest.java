@@ -14,7 +14,7 @@ import org.kalibro.*;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.dao.ProjectResultDao;
+import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -31,7 +31,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 
 	private ProjectDao projectDao;
 	private ModuleResultDatabaseDao moduleResultDao;
-	private ProjectResultDao projectResultDao;
+	private ProcessingDao processingDao;
 
 	private LoadSourceTask loadTask;
 	private CollectMetricsTask collectTask;
@@ -52,11 +52,11 @@ public class ProcessProjectTaskTest extends UnitTest {
 	private void mockKalibro() {
 		projectDao = mock(ProjectDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
-		projectResultDao = mock(ProjectResultDao.class);
+		processingDao = mock(ProcessingDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
 		when(DaoFactory.getModuleResultDao()).thenReturn(moduleResultDao);
-		when(DaoFactory.getProjectResultDao()).thenReturn(projectResultDao);
+		when(DaoFactory.getProjectResultDao()).thenReturn(processingDao);
 		when(projectDao.getProject(PROJECT_NAME)).thenReturn(project);
 	}
 
@@ -95,8 +95,8 @@ public class ProcessProjectTaskTest extends UnitTest {
 	public void shouldSaveResults() {
 		processTask.perform();
 
-		InOrder order = Mockito.inOrder(projectResultDao, moduleResultDao);
-		order.verify(projectResultDao).save(processing);
+		InOrder order = Mockito.inOrder(processingDao, moduleResultDao);
+		order.verify(processingDao).save(processing);
 		for (ModuleResult moduleResult : moduleResults)
 			order.verify(moduleResultDao).save(moduleResult, processing);
 	}
