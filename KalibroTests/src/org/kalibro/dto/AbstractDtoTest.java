@@ -22,13 +22,13 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 	protected ENTITY entity;
 	protected DataTransferObject<ENTITY> dto;
 
+	private List<LazyLoadExpectation> lazyLoadExpectations;
+
 	@Before
 	public void setUp() throws Exception {
 		entity = loadFixture();
 		createDto();
-		mockStatic(DaoLazyLoader.class);
-		for (LazyLoadExpectation e : lazyLoadExpectations())
-			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.stub);
+		mockLazyLoading();
 	}
 
 	protected abstract ENTITY loadFixture();
@@ -45,6 +45,24 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 		return Whitebox.getInternalState(entity, field);
 	}
 
+	private void mockLazyLoading() {
+		lazyLoadExpectations = new ArrayList<LazyLoadExpectation>();
+		registerLazyLoadExpectations();
+		mockStatic(DaoLazyLoader.class);
+		for (LazyLoadExpectation e : lazyLoadExpectations)
+			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.returnValue);
+	}
+
+	protected void registerLazyLoadExpectations() {
+		return;
+	}
+
+	protected LazyLoadExpectation whenLazy(Class<?> daoClass, String methodName, Object... parameters) {
+		LazyLoadExpectation expectation = new LazyLoadExpectation(daoClass, methodName, parameters);
+		lazyLoadExpectations.add(expectation);
+		return expectation;
+	}
+
 	@Test
 	public void shouldHavePublicDefaultConstructor() throws Exception {
 		Constructor<?> constructor = dto.getClass().getConstructor();
@@ -55,21 +73,13 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 	@Test
 	public void shouldConvert() {
 		assertDeepEquals(entity, dto.convert());
-		for (LazyLoadExpectation e : lazyLoadExpectations()) {
+		for (LazyLoadExpectation e : lazyLoadExpectations) {
 			verifyStatic();
 			DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e));
 		}
 	}
 
-	protected List<LazyLoadExpectation> lazyLoadExpectations() {
-		return new ArrayList<LazyLoadExpectation>();
-	}
-
 	private Object parameters(LazyLoadExpectation expectation) {
 		return argThat(new ParametersMatcher(expectation));
-	}
-
-	protected LazyLoadExpectation expectLazy(Object stub, Class<?> daoClass, String methodName, Object... parameters) {
-		return new LazyLoadExpectation(stub, daoClass, methodName, parameters);
 	}
 }
