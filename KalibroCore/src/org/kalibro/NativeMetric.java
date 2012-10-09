@@ -1,6 +1,7 @@
 package org.kalibro;
 
 import java.util.Arrays;
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -11,7 +12,7 @@ import java.util.TreeSet;
  */
 public class NativeMetric extends Metric {
 
-	private SortedSet<Language> languages;
+	private Set<Language> languages;
 
 	@SuppressWarnings("unused" /* used by SnakeYaml */)
 	private NativeMetric() {
@@ -31,6 +32,6 @@ public class NativeMetric extends Metric {
 	}
 
 	public final SortedSet<Language> getLanguages() {
-		return languages;
+		return new TreeSet<Language>(languages);
 	}
 }

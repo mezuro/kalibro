@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
-import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -33,16 +33,13 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
 	protected abstract ENTITY loadFixture();
 
-	private void createDto() throws Exception {
+	protected void createDto() throws Exception {
 		Class<?> dtoClass = Class.forName(getClass().getName().replace("Test", ""));
 		dto = (DataTransferObject<ENTITY>) mock(dtoClass, Mockito.CALLS_REAL_METHODS);
+		FieldReflector reflector = new FieldReflector(entity);
 		for (Method method : dtoClass.getDeclaredMethods())
-			if (Modifier.isAbstract(method.getModifiers()))
-				doReturn(entityField(method.getName())).when(dto, method).withNoArguments();
-	}
-
-	private Object entityField(String field) {
-		return Whitebox.getInternalState(entity, field);
+			if (Modifier.isAbstract(method.getModifiers()) && reflector.listFields().contains(method.getName()))
+				doReturn(reflector.get(method.getName())).when(dto, method).withNoArguments();
 	}
 
 	private void mockLazyLoading() {

@@ -1,4 +1,7 @@
  &id1 !!org.kalibro.NativeMetric
 name: "Lack of Cohesion of Methods"
 scope: CLASS
-languages: {C, CPP, JAVA}
+languages:
+  - C
+  - CPP
+  - JAVA
