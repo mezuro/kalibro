@@ -1,14 +1,20 @@
 package org.kalibro.dao;
 
-import java.util.Set;
 import java.util.SortedSet;
 
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 
+/**
+ * Data access object for {@link Repository}.
+ * 
+ * @author Carlos Morais
+ */
 public interface RepositoryDao {
 
 	SortedSet<RepositoryType> supportedTypes();
+
+	SortedSet<Repository> repositoriesOf(Long projectId);
 
 	Long save(Repository repository, Long projectId);
 
@@ -17,6 +23,4 @@ public interface RepositoryDao {
 	void cancelProcessing(Long repositoryId);
 
 	void delete(Long repositoryId);
-
-	Set<Repository> repositoriesOf(Long projectId);
 }

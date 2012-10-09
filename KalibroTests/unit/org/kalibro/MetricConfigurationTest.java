@@ -89,10 +89,20 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void shouldAssertNoConflictWithOtherMetricConfiguration() {
 		metricConfiguration.assertNoConflictWith(withCode("code"));
+
+		final CompoundMetric metric = (CompoundMetric) metricConfiguration.getMetric();
+		metricConfiguration.setCode("other");
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				metricConfiguration.assertNoConflictWith(new MetricConfiguration(metric));
+			}
+		}).throwsException().withMessage("Metric already exists in the configuration: New metric");
 	}
 
 	private MetricConfiguration withCode(String code) {
-		MetricConfiguration newConfiguration = new MetricConfiguration();
+		MetricConfiguration newConfiguration = new MetricConfiguration(new CompoundMetric("Other"));
 		newConfiguration.setCode(code);
 		return newConfiguration;
 	}

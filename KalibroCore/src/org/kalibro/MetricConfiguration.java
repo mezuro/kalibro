@@ -78,6 +78,7 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 
 	void assertNoConflictWith(MetricConfiguration other) {
 		assertNoCodeConflict(other, code);
+		throwExceptionIf(other.metric.equals(metric), "Metric already exists in the configuration: " + metric);
 	}
 
 	private void assertNoCodeConflict(MetricConfiguration other, String theCode) {

@@ -1,31 +1,23 @@
 package org.kalibro.dao;
 
-import java.util.List;
 import java.util.SortedSet;
 
 import org.kalibro.Project;
 
+/**
+ * Data access object for {@link Project}.
+ * 
+ * @author Carlos Morais
+ */
 public interface ProjectDao {
 
-	Long save(Project project);
+	boolean exists(Long projectId);
 
-	List<String> getProjectNames();
-
-	boolean hasProject(String projectName);
-
-	Project getProject(String projectName);
-
-	void removeProject(String projectName);
-
-	void processProject(String projectName);
-
-	void processPeriodically(String projectName, Integer periodInDays);
-
-	Integer getProcessPeriod(String projectName);
-
-	void cancelPeriodicProcess(String projectName);
+	Project get(Long projectId);
 
 	SortedSet<Project> all();
+
+	Long save(Project project);
 
 	void delete(Long projectId);
 }

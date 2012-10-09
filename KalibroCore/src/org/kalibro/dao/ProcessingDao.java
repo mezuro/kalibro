@@ -2,23 +2,33 @@ package org.kalibro.dao;
 
 import java.util.Date;
 
+import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 
+/**
+ * Data access object for {@link Processing}.
+ * 
+ * @author Carlos Morais
+ */
 public interface ProcessingDao {
 
-	void save(Processing repositoryResult);
+	boolean hasProcessing(Long repositoryId);
 
-	boolean hasResultsFor(String projectName);
+	boolean hasReadyProcessing(Long repositoryId);
 
-	boolean hasResultsBefore(Date date, String projectName);
+	boolean hasProcessingBefore(Date date, Long repositoryId);
 
-	boolean hasResultsAfter(Date date, String projectName);
+	boolean hasProcessingAfter(Date date, Long repositoryId);
 
-	Processing getFirstResultOf(String projectName);
+	ProcessState lastProcessingState(Long repositoryId);
 
-	Processing getLastResultOf(String projectName);
+	Processing lastReadyProcessing(Long repositoryId);
 
-	Processing getLastResultBefore(Date date, String projectName);
+	Processing firstProcessing(Long repositoryId);
 
-	Processing getFirstResultAfter(Date date, String projectName);
+	Processing lastProcessing(Long repositoryId);
+
+	Processing firstProcessingAfter(Date date, Long repositoryId);
+
+	Processing lastProcessingBefore(Date date, Long repositoryId);
 }
