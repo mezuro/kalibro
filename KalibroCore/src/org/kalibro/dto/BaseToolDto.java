@@ -18,11 +18,11 @@ public abstract class BaseToolDto extends DataTransferObject<BaseTool> {
 		return new BaseTool(name(), description, supportedMetrics(), collectorClassName());
 	}
 
-	protected abstract String name();
+	public abstract String name();
 
-	protected abstract String description();
+	public abstract String description();
 
-	protected abstract Set<NativeMetric> supportedMetrics();
+	public abstract Set<NativeMetric> supportedMetrics();
 
-	protected abstract String collectorClassName();
+	public abstract String collectorClassName();
 }

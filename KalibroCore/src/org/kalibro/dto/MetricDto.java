@@ -29,15 +29,15 @@ public abstract class MetricDto extends DataTransferObject<Metric> {
 		return new NativeMetric(name(), scope(), languages().toArray(new Language[0]));
 	}
 
-	protected abstract boolean compound();
+	public abstract boolean compound();
 
-	protected abstract String name();
+	public abstract String name();
 
-	protected abstract Granularity scope();
+	public abstract Granularity scope();
 
-	protected abstract String description();
+	public abstract String description();
 
-	protected abstract Set<Language> languages();
+	public abstract Set<Language> languages();
 
-	protected abstract String script();
+	public abstract String script();
 }
