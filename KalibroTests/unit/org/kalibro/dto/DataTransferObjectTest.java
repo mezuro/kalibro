@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 
 import org.junit.Test;
+import org.kalibro.Reading;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.UnitTest;
 
@@ -48,6 +49,20 @@ public class DataTransferObjectTest extends UnitTest {
 	@Test
 	public void shouldConvertDtosToSortedSet() {
 		assertTrue(DataTransferObject.toSortedSet(new ArrayList<DataTransferObject<String>>()).isEmpty());
+	}
+
+	@Test
+	public void shouldSetEntityId() {
+		final Long id = mock(Long.class);
+		assertSame(id, new DataTransferObject<Reading>() {
+
+			@Override
+			public Reading convert() {
+				Reading reading = new Reading();
+				setId(reading, id);
+				return reading;
+			}
+		}.convert().getId());
 	}
 
 	private class ErrorDto extends DataTransferObject<Color> {
