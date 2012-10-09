@@ -22,6 +22,7 @@ public class ModuleResultTest extends UnitTest {
 
 	@Test
 	public void checkConstruction() {
+		assertNull(result.getId());
 		assertSame(module, result.getModule());
 		assertDoubleEquals(Double.NaN, result.getGrade());
 		assertSame(parent, result.getParent());
@@ -51,7 +52,7 @@ public class ModuleResultTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSetParentOnChildren() {
+	public void shouldSetParentOnGettingChildren() {
 		ModuleResult child = new ModuleResult(null, new Module(Granularity.METHOD, "getParent"));
 		result.setChildren(asSortedSet(child));
 		assertDeepEquals(asSet(child), result.getChildren());
@@ -64,6 +65,14 @@ public class ModuleResultTest extends UnitTest {
 		SortedSet<ModuleResult> children = mock(SortedSet.class);
 		result.setChildren(children);
 		verifyZeroInteractions(children);
+	}
+
+	@Test
+	public void shouldSetParentOnAddChild() {
+		ModuleResult child = new ModuleResult(null, new Module(Granularity.METHOD, "getParent"));
+		result.addChild(child);
+		assertDeepEquals(asSet(child), result.getChildren());
+		assertSame(result, child.getParent());
 	}
 
 	@Test

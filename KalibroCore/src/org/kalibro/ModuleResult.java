@@ -13,6 +13,8 @@ import org.kalibro.core.abstractentity.Ignore;
  */
 public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
+	private Long id;
+
 	private Double grade;
 
 	@Ignore
@@ -21,9 +23,17 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	public ModuleResult(ModuleResult parent, Module module) {
 		super(module);
-		this.grade = Double.NaN;
+		setGrade(Double.NaN);
 		this.parent = parent;
 		setChildren(new TreeSet<ModuleResult>());
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public Double getGrade() {
+		return grade;
 	}
 
 	public void calculateGrade() {
@@ -35,11 +45,11 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 				gradeSum += metricResult.getGrade() * weight;
 				weightSum += weight;
 			}
-		grade = gradeSum / weightSum;
+		setGrade(gradeSum / weightSum);
 	}
 
-	public Double getGrade() {
-		return grade;
+	public void setGrade(Double grade) {
+		this.grade = grade;
 	}
 
 	public ModuleResult getParent() {
@@ -54,6 +64,11 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	public void setChildren(SortedSet<ModuleResult> children) {
 		this.children = children;
+	}
+
+	public void addChild(ModuleResult child) {
+		child.parent = this;
+		children.add(child);
 	}
 
 	@Override
