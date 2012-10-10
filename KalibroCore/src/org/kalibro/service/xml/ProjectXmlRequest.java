@@ -22,7 +22,7 @@ public class ProjectXmlRequest extends DataTransferObject<Project> {
 	private String description;
 
 	@XmlElement(required = true)
-	private RepositoryXml repository;
+	private RepositoryXmlRequest repository;
 
 	@XmlElement(required = true)
 	private String configurationName;
@@ -35,7 +35,7 @@ public class ProjectXmlRequest extends DataTransferObject<Project> {
 		name = project.getName();
 		license = project.getLicense();
 		description = project.getDescription();
-		repository = new RepositoryXml(project.getRepository());
+		repository = new RepositoryXmlRequest(project.getRepository());
 		configurationName = project.getConfigurationName();
 	}
 

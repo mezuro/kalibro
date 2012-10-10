@@ -18,7 +18,7 @@ public class ProjectXmlResponse extends DataTransferObject<Project> {
 	private String name;
 	private String license;
 	private String description;
-	private RepositoryXml repository;
+	private RepositoryXmlRequest repository;
 
 	private ProcessState state;
 	private ThrowableXml error;
@@ -34,7 +34,7 @@ public class ProjectXmlResponse extends DataTransferObject<Project> {
 		name = project.getName();
 		license = project.getLicense();
 		description = project.getDescription();
-		repository = new RepositoryXml(project.getRepository());
+		repository = new RepositoryXmlRequest(project.getRepository());
 		initializeState(project);
 		initializeError(project);
 		configurationName = project.getConfigurationName();

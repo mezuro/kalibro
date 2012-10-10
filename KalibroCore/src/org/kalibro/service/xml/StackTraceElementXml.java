@@ -7,6 +7,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.dto.StackTraceElementDto;
 
+/**
+ * XML element for {@link StackTraceElement}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "stackTraceElement")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StackTraceElementXml extends StackTraceElementDto {
