@@ -16,7 +16,7 @@ public abstract class RangeDto extends DataTransferObject<Range> {
 		Range range = new Range(beginning(), end());
 		setId(range, id());
 		range.setReading(reading());
-		range.setComments(comments());
+		range.setComments(comments() == null ? "" : comments());
 		return range;
 	}
 

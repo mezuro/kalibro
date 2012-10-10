@@ -2,6 +2,7 @@ package org.kalibro.service.xml;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.SortedSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -67,5 +68,10 @@ public class MetricConfigurationXmlRequest extends DataTransferObject<MetricConf
 		if (ranges != null)
 			for (RangeXmlRequest range : ranges)
 				metricConfiguration.addRange(range.convert());
+	}
+
+	public SortedSet<Range> ranges() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

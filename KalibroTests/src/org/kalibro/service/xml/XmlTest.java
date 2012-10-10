@@ -33,6 +33,10 @@ public abstract class XmlTest extends ConcreteDtoTest {
 		assertEquals(XmlAccessType.FIELD, accessorType.value());
 	}
 
+	protected void assertElement(String field, Class<?> type) {
+		assertElement(field, type, false);
+	}
+
 	protected void assertElement(String field, Class<?> type, boolean required) {
 		assertEquals(type, dtoReflector.getFieldType(field));
 		XmlElement element = dtoReflector.getFieldAnnotation(field, XmlElement.class);
@@ -40,11 +44,12 @@ public abstract class XmlTest extends ConcreteDtoTest {
 		assertEquals(required, element.required());
 	}
 
-	protected void assertCollection(String field, boolean required, String elementName) {
+	protected void assertCollection(String elementName) {
+		String field = elementName + "s";
 		assertEquals(Collection.class, dtoReflector.getFieldType(field));
 		XmlElement element = dtoReflector.getFieldAnnotation(field, XmlElement.class);
 		assertNotNull(element);
-		assertEquals(required, element.required());
+		assertFalse(element.required());
 		assertEquals(elementName, element.name());
 	}
 

@@ -1,11 +1,14 @@
 package org.kalibro.service.xml;
 
+import java.util.SortedSet;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Project;
+import org.kalibro.Repository;
 import org.kalibro.dto.DataTransferObject;
 
 @XmlRootElement(name = "project")
@@ -45,5 +48,10 @@ public class ProjectXmlRequest extends DataTransferObject<Project> {
 		project.setRepository(repository.convert());
 		project.setConfigurationName(configurationName);
 		return project;
+	}
+
+	public SortedSet<Repository> repositories() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

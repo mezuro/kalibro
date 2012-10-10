@@ -1,16 +1,11 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.ProjectFixtures.newHelloWorld;
-
-import org.kalibro.KalibroException;
-import org.kalibro.Project;
-
-public class ProjectXmlResponseTest extends XmlTest<Project> {
+public class ProjectXmlResponseTest extends XmlTest {
 
 	@Override
-	protected Project loadFixture() {
-		Project fixture = newHelloWorld();
-		fixture.setError(new KalibroException("ProjectXmlResponseTest", new Exception()));
-		return fixture;
+	public void verifyElements() {
+		assertElement("id", Long.class);
+		assertElement("name", String.class);
+		assertElement("description", String.class);
 	}
 }

@@ -3,25 +3,19 @@ package org.kalibro.service.xml;
 import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
-import org.kalibro.Configuration;
 
-public class ConfigurationXmlRequestTest extends XmlTest<Configuration> {
+public class ConfigurationXmlRequestTest extends XmlTest {
 
 	@Override
-	protected Configuration loadFixture() {
-		return loadFixture("sc", Configuration.class);
-	}
-
-	@Test
 	public void verifyElements() {
-		assertElement("id", Long.class, false);
+		assertElement("id", Long.class);
 		assertElement("name", String.class, true);
-		assertElement("description", String.class, false);
-		assertCollection("metricConfigurations", false, "metricConfiguration");
+		assertElement("description", String.class);
+		assertCollection("metricConfiguration");
 	}
 
 	@Test
-	public void shouldConvertNullMetricConfigurationsIntoEmptyList() {
+	public void shouldConvertNullMetricConfigurationsIntoEmptyCollection() {
 		assertTrue(new ConfigurationXmlRequest().metricConfigurations().isEmpty());
 	}
 }

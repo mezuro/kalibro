@@ -1,13 +1,16 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
+import org.kalibro.Statistic;
 
-import org.kalibro.MetricConfiguration;
-
-public class MetricConfigurationXmlResponseTest extends XmlTest<MetricConfiguration> {
+public class MetricConfigurationXmlResponseTest extends XmlTest {
 
 	@Override
-	protected MetricConfiguration loadFixture() {
-		return metricConfiguration("loc");
+	public void verifyElements() {
+		assertElement("id", Long.class);
+		assertElement("code", String.class);
+		assertElement("metric", MetricXmlResponse.class);
+		assertElement("baseTool", BaseToolXml.class);
+		assertElement("weight", Double.class);
+		assertElement("aggregationForm", Statistic.class);
 	}
 }

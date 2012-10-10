@@ -1,13 +1,12 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.ModuleFixtures.helloWorldApplication;
+import org.kalibro.Granularity;
 
-import org.kalibro.Module;
-
-public class ModuleXmlTest extends XmlTest<Module> {
+public class ModuleXmlTest extends XmlTest {
 
 	@Override
-	protected Module loadFixture() {
-		return helloWorldApplication();
+	public void verifyElements() {
+		assertElement("name", String[].class);
+		assertElement("granularity", Granularity.class);
 	}
 }

@@ -1,11 +1,12 @@
 package org.kalibro.service.xml;
 
-import org.kalibro.Range;
-
-public class RangeXmlResponseTest extends XmlTest<Range> {
+public class RangeXmlResponseTest extends XmlTest {
 
 	@Override
-	protected Range loadFixture() {
-		return loadFixture("lcom4-bad", Range.class);
+	public void verifyElements() {
+		assertElement("id", Long.class);
+		assertElement("beginning", Double.class);
+		assertElement("end", Double.class);
+		assertElement("comments", String.class);
 	}
 }

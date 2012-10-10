@@ -1,6 +1,7 @@
 package org.kalibro.service.xml;
 
 import java.util.Collection;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -66,5 +67,10 @@ public class MetricResultXml extends DataTransferObject<MetricResult> {
 	private void convertRange(MetricResult metricResult) {
 		if (range != null)
 			metricResult.setRange(range.convert());
+	}
+
+	public List<Double> descendentResults() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
