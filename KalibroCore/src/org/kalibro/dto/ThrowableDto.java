@@ -38,7 +38,7 @@ public abstract class ThrowableDto extends DataTransferObject<Throwable> {
 
 	public abstract String detailMessage();
 
-	public abstract StackTraceElement[] stackTrace();
-
 	public abstract Throwable cause();
+
+	public abstract StackTraceElement[] stackTrace();
 }
