@@ -4,6 +4,6 @@ public class StackTraceElementDtoTest extends AbstractDtoTest<StackTraceElement>
 
 	@Override
 	protected StackTraceElement loadFixture() {
-		return new Exception().getStackTrace()[0];
+		return new ThrowableDtoTest().loadFixture().getStackTrace()[0];
 	}
 }
