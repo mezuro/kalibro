@@ -1,6 +1,7 @@
 package org.kalibro.service.xml;
 
 import org.junit.runner.RunWith;
+import org.kalibro.Configuration;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dto.DaoLazyLoader;
@@ -14,12 +15,13 @@ public class RepositoryXmlRequestTest extends XmlTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		Configuration configuration = loadFixture("sc", Configuration.class);
 		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(eq(ConfigurationDao.class), eq("get"), any())).thenReturn(null);
+		when(DaoLazyLoader.createProxy(eq(ConfigurationDao.class), eq("get"), any())).thenReturn(configuration);
 	}
 
 	@Override
-	public void verifyElements() {
+	protected void verifyElements() {
 		assertElement("id", Long.class);
 		assertElement("name", String.class, true);
 		assertElement("description", String.class);

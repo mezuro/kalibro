@@ -8,6 +8,11 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.Range;
 import org.kalibro.dto.RangeDto;
 
+/**
+ * XML element for {@link Range} responses.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "range")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RangeXmlResponse extends RangeDto {

@@ -57,5 +57,9 @@ public abstract class XmlTest extends ConcreteDtoTest {
 	}
 
 	@Test
-	public abstract void verifyElements();
+	public void shouldHaveCorrectElements() {
+		verifyElements();
+	}
+
+	protected abstract void verifyElements();
 }

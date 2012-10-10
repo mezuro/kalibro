@@ -12,8 +12,7 @@ import org.powermock.reflect.Whitebox;
 
 public abstract class ConcreteDtoTest extends UnitTest {
 
-	private Object dto, entity;
-
+	protected Object dto, entity;
 	protected FieldReflector dtoReflector, entityReflector;
 
 	@Before

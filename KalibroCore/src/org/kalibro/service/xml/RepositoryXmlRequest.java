@@ -13,7 +13,7 @@ import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
- * XML element for {@link Repository} responses.
+ * XML element for {@link Repository} requests.
  * 
  * @author Carlos Morais
  */
@@ -57,6 +57,7 @@ public class RepositoryXmlRequest extends RepositoryDto {
 		processPeriod = repository.getProcessPeriod();
 		type = repository.getType();
 		address = repository.getAddress();
+		configurationId = repository.getConfiguration().getId();
 	}
 
 	@Override

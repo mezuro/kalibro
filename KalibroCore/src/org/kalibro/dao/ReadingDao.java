@@ -11,6 +11,8 @@ import org.kalibro.Reading;
  */
 public interface ReadingDao {
 
+	Reading get(Long readingId);
+
 	Reading readingOf(Long rangeId);
 
 	SortedSet<Reading> readingsOf(Long groupId);

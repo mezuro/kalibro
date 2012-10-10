@@ -5,7 +5,7 @@ import org.kalibro.RepositoryType;
 public class RepositoryXmlResponseTest extends XmlTest {
 
 	@Override
-	public void verifyElements() {
+	protected void verifyElements() {
 		assertElement("id", Long.class);
 		assertElement("name", String.class);
 		assertElement("description", String.class);

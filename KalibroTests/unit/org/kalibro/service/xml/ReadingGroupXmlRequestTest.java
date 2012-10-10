@@ -7,7 +7,7 @@ import org.junit.Test;
 public class ReadingGroupXmlRequestTest extends XmlTest {
 
 	@Override
-	public void verifyElements() {
+	protected void verifyElements() {
 		assertElement("id", Long.class);
 		assertElement("name", String.class, true);
 		assertElement("description", String.class);
