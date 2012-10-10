@@ -11,7 +11,7 @@ public class ProjectXmlRequestTest extends XmlTest {
 		assertElement("id", Long.class);
 		assertElement("name", String.class, true);
 		assertElement("description", String.class);
-		assertCollection("repository");
+		assertCollection("repositories", "repository");
 	}
 
 	@Test
