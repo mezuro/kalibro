@@ -1,7 +1,5 @@
 package org.kalibro.dto;
 
-import java.util.List;
-
 import org.kalibro.Range;
 import org.kalibro.dao.ReadingDao;
 
@@ -13,7 +11,7 @@ public class RangeDtoTest extends AbstractDtoTest<Range> {
 	}
 
 	@Override
-	protected List<LazyLoadExpectation> lazyLoadExpectations() {
-		return asList(expectLazy(entity.getReading(), ReadingDao.class, "readingOf", entity.getId()));
+	protected void registerLazyLoadExpectations() {
+		whenLazy(ReadingDao.class, "readingOf", entity.getId()).thenReturn(entity.getReading());
 	}
 }

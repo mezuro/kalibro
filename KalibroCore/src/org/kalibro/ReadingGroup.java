@@ -51,7 +51,6 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public ReadingGroup(String name) {
-		setId(null);
 		setName(name);
 		setDescription("");
 		setReadings(new TreeSet<Reading>());
@@ -63,10 +62,6 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	public boolean hasId() {
 		return id != null;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {

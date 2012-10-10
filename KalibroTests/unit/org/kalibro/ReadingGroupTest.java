@@ -169,7 +169,7 @@ public class ReadingGroupTest extends UnitTest {
 	public void shouldNotifyReadingsOfDeletion() {
 		Reading reading = mock(Reading.class);
 		group.setReadings(asSortedSet(reading));
-		group.setId(42L);
+		Whitebox.setInternalState(group, "id", 42L);
 
 		group.delete();
 		verify(reading).deleted();
