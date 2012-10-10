@@ -27,25 +27,26 @@ public class MetricResultTest extends UnitTest {
 	}
 
 	@Test
-	public void checkNormalConstruction() {
-		assertSame(configuration.getMetric(), result.getMetric());
+	public void checkValueConstruction() {
 		assertSame(VALUE, result.getValue());
 		assertFalse(result.hasError());
-		assertSame(configuration, result.getConfiguration());
-		assertTrue(result.getDescendentResults().isEmpty());
+		checkConstruction();
 	}
 
 	@Test
-	public void checkCompoundMetricWithErrorConstruction() {
-		CompoundMetric compoundMetric = mock(CompoundMetric.class);
+	public void checkErrorConstruction() {
 		Throwable error = mock(Throwable.class);
-		result = new MetricResult(compoundMetric, error);
-		assertSame(compoundMetric, result.getMetric());
+		result = new MetricResult(configuration, error);
 		assertDoubleEquals(Double.NaN, result.getValue());
 		assertTrue(result.hasError());
 		assertSame(error, result.getError());
-		assertNull(result.getConfiguration());
-		assertNull(result.getDescendentResults());
+		checkConstruction();
+	}
+
+	private void checkConstruction() {
+		assertSame(configuration.getMetric(), result.getMetric());
+		assertSame(configuration, result.getConfiguration());
+		assertTrue(result.getDescendentResults().isEmpty());
 	}
 
 	@Test

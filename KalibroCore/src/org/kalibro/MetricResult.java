@@ -15,15 +15,15 @@ public class MetricResult extends AbstractMetricResult {
 	private Throwable error;
 	private List<Double> descendentResults;
 
+	public MetricResult(MetricConfiguration configuration, Throwable error) {
+		this(configuration, Double.NaN);
+		this.error = error;
+	}
+
 	public MetricResult(MetricConfiguration configuration, Double value) {
 		super(configuration.getMetric(), value);
 		this.configuration = configuration;
 		setDescendentResults(new ArrayList<Double>());
-	}
-
-	public MetricResult(CompoundMetric metric, Throwable error) {
-		super(metric, Double.NaN);
-		this.error = error;
 	}
 
 	public boolean hasError() {
