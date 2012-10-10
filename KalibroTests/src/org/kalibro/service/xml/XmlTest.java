@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.kalibro.core.Identifier;
 import org.kalibro.dto.ConcreteDtoTest;
 
-public abstract class XmlTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
+public abstract class XmlTest extends ConcreteDtoTest {
 
 	@Test
 	public void elementNameShouldBeEntityNameAsVariable() throws ClassNotFoundException {
@@ -47,4 +47,7 @@ public abstract class XmlTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
 		assertEquals(required, element.required());
 		assertEquals(elementName, element.name());
 	}
+
+	@Test
+	public abstract void verifyElements();
 }

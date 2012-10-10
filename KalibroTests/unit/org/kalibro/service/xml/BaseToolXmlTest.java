@@ -1,11 +1,12 @@
 package org.kalibro.service.xml;
 
-import org.kalibro.BaseTool;
-
-public class BaseToolXmlTest extends XmlTest<BaseTool> {
+public class BaseToolXmlTest extends XmlTest {
 
 	@Override
-	protected BaseTool loadFixture() {
-		return loadFixture("inexistent", BaseTool.class);
+	public void verifyElements() {
+		assertElement("name", String.class, false);
+		assertElement("description", String.class, false);
+		assertElement("collectorClassName", String.class, false);
+		assertCollection("supportedMetrics", false, "supportedMetric");
 	}
 }

@@ -5,8 +5,14 @@ supportedMetrics:
   -
     name: "Coupling Between Objects"
     scope: CLASS
-    languages: {C, CPP, JAVA}
+    languages:
+      - C
+      - CPP
+      - JAVA
   -
     name: "Lack of Cohesion of Methods"
     scope: CLASS
-    languages: {C, CPP, JAVA}
+    languages:
+      - C
+      - CPP
+      - JAVA

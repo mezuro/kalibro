@@ -9,7 +9,7 @@ public class ConfigurationXmlRequestTest extends XmlTest<Configuration> {
 
 	@Override
 	protected Configuration loadFixture() {
-		return loadFixture("analizo", Configuration.class);
+		return loadFixture("sc", Configuration.class);
 	}
 
 	@Test

@@ -8,11 +8,11 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.tests.UnitTest;
+import org.powermock.reflect.Whitebox;
 
-public abstract class ConcreteDtoTest<ENTITY> extends UnitTest {
+public abstract class ConcreteDtoTest extends UnitTest {
 
-	private Object dto;
-	private ENTITY entity;
+	private Object dto, entity;
 
 	protected FieldReflector dtoReflector, entityReflector;
 
@@ -24,7 +24,10 @@ public abstract class ConcreteDtoTest<ENTITY> extends UnitTest {
 		entityReflector = new FieldReflector(entity);
 	}
 
-	protected abstract ENTITY loadFixture();
+	private Object loadFixture() throws Exception {
+		Object abstractDtoTest = Class.forName(dtoClass().getSuperclass().getName() + "Test").newInstance();
+		return Whitebox.invokeMethod(abstractDtoTest, "loadFixture");
+	}
 
 	@Test
 	public void shouldHavePublicDefaultConstructor() throws Exception {
