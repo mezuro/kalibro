@@ -45,8 +45,11 @@ public abstract class XmlTest extends ConcreteDtoTest {
 	}
 
 	protected void assertCollection(String elementName) {
-		String field = elementName + "s";
-		assertEquals(Collection.class, dtoReflector.getFieldType(field));
+		assertCollection(elementName + 's', elementName);
+	}
+
+	protected void assertCollection(String field, String elementName) {
+		assertTrue(Collection.class.isAssignableFrom(dtoReflector.getFieldType(field)));
 		XmlElement element = dtoReflector.getFieldAnnotation(field, XmlElement.class);
 		assertNotNull(element);
 		assertFalse(element.required());

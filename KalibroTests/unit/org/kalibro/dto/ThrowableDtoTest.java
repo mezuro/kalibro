@@ -14,7 +14,7 @@ public class ThrowableDtoTest extends AbstractDtoTest<Throwable> {
 
 	@Override
 	protected Throwable loadFixture() {
-		return new Exception("ThrowableDtoTest message", new NullPointerException());
+		return new Throwable("ThrowableDtoTest message", new NullPointerException());
 	}
 
 	@Test

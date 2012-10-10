@@ -7,6 +7,6 @@ public class ThrowableXmlTest extends XmlTest {
 		assertElement("throwableClass", String.class);
 		assertElement("detailMessage", String.class);
 		assertElement("cause", ThrowableXml.class);
-		assertCollection("stackTrace");
+		assertCollection("stackTrace", "stackTraceElement");
 	}
 }
