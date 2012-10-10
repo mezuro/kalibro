@@ -8,15 +8,20 @@ import org.kalibro.ModuleResult;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.dao.ModuleResultDao;
 
+/**
+ * Data transfer object for {@link ModuleResult}.
+ * 
+ * @author Carlos Morais
+ */
 public abstract class ModuleResultDto extends DataTransferObject<ModuleResult> {
 
 	@Override
 	public ModuleResult convert() {
 		ModuleResult moduleResult = new ModuleResult(parent(), module());
 		setId(moduleResult, id());
-		moduleResult.setMetricResults(metricResults());
 		moduleResult.setGrade(grade());
 		moduleResult.setChildren(children());
+		moduleResult.setMetricResults(metricResults());
 		return moduleResult;
 	}
 

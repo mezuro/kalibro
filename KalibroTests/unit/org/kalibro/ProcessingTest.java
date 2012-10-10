@@ -50,6 +50,7 @@ public class ProcessingTest extends UnitTest {
 
 	@Test
 	public void checkConstruction() {
+		assertNull(processing.getId());
 		assertSame(repository, processing.getRepository());
 		assertEquals(new Date().getTime(), processing.getDate().getTime(), 100);
 		assertEquals(LOADING, processing.getState());

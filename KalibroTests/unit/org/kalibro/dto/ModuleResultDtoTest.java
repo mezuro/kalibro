@@ -11,9 +11,9 @@ public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 	@Override
 	protected ModuleResult loadFixture() {
 		Module module = mock(Module.class);
-		ModuleResult parent = mock(ModuleResult.class);
-		ModuleResult child = mock(ModuleResult.class);
 		MetricResult metricResult = new MetricResultDtoTest().loadFixture();
+		ModuleResult child = mock(ModuleResult.class), parent = mock(ModuleResult.class);
+
 		ModuleResult moduleResult = new ModuleResult(parent, module);
 		moduleResult.addMetricResult(metricResult);
 		moduleResult.addChild(child);

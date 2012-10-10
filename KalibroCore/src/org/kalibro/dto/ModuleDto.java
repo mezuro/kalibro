@@ -3,6 +3,11 @@ package org.kalibro.dto;
 import org.kalibro.Granularity;
 import org.kalibro.Module;
 
+/**
+ * Data transfer object for {@link Module}.
+ * 
+ * @author Carlos Morais
+ */
 public abstract class ModuleDto extends DataTransferObject<Module> {
 
 	@Override

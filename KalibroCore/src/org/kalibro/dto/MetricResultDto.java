@@ -2,7 +2,6 @@ package org.kalibro.dto;
 
 import java.util.List;
 
-import org.kalibro.CompoundMetric;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
 
@@ -25,15 +24,14 @@ public abstract class MetricResultDto extends DataTransferObject<MetricResult> {
 	}
 
 	private MetricResult convertWithError() {
-		CompoundMetric metric = (CompoundMetric) configuration().getMetric();
-		return new MetricResult(metric, error());
+		return new MetricResult(configuration(), error());
 	}
-
-	public abstract Throwable error();
 
 	public abstract MetricConfiguration configuration();
 
 	public abstract Double value();
+
+	public abstract Throwable error();
 
 	public abstract List<Double> descendentResults();
 }

@@ -17,6 +17,8 @@ import org.kalibro.core.abstractentity.SortingFields;
 @SortingFields({"repository", "date"})
 public class Processing extends AbstractEntity<Processing> {
 
+	private Long id;
+
 	@IdentityField
 	private Repository repository;
 
@@ -34,6 +36,10 @@ public class Processing extends AbstractEntity<Processing> {
 		setDate(new Date());
 		setState(ProcessState.LOADING);
 		stateTimes = new HashMap<ProcessState, Long>();
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public Repository getRepository() {
