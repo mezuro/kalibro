@@ -12,7 +12,8 @@ import org.powermock.reflect.Whitebox;
 
 public abstract class ConcreteDtoTest extends UnitTest {
 
-	protected Object dto, entity;
+	private Object dto, entity;
+
 	protected FieldReflector dtoReflector, entityReflector;
 
 	@Before
@@ -23,7 +24,7 @@ public abstract class ConcreteDtoTest extends UnitTest {
 		entityReflector = new FieldReflector(entity);
 	}
 
-	private Object loadFixture() throws Exception {
+	protected Object loadFixture() throws Exception {
 		Object abstractDtoTest = Class.forName(dtoClass().getSuperclass().getName() + "Test").newInstance();
 		return Whitebox.invokeMethod(abstractDtoTest, "loadFixture");
 	}
