@@ -10,7 +10,7 @@ import org.kalibro.ProcessState;
 public class ProcessingXmlTest extends XmlTest {
 
 	@Override
-	public void verifyElements() {
+	protected void verifyElements() {
 		assertElement("id", Long.class);
 		assertElement("date", Date.class);
 		assertElement("state", ProcessState.class);
