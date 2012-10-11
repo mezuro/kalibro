@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import java.util.SortedSet;
 
@@ -32,7 +31,7 @@ public class ListTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		ranges = metricConfiguration("amloc").getRanges();
+		ranges = asSortedSet(loadFixture("lcom4-bad", Range.class));
 		list = new List<Range>("ranges", ranges, 5);
 		innerList = new ComponentFinder(list).find("ranges", JList.class);
 	}

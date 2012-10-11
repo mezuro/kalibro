@@ -1,10 +1,10 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.ConfigurationFixtures.*;
-
+import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
+import org.kalibro.tests.UnitTest;
 
 public final class ConfigurationPanelManualTest extends ConfigurationPanel implements
 	TablePanelListener<MetricConfiguration> {
@@ -15,7 +15,7 @@ public final class ConfigurationPanelManualTest extends ConfigurationPanel imple
 
 	private ConfigurationPanelManualTest() {
 		super();
-		set(newConfiguration("amloc", "cbo"));
+		set(UnitTest.loadFixture("sc", Configuration.class));
 		addMetricConfigurationsListener(this);
 	}
 

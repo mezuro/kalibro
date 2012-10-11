@@ -1,8 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.RangeFixtures.newRange;
-import static org.kalibro.RangeLabel.*;
 
 import java.awt.Color;
 
@@ -45,10 +43,7 @@ public class ReflectionColumnTest extends UnitTest {
 
 	@Test
 	public void checkValue() {
-		Range greenRange = newRange("amloc", EXCELLENT);
-		assertEquals(0, column.getValue(greenRange));
-
-		Range redRange = newRange("amloc", BAD);
+		Range redRange = loadFixture("lcom4-bad", Range.class);
 		assertEquals(255, column.getValue(redRange));
 	}
 

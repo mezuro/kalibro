@@ -1,9 +1,7 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.DefaultListSelectionModel;
@@ -33,7 +31,7 @@ public class TableTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		data = new ArrayList<Range>(metricConfiguration("amloc").getRanges());
+		data = asList(loadFixture("lcom4-bad", Range.class));
 		createModel();
 		table = new Table<Range>("ranges", model, 5);
 		table.setData(data);

@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import java.awt.Color;
 
@@ -21,7 +20,7 @@ public class ReflectionTableModelTest extends UnitTest {
 		model.addColumn(new ReflectionColumn("beginning", 0));
 		model.addColumn(new ReflectionColumn("label", 0));
 		model.addColumn(new ReflectionColumn("color", 0));
-		model.setData(metricConfiguration("amloc").getRanges());
+		model.setData(asList(loadFixture("lcom4-bad", Range.class)));
 	}
 
 	@Test

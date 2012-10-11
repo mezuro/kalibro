@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.kalibro.ConfigurationFixtures.*;
+import static org.kalibro.tests.UnitTest.loadFixture;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -10,6 +10,7 @@ import java.util.Collection;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
+import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
@@ -24,7 +25,7 @@ public final class ListManualTest extends JPanel implements ActionListener, List
 
 	private ListManualTest() {
 		super(new BorderLayout());
-		Collection<MetricConfiguration> data = kalibroConfiguration().getMetricConfigurations();
+		Collection<MetricConfiguration> data = loadFixture("sc", Configuration.class).getMetricConfigurations();
 		list = new List<MetricConfiguration>("", data, 8);
 		list.addListListener(this);
 		Button button = new Button("", "Clear selection", this);

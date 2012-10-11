@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.MetricConfigurationFixtures.*;
-import static org.kalibro.MetricFixtures.*;
+import static org.kalibro.tests.UnitTest.loadFixture;
 
+import org.kalibro.CompoundMetric;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
@@ -11,8 +11,8 @@ import org.kalibro.desktop.swingextension.list.TablePanelListener;
 public final class MetricConfigurationPanelManualTest implements TablePanelListener<Range> {
 
 	public static void main(String[] args) {
-		new MetricConfigurationPanelManualTest(metricConfiguration("amloc"));
-		new MetricConfigurationPanelManualTest(new MetricConfiguration(sc()));
+		new MetricConfigurationPanelManualTest(loadFixture("lcom4", MetricConfiguration.class));
+		new MetricConfigurationPanelManualTest(new MetricConfiguration(loadFixture("sc", CompoundMetric.class)));
 	}
 
 	private MetricConfigurationPanelManualTest(MetricConfiguration configuration) {

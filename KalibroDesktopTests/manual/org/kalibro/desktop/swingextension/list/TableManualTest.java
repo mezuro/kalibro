@@ -1,6 +1,7 @@
 package org.kalibro.desktop.swingextension.list;
 
-import static org.kalibro.MetricConfigurationFixtures.*;
+import static org.kalibro.tests.SpecialAssertions.asList;
+import static org.kalibro.tests.UnitTest.loadFixture;
 
 import java.awt.Color;
 import java.awt.GridLayout;
@@ -22,7 +23,7 @@ public final class TableManualTest extends JPanel implements ListListener<Range>
 	protected TableManualTest() {
 		super(new GridLayout());
 		table = new Table<Range>("", createModel(), 5);
-		table.setData(metricConfiguration("amloc").getRanges());
+		table.setData(asList(loadFixture("lcom4-bad", Range.class)));
 		table.addListListener(this);
 		add(table);
 	}

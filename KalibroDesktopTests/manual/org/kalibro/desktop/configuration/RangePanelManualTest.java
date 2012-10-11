@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
-import static org.kalibro.RangeFixtures.*;
-import static org.kalibro.RangeLabel.*;
+import static org.kalibro.tests.UnitTest.loadFixture;
 
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class RangePanelManualTest extends RangePanel {
@@ -13,6 +13,6 @@ public final class RangePanelManualTest extends RangePanel {
 
 	private RangePanelManualTest() {
 		super();
-		set(newRange("amloc", WARNING));
+		set(loadFixture("lcom4-bad", Range.class));
 	}
 }

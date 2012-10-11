@@ -1,7 +1,6 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -39,7 +38,7 @@ public class TablePanelTest extends UnitTest {
 		TableModel<Range> model = new ReflectionTableModel<Range>(Range.class);
 		model.addColumn(new ReflectionColumn("label", 15));
 		table = new Table<Range>("ranges", model, 5);
-		table.setData(metricConfiguration("amloc").getRanges());
+		table.setData(asList(loadFixture("lcom4-bad", Range.class)));
 		table = PowerMockito.spy(table);
 	}
 

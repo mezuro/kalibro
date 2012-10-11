@@ -1,13 +1,13 @@
 package org.kalibro.desktop.swingextension;
 
-import static org.kalibro.RangeFixtures.*;
-import static org.kalibro.RangeLabel.*;
+import static org.kalibro.tests.UnitTest.loadFixture;
 
 import java.awt.Dimension;
 import java.beans.PropertyVetoException;
 
 import javax.swing.JDesktopPane;
 
+import org.kalibro.Range;
 import org.kalibro.desktop.ComponentWrapperDialog;
 
 public final class InternalFrameManualTest extends JDesktopPane {
@@ -23,7 +23,7 @@ public final class InternalFrameManualTest extends JDesktopPane {
 	}
 
 	private InternalFrame<?> getFrame() throws PropertyVetoException {
-		RangeFrame frame = new RangeFrame(newRange("amloc", REGULAR));
+		RangeFrame frame = new RangeFrame(loadFixture("lcom4-bad", Range.class));
 		frame.setSelected(true);
 		return frame;
 	}

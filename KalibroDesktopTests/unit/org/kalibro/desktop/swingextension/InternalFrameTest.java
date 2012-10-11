@@ -1,8 +1,6 @@
 package org.kalibro.desktop.swingextension;
 
 import static org.junit.Assert.*;
-import static org.kalibro.RangeFixtures.newRange;
-import static org.kalibro.RangeLabel.REGULAR;
 
 import java.beans.PropertyVetoException;
 
@@ -30,7 +28,7 @@ public class InternalFrameTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		range = newRange("amloc", REGULAR);
+		range = loadFixture("lcom4-bad", Range.class);
 		frame = new RangeFrame(range);
 	}
 

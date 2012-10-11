@@ -1,11 +1,9 @@
 package org.kalibro.desktop.swingextension.list;
 
 import static org.junit.Assert.*;
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
 import static org.mockito.Matchers.anyInt;
 import static org.mockito.Mockito.atLeastOnce;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.table.TableCellRenderer;
@@ -27,7 +25,7 @@ public class TableModelTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		data = PowerMockito.spy(new ArrayList<Range>(metricConfiguration("amloc").getRanges()));
+		data = PowerMockito.spy(asList(loadFixture("lcom4-bad", Range.class)));
 		model = PowerMockito.spy(new MyModel());
 		model.setData(data);
 		model.addColumn(new Column("Label", String.class, 42));

@@ -6,7 +6,6 @@ import javax.swing.border.TitledBorder;
 
 import org.kalibro.BaseTool;
 import org.kalibro.NativeMetric;
-import org.kalibro.dao.DaoFactory;
 import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.list.*;
 import org.kalibro.desktop.swingextension.panel.AbstractPanel;
@@ -14,7 +13,7 @@ import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
 public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 
-	private List<BaseTool> baseToolList;
+	private List<String> baseToolList;
 	private Table<NativeMetric> metricTable;
 	private TextField descriptionField;
 
@@ -30,7 +29,7 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 	}
 
 	private void createBaseToolList() {
-		baseToolList = new List<BaseTool>("baseTools", DaoFactory.getBaseToolDao().all(), 5);
+		baseToolList = new List<String>("baseTools", BaseTool.allNames(), 5);
 		baseToolList.setBorder(new TitledBorder("Base tool"));
 		baseToolList.addListListener(new BaseToolListListener());
 	}
@@ -65,10 +64,11 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 		metricTable.addListListener(listener);
 	}
 
-	private class BaseToolListListener extends ListAdapter<BaseTool> {
+	private class BaseToolListListener extends ListAdapter<String> {
 
 		@Override
-		public void selected(BaseTool baseTool) {
+		public void selected(String baseToolName) {
+			BaseTool baseTool = BaseTool.get(baseToolName);
 			metricTable.setData(baseTool.getSupportedMetrics());
 			descriptionField.set(baseTool.getDescription());
 		}
