@@ -21,22 +21,30 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(DaoFactory.class)
 public class BaseToolTest extends UnitTest {
 
+	private BaseToolDao dao;
+
 	private BaseTool baseTool;
 
 	@Before
 	public void setUp() {
 		baseTool = new BaseTool(CLASS_NAME);
+		dao = mock(BaseToolDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getBaseToolDao()).thenReturn(dao);
 	}
 
 	@Test
 	public void shoouldGetAllBaseTools() {
-		BaseToolDao dao = mock(BaseToolDao.class);
-		SortedSet<BaseTool> baseTools = mock(SortedSet.class);
-		mockStatic(DaoFactory.class);
-		when(DaoFactory.getBaseToolDao()).thenReturn(dao);
-		when(dao.all()).thenReturn(baseTools);
+		SortedSet<String> baseToolNames = mock(SortedSet.class);
+		when(dao.allNames()).thenReturn(baseToolNames);
+		assertSame(baseToolNames, BaseTool.allNames());
+	}
 
-		assertSame(baseTools, BaseTool.all());
+	@Test
+	public void shoouldGetBaseToolByName() {
+		String name = mock(String.class);
+		when(dao.get(name)).thenReturn(baseTool);
+		assertSame(baseTool, BaseTool.get(name));
 	}
 
 	@Test

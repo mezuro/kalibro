@@ -4,26 +4,16 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 
 import java.io.File;
 
-
 /**
  * Responsible for providing information which depends on the environment: production or test.
  * 
  * @author Carlos Morais
  */
-public enum Environment {
+public final class Environment {
 
-	TEST, PRODUCTION;
-
-	private static Environment current = PRODUCTION;
-
-	public static File dotKalibro() {
-		File home = new File(System.getProperty("user.home"));
-		File dotKalibro = new File(home, ".kalibro");
-		if (current == TEST)
-			dotKalibro = new File(dotKalibro, "tests");
-		dotKalibro.mkdirs();
-		return dotKalibro;
-	}
+	private static final File HOME = new File(System.getProperty("user.home"));
+	private static final File DOT_KALIBRO = new File(HOME, ".kalibro");
+	private static final File TESTS = new File(DOT_KALIBRO, "tests");
 
 	public static File logsDirectory() {
 		File logs = new File(dotKalibro(), "logs");
@@ -31,12 +21,21 @@ public enum Environment {
 		return logs;
 	}
 
-	public static String ddlGeneration() {
-		return current == TEST ? DROP_AND_CREATE : CREATE_ONLY;
+	public static File dotKalibro() {
+		File dotKalibro = testing() ? TESTS : DOT_KALIBRO;
+		dotKalibro.mkdirs();
+		return dotKalibro;
 	}
 
-	@Override
-	public String toString() {
-		return Identifier.fromConstant(name()).asText();
+	public static String ddlGeneration() {
+		return testing() ? DROP_AND_CREATE : CREATE_ONLY;
+	}
+
+	private static boolean testing() {
+		return TESTS.exists();
+	}
+
+	private Environment() {
+		return;
 	}
 }

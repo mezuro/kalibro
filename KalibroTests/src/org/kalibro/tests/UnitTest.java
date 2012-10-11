@@ -5,21 +5,13 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.rules.Timeout;
-import org.kalibro.core.Environment;
-import org.powermock.reflect.Whitebox;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public abstract class UnitTest extends SpecialAssertions {
-
-	@BeforeClass
-	public static void setTestEnvironment() {
-		Whitebox.setInternalState(Environment.class, "current", Environment.TEST);
-	}
 
 	public static <T> T loadFixture(String name, Class<T> type) {
 		Yaml yaml = new Yaml();

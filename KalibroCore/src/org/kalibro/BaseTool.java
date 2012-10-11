@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 
 /**
@@ -18,8 +19,16 @@ import org.kalibro.dao.DaoFactory;
 @SortingFields("name")
 public class BaseTool extends AbstractEntity<BaseTool> {
 
-	public static SortedSet<BaseTool> all() {
-		return DaoFactory.getBaseToolDao().all();
+	public static SortedSet<String> allNames() {
+		return dao().allNames();
+	}
+
+	public static BaseTool get(String baseToolName) {
+		return dao().get(baseToolName);
+	}
+
+	private static BaseToolDao dao() {
+		return DaoFactory.getBaseToolDao();
 	}
 
 	@IdentityField
