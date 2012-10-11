@@ -1,18 +1,42 @@
 package org.kalibro.service.xml;
 
+import java.util.HashSet;
 import java.util.Set;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.*;
 import org.kalibro.dto.MetricDto;
 
+/**
+ * XML element for {@link Metric} requests.
+ * 
+ * @author Carlos Morais
+ */
+@XmlRootElement(name = "metric")
+@XmlAccessorType(XmlAccessType.FIELD)
 public class MetricXmlRequest extends MetricDto {
 
+	@XmlElement(required = true)
 	private boolean compound;
+
+	@XmlElement(required = true)
 	private String name;
+
+	@XmlElement(required = true)
 	private Granularity scope;
+
+	@XmlElement
 	private String description;
-	private Set<Language> languages;
+
+	@XmlElement
 	private String script;
+
+	@XmlElement(name = "language")
+	private Set<Language> languages;
 
 	public MetricXmlRequest() {
 		super();
@@ -50,12 +74,12 @@ public class MetricXmlRequest extends MetricDto {
 	}
 
 	@Override
-	public Set<Language> languages() {
-		return languages;
+	public String script() {
+		return script == null ? "return 1;" : script;
 	}
 
 	@Override
-	public String script() {
-		return script;
+	public Set<Language> languages() {
+		return languages == null ? new HashSet<Language>() : languages;
 	}
 }

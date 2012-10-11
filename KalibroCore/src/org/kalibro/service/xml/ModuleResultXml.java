@@ -1,74 +1,52 @@
 package org.kalibro.service.xml;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.CompoundMetric;
-import org.kalibro.MetricResult;
+import org.kalibro.Module;
 import org.kalibro.ModuleResult;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.dto.ModuleResultDto;
 
+/**
+ * XML element for {@link ModuleResult}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "moduleResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModuleResultXml extends DataTransferObject<ModuleResult> {
+public class ModuleResultXml extends ModuleResultDto {
 
+	@XmlElement
+	private Long id;
+	@XmlElement
 	private ModuleXml module;
-	private Date date;
+	@XmlElement
 	private Double grade;
-
-	@XmlElement(name = "metricResult")
-	private Collection<MetricResultXml> metricResults;
-
-	@XmlElement(name = "compoundMetricWithError")
-	private Collection<CompoundMetricWithErrorXml> compoundMetricsWithError;
 
 	public ModuleResultXml() {
 		super();
 	}
 
 	public ModuleResultXml(ModuleResult moduleResult) {
+		id = moduleResult.getId();
 		module = new ModuleXml(moduleResult.getModule());
-		date = moduleResult.getDate();
 		grade = moduleResult.getGrade();
-		initializeMetricResults(moduleResult);
-		initializeCompoundMetricsWithError(moduleResult);
-	}
-
-	private void initializeMetricResults(ModuleResult moduleResult) {
-		metricResults = new ArrayList<MetricResultXml>(moduleResult.getMetricResults().size());
-		for (MetricResult metricResult : moduleResult.getMetricResults())
-			metricResults.add(new MetricResultXml(metricResult));
-	}
-
-	private void initializeCompoundMetricsWithError(ModuleResult moduleResult) {
-		compoundMetricsWithError = new ArrayList<CompoundMetricWithErrorXml>();
-		for (CompoundMetric metric : moduleResult.getCompoundMetricsWithError())
-			compoundMetricsWithError.add(new CompoundMetricWithErrorXml(metric, moduleResult.getErrorFor(metric)));
 	}
 
 	@Override
-	public ModuleResult convert() {
-		ModuleResult moduleResult = new ModuleResult(module.convert(), date);
-		moduleResult.setGrade(grade);
-		convertMetricResults(moduleResult);
-		convertCompoundMetricsWithError(moduleResult);
-		return moduleResult;
+	public Long id() {
+		return id;
 	}
 
-	private void convertMetricResults(ModuleResult moduleResult) {
-		for (MetricResultXml metricResult : metricResults)
-			moduleResult.addMetricResult(metricResult.convert());
+	@Override
+	public Module module() {
+		return module.convert();
 	}
 
-	private void convertCompoundMetricsWithError(ModuleResult moduleResult) {
-		if (compoundMetricsWithError != null)
-			for (CompoundMetricWithErrorXml metricWithError : compoundMetricsWithError)
-				moduleResult.addCompoundMetricWithError(metricWithError.getMetric(), metricWithError.getError());
+	@Override
+	public Double grade() {
+		return grade;
 	}
 }

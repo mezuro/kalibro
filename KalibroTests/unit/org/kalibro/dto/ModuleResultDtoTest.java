@@ -1,7 +1,6 @@
 package org.kalibro.dto;
 
 import org.kalibro.MetricResult;
-import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.dao.ModuleResultDao;
@@ -10,11 +9,10 @@ public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 
 	@Override
 	protected ModuleResult loadFixture() {
-		Module module = mock(Module.class);
-		MetricResult metricResult = new MetricResultDtoTest().loadFixture();
 		ModuleResult child = mock(ModuleResult.class), parent = mock(ModuleResult.class);
+		MetricResult metricResult = new MetricResultDtoTest().loadFixture();
 
-		ModuleResult moduleResult = new ModuleResult(parent, module);
+		ModuleResult moduleResult = new ModuleResult(parent, new ModuleDtoTest().loadFixture());
 		moduleResult.addMetricResult(metricResult);
 		moduleResult.addChild(child);
 		moduleResult.calculateGrade();

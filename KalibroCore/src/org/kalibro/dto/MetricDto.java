@@ -37,7 +37,7 @@ public abstract class MetricDto extends DataTransferObject<Metric> {
 
 	public abstract String description();
 
-	public abstract Set<Language> languages();
-
 	public abstract String script();
+
+	public abstract Set<Language> languages();
 }

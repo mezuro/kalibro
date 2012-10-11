@@ -19,7 +19,7 @@ public abstract class ConcreteDtoTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		entity = loadFixture();
-		dto = dtoClass().getDeclaredConstructor(entity.getClass()).newInstance(entity);
+		dto = dtoClass().getDeclaredConstructor(entityClass()).newInstance(entity);
 		dtoReflector = new FieldReflector(dto);
 		entityReflector = new FieldReflector(entity);
 	}
@@ -53,6 +53,10 @@ public abstract class ConcreteDtoTest extends UnitTest {
 	}
 
 	protected String entityName() {
-		return entity.getClass().getSimpleName();
+		return entityClass().getSimpleName();
+	}
+
+	protected Class<?> entityClass() {
+		return entity.getClass();
 	}
 }
