@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -14,7 +14,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 public class ReadingEndpointImplTest extends
 	EndpointImplementorTest<Reading, ReadingXml, ReadingXml, ReadingDao, ReadingEndpointImpl> {
 
-	private static final Long ID = Math.abs(new Random().nextLong());
+	private static final Long ID = new Random().nextLong();
+	private static final Long GROUP_ID = new Random().nextLong();
 
 	@Override
 	protected Class<Reading> entityClass() {
@@ -22,16 +23,27 @@ public class ReadingEndpointImplTest extends
 	}
 
 	@Test
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertSame(response, implementor.getReading(ID));
+	}
+
+	@Test
+	public void shouldGetReadingOfRange() {
+		when(dao.readingOf(ID)).thenReturn(entity);
+		assertSame(response, implementor.readingOf(ID));
+	}
+
+	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(ID)).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.readingsOf(ID));
+		when(dao.readingsOf(GROUP_ID)).thenReturn(asSortedSet(entity));
+		assertDeepEquals(asList(response), implementor.readingsOf(GROUP_ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		Long groupId = mock(Long.class);
-		when(dao.save(entity, groupId)).thenReturn(ID);
-		assertEquals(ID, implementor.saveReading(request, groupId));
+		when(dao.save(entity, GROUP_ID)).thenReturn(ID);
+		assertEquals(ID, implementor.saveReading(request, GROUP_ID));
 	}
 
 	@Test
