@@ -6,17 +6,23 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
+import org.kalibro.ProcessState;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProcessingDao;
 import org.kalibro.service.xml.ProcessingXml;
 
-@WebService(name = "ProjectResultEndpoint", serviceName = "ProjectResultEndpointService")
-public class ProcessingEndpointImpl implements ProjectResultEndpoint {
+/**
+ * Implementation of {@link ProcessingEndpoint}.
+ * 
+ * @author Carlos Morais
+ */
+@WebService(name = "ProcessingEndpoint", serviceName = "ProcessingEndpointService")
+public class ProcessingEndpointImpl implements ProcessingEndpoint {
 
 	private ProcessingDao dao;
 
 	public ProcessingEndpointImpl() {
-		this(DaoFactory.getProjectResultDao());
+		this(DaoFactory.getProcessingDao());
 	}
 
 	public ProcessingEndpointImpl(ProcessingDao processingDao) {
@@ -24,52 +30,70 @@ public class ProcessingEndpointImpl implements ProjectResultEndpoint {
 	}
 
 	@Override
-	@WebResult(name = "hasResults")
-	public boolean hasResultsFor(@WebParam(name = "projectName") String projectName) {
-		return dao.hasResultsFor(projectName);
+	@WebResult(name = "exists")
+	public boolean hasProcessing(@WebParam(name = "repositoryId") Long repositoryId) {
+		return dao.hasProcessing(repositoryId);
 	}
 
 	@Override
-	@WebResult(name = "hasResults")
-	public boolean hasResultsBefore(
-		@WebParam(name = "date") Date date,
-		@WebParam(name = "projectName") String projectName) {
-		return dao.hasResultsBefore(date, projectName);
+	@WebResult(name = "exists")
+	public boolean hasReadyProcessing(@WebParam(name = "repositoryId") Long repositoryId) {
+		return dao.hasReadyProcessing(repositoryId);
 	}
 
 	@Override
-	@WebResult(name = "hasResults")
-	public boolean hasResultsAfter(
+	@WebResult(name = "exists")
+	public boolean hasProcessingBefore(
 		@WebParam(name = "date") Date date,
-		@WebParam(name = "projectName") String projectName) {
-		return dao.hasResultsAfter(date, projectName);
+		@WebParam(name = "repositoryId") Long repositoryId) {
+		return dao.hasProcessingBefore(date, repositoryId);
+	}
+
+	@Override
+	@WebResult(name = "exists")
+	public boolean hasProcessingAfter(
+		@WebParam(name = "date") Date date,
+		@WebParam(name = "repositoryId") Long repositoryId) {
+		return dao.hasProcessingAfter(date, repositoryId);
+	}
+
+	@Override
+	@WebResult(name = "processState")
+	public ProcessState lastProcessingState(@WebParam(name = "repositoryId") Long repositoryId) {
+		return dao.lastProcessingState(repositoryId);
 	}
 
 	@Override
 	@WebResult(name = "processing")
-	public ProcessingXml getFirstResultOf(@WebParam(name = "projectName") String projectName) {
-		return new ProcessingXml(dao.getFirstResultOf(projectName));
+	public ProcessingXml lastReadyProcessing(@WebParam(name = "repositoryId") Long repositoryId) {
+		return new ProcessingXml(dao.lastReadyProcessing(repositoryId));
 	}
 
 	@Override
 	@WebResult(name = "processing")
-	public ProcessingXml getLastResultOf(@WebParam(name = "projectName") String projectName) {
-		return new ProcessingXml(dao.getLastResultOf(projectName));
+	public ProcessingXml firstProcessing(@WebParam(name = "repositoryId") Long repositoryId) {
+		return new ProcessingXml(dao.firstProcessing(repositoryId));
 	}
 
 	@Override
 	@WebResult(name = "processing")
-	public ProcessingXml getLastResultBefore(
+	public ProcessingXml lastProcessing(@WebParam(name = "repositoryId") Long repositoryId) {
+		return new ProcessingXml(dao.lastProcessing(repositoryId));
+	}
+
+	@Override
+	@WebResult(name = "processing")
+	public ProcessingXml firstProcessingAfter(
 		@WebParam(name = "date") Date date,
-		@WebParam(name = "projectName") String projectName) {
-		return new ProcessingXml(dao.getLastResultBefore(date, projectName));
+		@WebParam(name = "repositoryId") Long repositoryId) {
+		return new ProcessingXml(dao.firstProcessingAfter(date, repositoryId));
 	}
 
 	@Override
 	@WebResult(name = "processing")
-	public ProcessingXml getFirstResultAfter(
+	public ProcessingXml lastProcessingBefore(
 		@WebParam(name = "date") Date date,
-		@WebParam(name = "projectName") String projectName) {
-		return new ProcessingXml(dao.getFirstResultAfter(date, projectName));
+		@WebParam(name = "repositoryId") Long repositoryId) {
+		return new ProcessingXml(dao.lastProcessingBefore(date, repositoryId));
 	}
 }
