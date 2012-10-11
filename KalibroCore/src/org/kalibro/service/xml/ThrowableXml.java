@@ -38,8 +38,8 @@ public class ThrowableXml extends ThrowableDto {
 	public ThrowableXml(Throwable throwable) {
 		throwableClass = throwable.getClass().getName();
 		detailMessage = throwable.getMessage();
-		setCause(throwable.getCause());
 		stackTrace = createDtos(Arrays.asList(throwable.getStackTrace()), StackTraceElementXml.class);
+		setCause(throwable.getCause());
 	}
 
 	private void setCause(Throwable cause) {

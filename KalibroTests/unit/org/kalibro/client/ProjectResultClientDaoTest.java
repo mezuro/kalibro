@@ -9,13 +9,13 @@ import org.junit.Test;
 import org.kalibro.Processing;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.service.ProjectResultEndpoint;
-import org.kalibro.service.xml.ProjectResultXml;
+import org.kalibro.service.xml.ProcessingXml;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(ProjectResultClientDao.class)
 public class ProjectResultClientDaoTest extends
-	ClientTest<Processing, ProjectResultXml, ProjectResultXml, ProjectResultEndpoint, ProjectResultClientDao> {
+	ClientTest<Processing, ProcessingXml, ProcessingXml, ProjectResultEndpoint, ProjectResultClientDao> {
 
 	private static final boolean HAS_RESULTS = new Random().nextBoolean();
 	private static final String PROJECT_NAME = "ProjectResultClientDaoTest project name";

@@ -54,11 +54,11 @@ public class EchoEndpoint {
 
 	@WebMethod
 	@WebResult(name = "processing")
-	public ProjectResultXml echoProjectResult(@WebParam(name = "processing") ProjectResultXml projectResult) {
+	public ProcessingXml echoProjectResult(@WebParam(name = "processing") ProcessingXml projectResult) {
 		Processing entity = projectResult.convert();
 		Project project = entity.getRepository();
 		project.setName("echo " + project.getName());
-		return new ProjectResultXml(entity);
+		return new ProcessingXml(entity);
 	}
 
 	@WebMethod

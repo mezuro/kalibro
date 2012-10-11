@@ -7,7 +7,7 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.service.xml.ProjectResultXml;
+import org.kalibro.service.xml.ProcessingXml;
 
 @WebService(name = "ProjectResultEndpoint", serviceName = "ProjectResultEndpointService")
 public interface ProjectResultEndpoint {
@@ -30,21 +30,21 @@ public interface ProjectResultEndpoint {
 
 	@WebMethod
 	@WebResult(name = "processing")
-	ProjectResultXml getFirstResultOf(@WebParam(name = "projectName") String projectName);
+	ProcessingXml getFirstResultOf(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
 	@WebResult(name = "processing")
-	ProjectResultXml getLastResultOf(@WebParam(name = "projectName") String projectName);
+	ProcessingXml getLastResultOf(@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
 	@WebResult(name = "processing")
-	ProjectResultXml getLastResultBefore(
+	ProcessingXml getLastResultBefore(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName);
 
 	@WebMethod
 	@WebResult(name = "processing")
-	ProjectResultXml getFirstResultAfter(
+	ProcessingXml getFirstResultAfter(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "projectName") String projectName);
 }

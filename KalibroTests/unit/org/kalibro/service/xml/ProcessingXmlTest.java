@@ -1,7 +1,10 @@
 package org.kalibro.service.xml;
 
+import static org.junit.Assert.assertNull;
+
 import java.util.Date;
 
+import org.junit.Test;
 import org.kalibro.ProcessState;
 
 public class ProcessingXmlTest extends XmlTest {
@@ -13,5 +16,10 @@ public class ProcessingXmlTest extends XmlTest {
 		assertElement("state", ProcessState.class);
 		assertElement("error", ThrowableXml.class);
 		assertCollection("stateTime");
+	}
+
+	@Test
+	public void checkNullError() {
+		assertNull(new ProcessingXml().error());
 	}
 }

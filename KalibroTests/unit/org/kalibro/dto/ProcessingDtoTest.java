@@ -13,7 +13,7 @@ public class ProcessingDtoTest extends AbstractDtoTest<Processing> {
 		Processing processing = new Processing(mock(Repository.class));
 		processing.setStateTime(ProcessState.LOADING, 2000);
 		processing.setState(ProcessState.COLLECTING);
-		processing.setError(mock(Throwable.class));
+		processing.setError(new Throwable());
 		return processing;
 	}
 
