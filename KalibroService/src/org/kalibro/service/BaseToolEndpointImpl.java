@@ -1,13 +1,14 @@
 package org.kalibro.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.xml.BaseToolXml;
 
 /**
@@ -29,8 +30,14 @@ public class BaseToolEndpointImpl implements BaseToolEndpoint {
 	}
 
 	@Override
+	@WebResult(name = "baseToolName")
+	public List<String> allBaseToolNames() {
+		return new ArrayList<String>(dao.allNames());
+	}
+
+	@Override
 	@WebResult(name = "baseTool")
-	public List<BaseToolXml> allBaseTools() {
-		return DataTransferObject.createDtos(dao.all(), BaseToolXml.class);
+	public BaseToolXml getBaseTool(@WebParam(name = "baseToolName") String baseToolName) {
+		return new BaseToolXml(dao.get(baseToolName));
 	}
 }

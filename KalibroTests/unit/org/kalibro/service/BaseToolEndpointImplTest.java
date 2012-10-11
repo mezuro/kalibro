@@ -1,5 +1,7 @@
 package org.kalibro.service;
 
+import static org.junit.Assert.assertSame;
+
 import org.junit.Test;
 import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
@@ -16,8 +18,16 @@ public class BaseToolEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.allBaseTools());
+	public void shouldGetAllNames() {
+		String name = mock(String.class);
+		when(dao.allNames()).thenReturn(asSortedSet(name));
+		assertDeepEquals(asList(name), implementor.allBaseToolNames());
+	}
+
+	@Test
+	public void shouldGetByName() {
+		String name = mock(String.class);
+		when(dao.get(name)).thenReturn(entity);
+		assertSame(response, implementor.getBaseTool(name));
 	}
 }
