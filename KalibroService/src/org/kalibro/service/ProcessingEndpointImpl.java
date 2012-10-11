@@ -11,15 +11,15 @@ import org.kalibro.dao.ProcessingDao;
 import org.kalibro.service.xml.ProcessingXml;
 
 @WebService(name = "ProjectResultEndpoint", serviceName = "ProjectResultEndpointService")
-public class ProjectResultEndpointImpl implements ProjectResultEndpoint {
+public class ProcessingEndpointImpl implements ProjectResultEndpoint {
 
 	private ProcessingDao dao;
 
-	public ProjectResultEndpointImpl() {
+	public ProcessingEndpointImpl() {
 		this(DaoFactory.getProjectResultDao());
 	}
 
-	public ProjectResultEndpointImpl(ProcessingDao processingDao) {
+	public ProcessingEndpointImpl(ProcessingDao processingDao) {
 		dao = processingDao;
 	}
 

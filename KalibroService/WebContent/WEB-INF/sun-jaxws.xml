@@ -11,7 +11,7 @@
 	<endpoint name="MetricConfigurationEndpoint" url-pattern="/MetricConfigurationEndpoint/" implementation="org.kalibro.service.MetricConfigurationEndpointImpl"/>
 	<endpoint name="ModuleResultEndpoint"        url-pattern="/ModuleResultEndpoint/"        implementation="org.kalibro.service.ModuleResultEndpointImpl"/>
 	<endpoint name="ProjectEndpoint"             url-pattern="/ProjectEndpoint/"             implementation="org.kalibro.service.ProjectEndpointImpl"/>
-	<endpoint name="ProjectResultEndpoint"       url-pattern="/ProjectResultEndpoint/"       implementation="org.kalibro.service.ProjectResultEndpointImpl"/>
+	<endpoint name="ProjectResultEndpoint"       url-pattern="/ProjectResultEndpoint/"       implementation="org.kalibro.service.ProcessingEndpointImpl"/>
 	<endpoint name="ReadingEndpoint"             url-pattern="/ReadingEndpoint/"             implementation="org.kalibro.service.ReadingEndpointImpl"/>
 	<endpoint name="ReadingGroupEndpoint"        url-pattern="/ReadingGroupEndpoint/"        implementation="org.kalibro.service.ReadingEndpointImpl"/>
 </endpoints>

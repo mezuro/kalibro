@@ -23,14 +23,14 @@ public class ProjectResultEndpointImplTest extends UnitTest {
 	private boolean flag;
 	private ProcessingDao dao;
 	private Processing processing;
-	private ProjectResultEndpointImpl endpoint;
+	private ProcessingEndpointImpl endpoint;
 
 	@Before
 	public void setUp() {
 		mockDao();
 		flag = new Random(System.currentTimeMillis()).nextBoolean();
 		processing = helloWorldResult();
-		endpoint = new ProjectResultEndpointImpl();
+		endpoint = new ProcessingEndpointImpl();
 	}
 
 	private void mockDao() {
