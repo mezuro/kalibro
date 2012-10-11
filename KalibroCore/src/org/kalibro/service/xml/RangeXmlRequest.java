@@ -7,13 +7,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Range;
 import org.kalibro.Reading;
-import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RangeDto;
 
 /**
- * XML element for {@link ReadingGroup} requests.
+ * XML element for {@link Range} requests.
  * 
  * @author Carlos Morais
  */

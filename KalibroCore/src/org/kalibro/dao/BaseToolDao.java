@@ -11,5 +11,7 @@ import org.kalibro.BaseTool;
  */
 public interface BaseToolDao {
 
-	SortedSet<BaseTool> all();
+	SortedSet<String> allNames();
+
+	BaseTool get(String baseToolName);
 }

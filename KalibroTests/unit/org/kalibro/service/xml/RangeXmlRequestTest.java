@@ -16,21 +16,13 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(DaoLazyLoader.class)
 public class RangeXmlRequestTest extends XmlTest {
 
-	private Reading reading;
-
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		Whitebox.setInternalState(dto, "readingId", 42L);
+		Reading reading = Whitebox.getInternalState(entity, "reading");
 		mockStatic(DaoLazyLoader.class);
 		when(DaoLazyLoader.createProxy(ReadingDao.class, "get", 42L)).thenReturn(reading);
-	}
-
-	@Override
-	protected Range loadFixture() throws Exception {
-		Range range = (Range) super.loadFixture();
-		reading = range.getReading();
-		Whitebox.setInternalState(reading, "id", 42L);
-		return range;
 	}
 
 	@Override

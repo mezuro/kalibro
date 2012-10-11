@@ -15,7 +15,10 @@ metricConfigurations:
     metric: &id1 !!org.kalibro.NativeMetric
       name: "Coupling Between Objects"
       scope: CLASS
-      languages: {C, CPP, JAVA}
+      languages:
+        - C
+        - CPP
+        - JAVA
     baseTool: &id2
       name: "Inexistent"
       description: "Base tool for testing"
@@ -25,7 +28,10 @@ metricConfigurations:
         - &id3 !!org.kalibro.NativeMetric
           name: "Lack of Cohesion of Methods"
           scope: CLASS
-          languages: {C, CPP, JAVA}
+          languages:
+            - C
+            - CPP
+            - JAVA
     weight: 1.0
     aggregationForm: AVERAGE
     ranges: []

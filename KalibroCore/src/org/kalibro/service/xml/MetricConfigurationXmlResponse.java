@@ -1,71 +1,86 @@
 package org.kalibro.service.xml;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.*;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.BaseTool;
+import org.kalibro.Metric;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Statistic;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dto.DaoLazyLoader;
+import org.kalibro.dto.MetricConfigurationDto;
 
+/**
+ * XML element for {@link MetricConfiguration} responses.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "metricConfiguration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricConfigurationXmlResponse extends DataTransferObject<MetricConfiguration> {
+public class MetricConfigurationXmlResponse extends MetricConfigurationDto {
 
-	@XmlElement(required = true)
-	private MetricXml<?> metric;
+	@XmlElement
+	private Long id;
 
-	@XmlElement(required = true)
+	@XmlElement
 	private String code;
 
-	private Double weight;
-	private Statistic aggregationForm;
+	@XmlElement
+	private MetricXmlResponse metric;
 
-	@XmlElement(name = "range")
-	private Collection<RangeXmlRequest> ranges;
+	@XmlElement
+	private String baseToolName;
+
+	@XmlElement
+	private Double weight;
+
+	@XmlElement
+	private Statistic aggregationForm;
 
 	public MetricConfigurationXmlResponse() {
 		super();
 	}
 
 	public MetricConfigurationXmlResponse(MetricConfiguration metricConfiguration) {
-		initializeMetric(metricConfiguration);
+		id = metricConfiguration.getId();
 		code = metricConfiguration.getCode();
+		metric = new MetricXmlResponse(metricConfiguration.getMetric());
+		if (!metric.compound())
+			baseToolName = metricConfiguration.getBaseTool().getName();
 		weight = metricConfiguration.getWeight();
 		aggregationForm = metricConfiguration.getAggregationForm();
-		initializeRanges(metricConfiguration);
-	}
-
-	private void initializeMetric(MetricConfiguration metricConfiguration) {
-		Metric theMetric = metricConfiguration.getMetric();
-		if (theMetric.isCompound())
-			metric = new CompoundMetricXml((CompoundMetric) theMetric);
-		else
-			metric = new NativeMetricXml((NativeMetric) theMetric);
-	}
-
-	private void initializeRanges(MetricConfiguration metricConfiguration) {
-		ranges = new ArrayList<RangeXmlRequest>();
-		for (Range range : metricConfiguration.getRanges())
-			ranges.add(new RangeXmlRequest(range));
 	}
 
 	@Override
-	public MetricConfiguration convert() {
-		MetricConfiguration metricConfiguration = new MetricConfiguration();
-		metricConfiguration.setCode(code);
-		metricConfiguration.setWeight(weight == null ? 1.0 : weight);
-		metricConfiguration.setAggregationForm(aggregationForm == null ? Statistic.AVERAGE : aggregationForm);
-		convertRanges(metricConfiguration);
-		return metricConfiguration;
+	public Long id() {
+		return id;
 	}
 
-	private void convertRanges(MetricConfiguration metricConfiguration) {
-		if (ranges != null)
-			for (RangeXmlRequest range : ranges)
-				metricConfiguration.addRange(range.convert());
+	@Override
+	public String code() {
+		return code;
+	}
+
+	@Override
+	public Metric metric() {
+		return metric.convert();
+	}
+
+	@Override
+	public BaseTool baseTool() {
+		return metric.compound() ? null : (BaseTool) DaoLazyLoader.createProxy(BaseToolDao.class, "get", baseToolName);
+	}
+
+	@Override
+	public Double weight() {
+		return weight;
+	}
+
+	@Override
+	public Statistic aggregationForm() {
+		return aggregationForm;
 	}
 }

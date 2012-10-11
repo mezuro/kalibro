@@ -12,8 +12,7 @@ import org.powermock.reflect.Whitebox;
 
 public abstract class ConcreteDtoTest extends UnitTest {
 
-	private Object dto, entity;
-
+	protected Object dto, entity;
 	protected FieldReflector dtoReflector, entityReflector;
 
 	@Before
@@ -49,7 +48,7 @@ public abstract class ConcreteDtoTest extends UnitTest {
 	private void verifyField(Method method) throws Exception {
 		String methodName = method.getName();
 		if (entityReflector.listFields().contains(methodName))
-			assertDeepEquals(entityReflector.get(methodName), method.invoke(dto));
+			assertDeepEquals(methodName, entityReflector.get(methodName), method.invoke(dto));
 	}
 
 	protected String entityName() {

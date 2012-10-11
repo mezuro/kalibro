@@ -36,9 +36,13 @@ public abstract class SpecialAssertions extends MockitoProxy {
 	}
 
 	public static <T> void assertDeepEquals(T expected, T actual) {
+		assertDeepEquals("", expected, actual);
+	}
+
+	public static <T> void assertDeepEquals(String message, T expected, T actual) {
 		if (!Equality.areDeepEqual(expected, actual)) {
 			assertEquals(Printer.print(expected), Printer.print(actual));
-			fail("Print is the same but they are not deep equal");
+			fail("Print is the same but they are not deep equal: " + message);
 		}
 	}
 
