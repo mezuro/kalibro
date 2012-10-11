@@ -16,7 +16,8 @@ public class MetricConfigurationEndpointImplTest extends EndpointImplementorTest
 	MetricConfiguration, MetricConfigurationXmlRequest, MetricConfigurationXmlResponse,
 	MetricConfigurationDao, MetricConfigurationEndpointImpl> {// @formatter:on
 
-	private static final Long ID = Math.abs(new Random().nextLong());
+	private static final Long ID = new Random().nextLong();
+	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
 	@Override
 	protected Class<MetricConfiguration> entityClass() {
@@ -25,19 +26,18 @@ public class MetricConfigurationEndpointImplTest extends EndpointImplementorTest
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(dao.metricConfigurationsOf(ID)).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.metricConfigurationsOf(ID));
+		when(dao.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(asSortedSet(entity));
+		assertDeepEquals(asList(response), implementor.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		Long configurationId = mock(Long.class);
-		when(dao.save(entity, configurationId)).thenReturn(ID);
-		assertEquals(ID, implementor.saveMetricConfiguration(request, configurationId));
+		when(dao.save(entity, CONFIGURATION_ID)).thenReturn(ID);
+		assertEquals(ID, implementor.saveMetricConfiguration(request, CONFIGURATION_ID));
 	}
 
 	@Test
-	public void shouldDeleteReading() {
+	public void shouldDeleteMetricConfiguration() {
 		implementor.deleteMetricConfiguration(ID);
 		verify(dao).delete(ID);
 	}
