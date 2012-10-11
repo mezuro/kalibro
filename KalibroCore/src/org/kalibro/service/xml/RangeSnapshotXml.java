@@ -12,7 +12,7 @@ import org.kalibro.Reading;
 import org.kalibro.dto.RangeDto;
 
 /**
- * XML element for {@link Range} snapshots (goes with {@link MetricResult}).
+ * XML element for {@link Range} snapshots.
  * 
  * @author Carlos Morais
  */

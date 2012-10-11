@@ -11,7 +11,9 @@ public class MetricResultDtoTest extends AbstractDtoTest<MetricResult> {
 	@Override
 	protected MetricResult loadFixture() {
 		MetricConfiguration configuration = loadFixture("lcom4", MetricConfiguration.class);
-		return new MetricResult(configuration, new Random().nextDouble());
+		MetricResult metricResult = new MetricResult(configuration, new Random().nextDouble());
+		metricResult.addDescendentResult(42.0);
+		return metricResult;
 	}
 
 	@Test

@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import java.util.Collection;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,69 +8,60 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.CompoundMetric;
-import org.kalibro.Metric;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
-import org.kalibro.NativeMetric;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.dto.MetricResultDto;
 
+/**
+ * XML element for {@link MetricResult}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "metricResult")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricResultXml extends DataTransferObject<MetricResult> {
+public class MetricResultXml extends MetricResultDto {
 
-	private MetricXml<?> metric;
+	@XmlElement
+	private MetricConfigurationSnapshotXml configuration;
 
+	@XmlElement
 	private Double value;
 
-	private Double weight;
-
-	private RangeXmlRequest range;
+	@XmlElement
+	private ThrowableXml error;
 
 	@XmlElement(name = "descendentResult")
-	private Collection<Double> descendentResults;
+	private List<Double> descendentResults;
 
 	public MetricResultXml() {
 		super();
 	}
 
 	public MetricResultXml(MetricResult metricResult) {
-		initializeMetric(metricResult);
+		configuration = new MetricConfigurationSnapshotXml(metricResult.getConfiguration());
 		value = metricResult.getValue();
-		weight = metricResult.getWeight();
-		initializeRange(metricResult);
+		if (metricResult.hasError())
+			error = new ThrowableXml(metricResult.getError());
 		descendentResults = metricResult.getDescendentResults();
 	}
 
-	private void initializeMetric(MetricResult metricResult) {
-		Metric theMetric = metricResult.getMetric();
-		if (theMetric.isCompound())
-			metric = new CompoundMetricXml((CompoundMetric) theMetric);
-		else
-			metric = new NativeMetricXml((NativeMetric) theMetric);
-	}
-
-	private void initializeRange(MetricResult metricResult) {
-		if (metricResult.hasRange())
-			range = new RangeXmlRequest(metricResult.getRange());
+	@Override
+	public MetricConfiguration configuration() {
+		return configuration.convert();
 	}
 
 	@Override
-	public MetricResult convert() {
-		MetricResult metricResult = new MetricResult(metric.convert(), value);
-		metricResult.setWeight(weight);
-		convertRange(metricResult);
-		if (descendentResults != null)
-			metricResult.addDescendentResults(descendentResults);
-		return metricResult;
+	public Double value() {
+		return value;
 	}
 
-	private void convertRange(MetricResult metricResult) {
-		if (range != null)
-			metricResult.setRange(range.convert());
+	@Override
+	public Throwable error() {
+		return error == null ? null : error.convert();
 	}
 
+	@Override
 	public List<Double> descendentResults() {
-		// TODO Auto-generated method stub
-		return null;
+		return descendentResults == null ? new ArrayList<Double>() : descendentResults;
 	}
 }

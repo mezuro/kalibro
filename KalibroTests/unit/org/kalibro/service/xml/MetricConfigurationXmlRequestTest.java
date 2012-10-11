@@ -39,7 +39,7 @@ public class MetricConfigurationXmlRequestTest extends XmlTest {
 	}
 
 	@Override
-	public void verifyElements() {
+	protected void verifyElements() {
 		assertElement("id", Long.class);
 		assertElement("code", String.class, true);
 		assertElement("metric", MetricXmlRequest.class, true);
