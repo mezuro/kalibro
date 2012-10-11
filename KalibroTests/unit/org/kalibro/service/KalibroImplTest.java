@@ -9,6 +9,6 @@ public class KalibroImplTest extends UnitTest {
 
 	@Test
 	public void shouldGetVersion() {
-		assertEquals("0.6", new KalibroImpl().version());
+		assertEquals("1.0", new KalibroImpl().version());
 	}
 }
