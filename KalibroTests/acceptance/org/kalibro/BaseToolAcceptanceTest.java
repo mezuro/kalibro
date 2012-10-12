@@ -1,34 +1,26 @@
 package org.kalibro;
 
-import static org.junit.Assert.*;
-
-import java.util.SortedSet;
-
-import org.junit.experimental.theories.Theory;
+import org.analizo.AnalizoMetricCollector;
+import org.checkstyle.CheckstyleMetricCollector;
+import org.cvsanaly.CvsAnalyMetricCollector;
+import org.junit.Test;
 import org.kalibro.tests.AcceptanceTest;
 
 public class BaseToolAcceptanceTest extends AcceptanceTest {
 
-	private SortedSet<BaseTool> baseTools;
-
-	@Theory
-	public void baseToolsShouldBeThere(SupportedDatabase databaseType) {
-		changeDatabase(databaseType);
-		baseTools = BaseTool.all();
-		verifyAndRemove("org.analizo.AnalizoMetricCollector");
-		verifyAndRemove("org.analizo.CheckstyleMetricCollector");
-		verifyAndRemove("org.analizo.CvsAnalyMetricCollector");
-		assertTrue(baseTools.isEmpty());
+	@Test
+	public void shouldGetBaseToolNames() {
+		assertDeepEquals(asList("Analizo", "Checkstyle", "CVSAnalY"), BaseTool.allNames());
 	}
 
-	private void verifyAndRemove(String collectorClassName) {
-		BaseTool baseTool = baseTools.first();
-		assertEquals(collectorClassName, baseTool.getCollectorClassName());
+	@Test
+	public void shouldGetByName() {
+		shouldGetBaseTool("Analizo", AnalizoMetricCollector.class);
+		shouldGetBaseTool("Checkstyle", CheckstyleMetricCollector.class);
+		shouldGetBaseTool("CVSAnalY", CvsAnalyMetricCollector.class);
+	}
 
-		BaseTool expected = new BaseTool(collectorClassName);
-		assertEquals(expected.getName(), baseTool.getName());
-		assertEquals(expected.getDescription(), baseTool.getDescription());
-		assertEquals(expected.getSupportedMetrics(), baseTool.getSupportedMetrics());
-		baseTools.remove(baseTool);
+	private void shouldGetBaseTool(String baseToolName, Class<? extends MetricCollector> collectorClass) {
+		assertDeepEquals(new BaseTool(collectorClass.getName()), BaseTool.get(baseToolName));
 	}
 }

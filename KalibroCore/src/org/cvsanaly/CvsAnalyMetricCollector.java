@@ -10,7 +10,7 @@ import org.cvsanaly.entities.MetricResult;
 import org.kalibro.*;
 import org.kalibro.core.command.CommandTask;
 
-public class CVSAnalyMetricCollector implements MetricCollector {
+public class CvsAnalyMetricCollector implements MetricCollector {
 
 	private static final String CVSANALY2_COMMAND_LINE = "cvsanaly2 -q --extensions=Metrics --db-driver=sqlite -d ";
 

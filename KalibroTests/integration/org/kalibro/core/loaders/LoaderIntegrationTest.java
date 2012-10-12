@@ -1,7 +1,7 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
-import static org.kalibro.RepositoryFixtures.newHelloWorldRepository;
+import static org.kalibro.core.loaders.RepositoryFixtures.newHelloWorldRepository;
 
 import java.io.File;
 import java.util.Iterator;

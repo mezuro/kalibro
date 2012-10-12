@@ -15,7 +15,7 @@ class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implemen
 	public void saveBaseTools() {
 		save("org.analizo.AnalizoMetricCollector");
 		save("org.checkstyle.CheckstyleMetricCollector");
-		save("org.cvsanaly.CVSAnalyMetricCollector");
+		save("org.cvsanaly.CvsAnalyMetricCollector");
 	}
 
 	private void save(String collectorClassName) {

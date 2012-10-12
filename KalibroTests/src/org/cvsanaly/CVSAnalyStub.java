@@ -83,7 +83,7 @@ public final class CVSAnalyStub {
 	}
 
 	public static BaseTool getBaseTool() {
-		return new BaseTool(CVSAnalyMetricCollector.class.getName());
+		return new BaseTool(CvsAnalyMetricCollector.class.getName());
 	}
 
 	public static Set<NativeMetric> getSupportedMetrics() {

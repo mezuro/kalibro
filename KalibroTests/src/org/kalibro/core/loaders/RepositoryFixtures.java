@@ -1,4 +1,4 @@
-package org.kalibro;
+package org.kalibro.core.loaders;
 
 import static org.kalibro.RepositoryType.*;
 
@@ -6,6 +6,8 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.core.Environment;
 
 @Deprecated

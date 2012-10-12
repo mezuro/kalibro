@@ -16,7 +16,7 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		configuration = loadFixture("analizo", Configuration.class);
+		configuration = loadFixture("sc", Configuration.class);
 	}
 
 	@After
@@ -44,11 +44,11 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(metricConfiguration, ReadingGroup.all().first().getReadings().first());
+		assertDeepEquals(metricConfiguration, Configuration.all().first().getMetricConfigurations().first());
 	}
 
 	private void assertDifferentFromSaved() {
-		Reading saved = ReadingGroup.all().first().getReadings().first();
+		MetricConfiguration saved = Configuration.all().first().getMetricConfigurations().first();
 		assertFalse(metricConfiguration.deepEquals(saved));
 	}
 

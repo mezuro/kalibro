@@ -20,16 +20,16 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(CVSAnalyMetricCollector.class)
+@PrepareForTest(CvsAnalyMetricCollector.class)
 public class CVSAnalyMetricCollectorTest extends UnitTest {
 
-	private CVSAnalyMetricCollector cvsanaly;
+	private CvsAnalyMetricCollector cvsanaly;
 	private CommandTask executor;
 	private CVSAnalyDatabaseFetcher fetcher;
 
 	@Before
 	public void setUp() {
-		cvsanaly = new CVSAnalyMetricCollector();
+		cvsanaly = new CvsAnalyMetricCollector();
 		executor = PowerMockito.mock(CommandTask.class);
 		fetcher = PowerMockito.mock(CVSAnalyDatabaseFetcher.class);
 	}

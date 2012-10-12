@@ -11,11 +11,11 @@ import org.kalibro.tests.IntegrationTest;
 
 public class CVSAnalyTest extends IntegrationTest {
 
-	private CVSAnalyMetricCollector cvsanaly;
+	private CvsAnalyMetricCollector cvsanaly;
 
 	@Before
 	public void setUp() {
-		cvsanaly = new CVSAnalyMetricCollector();
+		cvsanaly = new CvsAnalyMetricCollector();
 	}
 
 	@Test
