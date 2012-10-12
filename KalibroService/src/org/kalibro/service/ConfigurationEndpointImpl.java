@@ -44,8 +44,8 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
 	@Override
 	@WebResult(name = "configuration")
-	public ConfigurationXmlResponse configurationOf(@WebParam(name = "projectId") Long projectId) {
-		return new ConfigurationXmlResponse(dao.configurationOf(projectId));
+	public ConfigurationXmlResponse configurationOf(@WebParam(name = "repositoryId") Long repositoryId) {
+		return new ConfigurationXmlResponse(dao.configurationOf(repositoryId));
 	}
 
 	@Override

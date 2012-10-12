@@ -1,7 +1,6 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.ConfigurationFixtures.newConfiguration;
 
 import java.util.List;
 import java.util.Random;
@@ -11,6 +10,7 @@ import org.kalibro.Configuration;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.powermock.reflect.Whitebox;
 
 public class ConfigurationEndpointTest extends EndpointTest<Configuration, ConfigurationDao, ConfigurationEndpoint> {
 
@@ -18,7 +18,9 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 
 	@Override
 	public Configuration loadFixture() {
-		return newConfiguration();
+		Configuration configuration = loadFixture("sc", Configuration.class);
+		Whitebox.setInternalState(configuration, "id", ID);
+		return configuration;
 	}
 
 	@Override
@@ -40,7 +42,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 	}
 
 	@Test
-	public void shouldGetConfigurationOfProject() {
+	public void shouldGetConfigurationOfRepository() {
 		when(dao.configurationOf(ID)).thenReturn(entity);
 		assertDeepDtoEquals(entity, port.configurationOf(ID));
 	}
@@ -48,7 +50,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(port.allConfigurations(), entity);
+		assertDeepDtoList(asList(entity), port.allConfigurations());
 	}
 
 	@Test
