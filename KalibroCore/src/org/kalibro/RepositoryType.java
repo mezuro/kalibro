@@ -12,7 +12,7 @@ import org.kalibro.dao.DaoFactory;
  */
 public enum RepositoryType {
 
-	BAZAAR, CVS("CVS"), GIT, LOCAL_DIRECTORY, LOCAL_TARBALL, LOCAL_ZIP, MERCURIAL, REMOTE_ZIP, REMOTE_TARBALL,
+	BAZAAR, CVS("CVS"), GIT, LOCAL_DIRECTORY, LOCAL_TARBALL, LOCAL_ZIP, MERCURIAL, REMOTE_TARBALL, REMOTE_ZIP,
 	SUBVERSION;
 
 	public static SortedSet<RepositoryType> supportedTypes() {
