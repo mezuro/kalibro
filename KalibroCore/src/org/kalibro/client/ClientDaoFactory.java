@@ -42,7 +42,7 @@ public class ClientDaoFactory extends DaoFactory {
 
 	@Override
 	public ProcessingDao createProjectResultDao() {
-		return new ProjectResultClientDao(serviceAddress);
+		return new ProcessingClientDao(serviceAddress);
 	}
 
 	@Override

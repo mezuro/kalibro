@@ -49,7 +49,7 @@ public class ClientDaoFactoryTest extends UnitTest {
 
 	@Test
 	public void shouldCreateProjectResultPortDao() throws Exception {
-		assertSame(prepareDao(ProjectResultClientDao.class), factory.createProjectResultDao());
+		assertSame(prepareDao(ProcessingClientDao.class), factory.createProjectResultDao());
 	}
 
 	@Test
