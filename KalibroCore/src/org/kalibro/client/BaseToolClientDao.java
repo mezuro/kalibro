@@ -1,10 +1,10 @@
 package org.kalibro.client;
 
 import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
-import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.BaseToolEndpoint;
 
 /**
@@ -19,7 +19,12 @@ class BaseToolClientDao extends EndpointClient<BaseToolEndpoint> implements Base
 	}
 
 	@Override
-	public SortedSet<BaseTool> all() {
-		return DataTransferObject.toSortedSet(port.allBaseTools());
+	public SortedSet<String> allNames() {
+		return new TreeSet<String>(port.allBaseToolNames());
+	}
+
+	@Override
+	public BaseTool get(String baseToolName) {
+		return port.getBaseTool(baseToolName).convert();
 	}
 }

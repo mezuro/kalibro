@@ -12,6 +12,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 public class BaseToolEndpointImplTest extends
 	EndpointImplementorTest<BaseTool, BaseToolXml, BaseToolXml, BaseToolDao, BaseToolEndpointImpl> {
 
+	private static final String NAME = "BaseToolEndpointImplTest name";
+
 	@Override
 	protected Class<BaseTool> entityClass() {
 		return BaseTool.class;
@@ -19,15 +21,13 @@ public class BaseToolEndpointImplTest extends
 
 	@Test
 	public void shouldGetAllNames() {
-		String name = mock(String.class);
-		when(dao.allNames()).thenReturn(asSortedSet(name));
-		assertDeepEquals(asList(name), implementor.allBaseToolNames());
+		when(dao.allNames()).thenReturn(asSortedSet(NAME));
+		assertDeepEquals(asList(NAME), implementor.allBaseToolNames());
 	}
 
 	@Test
 	public void shouldGetByName() {
-		String name = mock(String.class);
-		when(dao.get(name)).thenReturn(entity);
-		assertSame(response, implementor.getBaseTool(name));
+		when(dao.get(NAME)).thenReturn(entity);
+		assertSame(response, implementor.getBaseTool(NAME));
 	}
 }
