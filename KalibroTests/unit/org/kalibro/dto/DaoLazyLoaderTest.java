@@ -1,8 +1,8 @@
 package org.kalibro.dto;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertSame;
 
-import java.util.SortedSet;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,46 +18,48 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(DaoFactory.class)
 public class DaoLazyLoaderTest extends UnitTest {
 
+	private static final Long ID = new Random().nextLong();
+
 	private ReadingDao dao;
-	private SortedSet<Reading> real, proxy;
+	private Reading real, proxy;
 
 	@Before
 	public void setUp() {
+		real = loadFixture("excellent", Reading.class);
+		mockReadingDao();
+		proxy = DaoLazyLoader.createProxy(ReadingDao.class, "get", ID);
+	}
+
+	private void mockReadingDao() {
 		dao = mock(ReadingDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getReadingDao()).thenReturn(dao);
-		real = mock(SortedSet.class);
-		when(dao.readingsOf(42L)).thenReturn(real);
-		proxy = (SortedSet<Reading>) DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", 42L);
+		when(dao.get(ID)).thenReturn(real);
 	}
 
 	@Test
 	public void shouldLoadOnFirstInvocation() {
 		verifyStatic(never());
 		DaoFactory.getReadingDao();
-		verify(dao, never()).readingsOf(any(Long.class));
 
-		proxy.size();
+		proxy.getLabel();
 		verifyStatic();
 		DaoFactory.getReadingDao();
-		verify(dao).readingsOf(any(Long.class));
+		verify(dao).get(ID);
 	}
 
 	@Test
 	public void shouldFetchOnlyOnce() {
-		proxy.size();
-		proxy.toArray();
-		proxy.toString();
-		verify(dao, once()).readingsOf(any(Long.class));
+		proxy.getLabel();
+		proxy.getGrade();
+		proxy.getColor();
+		verify(dao, once()).get(ID);
 	}
 
 	@Test
 	public void proxyShouldActAsRealObject() {
-		when(real.size()).thenReturn(42);
-		assertEquals(42, proxy.size());
-
-		Reading reading = mock(Reading.class);
-		when(real.first()).thenReturn(reading);
-		assertSame(reading, proxy.first());
+		assertSame(real.getLabel(), proxy.getLabel());
+		assertSame(real.getGrade(), proxy.getGrade());
+		assertSame(real.getColor(), proxy.getColor());
 	}
 }
