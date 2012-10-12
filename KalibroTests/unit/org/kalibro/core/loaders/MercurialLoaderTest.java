@@ -2,14 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
 public class MercurialLoaderTest extends RepositoryLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.MERCURIAL;
-	}
 
 	@Override
 	protected List<String> expectedValidationCommands() {
@@ -17,14 +10,12 @@ public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return asList("hg clone " + ADDRESS + " .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		if (update)
-			return asList("hg pull -u");
-		return asList("hg clone " + repository.getAddress() + " .");
+	protected List<String> expectedUpdateCommands() {
+		return asList("hg pull -u");
 	}
 }

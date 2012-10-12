@@ -3,8 +3,11 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.Repository;
-
+/**
+ * Loader for local Mercurial repositories.
+ * 
+ * @author Carlos Morais
+ */
 public class MercurialLoader extends RepositoryLoader {
 
 	@Override
@@ -13,14 +16,9 @@ public class MercurialLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public boolean supportsAuthentication() {
-		return false;
-	}
-
-	@Override
-	public List<String> loadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(String address, boolean update) {
 		if (update)
 			return Arrays.asList("hg pull -u");
-		return Arrays.asList("hg clone " + repository.getAddress() + " .");
+		return Arrays.asList("hg clone " + address + " .");
 	}
 }
