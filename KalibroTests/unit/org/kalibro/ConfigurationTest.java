@@ -158,13 +158,11 @@ public class ConfigurationTest extends UnitTest {
 
 	@Test
 	public void shouldValidateScripts() {
-		MetricConfiguration scConfiguration = new MetricConfiguration(sc);
-		configuration.addMetricConfiguration(scConfiguration);
+		sc = (CompoundMetric) configuration.getConfigurationFor(sc).getMetric();
 		configuration.validateScripts();
 
 		sc.setScript("return null;");
-		assertThat(validateScripts()).throwsException()
-			.withMessage("Error evaluating Javascript for: structuralComplexity");
+		assertThat(validateScripts()).throwsException().withMessage("Error evaluating Javascript for: sc");
 	}
 
 	private VoidTask validateScripts() {
