@@ -2,14 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
 public class LocalZipLoaderTest extends RepositoryLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.LOCAL_ZIP;
-	}
 
 	@Override
 	protected List<String> expectedValidationCommands() {
@@ -17,12 +10,12 @@ public class LocalZipLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return true;
+	protected List<String> expectedLoadCommands() {
+		return asList("unzip -u -o " + ADDRESS + " -d .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		return asList("unzip -u -o -P PASSWORD " + repository.getAddress() + " -d .");
+	protected List<String> expectedUpdateCommands() {
+		return asList("unzip -u -o " + ADDRESS + " -d .");
 	}
 }
