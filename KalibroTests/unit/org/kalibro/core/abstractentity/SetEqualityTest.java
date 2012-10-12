@@ -10,7 +10,7 @@ import java.util.TreeSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.core.Environment;
+import org.kalibro.Language;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -32,7 +32,7 @@ public class SetEqualityTest extends UnitTest {
 	public void shouldEvaluateAnyTypeOfSet() {
 		assertTrue(equality.canEvaluate(new HashSet<Object>()));
 		assertTrue(equality.canEvaluate(new TreeSet<String>()));
-		assertTrue(equality.canEvaluate(EnumSet.allOf(Environment.class)));
+		assertTrue(equality.canEvaluate(EnumSet.allOf(Language.class)));
 
 		assertFalse(equality.canEvaluate(null));
 		assertFalse(equality.canEvaluate(this));

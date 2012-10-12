@@ -4,8 +4,8 @@ import static org.junit.Assert.*;
 import static org.kalibro.SupportedDatabase.*;
 
 import org.junit.Test;
+import org.kalibro.Language;
 import org.kalibro.SupportedDatabase;
-import org.kalibro.core.Environment;
 import org.yaml.snakeyaml.Yaml;
 
 public class EnumPrinterTest extends PrinterTestCase<Enum<?>> {
@@ -17,7 +17,7 @@ public class EnumPrinterTest extends PrinterTestCase<Enum<?>> {
 
 	@Test
 	public void shouldPrintEnums() {
-		assertTrue(printer.canPrint(Environment.TEST));
+		assertTrue(printer.canPrint(Language.JAVA));
 		assertTrue(printer.canPrint(MYSQL));
 
 		assertFalse(printer.canPrint(this));
