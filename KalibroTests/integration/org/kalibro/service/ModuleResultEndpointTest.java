@@ -1,37 +1,48 @@
 package org.kalibro.service;
 
-import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.ModuleResultFixtures.newHelloWorldClassResult;
-
-import java.util.Date;
+import java.util.List;
+import java.util.Random;
 
 import org.junit.Test;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ModuleResultDao;
+import org.powermock.reflect.Whitebox;
 
 public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleResultDao, ModuleResultEndpoint> {
 
-	private static final String PROJECT_NAME = "ModuleResultEndpointTest project name";
-	private static final String MODULE_NAME = "ModuleResultEndpointTest module name";
-	private static final Date DATE = new Date();
+	private static final Long ID = new Random().nextLong();
 
 	@Override
 	protected ModuleResult loadFixture() {
-		ModuleResult fixture = newHelloWorldClassResult(DATE);
-		fixture.setConfiguration(newConfiguration("cbo", "lcom4"));
-		return fixture;
+		Module module = new Module(Granularity.PACKAGE, "org", "kalibro", "service");
+		ModuleResult moduleResult = new ModuleResult(null, module);
+		Whitebox.setInternalState(moduleResult, "id", ID);
+		return moduleResult;
+	}
+
+	@Override
+	protected List<String> fieldsThatShouldBeProxy() {
+		return asList("metricResults", "parent", "children");
 	}
 
 	@Test
-	public void shouldRetrieveModuleResult() {
-		when(dao.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE)).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE));
+	public void shouldGetResultsRootOfProcessing() {
+		when(dao.resultsRootOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.resultsRootOf(ID));
 	}
 
 	@Test
-	public void shouldRetrieveResultHistory() {
-		when(dao.getResultHistory(PROJECT_NAME, MODULE_NAME)).thenReturn(asList(entity));
-		assertDeepDtoList(port.getResultHistory(PROJECT_NAME, MODULE_NAME), entity);
+	public void shouldGetParent() {
+		when(dao.parentOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.parentOf(ID));
+	}
+
+	@Test
+	public void shouldGetChildren() {
+		when(dao.childrenOf(ID)).thenReturn(asSortedSet(entity));
+		assertDeepDtoList(asList(entity), port.childrenOf(ID));
 	}
 }
