@@ -86,8 +86,9 @@ public class ProcessingXml extends ProcessingDto {
 	@Override
 	public Map<ProcessState, Long> stateTimes() {
 		Map<ProcessState, Long> map = new HashMap<ProcessState, Long>();
-		for (StateTimeXml stateTime : stateTimes)
-			map.put(stateTime.state(), stateTime.time());
+		if (stateTimes != null)
+			for (StateTimeXml stateTime : stateTimes)
+				map.put(stateTime.state(), stateTime.time());
 		return map;
 	}
 }

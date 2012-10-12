@@ -17,15 +17,13 @@ import org.powermock.reflect.Whitebox;
 public class ProcessingEndpointTest extends EndpointTest<Processing, ProcessingDao, ProcessingEndpoint> {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
-	private static final Date DATE = new Date(new Random().nextLong());
+	private static final Date DATE = new Date();
 
 	@Override
 	protected Processing loadFixture() {
 		Processing processing = new Processing(new Repository());
 		Whitebox.setInternalState(processing, "id", ID);
-		processing.setStateTime(ProcessState.LOADING, 2000);
-		processing.setState(ProcessState.COLLECTING);
-		processing.setError(new Throwable());
+		processing.setDate(DATE);
 		return processing;
 	}
 
