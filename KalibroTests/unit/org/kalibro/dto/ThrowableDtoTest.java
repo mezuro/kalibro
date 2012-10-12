@@ -8,7 +8,7 @@ public class ThrowableDtoTest extends AbstractDtoTest<Throwable> {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		doReturn(Exception.class.getName()).when(dto, "throwableClass");
+		doReturn(Throwable.class.getName()).when(dto, "throwableClass");
 		doReturn(entity.getStackTrace()).when(dto, "stackTrace");
 	}
 

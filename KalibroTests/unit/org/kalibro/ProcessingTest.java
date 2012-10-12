@@ -42,6 +42,7 @@ public class ProcessingTest extends UnitTest {
 		assertFalse(other.equals(processing));
 
 		other = new Processing(repository);
+		other.setDate(new Date(0));
 		assertFalse(other.equals(processing));
 
 		other.setDate(processing.getDate());
