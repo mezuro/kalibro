@@ -2,6 +2,8 @@ package org.kalibro.client;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Random;
+
 import org.junit.Test;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
@@ -14,7 +16,8 @@ public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:o
 	MetricConfiguration, MetricConfigurationXmlRequest, MetricConfigurationXmlResponse,
 	MetricConfigurationEndpoint, MetricConfigurationClientDao> { // @formatter:on
 
-	private static final Long ID = mock(Long.class);
+	private static final Long ID = new Random().nextLong();
+	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
 	@Override
 	protected Class<MetricConfiguration> entityClass() {
@@ -23,15 +26,14 @@ public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:o
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(port.metricConfigurationsOf(ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.metricConfigurationsOf(ID));
+		when(port.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(asList(response));
+		assertDeepEquals(asSet(entity), client.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		Long configurationId = mock(Long.class);
-		when(port.saveMetricConfiguration(request, configurationId)).thenReturn(ID);
-		assertEquals(ID, client.save(entity, configurationId));
+		when(port.saveMetricConfiguration(request, CONFIGURATION_ID)).thenReturn(ID);
+		assertEquals(ID, client.save(entity, CONFIGURATION_ID));
 	}
 
 	@Test
