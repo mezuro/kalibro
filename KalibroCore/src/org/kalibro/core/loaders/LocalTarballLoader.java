@@ -3,8 +3,11 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.Repository;
-
+/**
+ * Loader for local tarball files.
+ * 
+ * @author Carlos Morais
+ */
 public class LocalTarballLoader extends RepositoryLoader {
 
 	@Override
@@ -13,12 +16,7 @@ public class LocalTarballLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public boolean supportsAuthentication() {
-		return false;
-	}
-
-	@Override
-	public List<String> loadCommands(Repository repository, boolean update) {
-		return Arrays.asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C .");
+	public List<String> loadCommands(String address, boolean update) {
+		return Arrays.asList("tar -x --keep-newer-files -f " + address + " -C .");
 	}
 }
