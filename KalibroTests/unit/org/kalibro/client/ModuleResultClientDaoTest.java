@@ -2,7 +2,7 @@ package org.kalibro.client;
 
 import static org.junit.Assert.assertSame;
 
-import java.util.Date;
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.ModuleResult;
@@ -14,9 +14,7 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 public class ModuleResultClientDaoTest extends
 	ClientTest<ModuleResult, ModuleResultXml, ModuleResultXml, ModuleResultEndpoint, ModuleResultClientDao> {
 
-	private static final String PROJECT_NAME = "ModuleResultClientDaoTest project name";
-	private static final String MODULE_NAME = "ModuleResultClientDaoTest module name";
-	private static final Date DATE = new Date();
+	private static final Long ID = new Random().nextLong();
 
 	@Override
 	protected Class<ModuleResult> entityClass() {
@@ -24,14 +22,20 @@ public class ModuleResultClientDaoTest extends
 	}
 
 	@Test
-	public void testGetModuleResult() {
-		when(port.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE)).thenReturn(response);
-		assertSame(entity, client.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE));
+	public void shouldGetResultsRoot() {
+		when(port.resultsRootOf(ID)).thenReturn(response);
+		assertSame(entity, client.resultsRootOf(ID));
 	}
 
 	@Test
-	public void testResultHistory() {
-		when(port.getResultHistory(PROJECT_NAME, MODULE_NAME)).thenReturn(asList(response));
-		assertDeepEquals(asList(entity), client.getResultHistory(PROJECT_NAME, MODULE_NAME));
+	public void shouldGetParent() {
+		when(port.parentOf(ID)).thenReturn(response);
+		assertSame(entity, client.parentOf(ID));
+	}
+
+	@Test
+	public void shouldGetChildren() {
+		when(port.childrenOf(ID)).thenReturn(asList(response));
+		assertDeepEquals(asSet(entity), client.childrenOf(ID));
 	}
 }
