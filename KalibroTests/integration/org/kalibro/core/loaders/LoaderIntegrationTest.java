@@ -34,7 +34,7 @@ public abstract class LoaderIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void validateLoaderInstallation() {
-//		TODO assertTrue(repositoryType.isSupported());
+		assertTrue(repositoryType.isSupported());
 	}
 
 	@Test
