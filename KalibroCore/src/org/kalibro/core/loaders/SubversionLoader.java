@@ -3,8 +3,11 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.Repository;
-
+/**
+ * Loader for local Subversion repositories.
+ * 
+ * @author Carlos Morais
+ */
 public class SubversionLoader extends RepositoryLoader {
 
 	@Override
@@ -13,21 +16,9 @@ public class SubversionLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public boolean supportsAuthentication() {
-		return true;
-	}
-
-	@Override
-	public List<String> loadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(String address, boolean update) {
 		if (update)
-			return Arrays.asList("svn update" + authentication(repository));
-		return Arrays.asList("svn checkout" + authentication(repository) + " " + repository.getAddress() + " .");
-	}
-
-	private String authentication(Repository repository) {
-		String authentication = "";
-		if (repository.hasAuthentication())
-			authentication += " --username " + repository.getUsername() + " --password " + repository.getPassword();
-		return authentication;
+			return Arrays.asList("svn update");
+		return Arrays.asList("svn checkout " + address + " .");
 	}
 }
