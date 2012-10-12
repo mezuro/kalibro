@@ -2,14 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
-public class BazaarLoaderTest extends ProjectLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.BAZAAR;
-	}
+public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
@@ -17,14 +10,12 @@ public class BazaarLoaderTest extends ProjectLoaderTestCase {
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return asList("bzr branch --use-existing-dir " + ADDRESS + " .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		if (update)
-			return asList("bzr pull --overwrite");
-		return asList("bzr branch --use-existing-dir " + repository.getAddress() + " .");
+	protected List<String> expectedUpdateCommands() {
+		return asList("bzr pull --overwrite");
 	}
 }

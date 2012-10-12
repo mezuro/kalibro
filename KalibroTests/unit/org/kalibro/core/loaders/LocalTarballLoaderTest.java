@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.kalibro.RepositoryType;
 
-public class LocalTarballLoaderTest extends ProjectLoaderTestCase {
+public class LocalTarballLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected RepositoryType getRepositoryType() {

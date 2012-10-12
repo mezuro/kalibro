@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.kalibro.RepositoryType;
 
-public class SubversionLoaderTest extends ProjectLoaderTestCase {
+public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected RepositoryType getRepositoryType() {

@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.kalibro.RepositoryType;
 
-public class CvsLoaderTest extends ProjectLoaderTestCase {
+public class CvsLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected RepositoryType getRepositoryType() {

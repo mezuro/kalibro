@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.kalibro.Repository;
 
-public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
+public abstract class RemoteFileLoaderTestCase extends RepositoryLoaderTestCase {
 
 	private static final String DOWNLOAD_PREFIX = "wget -N --user=USERNAME --password=PASSWORD ";
 
