@@ -21,6 +21,11 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	private ModuleResult parent;
 	private Set<ModuleResult> children;
 
+	/** Should NOT be used. Only for CGLIB proxy creation. */
+	protected ModuleResult() {
+		this(null, null);
+	}
+
 	public ModuleResult(ModuleResult parent, Module module) {
 		super(module);
 		setGrade(Double.NaN);

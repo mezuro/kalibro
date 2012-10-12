@@ -27,6 +27,10 @@ public class ModuleResultTest extends UnitTest {
 		assertDoubleEquals(Double.NaN, result.getGrade());
 		assertSame(parent, result.getParent());
 		assertTrue(result.getChildren().isEmpty());
+
+		result = new ModuleResult();
+		assertNull(result.getModule());
+		assertNull(result.getParent());
 	}
 
 	@Test
