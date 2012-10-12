@@ -2,14 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
 public class CvsLoaderTest extends RepositoryLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.CVS;
-	}
 
 	@Override
 	protected List<String> expectedValidationCommands() {
@@ -17,14 +10,12 @@ public class CvsLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return asList("cvs -z3 -d " + ADDRESS + " checkout -d . -P .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		if (update)
-			return asList("cvs update");
-		return asList("cvs -z3 -d " + repository.getAddress() + " checkout -d . -P .");
+	protected List<String> expectedUpdateCommands() {
+		return asList("cvs update");
 	}
 }
