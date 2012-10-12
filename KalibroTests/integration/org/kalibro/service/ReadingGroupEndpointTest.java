@@ -10,6 +10,7 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
+import org.powermock.reflect.Whitebox;
 
 public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, ReadingGroupDao, ReadingGroupEndpoint> {
 
@@ -17,9 +18,9 @@ public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, Reading
 
 	@Override
 	public ReadingGroup loadFixture() {
-		ReadingGroup fixture = loadFixture("scholar", ReadingGroup.class);
-		fixture.setId(ID);
-		return fixture;
+		ReadingGroup readingGroup = loadFixture("scholar", ReadingGroup.class);
+		Whitebox.setInternalState(readingGroup, "id", ID);
+		return readingGroup;
 	}
 
 	@Override
@@ -49,7 +50,7 @@ public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, Reading
 	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(port.allReadingGroups(), entity);
+		assertDeepDtoList(asList(entity), port.allReadingGroups());
 	}
 
 	@Test
