@@ -37,7 +37,7 @@ public class ConfigurationClientDaoTest extends ClientTest<// @formatter:off
 	}
 
 	@Test
-	public void shouldGetConfigurationOfProject() {
+	public void shouldGetConfigurationOfRepository() {
 		when(port.configurationOf(ID)).thenReturn(response);
 		assertSame(entity, client.configurationOf(ID));
 	}
