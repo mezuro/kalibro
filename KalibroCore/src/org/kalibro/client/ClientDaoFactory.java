@@ -3,7 +3,7 @@ package org.kalibro.client;
 import org.kalibro.dao.*;
 
 /**
- * Factory which creates data access objects that work as clients to Kalibro Service end points.
+ * Factory of data access objects that work as clients to Kalibro Service end points.
  * 
  * @author Carlos Morais
  */
@@ -31,8 +31,18 @@ public class ClientDaoFactory extends DaoFactory {
 	}
 
 	@Override
+	public MetricResultDao createMetricResultDao() {
+		return new MetricResultClientDao(serviceAddress);
+	}
+
+	@Override
 	public ModuleResultDao createModuleResultDao() {
 		return new ModuleResultClientDao(serviceAddress);
+	}
+
+	@Override
+	public ProcessingDao createProcessingDao() {
+		return new ProcessingClientDao(serviceAddress);
 	}
 
 	@Override
@@ -41,8 +51,8 @@ public class ClientDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	public ProcessingDao createProjectResultDao() {
-		return new ProcessingClientDao(serviceAddress);
+	protected RangeDao createRangeDao() {
+		return new RangeClientDao(serviceAddress);
 	}
 
 	@Override
@@ -53,5 +63,10 @@ public class ClientDaoFactory extends DaoFactory {
 	@Override
 	protected ReadingGroupDao createReadingGroupDao() {
 		return new ReadingGroupClientDao(serviceAddress);
+	}
+
+	@Override
+	protected RepositoryDao createRepositoryDao() {
+		return new RepositoryClientDao(serviceAddress);
 	}
 }
