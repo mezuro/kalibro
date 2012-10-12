@@ -13,10 +13,10 @@ abstract class RemoteFileLoader extends RepositoryLoader {
 	protected abstract RepositoryLoader createLocalLoader();
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		List<String> validationCommands = new ArrayList<String>();
 		validationCommands.add("wget --version");
-		validationCommands.addAll(localLoader.getValidationCommands());
+		validationCommands.addAll(localLoader.validationCommands());
 		return validationCommands;
 	}
 
@@ -26,11 +26,11 @@ abstract class RemoteFileLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		String temporaryFilePath = "." + File.separator + "." + hashCode();
 		List<String> loadCommands = new ArrayList<String>();
 		loadCommands.add(getDownloadCommand(repository, temporaryFilePath));
-		loadCommands.addAll(localLoader.getLoadCommands(new Repository(null, temporaryFilePath), update));
+		loadCommands.addAll(localLoader.loadCommands(new Repository(null, temporaryFilePath), update));
 		return loadCommands;
 	}
 

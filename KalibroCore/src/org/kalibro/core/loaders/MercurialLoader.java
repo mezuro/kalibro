@@ -8,7 +8,7 @@ import org.kalibro.Repository;
 public class MercurialLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("hg --version");
 	}
 
@@ -18,7 +18,7 @@ public class MercurialLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		if (update)
 			return Arrays.asList("hg pull -u");
 		return Arrays.asList("hg clone " + repository.getAddress() + " .");

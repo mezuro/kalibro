@@ -9,11 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroException;
 import org.kalibro.Repository;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -49,21 +47,21 @@ public class RepositoryLoaderTest extends UnitTest {
 	public void shouldValidate() {
 		assertTrue(loader.validate());
 
-		doThrow(new KalibroException("")).when(commandTask).execute(1, MINUTES);
+		doThrow(mock(RuntimeException.class)).when(commandTask).execute(30, SECONDS);
 		assertFalse(loader.validate());
 	}
 
 	@Test
-	public void shouldCreateLoadDirectoryIfNotExistentOnLoad() {
+	public void shouldCreateLoadDirectory() {
 		loader.load(repository, loadDirectory);
-		Mockito.verify(loadDirectory).mkdirs();
+		verify(loadDirectory).mkdirs();
 	}
 
 	@Test
 	public void shouldExecuteLoadCommandsOnFirstLoad() throws Exception {
 		loader.load(repository, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, loadDirectory);
-		Mockito.verify(commandTask).execute(1, HOURS);
+		verify(commandTask).execute(10, HOURS);
 	}
 
 	@Test
@@ -71,23 +69,18 @@ public class RepositoryLoaderTest extends UnitTest {
 		when(loadDirectory.exists()).thenReturn(true);
 		loader.load(repository, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(UPDATE_COMMAND, loadDirectory);
-		Mockito.verify(commandTask).execute(1, HOURS);
+		verify(commandTask).execute(10, HOURS);
 	}
 
 	private class FakeLoader extends RepositoryLoader {
 
 		@Override
-		public boolean supportsAuthentication() {
-			return false;
-		}
-
-		@Override
-		protected List<String> getValidationCommands() {
+		protected List<String> validationCommands() {
 			return asList(VALIDATION_COMMAND);
 		}
 
 		@Override
-		protected List<String> getLoadCommands(Repository repo, boolean update) {
+		protected List<String> loadCommands(Repository repo, boolean update) {
 			return asList(update ? UPDATE_COMMAND : LOAD_COMMAND);
 		}
 	}

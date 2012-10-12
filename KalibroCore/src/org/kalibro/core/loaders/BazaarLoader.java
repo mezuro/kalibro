@@ -8,7 +8,7 @@ import org.kalibro.Repository;
 public class BazaarLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("bzr --version");
 	}
 
@@ -18,7 +18,7 @@ public class BazaarLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		if (update)
 			return Arrays.asList("bzr pull --overwrite");
 		return Arrays.asList("bzr branch --use-existing-dir " + repository.getAddress() + " .");

@@ -8,7 +8,7 @@ import org.kalibro.Repository;
 public class LocalTarballLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("tar --version");
 	}
 
@@ -18,7 +18,7 @@ public class LocalTarballLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		return Arrays.asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C .");
 	}
 }

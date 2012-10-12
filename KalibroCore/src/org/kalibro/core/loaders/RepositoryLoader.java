@@ -5,36 +5,38 @@ import static java.util.concurrent.TimeUnit.*;
 import java.io.File;
 import java.util.List;
 
-import org.kalibro.KalibroException;
 import org.kalibro.Repository;
 import org.kalibro.core.command.CommandTask;
 
+/**
+ * Abstract loader class. Assumes that loaders with download source code from repositories using system calls.
+ * 
+ * @author Carlos Morais
+ */
 public abstract class RepositoryLoader {
 
 	public boolean validate() {
 		try {
 			executeValidation();
 			return true;
-		} catch (KalibroException exception) {
+		} catch (Throwable exception) {
 			return false;
 		}
 	}
 
 	private void executeValidation() {
-		for (String validationCommand : getValidationCommands())
-			new CommandTask(validationCommand).execute(1, MINUTES);
+		for (String validationCommand : validationCommands())
+			new CommandTask(validationCommand).execute(30, SECONDS);
 	}
 
-	protected abstract List<String> getValidationCommands();
-
-	public abstract boolean supportsAuthentication();
+	protected abstract List<String> validationCommands();
 
 	public void load(Repository repository, File loadDirectory) {
-		List<String> commands = getLoadCommands(repository, loadDirectory.exists());
+		List<String> commands = loadCommands(repository, loadDirectory.exists());
 		loadDirectory.mkdirs();
 		for (String loadCommand : commands)
-			new CommandTask(loadCommand, loadDirectory).execute(1, HOURS);
+			new CommandTask(loadCommand, loadDirectory).execute(10, HOURS);
 	}
 
-	protected abstract List<String> getLoadCommands(Repository repository, boolean update);
+	protected abstract List<String> loadCommands(Repository repository, boolean update);
 }

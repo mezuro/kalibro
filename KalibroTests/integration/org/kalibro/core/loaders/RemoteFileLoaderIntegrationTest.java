@@ -9,7 +9,7 @@ public abstract class RemoteFileLoaderIntegrationTest extends LoaderIntegrationT
 	public void testLoad() {
 		RepositoryLoader loader = Whitebox.getInternalState(getRepositoryType(), RepositoryLoader.class);
 		assertThat(whenLoading()).throwsException()
-			.withMessage("Command returned with error status: " + loader.getLoadCommands(repository, false).get(0));
+			.withMessage("Command returned with error status: " + loader.loadCommands(repository, false).get(0));
 	}
 
 	private VoidTask whenLoading() {

@@ -8,7 +8,7 @@ import org.kalibro.Repository;
 public class LocalZipLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("unzip -v");
 	}
 
@@ -18,7 +18,7 @@ public class LocalZipLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		String command = "unzip -u -o";
 		if (repository.hasAuthentication())
 			command += " -P " + repository.getPassword();

@@ -8,7 +8,7 @@ import org.kalibro.Repository;
 public class GitLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("git --version");
 	}
 
@@ -18,7 +18,7 @@ public class GitLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		if (update)
 			return Arrays.asList("git pull origin master");
 		return Arrays.asList("git clone " + repository.getAddress() + " .");

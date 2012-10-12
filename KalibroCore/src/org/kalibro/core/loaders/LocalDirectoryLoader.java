@@ -8,7 +8,7 @@ import org.kalibro.Repository;
 public class LocalDirectoryLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("cp --version");
 	}
 
@@ -18,7 +18,7 @@ public class LocalDirectoryLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		return Arrays.asList("cp -ru " + repository.getAddress() + " .");
 	}
 }

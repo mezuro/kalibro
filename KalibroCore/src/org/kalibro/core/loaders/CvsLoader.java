@@ -8,7 +8,7 @@ import org.kalibro.Repository;
 public class CvsLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("cvs --version");
 	}
 
@@ -18,7 +18,7 @@ public class CvsLoader extends RepositoryLoader {
 	}
 
 	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(Repository repository, boolean update) {
 		if (update)
 			return Arrays.asList("cvs update");
 		return Arrays.asList("cvs -z3 -d " + repository.getAddress() + " checkout -d . -P .");

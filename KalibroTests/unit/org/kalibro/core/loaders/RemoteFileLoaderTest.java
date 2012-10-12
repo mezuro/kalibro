@@ -30,14 +30,14 @@ public class RemoteFileLoaderTest extends UnitTest {
 
 	private void mockLocalLoader() {
 		localLoader = mock(RepositoryLoader.class);
-		when(localLoader.getValidationCommands()).thenReturn(asList(LOCAL_VALIDATION_COMMAND));
-		when(localLoader.getLoadCommands(any(Repository.class), anyBoolean()))
+		when(localLoader.validationCommands()).thenReturn(asList(LOCAL_VALIDATION_COMMAND));
+		when(localLoader.loadCommands(any(Repository.class), anyBoolean()))
 			.thenReturn(asList(LOCAL_LOAD_COMMAND));
 	}
 
 	@Test
 	public void checkValidationCommands() {
-		assertDeepEquals(asList("wget --version", LOCAL_VALIDATION_COMMAND), remoteLoader.getValidationCommands());
+		assertDeepEquals(asList("wget --version", LOCAL_VALIDATION_COMMAND), remoteLoader.validationCommands());
 	}
 
 	@Test
@@ -50,15 +50,15 @@ public class RemoteFileLoaderTest extends UnitTest {
 		assertDeepEquals(asList(
 			"wget -N --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
 			LOCAL_LOAD_COMMAND),
-			remoteLoader.getLoadCommands(repository, false));
+			remoteLoader.loadCommands(repository, false));
 	}
 
 	@Test
 	public void checkGetLocalLoadCommandsForTemporaryFile() {
-		remoteLoader.getLoadCommands(repository, false);
+		remoteLoader.loadCommands(repository, false);
 
 		ArgumentCaptor<Repository> captor = ArgumentCaptor.forClass(Repository.class);
-		Mockito.verify(localLoader).getLoadCommands(captor.capture(), eq(false));
+		Mockito.verify(localLoader).loadCommands(captor.capture(), eq(false));
 		assertEquals(temporaryFilePath(), captor.getValue().getAddress());
 	}
 

@@ -13,7 +13,7 @@ public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 	protected List<String> expectedValidationCommands() {
 		List<String> expectedValidationCommands = new ArrayList<String>();
 		expectedValidationCommands.add("wget --version");
-		expectedValidationCommands.addAll(expectedLocalLoader().getValidationCommands());
+		expectedValidationCommands.addAll(expectedLocalLoader().validationCommands());
 		return expectedValidationCommands;
 	}
 
@@ -28,7 +28,7 @@ public abstract class RemoteFileLoaderTestCase extends ProjectLoaderTestCase {
 		Repository localRepository = new Repository(null, temporaryFilePath);
 		List<String> expectedLoadCommands = new ArrayList<String>();
 		expectedLoadCommands.add(DOWNLOAD_PREFIX + repository.getAddress() + " -O " + temporaryFilePath);
-		expectedLoadCommands.addAll(expectedLocalLoader().getLoadCommands(localRepository, update));
+		expectedLoadCommands.addAll(expectedLocalLoader().loadCommands(localRepository, update));
 		return expectedLoadCommands;
 	}
 

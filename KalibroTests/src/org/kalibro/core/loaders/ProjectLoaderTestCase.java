@@ -32,7 +32,7 @@ public abstract class ProjectLoaderTestCase extends UnitTest {
 
 	@Test
 	public void checkValidationCommands() {
-		assertDeepEquals(expectedValidationCommands(), loader.getValidationCommands());
+		assertDeepEquals(expectedValidationCommands(), loader.validationCommands());
 	}
 
 	protected abstract List<String> expectedValidationCommands();
@@ -46,8 +46,8 @@ public abstract class ProjectLoaderTestCase extends UnitTest {
 
 	@Test
 	public void checkLoadCommands() {
-		assertDeepEquals(expectedLoadCommands(true), loader.getLoadCommands(repository, true));
-		assertDeepEquals(expectedLoadCommands(false), loader.getLoadCommands(repository, false));
+		assertDeepEquals(expectedLoadCommands(true), loader.loadCommands(repository, true));
+		assertDeepEquals(expectedLoadCommands(false), loader.loadCommands(repository, false));
 	}
 
 	protected abstract List<String> expectedLoadCommands(boolean update);
