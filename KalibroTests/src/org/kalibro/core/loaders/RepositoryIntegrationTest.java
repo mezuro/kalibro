@@ -38,18 +38,22 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void shouldLoadAndUpdate() {
-		File loaded = load();
-		File updated = load();
+		File loaded = loadAndCheck();
+		File updated = loadAndCheck();
 		assertEquals(updated.lastModified(), loaded.lastModified());
 	}
 
-	private File load() {
-		loader.load(address(), helloWorldDirectory());
+	private File loadAndCheck() {
+		load();
 		Iterator<File> files = FileUtils.iterateFiles(helloWorldDirectory(), new String[]{"c"}, true);
 		File loaded = files.next();
 		assertEquals("HelloWorld.c", loaded.getName());
 		assertFalse(files.hasNext());
 		return loaded;
+	}
+
+	protected void load() {
+		loader.load(address(), helloWorldDirectory());
 	}
 
 	protected abstract String address();
