@@ -30,6 +30,13 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		return "\"" + Identifier.fromVariable(entityName()).asConstant() + "\"";
 	}
 
+	@Test
+	public void shouldHaveCorrectColumns() {
+		verifyColumns();
+	}
+
+	protected abstract void verifyColumns();
+
 	protected void shouldHaveId() {
 		assertNotNull("@Id not present", dtoReflector.getFieldAnnotation("id", Id.class));
 		assertNotNull("@GeneratedValue not present", dtoReflector.getFieldAnnotation("id", GeneratedValue.class));
