@@ -5,8 +5,8 @@ import static org.kalibro.ProcessState.ERROR;
 import javax.persistence.*;
 
 import org.kalibro.Configuration;
-import org.kalibro.Project;
 import org.kalibro.ProcessState;
+import org.kalibro.Project;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Project")
@@ -57,6 +57,10 @@ public class ProjectRecord extends DataTransferObject<Project> {
 		initializeConfiguration(configurationId);
 		initializeState(project);
 		initializeError(project);
+	}
+
+	public ProjectRecord(Long projectId) {
+		// TODO Auto-generated constructor stub
 	}
 
 	private void initializeConfiguration(Long configurationId) {
