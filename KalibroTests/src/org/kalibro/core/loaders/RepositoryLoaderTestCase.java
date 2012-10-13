@@ -10,7 +10,7 @@ public abstract class RepositoryLoaderTestCase extends UnitTest {
 
 	protected static final String ADDRESS = "RepositoryLoaderTestCase address";
 
-	private RepositoryLoader loader;
+	protected RepositoryLoader loader;
 
 	@Before
 	public void setUp() throws Exception {
