@@ -1,75 +1,54 @@
 package org.kalibro.core.loaders;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyBoolean;
-
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Repository;
 import org.kalibro.tests.UnitTest;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 public class RemoteFileLoaderTest extends UnitTest {
 
-	private static final String ADDRESS = "RemoteFileLoaderTest address";
-	private static final String LOCAL_LOAD_COMMAND = "RemoteFileLoaderTest local load command";
-	private static final String LOCAL_VALIDATION_COMMAND = "RemoteFileLoaderTest local validation command";
+	private static final String ADDRESS = "ADDRESS";
+	private static final String LOCAL_LOAD_COMMAND = "LOCAL_LOAD_COMMAND";
+	private static final String LOCAL_UPDATE_COMMAND = "LOCAL_UPDATE_COMMAND";
+	private static final String LOCAL_VALIDATION_COMMAND = "LOCAL_VALIDATION_COMMAND";
 
-	private Repository repository;
 	private RepositoryLoader localLoader;
-
 	private RemoteFileLoader remoteLoader;
+	private String temporaryFilePath;
 
 	@Before
 	public void setUp() {
-		repository = new Repository(null, ADDRESS, "USERNAME", "PASSWORD");
-		mockLocalLoader();
-		remoteLoader = new FakeRemoteLoader();
-	}
-
-	private void mockLocalLoader() {
 		localLoader = mock(RepositoryLoader.class);
+		remoteLoader = new FakeRemoteLoader();
+		temporaryFilePath = "./." + remoteLoader.hashCode();
 		when(localLoader.validationCommands()).thenReturn(asList(LOCAL_VALIDATION_COMMAND));
-		when(localLoader.loadCommands(any(Repository.class), anyBoolean()))
-			.thenReturn(asList(LOCAL_LOAD_COMMAND));
+		when(localLoader.loadCommands(temporaryFilePath, false)).thenReturn(asList(LOCAL_LOAD_COMMAND));
+		when(localLoader.loadCommands(temporaryFilePath, true)).thenReturn(asList(LOCAL_UPDATE_COMMAND));
 	}
 
 	@Test
 	public void checkValidationCommands() {
-		assertDeepEquals(asList("wget --version", LOCAL_VALIDATION_COMMAND), remoteLoader.validationCommands());
-	}
-
-	@Test
-	public void shouldSupportAuthentication() {
-		assertTrue(remoteLoader.supportsAuthentication());
+		assertDeepEquals(asList("wget --version", LOCAL_VALIDATION_COMMAND, "rm --version"),
+			remoteLoader.validationCommands());
 	}
 
 	@Test
 	public void checkLoadCommands() {
+		checkMergedCommands(false, LOCAL_LOAD_COMMAND);
+		checkMergedCommands(true, LOCAL_UPDATE_COMMAND);
+	}
+
+	private void checkMergedCommands(boolean update, String localCommand) {
 		assertDeepEquals(asList(
-			"wget -N --user=USERNAME --password=PASSWORD " + ADDRESS + " -O " + temporaryFilePath(),
-			LOCAL_LOAD_COMMAND),
-			remoteLoader.loadCommands(repository, false));
-	}
-
-	@Test
-	public void checkGetLocalLoadCommandsForTemporaryFile() {
-		remoteLoader.loadCommands(repository, false);
-
-		ArgumentCaptor<Repository> captor = ArgumentCaptor.forClass(Repository.class);
-		Mockito.verify(localLoader).loadCommands(captor.capture(), eq(false));
-		assertEquals(temporaryFilePath(), captor.getValue().getAddress());
-	}
-
-	private String temporaryFilePath() {
-		return "./." + remoteLoader.hashCode();
+			"wget " + ADDRESS + " -O " + temporaryFilePath,
+			localCommand,
+			"rm -f " + temporaryFilePath),
+			remoteLoader.loadCommands(ADDRESS, update));
 	}
 
 	private class FakeRemoteLoader extends RemoteFileLoader {
 
 		@Override
-		protected RepositoryLoader createLocalLoader() {
+		protected RepositoryLoader localLoader() {
 			return localLoader;
 		}
 	}

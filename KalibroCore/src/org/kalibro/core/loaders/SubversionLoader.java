@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Loader for local Subversion repositories.
+ * Loader for Subversion repositories.
  * 
  * @author Carlos Morais
  */

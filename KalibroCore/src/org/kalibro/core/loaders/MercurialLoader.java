@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * Loader for local Mercurial repositories.
+ * Loader for Mercurial repositories.
  * 
  * @author Carlos Morais
  */
