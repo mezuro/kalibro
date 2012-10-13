@@ -24,7 +24,6 @@ public final class RepositoryFixtures {
 		String repositoriesPath = repositoriesDir.getAbsolutePath() + File.separator;
 		newAddress(REMOTE_TARBALL, "http:/invalid.address/HelloWorld.tar.gz");
 		newAddress(REMOTE_ZIP, "http://invalid.address/HelloWorld.zip");
-		newAddress(SUBVERSION, "file://" + repositoriesPath + "HelloWorldSubversion");
 	}
 
 	private static void newAddress(RepositoryType type, String address) {
