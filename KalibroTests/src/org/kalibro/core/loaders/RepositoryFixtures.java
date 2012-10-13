@@ -22,7 +22,6 @@ public final class RepositoryFixtures {
 		File samplesDir = new File(Environment.dotKalibro(), "samples");
 		File repositoriesDir = new File(samplesDir, "repositories");
 		String repositoriesPath = repositoriesDir.getAbsolutePath() + File.separator;
-		newAddress(LOCAL_ZIP, repositoriesPath + "HelloWorld.zip");
 		newAddress(MERCURIAL, repositoriesPath + "HelloWorldMercurial/");
 		newAddress(REMOTE_TARBALL, "http:/invalid.address/HelloWorld.tar.gz");
 		newAddress(REMOTE_ZIP, "http://invalid.address/HelloWorld.zip");
