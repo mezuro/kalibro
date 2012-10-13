@@ -1,20 +1,12 @@
 package org.kalibro.core.persistence.record;
 
-import org.junit.Test;
-import org.kalibro.ReadingGroup;
-
-public class ReadingGroupRecordTest extends RecordTest<ReadingGroup> {
+public class ReadingGroupRecordTest extends RecordTest {
 
 	@Override
-	protected ReadingGroup loadFixture() {
-		return loadFixture("scholar", ReadingGroup.class);
-	}
-
-	@Test
-	public void verifyColumns() {
+	protected void verifyColumns() {
 		shouldHaveId();
-		assertColumn("name", String.class, false, true);
-		assertColumn("description", String.class, true, false);
-		assertOneToMany("readings", "group");
+		assertColumn("name", String.class).isRequired().isUnique();
+		assertColumn("description", String.class).isNullable();
+		assertOneToMany("readings").mappedBy("group");
 	}
 }

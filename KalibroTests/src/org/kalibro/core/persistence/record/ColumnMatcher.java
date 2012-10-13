@@ -22,6 +22,11 @@ class ColumnMatcher {
 		return this;
 	}
 
+	ColumnMatcher isNullable() {
+		assertTrue("Column " + column.name() + " should be nullable.", column.nullable());
+		return this;
+	}
+
 	ColumnMatcher isRequired() {
 		assertFalse("Column " + column.name() + " should NOT be nullable.", column.nullable());
 		return this;
