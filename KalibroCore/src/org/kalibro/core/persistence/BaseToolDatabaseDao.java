@@ -6,9 +6,9 @@ import org.kalibro.BaseTool;
 import org.kalibro.core.persistence.record.BaseToolRecord;
 import org.kalibro.dao.BaseToolDao;
 
-class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implements BaseToolDao {
+public class BaseToolDatabaseDao extends DatabaseDao<BaseTool, BaseToolRecord> implements BaseToolDao {
 
-	protected BaseToolDatabaseDao(RecordManager recordManager) {
+	BaseToolDatabaseDao() {
 		super(recordManager, BaseToolRecord.class);
 	}
 

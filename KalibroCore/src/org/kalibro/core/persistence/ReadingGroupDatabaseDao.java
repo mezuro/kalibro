@@ -11,7 +11,7 @@ import org.kalibro.dao.ReadingGroupDao;
  * 
  * @author Carlos Morais
  */
-class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGroupRecord> implements ReadingGroupDao {
+public class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGroupRecord> implements ReadingGroupDao {
 
 	ReadingGroupDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ReadingGroupRecord.class);

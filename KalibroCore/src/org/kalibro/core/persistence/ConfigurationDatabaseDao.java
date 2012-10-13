@@ -11,9 +11,10 @@ import org.kalibro.dao.ConfigurationDao;
  * 
  * @author Carlos Morais
  */
-class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements ConfigurationDao {
+public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements
+	ConfigurationDao {
 
-	ConfigurationDatabaseDao(RecordManager recordManager) {
+	public ConfigurationDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ConfigurationRecord.class);
 	}
 

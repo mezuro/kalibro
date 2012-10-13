@@ -30,7 +30,7 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 	private String projectName;
 	private Date date;
 
-	private ProjectResultDatabaseDao dao;
+	private ProcessingDatabaseDao dao;
 
 	@Before
 	public void setUp() {
@@ -38,7 +38,7 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 		projectName = processing.getRepository().getName();
 		date = processing.getDate();
 		recordManager = PowerMockito.mock(RecordManager.class);
-		dao = PowerMockito.spy(new ProjectResultDatabaseDao(recordManager));
+		dao = PowerMockito.spy(new ProcessingDatabaseDao(recordManager));
 	}
 
 	@Test

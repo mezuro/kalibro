@@ -4,18 +4,18 @@ import java.util.Date;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.RepositoryResult;
+import org.kalibro.Processing;
 import org.kalibro.core.persistence.record.ProjectResultRecord;
 import org.kalibro.dao.ProcessingDao;
 
-class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResultRecord> implements ProcessingDao {
+public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProjectResultRecord> implements ProcessingDao {
 
-	protected ProjectResultDatabaseDao(RecordManager recordManager) {
+	public ProcessingDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ProjectResultRecord.class);
 	}
 
 	@Override
-	public void save(RepositoryResult repositoryResult) {
+	public void save(Processing repositoryResult) {
 		save(new ProjectResultRecord(repositoryResult));
 	}
 
@@ -52,21 +52,21 @@ class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResu
 	}
 
 	@Override
-	public RepositoryResult getFirstResultOf(String projectName) {
+	public Processing getFirstResultOf(String projectName) {
 		TypedQuery<ProjectResultRecord> query = createRecordQuery(getFirstQuery());
 		query.setParameter("projectName", projectName);
 		return getResult(query);
 	}
 
 	@Override
-	public RepositoryResult getLastResultOf(String projectName) {
+	public Processing getLastResultOf(String projectName) {
 		TypedQuery<ProjectResultRecord> query = createRecordQuery(getLastQuery());
 		query.setParameter("projectName", projectName);
 		return getResult(query);
 	}
 
 	@Override
-	public RepositoryResult getFirstResultAfter(Date date, String projectName) {
+	public Processing getFirstResultAfter(Date date, String projectName) {
 		TypedQuery<ProjectResultRecord> query = createRecordQuery(getFirstQuery("result.date > :date"));
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
@@ -74,7 +74,7 @@ class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResu
 	}
 
 	@Override
-	public RepositoryResult getLastResultBefore(Date date, String projectName) {
+	public Processing getLastResultBefore(Date date, String projectName) {
 		TypedQuery<ProjectResultRecord> query = createRecordQuery(getLastQuery("result.date < :date"));
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
@@ -99,7 +99,7 @@ class ProjectResultDatabaseDao extends DatabaseDao<RepositoryResult, ProjectResu
 			"AND " + loadDateCondition + ")";
 	}
 
-	private RepositoryResult getResult(TypedQuery<ProjectResultRecord> query) {
+	private Processing getResult(TypedQuery<ProjectResultRecord> query) {
 		return query.getSingleResult().convert();
 	}
 }

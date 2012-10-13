@@ -24,21 +24,21 @@ public class ClientDaoFactoryTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetDaos() throws Exception {
-		shouldGetDao(BaseToolClientDao.class);
-		shouldGetDao(ConfigurationClientDao.class);
-		shouldGetDao(MetricConfigurationClientDao.class);
-		shouldGetDao(MetricResultClientDao.class);
-		shouldGetDao(ModuleResultClientDao.class);
-		shouldGetDao(ProcessingClientDao.class);
-		shouldGetDao(ProjectClientDao.class);
-		shouldGetDao(RangeClientDao.class);
-		shouldGetDao(ReadingClientDao.class);
-		shouldGetDao(ReadingGroupClientDao.class);
-		shouldGetDao(RepositoryClientDao.class);
+	public void shouldCreateDaos() throws Exception {
+		shouldCreate(BaseToolClientDao.class);
+		shouldCreate(ConfigurationClientDao.class);
+		shouldCreate(MetricConfigurationClientDao.class);
+		shouldCreate(MetricResultClientDao.class);
+		shouldCreate(ModuleResultClientDao.class);
+		shouldCreate(ProcessingClientDao.class);
+		shouldCreate(ProjectClientDao.class);
+		shouldCreate(RangeClientDao.class);
+		shouldCreate(ReadingClientDao.class);
+		shouldCreate(ReadingGroupClientDao.class);
+		shouldCreate(RepositoryClientDao.class);
 	}
 
-	private <T> void shouldGetDao(Class<T> daoClass) throws Exception {
+	private <T> void shouldCreate(Class<T> daoClass) throws Exception {
 		T dao = mock(daoClass);
 		whenNew(daoClass).withArguments(SERVICE_ADDRESS).thenReturn(dao);
 		assertSame(dao, Whitebox.invokeMethod(factory, "create" + daoClass.getSimpleName().replace("Client", "")));

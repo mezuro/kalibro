@@ -16,14 +16,14 @@ import org.kalibro.core.processing.ProcessProjectTask;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.ProjectDao;
 
-class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
+public class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
 
 	private Map<String, ProcessProjectTask> processTasks;
 	private Map<String, Integer> processPeriods;
 
 	private ConfigurationDao configurationDao;
 
-	protected ProjectDatabaseDao(RecordManager recordManager) {
+	public ProjectDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ProjectRecord.class);
 		configurationDao = new ConfigurationDatabaseDao(recordManager);
 		processTasks = new HashMap<String, ProcessProjectTask>();
