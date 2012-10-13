@@ -13,7 +13,7 @@ public class ConfigurationRecordTest extends RecordTest<Configuration> {
 
 	@Test
 	public void verifyColumns() {
-		assertId();
+		shouldHaveId();
 		assertColumn("name", String.class, false, true);
 		assertColumn("description", String.class, true, false);
 		assertOneToMany("metricConfigurations", "configuration");

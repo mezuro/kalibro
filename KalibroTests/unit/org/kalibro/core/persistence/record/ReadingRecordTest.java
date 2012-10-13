@@ -12,7 +12,7 @@ public class ReadingRecordTest extends RecordTest<Reading> {
 
 	@Test
 	public void verifyColumns() {
-		assertId();
+		shouldHaveId();
 		assertColumn("label", String.class, false, false);
 		assertColumn("grade", Long.class, false, false);
 		assertColumn("color", Integer.class, false, false);

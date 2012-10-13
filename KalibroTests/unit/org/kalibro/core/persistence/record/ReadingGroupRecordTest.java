@@ -12,7 +12,7 @@ public class ReadingGroupRecordTest extends RecordTest<ReadingGroup> {
 
 	@Test
 	public void verifyColumns() {
-		assertId();
+		shouldHaveId();
 		assertColumn("name", String.class, false, true);
 		assertColumn("description", String.class, true, false);
 		assertOneToMany("readings", "group");

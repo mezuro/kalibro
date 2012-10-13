@@ -1,7 +1,5 @@
 package org.kalibro.dto;
 
-import java.util.Random;
-
 import org.junit.Test;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
@@ -10,15 +8,13 @@ public class MetricResultDtoTest extends AbstractDtoTest<MetricResult> {
 
 	@Override
 	protected MetricResult loadFixture() {
-		MetricConfiguration configuration = loadFixture("lcom4", MetricConfiguration.class);
-		MetricResult metricResult = new MetricResult(configuration, new Random().nextDouble());
-		metricResult.addDescendentResult(42.0);
-		return metricResult;
+		return new MetricResult(new MetricConfiguration(), new Throwable());
 	}
 
 	@Test
-	public void shouldAlsoConvertErrorResult() throws Exception {
-		entity = new MetricResult(entity.getConfiguration(), new Exception());
+	public void shouldAlsoConvertNormalResult() throws Exception {
+		entity = new MetricResult(entity.getConfiguration(), Double.POSITIVE_INFINITY);
+		entity.addDescendentResult(42.0);
 		createDto();
 		shouldConvert();
 	}
