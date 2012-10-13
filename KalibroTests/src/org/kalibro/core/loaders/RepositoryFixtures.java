@@ -25,7 +25,6 @@ public final class RepositoryFixtures {
 		newAddress(LOCAL_DIRECTORY, repositoriesPath + "HelloWorldDirectory/");
 		newAddress(LOCAL_TARBALL, repositoriesPath + "HelloWorld.tar.gz");
 		newAddress(LOCAL_ZIP, repositoriesPath + "HelloWorld.zip");
-		newAddress(BAZAAR, repositoriesPath + "HelloWorldBazaar/");
 		newAddress(CVS, repositoriesPath + "HelloWorldCvs/");
 		newAddress(GIT, repositoriesPath + "HelloWorldGit/");
 		newAddress(MERCURIAL, repositoriesPath + "HelloWorldMercurial/");

@@ -3,7 +3,7 @@ package org.kalibro.core.loaders;
 import org.kalibro.core.concurrent.VoidTask;
 import org.powermock.reflect.Whitebox;
 
-public abstract class RemoteFileLoaderIntegrationTest extends LoaderIntegrationTest {
+public abstract class RemoteFileLoaderIntegrationTest extends RepositoryIntegrationTest {
 
 	@Override
 	public void testLoad() {
