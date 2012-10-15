@@ -5,12 +5,9 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.BaseTool;
 import org.kalibro.Metric;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.Statistic;
-import org.kalibro.dao.BaseToolDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.MetricConfigurationDto;
 
 /**
@@ -70,8 +67,8 @@ public class MetricConfigurationXmlResponse extends MetricConfigurationDto {
 	}
 
 	@Override
-	public BaseTool baseTool() {
-		return metric.compound() ? null : (BaseTool) DaoLazyLoader.createProxy(BaseToolDao.class, "get", baseToolName);
+	public String baseToolName() {
+		return baseToolName;
 	}
 
 	@Override

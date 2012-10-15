@@ -3,6 +3,7 @@ package org.kalibro.dto;
 import java.util.SortedSet;
 
 import org.kalibro.*;
+import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.RangeDao;
 import org.kalibro.dao.ReadingGroupDao;
 
@@ -36,7 +37,11 @@ public abstract class MetricConfigurationDto extends DataTransferObject<MetricCo
 
 	public abstract Metric metric();
 
-	public abstract BaseTool baseTool();
+	protected BaseTool baseTool() {
+		return DaoLazyLoader.createProxy(BaseToolDao.class, "get", baseToolName());
+	}
+
+	public abstract String baseToolName();
 
 	public abstract Long id();
 

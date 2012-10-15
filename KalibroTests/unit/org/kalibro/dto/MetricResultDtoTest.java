@@ -6,16 +6,19 @@ import org.kalibro.MetricResult;
 
 public class MetricResultDtoTest extends AbstractDtoTest<MetricResult> {
 
+	private boolean normal;
+
 	@Override
 	protected MetricResult loadFixture() {
+		if (normal)
+			return new MetricResult(entity.getConfiguration(), Double.POSITIVE_INFINITY);
 		return new MetricResult(new MetricConfiguration(), new Throwable());
 	}
 
 	@Test
 	public void shouldAlsoConvertNormalResult() throws Exception {
-		entity = new MetricResult(entity.getConfiguration(), Double.POSITIVE_INFINITY);
-		entity.addDescendentResult(42.0);
-		createDto();
+		normal = true;
+		setUp();
 		shouldConvert();
 	}
 }

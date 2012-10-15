@@ -16,7 +16,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
-public class ProjectResultDatabaseDaoTest extends UnitTest {
+public class ProcessingDatabaseDaoTest extends UnitTest {
 
 	private static final String COUNT_QUERY = "SELECT count(result) FROM Processing result " +
 		"WHERE result.project.name = :projectName";

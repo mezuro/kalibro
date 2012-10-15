@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.*;
-import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.MetricConfigurationDto;
@@ -80,8 +79,8 @@ public class MetricConfigurationXmlRequest extends MetricConfigurationDto {
 	}
 
 	@Override
-	public BaseTool baseTool() {
-		return metric.compound() ? null : (BaseTool) DaoLazyLoader.createProxy(BaseToolDao.class, "get", baseToolName);
+	public String baseToolName() {
+		return baseToolName;
 	}
 
 	@Override

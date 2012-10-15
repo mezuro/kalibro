@@ -7,8 +7,10 @@ import java.util.TreeSet;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.*;
-import org.kalibro.dao.BaseToolDao;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
+import org.kalibro.ReadingGroup;
+import org.kalibro.Statistic;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.DataTransferObject;
@@ -31,10 +33,8 @@ public class MetricConfigurationXmlRequestTest extends XmlTest {
 
 	private void mockLazyLoading() {
 		Whitebox.setInternalState(dto, "readingGroupId", 42L);
-		BaseTool baseTool = loadFixture("inexistent", BaseTool.class);
 		ReadingGroup readingGroup = Whitebox.getInternalState(entity, "readingGroup");
 		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(BaseToolDao.class, "get", "Inexistent")).thenReturn(baseTool);
 		when(DaoLazyLoader.createProxy(ReadingGroupDao.class, "get", 42L)).thenReturn(readingGroup);
 	}
 
@@ -52,7 +52,7 @@ public class MetricConfigurationXmlRequestTest extends XmlTest {
 
 	@Test
 	public void shouldReturnNullBaseToolForCompoundMetricConfiguration() {
-		assertNull(new MetricConfigurationXmlRequest(new MetricConfiguration()).baseTool());
+		assertNull(new MetricConfigurationXmlRequest(new MetricConfiguration()).baseToolName());
 	}
 
 	@Test

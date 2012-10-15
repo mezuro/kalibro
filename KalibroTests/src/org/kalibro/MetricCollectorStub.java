@@ -1,5 +1,6 @@
 package org.kalibro;
 
+import static org.kalibro.Granularity.METHOD;
 import static org.kalibro.tests.SpecialAssertions.asSet;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
@@ -11,7 +12,7 @@ public class MetricCollectorStub implements MetricCollector {
 	public static final String NAME = "Metric collector stub";
 	public static final String DESCRIPTION = "A MetricCollector for testing";
 	public static final String CLASS_NAME = MetricCollectorStub.class.getName();
-	public static final NativeMetric SUPPORTED_METRIC = mock(NativeMetric.class);
+	public static final NativeMetric SUPPORTED_METRIC = new NativeMetric("MetriCollectorStub metric", METHOD);
 	public static final NativeModuleResult RESULT = mock(NativeModuleResult.class);
 
 	@Override

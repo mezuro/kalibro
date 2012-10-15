@@ -33,7 +33,7 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
 	protected abstract ENTITY loadFixture();
 
-	protected void createDto() throws Exception {
+	private void createDto() throws Exception {
 		Class<?> dtoClass = Class.forName(getClass().getName().replace("Test", ""));
 		dto = (DataTransferObject<ENTITY>) mock(dtoClass, Mockito.CALLS_REAL_METHODS);
 		FieldReflector reflector = new FieldReflector(entity);
@@ -42,7 +42,7 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 				doReturn(reflector.get(method.getName())).when(dto, method).withNoArguments();
 	}
 
-	private void mockLazyLoading() {
+	private void mockLazyLoading() throws Exception {
 		lazyLoadExpectations = new ArrayList<LazyLoadExpectation>();
 		registerLazyLoadExpectations();
 		mockStatic(DaoLazyLoader.class);
@@ -50,7 +50,8 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.returnValue);
 	}
 
-	protected void registerLazyLoadExpectations() {
+	@SuppressWarnings("unused" /* to be overriden */)
+	protected void registerLazyLoadExpectations() throws Exception {
 		return;
 	}
 

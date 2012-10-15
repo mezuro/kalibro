@@ -70,6 +70,13 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 		return new TreeSet<NativeMetric>(supportedMetrics);
 	}
 
+	public NativeMetric getSupportedMetric(String metricName) {
+		for (NativeMetric metric : supportedMetrics)
+			if (metric.getName().equals(metricName))
+				return metric;
+		throw new KalibroException("Base tool '" + name + "' does not support metric: " + metricName);
+	}
+
 	public String getCollectorClassName() {
 		return collectorClassName;
 	}

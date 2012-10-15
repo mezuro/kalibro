@@ -9,15 +9,19 @@ import org.kalibro.NativeMetric;
 
 public class MetricDtoTest extends AbstractDtoTest<Metric> {
 
+	private boolean compound;
+
 	@Override
 	protected Metric loadFixture() {
+		if (compound)
+			return loadFixture("sc", CompoundMetric.class);
 		return loadFixture("lcom4", NativeMetric.class);
 	}
 
 	@Test
 	public void shouldAlsoConvertCompoundMetric() throws Exception {
-		entity = loadFixture("sc", CompoundMetric.class);
-		createDto();
+		compound = true;
+		setUp();
 		shouldConvert();
 	}
 

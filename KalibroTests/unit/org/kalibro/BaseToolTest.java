@@ -79,6 +79,18 @@ public class BaseToolTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldGetSupportedMetricByName() {
+		assertSame(SUPPORTED_METRIC, baseTool.getSupportedMetric(SUPPORTED_METRIC.getName()));
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				baseTool.getSupportedMetric("inexistent");
+			}
+		}).throwsException().withMessage("Base tool '" + NAME + "' does not support metric: inexistent");
+	}
+
+	@Test
 	public void shouldCollectMetrics() throws Exception {
 		assertEquals(asSet(RESULT), baseTool.collectMetrics(null, null));
 	}
