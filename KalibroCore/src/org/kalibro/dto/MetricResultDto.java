@@ -15,7 +15,7 @@ public abstract class MetricResultDto extends DataTransferObject<MetricResult> {
 	@Override
 	public MetricResult convert() {
 		MetricResult metricResult = error() == null ? convertNormal() : convertWithError();
-		metricResult.setDescendentResults(descendentResults());
+		metricResult.setDescendantResults(descendantResults());
 		return metricResult;
 	}
 
@@ -33,5 +33,5 @@ public abstract class MetricResultDto extends DataTransferObject<MetricResult> {
 
 	public abstract Throwable error();
 
-	public abstract List<Double> descendentResults();
+	public abstract List<Double> descendantResults();
 }

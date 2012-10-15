@@ -13,7 +13,7 @@ public class MetricResult extends AbstractMetricResult {
 
 	private MetricConfiguration configuration;
 	private Throwable error;
-	private List<Double> descendentResults;
+	private List<Double> descendantResults;
 
 	public MetricResult(MetricConfiguration configuration, Throwable error) {
 		this(configuration, Double.NaN);
@@ -23,7 +23,7 @@ public class MetricResult extends AbstractMetricResult {
 	public MetricResult(MetricConfiguration configuration, Double value) {
 		super(configuration.getMetric(), value);
 		this.configuration = configuration;
-		setDescendentResults(new ArrayList<Double>());
+		setDescendantResults(new ArrayList<Double>());
 	}
 
 	public boolean hasError() {
@@ -38,21 +38,21 @@ public class MetricResult extends AbstractMetricResult {
 		return configuration;
 	}
 
-	public List<Double> getDescendentResults() {
-		return descendentResults;
+	public List<Double> getDescendantResults() {
+		return descendantResults;
 	}
 
-	public void setDescendentResults(List<Double> descendentResults) {
-		this.descendentResults = descendentResults;
+	public void setDescendantResults(List<Double> descendantResults) {
+		this.descendantResults = descendantResults;
 	}
 
-	public void addDescendentResult(Double descendentResult) {
-		descendentResults.add(descendentResult);
+	public void addDescendantResult(Double descendantResult) {
+		descendantResults.add(descendantResult);
 	}
 
 	public Double getAggregatedValue() {
-		if (getValue().isNaN() && !descendentResults.isEmpty())
-			return configuration.getAggregationForm().calculate(descendentResults);
+		if (getValue().isNaN() && !descendantResults.isEmpty())
+			return configuration.getAggregationForm().calculate(descendantResults);
 		return getValue();
 	}
 

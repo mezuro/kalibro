@@ -46,7 +46,7 @@ public class MetricResultTest extends UnitTest {
 	private void checkConstruction() {
 		assertSame(configuration.getMetric(), result.getMetric());
 		assertSame(configuration, result.getConfiguration());
-		assertTrue(result.getDescendentResults().isEmpty());
+		assertTrue(result.getDescendantResults().isEmpty());
 	}
 
 	@Test
@@ -54,8 +54,8 @@ public class MetricResultTest extends UnitTest {
 		assertSame(VALUE, result.getAggregatedValue());
 
 		result = new MetricResult(configuration, Double.NaN);
-		result.addDescendentResult(1.0);
-		result.addDescendentResult(2.0);
+		result.addDescendantResult(1.0);
+		result.addDescendantResult(2.0);
 
 		when(configuration.getAggregationForm()).thenReturn(Statistic.AVERAGE);
 		assertDoubleEquals(1.5, result.getAggregatedValue());

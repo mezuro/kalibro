@@ -22,7 +22,7 @@ public class MetricResultEndpointTest extends EndpointTest<MetricResult, MetricR
 		configuration.setReadingGroup(null);
 		Whitebox.setInternalState(configuration, "baseTool", (BaseTool) null);
 		MetricResult metricResult = new MetricResult(configuration, new Random().nextDouble());
-		metricResult.addDescendentResult(42.0);
+		metricResult.addDescendantResult(42.0);
 		return metricResult;
 	}
 

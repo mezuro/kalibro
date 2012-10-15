@@ -38,7 +38,7 @@ public class DateMetricResultXmlTest extends UnitTest {
 	private MetricResult createMetricResult() {
 		MetricConfiguration configuration = new MetricConfiguration();
 		MetricResult metricResult = new MetricResult(configuration, new Throwable());
-		metricResult.addDescendentResult(42.0);
+		metricResult.addDescendantResult(42.0);
 		return metricResult;
 	}
 

@@ -37,7 +37,7 @@ public class ResultTableModel extends TableModel<MetricResult> {
 
 	private List<Object> rowFor(MetricResult result) {
 		List<Object> row = new ArrayList<Object>();
-		row.addAll(Arrays.asList(result.getMetric(), result.getValue(), result.getDescendentResults().size()));
+		row.addAll(Arrays.asList(result.getMetric(), result.getValue(), result.getdescendantResults().size()));
 		for (Statistic statistic : Statistic.values())
 			row.add(result.getStatistic(statistic));
 		return row;

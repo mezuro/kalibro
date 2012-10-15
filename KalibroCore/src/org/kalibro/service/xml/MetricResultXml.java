@@ -30,8 +30,8 @@ public class MetricResultXml extends MetricResultDto {
 	@XmlElement
 	private ThrowableXml error;
 
-	@XmlElement(name = "descendentResult")
-	private List<Double> descendentResults;
+	@XmlElement(name = "descendantResult")
+	private List<Double> descendantResults;
 
 	public MetricResultXml() {
 		super();
@@ -42,7 +42,7 @@ public class MetricResultXml extends MetricResultDto {
 		value = metricResult.getValue();
 		if (metricResult.hasError())
 			error = new ThrowableXml(metricResult.getError());
-		descendentResults = metricResult.getDescendentResults();
+		descendantResults = metricResult.getDescendantResults();
 	}
 
 	@Override
@@ -61,7 +61,7 @@ public class MetricResultXml extends MetricResultDto {
 	}
 
 	@Override
-	public List<Double> descendentResults() {
-		return descendentResults == null ? new ArrayList<Double>() : descendentResults;
+	public List<Double> descendantResults() {
+		return descendantResults == null ? new ArrayList<Double>() : descendantResults;
 	}
 }

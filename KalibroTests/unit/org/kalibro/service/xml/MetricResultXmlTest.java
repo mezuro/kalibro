@@ -11,12 +11,12 @@ public class MetricResultXmlTest extends XmlTest {
 		assertElement("configuration", MetricConfigurationSnapshotXml.class);
 		assertElement("value", Double.class);
 		assertElement("error", ThrowableXml.class);
-		assertCollection("descendentResult");
+		assertCollection("descendantResult");
 	}
 
 	@Test
-	public void shouldConvertNullDescendentResultsIntoEmptyCollection() {
-		assertTrue(new MetricResultXml().descendentResults().isEmpty());
+	public void shouldConvertNullDescendantResultsIntoEmptyCollection() {
+		assertTrue(new MetricResultXml().descendantResults().isEmpty());
 	}
 
 	@Test

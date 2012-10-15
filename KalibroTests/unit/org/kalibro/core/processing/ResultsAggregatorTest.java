@@ -3,9 +3,6 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.assertFalse;
 import static org.kalibro.Granularity.*;
 import static org.kalibro.Language.JAVA;
-import static org.kalibro.ModuleNodeFixtures.*;
-import static org.kalibro.ModuleResultFixtures.analizoCheckstyleResultMap;
-import static org.kalibro.ProjectResultFixtures.newHelloWorldResult;
 
 import java.util.Map;
 
@@ -75,9 +72,9 @@ public class ResultsAggregatorTest extends UnitTest {
 		checkResult(checkstyleOutputParser, classMetric, 22.0);
 	}
 
-	private void checkResult(ModuleResult result, NativeMetric metric, Double value, Double... descendentResults) {
+	private void checkResult(ModuleResult result, NativeMetric metric, Double value, Double... descendantResults) {
 		MetricResult metricResult = result.getResultFor(metric);
 		assertDoubleEquals(value, metricResult.getValue());
-		assertDeepEquals(asList(descendentResults), metricResult.getDescendentResults());
+		assertDeepEquals(asList(descendantResults), metricResult.getDescendantResults());
 	}
 }

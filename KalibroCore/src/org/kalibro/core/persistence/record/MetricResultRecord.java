@@ -58,7 +58,7 @@ public class MetricResultRecord extends DataTransferObject<MetricResult> {
 
 	@OrderColumn
 	@ElementCollection
-	private List<Long> descendentResults;
+	private List<Long> descendantResults;
 
 	public MetricResultRecord() {
 		super();
@@ -67,7 +67,7 @@ public class MetricResultRecord extends DataTransferObject<MetricResult> {
 	public MetricResultRecord(MetricResult metricResult) {
 		metric = new NativeMetricRecord((NativeMetric) metricResult.getMetric());
 		value = Double.doubleToLongBits(metricResult.getValue());
-		initializeDescendentResults(metricResult);
+		initializedescendantResults(metricResult);
 	}
 
 	public MetricResultRecord(MetricResult metricResult, Module module, RepositoryResult repositoryResult) {
@@ -80,10 +80,10 @@ public class MetricResultRecord extends DataTransferObject<MetricResult> {
 		module = new ModuleRecord(moduleNode, repositoryResult);
 	}
 
-	private void initializeDescendentResults(MetricResult metricResult) {
-		descendentResults = new ArrayList<Long>();
-		for (Double result : metricResult.getDescendentResults())
-			descendentResults.add(Double.doubleToLongBits(result));
+	private void initializedescendantResults(MetricResult metricResult) {
+		descendantResults = new ArrayList<Long>();
+		for (Double result : metricResult.getdescendantResults())
+			descendantResults.add(Double.doubleToLongBits(result));
 	}
 
 	@Override
@@ -94,7 +94,7 @@ public class MetricResultRecord extends DataTransferObject<MetricResult> {
 	}
 
 	private void convertResults(MetricResult metricResult) {
-		for (Long result : descendentResults)
-			metricResult.addDescendentResult(Double.longBitsToDouble(result));
+		for (Long result : descendantResults)
+			metricResult.adddescendantResult(Double.longBitsToDouble(result));
 	}
 }
