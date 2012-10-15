@@ -8,8 +8,8 @@ import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.KalibroException;
-import org.kalibro.Processing;
 import org.kalibro.ProcessState;
+import org.kalibro.Processing;
 import org.kalibro.dto.DataTransferObject;
 
 @Entity(name = "Processing")
@@ -49,6 +49,10 @@ public class ProcessingRecord extends DataTransferObject<Processing> {
 			analysisTime = processing.getAnalysisTime();
 			initializeSourceTree(processing);
 		}
+	}
+
+	public ProcessingRecord(Long processingId) {
+		// TODO Auto-generated constructor stub
 	}
 
 	private void initializeSourceTree(Processing processing) {
