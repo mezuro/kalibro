@@ -26,17 +26,17 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 	@SuppressWarnings("unused" /* used by JPA */)
 	private String metricName;
 
-	@ManyToOne
-	@JoinColumns({
-		@JoinColumn(insertable = false, name = "metricName", referencedColumnName = "name", updatable = false),
-		@JoinColumn(name = "metricOrigin", referencedColumnName = "origin")})
-	private NativeMetricRecord nativeMetric;
-
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "metricConfiguration", orphanRemoval = true)
-	@JoinColumns({
-		@JoinColumn(insertable = false, name = "metricName", referencedColumnName = "name", updatable = false),
-		@JoinColumn(name = "configuration", referencedColumnName = "configuration")})
-	private CompoundMetricRecord compoundMetric;
+//	@ManyToOne
+//	@JoinColumns({
+//		@JoinColumn(insertable = false, name = "metricName", referencedColumnName = "name", updatable = false),
+//		@JoinColumn(name = "metricOrigin", referencedColumnName = "origin")})
+//	private NativeMetricRecord nativeMetric;
+//
+//	@OneToOne(cascade = CascadeType.ALL, mappedBy = "metricConfiguration", orphanRemoval = true)
+//	@JoinColumns({
+//		@JoinColumn(insertable = false, name = "metricName", referencedColumnName = "name", updatable = false),
+//		@JoinColumn(name = "configuration", referencedColumnName = "configuration")})
+//	private CompoundMetricRecord compoundMetric;
 
 	@Column(nullable = false)
 	private String code;
@@ -70,6 +70,10 @@ public class MetricConfigurationRecord extends DataTransferObject<MetricConfigur
 		weight = Double.doubleToLongBits(metricConfiguration.getWeight());
 		aggregationForm = metricConfiguration.getAggregationForm().name();
 		initializeRanges(metricConfiguration);
+	}
+
+	public MetricConfigurationRecord(Long configurationId) {
+		// TODO Auto-generated constructor stub
 	}
 
 	private void initializeMetric(MetricConfiguration metricConfiguration) {
