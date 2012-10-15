@@ -29,7 +29,7 @@ public class ConfigurationRecord extends ConfigurationDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "configuration", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configuration", orphanRemoval = true)
 	private Collection<MetricConfigurationRecord> metricConfigurations;
 
 	public ConfigurationRecord() {
