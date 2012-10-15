@@ -23,7 +23,7 @@ public abstract class ConcreteDtoTest extends UnitTest {
 		entityReflector = new FieldReflector(entity);
 	}
 
-	private Object loadFixture() throws Exception {
+	protected Object loadFixture() throws Exception {
 		Object abstractDtoTest = Class.forName(dtoClass().getSuperclass().getName() + "Test").newInstance();
 		return Whitebox.invokeMethod(abstractDtoTest, "loadFixture");
 	}

@@ -6,6 +6,7 @@
 
 	<persistence-unit name="Kalibro" transaction-type="RESOURCE_LOCAL">
 		<class>org.kalibro.core.persistence.record.ConfigurationRecord</class>
+		<class>org.kalibro.core.persistence.record.DescendantResultRecord</class>
 		<class>org.kalibro.core.persistence.record.MetricConfigurationRecord</class>
 		<class>org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord</class>
 		<class>org.kalibro.core.persistence.record.ProjectRecord</class>
