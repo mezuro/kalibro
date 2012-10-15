@@ -18,7 +18,7 @@ public class ModuleRecord extends DataTransferObject<ModuleNode> {
 	@JoinColumns({
 		@JoinColumn(name = "project", nullable = false, referencedColumnName = "project"),
 		@JoinColumn(name = "date", nullable = false, referencedColumnName = "date")})
-	private ProjectResultRecord projectResult;
+	private ProcessingRecord projectResult;
 
 	@Column(name = "name", nullable = false)
 	private String name;
@@ -41,18 +41,18 @@ public class ModuleRecord extends DataTransferObject<ModuleNode> {
 	}
 
 	public ModuleRecord(Module module) {
-		this(new ModuleNode(module), new ProjectResultRecord(), new ModuleRecord());
+		this(new ModuleNode(module), new ProcessingRecord(), new ModuleRecord());
 	}
 
 	public ModuleRecord(ModuleNode moduleNode, RepositoryResult repositoryResult) {
-		initialize(moduleNode, new ProjectResultRecord(repositoryResult), null);
+		initialize(moduleNode, new ProcessingRecord(repositoryResult), null);
 	}
 
-	public ModuleRecord(ModuleNode moduleNode, ProjectResultRecord projectResult, ModuleRecord parent) {
+	public ModuleRecord(ModuleNode moduleNode, ProcessingRecord projectResult, ModuleRecord parent) {
 		initialize(moduleNode, projectResult, parent);
 	}
 
-	private void initialize(ModuleNode moduleNode, ProjectResultRecord result, ModuleRecord parentModule) {
+	private void initialize(ModuleNode moduleNode, ProcessingRecord result, ModuleRecord parentModule) {
 		projectResult = result;
 		parent = parentModule;
 		name = moduleNode.getModule().getLongName();

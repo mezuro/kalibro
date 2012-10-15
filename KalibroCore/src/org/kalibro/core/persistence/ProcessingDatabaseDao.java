@@ -5,18 +5,18 @@ import java.util.Date;
 import javax.persistence.TypedQuery;
 
 import org.kalibro.Processing;
-import org.kalibro.core.persistence.record.ProjectResultRecord;
+import org.kalibro.core.persistence.record.ProcessingRecord;
 import org.kalibro.dao.ProcessingDao;
 
-public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProjectResultRecord> implements ProcessingDao {
+public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRecord> implements ProcessingDao {
 
 	public ProcessingDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ProjectResultRecord.class);
+		super(recordManager, ProcessingRecord.class);
 	}
 
 	@Override
 	public void save(Processing repositoryResult) {
-		save(new ProjectResultRecord(repositoryResult));
+		save(new ProcessingRecord(repositoryResult));
 	}
 
 	@Override
@@ -53,21 +53,21 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProjectResult
 
 	@Override
 	public Processing getFirstResultOf(String projectName) {
-		TypedQuery<ProjectResultRecord> query = createRecordQuery(getFirstQuery());
+		TypedQuery<ProcessingRecord> query = createRecordQuery(getFirstQuery());
 		query.setParameter("projectName", projectName);
 		return getResult(query);
 	}
 
 	@Override
 	public Processing getLastResultOf(String projectName) {
-		TypedQuery<ProjectResultRecord> query = createRecordQuery(getLastQuery());
+		TypedQuery<ProcessingRecord> query = createRecordQuery(getLastQuery());
 		query.setParameter("projectName", projectName);
 		return getResult(query);
 	}
 
 	@Override
 	public Processing getFirstResultAfter(Date date, String projectName) {
-		TypedQuery<ProjectResultRecord> query = createRecordQuery(getFirstQuery("result.date > :date"));
+		TypedQuery<ProcessingRecord> query = createRecordQuery(getFirstQuery("result.date > :date"));
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
 		return getResult(query);
@@ -75,7 +75,7 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProjectResult
 
 	@Override
 	public Processing getLastResultBefore(Date date, String projectName) {
-		TypedQuery<ProjectResultRecord> query = createRecordQuery(getLastQuery("result.date < :date"));
+		TypedQuery<ProcessingRecord> query = createRecordQuery(getLastQuery("result.date < :date"));
 		query.setParameter("date", date.getTime());
 		query.setParameter("projectName", projectName);
 		return getResult(query);
@@ -99,7 +99,7 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProjectResult
 			"AND " + loadDateCondition + ")";
 	}
 
-	private Processing getResult(TypedQuery<ProjectResultRecord> query) {
+	private Processing getResult(TypedQuery<ProcessingRecord> query) {
 		return query.getSingleResult().convert();
 	}
 }

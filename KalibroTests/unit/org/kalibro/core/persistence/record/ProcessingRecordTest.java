@@ -9,7 +9,7 @@ import org.kalibro.Processing;
 import org.kalibro.core.concurrent.VoidTask;
 import org.powermock.reflect.Whitebox;
 
-public class ProjectResultRecordTest extends RecordTest<Processing> {
+public class ProcessingRecordTest extends RecordTest<Processing> {
 
 	@Override
 	protected Processing loadFixture() {
@@ -18,7 +18,7 @@ public class ProjectResultRecordTest extends RecordTest<Processing> {
 
 	@Test
 	public void checkRootNotFoundError() {
-		final ProjectResultRecord record = new ProjectResultRecord(helloWorldResult());
+		final ProcessingRecord record = new ProcessingRecord(helloWorldResult());
 		Whitebox.setInternalState(record, "sourceTree", new ArrayList<ModuleRecord>());
 		assertThat(new VoidTask() {
 

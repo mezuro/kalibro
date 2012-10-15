@@ -15,7 +15,7 @@ import org.kalibro.dto.DataTransferObject;
 @Entity(name = "Processing")
 @Table(name = "\"PROJECT_RESULT\"")
 @PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date")})
-public class ProjectResultRecord extends DataTransferObject<Processing> {
+public class ProcessingRecord extends DataTransferObject<Processing> {
 
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "project", nullable = false, referencedColumnName = "id")
@@ -36,11 +36,11 @@ public class ProjectResultRecord extends DataTransferObject<Processing> {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "processing", orphanRemoval = true)
 	private Collection<ModuleRecord> sourceTree;
 
-	public ProjectResultRecord() {
+	public ProcessingRecord() {
 		super();
 	}
 
-	public ProjectResultRecord(Processing processing) {
+	public ProcessingRecord(Processing processing) {
 		project = new ProjectRecord(processing.getRepository(), null);
 		date = processing.getDate().getTime();
 		if (processing.isProcessed()) {
