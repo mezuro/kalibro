@@ -29,7 +29,7 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "group", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "group", orphanRemoval = true)
 	private Collection<ReadingRecord> readings;
 
 	public ReadingGroupRecord() {

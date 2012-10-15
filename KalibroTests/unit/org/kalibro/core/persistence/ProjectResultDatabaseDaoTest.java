@@ -10,7 +10,7 @@ import javax.persistence.TypedQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Processing;
-import org.kalibro.core.persistence.record.ProjectResultRecord;
+import org.kalibro.core.persistence.record.ProcessingRecord;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
@@ -45,7 +45,7 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 	public void testSave() {
 		dao.save(processing);
 
-		ArgumentCaptor<ProjectResultRecord> captor = ArgumentCaptor.forClass(ProjectResultRecord.class);
+		ArgumentCaptor<ProcessingRecord> captor = ArgumentCaptor.forClass(ProcessingRecord.class);
 		Mockito.verify(recordManager).save(captor.capture());
 		assertExpected(captor.getValue().convert());
 	}
@@ -102,21 +102,21 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void testFirstResult() {
-		TypedQuery<ProjectResultRecord> query = prepareResultQuery(FIRST_QUERY + "1 = 1)");
+		TypedQuery<ProcessingRecord> query = prepareResultQuery(FIRST_QUERY + "1 = 1)");
 		assertExpected(dao.getFirstResultOf(projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 	}
 
 	@Test
 	public void testLastResult() {
-		TypedQuery<ProjectResultRecord> query = prepareResultQuery(LAST_QUERY + "1 = 1)");
+		TypedQuery<ProcessingRecord> query = prepareResultQuery(LAST_QUERY + "1 = 1)");
 		assertExpected(dao.getLastResultOf(projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 	}
 
 	@Test
 	public void testFirstResultAfter() {
-		TypedQuery<ProjectResultRecord> query = prepareResultQuery(FIRST_QUERY + "result.date > :date)");
+		TypedQuery<ProcessingRecord> query = prepareResultQuery(FIRST_QUERY + "result.date > :date)");
 		assertExpected(dao.getFirstResultAfter(date, projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 		Mockito.verify(query).setParameter("date", date.getTime());
@@ -124,7 +124,7 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void testLastResultBefore() {
-		TypedQuery<ProjectResultRecord> query = prepareResultQuery(LAST_QUERY + "result.date < :date)");
+		TypedQuery<ProcessingRecord> query = prepareResultQuery(LAST_QUERY + "result.date < :date)");
 		assertExpected(dao.getLastResultBefore(date, projectName));
 		Mockito.verify(query).setParameter("projectName", projectName);
 		Mockito.verify(query).setParameter("date", date.getTime());
@@ -136,9 +136,9 @@ public class ProjectResultDatabaseDaoTest extends UnitTest {
 		assertDeepEquals(processing, actual);
 	}
 
-	private TypedQuery<ProjectResultRecord> prepareResultQuery(String queryText) {
-		TypedQuery<ProjectResultRecord> query = PowerMockito.mock(TypedQuery.class);
-		ProjectResultRecord record = new ProjectResultRecord(processing);
+	private TypedQuery<ProcessingRecord> prepareResultQuery(String queryText) {
+		TypedQuery<ProcessingRecord> query = PowerMockito.mock(TypedQuery.class);
+		ProcessingRecord record = new ProcessingRecord(processing);
 		PowerMockito.doReturn(query).when(dao).createRecordQuery(queryText);
 		PowerMockito.when(query.getSingleResult()).thenReturn(record);
 		return query;
