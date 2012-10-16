@@ -36,6 +36,12 @@ public class MetricResultEndpointImpl implements MetricResultEndpoint {
 	}
 
 	@Override
+	@WebResult(name = "descendantResult")
+	public List<Double> descendantResultsOf(@WebParam(name = "metricResultId") Long metricResultId) {
+		return dao.descendantResultsOf(metricResultId);
+	}
+
+	@Override
 	@WebResult(name = "metricResult")
 	public List<MetricResultXml> metricResultsOf(@WebParam(name = "moduleResultId") Long moduleResultId) {
 		return DataTransferObject.createDtos(dao.metricResultsOf(moduleResultId), MetricResultXml.class);

@@ -44,6 +44,7 @@ public class MetricResultTest extends UnitTest {
 	}
 
 	private void checkConstruction() {
+		assertNull(result.getId());
 		assertSame(configuration.getMetric(), result.getMetric());
 		assertSame(configuration, result.getConfiguration());
 		assertTrue(result.getDescendantResults().isEmpty());

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
+import org.kalibro.dao.MetricResultDao;
 
 /**
  * Data transfer object for {@link MetricResult}.
@@ -15,6 +16,7 @@ public abstract class MetricResultDto extends DataTransferObject<MetricResult> {
 	@Override
 	public MetricResult convert() {
 		MetricResult metricResult = error() == null ? convertNormal() : convertWithError();
+		setId(metricResult, id());
 		metricResult.setDescendantResults(descendantResults());
 		return metricResult;
 	}
@@ -27,11 +29,15 @@ public abstract class MetricResultDto extends DataTransferObject<MetricResult> {
 		return new MetricResult(configuration(), error());
 	}
 
+	public abstract Long id();
+
 	public abstract MetricConfiguration configuration();
 
 	public abstract Double value();
 
 	public abstract Throwable error();
 
-	public abstract List<Double> descendantResults();
+	public List<Double> descendantResults() {
+		return DaoLazyLoader.createProxy(MetricResultDao.class, "descendantResultsOf", id());
+	}
 }

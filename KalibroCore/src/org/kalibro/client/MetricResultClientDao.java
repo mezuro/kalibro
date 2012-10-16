@@ -1,9 +1,6 @@
 package org.kalibro.client;
 
-import java.util.Date;
-import java.util.SortedMap;
-import java.util.SortedSet;
-import java.util.TreeMap;
+import java.util.*;
 
 import org.kalibro.Metric;
 import org.kalibro.MetricResult;
@@ -22,6 +19,11 @@ class MetricResultClientDao extends EndpointClient<MetricResultEndpoint> impleme
 
 	MetricResultClientDao(String serviceAddress) {
 		super(serviceAddress, MetricResultEndpoint.class);
+	}
+
+	@Override
+	public List<Double> descendantResultsOf(Long metricResultId) {
+		return port.descendantResultsOf(metricResultId);
 	}
 
 	@Override

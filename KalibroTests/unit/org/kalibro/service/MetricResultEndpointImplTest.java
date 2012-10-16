@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.*;
 
@@ -10,12 +10,13 @@ import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
 import org.kalibro.NativeMetric;
 import org.kalibro.dao.MetricResultDao;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.service.xml.DateMetricResultXml;
 import org.kalibro.service.xml.MetricResultXml;
 import org.kalibro.service.xml.MetricXmlRequest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
-@PrepareForTest(MetricResultEndpointImpl.class)
+@PrepareForTest({DaoLazyLoader.class, MetricResultEndpointImpl.class})
 public class MetricResultEndpointImplTest extends
 	EndpointImplementorTest<MetricResult, MetricResultXml, MetricResultXml, MetricResultDao, MetricResultEndpointImpl> {
 
@@ -27,6 +28,13 @@ public class MetricResultEndpointImplTest extends
 	}
 
 	@Test
+	public void shouldGetDescendantResultsOfMetricResult() {
+		List<Double> descendantResults = mock(List.class);
+		when(dao.descendantResultsOf(ID)).thenReturn(descendantResults);
+		assertSame(descendantResults, implementor.descendantResultsOf(ID));
+	}
+
+	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
 		when(dao.metricResultsOf(ID)).thenReturn(asSortedSet(entity));
 		assertDeepEquals(asList(response), implementor.metricResultsOf(ID));
@@ -34,6 +42,8 @@ public class MetricResultEndpointImplTest extends
 
 	@Test
 	public void shouldGetHistoryOfMetric() {
+		mockLazyLoad();
+
 		Metric metric = loadFixture("cbo", NativeMetric.class);
 		MetricXmlRequest metricXml = new MetricXmlRequest(metric);
 
@@ -47,5 +57,10 @@ public class MetricResultEndpointImplTest extends
 		assertEquals(1, history.size());
 		assertEquals(date, history.get(0).date());
 		assertDeepEquals(result, history.get(0).metricResult());
+	}
+
+	private void mockLazyLoad() {
+		mockStatic(DaoLazyLoader.class);
+		when(DaoLazyLoader.createProxy(MetricResultDao.class, "descendantResultsOf", (Long) null)).thenReturn(asList());
 	}
 }

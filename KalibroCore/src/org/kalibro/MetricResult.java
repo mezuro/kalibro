@@ -11,6 +11,8 @@ import java.util.List;
  */
 public class MetricResult extends AbstractMetricResult {
 
+	private Long id;
+
 	private MetricConfiguration configuration;
 	private Throwable error;
 	private List<Double> descendantResults;
@@ -24,6 +26,10 @@ public class MetricResult extends AbstractMetricResult {
 		super(configuration.getMetric(), value);
 		this.configuration = configuration;
 		setDescendantResults(new ArrayList<Double>());
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public boolean hasError() {

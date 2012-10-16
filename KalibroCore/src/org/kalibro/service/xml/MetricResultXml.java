@@ -1,8 +1,5 @@
 package org.kalibro.service.xml;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -22,6 +19,9 @@ import org.kalibro.dto.MetricResultDto;
 public class MetricResultXml extends MetricResultDto {
 
 	@XmlElement
+	private Long id;
+
+	@XmlElement
 	private MetricConfigurationSnapshotXml configuration;
 
 	@XmlElement
@@ -30,19 +30,21 @@ public class MetricResultXml extends MetricResultDto {
 	@XmlElement
 	private ThrowableXml error;
 
-	@XmlElement(name = "descendantResult")
-	private List<Double> descendantResults;
-
 	public MetricResultXml() {
 		super();
 	}
 
 	public MetricResultXml(MetricResult metricResult) {
+		id = metricResult.getId();
 		configuration = new MetricConfigurationSnapshotXml(metricResult.getConfiguration());
 		value = metricResult.getValue();
 		if (metricResult.hasError())
 			error = new ThrowableXml(metricResult.getError());
-		descendantResults = metricResult.getDescendantResults();
+	}
+
+	@Override
+	public Long id() {
+		return id;
 	}
 
 	@Override
@@ -58,10 +60,5 @@ public class MetricResultXml extends MetricResultDto {
 	@Override
 	public Throwable error() {
 		return error == null ? null : error.convert();
-	}
-
-	@Override
-	public List<Double> descendantResults() {
-		return descendantResults == null ? new ArrayList<Double>() : descendantResults;
 	}
 }

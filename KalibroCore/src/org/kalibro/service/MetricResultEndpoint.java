@@ -21,6 +21,10 @@ import org.kalibro.service.xml.MetricXmlRequest;
 public interface MetricResultEndpoint {
 
 	@WebMethod
+	@WebResult(name = "descendantResult")
+	List<Double> descendantResultsOf(@WebParam(name = "metricResultId") Long metricResultId);
+
+	@WebMethod
 	@WebResult(name = "metricResult")
 	List<MetricResultXml> metricResultsOf(@WebParam(name = "moduleResultId") Long moduleResultId);
 

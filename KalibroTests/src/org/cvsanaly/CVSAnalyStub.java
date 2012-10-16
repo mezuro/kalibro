@@ -13,8 +13,6 @@ public final class CVSAnalyStub {
 	private static Set<NativeModuleResult> result = generateResult();
 	private static Set<NativeModuleResult> limitedResult = generateLimitedResult();
 
-	private CVSAnalyStub() {}
-
 	private static Map<CVSAnalyMetric, Double> generateHelloWorldResultMap(boolean limited) {
 		Map<CVSAnalyMetric, Double> helloWorldResultMap;
 		helloWorldResultMap = new HashMap<CVSAnalyMetric, Double>(CVSAnalyMetric.values().length);
@@ -164,4 +162,7 @@ public final class CVSAnalyStub {
 		return limitedResult;
 	}
 
+	private CVSAnalyStub() {
+		return;
+	}
 }
