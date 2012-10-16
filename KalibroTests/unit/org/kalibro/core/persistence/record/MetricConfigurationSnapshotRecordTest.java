@@ -42,7 +42,7 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 		assertColumn("metricScope", String.class).isRequired();
 		assertColumn("metricDescription", String.class).isNullable();
 		assertColumn("metricOrigin", String.class).isRequired();
-		assertOneToMany("ranges").mappedBy("configurationSnapshot");
+		assertOneToMany("ranges").isMappedBy("configurationSnapshot");
 	}
 
 	@Test

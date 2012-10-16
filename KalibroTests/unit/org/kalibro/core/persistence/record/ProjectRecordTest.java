@@ -17,7 +17,7 @@ public class ProjectRecordTest extends RecordTest {
 		shouldHaveId();
 		assertColumn("name", String.class).isRequired().isUnique();
 		assertColumn("description", String.class).isNullable();
-		assertOneToMany("repositories").mappedBy("project");
+		assertOneToMany("repositories").isMappedBy("project");
 	}
 
 	@Test

@@ -8,7 +8,7 @@ public class MetricResultRecordTest extends RecordTest {
 		shouldHaveId();
 		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isRequired();
 		assertColumn("value", Long.class).isRequired();
-		assertOneToMany("descendantResults").mappedBy("metricResult");
+		assertOneToMany("descendantResults").isMappedBy("metricResult");
 //		assertOneToOne();
 	}
 }

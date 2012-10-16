@@ -2,6 +2,8 @@ package org.kalibro.core.persistence.record;
 
 import static org.junit.Assert.*;
 
+import javax.persistence.CascadeType;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
@@ -15,15 +17,29 @@ class ManyToOneMatcher {
 		this.joinColumn = joinColumn;
 	}
 
+	ManyToOneMatcher doesNotCascade() {
+		assertArrayEquals(message(manyToOne, "should NOT cascade"), new CascadeType[]{}, manyToOne.cascade());
+		return this;
+	}
+
+	ManyToOneMatcher isLazy() {
+		assertEquals(message(manyToOne, "has wrong fetch type"), FetchType.LAZY, manyToOne.fetch());
+		return this;
+	}
+
 	ManyToOneMatcher isOptional() {
-		assertTrue("ManyToOne " + joinColumn.name() + " should be optional.", manyToOne.optional());
-		assertTrue("JoinColumn " + joinColumn.name() + " should be nullable.", joinColumn.nullable());
+		assertTrue(message(manyToOne, "should be optional"), manyToOne.optional());
+		assertTrue(message(joinColumn, "should be nullable"), joinColumn.nullable());
 		return this;
 	}
 
 	ManyToOneMatcher isRequired() {
-		assertFalse("ManyToOne " + joinColumn.name() + " should NOT be optional.", manyToOne.optional());
-		assertFalse("JoinColumn " + joinColumn.name() + " should NOT be nullable.", joinColumn.nullable());
+		assertFalse(message(manyToOne, "should NOT be optional"), manyToOne.optional());
+		assertFalse(message(joinColumn, "should NOT be nullable"), joinColumn.nullable());
 		return this;
+	}
+
+	private String message(Object annotation, String message) {
+		return "@" + annotation.getClass().getSimpleName() + " " + joinColumn.name() + " " + message + ".";
 	}
 }

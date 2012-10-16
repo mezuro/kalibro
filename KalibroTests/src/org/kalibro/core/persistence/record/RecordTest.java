@@ -2,7 +2,9 @@ package org.kalibro.core.persistence.record;
 
 import static org.junit.Assert.*;
 
+import java.lang.annotation.Annotation;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -38,44 +40,54 @@ public abstract class RecordTest extends ConcreteDtoTest {
 	protected abstract void verifyColumns();
 
 	protected void shouldHaveId() {
-		assertNotNull("@Id not present", dtoReflector.getFieldAnnotation("id", Id.class));
-		assertNotNull("@GeneratedValue not present", dtoReflector.getFieldAnnotation("id", GeneratedValue.class));
 		assertColumn("id", Long.class).isRequired().isNotUnique();
+		annotation("id", Id.class);
+		annotation("id", GeneratedValue.class);
 	}
 
 	protected ColumnMatcher assertColumn(String field, Class<?> type) {
-		assertEquals(type, dtoReflector.getFieldType(field));
-		Column column = dtoReflector.getFieldAnnotation(field, Column.class);
-		assertNotNull("@Column not present for field: " + field, column);
-		assertEquals(columnName(field), column.name());
-		return new ColumnMatcher(column);
+		assertFieldType(field, type);
+		return new ColumnMatcher(annotation(field, Column.class)).named(columnName(field));
+	}
+
+	protected OneToOneMatcher assertOneToOne(String field, Class<?> type) {
+		assertFieldType(field, type);
+		return new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).cascades().isLazy();
 	}
 
 	protected OneToManyMatcher assertOneToMany(String field) {
-		assertTrue(Collection.class.isAssignableFrom(dtoReflector.getFieldType(field)));
+		assertFieldType(field, Collection.class);
+		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades().isLazy();
+	}
 
-		OneToMany oneToMany = dtoReflector.getFieldAnnotation(field, OneToMany.class);
-		assertNotNull("@OneToMany not present for field: " + field, oneToMany);
-		assertArrayEquals(new CascadeType[]{CascadeType.ALL}, oneToMany.cascade());
-		assertEquals(FetchType.LAZY, oneToMany.fetch());
-		assertTrue("Orphan removal should be true for " + field, oneToMany.orphanRemoval());
-		return new OneToManyMatcher(oneToMany);
+	protected OneToManyMatcher assertOrderedOneToMany(String field) {
+		assertFieldType(field, List.class);
+		assertEquals("\"index\"", annotation(field, OrderColumn.class).name());
+		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades().isLazy();
 	}
 
 	protected ManyToOneMatcher assertManyToOne(String field, Class<?> type) {
-		assertEquals(type, dtoReflector.getFieldType(field));
+		assertFieldType(field, type);
+		return new ManyToOneMatcher(annotation(field, ManyToOne.class), joinColumn(field)).doesNotCascade().isLazy();
+	}
 
-		ManyToOne manyToOne = dtoReflector.getFieldAnnotation(field, ManyToOne.class);
-		assertNotNull("@ManyToOne not present for field: " + field, manyToOne);
-		assertEquals(0, manyToOne.cascade().length);
-		assertEquals(FetchType.LAZY, manyToOne.fetch());
+	private void assertFieldType(String field, Class<?> type) {
+		assertTrue("Field not present: " + field, dtoReflector.listFields().contains(field));
+		assertEquals("Wrong type for field " + field + ".", type, dtoReflector.getFieldType(field));
+	}
 
-		JoinColumn joinColumn = dtoReflector.getFieldAnnotation(field, JoinColumn.class);
-		assertNotNull("@JoinColumn not present for field: " + field, joinColumn);
-		assertEquals(columnName(field), joinColumn.name());
-		assertEquals("@JoinColumn should reference \"id\"", "\"id\"", joinColumn.referencedColumnName());
+	private JoinColumn joinColumn(String field) {
+		JoinColumn joinColumn = annotation(field, JoinColumn.class);
+		assertEquals("Wrong @JoinColumn name.", columnName(field), joinColumn.name());
+		assertEquals("@JoinColumn " + joinColumn.name() + " references wrong column.",
+			"\"id\"", joinColumn.referencedColumnName());
+		return joinColumn;
+	}
 
-		return new ManyToOneMatcher(manyToOne, joinColumn);
+	private <T extends Annotation> T annotation(String field, Class<T> annotationClass) {
+		T annotation = dtoReflector.getFieldAnnotation(field, annotationClass);
+		assertNotNull("@" + annotationClass.getSimpleName() + " not present for field: " + field, annotation);
+		return annotation;
 	}
 
 	private String columnName(String field) {
