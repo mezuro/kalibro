@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ConfigurationDatabaseDao.class)
 public class ConfigurationDatabaseDaoTest extends UnitTest {
 
-	private static final Long ID = Math.abs(new Random().nextLong());
+	private static final Long ID = new Random().nextLong();
 
 	private Configuration configuration;
 	private ConfigurationRecord record;
