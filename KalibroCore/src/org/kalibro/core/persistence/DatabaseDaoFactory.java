@@ -38,7 +38,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	public BaseToolDatabaseDao createBaseToolDao() {
+	protected BaseToolDatabaseDao createBaseToolDao() {
 		return new BaseToolDatabaseDao();
 	}
 
