@@ -43,52 +43,52 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	public ConfigurationDatabaseDao createConfigurationDao() {
+	protected ConfigurationDatabaseDao createConfigurationDao() {
 		return new ConfigurationDatabaseDao(recordManager());
 	}
 
 	@Override
-	public MetricConfigurationDatabaseDao createMetricConfigurationDao() {
+	protected MetricConfigurationDatabaseDao createMetricConfigurationDao() {
 		return new MetricConfigurationDatabaseDao(recordManager());
 	}
 
 	@Override
-	public MetricResultDatabaseDao createMetricResultDao() {
+	protected MetricResultDatabaseDao createMetricResultDao() {
 		return new MetricResultDatabaseDao(recordManager());
 	}
 
 	@Override
-	public ModuleResultDatabaseDao createModuleResultDao() {
+	protected ModuleResultDatabaseDao createModuleResultDao() {
 		return new ModuleResultDatabaseDao(recordManager());
 	}
 
 	@Override
-	public ProcessingDatabaseDao createProcessingDao() {
+	protected ProcessingDatabaseDao createProcessingDao() {
 		return new ProcessingDatabaseDao(recordManager());
 	}
 
 	@Override
-	public ProjectDatabaseDao createProjectDao() {
+	protected ProjectDatabaseDao createProjectDao() {
 		return new ProjectDatabaseDao(recordManager());
 	}
 
 	@Override
-	public RangeDatabaseDao createRangeDao() {
+	protected RangeDatabaseDao createRangeDao() {
 		return new RangeDatabaseDao(recordManager());
 	}
 
 	@Override
-	public ReadingDatabaseDao createReadingDao() {
+	protected ReadingDatabaseDao createReadingDao() {
 		return new ReadingDatabaseDao(recordManager());
 	}
 
 	@Override
-	public ReadingGroupDatabaseDao createReadingGroupDao() {
+	protected ReadingGroupDatabaseDao createReadingGroupDao() {
 		return new ReadingGroupDatabaseDao(recordManager());
 	}
 
 	@Override
-	public RepositoryDatabaseDao createRepositoryDao() {
+	protected RepositoryDatabaseDao createRepositoryDao() {
 		return new RepositoryDatabaseDao(recordManager());
 	}
 
