@@ -59,6 +59,10 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 		super();
 	}
 
+	public MetricConfigurationSnapshotRecord(Long id) {
+		this.id = id;
+	}
+
 	public MetricConfigurationSnapshotRecord(MetricConfiguration metricConfiguration) {
 		this(metricConfiguration, null);
 	}

@@ -58,7 +58,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		assertNotNull("@OneToMany not present for field: " + field, oneToMany);
 		assertArrayEquals(new CascadeType[]{CascadeType.ALL}, oneToMany.cascade());
 		assertEquals(FetchType.LAZY, oneToMany.fetch());
-		assertTrue(oneToMany.orphanRemoval());
+		assertTrue("Orphan removal should be true for " + field, oneToMany.orphanRemoval());
 		return new OneToManyMatcher(oneToMany);
 	}
 

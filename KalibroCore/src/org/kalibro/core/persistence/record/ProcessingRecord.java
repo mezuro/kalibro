@@ -34,7 +34,7 @@ public class ProcessingRecord extends DataTransferObject<Processing> {
 	private Long analysisTime;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "processing", orphanRemoval = true)
-	private Collection<ModuleRecord> sourceTree;
+	private Collection<ModuleResultRecord> sourceTree;
 
 	public ProcessingRecord() {
 		super();
@@ -56,14 +56,14 @@ public class ProcessingRecord extends DataTransferObject<Processing> {
 	}
 
 	private void initializeSourceTree(Processing processing) {
-		sourceTree = new ArrayList<ModuleRecord>();
-		ModuleRecord root = new ModuleRecord(processing.getResultsRoot(), this, null);
+		sourceTree = new ArrayList<ModuleResultRecord>();
+		ModuleResultRecord root = new ModuleResultRecord(processing.getResultsRoot(), this, null);
 		addToSourceTree(root);
 	}
 
-	private void addToSourceTree(ModuleRecord node) {
+	private void addToSourceTree(ModuleResultRecord node) {
 		sourceTree.add(node);
-		for (ModuleRecord child : node.getChildren())
+		for (ModuleResultRecord child : node.getChildren())
 			addToSourceTree(child);
 	}
 
@@ -79,7 +79,7 @@ public class ProcessingRecord extends DataTransferObject<Processing> {
 	}
 
 	private void convertSourceTree(Processing processing) {
-		for (ModuleRecord node : sourceTree)
+		for (ModuleResultRecord node : sourceTree)
 			if (node.isRoot()) {
 				processing.setResultsRoot(node.convert());
 				return;

@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence.record;
 
+import static org.junit.Assert.assertSame;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.BaseTool;
@@ -47,5 +49,11 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 	public void shouldAlsoConvertCompoundMetric() {
 		CompoundMetric metric = loadFixture("sc", CompoundMetric.class);
 		assertDeepEquals(metric, new MetricConfigurationSnapshotRecord(new MetricConfiguration(metric)).metric());
+	}
+
+	@Test
+	public void shouldHaveIdConstructor() {
+		Long id = mock(Long.class);
+		assertSame(id, new MetricConfigurationSnapshotRecord(id).id());
 	}
 }

@@ -1,14 +1,14 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.MetricResultFixtures.newMetricResult;
-
-import org.kalibro.MetricResult;
-
-public class MetricResultRecordTest extends RecordTest<MetricResult> {
+public class MetricResultRecordTest extends RecordTest {
 
 	@Override
-	protected MetricResult loadFixture() {
-		Double[] specialvalues = new Double[]{Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
-		return newMetricResult("loc", 42.0, specialvalues);
+	protected void verifyColumns() {
+		assertManyToOne("moduleResult", ModuleResultRecord.class);
+		shouldHaveId();
+		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isRequired();
+		assertColumn("value", Long.class).isRequired();
+		assertOneToMany("descendantResults").mappedBy("metricResult");
+//		assertOneToOne();
 	}
 }
