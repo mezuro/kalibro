@@ -14,10 +14,17 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements ReadingDao {
+class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements ReadingDao {
 
-	public ReadingDatabaseDao(RecordManager recordManager) {
+	ReadingDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ReadingRecord.class);
+	}
+
+	@Override
+	public Reading readingOf(Long rangeId) {
+		TypedQuery<ReadingRecord> query = createRecordQuery("JOIN Range range WHERE range.id = :rangeId");
+		query.setParameter("rangeId", rangeId);
+		return query.getSingleResult().convert();
 	}
 
 	@Override
