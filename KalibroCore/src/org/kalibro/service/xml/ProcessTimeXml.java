@@ -14,7 +14,7 @@ import org.kalibro.ProcessState;
  */
 @XmlRootElement(name = "stateTime")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class StateTimeXml {
+public class ProcessTimeXml {
 
 	@XmlElement
 	private ProcessState state;
@@ -22,11 +22,11 @@ public class StateTimeXml {
 	@XmlElement
 	private Long time;
 
-	public StateTimeXml() {
+	public ProcessTimeXml() {
 		super();
 	}
 
-	public StateTimeXml(ProcessState state, Long time) {
+	public ProcessTimeXml(ProcessState state, Long time) {
 		this.state = state;
 		this.time = time;
 	}

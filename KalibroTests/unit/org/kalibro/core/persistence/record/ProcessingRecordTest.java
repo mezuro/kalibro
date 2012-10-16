@@ -1,31 +1,26 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.ProjectResultFixtures.helloWorldResult;
-
-import java.util.ArrayList;
+import static org.junit.Assert.assertNull;
 
 import org.junit.Test;
 import org.kalibro.Processing;
-import org.kalibro.core.concurrent.VoidTask;
-import org.powermock.reflect.Whitebox;
+import org.kalibro.Repository;
 
-public class ProcessingRecordTest extends RecordTest<Processing> {
+public class ProcessingRecordTest extends RecordTest {
 
 	@Override
-	protected Processing loadFixture() {
-		return helloWorldResult();
+	protected void verifyColumns() {
+		assertManyToOne("repository", RepositoryRecord.class).isRequired();
+		shouldHaveId();
+		assertColumn("date", Long.class).isRequired();
+		assertColumn("state", String.class).isRequired();
+		assertOneToOne("error", ThrowableRecord.class).isOptional();
+		assertOneToMany("processTimes").isMappedBy("processing");
 	}
 
 	@Test
-	public void checkRootNotFoundError() {
-		final ProcessingRecord record = new ProcessingRecord(helloWorldResult());
-		Whitebox.setInternalState(record, "sourceTree", new ArrayList<ModuleRecord>());
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				record.convert();
-			}
-		}).throwsException().withMessage("No source tree root found in result for project: HelloWorld-1.0");
+	public void shouldConvertNullErrorForNormalProcessing() {
+		Processing normalProcessing = new Processing(new Repository());
+		assertNull(new ProcessingRecord(normalProcessing).error());
 	}
 }

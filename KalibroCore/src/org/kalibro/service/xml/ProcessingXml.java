@@ -32,8 +32,8 @@ public class ProcessingXml extends ProcessingDto {
 	@XmlElement
 	private ThrowableXml error;
 
-	@XmlElement(name = "stateTime")
-	private Collection<StateTimeXml> stateTimes;
+	@XmlElement(name = "processTime")
+	private Collection<ProcessTimeXml> processTimes;
 
 	public ProcessingXml() {
 		super();
@@ -55,11 +55,11 @@ public class ProcessingXml extends ProcessingDto {
 	}
 
 	private void setStateTimes(Processing processing) {
-		stateTimes = new ArrayList<StateTimeXml>();
+		processTimes = new ArrayList<ProcessTimeXml>();
 		for (ProcessState processState : ProcessState.values()) {
 			Long time = processing.getStateTime(processState);
 			if (time != null)
-				stateTimes.add(new StateTimeXml(processState, time));
+				processTimes.add(new ProcessTimeXml(processState, time));
 		}
 	}
 
@@ -86,8 +86,8 @@ public class ProcessingXml extends ProcessingDto {
 	@Override
 	public Map<ProcessState, Long> stateTimes() {
 		Map<ProcessState, Long> map = new HashMap<ProcessState, Long>();
-		if (stateTimes != null)
-			for (StateTimeXml stateTime : stateTimes)
+		if (processTimes != null)
+			for (ProcessTimeXml stateTime : processTimes)
 				map.put(stateTime.state(), stateTime.time());
 		return map;
 	}

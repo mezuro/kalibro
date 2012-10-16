@@ -28,7 +28,7 @@ public class ThrowableRecord extends ThrowableDto {
 	@Column(name = "\"detail_message\"")
 	private String detailMessage;
 
-	@OrderColumn(name = "\"index\"")
+	@OrderColumn(name = "\"index\"", nullable = false)
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
 	private List<StackTraceElementRecord> stackTrace;
 

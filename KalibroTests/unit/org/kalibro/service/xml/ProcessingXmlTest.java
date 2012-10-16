@@ -15,7 +15,7 @@ public class ProcessingXmlTest extends XmlTest {
 		assertElement("date", Date.class);
 		assertElement("state", ProcessState.class);
 		assertElement("error", ThrowableXml.class);
-		assertCollection("stateTime");
+		assertCollection("processTime");
 	}
 
 	@Test

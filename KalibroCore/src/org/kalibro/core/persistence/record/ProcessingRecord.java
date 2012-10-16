@@ -1,94 +1,108 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
+import java.util.*;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.KalibroException;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.dto.ProcessingDto;
 
+/**
+ * Java Persistence API entity for {@link Processing}.
+ * 
+ * @author Carlos Morais
+ */
 @Entity(name = "Processing")
-@Table(name = "\"PROJECT_RESULT\"")
-@PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date")})
-public class ProcessingRecord extends DataTransferObject<Processing> {
+@Table(name = "\"PROCESSING\"")
+public class ProcessingRecord extends ProcessingDto {
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "project", nullable = false, referencedColumnName = "id")
-	private ProjectRecord project;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"repository\"", nullable = false, referencedColumnName = "\"id\"")
+	@SuppressWarnings("unused" /* used by JPA */)
+	private RepositoryRecord repository;
 
-	@Column(name = "date", nullable = false)
+	@Id
+	@GeneratedValue
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
+
+	@Column(name = "\"date\"", nullable = false)
 	private Long date;
 
-	@Column(nullable = false)
-	private Long loadTime;
+	@Column(name = "\"state\"", nullable = false)
+	private String state;
 
-	@Column(nullable = false)
-	private Long collectTime;
-
-	@Column(nullable = false)
-	private Long analysisTime;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
+	private ThrowableRecord error;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "processing", orphanRemoval = true)
-	private Collection<ModuleResultRecord> sourceTree;
+	private Collection<ProcessTimeRecord> processTimes;
 
 	public ProcessingRecord() {
 		super();
 	}
 
+	public ProcessingRecord(Long id) {
+		this.id = id;
+	}
+
 	public ProcessingRecord(Processing processing) {
-		project = new ProjectRecord(processing.getRepository(), null);
+		this(processing, null);
+	}
+
+	public ProcessingRecord(Processing processing, RepositoryRecord repositoryRecord) {
+		this(processing.getId());
+		repository = repositoryRecord;
 		date = processing.getDate().getTime();
-		if (processing.isProcessed()) {
-			loadTime = processing.getLoadTime();
-			collectTime = processing.getCollectTime();
-			analysisTime = processing.getAnalysisTime();
-			initializeSourceTree(processing);
+		state = processing.getState().name();
+		setState(processing);
+		setProcessTimes(processing);
+	}
+
+	private void setState(Processing processing) {
+		state = processing.getState().name();
+		if (state.equals("ERROR")) {
+			error = new ThrowableRecord(processing.getError());
+			state = processing.getStateWhenErrorOcurred().name();
 		}
 	}
 
-	public ProcessingRecord(Long processingId) {
-		// TODO Auto-generated constructor stub
-	}
-
-	private void initializeSourceTree(Processing processing) {
-		sourceTree = new ArrayList<ModuleResultRecord>();
-		ModuleResultRecord root = new ModuleResultRecord(processing.getResultsRoot(), this, null);
-		addToSourceTree(root);
-	}
-
-	private void addToSourceTree(ModuleResultRecord node) {
-		sourceTree.add(node);
-		for (ModuleResultRecord child : node.getChildren())
-			addToSourceTree(child);
+	private void setProcessTimes(Processing processing) {
+		processTimes = new ArrayList<ProcessTimeRecord>();
+		for (ProcessState passedState : ProcessState.values()) {
+			Long time = processing.getStateTime(passedState);
+			if (time != null)
+				processTimes.add(new ProcessTimeRecord(passedState, time));
+		}
 	}
 
 	@Override
-	public Processing convert() {
-		Processing processing = new Processing(project.convert());
-		processing.setDate(new Date(date));
-		processing.setStateTime(ProcessState.LOADING, loadTime);
-		processing.setStateTime(ProcessState.COLLECTING, collectTime);
-		processing.setStateTime(ProcessState.ANALYZING, analysisTime);
-		convertSourceTree(processing);
-		return processing;
+	public Long id() {
+		return id;
 	}
 
-	private void convertSourceTree(Processing processing) {
-		for (ModuleResultRecord node : sourceTree)
-			if (node.isRoot()) {
-				processing.setResultsRoot(node.convert());
-				return;
-			}
-		String projectName = processing.getRepository().getName();
-		throw new KalibroException("No source tree root found in result for project: " + projectName);
-	}
-
-	protected Date getDate() {
+	@Override
+	public Date date() {
 		return new Date(date);
+	}
+
+	@Override
+	public ProcessState state() {
+		return ProcessState.valueOf(state);
+	}
+
+	@Override
+	public Throwable error() {
+		return error == null ? null : error.convert();
+	}
+
+	@Override
+	public Map<ProcessState, Long> stateTimes() {
+		Map<ProcessState, Long> map = new HashMap<ProcessState, Long>();
+		for (ProcessTimeRecord processTime : processTimes)
+			map.put(processTime.state(), processTime.time());
+		return map;
 	}
 }
