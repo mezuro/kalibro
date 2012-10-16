@@ -35,7 +35,11 @@ public class RepositoryEndpointImpl implements RepositoryEndpoint {
 	@Override
 	@WebResult(name = "supportedType")
 	public List<RepositoryType> supportedRepositoryTypes() {
-		return new ArrayList<RepositoryType>(dao.supportedTypes());
+		ArrayList<RepositoryType> supportedTypes = new ArrayList<RepositoryType>();
+		for (RepositoryType type : dao.supportedTypes())
+			if (!type.isLocal())
+				supportedTypes.add(type);
+		return supportedTypes;
 	}
 
 	@Override

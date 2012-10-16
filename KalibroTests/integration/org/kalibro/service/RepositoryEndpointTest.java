@@ -1,7 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.RepositoryType.GIT;
+import static org.kalibro.RepositoryType.*;
 
 import java.util.List;
 import java.util.Random;
@@ -38,7 +38,7 @@ public class RepositoryEndpointTest extends EndpointTest<Repository, RepositoryD
 
 	@Test
 	public void shouldGetSupportedTypes() {
-		when(dao.supportedTypes()).thenReturn(asSortedSet(GIT));
+		when(dao.supportedTypes()).thenReturn(asSortedSet(GIT, LOCAL_DIRECTORY));
 		assertDeepEquals(asList(GIT), port.supportedRepositoryTypes());
 	}
 

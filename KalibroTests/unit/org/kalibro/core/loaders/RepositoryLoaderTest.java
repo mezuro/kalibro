@@ -1,7 +1,6 @@
 package org.kalibro.core.loaders;
 
-import static java.util.concurrent.TimeUnit.*;
-import static org.junit.Assert.*;
+import static java.util.concurrent.TimeUnit.HOURS;
 
 import java.io.File;
 import java.util.List;
@@ -43,10 +42,7 @@ public class RepositoryLoaderTest extends UnitTest {
 
 	@Test
 	public void shouldValidate() {
-		assertTrue(loader.validate());
-
-		doThrow(mock(RuntimeException.class)).when(commandTask).execute(30, SECONDS);
-		assertFalse(loader.validate());
+		loader.validate();
 	}
 
 	@Test

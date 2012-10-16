@@ -1,6 +1,7 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
+import static org.kalibro.RepositoryType.*;
 
 import java.util.Random;
 
@@ -26,9 +27,8 @@ public class RepositoryEndpointImplTest extends EndpointImplementorTest<// @form
 
 	@Test
 	public void shouldGetSupportedTypes() {
-		RepositoryType supportedType = mock(RepositoryType.class);
-		when(dao.supportedTypes()).thenReturn(asSortedSet(supportedType));
-		assertDeepEquals(asList(supportedType), implementor.supportedRepositoryTypes());
+		when(dao.supportedTypes()).thenReturn(asSortedSet(LOCAL_ZIP, REMOTE_ZIP));
+		assertDeepEquals(asList(REMOTE_ZIP), implementor.supportedRepositoryTypes());
 	}
 
 	@Test

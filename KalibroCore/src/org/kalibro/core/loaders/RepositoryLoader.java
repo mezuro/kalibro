@@ -14,16 +14,7 @@ import org.kalibro.core.command.CommandTask;
  */
 public abstract class RepositoryLoader {
 
-	public boolean validate() {
-		try {
-			executeValidation();
-			return true;
-		} catch (Throwable exception) {
-			return false;
-		}
-	}
-
-	private void executeValidation() {
+	public void validate() {
 		for (String validationCommand : validationCommands())
 			new CommandTask(validationCommand).execute(30, SECONDS);
 	}
