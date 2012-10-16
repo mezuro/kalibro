@@ -54,7 +54,7 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void metricConfigurationIsRequiredToBeInConfiguration() {
-		assertThat(saveNew()).throwsException().withMessage("Metric configuration is not in any configuration.");
+		assertThat(saveNew()).throwsException().withMessage("Metric is not in any configuration.");
 	}
 
 	private VoidTask saveNew() {

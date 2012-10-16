@@ -33,7 +33,7 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 
 	@Test
 	public void validateLoader() {
-		assertTrue(loader.validate());
+		loader.validate();
 	}
 
 	@Test
