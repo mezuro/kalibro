@@ -15,14 +15,14 @@ public abstract class RecordTest extends ConcreteDtoTest {
 	@Test
 	public void persistenceEntityNameShouldBeEqualEntityName() throws ClassNotFoundException {
 		Entity entityAnnotation = dtoClass().getAnnotation(Entity.class);
-		assertNotNull(entityAnnotation);
+		assertNotNull("@Entity not present", entityAnnotation);
 		assertEquals(entityName(), entityAnnotation.name());
 	}
 
 	@Test
 	public void tableNameShouldBeEntityNameAsConstant() throws ClassNotFoundException {
 		Table table = dtoClass().getAnnotation(Table.class);
-		assertNotNull(table);
+		assertNotNull("@Table not present", table);
 		assertEquals(tableName(), table.name());
 	}
 
@@ -73,7 +73,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		JoinColumn joinColumn = dtoReflector.getFieldAnnotation(field, JoinColumn.class);
 		assertNotNull("@JoinColumn not present for field: " + field, joinColumn);
 		assertEquals(columnName(field), joinColumn.name());
-		assertEquals("\"id\"", joinColumn.referencedColumnName());
+		assertEquals("@JoinColumn should reference \"id\"", "\"id\"", joinColumn.referencedColumnName());
 
 		return new ManyToOneMatcher(manyToOne, joinColumn);
 	}
