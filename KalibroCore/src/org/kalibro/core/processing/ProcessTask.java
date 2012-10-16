@@ -8,12 +8,16 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 
-public class ProcessProjectTask extends VoidTask {
+public class ProcessTask extends VoidTask {
 
 	private Project project;
 
-	public ProcessProjectTask(String projectName) {
+	public ProcessTask(String projectName) {
 		project = DaoFactory.getProjectDao().getProject(projectName);
+	}
+
+	public ProcessTask(Long repositoryId) {
+		// TODO Auto-generated constructor stub
 	}
 
 	@Override

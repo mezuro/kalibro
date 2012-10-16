@@ -22,7 +22,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DaoFactory.class, ProcessProjectTask.class})
+@PrepareForTest({DaoFactory.class, ProcessTask.class})
 public class ProcessProjectTaskTest extends UnitTest {
 
 	private Project project;
@@ -37,7 +37,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 	private CollectMetricsTask collectTask;
 	private AnalyzeResultsTask analyzeTask;
 
-	private ProcessProjectTask processTask;
+	private ProcessTask processTask;
 
 	@Before
 	public void setUp() throws Exception {
@@ -46,7 +46,7 @@ public class ProcessProjectTaskTest extends UnitTest {
 		moduleResults = newHelloWorldResults();
 		mockKalibro();
 		mockSubtasks();
-		processTask = new ProcessProjectTask(PROJECT_NAME);
+		processTask = new ProcessTask(PROJECT_NAME);
 	}
 
 	private void mockKalibro() {

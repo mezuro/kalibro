@@ -1,5 +1,9 @@
 package org.kalibro.core.persistence;
 
+import static java.util.concurrent.TimeUnit.DAYS;
+
+import java.util.HashMap;
+import java.util.Map;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -10,6 +14,7 @@ import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
 import org.kalibro.core.loaders.RepositoryLoader;
 import org.kalibro.core.persistence.record.RepositoryRecord;
+import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.RepositoryDao;
 import org.kalibro.dto.DataTransferObject;
 
@@ -20,8 +25,11 @@ import org.kalibro.dto.DataTransferObject;
  */
 class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> implements RepositoryDao {
 
+	private Map<Long, ProcessTask> processTasks;
+
 	RepositoryDatabaseDao(RecordManager recordManager) {
 		super(recordManager, RepositoryRecord.class);
+		processTasks = new HashMap<Long, ProcessTask>();
 	}
 
 	@Override
@@ -67,11 +75,21 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 
 	@Override
 	public void process(Long repositoryId) {
-		// TODO Auto-generated method stub
+		cancelProcessing(repositoryId);
+		ProcessTask task = new ProcessTask(repositoryId);
+		processTasks.put(repositoryId, task);
+		Integer processPeriod = get(repositoryId).getProcessPeriod();
+		if (processPeriod == null || processPeriod <= 0)
+			task.executeInBackground();
+		else
+			task.executePeriodically(processPeriod, DAYS);
 	}
 
 	@Override
 	public void cancelProcessing(Long repositoryId) {
-		// TODO Auto-generated method stub
+		if (processTasks.containsKey(repositoryId)) {
+			processTasks.get(repositoryId).cancelExecution();
+			processTasks.remove(repositoryId);
+		}
 	}
 }

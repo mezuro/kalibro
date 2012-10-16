@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 import static org.kalibro.RepositoryType.LOCAL_DIRECTORY;
 
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.persistence.TypedQuery;
 
@@ -13,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.persistence.record.RepositoryRecord;
+import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -74,5 +76,35 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 		doReturn(record).when(dao).save(record);
 		assertEquals(ID, dao.save(repository, PROJECT_ID));
 		verify(dao).save(record);
+	}
+
+	@Test
+	public void shouldProcessOnce() throws Exception {
+		ProcessTask task = mockProcessTask(0);
+		dao.process(ID);
+		verify(task).executeInBackground();
+	}
+
+	@Test
+	public void shouldProcessPeriodically() throws Exception {
+		ProcessTask task = mockProcessTask(42);
+		dao.process(ID);
+		verify(task).executePeriodically(42, TimeUnit.DAYS);
+	}
+
+	@Test
+	public void shouldCancelProcessing() throws Exception {
+		ProcessTask task = mockProcessTask(0);
+		dao.process(ID);
+		dao.cancelProcessing(ID);
+		verify(task).cancelExecution();
+	}
+
+	private ProcessTask mockProcessTask(Integer period) throws Exception {
+		ProcessTask task = mock(ProcessTask.class);
+		whenNew(ProcessTask.class).withArguments(ID).thenReturn(task);
+		doReturn(repository).when(dao).get(ID);
+		when(repository.getProcessPeriod()).thenReturn(period);
+		return task;
 	}
 }
