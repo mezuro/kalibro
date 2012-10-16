@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(MetricConfigurationDatabaseDao.class)
 public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 
-	private static final Long METRIC_CONFIGURATION_ID = new Random().nextLong();
+	private static final Long ID = new Random().nextLong();
 	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
 	private MetricConfiguration metricConfiguration;
@@ -34,7 +34,7 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 		whenNew(MetricConfigurationRecord.class).withArguments(metricConfiguration, CONFIGURATION_ID)
 			.thenReturn(record);
 		when(record.convert()).thenReturn(metricConfiguration);
-		when(record.id()).thenReturn(METRIC_CONFIGURATION_ID);
+		when(record.id()).thenReturn(ID);
 		dao = spy(new MetricConfigurationDatabaseDao(null));
 	}
 
@@ -51,7 +51,7 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldSave() {
 		doReturn(record).when(dao).save(record);
-		assertEquals(METRIC_CONFIGURATION_ID, dao.save(metricConfiguration, CONFIGURATION_ID));
+		assertEquals(ID, dao.save(metricConfiguration, CONFIGURATION_ID));
 		verify(dao).save(record);
 	}
 }

@@ -14,10 +14,10 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-public class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord>
+class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord>
 	implements MetricConfigurationDao {
 
-	public MetricConfigurationDatabaseDao(RecordManager recordManager) {
+	MetricConfigurationDatabaseDao(RecordManager recordManager) {
 		super(recordManager, MetricConfigurationRecord.class);
 	}
 
