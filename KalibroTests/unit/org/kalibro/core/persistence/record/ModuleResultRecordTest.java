@@ -1,12 +1,15 @@
 package org.kalibro.core.persistence.record;
 
-import org.kalibro.Module;
-import org.kalibro.ModuleFixtures;
-
-public class ModuleResultRecordTest extends RecordTest<Module> {
+public class ModuleResultRecordTest extends RecordTest {
 
 	@Override
-	protected Module loadFixture() {
-		return ModuleFixtures.helloWorldClass();
+	protected void verifyColumns() {
+		assertManyToOne("processing", ProcessingRecord.class).isRequired();
+		shouldHaveId();
+		assertOrderedElementCollection("moduleName");
+		assertColumn("moduleGranularity", String.class).isRequired();
+		assertColumn("grade", Long.class).isRequired();
+		assertManyToOne("parent", ModuleResultRecord.class).isOptional();
+		assertOneToMany("children").isMappedBy("parent");
 	}
 }

@@ -1,38 +1,48 @@
 package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrimaryKey;
 import org.kalibro.Granularity;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dto.ModuleResultDto;
 
-@Entity(name = "Module")
-@Table(name = "\"MODULE\"")
-@PrimaryKey(columns = {@Column(name = "project"), @Column(name = "date"), @Column(name = "name")})
+/**
+ * Java Persistence API entity for {@link ModuleResult}.
+ * 
+ * @author Carlos Morais
+ */
+@Entity(name = "ModuleResult")
+@Table(name = "\"MODULE_RESULT\"")
 public class ModuleResultRecord extends ModuleResultDto {
 
-	@ManyToOne(optional = false)
-	@JoinColumns({
-		@JoinColumn(name = "project", nullable = false, referencedColumnName = "project"),
-		@JoinColumn(name = "date", nullable = false, referencedColumnName = "date")})
-	private ProcessingRecord projectResult;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
+	private ProcessingRecord processing;
 
-	@Column(name = "name", nullable = false)
-	private String name;
+	@Id
+	@GeneratedValue
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
 
-	@Column(nullable = false)
-	private String granularity;
+	@OrderColumn(name = "\"index\"", nullable = false)
+	@ElementCollection(fetch = FetchType.EAGER)
+	private List<String> moduleName;
 
-	@ManyToOne(optional = true)
-	@JoinColumns({
-		@JoinColumn(insertable = false, name = "project", referencedColumnName = "project", updatable = false),
-		@JoinColumn(insertable = false, name = "date", referencedColumnName = "date", updatable = false),
-		@JoinColumn(name = "parent", referencedColumnName = "name")})
+	@Column(name = "\"module_granularity\"", nullable = false)
+	private String moduleGranularity;
+
+	@Column(name = "\"grade\"", nullable = false)
+	private Long grade;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "\"parent\"", referencedColumnName = "\"id\"")
+	@SuppressWarnings("unused" /* used by JPA */)
 	private ModuleResultRecord parent;
 
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true)
@@ -42,79 +52,47 @@ public class ModuleResultRecord extends ModuleResultDto {
 		super();
 	}
 
-	public ModuleResultRecord(Module module) {
-		this(new ModuleNode(module), new ProcessingRecord(), new ModuleResultRecord());
-	}
-
-	public ModuleResultRecord(ModuleNode moduleNode, RepositoryResult repositoryResult) {
-		initialize(moduleNode, new ProcessingRecord(repositoryResult), null);
-	}
-
-	public ModuleResultRecord(ModuleNode moduleNode, ProcessingRecord projectResult, ModuleResultRecord parent) {
-		initialize(moduleNode, projectResult, parent);
-	}
-
 	public ModuleResultRecord(Long id) {
-		// TODO Auto-generated constructor stub
+		this.id = id;
 	}
 
-	private void initialize(ModuleNode moduleNode, ProcessingRecord result, ModuleResultRecord parentModule) {
-		projectResult = result;
-		parent = parentModule;
-		name = moduleNode.getModule().getLongName();
-		granularity = moduleNode.getModule().getGranularity().name();
-		initializeChildren(moduleNode);
+	public ModuleResultRecord(ModuleResult moduleResult) {
+		this(moduleResult, null);
 	}
 
-	private void initializeChildren(ModuleNode moduleNode) {
-		children = new ArrayList<ModuleResultRecord>(moduleNode.getChildren().size());
-		for (ModuleNode child : moduleNode.getChildren())
-			children.add(new ModuleResultRecord(child, projectResult, this));
+	public ModuleResultRecord(ModuleResult moduleResult, ProcessingRecord processingRecord) {
+		this(moduleResult.getId());
+		processing = processingRecord;
+		moduleName = Arrays.asList(moduleResult.getModule().getName());
+		moduleGranularity = moduleResult.getModule().getGranularity().name();
+		grade = Double.doubleToLongBits(moduleResult.getGrade());
+		setParent(moduleResult.getParent());
+		setChildren(moduleResult.getChildren());
 	}
 
-	@Override
-	public ModuleNode convert() {
-		ModuleNode moduleNode = new ModuleNode(convertIntoModule());
-		convertChildren(moduleNode);
-		return moduleNode;
+	private void setParent(ModuleResult parent) {
+		if (parent != null)
+			this.parent = new ModuleResultRecord(parent.getId());
 	}
 
-	private void convertChildren(ModuleNode moduleNode) {
-		for (ModuleResultRecord child : children)
-			moduleNode.addChild(child.convert());
-	}
-
-	protected ModuleResult convertIntoModuleResult() {
-		return new ModuleResult(convertIntoModule(), projectResult.getDate());
-	}
-
-	private Module convertIntoModule() {
-		return new Module(Granularity.valueOf(granularity), name);
-	}
-
-	protected boolean isRoot() {
-		return parent == null;
-	}
-
-	protected Collection<ModuleResultRecord> getChildren() {
-		return children;
+	private void setChildren(Collection<ModuleResult> children) {
+		this.children = new ArrayList<ModuleResultRecord>();
+		for (ModuleResult child : children)
+			this.children.add(new ModuleResultRecord(child, processing));
 	}
 
 	@Override
 	public Long id() {
-		// TODO Auto-generated method stub
-		return null;
+		return id;
 	}
 
 	@Override
 	public Module module() {
-		// TODO Auto-generated method stub
-		return null;
+		return new Module(Granularity.valueOf(moduleGranularity), moduleName.toArray(new String[0]));
 	}
 
 	@Override
 	public Double grade() {
-		// TODO Auto-generated method stub
-		return null;
+		return Double.longBitsToDouble(grade);
 	}
 }

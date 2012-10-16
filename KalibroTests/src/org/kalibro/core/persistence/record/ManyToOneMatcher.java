@@ -18,28 +18,32 @@ class ManyToOneMatcher {
 	}
 
 	ManyToOneMatcher doesNotCascade() {
-		assertArrayEquals(message(manyToOne, "should NOT cascade"), new CascadeType[]{}, manyToOne.cascade());
+		assertArrayEquals(message("should NOT cascade"), new CascadeType[]{}, manyToOne.cascade());
 		return this;
 	}
 
 	ManyToOneMatcher isLazy() {
-		assertEquals(message(manyToOne, "has wrong fetch type"), FetchType.LAZY, manyToOne.fetch());
+		assertEquals(message("has wrong fetch type"), FetchType.LAZY, manyToOne.fetch());
 		return this;
 	}
 
 	ManyToOneMatcher isOptional() {
-		assertTrue(message(manyToOne, "should be optional"), manyToOne.optional());
-		assertTrue(message(joinColumn, "should be nullable"), joinColumn.nullable());
+		assertTrue(message("should be optional"), manyToOne.optional());
+		assertTrue(message("JoinColumn", "should be nullable"), joinColumn.nullable());
 		return this;
 	}
 
 	ManyToOneMatcher isRequired() {
-		assertFalse(message(manyToOne, "should NOT be optional"), manyToOne.optional());
-		assertFalse(message(joinColumn, "should NOT be nullable"), joinColumn.nullable());
+		assertFalse(message("should NOT be optional"), manyToOne.optional());
+		assertFalse(message("JoinColumn", "should NOT be nullable"), joinColumn.nullable());
 		return this;
 	}
 
-	private String message(Object annotation, String message) {
-		return "@" + annotation.getClass().getSimpleName() + " " + joinColumn.name() + " " + message + ".";
+	private String message(String message) {
+		return message("ManyToOne", message);
+	}
+
+	private String message(String annotation, String message) {
+		return "@" + annotation + " " + joinColumn.name() + " " + message + ".";
 	}
 }

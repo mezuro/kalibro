@@ -61,14 +61,25 @@ public abstract class RecordTest extends ConcreteDtoTest {
 	}
 
 	protected OneToManyMatcher assertOrderedOneToMany(String field) {
-		assertFieldType(field, List.class);
-		assertEquals("\"index\"", annotation(field, OrderColumn.class).name());
+		assertOrdered(field);
 		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades().isLazy();
+	}
+
+	protected void assertOrderedElementCollection(String field) {
+		assertOrdered(field);
+		annotation(field, ElementCollection.class);
 	}
 
 	protected ManyToOneMatcher assertManyToOne(String field, Class<?> type) {
 		assertFieldType(field, type);
 		return new ManyToOneMatcher(annotation(field, ManyToOne.class), joinColumn(field)).doesNotCascade().isLazy();
+	}
+
+	private void assertOrdered(String field) {
+		assertFieldType(field, List.class);
+		OrderColumn orderColumn = annotation(field, OrderColumn.class);
+		assertEquals("Wrong @OrderColumn name.", "\"index\"", orderColumn.name());
+		assertFalse("@OrderColumn should NOT be nullable.", orderColumn.nullable());
 	}
 
 	private void assertFieldType(String field, Class<?> type) {
