@@ -16,7 +16,7 @@ public class ProcessTask extends VoidTask {
 		project = DaoFactory.getProjectDao().getProject(projectName);
 	}
 
-	public ProcessTask(Long repositoryId) {
+	public ProcessTask(Repository repository) {
 		// TODO Auto-generated constructor stub
 	}
 

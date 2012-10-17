@@ -76,9 +76,13 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 	@Override
 	public void process(Long repositoryId) {
 		cancelProcessing(repositoryId);
-		ProcessTask task = new ProcessTask(repositoryId);
+		Repository repository = get(repositoryId);
+		ProcessTask task = new ProcessTask(repository);
 		processTasks.put(repositoryId, task);
-		Integer processPeriod = get(repositoryId).getProcessPeriod();
+		executeTask(task, repository.getProcessPeriod());
+	}
+
+	private void executeTask(ProcessTask task, Integer processPeriod) {
 		if (processPeriod == null || processPeriod <= 0)
 			task.executeInBackground();
 		else

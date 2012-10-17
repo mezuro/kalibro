@@ -102,8 +102,8 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 
 	private ProcessTask mockProcessTask(Integer period) throws Exception {
 		ProcessTask task = mock(ProcessTask.class);
-		whenNew(ProcessTask.class).withArguments(ID).thenReturn(task);
 		doReturn(repository).when(dao).get(ID);
+		whenNew(ProcessTask.class).withArguments(repository).thenReturn(task);
 		when(repository.getProcessPeriod()).thenReturn(period);
 		return task;
 	}
