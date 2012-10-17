@@ -43,18 +43,18 @@ public class ProcessingEndpointImpl implements ProcessingEndpoint {
 
 	@Override
 	@WebResult(name = "exists")
-	public boolean hasProcessingBefore(
-		@WebParam(name = "date") Date date,
-		@WebParam(name = "repositoryId") Long repositoryId) {
-		return dao.hasProcessingBefore(date, repositoryId);
-	}
-
-	@Override
-	@WebResult(name = "exists")
 	public boolean hasProcessingAfter(
 		@WebParam(name = "date") Date date,
 		@WebParam(name = "repositoryId") Long repositoryId) {
 		return dao.hasProcessingAfter(date, repositoryId);
+	}
+
+	@Override
+	@WebResult(name = "exists")
+	public boolean hasProcessingBefore(
+		@WebParam(name = "date") Date date,
+		@WebParam(name = "repositoryId") Long repositoryId) {
+		return dao.hasProcessingBefore(date, repositoryId);
 	}
 
 	@Override

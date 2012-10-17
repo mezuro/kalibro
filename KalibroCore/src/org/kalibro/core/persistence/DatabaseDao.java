@@ -25,8 +25,13 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	public boolean exists(Long recordId) {
-		Query query = recordManager.createQuery("SELECT 1 FROM " + entityName() + " WHERE id = :id");
-		query.setParameter("id", recordId);
+		return exists("WHERE " + alias() + ".id = :id", "id", recordId);
+	}
+
+	protected boolean exists(String clauses, Object... parameters) {
+		Query query = recordManager.createQuery("SELECT 1 FROM " + entityName() + " " + alias() + " " + clauses);
+		for (int i = 0; i < parameters.length; i += 2)
+			query.setParameter(parameters[i].toString(), parameters[i + 1]);
 		return !query.getResultList().isEmpty();
 	}
 
@@ -50,7 +55,11 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	protected TypedQuery<RECORD> createRecordQuery(String clauses) {
 		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias() + " " + clauses;
-		return recordManager.createQuery(queryString, recordClass);
+		return createQuery(queryString, recordClass);
+	}
+
+	protected <T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
+		return recordManager.createQuery(queryString, resultClass);
 	}
 
 	private String alias() {

@@ -16,9 +16,9 @@ public interface ProcessingDao {
 
 	boolean hasReadyProcessing(Long repositoryId);
 
-	boolean hasProcessingBefore(Date date, Long repositoryId);
-
 	boolean hasProcessingAfter(Date date, Long repositoryId);
+
+	boolean hasProcessingBefore(Date date, Long repositoryId);
 
 	ProcessState lastProcessingState(Long repositoryId);
 

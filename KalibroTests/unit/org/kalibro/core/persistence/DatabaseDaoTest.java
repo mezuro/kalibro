@@ -37,7 +37,7 @@ public class DatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldConfirmExistence() {
 		Query query = mock(Query.class);
-		when(recordManager.createQuery("SELECT 1 FROM Person WHERE id = :id")).thenReturn(query);
+		when(recordManager.createQuery("SELECT 1 FROM Person person WHERE person.id = :id")).thenReturn(query);
 
 		when(query.getResultList()).thenReturn(asList(1));
 		assertTrue(dao.exists(ID));

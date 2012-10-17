@@ -29,7 +29,13 @@ enum DatePicker {
 	}
 
 	String processingClause() {
-		return clause("processing", "= (SELECT " + selector + "(p.date) FROM Processing p " + clause("p") + ")");
+		return processingClause("");
+	}
+
+	String processingClause(String extraCondition) {
+		String dateCondition = "= (SELECT " + selector + "(p.date) FROM Processing p " + clause("p");
+		dateCondition += extraCondition.equals("") ? ")" : " AND p." + extraCondition + ")";
+		return clause("processing", dateCondition);
 	}
 
 	private String clause(String alias) {

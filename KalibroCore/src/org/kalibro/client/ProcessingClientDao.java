@@ -29,13 +29,13 @@ class ProcessingClientDao extends EndpointClient<ProcessingEndpoint> implements 
 	}
 
 	@Override
-	public boolean hasProcessingBefore(Date date, Long repositoryId) {
-		return port.hasProcessingBefore(date, repositoryId);
+	public boolean hasProcessingAfter(Date date, Long repositoryId) {
+		return port.hasProcessingAfter(date, repositoryId);
 	}
 
 	@Override
-	public boolean hasProcessingAfter(Date date, Long repositoryId) {
-		return port.hasProcessingAfter(date, repositoryId);
+	public boolean hasProcessingBefore(Date date, Long repositoryId) {
+		return port.hasProcessingBefore(date, repositoryId);
 	}
 
 	@Override

@@ -29,11 +29,11 @@ public interface ProcessingEndpoint {
 
 	@WebMethod
 	@WebResult(name = "exists")
-	boolean hasProcessingBefore(@WebParam(name = "date") Date date, @WebParam(name = "repositoryId") Long repositoryId);
+	boolean hasProcessingAfter(@WebParam(name = "date") Date date, @WebParam(name = "repositoryId") Long repositoryId);
 
 	@WebMethod
 	@WebResult(name = "exists")
-	boolean hasProcessingAfter(@WebParam(name = "date") Date date, @WebParam(name = "repositoryId") Long repositoryId);
+	boolean hasProcessingBefore(@WebParam(name = "date") Date date, @WebParam(name = "repositoryId") Long repositoryId);
 
 	@WebMethod
 	@WebResult(name = "processState")
