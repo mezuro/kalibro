@@ -24,14 +24,14 @@ public class MetricResultRecord extends MetricResultDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ModuleResultRecord moduleResult;
 
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
+	private MetricConfigurationSnapshotRecord configuration;
+
 	@Id
 	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
-
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	private MetricConfigurationSnapshotRecord configuration;
 
 	@Column(name = "\"value\"", nullable = false)
 	private Long value;

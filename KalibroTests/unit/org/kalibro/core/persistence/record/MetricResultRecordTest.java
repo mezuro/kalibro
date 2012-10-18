@@ -21,8 +21,8 @@ public class MetricResultRecordTest extends RecordTest {
 	@Override
 	protected void verifyColumns() {
 		assertManyToOne("moduleResult", ModuleResultRecord.class);
-		shouldHaveId();
 		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isRequired();
+		shouldHaveId();
 		assertColumn("value", Long.class).isRequired();
 		assertOneToOne("error", ThrowableRecord.class).isOptional();
 		assertOneToMany("descendantResults").isMappedBy("metricResult");
