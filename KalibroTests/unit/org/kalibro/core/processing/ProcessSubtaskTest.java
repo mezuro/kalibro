@@ -1,91 +1,105 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.ProcessState.COLLECTING;
+import static org.kalibro.ProcessState.*;
+
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Project;
-import org.kalibro.Processing;
 import org.kalibro.ProcessState;
-import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProjectDao;
+import org.kalibro.Processing;
+import org.kalibro.core.concurrent.TaskReport;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoFactory.class)
+@PrepareForTest(ProcessSubtask.class)
 public class ProcessSubtaskTest extends UnitTest {
 
-	private static final String TASK_RESULT = "ProcessSubtaskTest result";
-	private static final ProcessState TASK_STATE = COLLECTING;
+	private static final Long EXECUTION_TIME = new Random().nextLong();
+	private static final String RESULT = "ProcessSubtaskTest result";
 
-	private Project project;
-	private ProjectDao projectDao;
+	private static final ProcessState CURRENT_STATE = LOADING;
+	private static final ProcessState NEXT_STATE = COLLECTING;
+
 	private Processing processing;
+	private ProcessingDatabaseDao processingDao;
 
-	private FakeSubtask subtask;
+	private ProcessSubtask<String> subtask;
 
 	@Before
-	public void setUp() {
-		mockDaoFactory();
-		mockProjectResult();
+	public void setUp() throws Exception {
+		processing = mock(Processing.class);
+		processingDao = mock(ProcessingDatabaseDao.class);
+		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
+		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
+		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
+		when(processing.getState()).thenReturn(CURRENT_STATE);
 		subtask = new FakeSubtask(processing);
 	}
 
-	private void mockDaoFactory() {
-		projectDao = mock(ProjectDao.class);
-		mockStatic(DaoFactory.class);
-		when(DaoFactory.getProjectDao()).thenReturn(projectDao);
-	}
-
-	private void mockProjectResult() {
-		project = mock(Project.class);
-		processing = mock(Processing.class);
-		when(processing.getRepository()).thenReturn(project);
+	@Test
+	public void shouldListenToItself() {
+		assertDeepEquals(asSet(subtask), Whitebox.getInternalState(subtask, "listeners"));
 	}
 
 	@Test
-	public void shouldReturnTaskResult() {
-		assertEquals(TASK_RESULT, subtask.executeSubTask());
+	public void shouldUpdateProcessingAfterExecution() {
+		subtask.taskFinished(report(null));
+		InOrder order = Mockito.inOrder(processing, processing, processingDao);
+		order.verify(processing).setStateTime(CURRENT_STATE, EXECUTION_TIME);
+		order.verify(processing).setState(NEXT_STATE);
+		order.verify(processingDao).save(processing);
 	}
 
 	@Test
-	public void shouldUpdateProjectState() {
-		subtask.executeSubTask();
-		Mockito.verify(project).setState(subtask.getTaskState());
-		Mockito.verify(projectDao).save(project);
+	public void shouldUpdateProcessingOnError() {
+		Throwable error = mock(Throwable.class);
+		subtask.taskFinished(report(error));
+		InOrder order = Mockito.inOrder(processing, processing, processingDao);
+		order.verify(processing).setStateTime(eq(CURRENT_STATE), anyLong());
+		order.verify(processing).setError(error);
+		order.verify(processingDao).save(processing);
+	}
+
+	private TaskReport<String> report(Throwable error) {
+		TaskReport<String> report = mock(TaskReport.class);
+		when(report.getExecutionTime()).thenReturn(EXECUTION_TIME);
+		when(report.getResult()).thenReturn(RESULT);
+		when(report.isTaskDone()).thenReturn(error == null);
+		when(report.getError()).thenReturn(error);
+		return report;
 	}
 
 	@Test
-	public void shouldSetStateTime() {
-		subtask.executeSubTask();
-		Mockito.verify(processing).setStateTime(eq(TASK_STATE), anyLong());
-	}
-
-	@Test
-	public void shouldDescribeTaskWithProjectStateMessage() {
-		when(project.getStateMessage()).thenReturn(TASK_RESULT);
-		assertEquals(TASK_RESULT, "" + subtask);
+	public void toStringShouldBeStateMessage() {
+		String stateMessage = "ProcessSubtaskTest state message";
+		when(processing.getStateMessage()).thenReturn(stateMessage);
+		assertEquals(stateMessage, "" + subtask);
 	}
 
 	private final class FakeSubtask extends ProcessSubtask<String> {
 
-		private FakeSubtask(Processing result) {
-			super(result);
-		}
-
-		@Override
-		protected ProcessState getTaskState() {
-			return TASK_STATE;
+		private FakeSubtask(Processing processing) {
+			super(processing);
 		}
 
 		@Override
 		protected String compute() {
-			return TASK_RESULT;
+			return RESULT;
+		}
+
+		@Override
+		ProcessState getNextState() {
+			return NEXT_STATE;
 		}
 	}
 }

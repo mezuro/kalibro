@@ -3,12 +3,18 @@ package org.kalibro.core.processing;
 import java.io.File;
 import java.util.Set;
 
+import org.kalibro.Configuration;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.Processing;
 import org.kalibro.Repository;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 
+/**
+ * Performs a {@link Processing} for a {@link Repository} according to its {@link Configuration}.
+ * 
+ * @author Carlos Morais
+ */
 public class ProcessTask extends VoidTask {
 
 	private Processing processing;
