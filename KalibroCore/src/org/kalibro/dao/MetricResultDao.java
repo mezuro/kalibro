@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.SortedMap;
 import java.util.SortedSet;
 
-import org.kalibro.Metric;
 import org.kalibro.MetricResult;
 
 /**
@@ -19,5 +18,5 @@ public interface MetricResultDao {
 
 	SortedSet<MetricResult> metricResultsOf(Long moduleResultId);
 
-	SortedMap<Date, MetricResult> historyOf(Metric metric, Long repositoryId);
+	SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId);
 }

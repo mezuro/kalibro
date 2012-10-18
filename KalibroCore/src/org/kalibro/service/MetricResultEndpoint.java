@@ -10,7 +10,6 @@ import javax.jws.WebService;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.service.xml.DateMetricResultXml;
 import org.kalibro.service.xml.MetricResultXml;
-import org.kalibro.service.xml.MetricXmlRequest;
 
 /**
  * End point to make {@link MetricResultDao} interface available as Web service.
@@ -31,6 +30,6 @@ public interface MetricResultEndpoint {
 	@WebMethod
 	@WebResult(name = "dateMetricResult")
 	List<DateMetricResultXml> historyOf(
-		@WebParam(name = "metric") MetricXmlRequest metric,
-		@WebParam(name = "repositoryId") Long repositoryId);
+		@WebParam(name = "metricName") String metricName,
+		@WebParam(name = "moduleResultId") Long moduleResultId);
 }

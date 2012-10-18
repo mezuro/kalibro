@@ -2,13 +2,11 @@ package org.kalibro.client;
 
 import java.util.*;
 
-import org.kalibro.Metric;
 import org.kalibro.MetricResult;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.MetricResultEndpoint;
 import org.kalibro.service.xml.DateMetricResultXml;
-import org.kalibro.service.xml.MetricXmlRequest;
 
 /**
  * {@link MetricResultEndpoint} client implementation of {@link MetricResultDao}.
@@ -32,9 +30,9 @@ class MetricResultClientDao extends EndpointClient<MetricResultEndpoint> impleme
 	}
 
 	@Override
-	public SortedMap<Date, MetricResult> historyOf(Metric metric, Long repositoryId) {
+	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
 		SortedMap<Date, MetricResult> history = new TreeMap<Date, MetricResult>();
-		for (DateMetricResultXml dateResult : port.historyOf(new MetricXmlRequest(metric), repositoryId))
+		for (DateMetricResultXml dateResult : port.historyOf(metricName, moduleResultId))
 			history.put(dateResult.date(), dateResult.metricResult());
 		return history;
 	}

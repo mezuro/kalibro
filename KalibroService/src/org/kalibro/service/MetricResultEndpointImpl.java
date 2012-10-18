@@ -15,7 +15,6 @@ import org.kalibro.dao.MetricResultDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.xml.DateMetricResultXml;
 import org.kalibro.service.xml.MetricResultXml;
-import org.kalibro.service.xml.MetricXmlRequest;
 
 /**
  * Implementation of {@link MetricResultEndpoint}.
@@ -50,9 +49,9 @@ public class MetricResultEndpointImpl implements MetricResultEndpoint {
 	@Override
 	@WebResult(name = "dateMetricResult")
 	public List<DateMetricResultXml> historyOf(
-		@WebParam(name = "metric") MetricXmlRequest metric,
-		@WebParam(name = "repositoryId") Long repositoryId) {
-		SortedMap<Date, MetricResult> history = dao.historyOf(metric.convert(), repositoryId);
+		@WebParam(name = "metricName") String metricName,
+		@WebParam(name = "moduleResultId") Long moduleResultId) {
+		SortedMap<Date, MetricResult> history = dao.historyOf(metricName, moduleResultId);
 		List<DateMetricResultXml> dtos = new ArrayList<DateMetricResultXml>();
 		for (Date date : history.keySet())
 			dtos.add(new DateMetricResultXml(date, history.get(date)));

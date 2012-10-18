@@ -5,20 +5,18 @@ import static org.junit.Assert.assertEquals;
 import java.util.*;
 
 import org.junit.Test;
-import org.kalibro.Metric;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
-import org.kalibro.NativeMetric;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.service.xml.DateMetricResultXml;
 import org.kalibro.service.xml.MetricResultXml;
-import org.kalibro.service.xml.MetricXmlRequest;
 import org.powermock.reflect.Whitebox;
 
 public class MetricResultEndpointTest extends EndpointTest<MetricResult, MetricResultDao, MetricResultEndpoint> {
 
 	private static final Long ID = new Random().nextLong();
+	private static final String METRIC_NAME = "MetricResultEndpointTest metric name";
 
 	@Override
 	protected MetricResult loadFixture() {
@@ -51,15 +49,12 @@ public class MetricResultEndpointTest extends EndpointTest<MetricResult, MetricR
 
 	@Test
 	public void shouldGetMetricResultHistory() {
-		Metric metric = loadFixture("cbo", NativeMetric.class);
-		MetricXmlRequest metricXml = new MetricXmlRequest(metric);
-
 		Date date = new Date(1);
 		SortedMap<Date, MetricResult> map = new TreeMap<Date, MetricResult>();
 		map.put(date, entity);
 
-		when(dao.historyOf(metric, ID)).thenReturn(map);
-		List<DateMetricResultXml> history = port.historyOf(metricXml, ID);
+		when(dao.historyOf(METRIC_NAME, ID)).thenReturn(map);
+		List<DateMetricResultXml> history = port.historyOf(METRIC_NAME, ID);
 		assertEquals(1, history.size());
 		assertEquals(date, history.get(0).date());
 		assertDeepDtoEquals(Whitebox.getInternalState(history.get(0), MetricResultXml.class));
