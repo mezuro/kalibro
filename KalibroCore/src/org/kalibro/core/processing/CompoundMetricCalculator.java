@@ -2,27 +2,31 @@ package org.kalibro.core.processing;
 
 import org.kalibro.*;
 
-public class CompoundMetricCalculator {
+public final class CompoundMetricCalculator {
+
+	public static void addCompoundMetrics(ModuleResult moduleResult, Configuration configuration) {
+		new CompoundMetricCalculator(moduleResult, configuration).addCompoundMetrics();
+	}
 
 	private ModuleResult moduleResult;
 	private Configuration configuration;
 	private JavascriptEvaluator scriptEvaluator;
 
-	public CompoundMetricCalculator(ModuleResult moduleResult, Configuration configuration) {
+	private CompoundMetricCalculator(ModuleResult moduleResult, Configuration configuration) {
 		this.moduleResult = moduleResult;
 		this.configuration = configuration;
+		this.scriptEvaluator = new JavascriptEvaluator();
 	}
 
-	public void configure() {
-		scriptEvaluator = new JavascriptEvaluator();
+	private void addCompoundMetrics() {
 		for (MetricConfiguration metricConfiguration : configuration.getMetricConfigurations())
-			include(metricConfiguration);
+			includeScriptFor(metricConfiguration);
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics())
 			if (isScopeCompatible(compoundMetric))
 				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric));
 	}
 
-	private void include(MetricConfiguration metricConfiguration) {
+	private void includeScriptFor(MetricConfiguration metricConfiguration) {
 		String code = metricConfiguration.getCode();
 		Metric metric = metricConfiguration.getMetric();
 		if (metric.isCompound())
@@ -39,8 +43,7 @@ public class CompoundMetricCalculator {
 		try {
 			doComputeCompoundMetric(metricConfiguration);
 		} catch (Exception exception) {
-			CompoundMetric metric = (CompoundMetric) metricConfiguration.getMetric();
-			moduleResult.addMetricResult(new MetricResult(metric, exception));
+			moduleResult.addMetricResult(new MetricResult(metricConfiguration, exception));
 		}
 	}
 

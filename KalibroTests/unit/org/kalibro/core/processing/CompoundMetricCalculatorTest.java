@@ -20,8 +20,6 @@ public class CompoundMetricCalculatorTest extends UnitTest {
 	private CompoundMetric sc, other;
 	private Configuration configuration;
 
-	private CompoundMetricCalculator configurer;
-
 	@Before
 	public void setUp() {
 		cbo = loadFixture("cbo", NativeMetric.class);
@@ -33,13 +31,12 @@ public class CompoundMetricCalculatorTest extends UnitTest {
 		result = new ModuleResult(null, new Module(Granularity.CLASS, "ClassX"));
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(lcom4), LCOM4));
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(cbo), CBO));
-		configurer = new CompoundMetricCalculator(result, configuration);
 	}
 
 	@Test
 	public void shouldComputeCompoundResults() {
 		assertFalse(result.hasResultFor(sc));
-		configurer.configure();
+		calculate();
 		assertDoubleEquals(SC, result.getResultFor(sc).getValue());
 	}
 
@@ -47,14 +44,14 @@ public class CompoundMetricCalculatorTest extends UnitTest {
 	public void shouldIncludeOnlyCompoundMetricsWithCompatibleScope() {
 		sc = (CompoundMetric) configuration.getConfigurationFor(sc).getMetric();
 		sc.setScope(Granularity.PACKAGE);
-		configurer.configure();
+		calculate();
 		assertFalse(result.hasResultFor(sc));
 	}
 
 	@Test
 	public void shouldAddCompoundMetricsWithError() {
 		other.setScript("return null;");
-		configurer.configure();
+		calculate();
 		MetricResult otherResult = result.getResultFor(other);
 		assertTrue(otherResult.hasError());
 
@@ -67,7 +64,11 @@ public class CompoundMetricCalculatorTest extends UnitTest {
 	@Test
 	public void shouldCalculateCompoundUsingOtherCompound() {
 		other.setScript("return 2 * sc();");
-		configurer.configure();
+		calculate();
 		assertDoubleEquals(2 * SC, result.getResultFor(other).getValue());
+	}
+
+	private void calculate() {
+		CompoundMetricCalculator.addCompoundMetrics(result, configuration);
 	}
 }
