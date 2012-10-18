@@ -52,6 +52,7 @@ public class RepositoryTest extends UnitTest {
 		assertEquals(RepositoryType.LOCAL_DIRECTORY, repository.getType());
 		assertEquals(0, repository.getProcessPeriod().intValue());
 		assertNull(repository.getConfiguration());
+		assertNull(repository.getProject());
 	}
 
 	@Test

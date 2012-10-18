@@ -127,6 +127,10 @@ public class Repository extends AbstractEntity<Repository> {
 		this.configuration = configuration;
 	}
 
+	public Project getProject() {
+		return project;
+	}
+
 	void setProject(Project project) {
 		this.project = project;
 	}
