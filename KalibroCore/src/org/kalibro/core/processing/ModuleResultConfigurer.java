@@ -2,9 +2,9 @@ package org.kalibro.core.processing;
 
 import org.kalibro.*;
 
-public final class ModuleResultConfigurer {
+final class ModuleResultConfigurer {
 
-	public static void configure(ModuleResult moduleResult, Configuration configuration) {
+	static void configure(ModuleResult moduleResult, Configuration configuration) {
 		new ModuleResultConfigurer(moduleResult, configuration).addCompoundMetrics();
 		double gradeSum = 0.0;
 		double weightSum = 0.0;

@@ -52,6 +52,10 @@ public class RepositoryRecord extends RepositoryDto {
 		super();
 	}
 
+	public RepositoryRecord(Long id) {
+		this.id = id;
+	}
+
 	public RepositoryRecord(Repository repository) {
 		this(repository, (Long) null);
 	}
@@ -61,8 +65,8 @@ public class RepositoryRecord extends RepositoryDto {
 	}
 
 	public RepositoryRecord(Repository repository, ProjectRecord projectRecord) {
+		this(repository.getId());
 		project = projectRecord;
-		id = repository.getId();
 		name = repository.getName();
 		type = repository.getType().name();
 		address = repository.getAddress();

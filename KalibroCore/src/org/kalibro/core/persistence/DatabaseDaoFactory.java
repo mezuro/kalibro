@@ -63,7 +63,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected ProcessingDatabaseDao createProcessingDao() {
+	public ProcessingDatabaseDao createProcessingDao() {
 		return new ProcessingDatabaseDao(recordManager());
 	}
 

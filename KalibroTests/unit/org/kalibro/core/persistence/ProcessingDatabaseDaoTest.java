@@ -38,7 +38,15 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 		processing = mock(Processing.class);
 		record = mock(ProcessingRecord.class);
 		when(record.convert()).thenReturn(processing);
-		dao = PowerMockito.spy(new ProcessingDatabaseDao(null));
+		dao = spy(new ProcessingDatabaseDao(null));
+	}
+
+	@Test
+	public void shouldSave() throws Exception {
+		whenNew(ProcessingRecord.class).withArguments(processing).thenReturn(record);
+		doReturn(record).when(dao).save(record);
+		dao.save(processing);
+		verify(dao).save(record);
 	}
 
 	@Test
