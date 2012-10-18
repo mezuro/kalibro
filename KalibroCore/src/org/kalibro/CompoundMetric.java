@@ -1,6 +1,5 @@
 package org.kalibro;
 
-
 /**
  * Metric calculated based on the results of other metrics, using a script.
  * 

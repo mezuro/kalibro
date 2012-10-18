@@ -1,12 +1,11 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.MetricFixtures.*;
-
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.CompoundMetric;
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
+import org.kalibro.NativeMetric;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.ThrowableMatcher;
 import org.kalibro.tests.UtilityClassTest;
@@ -19,10 +18,9 @@ public class ScriptValidatorTest extends UtilityClassTest {
 
 	@Before
 	public void setUp() {
-		sc = new MetricConfiguration(newSc());
-		configuration = newConfiguration("cbo", "lcom4");
-		configuration.addMetricConfiguration(sc);
-		cbo = configuration.getConfigurationFor(analizoMetric("cbo"));
+		configuration = loadFixture("sc", Configuration.class);
+		sc = configuration.getConfigurationFor(loadFixture("sc", CompoundMetric.class));
+		cbo = configuration.getConfigurationFor(loadFixture("cbo", NativeMetric.class));
 		assertValid();
 	}
 
@@ -46,7 +44,7 @@ public class ScriptValidatorTest extends UtilityClassTest {
 	@Test
 	public void shouldValidateCompoundScript() {
 		configuration.removeMetricConfiguration(cbo);
-		assertInvalid("Error evaluating Javascript for: structuralComplexity").withCause(EcmaError.class);
+		assertInvalid("Error evaluating Javascript for: sc").withCause(EcmaError.class);
 	}
 
 	private ThrowableMatcher assertInvalid(String message) {

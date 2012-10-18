@@ -5,6 +5,11 @@ import org.kalibro.Configuration;
 import org.kalibro.Metric;
 import org.kalibro.MetricConfiguration;
 
+/**
+ * Validates scripts of {@link CompoundMetrics} in a {@link Configuration}.
+ * 
+ * @author Carlos Morais
+ */
 public final class ScriptValidator {
 
 	public static void validate(Configuration configuration) {
