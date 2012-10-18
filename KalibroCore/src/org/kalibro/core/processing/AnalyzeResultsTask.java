@@ -8,7 +8,7 @@ import org.kalibro.ModuleResult;
 import org.kalibro.Processing;
 import org.kalibro.ProcessState;
 
-class AnalyzeResultsTask extends ProcessProjectSubtask<Collection<ModuleResult>> {
+class AnalyzeResultsTask extends ProcessSubtask<Collection<ModuleResult>> {
 
 	private Map<Module, ModuleResult> resultMap;
 

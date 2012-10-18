@@ -67,8 +67,8 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 		this(metricConfiguration, null);
 	}
 
-	public MetricConfigurationSnapshotRecord(MetricConfiguration metricConfiguration, Long processingId) {
-		processing = new ProcessingRecord(processingId);
+	public MetricConfigurationSnapshotRecord(MetricConfiguration metricConfiguration, ProcessingRecord processing) {
+		this.processing = processing;
 		code = metricConfiguration.getCode();
 		weight = Double.doubleToLongBits(metricConfiguration.getWeight());
 		aggregationForm = metricConfiguration.getAggregationForm().name();

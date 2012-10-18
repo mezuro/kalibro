@@ -10,8 +10,8 @@ import javax.persistence.TypedQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.ProcessState;
-import org.kalibro.Processing;
+import org.kalibro.*;
+import org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord;
 import org.kalibro.core.persistence.record.ProcessingRecord;
 import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
@@ -34,19 +34,42 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 	private ProcessingDatabaseDao dao;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		processing = mock(Processing.class);
 		record = mock(ProcessingRecord.class);
 		when(record.convert()).thenReturn(processing);
+		whenNew(ProcessingRecord.class).withArguments(processing).thenReturn(record);
 		dao = spy(new ProcessingDatabaseDao(null));
+		doReturn(record).when(dao).save(record);
 	}
 
 	@Test
-	public void shouldSave() throws Exception {
-		whenNew(ProcessingRecord.class).withArguments(processing).thenReturn(record);
+	public void shouldCreateProcessingForRepository() throws Exception {
+		Repository repository = mock(Repository.class);
+		MetricConfigurationSnapshotRecord snapshot = mockSnapshot(repository);
+		whenNew(Processing.class).withArguments(repository).thenReturn(processing);
+
+		assertSame(processing, dao.createProcessingFor(repository));
+		verify(dao).save(record);
+		verify(dao).save(snapshot);
+	}
+
+	@Test
+	public void shouldSaveProcessing() {
 		doReturn(record).when(dao).save(record);
 		dao.save(processing);
 		verify(dao).save(record);
+	}
+
+	private MetricConfigurationSnapshotRecord mockSnapshot(Repository repository) throws Exception {
+		Configuration configuration = mock(Configuration.class);
+		MetricConfiguration metricConf = mock(MetricConfiguration.class);
+		MetricConfigurationSnapshotRecord snapshot = mock(MetricConfigurationSnapshotRecord.class);
+		when(repository.getConfiguration()).thenReturn(configuration);
+		when(configuration.getMetricConfigurations()).thenReturn(asSortedSet(metricConf));
+		whenNew(MetricConfigurationSnapshotRecord.class).withArguments(metricConf, record).thenReturn(snapshot);
+		doReturn(snapshot).when(dao).save(snapshot);
+		return snapshot;
 	}
 
 	@Test

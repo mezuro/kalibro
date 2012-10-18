@@ -5,31 +5,29 @@ import java.util.Map;
 
 import org.kalibro.*;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.persistence.ModuleResultDatabaseDao;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.dao.DaoFactory;
 
 public class ProcessTask extends VoidTask {
 
-	private Project project;
-
-	public ProcessTask(String projectName) {
-		project = DaoFactory.getProjectDao().getProject(projectName);
-	}
+	private Processing processing;
 
 	public ProcessTask(Repository repository) {
-		// TODO Auto-generated constructor stub
+		processing = new DatabaseDaoFactory().createProcessingDao().createProcessingFor(repository);
 	}
 
 	@Override
 	protected void perform() {
 		try {
-			processProject();
+			process();
 		} catch (Throwable error) {
-			reportError(error);
+			processing.setError(error);
+			saveProcessing();
 		}
 	}
 
-	private void processProject() {
+	private void process() {
+		saveProcessing();
 		Processing processing = new LoadSourceTask(project).executeSubTask();
 		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(processing).executeSubTask();
 		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(processing, resultMap).executeSubTask();
@@ -40,14 +38,7 @@ public class ProcessTask extends VoidTask {
 		DaoFactory.getProjectDao().save(project);
 	}
 
-	private void saveModuleResults(Collection<ModuleResult> moduleResults, Processing processing) {
-		ModuleResultDatabaseDao moduleResultDao = (ModuleResultDatabaseDao) DaoFactory.getModuleResultDao();
-		for (ModuleResult moduleResult : moduleResults)
-			moduleResultDao.save(moduleResult, processing);
-	}
-
-	private void reportError(Throwable error) {
-		project.setError(error);
-		DaoFactory.getProjectDao().save(project);
+	private void saveProcessing() {
+		.save(processing);
 	}
 }

@@ -4,7 +4,7 @@ import org.kalibro.Project;
 import org.kalibro.Processing;
 import org.kalibro.ProcessState;
 
-class LoadSourceTask extends ProcessProjectSubtask<Processing> {
+class LoadSourceTask extends ProcessSubtask<Processing> {
 
 	protected LoadSourceTask(Project project) {
 		super(new Processing(project));

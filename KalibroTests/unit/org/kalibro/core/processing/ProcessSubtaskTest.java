@@ -18,9 +18,9 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class ProcessProjectSubtaskTest extends UnitTest {
+public class ProcessSubtaskTest extends UnitTest {
 
-	private static final String TASK_RESULT = "ProcessProjectSubtaskTest result";
+	private static final String TASK_RESULT = "ProcessSubtaskTest result";
 	private static final ProcessState TASK_STATE = COLLECTING;
 
 	private Project project;
@@ -72,7 +72,7 @@ public class ProcessProjectSubtaskTest extends UnitTest {
 		assertEquals(TASK_RESULT, "" + subtask);
 	}
 
-	private final class FakeSubtask extends ProcessProjectSubtask<String> {
+	private final class FakeSubtask extends ProcessSubtask<String> {
 
 		private FakeSubtask(Processing result) {
 			super(result);

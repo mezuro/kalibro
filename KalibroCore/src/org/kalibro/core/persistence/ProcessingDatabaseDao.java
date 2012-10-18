@@ -6,8 +6,11 @@ import java.util.Date;
 
 import javax.persistence.TypedQuery;
 
+import org.kalibro.MetricConfiguration;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
+import org.kalibro.Repository;
+import org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord;
 import org.kalibro.core.persistence.record.ProcessingRecord;
 import org.kalibro.dao.ProcessingDao;
 
@@ -20,6 +23,13 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRec
 
 	ProcessingDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ProcessingRecord.class);
+	}
+
+	public Processing createProcessingFor(Repository repository) {
+		ProcessingRecord record = save(new ProcessingRecord(new Processing(repository)));
+		for (MetricConfiguration configuration : repository.getConfiguration().getMetricConfigurations())
+			save(new MetricConfigurationSnapshotRecord(configuration, record));
+		return record.convert();
 	}
 
 	public void save(Processing processing) {

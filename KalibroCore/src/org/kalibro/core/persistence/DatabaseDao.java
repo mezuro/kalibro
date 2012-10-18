@@ -43,7 +43,7 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		return DataTransferObject.toSortedSet(createRecordQuery("").getResultList());
 	}
 
-	protected RECORD save(RECORD record) {
+	protected <T> T save(T record) {
 		return recordManager.save(record);
 	}
 

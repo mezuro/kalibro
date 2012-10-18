@@ -8,7 +8,7 @@ import java.util.Set;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 
-public class CollectMetricsTask extends ProcessProjectSubtask<Map<Module, ModuleResult>> {
+public class CollectMetricsTask extends ProcessSubtask<Map<Module, ModuleResult>> {
 
 	private Map<Module, ModuleResult> resultMap;
 

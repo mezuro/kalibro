@@ -1,17 +1,17 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Project;
-import org.kalibro.Processing;
 import org.kalibro.ProcessState;
+import org.kalibro.Processing;
+import org.kalibro.Project;
 import org.kalibro.core.concurrent.Task;
 import org.kalibro.dao.DaoFactory;
 
-abstract class ProcessProjectSubtask<T> extends Task<T> {
+abstract class ProcessSubtask<T> extends Task<T> {
 
 	protected Project project;
 	protected Processing processing;
 
-	protected ProcessProjectSubtask(Processing processing) {
+	ProcessSubtask(Processing processing) {
 		this.processing = processing;
 		project = processing.getRepository();
 	}
