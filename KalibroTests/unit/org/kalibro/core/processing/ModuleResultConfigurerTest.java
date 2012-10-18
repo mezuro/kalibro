@@ -2,6 +2,7 @@ package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
 
+import java.awt.Color;
 import java.util.Random;
 
 import org.junit.Before;
@@ -9,7 +10,7 @@ import org.junit.Test;
 import org.kalibro.*;
 import org.kalibro.tests.UnitTest;
 
-public class CompoundMetricCalculatorTest extends UnitTest {
+public class ModuleResultConfigurerTest extends UnitTest {
 
 	private static final double CBO = new Random().nextDouble();
 	private static final double LCOM4 = new Random().nextDouble();
@@ -36,7 +37,7 @@ public class CompoundMetricCalculatorTest extends UnitTest {
 	@Test
 	public void shouldComputeCompoundResults() {
 		assertFalse(result.hasResultFor(sc));
-		calculate();
+		configure();
 		assertDoubleEquals(SC, result.getResultFor(sc).getValue());
 	}
 
@@ -44,14 +45,14 @@ public class CompoundMetricCalculatorTest extends UnitTest {
 	public void shouldIncludeOnlyCompoundMetricsWithCompatibleScope() {
 		sc = (CompoundMetric) configuration.getConfigurationFor(sc).getMetric();
 		sc.setScope(Granularity.PACKAGE);
-		calculate();
+		configure();
 		assertFalse(result.hasResultFor(sc));
 	}
 
 	@Test
 	public void shouldAddCompoundMetricsWithError() {
 		other.setScript("return null;");
-		calculate();
+		configure();
 		MetricResult otherResult = result.getResultFor(other);
 		assertTrue(otherResult.hasError());
 
@@ -64,11 +65,30 @@ public class CompoundMetricCalculatorTest extends UnitTest {
 	@Test
 	public void shouldCalculateCompoundUsingOtherCompound() {
 		other.setScript("return 2 * sc();");
-		calculate();
+		configure();
 		assertDoubleEquals(2 * SC, result.getResultFor(other).getValue());
 	}
 
-	private void calculate() {
-		CompoundMetricCalculator.addCompoundMetrics(result, configuration);
+	@Test
+	public void shouldCalculateGrade() {
+		assertDoubleEquals(Double.NaN, result.getGrade());
+		configure();
+		assertDoubleEquals(10.0, result.getGrade());
+
+		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
+		cboConfiguration.addRange(rangeThatGradesCboWith(7.0));
+		cboConfiguration.setWeight(2.0);
+		configure();
+		assertDoubleEquals(8.0, result.getGrade());
+	}
+
+	private Range rangeThatGradesCboWith(Double grade) {
+		Range range = new Range(CBO, CBO + 1.0);
+		range.setReading(new Reading("name", grade, Color.WHITE));
+		return range;
+	}
+
+	private void configure() {
+		ModuleResultConfigurer.configure(result, configuration);
 	}
 }

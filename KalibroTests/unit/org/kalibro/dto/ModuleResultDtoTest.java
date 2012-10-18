@@ -18,7 +18,6 @@ public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 		ModuleResult moduleResult = new ModuleResult(null, ancestry.get(0));
 		moduleResult.addMetricResult(metricResult);
 		moduleResult.addChild(new ModuleResult(moduleResult, ancestry.get(1)));
-		moduleResult.calculateGrade();
 		return moduleResult;
 	}
 

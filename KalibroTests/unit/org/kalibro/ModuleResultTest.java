@@ -34,28 +34,6 @@ public class ModuleResultTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldCalculateGrade() {
-		addGradedResult(null, null);
-		assertDoubleEquals(Double.NaN, result.getGrade());
-
-		addGradedResult(10.0, 1.0);
-		assertDoubleEquals(10.0, result.getGrade());
-
-		addGradedResult(7.0, 2.0);
-		assertDoubleEquals(8.0, result.getGrade());
-	}
-
-	private void addGradedResult(Double grade, Double weight) {
-		MetricResult metricResult = mock(MetricResult.class);
-		when(metricResult.compareTo(any(MetricResult.class))).thenReturn(1);
-		when(metricResult.hasGrade()).thenReturn(grade != null);
-		when(metricResult.getGrade()).thenReturn(grade);
-		when(metricResult.getWeight()).thenReturn(weight);
-		result.addMetricResult(metricResult);
-		result.calculateGrade();
-	}
-
-	@Test
 	public void shouldSetParentOnGettingChildren() {
 		ModuleResult child = new ModuleResult(null, new Module(Granularity.METHOD, "getParent"));
 		result.setChildren(asSortedSet(child));

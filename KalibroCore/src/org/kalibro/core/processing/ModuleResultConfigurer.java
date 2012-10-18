@@ -2,17 +2,26 @@ package org.kalibro.core.processing;
 
 import org.kalibro.*;
 
-public final class CompoundMetricCalculator {
+public final class ModuleResultConfigurer {
 
-	public static void addCompoundMetrics(ModuleResult moduleResult, Configuration configuration) {
-		new CompoundMetricCalculator(moduleResult, configuration).addCompoundMetrics();
+	public static void configure(ModuleResult moduleResult, Configuration configuration) {
+		new ModuleResultConfigurer(moduleResult, configuration).addCompoundMetrics();
+		double gradeSum = 0.0;
+		double weightSum = 0.0;
+		for (MetricResult metricResult : moduleResult.getMetricResults())
+			if (metricResult.hasGrade()) {
+				Double weight = metricResult.getWeight();
+				gradeSum += metricResult.getGrade() * weight;
+				weightSum += weight;
+			}
+		moduleResult.setGrade(gradeSum / weightSum);
 	}
 
 	private ModuleResult moduleResult;
 	private Configuration configuration;
 	private JavascriptEvaluator scriptEvaluator;
 
-	private CompoundMetricCalculator(ModuleResult moduleResult, Configuration configuration) {
+	private ModuleResultConfigurer(ModuleResult moduleResult, Configuration configuration) {
 		this.moduleResult = moduleResult;
 		this.configuration = configuration;
 		this.scriptEvaluator = new JavascriptEvaluator();

@@ -41,18 +41,6 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		return grade;
 	}
 
-	public void calculateGrade() {
-		double gradeSum = 0.0;
-		double weightSum = 0.0;
-		for (MetricResult metricResult : getMetricResults())
-			if (metricResult.hasGrade()) {
-				Double weight = metricResult.getWeight();
-				gradeSum += metricResult.getGrade() * weight;
-				weightSum += weight;
-			}
-		setGrade(gradeSum / weightSum);
-	}
-
 	public void setGrade(Double grade) {
 		this.grade = grade;
 	}
