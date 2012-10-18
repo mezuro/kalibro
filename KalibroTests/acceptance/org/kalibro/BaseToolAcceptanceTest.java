@@ -10,7 +10,7 @@ public class BaseToolAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldGetBaseToolNames() {
-		assertDeepEquals(asList("Analizo", "Checkstyle", "CVSAnalY"), BaseTool.allNames());
+		assertDeepEquals(asSet("Analizo", "Checkstyle", "CVSAnalY"), BaseTool.allNames());
 	}
 
 	@Test

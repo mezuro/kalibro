@@ -2,7 +2,6 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.Theory;
@@ -18,11 +17,6 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 	public void setUp() {
 		group = loadFixture("scholar", ReadingGroup.class);
 		reading = group.getReadings().first();
-	}
-
-	@After
-	public void tearDown() {
-		group.delete();
 	}
 
 	@Theory
