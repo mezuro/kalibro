@@ -1,12 +1,13 @@
 package org.kalibro.core.processing;
 
-import java.util.Collection;
-import java.util.Map;
+import java.io.File;
+import java.util.Set;
 
-import org.kalibro.*;
+import org.kalibro.NativeModuleResult;
+import org.kalibro.Processing;
+import org.kalibro.Repository;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
-import org.kalibro.dao.DaoFactory;
 
 public class ProcessTask extends VoidTask {
 
@@ -18,27 +19,8 @@ public class ProcessTask extends VoidTask {
 
 	@Override
 	protected void perform() {
-		try {
-			process();
-		} catch (Throwable error) {
-			processing.setError(error);
-			saveProcessing();
-		}
-	}
-
-	private void process() {
-		saveProcessing();
-		Processing processing = new LoadSourceTask(project).executeSubTask();
-		Map<Module, ModuleResult> resultMap = new CollectMetricsTask(processing).executeSubTask();
-		Collection<ModuleResult> moduleResults = new AnalyzeResultsTask(processing, resultMap).executeSubTask();
-
-		DaoFactory.getProjectResultDao().save(processing);
-		saveModuleResults(moduleResults, processing);
-		project.setState(ProcessState.READY);
-		DaoFactory.getProjectDao().save(project);
-	}
-
-	private void saveProcessing() {
-		.save(processing);
+		File codeDirectory = new LoadSourceTask(processing).execute();
+		Set<NativeModuleResult> results = new CollectMetricsTask(processing, codeDirectory).execute();
+		new AnalyzeResultsTask(processing, results).execute();
 	}
 }

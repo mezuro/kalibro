@@ -2,37 +2,39 @@ package org.kalibro.core.processing;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 
-public class CollectMetricsTask extends ProcessSubtask<Map<Module, ModuleResult>> {
+class CollectMetricsTask extends ProcessSubtask<Set<NativeModuleResult>> {
 
-	private Map<Module, ModuleResult> resultMap;
+	private Map<Module, NativeModuleResult> results;
+	private File codeDirectory;
 
-	protected CollectMetricsTask(Processing processing) {
+	CollectMetricsTask(Processing processing, File codeDirectory) {
 		super(processing);
+		this.codeDirectory = codeDirectory;
 	}
 
 	@Override
-	protected ProcessState getTaskState() {
-		return ProcessState.COLLECTING;
+	ProcessState getNextState() {
+		return ProcessState.ANALYZING;
 	}
 
 	@Override
-	protected Map<Module, ModuleResult> compute() throws Exception {
-		resultMap = new HashMap<Module, ModuleResult>();
+	protected Set<NativeModuleResult> compute() throws Exception {
+		results = new HashMap<Module, ModuleResult>();
 		Configuration configuration = DaoFactory.getConfigurationDao().configurationOf(project.getId());
 		Map<BaseTool, Set<NativeMetric>> metricsMap = configuration.getNativeMetrics();
 		for (BaseTool baseTool : metricsMap.keySet())
 			collectMetrics(baseTool, metricsMap.get(baseTool));
-		return resultMap;
+		return new HashSet<NativeModuleResult>(results.values());
 	}
 
 	private void collectMetrics(BaseTool baseTool, Set<NativeMetric> metrics) throws Exception {
-		File codeDirectory = project.getDirectory();
 		Set<NativeModuleResult> nativeResults = baseTool.collectMetrics(codeDirectory, metrics);
 		for (NativeModuleResult nativeResult : nativeResults)
 			putResult(nativeResult);
@@ -41,9 +43,9 @@ public class CollectMetricsTask extends ProcessSubtask<Map<Module, ModuleResult>
 	private void putResult(NativeModuleResult nativeResult) {
 		Module module = nativeResult.getModule();
 		changeModuleNameIfRoot(module);
-		if (!resultMap.containsKey(module))
-			resultMap.put(module, new ModuleResult(module, processing.getDate()));
-		resultMap.get(module).addMetricResults(nativeResult.getMetricResults());
+		if (!results.containsKey(module))
+			results.put(module, new ModuleResult(module, processing.getDate()));
+		results.get(module).addMetricResults(nativeResult.getMetricResults());
 	}
 
 	private void changeModuleNameIfRoot(Module module) {

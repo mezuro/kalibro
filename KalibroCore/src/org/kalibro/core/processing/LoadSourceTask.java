@@ -1,23 +1,25 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Project;
-import org.kalibro.Processing;
+import java.io.File;
+
 import org.kalibro.ProcessState;
+import org.kalibro.Processing;
 
-class LoadSourceTask extends ProcessSubtask<Processing> {
+class LoadSourceTask extends ProcessSubtask<File> {
 
-	protected LoadSourceTask(Project project) {
-		super(new Processing(project));
+	LoadSourceTask(Processing processing) {
+		super(processing);
 	}
 
 	@Override
-	protected ProcessState getTaskState() {
-		return ProcessState.LOADING;
-	}
-
-	@Override
-	protected Processing compute() {
+	protected File compute() {
+		File codeDirectory;
 		project.load();
-		return processing;
+		return codeDirectory;
+	}
+
+	@Override
+	ProcessState getNextState() {
+		return ProcessState.COLLECTING;
 	}
 }

@@ -1,31 +1,29 @@
 package org.kalibro.core.processing;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.Set;
 
-import org.kalibro.Module;
-import org.kalibro.ModuleResult;
-import org.kalibro.Processing;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.ProcessState;
+import org.kalibro.Processing;
 
-class AnalyzeResultsTask extends ProcessSubtask<Collection<ModuleResult>> {
+class AnalyzeResultsTask extends ProcessSubtask<Void> {
 
-	private Map<Module, ModuleResult> resultMap;
+	private Set<NativeModuleResult> results;
 
-	protected AnalyzeResultsTask(Processing processing, Map<Module, ModuleResult> resultMap) {
+	AnalyzeResultsTask(Processing processing, Set<NativeModuleResult> results) {
 		super(processing);
-		this.resultMap = resultMap;
+		this.results = results;
 	}
 
 	@Override
-	protected ProcessState getTaskState() {
-		return ProcessState.ANALYZING;
+	ProcessState getNextState() {
+		return ProcessState.READY;
 	}
 
 	@Override
-	protected Collection<ModuleResult> compute() {
+	protected Void compute() {
 		new SourceTreeBuilder(processing).buildSourceTree(resultMap.keySet());
 		new ResultsAggregator(processing, resultMap).aggregate();
-		return resultMap.values();
+		return null;
 	}
 }

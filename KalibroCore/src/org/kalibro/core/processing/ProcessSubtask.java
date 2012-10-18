@@ -2,36 +2,36 @@ package org.kalibro.core.processing;
 
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
-import org.kalibro.Project;
 import org.kalibro.core.concurrent.Task;
-import org.kalibro.dao.DaoFactory;
+import org.kalibro.core.concurrent.TaskListener;
+import org.kalibro.core.concurrent.TaskReport;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.core.persistence.ProcessingDatabaseDao;
 
-abstract class ProcessSubtask<T> extends Task<T> {
+abstract class ProcessSubtask<T> extends Task<T> implements TaskListener<T> {
 
-	protected Project project;
 	protected Processing processing;
+	protected ProcessingDatabaseDao processingDao;
 
 	ProcessSubtask(Processing processing) {
 		this.processing = processing;
-		project = processing.getRepository();
-	}
-
-	T executeSubTask() {
-		project.setState(getTaskState());
-		DaoFactory.getProjectDao().save(project);
-		return execute();
+		this.processingDao = new DatabaseDaoFactory().createProcessingDao();
 	}
 
 	@Override
-	public void reportTaskFinished() {
-		processing.setStateTime(getTaskState(), getReport().getExecutionTime());
-		super.reportTaskFinished();
+	public void taskFinished(TaskReport<T> report) {
+		processing.setStateTime(processing.getState(), report.getExecutionTime());
+		if (report.isTaskDone())
+			processing.setState(getNextState());
+		else
+			processing.setError(report.getError());
+		processingDao.save(processing);
 	}
 
-	protected abstract ProcessState getTaskState();
+	abstract ProcessState getNextState();
 
 	@Override
 	public String toString() {
-		return project.getStateMessage();
+		return processing.getStateMessage();
 	}
 }
