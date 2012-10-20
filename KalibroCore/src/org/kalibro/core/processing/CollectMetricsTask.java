@@ -6,31 +6,30 @@ import java.util.Set;
 
 import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
-import org.kalibro.core.concurrent.Writer;
 
-class CollectMetricsTask extends ProcessSubtask<Producer<NativeModuleResult>> {
+/**
+ * Collects metric results using the {@link BaseTool}s specified at the {@link Repository}'s {@link Configuration}.
+ * 
+ * @author Carlos Morais
+ */
+class CollectMetricsTask extends ProcessSubtask<Void> {
 
 	private File codeDirectory;
+	private Producer<NativeModuleResult> resultProducer;
 
-	CollectMetricsTask(Processing processing, File codeDirectory) {
+	CollectMetricsTask(Processing processing, File codeDirectory, Producer<NativeModuleResult> resultProducer) {
 		super(processing);
 		this.codeDirectory = codeDirectory;
+		this.resultProducer = resultProducer;
 	}
 
 	@Override
-	protected Producer<NativeModuleResult> compute() throws Exception {
-		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
+	protected Void compute() throws Exception {
 		Configuration configuration = processing.getRepository().getConfiguration();
-		Map<BaseTool, Set<NativeMetric>> metricsMap = configuration.getNativeMetrics();
-		for (BaseTool baseTool : metricsMap.keySet())
-			collectMetrics(baseTool, metricsMap.get(baseTool), resultProducer.createWriter());
-		return resultProducer;
-	}
-
-	private void collectMetrics(
-		BaseTool baseTool, Set<NativeMetric> metrics, Writer<NativeModuleResult> resultsWriter) throws Exception {
-		// TODO in background
-		baseTool.collectMetrics(codeDirectory, metrics, resultsWriter);
+		Map<BaseTool, Set<NativeMetric>> wantedMetrics = configuration.getNativeMetrics();
+		for (BaseTool baseTool : wantedMetrics.keySet())
+			baseTool.collectMetrics(codeDirectory, wantedMetrics.get(baseTool), resultProducer.createWriter());
+		return null;
 	}
 
 	@Override

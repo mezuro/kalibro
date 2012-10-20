@@ -27,7 +27,7 @@ public class ProcessTask extends VoidTask {
 	protected void perform() {
 		File codeDirectory = new LoadSourceTask(processing).execute();
 		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
-		new CollectMetricsTask(processing, codeDirectory, resultProducer).execute();
+		new CollectMetricsTask(processing, codeDirectory, resultProducer).executeInBackground();
 		new AnalyzeResultsTask(processing, resultProducer).execute();
 	}
 }

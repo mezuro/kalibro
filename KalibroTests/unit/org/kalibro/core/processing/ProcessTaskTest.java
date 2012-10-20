@@ -44,7 +44,7 @@ public class ProcessTaskTest extends UnitTest {
 		AnalyzeResultsTask analysisTask = mockAnalysis(resultProducer);
 		processTask.perform();
 		InOrder order = Mockito.inOrder(collectTask, analysisTask);
-		order.verify(collectTask).execute();
+		order.verify(collectTask).executeInBackground();
 		order.verify(analysisTask).execute();
 	}
 
