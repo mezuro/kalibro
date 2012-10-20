@@ -7,9 +7,10 @@ import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.*;
+import org.kalibro.core.concurrent.Producer;
 import org.kalibro.dao.DaoFactory;
 
-class CollectMetricsTask extends ProcessSubtask<Set<NativeModuleResult>> {
+class CollectMetricsTask extends ProcessSubtask<Producer<NativeModuleResult>> {
 
 	private Map<Module, NativeModuleResult> results;
 	private File codeDirectory;
@@ -20,7 +21,7 @@ class CollectMetricsTask extends ProcessSubtask<Set<NativeModuleResult>> {
 	}
 
 	@Override
-	protected Set<NativeModuleResult> compute() throws Exception {
+	protected Producer<NativeModuleResult> compute() throws Exception {
 		results = new HashMap<Module, ModuleResult>();
 		Configuration configuration = DaoFactory.getConfigurationDao().configurationOf(project.getId());
 		Map<BaseTool, Set<NativeMetric>> metricsMap = configuration.getNativeMetrics();

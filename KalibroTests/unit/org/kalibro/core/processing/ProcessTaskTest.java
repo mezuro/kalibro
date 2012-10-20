@@ -1,7 +1,6 @@
 package org.kalibro.core.processing;
 
 import java.io.File;
-import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -9,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.Processing;
 import org.kalibro.Repository;
+import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
@@ -37,8 +37,8 @@ public class ProcessTaskTest extends UnitTest {
 	@Test
 	public void shouldExecuteChainedSubtasks() throws Exception {
 		File codeDirectory = mockLoading();
-		Set<NativeModuleResult> results = mockCollecting(codeDirectory);
-		AnalyzeResultsTask analysisTask = mockAnalysis(results);
+		Producer<NativeModuleResult> resultProducer = mockCollecting(codeDirectory);
+		AnalyzeResultsTask analysisTask = mockAnalysis(resultProducer);
 		processTask.perform();
 		verify(analysisTask).execute();
 	}
@@ -51,17 +51,17 @@ public class ProcessTaskTest extends UnitTest {
 		return codeDirectory;
 	}
 
-	private Set<NativeModuleResult> mockCollecting(File codeDirectory) throws Exception {
-		Set<NativeModuleResult> results = mock(Set.class);
+	private Producer<NativeModuleResult> mockCollecting(File codeDirectory) throws Exception {
+		Producer<NativeModuleResult> resultProducer = mock(Producer.class);
 		CollectMetricsTask collectMetricsTask = mock(CollectMetricsTask.class);
 		whenNew(CollectMetricsTask.class).withArguments(processing, codeDirectory).thenReturn(collectMetricsTask);
-		when(collectMetricsTask.execute()).thenReturn(results);
-		return results;
+		when(collectMetricsTask.execute()).thenReturn(resultProducer);
+		return resultProducer;
 	}
 
-	private AnalyzeResultsTask mockAnalysis(Set<NativeModuleResult> results) throws Exception {
+	private AnalyzeResultsTask mockAnalysis(Producer<NativeModuleResult> resultProducer) throws Exception {
 		AnalyzeResultsTask analysisTask = mock(AnalyzeResultsTask.class);
-		whenNew(AnalyzeResultsTask.class).withArguments(processing, results).thenReturn(analysisTask);
+		whenNew(AnalyzeResultsTask.class).withArguments(processing, resultProducer).thenReturn(analysisTask);
 		return analysisTask;
 	}
 }
