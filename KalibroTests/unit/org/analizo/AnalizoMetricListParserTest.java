@@ -18,6 +18,6 @@ public class AnalizoMetricListParserTest extends UnitTest {
 			new NativeMetric("Total Lines of Code", SOFTWARE, C, CPP, JAVA), "total_loc",
 			new NativeMetric("Coupling Between Objects", CLASS, C, CPP, JAVA), "cbo",
 			new NativeMetric("Lack of Cohesion of Methods", CLASS, C, CPP, JAVA), "lcom4"),
-			new AnalizoMetricListParser(getStream("analizo-metrics-list")).getSupportedMetrics());
+			new AnalizoMetricListParser(getStream("metrics-list")).getSupportedMetrics());
 	}
 }

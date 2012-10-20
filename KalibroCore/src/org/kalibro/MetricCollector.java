@@ -3,6 +3,8 @@ package org.kalibro;
 import java.io.File;
 import java.util.Set;
 
+import org.kalibro.core.concurrent.Writer;
+
 /**
  * Interface between Kalibro and the metric collector tool.
  * 
@@ -26,7 +28,8 @@ public interface MetricCollector {
 	 * 
 	 * @param codeDirectory Directory where the source code is located.
 	 * @param wantedMetrics Set of metrics Kalibro wants from the collector.
-	 * @return Set of {@link NativeModuleResult}s obtained.
+	 * @param resultWriter Where the {@link NativeModuleResult}s obtained should be written to.
 	 */
-	Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> wantedMetrics) throws Exception;
+	void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception;
 }

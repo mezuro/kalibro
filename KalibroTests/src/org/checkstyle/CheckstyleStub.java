@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.*;
 
 import org.kalibro.*;
+import org.kalibro.core.concurrent.Writer;
 import org.yaml.snakeyaml.Yaml;
 
 public class CheckstyleStub implements MetricCollector {
@@ -70,7 +71,10 @@ public class CheckstyleStub implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) {
-		return results();
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
+		for (NativeModuleResult moduleResult : results())
+			resultWriter.write(moduleResult);
+		resultWriter.close();
 	}
 }

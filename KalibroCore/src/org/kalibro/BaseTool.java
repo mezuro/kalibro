@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.concurrent.Writer;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 
@@ -81,9 +82,9 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 		return collectorClassName;
 	}
 
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> wantedMetrics)
-		throws Exception {
-		return createMetricCollector().collectMetrics(codeDirectory, wantedMetrics);
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
+		createMetricCollector().collectMetrics(codeDirectory, wantedMetrics, resultWriter);
 	}
 
 	private MetricCollector createMetricCollector() {

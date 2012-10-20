@@ -2,9 +2,7 @@ package org.kalibro.core.processing;
 
 import java.util.Set;
 
-import org.kalibro.NativeModuleResult;
-import org.kalibro.ProcessState;
-import org.kalibro.Processing;
+import org.kalibro.*;
 
 class AnalyzeResultsTask extends ProcessSubtask<Void> {
 
@@ -25,5 +23,10 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 		new SourceTreeBuilder(processing).buildSourceTree(resultMap.keySet());
 		new ResultsAggregator(processing, resultMap).aggregate();
 		return null;
+	}
+
+	private void changeModuleNameIfRoot(Module module) {
+		if (module.getGranularity() == Granularity.SOFTWARE)
+			module.setName(project.getName());
 	}
 }

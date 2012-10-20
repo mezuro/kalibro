@@ -20,11 +20,6 @@ class CollectMetricsTask extends ProcessSubtask<Set<NativeModuleResult>> {
 	}
 
 	@Override
-	ProcessState getNextState() {
-		return ProcessState.ANALYZING;
-	}
-
-	@Override
 	protected Set<NativeModuleResult> compute() throws Exception {
 		results = new HashMap<Module, ModuleResult>();
 		Configuration configuration = DaoFactory.getConfigurationDao().configurationOf(project.getId());
@@ -48,8 +43,8 @@ class CollectMetricsTask extends ProcessSubtask<Set<NativeModuleResult>> {
 		results.get(module).addMetricResults(nativeResult.getMetricResults());
 	}
 
-	private void changeModuleNameIfRoot(Module module) {
-		if (module.getGranularity() == Granularity.SOFTWARE)
-			module.setName(project.getName());
+	@Override
+	ProcessState getNextState() {
+		return ProcessState.ANALYZING;
 	}
 }

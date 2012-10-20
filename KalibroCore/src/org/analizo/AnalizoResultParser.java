@@ -4,11 +4,11 @@ import static org.kalibro.Granularity.*;
 
 import java.io.InputStream;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.*;
+import org.kalibro.core.concurrent.Writer;
 import org.yaml.snakeyaml.Yaml;
 
 /**
@@ -27,11 +27,9 @@ class AnalizoResultParser {
 				this.wantedMetrics.put(supportedMetrics.get(metric), metric);
 	}
 
-	Set<NativeModuleResult> parse(InputStream input) {
-		Set<NativeModuleResult> results = new HashSet<NativeModuleResult>();
+	void parse(InputStream input, Writer<NativeModuleResult> resultWriter) {
 		for (Object resultMap : new Yaml().loadAll(input))
-			results.add(parseResult((Map<?, ?>) resultMap));
-		return results;
+			resultWriter.write(parseResult((Map<?, ?>) resultMap));
 	}
 
 	private NativeModuleResult parseResult(Map<?, ?> resultMap) {

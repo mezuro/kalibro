@@ -7,6 +7,8 @@ import static org.powermock.api.mockito.PowerMockito.mock;
 import java.io.File;
 import java.util.Set;
 
+import org.kalibro.core.concurrent.Writer;
+
 public class MetricCollectorStub implements MetricCollector {
 
 	public static final String NAME = "Metric collector stub";
@@ -31,8 +33,9 @@ public class MetricCollectorStub implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> wantedMetrics)
-		throws Exception {
-		return asSet(RESULT);
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
+		resultWriter.write(RESULT);
+		resultWriter.close();
 	}
 }

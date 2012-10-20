@@ -1,20 +1,24 @@
 package org.analizo;
 
 import static org.junit.Assert.*;
+import static org.kalibro.Granularity.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Map;
+import java.util.Iterator;
 import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.kalibro.Granularity;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.concurrent.Writer;
 import org.kalibro.tests.IntegrationTest;
 
 public class AnalizoIntegrationTest extends IntegrationTest {
@@ -34,29 +38,34 @@ public class AnalizoIntegrationTest extends IntegrationTest {
 		return IOUtils.toString(output).trim();
 	}
 
-	private Map<NativeMetric, String> supportedMetrics;
 	private AnalizoMetricCollector analizo;
 
 	@Before
 	public void setUp() throws IOException {
-		InputStream metricListOutput = getStream("analizo-metrics-list-complete");
-		supportedMetrics = new AnalizoMetricListParser(metricListOutput).getSupportedMetrics();
 		analizo = new AnalizoMetricCollector();
 	}
 
 	@Test
 	public void shouldGetSupportedMetrics() {
-		assertDeepEquals(supportedMetrics.keySet(), analizo.supportedMetrics());
+		assertDeepEquals(loadYaml("supported-metrics", Set.class), analizo.supportedMetrics());
 	}
 
 	@Test
-	public void shouldCollectMetrics() throws IOException {
+	public void shouldCollectMetrics() throws Exception {
+		Producer<NativeModuleResult> producer = new Producer<NativeModuleResult>();
+
 		File codeDirectory = new File(samplesDirectory(), "analizo");
-		Set<NativeMetric> wantedMetrics = supportedMetrics.keySet();
+		Set<NativeMetric> wantedMetrics = analizo.supportedMetrics();
+		Writer<NativeModuleResult> resultWriter = producer.createWriter();
+		analizo.collectMetrics(codeDirectory, wantedMetrics, resultWriter);
 
-		InputStream analizoOutput = getStream("analizo-metrics-HelloWorld-complete");
-		Set<NativeModuleResult> results = new AnalizoResultParser(supportedMetrics, wantedMetrics).parse(analizoOutput);
+		Iterator<NativeModuleResult> iterator = producer.iterator();
+		assertDeepEquals(loadResult(SOFTWARE), iterator.next());
+		assertDeepEquals(loadResult(CLASS), iterator.next());
+		assertFalse(iterator.hasNext());
+	}
 
-		assertDeepEquals(results, analizo.collectMetrics(codeDirectory, wantedMetrics));
+	private NativeModuleResult loadResult(Granularity granularity) {
+		return loadYaml("result-" + granularity + "-HelloWorld", NativeModuleResult.class);
 	}
 }

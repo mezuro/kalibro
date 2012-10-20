@@ -1,0 +1,75 @@
+!!org.kalibro.NativeModuleResult
+module: !!org.kalibro.Module [SOFTWARE, ["null"]]
+metricResults:
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total Abstract Classes"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 0.0
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total Coupling Factor"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 1.0
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total Lines of Code"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 4.0
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total number of methods per abstract class"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 0.0
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total Number of Modules/Classes"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 1.0
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total number of modules/classes with at least one defined attributes"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 0.0
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total number of modules/classes with at least one defined method"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 1.0
+  - !!org.kalibro.NativeMetricResult
+    metric: !!org.kalibro.NativeMetric
+      name: "Total Number of Methods"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    value: 1.0

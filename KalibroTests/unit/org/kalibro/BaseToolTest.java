@@ -9,9 +9,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.core.concurrent.Writer;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -92,7 +95,12 @@ public class BaseToolTest extends UnitTest {
 
 	@Test
 	public void shouldCollectMetrics() throws Exception {
-		assertEquals(asSet(RESULT), baseTool.collectMetrics(null, null));
+		Writer<NativeModuleResult> writer = mock(Writer.class);
+		baseTool.collectMetrics(null, null, writer);
+
+		InOrder order = Mockito.inOrder(writer, writer);
+		order.verify(writer).write(RESULT);
+		order.verify(writer).close();
 	}
 
 	@Test

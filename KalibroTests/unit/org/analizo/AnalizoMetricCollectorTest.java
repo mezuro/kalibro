@@ -14,6 +14,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.concurrent.Writer;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -59,7 +60,7 @@ public class AnalizoMetricCollectorTest extends UnitTest {
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = mock(File.class);
 		Set<NativeMetric> wantedMetrics = mock(Set.class);
-		Set<NativeModuleResult> results = mock(Set.class);
+		Writer<NativeModuleResult> resultWriter = mock(Writer.class);
 
 		CommandTask analizoTask = mock(CommandTask.class);
 		InputStream analizoOutput = mock(InputStream.class);
@@ -69,8 +70,9 @@ public class AnalizoMetricCollectorTest extends UnitTest {
 		whenNew(CommandTask.class).withArguments("analizo metrics ~").thenReturn(analizoTask);
 		when(analizoTask.executeAndGetOuput()).thenReturn(analizoOutput);
 		whenNew(AnalizoResultParser.class).withArguments(supportedMetrics, wantedMetrics).thenReturn(resultParser);
-		when(resultParser.parse(analizoOutput)).thenReturn(results);
 
-		assertSame(results, collector.collectMetrics(codeDirectory, wantedMetrics));
+		collector.collectMetrics(codeDirectory, wantedMetrics, resultWriter);
+		verify(resultParser).parse(analizoOutput, resultWriter);
+		verify(resultWriter).close();
 	}
 }

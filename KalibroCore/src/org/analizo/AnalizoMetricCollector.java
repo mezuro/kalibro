@@ -11,6 +11,7 @@ import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.concurrent.Writer;
 
 /**
  * Metric collector for Analizo.
@@ -43,10 +44,12 @@ public class AnalizoMetricCollector implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> wantedMetrics)
-		throws IOException {
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
 		InputStream analizoOutput = executeAnalizo(codeDirectory.getAbsolutePath());
-		return new AnalizoResultParser(supportedMetrics, wantedMetrics).parse(analizoOutput);
+		AnalizoResultParser resultParser = new AnalizoResultParser(supportedMetrics, wantedMetrics);
+		resultParser.parse(analizoOutput, resultWriter);
+		resultWriter.close();
 	}
 
 	private InputStream executeAnalizo(String argument) throws IOException {
