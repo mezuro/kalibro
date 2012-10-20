@@ -12,6 +12,8 @@ import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -37,31 +39,38 @@ public class ProcessTaskTest extends UnitTest {
 	@Test
 	public void shouldExecuteChainedSubtasks() throws Exception {
 		File codeDirectory = mockLoading();
-		Producer<NativeModuleResult> resultProducer = mockCollecting(codeDirectory);
+		Producer<NativeModuleResult> resultProducer = mockProducer();
+		CollectMetricsTask collectTask = mockCollecting(codeDirectory, resultProducer);
 		AnalyzeResultsTask analysisTask = mockAnalysis(resultProducer);
 		processTask.perform();
-		verify(analysisTask).execute();
+		InOrder order = Mockito.inOrder(collectTask, analysisTask);
+		order.verify(collectTask).execute();
+		order.verify(analysisTask).execute();
 	}
 
 	private File mockLoading() throws Exception {
 		File codeDirectory = mock(File.class);
-		LoadSourceTask loadSourceTask = mock(LoadSourceTask.class);
-		whenNew(LoadSourceTask.class).withArguments(processing).thenReturn(loadSourceTask);
-		when(loadSourceTask.execute()).thenReturn(codeDirectory);
+		LoadSourceTask loadTask = mock(LoadSourceTask.class);
+		whenNew(LoadSourceTask.class).withArguments(processing).thenReturn(loadTask);
+		when(loadTask.execute()).thenReturn(codeDirectory);
 		return codeDirectory;
 	}
 
-	private Producer<NativeModuleResult> mockCollecting(File codeDirectory) throws Exception {
+	private Producer<NativeModuleResult> mockProducer() throws Exception {
 		Producer<NativeModuleResult> resultProducer = mock(Producer.class);
-		CollectMetricsTask collectMetricsTask = mock(CollectMetricsTask.class);
-		whenNew(CollectMetricsTask.class).withArguments(processing, codeDirectory).thenReturn(collectMetricsTask);
-		when(collectMetricsTask.execute()).thenReturn(resultProducer);
+		whenNew(Producer.class).withNoArguments().thenReturn(resultProducer);
 		return resultProducer;
 	}
 
-	private AnalyzeResultsTask mockAnalysis(Producer<NativeModuleResult> resultProducer) throws Exception {
+	private CollectMetricsTask mockCollecting(File directory, Producer<NativeModuleResult> producer) throws Exception {
+		CollectMetricsTask collectTask = mock(CollectMetricsTask.class);
+		whenNew(CollectMetricsTask.class).withArguments(processing, directory, producer).thenReturn(collectTask);
+		return collectTask;
+	}
+
+	private AnalyzeResultsTask mockAnalysis(Producer<NativeModuleResult> producer) throws Exception {
 		AnalyzeResultsTask analysisTask = mock(AnalyzeResultsTask.class);
-		whenNew(AnalyzeResultsTask.class).withArguments(processing, resultProducer).thenReturn(analysisTask);
+		whenNew(AnalyzeResultsTask.class).withArguments(processing, producer).thenReturn(analysisTask);
 		return analysisTask;
 	}
 }

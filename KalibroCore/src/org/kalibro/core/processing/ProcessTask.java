@@ -17,7 +17,7 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
  */
 public class ProcessTask extends VoidTask {
 
-	private Processing processing;
+	Processing processing;
 
 	public ProcessTask(Repository repository) {
 		processing = new DatabaseDaoFactory().createProcessingDao().createProcessingFor(repository);
@@ -26,7 +26,8 @@ public class ProcessTask extends VoidTask {
 	@Override
 	protected void perform() {
 		File codeDirectory = new LoadSourceTask(processing).execute();
-		Producer<NativeModuleResult> resultProducer = new CollectMetricsTask(processing, codeDirectory).execute();
+		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
+		new CollectMetricsTask(processing, codeDirectory, resultProducer).execute();
 		new AnalyzeResultsTask(processing, resultProducer).execute();
 	}
 }
