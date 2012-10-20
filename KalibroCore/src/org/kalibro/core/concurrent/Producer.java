@@ -17,6 +17,7 @@ import org.kalibro.KalibroException;
  */
 public class Producer<T> implements Iterable<T> {
 
+	private boolean started;
 	private BlockingQueue<T> queue;
 	private Set<Writer<T>> openWriters;
 
@@ -31,14 +32,14 @@ public class Producer<T> implements Iterable<T> {
 		return writer;
 	}
 
-	synchronized void write(T product) {
+	void write(T product) {
 		queue.add(product);
-		notify();
+		notifyEvent();
 	}
 
-	synchronized void close(Writer<T> writer) {
+	void close(Writer<T> writer) {
 		openWriters.remove(writer);
-		notify();
+		notifyEvent();
 	}
 
 	synchronized boolean canYield() {
@@ -46,11 +47,7 @@ public class Producer<T> implements Iterable<T> {
 			return true;
 		if (openWriters.isEmpty())
 			return false;
-		try {
-			wait();
-		} catch (InterruptedException interruption) {
-			throw exception(interruption);
-		}
+		waitEvent();
 		return canYield();
 	}
 
@@ -62,12 +59,27 @@ public class Producer<T> implements Iterable<T> {
 		}
 	}
 
-	private KalibroException exception(InterruptedException interruption) {
-		return new KalibroException("Producer interrupted while yielding.", interruption);
-	}
-
 	@Override
 	public Iterator<T> iterator() {
+		while (!started)
+			waitEvent();
 		return new ProducerIterator<T>(this);
+	}
+
+	private synchronized void notifyEvent() {
+		started = true;
+		notify();
+	}
+
+	private synchronized void waitEvent() {
+		try {
+			wait();
+		} catch (InterruptedException interruption) {
+			throw exception(interruption);
+		}
+	}
+
+	private KalibroException exception(InterruptedException interruption) {
+		return new KalibroException("Producer interrupted while yielding.", interruption);
 	}
 }

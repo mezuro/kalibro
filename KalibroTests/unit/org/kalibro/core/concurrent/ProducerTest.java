@@ -12,6 +12,7 @@ import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Producer.class)
@@ -137,9 +138,18 @@ public class ProducerTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldIterateProperly() throws Exception {
+	public void shouldIterateOnlyAfterStart() throws Exception {
+		doAnswer(new Answer<Void>() {
+
+			@Override
+			public Void answer(InvocationOnMock invocation) throws Throwable {
+				Whitebox.setInternalState(producer, "started", true);
+				return null;
+			}
+		}).when(producer).wait();
 		ProducerIterator<Object> iterator = mock(ProducerIterator.class);
 		whenNew(ProducerIterator.class).withArguments(producer).thenReturn(iterator);
 		assertSame(iterator, producer.iterator());
+		verify(producer).wait();
 	}
 }
