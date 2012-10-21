@@ -1,12 +1,17 @@
 package org.kalibro.core.abstractentity;
 
 /**
- * Determines equality of arrays deeply for each element. Two arrays are equal when they contain the same elements in
- * the same order.
+ * Determines equality of arrays. Two arrays are equal when they contain the same elements in the same order.
  * 
  * @author Carlos Morais
  */
 class ArrayEquality extends Equality<Object[]> {
+
+	private boolean deep;
+
+	public ArrayEquality(boolean deep) {
+		this.deep = deep;
+	}
 
 	@Override
 	protected boolean canEvaluate(Object value) {
@@ -18,7 +23,7 @@ class ArrayEquality extends Equality<Object[]> {
 		if (array.length != other.length)
 			return false;
 		for (int i = 0; i < array.length; i++)
-			if (!areDeepEqual(array[i], other[i]))
+			if (!areEqual(array[i], other[i], deep))
 				return false;
 		return true;
 	}

@@ -2,10 +2,7 @@ package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
+import java.util.*;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.junit.Before;
@@ -19,13 +16,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Equality.class)
 public class ListEqualityTest extends UnitTest {
 
+	private static final boolean DEEP = new Random().nextBoolean();
+
 	private ListEquality equality;
 
 	@Before
 	public void setUp() {
-		equality = new ListEquality();
+		equality = new ListEquality(DEEP);
 		mockStatic(Equality.class);
-		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
+		when(Equality.areEqual(any(), any(), eq(DEEP))).thenAnswer(new EqualArgumentsAnswer());
 	}
 
 	@Test
@@ -52,10 +51,10 @@ public class ListEqualityTest extends UnitTest {
 	}
 
 	@Test
-	public void elementsShouldBeDeepEqual() {
+	public void elementsShouldBeDeepEqualIfDeep() {
 		assertTrue(equality.equals(newList("1", "2", "3"), newList("1", "2", "3")));
 		verifyStatic();
-		Equality.areDeepEqual("1", "1");
+		Equality.areEqual("1", "1", DEEP);
 	}
 
 	private List<String> newList(String... elements) {

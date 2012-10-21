@@ -3,6 +3,8 @@ package org.kalibro;
 import static org.junit.Assert.*;
 import static org.kalibro.Granularity.*;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;
@@ -35,7 +37,7 @@ public class ModuleTest extends UnitTest {
 	}
 
 	private Module module(String... name) {
-		return new Module(METHOD, name);
+		return new Module(METHOD, Arrays.copyOf(name, name.length));
 	}
 
 	private Module module(Granularity granularity, String... name) {

@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.TreeMap;
 
 import org.junit.Before;
@@ -17,13 +18,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Equality.class)
 public class MapEqualityTest extends UnitTest {
 
+	private static final boolean DEEP = new Random().nextBoolean();
+
 	private MapEquality equality;
 
 	@Before
 	public void setUp() {
-		equality = new MapEquality();
+		equality = new MapEquality(DEEP);
 		mockStatic(Equality.class);
-		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
+		when(Equality.areEqual(any(), any(), eq(DEEP))).thenAnswer(new EqualArgumentsAnswer());
 	}
 
 	@Test
@@ -47,14 +50,14 @@ public class MapEqualityTest extends UnitTest {
 	}
 
 	@Test
-	public void mappingsShouldBeDeepEqual() {
+	public void mappingsShouldBeDeepEqualIfDeep() {
 		Map<String, String> map1 = newMap("d->dog", "p->pig");
 		Map<String, String> map2 = newMap("d->dog", "p->pig");
 		assertTrue(equality.equals(map1, map2));
 		verifyStatic();
-		Equality.areDeepEqual(map1.keySet(), map2.keySet());
+		Equality.areEqual(map1.keySet(), map2.keySet(), DEEP);
 		verifyStatic();
-		Equality.areDeepEqual("pig", "pig");
+		Equality.areEqual("pig", "pig", DEEP);
 	}
 
 	private Map<String, String> newMap(String... mappings) {

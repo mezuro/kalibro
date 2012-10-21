@@ -2,10 +2,7 @@ package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
 
-import java.util.ArrayList;
-import java.util.EnumSet;
-import java.util.HashSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -19,13 +16,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(Equality.class)
 public class SetEqualityTest extends UnitTest {
 
+	private static final boolean DEEP = new Random().nextBoolean();
+
 	private SetEquality equality;
 
 	@Before
 	public void setUp() {
-		equality = new SetEquality();
+		equality = new SetEquality(DEEP);
 		mockStatic(Equality.class);
-		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
+		when(Equality.areEqual(any(), any(), eq(DEEP))).thenAnswer(new EqualArgumentsAnswer());
 	}
 
 	@Test
@@ -58,9 +57,9 @@ public class SetEqualityTest extends UnitTest {
 	}
 
 	@Test
-	public void elementsShouldBeDeepEqual() {
+	public void elementsShouldBeDeepEqualIfDeep() {
 		assertTrue(equality.equals(asSet(1, 2, 3), asSet(1, 2, 3)));
 		verifyStatic();
-		Equality.areDeepEqual(1, 1);
+		Equality.areEqual(1, 1, DEEP);
 	}
 }

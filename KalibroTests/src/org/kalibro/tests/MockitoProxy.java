@@ -46,6 +46,14 @@ public abstract class MockitoProxy extends PowerMockito {
 		return Matchers.any(type);
 	}
 
+	public static <T> T anyVararg() {
+		return Matchers.anyVararg();
+	}
+
+	public static <T> T isA(Class<T> type) {
+		return Matchers.isA(type);
+	}
+
 	public static <T> T eq(T expected) {
 		return Matchers.eq(expected);
 	}
