@@ -53,8 +53,8 @@ public class MetricResultRecord extends MetricResultDto {
 
 	public MetricResultRecord(MetricResult metricResult, ModuleResultRecord moduleResult) {
 		this.moduleResult = moduleResult;
-		id = metricResult.getId();
 		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
+		id = metricResult.getId();
 		value = Double.doubleToLongBits(metricResult.getValue());
 		error = metricResult.hasError() ? new ThrowableRecord(metricResult.getError()) : null;
 		setDescendantResults(metricResult.getDescendantResults());

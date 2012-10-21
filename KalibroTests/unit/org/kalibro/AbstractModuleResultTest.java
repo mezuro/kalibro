@@ -41,6 +41,10 @@ public class AbstractModuleResultTest extends UnitTest {
 		assertEquals(moduleResult, other);
 	}
 
+	private AbstractModuleResult<NativeMetricResult> moduleResult(Module theModule) {
+		return new AbstractModuleResult<NativeMetricResult>(theModule) {/* just for test */};
+	}
+
 	@Test
 	public void checkConstruction() {
 		assertSame(module, moduleResult.getModule());
@@ -78,7 +82,12 @@ public class AbstractModuleResultTest extends UnitTest {
 		assertDeepEquals(asSet(cboResult, lcom4Result), moduleResult.getMetricResults());
 	}
 
-	private AbstractModuleResult<NativeMetricResult> moduleResult(Module theModule) {
-		return new AbstractModuleResult<NativeMetricResult>(theModule) {/* just for test */};
+	@Test
+	public void shouldReplaceMetricOnAddingEquivalent() {
+		moduleResult.addMetricResult(cboResult);
+		assertDoubleEquals(28.0, moduleResult.getResultFor(cbo).getValue());
+
+		moduleResult.addMetricResult(new NativeMetricResult(cbo, 496.0));
+		assertDoubleEquals(496.0, moduleResult.getResultFor(cbo).getValue());
 	}
 }

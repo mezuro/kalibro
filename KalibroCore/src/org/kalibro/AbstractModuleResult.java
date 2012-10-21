@@ -57,6 +57,8 @@ abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 	}
 
 	public final void addMetricResult(METRIC_RESULT metricResult) {
+		if (metricResults.contains(metricResult))
+			metricResults.remove(metricResult);
 		metricResults.add(metricResult);
 	}
 }
