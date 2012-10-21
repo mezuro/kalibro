@@ -3,36 +3,36 @@ package org.kalibro.core.processing;
 import static org.kalibro.Granularity.SOFTWARE;
 
 import java.util.Collection;
-import java.util.Map;
 
 import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
+/**
+ * Analyzes and saves metric results collected by {@link BaseTool}s.
+ * 
+ * @author Carlos Morais
+ */
 class AnalyzeResultsTask extends ProcessSubtask<Void> {
 
+	private Configuration configurationSnapshot;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private Producer<NativeModuleResult> resultProducer;
 
 	AnalyzeResultsTask(Processing processing, Producer<NativeModuleResult> resultProducer) {
 		super(processing);
 		this.resultProducer = resultProducer;
-		this.moduleResultDao = new DatabaseDaoFactory().createModuleResultDao();
+		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
+		moduleResultDao = daoFactory.createModuleResultDao();
+		configurationSnapshot = daoFactory.createConfigurationDao().snapshotFor(processing.getId());
 	}
 
 	@Override
 	protected Void compute() {
 		for (NativeModuleResult nativeModuleResult : resultProducer)
-			analyze(nativeModuleResult);
+			new Analyzer(nativeModuleResult);
 		return null;
-	}
-
-	private void analyze(NativeModuleResult nativeModuleResult) {
-		Module module = prepareModule(nativeModuleResult.getModule());
-		ModuleResult moduleResult = moduleResultDao.prepareResultFor(module, processing.getId());
-		addMetricResults(moduleResult, nativeModuleResult.getMetricResults());
-		configureAndSave(moduleResult);
 	}
 
 	private Module prepareModule(Module module) {
@@ -41,13 +41,15 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 		return module;
 	}
 
-	private void addMetricResults(ModuleResult moduleResult, Collection<NativeMetricResult> metricResults) {
-		// TODO add metric results
-		// TODO for each metric result traverse ancestry adding descendant results
+	private void addDescendantResult(ModuleResult moduleResult, MetricConfiguration snapshot, Double descendantResult) {
+		Metric metric = snapshot.getMetric();
+		if (!moduleResult.hasResultFor(metric))
+			moduleResult.addMetricResult(new MetricResult(snapshot, Double.NaN));
+		moduleResult.getResultFor(metric).addDescendantResult(descendantResult);
 	}
 
 	private void configureAndSave(ModuleResult moduleResult) {
-		// TODO configure ModuleResult (grade and compound metrics)
+		ModuleResultConfigurer.configure(moduleResult, configurationSnapshot);
 		moduleResultDao.save(moduleResult, processing.getId());
 		if (moduleResult.hasParent())
 			configureAndSave(moduleResult.getParent());
@@ -57,57 +59,37 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 	ProcessState getNextState() {
 		return ProcessState.READY;
 	}
-}
 
-class ResultsAggregator {
+	private final class Analyzer {
 
-	private ModuleNode node;
-	private Map<Module, ModuleResult> resultMap;
+		private ModuleResult moduleResult;
 
-	public ResultsAggregator(RepositoryResult repositoryResult, Map<Module, ModuleResult> resultMap) {
-		this(repositoryResult.getDate(), repositoryResult.getResultsRoot(), resultMap);
-	}
-
-	private ResultsAggregator(ModuleNode node, Map<Module, ModuleResult> resultMap) {
-		this.node = node;
-		this.resultMap = resultMap;
-	}
-
-	public void aggregate() {
-		for (ModuleNode child : node.getChildren()) {
-			new ResultsAggregator(date, child, resultMap).aggregate();
-			adddescendantResultsFrom(child);
+		private Analyzer(NativeModuleResult nativeResult) {
+			Module module = prepareModule(nativeResult.getModule());
+			moduleResult = moduleResultDao.prepareResultFor(module, processing.getId());
+			addMetricResults(nativeResult.getMetricResults());
+			configureAndSave(moduleResult);
 		}
-	}
 
-	private void adddescendantResultsFrom(ModuleNode child) {
-		ModuleResult childResult = resultMap.get(child.getModule());
-		for (MetricResult metricResult : childResult.getMetricResults()) {
-			Metric metric = metricResult.getMetric();
-			if (!metric.isCompound())
-				adddescendantResultsFrom(childResult, (NativeMetric) metric);
+		private void addMetricResults(Collection<NativeMetricResult> metricResults) {
+			for (NativeMetricResult metricResult : metricResults)
+				addMetricResult(metricResult);
 		}
-	}
 
-	private void adddescendantResultsFrom(ModuleResult childResult, NativeMetric metric) {
-		MetricResult myMetricResult = prepareResultFor(metric);
-		MetricResult childMetricResult = childResult.getResultFor(metric);
-		if (!childMetricResult.getValue().isNaN())
-			myMetricResult.adddescendantResult(childMetricResult.getValue());
-		myMetricResult.adddescendantResults(childMetricResult.getdescendantResults());
-	}
+		private void addMetricResult(NativeMetricResult nativeMetricResult) {
+			Metric metric = nativeMetricResult.getMetric();
+			Double value = nativeMetricResult.getValue();
+			MetricConfiguration snapshot = configurationSnapshot.getConfigurationFor(metric);
+			moduleResult.addMetricResult(new MetricResult(snapshot, value));
+			addValueToAncestry(snapshot, value);
+		}
 
-	private MetricResult prepareResultFor(NativeMetric metric) {
-		ModuleResult moduleResult = prepareModuleResult();
-		if (!moduleResult.hasResultFor(metric))
-			moduleResult.addMetricResult(new MetricResult(metric, Double.NaN));
-		return moduleResult.getResultFor(metric);
-	}
-
-	private ModuleResult prepareModuleResult() {
-		Module module = node.getModule();
-		if (!resultMap.containsKey(module))
-			resultMap.put(module, new ModuleResult(module));
-		return resultMap.get(module);
+		private void addValueToAncestry(MetricConfiguration snapshot, Double value) {
+			ModuleResult ancestor = moduleResult;
+			while (ancestor.hasParent()) {
+				ancestor = moduleResult.getParent();
+				addDescendantResult(ancestor, snapshot, value);
+			}
+		}
 	}
 }

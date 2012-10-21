@@ -2,6 +2,11 @@ package org.kalibro.core.processing;
 
 import org.kalibro.*;
 
+/**
+ * Uses a {@link Configuration} to add compound metrics and calculate the grade of a {@link ModuleResult}.
+ * 
+ * @author Carlos Morais
+ */
 final class ModuleResultConfigurer {
 
 	static void configure(ModuleResult moduleResult, Configuration configuration) {

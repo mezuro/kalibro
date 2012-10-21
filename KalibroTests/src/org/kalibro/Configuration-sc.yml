@@ -32,6 +32,13 @@ metricConfigurations:
             - C
             - CPP
             - JAVA
+        - &id4 !!org.kalibro.NativeMetric
+          name: "Total Coupling Factor"
+          scope: SOFTWARE
+          languages:
+            - C
+            - CPP
+            - JAVA
     weight: 1.0
     aggregationForm: AVERAGE
     ranges: []
@@ -45,11 +52,11 @@ metricConfigurations:
       name: "Extremes"
       description: "All or nothing group."
       readings:
-        - &id4
+        - &id5
           color: 0xff0000
           grade: 0.0
           label: "Bad"
-        - &id5
+        - &id6
           color: 0x00ff00
           grade: 10.0
           label: "Good"
@@ -57,8 +64,15 @@ metricConfigurations:
       -
         beginning: 0.0
         end: 1.0
-        reading: *id5
+        reading: *id6
       -
         beginning: 1.0
         end: .inf
-        reading: *id4
+        reading: *id5
+  -
+    code: total_cof
+    metric: *id4
+    baseTool: *id2
+    weight: 1.0
+    aggregationForm: AVERAGE
+    ranges: []
