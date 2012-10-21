@@ -43,24 +43,6 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 		doReturn(record).when(dao).save(record);
 	}
 
-	@Test
-	public void shouldCreateProcessingForRepository() throws Exception {
-		Repository repository = mock(Repository.class);
-		MetricConfigurationSnapshotRecord snapshot = mockSnapshot(repository);
-		whenNew(Processing.class).withArguments(repository).thenReturn(processing);
-
-		assertSame(processing, dao.createProcessingFor(repository));
-		verify(dao).save(record);
-		verify(dao).save(snapshot);
-	}
-
-	@Test
-	public void shouldSaveProcessing() {
-		doReturn(record).when(dao).save(record);
-		dao.save(processing);
-		verify(dao).save(record);
-	}
-
 	private MetricConfigurationSnapshotRecord mockSnapshot(Repository repository) throws Exception {
 		Configuration configuration = mock(Configuration.class);
 		MetricConfiguration metricConf = mock(MetricConfiguration.class);
@@ -168,5 +150,23 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 		doReturn(query).when(dao).createRecordQuery(clauses);
 		when(query.getSingleResult()).thenReturn(record);
 		return query;
+	}
+
+	@Test
+	public void shouldCreateProcessingForRepository() throws Exception {
+		Repository repository = mock(Repository.class);
+		MetricConfigurationSnapshotRecord snapshot = mockSnapshot(repository);
+		whenNew(Processing.class).withArguments(repository).thenReturn(processing);
+
+		assertSame(processing, dao.createProcessingFor(repository));
+		verify(dao).save(record);
+		verify(dao).save(snapshot);
+	}
+
+	@Test
+	public void shouldSaveProcessing() {
+		doReturn(record).when(dao).save(record);
+		dao.save(processing);
+		verify(dao).save(record);
 	}
 }

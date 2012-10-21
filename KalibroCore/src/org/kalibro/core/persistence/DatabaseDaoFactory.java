@@ -43,7 +43,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected ConfigurationDatabaseDao createConfigurationDao() {
+	public ConfigurationDatabaseDao createConfigurationDao() {
 		return new ConfigurationDatabaseDao(recordManager());
 	}
 

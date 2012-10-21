@@ -25,17 +25,6 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRec
 		super(recordManager, ProcessingRecord.class);
 	}
 
-	public Processing createProcessingFor(Repository repository) {
-		ProcessingRecord record = save(new ProcessingRecord(new Processing(repository)));
-		for (MetricConfiguration configuration : repository.getConfiguration().getMetricConfigurations())
-			save(new MetricConfigurationSnapshotRecord(configuration, record));
-		return record.convert();
-	}
-
-	public void save(Processing processing) {
-		save(new ProcessingRecord(processing));
-	}
-
 	@Override
 	public boolean hasProcessing(Long repositoryId) {
 		return exists(repositoryId, "");
@@ -108,5 +97,16 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRec
 		query.setParameter("repositoryId", repositoryId);
 		query.setParameter("date", date.getTime());
 		return query.getSingleResult().convert();
+	}
+
+	public Processing createProcessingFor(Repository repository) {
+		ProcessingRecord record = save(new ProcessingRecord(new Processing(repository)));
+		for (MetricConfiguration configuration : repository.getConfiguration().getMetricConfigurations())
+			save(new MetricConfigurationSnapshotRecord(configuration, record));
+		return record.convert();
+	}
+
+	public void save(Processing processing) {
+		save(new ProcessingRecord(processing));
 	}
 }
