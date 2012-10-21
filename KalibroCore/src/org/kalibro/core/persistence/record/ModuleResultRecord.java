@@ -8,6 +8,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import org.kalibro.Granularity;
+import org.kalibro.MetricResult;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dto.ModuleResultDto;
@@ -21,8 +22,15 @@ import org.kalibro.dto.ModuleResultDto;
 @Table(name = "\"MODULE_RESULT\"")
 public class ModuleResultRecord extends ModuleResultDto {
 
+	private static ModuleResultRecord parentRecord(ModuleResult moduleResult) {
+		if (!moduleResult.hasParent())
+			return null;
+		return new ModuleResultRecord(moduleResult.getParent().getId());
+	}
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
+	@SuppressWarnings("unused" /* used by JPA */)
 	private ProcessingRecord processing;
 
 	@Id
@@ -37,7 +45,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"module_granularity\"", nullable = false)
 	private String moduleGranularity;
 
-	@Column(name = "\"grade\"", nullable = false)
+	@Column(name = "\"grade\"")
 	private Long grade;
 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -45,8 +53,12 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ModuleResultRecord parent;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "parent", orphanRemoval = true)
+	@OneToMany(mappedBy = "parent")
+	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<ModuleResultRecord> children;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleResult", orphanRemoval = true)
+	private Collection<MetricResultRecord> metricResults;
 
 	public ModuleResultRecord() {
 		super();
@@ -60,25 +72,28 @@ public class ModuleResultRecord extends ModuleResultDto {
 		this(moduleResult, null);
 	}
 
-	public ModuleResultRecord(ModuleResult moduleResult, ProcessingRecord processingRecord) {
-		this(moduleResult.getId());
-		processing = processingRecord;
-		moduleName = Arrays.asList(moduleResult.getModule().getName());
-		moduleGranularity = moduleResult.getModule().getGranularity().name();
+	public ModuleResultRecord(ModuleResult moduleResult, Long processingId) {
+		this(moduleResult, parentRecord(moduleResult), processingId);
+	}
+
+	public ModuleResultRecord(ModuleResult moduleResult, ModuleResultRecord parent, Long processingId) {
+		this(moduleResult.getModule(), parent, processingId);
+		id = moduleResult.getId();
 		grade = Double.doubleToLongBits(moduleResult.getGrade());
-		setParent(moduleResult.getParent());
-		setChildren(moduleResult.getChildren());
+		setMetricResults(moduleResult.getMetricResults());
 	}
 
-	private void setParent(ModuleResult parent) {
-		if (parent != null)
-			this.parent = new ModuleResultRecord(parent.getId());
+	public ModuleResultRecord(Module module, ModuleResultRecord parent, Long processingId) {
+		this.parent = parent;
+		processing = new ProcessingRecord(processingId);
+		moduleName = Arrays.asList(module.getName());
+		moduleGranularity = module.getGranularity().name();
 	}
 
-	private void setChildren(Collection<ModuleResult> children) {
-		this.children = new ArrayList<ModuleResultRecord>();
-		for (ModuleResult child : children)
-			this.children.add(new ModuleResultRecord(child, processing));
+	private void setMetricResults(Collection<MetricResult> results) {
+		metricResults = new ArrayList<MetricResultRecord>();
+		for (MetricResult metricResult : results)
+			metricResults.add(new MetricResultRecord(metricResult, this));
 	}
 
 	@Override

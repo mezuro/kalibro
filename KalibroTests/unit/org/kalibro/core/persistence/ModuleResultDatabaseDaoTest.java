@@ -59,6 +59,16 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		verify(query).setParameter("parentId", ID);
 	}
 
+	@Test
+	public void shouldSave() {
+		// TODO
+	}
+
+	@Test
+	public void shouldPrepareResultForModule() {
+		// TODO
+	}
+
 	private void prepareQuery(String clauses) {
 		doReturn(query).when(dao).createRecordQuery(clauses);
 	}

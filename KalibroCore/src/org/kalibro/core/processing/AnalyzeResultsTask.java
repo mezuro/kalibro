@@ -2,37 +2,47 @@ package org.kalibro.core.processing;
 
 import static org.kalibro.Granularity.SOFTWARE;
 
-import java.util.Collection;
 import java.util.Date;
 import java.util.Map;
 
 import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
 class AnalyzeResultsTask extends ProcessSubtask<Void> {
 
+	private ModuleResultDatabaseDao moduleResultDao;
 	private Producer<NativeModuleResult> resultProducer;
 
 	AnalyzeResultsTask(Processing processing, Producer<NativeModuleResult> resultProducer) {
 		super(processing);
 		this.resultProducer = resultProducer;
+		this.moduleResultDao = new DatabaseDaoFactory().createModuleResultDao();
+	}
+
+	@Override
+	protected Void compute() {
+		for (NativeModuleResult nativeModuleResult : resultProducer)
+			analyze(nativeModuleResult);
+		return null;
+	}
+
+	private void analyze(NativeModuleResult nativeModuleResult) {
+		Module module = prepareModule(nativeModuleResult.getModule());
+		ModuleResult moduleResult = moduleResultDao.prepareModuleResult(processing.getId(), module);
+		// TODO
+	}
+
+	private Module prepareModule(Module module) {
+		if (module.getGranularity() == SOFTWARE)
+			return new Module(SOFTWARE, processing.getRepository().getName());
+		return module;
 	}
 
 	@Override
 	ProcessState getNextState() {
 		return ProcessState.READY;
-	}
-
-	@Override
-	protected Void compute() {
-		new SourceTreeBuilder(processing).buildSourceTree(resultMap.keySet());
-		new ResultsAggregator(processing, resultMap).aggregate();
-		return null;
-	}
-
-	private void changeModuleNameIfRoot(Module module) {
-		if (module.getGranularity() == Granularity.SOFTWARE)
-			module.setName(project.getName());
 	}
 }
 
@@ -88,48 +98,5 @@ class ResultsAggregator {
 		if (!resultMap.containsKey(module))
 			resultMap.put(module, new ModuleResult(module, date));
 		return resultMap.get(module);
-	}
-}
-
-class SourceTreeBuilder {
-
-	private ModuleNode sourceRoot;
-	private RepositoryResult repositoryResult;
-
-	protected SourceTreeBuilder(RepositoryResult repositoryResult) {
-		this.repositoryResult = repositoryResult;
-	}
-
-	protected void buildSourceTree(Collection<Module> modules) {
-		String projectName = repositoryResult.getRepository().getName();
-		sourceRoot = new ModuleNode(new Module(SOFTWARE, projectName));
-		for (Module module : modules)
-			addModule(module);
-		repositoryResult.setResultsRoot(sourceRoot);
-	}
-
-	private void addModule(Module module) {
-		if (module.getGranularity() != SOFTWARE) {
-			ModuleNode parent = addInferredAncestry(module);
-			if (parent.hasChildFor(module))
-				parent.getChildFor(module).setModule(module);
-			else
-				parent.addChild(new ModuleNode(module));
-		}
-	}
-
-	private ModuleNode addInferredAncestry(Module module) {
-		ModuleNode parent = sourceRoot;
-		for (Module ancestor : module.inferAncestry()) {
-			ModuleNode child;
-			if (parent.hasChildFor(ancestor))
-				child = parent.getChildFor(ancestor);
-			else {
-				child = new ModuleNode(ancestor);
-				parent.addChild(child);
-			}
-			parent = child;
-		}
-		return parent;
 	}
 }

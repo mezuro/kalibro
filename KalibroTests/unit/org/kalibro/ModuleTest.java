@@ -67,10 +67,12 @@ public class ModuleTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldInferAncestry() {
-		assertTrue(org.inferAncestry().isEmpty());
-		assertDeepEquals(asList(org), kalibro.inferAncestry());
-		assertDeepEquals(asList(org, kalibro), module.inferAncestry());
+	public void shouldInferParent() {
+		assertDeepEquals(kalibro, module.inferParent());
+		assertDeepEquals(org, kalibro.inferParent());
+		assertDeepEquals(new Module(SOFTWARE), org.inferParent());
+
+		assertNull(new Module(SOFTWARE, "any", "name").inferParent());
 	}
 
 	@Test

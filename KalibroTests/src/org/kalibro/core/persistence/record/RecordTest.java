@@ -56,13 +56,17 @@ public abstract class RecordTest extends ConcreteDtoTest {
 	}
 
 	protected OneToManyMatcher assertOneToMany(String field) {
+		return assertOneToMany(field, true);
+	}
+
+	protected OneToManyMatcher assertOneToMany(String field, boolean shouldCascade) {
 		assertFieldType(field, Collection.class);
-		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades().isLazy();
+		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades(shouldCascade).isLazy();
 	}
 
 	protected OneToManyMatcher assertOrderedOneToMany(String field) {
 		assertOrdered(field);
-		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades().isLazy();
+		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades(true).isLazy();
 	}
 
 	protected void assertOrderedElementCollection(String field) {

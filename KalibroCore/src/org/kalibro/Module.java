@@ -1,8 +1,6 @@
 package org.kalibro;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
@@ -30,8 +28,8 @@ public class Module extends AbstractEntity<Module> {
 	 * @param name Complete name of the module, with separated packages/directories.
 	 */
 	public Module(Granularity granularity, String... name) {
-		this.granularity = granularity;
 		this.name = name;
+		setGranularity(granularity);
 	}
 
 	public String[] getName() {
@@ -53,21 +51,15 @@ public class Module extends AbstractEntity<Module> {
 		return granularity;
 	}
 
-	public List<Module> inferAncestry() {
-		List<Module> ancestry = new ArrayList<Module>();
-		if (hasParent()) {
-			Module parent = inferParent();
-			ancestry.addAll(parent.inferAncestry());
-			ancestry.add(parent);
-		}
-		return ancestry;
+	public void setGranularity(Granularity granularity) {
+		this.granularity = granularity;
 	}
 
-	private boolean hasParent() {
-		return name.length > 1;
-	}
-
-	private Module inferParent() {
+	public Module inferParent() {
+		if (granularity == Granularity.SOFTWARE)
+			return null;
+		if (name.length <= 1)
+			return new Module(Granularity.SOFTWARE);
 		return new Module(granularity.inferParentGranularity(), Arrays.copyOf(name, name.length - 1));
 	}
 

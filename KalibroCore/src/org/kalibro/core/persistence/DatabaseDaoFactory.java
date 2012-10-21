@@ -58,7 +58,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected ModuleResultDatabaseDao createModuleResultDao() {
+	public ModuleResultDatabaseDao createModuleResultDao() {
 		return new ModuleResultDatabaseDao(recordManager());
 	}
 

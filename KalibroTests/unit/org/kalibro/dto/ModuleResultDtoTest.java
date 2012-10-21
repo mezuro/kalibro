@@ -1,8 +1,5 @@
 package org.kalibro.dto;
 
-import java.util.List;
-
-import org.kalibro.MetricResult;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dao.MetricResultDao;
@@ -12,12 +9,11 @@ public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 
 	@Override
 	protected ModuleResult loadFixture() {
-		MetricResult metricResult = new MetricResultDtoTest().loadFixture();
-		List<Module> ancestry = new ModuleDtoTest().loadFixture().inferAncestry();
-
-		ModuleResult moduleResult = new ModuleResult(null, ancestry.get(0));
-		moduleResult.addMetricResult(metricResult);
-		moduleResult.addChild(new ModuleResult(moduleResult, ancestry.get(1)));
+		Module module = new ModuleDtoTest().loadFixture();
+		ModuleResult parent = new ModuleResult(null, module.inferParent().inferParent());
+		ModuleResult moduleResult = new ModuleResult(parent, module.inferParent());
+		moduleResult.addMetricResult(new MetricResultDtoTest().loadFixture());
+		moduleResult.addChild(new ModuleResult(moduleResult, module));
 		return moduleResult;
 	}
 

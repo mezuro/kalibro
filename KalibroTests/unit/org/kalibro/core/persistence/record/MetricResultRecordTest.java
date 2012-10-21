@@ -20,7 +20,7 @@ public class MetricResultRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("moduleResult", ModuleResultRecord.class);
+		assertManyToOne("moduleResult", ModuleResultRecord.class).isRequired();
 		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isRequired();
 		shouldHaveId();
 		assertColumn("value", Long.class).isRequired();

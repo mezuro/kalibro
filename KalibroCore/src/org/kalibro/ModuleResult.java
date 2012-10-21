@@ -45,6 +45,10 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		this.grade = grade;
 	}
 
+	public boolean hasParent() {
+		return parent != null;
+	}
+
 	public ModuleResult getParent() {
 		return parent;
 	}

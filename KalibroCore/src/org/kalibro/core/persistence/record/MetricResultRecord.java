@@ -51,8 +51,8 @@ public class MetricResultRecord extends MetricResultDto {
 		this(metricResult, null);
 	}
 
-	public MetricResultRecord(MetricResult metricResult, Long moduleResultId) {
-		moduleResult = new ModuleResultRecord(moduleResultId);
+	public MetricResultRecord(MetricResult metricResult, ModuleResultRecord moduleResult) {
+		this.moduleResult = moduleResult;
 		id = metricResult.getId();
 		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
 		value = Double.doubleToLongBits(metricResult.getValue());
