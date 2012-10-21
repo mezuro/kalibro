@@ -2,7 +2,7 @@ package org.kalibro.core.processing;
 
 import static org.kalibro.Granularity.SOFTWARE;
 
-import java.util.Date;
+import java.util.Collection;
 import java.util.Map;
 
 import org.kalibro.*;
@@ -30,14 +30,27 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 
 	private void analyze(NativeModuleResult nativeModuleResult) {
 		Module module = prepareModule(nativeModuleResult.getModule());
-		ModuleResult moduleResult = moduleResultDao.prepareModuleResult(processing.getId(), module);
-		// TODO
+		ModuleResult moduleResult = moduleResultDao.prepareResultFor(module, processing.getId());
+		addMetricResults(moduleResult, nativeModuleResult.getMetricResults());
+		configureAndSave(moduleResult);
 	}
 
 	private Module prepareModule(Module module) {
 		if (module.getGranularity() == SOFTWARE)
 			return new Module(SOFTWARE, processing.getRepository().getName());
 		return module;
+	}
+
+	private void addMetricResults(ModuleResult moduleResult, Collection<NativeMetricResult> metricResults) {
+		// TODO add metric results
+		// TODO for each metric result traverse ancestry adding descendant results
+	}
+
+	private void configureAndSave(ModuleResult moduleResult) {
+		// TODO configure ModuleResult (grade and compound metrics)
+		moduleResultDao.save(moduleResult, processing.getId());
+		if (moduleResult.hasParent())
+			configureAndSave(moduleResult.getParent());
 	}
 
 	@Override
@@ -48,7 +61,6 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 
 class ResultsAggregator {
 
-	private Date date;
 	private ModuleNode node;
 	private Map<Module, ModuleResult> resultMap;
 
@@ -56,8 +68,7 @@ class ResultsAggregator {
 		this(repositoryResult.getDate(), repositoryResult.getResultsRoot(), resultMap);
 	}
 
-	private ResultsAggregator(Date date, ModuleNode node, Map<Module, ModuleResult> resultMap) {
-		this.date = date;
+	private ResultsAggregator(ModuleNode node, Map<Module, ModuleResult> resultMap) {
 		this.node = node;
 		this.resultMap = resultMap;
 	}
@@ -96,7 +107,7 @@ class ResultsAggregator {
 	private ModuleResult prepareModuleResult() {
 		Module module = node.getModule();
 		if (!resultMap.containsKey(module))
-			resultMap.put(module, new ModuleResult(module, date));
+			resultMap.put(module, new ModuleResult(module));
 		return resultMap.get(module);
 	}
 }
