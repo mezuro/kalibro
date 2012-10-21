@@ -24,8 +24,8 @@ public abstract class Printer<T> {
 	}
 
 	private static Printer<?>[] specialPrinters() {
-		return new Printer[]{new CollectionPrinter(), new ColorPrinter(), new EntityPrinter(), new EnumPrinter(),
-			new MapPrinter(), new StringPrinter()};
+		return new Printer[]{new ArrayPrinter(), new CollectionPrinter(), new ColorPrinter(), new EntityPrinter(),
+			new EnumPrinter(), new MapPrinter(), new StringPrinter()};
 	}
 
 	private static <T> void print(Printer<T> printer, Object object, StringBuffer buffer, int indent, String comment) {

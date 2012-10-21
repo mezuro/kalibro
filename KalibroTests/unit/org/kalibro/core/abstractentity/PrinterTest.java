@@ -18,13 +18,14 @@ public class PrinterTest extends UnitTest {
 	@Test
 	public void checkSpecialPrinters() throws Exception {
 		Printer<?>[] printers = Whitebox.invokeMethod(Printer.class, "specialPrinters");
-		assertEquals(6, printers.length);
-		assertClassEquals(CollectionPrinter.class, printers[0]);
-		assertClassEquals(ColorPrinter.class, printers[1]);
-		assertClassEquals(EntityPrinter.class, printers[2]);
-		assertClassEquals(EnumPrinter.class, printers[3]);
-		assertClassEquals(MapPrinter.class, printers[4]);
-		assertClassEquals(StringPrinter.class, printers[5]);
+		assertEquals(7, printers.length);
+		assertClassEquals(ArrayPrinter.class, printers[0]);
+		assertClassEquals(CollectionPrinter.class, printers[1]);
+		assertClassEquals(ColorPrinter.class, printers[2]);
+		assertClassEquals(EntityPrinter.class, printers[3]);
+		assertClassEquals(EnumPrinter.class, printers[4]);
+		assertClassEquals(MapPrinter.class, printers[5]);
+		assertClassEquals(StringPrinter.class, printers[6]);
 	}
 
 	@Test
