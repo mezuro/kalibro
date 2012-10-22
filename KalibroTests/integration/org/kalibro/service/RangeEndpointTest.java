@@ -26,13 +26,13 @@ public class RangeEndpointTest extends EndpointTest<Range, RangeDao, RangeEndpoi
 
 	@Override
 	public List<String> fieldsThatShouldBeProxy() {
-		return asList("reading");
+		return list("reading");
 	}
 
 	@Test
 	public void shouldGetRangesOfMetricConfiguration() {
-		when(dao.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.rangesOf(METRIC_CONFIGURATION_ID));
+		when(dao.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.rangesOf(METRIC_CONFIGURATION_ID));
 	}
 
 	@Test

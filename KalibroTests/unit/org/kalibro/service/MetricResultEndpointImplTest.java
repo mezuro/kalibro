@@ -34,8 +34,8 @@ public class MetricResultEndpointImplTest extends
 
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
-		when(dao.metricResultsOf(ID)).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.metricResultsOf(ID));
+		when(dao.metricResultsOf(ID)).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.metricResultsOf(ID));
 	}
 
 	@Test
@@ -56,6 +56,6 @@ public class MetricResultEndpointImplTest extends
 
 	private void mockLazyLoad() {
 		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(MetricResultDao.class, "descendantResultsOf", (Long) null)).thenReturn(asList());
+		when(DaoLazyLoader.createProxy(MetricResultDao.class, "descendantResultsOf", (Long) null)).thenReturn(list());
 	}
 }

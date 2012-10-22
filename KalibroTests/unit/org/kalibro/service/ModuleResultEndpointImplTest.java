@@ -35,7 +35,7 @@ public class ModuleResultEndpointImplTest extends
 
 	@Test
 	public void shouldGetChildren() {
-		when(dao.childrenOf(ID)).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.childrenOf(ID));
+		when(dao.childrenOf(ID)).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.childrenOf(ID));
 	}
 }

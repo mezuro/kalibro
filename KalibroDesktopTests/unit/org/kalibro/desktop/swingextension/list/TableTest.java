@@ -31,7 +31,7 @@ public class TableTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		data = asList(loadFixture("lcom4-bad", Range.class));
+		data = list(loadFixture("lcom4-bad", Range.class));
 		createModel();
 		table = new Table<Range>("ranges", model, 5);
 		table.setData(data);
@@ -120,9 +120,9 @@ public class TableTest extends UnitTest {
 		whenNew(ListComponentAdapter.class).withArguments(listener, table).thenReturn(adapter);
 
 		table.addListListener(listener);
-		assertTrue(asList(innerTable.getMouseListeners()).contains(adapter));
+		assertTrue(list(innerTable.getMouseListeners()).contains(adapter));
 		DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) innerTable.getSelectionModel();
-		assertTrue(asList(selectionModel.getListSelectionListeners()).contains(adapter));
+		assertTrue(list(selectionModel.getListSelectionListeners()).contains(adapter));
 	}
 
 	private class MyModel extends TableModel<Range> {

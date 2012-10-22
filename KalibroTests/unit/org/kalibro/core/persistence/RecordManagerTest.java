@@ -73,7 +73,7 @@ public class RecordManagerTest extends UnitTest {
 
 	@Test
 	public void shouldMergeAndSaveCollection() throws Exception {
-		recordManager.saveAll(asList(UNMERGED, UNMERGED, UNMERGED));
+		recordManager.saveAll(list(UNMERGED, UNMERGED, UNMERGED));
 		verifyWithinTransaction(entityManager, times(3), "persist", MERGED);
 	}
 

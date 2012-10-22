@@ -21,8 +21,8 @@ public class BaseToolEndpointImplTest extends
 
 	@Test
 	public void shouldGetAllNames() {
-		when(dao.allNames()).thenReturn(asSortedSet(NAME));
-		assertDeepEquals(asList(NAME), implementor.allBaseToolNames());
+		when(dao.allNames()).thenReturn(sortedSet(NAME));
+		assertDeepEquals(list(NAME), implementor.allBaseToolNames());
 	}
 
 	@Test

@@ -40,25 +40,25 @@ public class SetEqualityTest extends UnitTest {
 
 	@Test
 	public void setsShouldHaveSameSize() {
-		assertFalse(equality.equals(asSet(1, 2), asSet(1, 2, 3)));
-		assertFalse(equality.equals(asSet(1, 2, 3), asSet(1, 2)));
+		assertFalse(equality.equals(set(1, 2), set(1, 2, 3)));
+		assertFalse(equality.equals(set(1, 2, 3), set(1, 2)));
 	}
 
 	@Test
 	public void elementsShouldBeEqual() {
-		assertFalse(equality.equals(asSet(6, 28), asSet(2, 42)));
-		assertTrue(equality.equals(asSet(6, 28), asSet(6, 28)));
+		assertFalse(equality.equals(set(6, 28), set(2, 42)));
+		assertTrue(equality.equals(set(6, 28), set(6, 28)));
 	}
 
 	@Test
 	public void elementsNeedNotToBeInTheSameOrder() {
-		assertTrue(equality.equals(asSet(1, 2), asSet(2, 1)));
-		assertTrue(equality.equals(asSet(1, 2, 3), asSet(2, 3, 1)));
+		assertTrue(equality.equals(set(1, 2), set(2, 1)));
+		assertTrue(equality.equals(set(1, 2, 3), set(2, 3, 1)));
 	}
 
 	@Test
 	public void elementsShouldBeDeepEqualIfDeep() {
-		assertTrue(equality.equals(asSet(1, 2, 3), asSet(1, 2, 3)));
+		assertTrue(equality.equals(set(1, 2, 3), set(1, 2, 3)));
 		verifyStatic();
 		Equality.areEqual(1, 1, DEEP);
 	}

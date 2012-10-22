@@ -31,7 +31,7 @@ public class ListTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		ranges = asSortedSet(loadFixture("lcom4-bad", Range.class));
+		ranges = sortedSet(loadFixture("lcom4-bad", Range.class));
 		list = new List<Range>("ranges", ranges, 5);
 		innerList = new ComponentFinder(list).find("ranges", JList.class);
 	}
@@ -68,8 +68,8 @@ public class ListTest extends UnitTest {
 		PowerMockito.whenNew(ListComponentAdapter.class).withArguments(listener, list).thenReturn(adapter);
 
 		list.addListListener(listener);
-		assertTrue(asList(innerList.getMouseListeners()).contains(adapter));
+		assertTrue(list(innerList.getMouseListeners()).contains(adapter));
 		DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) innerList.getSelectionModel();
-		assertTrue(asList(selectionModel.getListSelectionListeners()).contains(adapter));
+		assertTrue(list(selectionModel.getListSelectionListeners()).contains(adapter));
 	}
 }

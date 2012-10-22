@@ -25,7 +25,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 
 	@Override
 	public List<String> fieldsThatShouldBeProxy() {
-		return asList("metricConfigurations");
+		return list("metricConfigurations");
 	}
 
 	@Test
@@ -49,8 +49,8 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.allConfigurations());
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.allConfigurations());
 	}
 
 	@Test

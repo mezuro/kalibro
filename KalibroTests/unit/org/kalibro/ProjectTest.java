@@ -64,8 +64,8 @@ public class ProjectTest extends UnitTest {
 	@Test
 	public void shouldSetProjectOnRepositories() {
 		Repository repository = mock(Repository.class);
-		project.setRepositories(asSortedSet(repository));
-		assertDeepEquals(asSet(repository), project.getRepositories());
+		project.setRepositories(sortedSet(repository));
+		assertDeepEquals(set(repository), project.getRepositories());
 		verify(repository).setProject(project);
 	}
 
@@ -93,7 +93,7 @@ public class ProjectTest extends UnitTest {
 	@Test
 	public void shouldRemoveRepository() {
 		Repository repository = mock(Repository.class);
-		SortedSet<Repository> repositories = spy(asSortedSet(repository));
+		SortedSet<Repository> repositories = spy(sortedSet(repository));
 		project.setRepositories(repositories);
 
 		project.removeRepository(repository);
@@ -126,14 +126,14 @@ public class ProjectTest extends UnitTest {
 		assertFalse(project.hasId());
 		project.save();
 		assertSame(id, project.getId());
-		assertDeepEquals(asSet(repository), project.getRepositories());
+		assertDeepEquals(set(repository), project.getRepositories());
 	}
 
 	private Repository mockRepository(Long id) {
 		Repository repository = mock(Repository.class);
 		RepositoryDao repositoryDao = mock(RepositoryDao.class);
 		when(DaoFactory.getRepositoryDao()).thenReturn(repositoryDao);
-		when(repositoryDao.repositoriesOf(id)).thenReturn(asSortedSet(repository));
+		when(repositoryDao.repositoriesOf(id)).thenReturn(sortedSet(repository));
 		return repository;
 	}
 
@@ -154,7 +154,7 @@ public class ProjectTest extends UnitTest {
 	@Test
 	public void shouldNotifyRepositoriesOfDeletion() {
 		Repository repository = mock(Repository.class);
-		project.setRepositories(asSortedSet(repository));
+		project.setRepositories(sortedSet(repository));
 
 		project.delete();
 		verify(repository).deleted();

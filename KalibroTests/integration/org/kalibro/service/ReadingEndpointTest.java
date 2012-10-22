@@ -34,8 +34,8 @@ public class ReadingEndpointTest extends EndpointTest<Reading, ReadingDao, Readi
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(GROUP_ID)).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.readingsOf(GROUP_ID));
+		when(dao.readingsOf(GROUP_ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.readingsOf(GROUP_ID));
 	}
 
 	@Test

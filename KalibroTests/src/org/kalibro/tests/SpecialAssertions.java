@@ -46,19 +46,23 @@ public abstract class SpecialAssertions extends MockitoProxy {
 		}
 	}
 
-	public static <T> List<T> asList(T... elements) {
+	public static <T> T[] array(T... elements) {
+		return elements;
+	}
+
+	public static <T> List<T> list(T... elements) {
 		return new ArrayList<T>(Arrays.asList(elements));
 	}
 
-	public static <T> Set<T> asSet(T... elements) {
+	public static <T> Set<T> set(T... elements) {
 		return new HashSet<T>(Arrays.asList(elements));
 	}
 
-	public static <T> SortedSet<T> asSortedSet(T... elements) {
+	public static <T> SortedSet<T> sortedSet(T... elements) {
 		return new TreeSet<T>(Arrays.asList(elements));
 	}
 
-	public static Map<Object, Object> asMap(Object... elements) {
+	public static Map<Object, Object> map(Object... elements) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int i = 0; i < elements.length; i += 2)
 			map.put(elements[i], elements[i + 1]);

@@ -27,13 +27,13 @@ public class MetricConfigurationEndpointTest extends
 
 	@Override
 	protected List<String> fieldsThatShouldBeProxy() {
-		return asList("baseTool", "readingGroup", "ranges");
+		return list("baseTool", "readingGroup", "ranges");
 	}
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(dao.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.metricConfigurationsOf(CONFIGURATION_ID));
+		when(dao.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test

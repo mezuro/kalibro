@@ -29,13 +29,13 @@ public class BaseToolDatabaseDaoTest extends UnitTest {
 	@Before
 	public void setUp() throws IOException {
 		mockStatic(IOUtils.class);
-		when(IOUtils.readLines(any(InputStream.class))).thenReturn(asList(CLASS_NAME));
+		when(IOUtils.readLines(any(InputStream.class))).thenReturn(list(CLASS_NAME));
 		dao = new BaseToolDatabaseDao();
 	}
 
 	@Test
 	public void shouldGetAllNames() {
-		assertDeepEquals(asSet(NAME), dao.allNames());
+		assertDeepEquals(set(NAME), dao.allNames());
 	}
 
 	@Test
@@ -66,7 +66,7 @@ public class BaseToolDatabaseDaoTest extends UnitTest {
 		PrintStream printStream = mock(PrintStream.class);
 		KalibroException exception = mock(KalibroException.class);
 
-		when(IOUtils.readLines(any(InputStream.class))).thenReturn(asList("inexistent.Class"));
+		when(IOUtils.readLines(any(InputStream.class))).thenReturn(list("inexistent.Class"));
 		whenNew(File.class).withArguments(Environment.logsDirectory(), "collectors.log").thenReturn(file);
 		whenNew(PrintStream.class).withArguments(file).thenReturn(printStream);
 		whenNew(KalibroException.class).withArguments(

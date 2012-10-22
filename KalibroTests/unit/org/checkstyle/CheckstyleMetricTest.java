@@ -35,7 +35,7 @@ public class CheckstyleMetricTest extends UnitTest {
 	public void allMetricsShouldHaveJavaFilesAsScope() {
 		for (CheckstyleMetric metric : CheckstyleMetric.supportedMetrics()) {
 			assertEquals(CLASS, metric.getScope());
-			assertEquals(asSet(JAVA), metric.getLanguages());
+			assertEquals(set(JAVA), metric.getLanguages());
 		}
 	}
 
@@ -57,7 +57,7 @@ public class CheckstyleMetricTest extends UnitTest {
 		CheckstyleMetric metric = CheckstyleMetric.metricFor("maxLen.file");
 		metric.addToChecker(checker);
 		verify(fileLength).addMessageKey("maxLen.file");
-		verify(fileLength).addAttributeName("max");
+		verify(fileLength).addAttribute("max");
 	}
 
 	@Test
@@ -68,6 +68,6 @@ public class CheckstyleMetricTest extends UnitTest {
 		CheckstyleMetric metric = CheckstyleMetric.metricFor("classFanOutComplexity");
 		metric.addToChecker(checker);
 		verify(fanOut).addMessageKey("classFanOutComplexity");
-		verify(fanOut).addAttributeName("max");
+		verify(fanOut).addAttribute("max");
 	}
 }

@@ -100,7 +100,7 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 		MetricResult cboResult = softwareResult.getResultFor(cbo);
 		assertDoubleEquals(Double.NaN, cboResult.getValue());
 		assertDoubleEquals(0.0, cboResult.getAggregatedValue());
-		assertDeepEquals(asList(0.0), cboResult.getDescendantResults());
+		assertDeepEquals(list(0.0), cboResult.getDescendantResults());
 	}
 
 	@Test

@@ -32,8 +32,8 @@ public class MetricResultClientDaoTest extends
 
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
-		when(port.metricResultsOf(ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.metricResultsOf(ID));
+		when(port.metricResultsOf(ID)).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.metricResultsOf(ID));
 	}
 
 	@Test
@@ -46,7 +46,7 @@ public class MetricResultClientDaoTest extends
 
 		SortedMap<Date, MetricResult> map = client.historyOf(METRIC_NAME, ID);
 		assertEquals(1, map.size());
-		assertDeepEquals(asSet(date), map.keySet());
+		assertDeepEquals(set(date), map.keySet());
 		assertDeepEquals(entity, map.get(date));
 	}
 }

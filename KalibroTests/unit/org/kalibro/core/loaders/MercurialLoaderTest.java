@@ -6,16 +6,16 @@ public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return asList("hg --version");
+		return list("hg --version");
 	}
 
 	@Override
 	protected List<String> expectedLoadCommands() {
-		return asList("hg clone " + ADDRESS + " .");
+		return list("hg clone " + ADDRESS + " .");
 	}
 
 	@Override
 	protected List<String> expectedUpdateCommands() {
-		return asList("hg pull -u");
+		return list("hg pull -u");
 	}
 }

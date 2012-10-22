@@ -6,16 +6,16 @@ public class LocalDirectoryLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return asList("cp --version");
+		return list("cp --version");
 	}
 
 	@Override
 	protected List<String> expectedLoadCommands() {
-		return asList("cp -ru " + ADDRESS + " .");
+		return list("cp -ru " + ADDRESS + " .");
 	}
 
 	@Override
 	protected List<String> expectedUpdateCommands() {
-		return asList("cp -ru " + ADDRESS + " .");
+		return list("cp -ru " + ADDRESS + " .");
 	}
 }

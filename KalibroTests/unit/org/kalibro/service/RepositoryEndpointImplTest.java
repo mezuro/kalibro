@@ -27,8 +27,8 @@ public class RepositoryEndpointImplTest extends EndpointImplementorTest<// @form
 
 	@Test
 	public void shouldGetSupportedTypes() {
-		when(dao.supportedTypes()).thenReturn(asSortedSet(LOCAL_ZIP, REMOTE_ZIP));
-		assertDeepEquals(asList(REMOTE_ZIP), implementor.supportedRepositoryTypes());
+		when(dao.supportedTypes()).thenReturn(sortedSet(LOCAL_ZIP, REMOTE_ZIP));
+		assertDeepEquals(list(REMOTE_ZIP), implementor.supportedRepositoryTypes());
 	}
 
 	@Test
@@ -39,8 +39,8 @@ public class RepositoryEndpointImplTest extends EndpointImplementorTest<// @form
 
 	@Test
 	public void shouldGetRepositoriesOfProject() {
-		when(dao.repositoriesOf(PROJECT_ID)).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.repositoriesOf(PROJECT_ID));
+		when(dao.repositoriesOf(PROJECT_ID)).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.repositoriesOf(PROJECT_ID));
 	}
 
 	@Test

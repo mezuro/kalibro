@@ -58,6 +58,6 @@ public class ListEqualityTest extends UnitTest {
 	}
 
 	private List<String> newList(String... elements) {
-		return asList(elements);
+		return list(elements);
 	}
 }

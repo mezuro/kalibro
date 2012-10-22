@@ -48,7 +48,7 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 		mockStatic(RepositoryType.class);
 		when(RepositoryType.values()).thenReturn(new RepositoryType[]{supported, notSupported});
 
-		assertDeepEquals(asSet(supported), dao.supportedTypes());
+		assertDeepEquals(set(supported), dao.supportedTypes());
 	}
 
 	@Test
@@ -65,9 +65,9 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 	public void shouldGetRepositoriesOfProject() {
 		TypedQuery<RepositoryRecord> query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createRecordQuery("WHERE repository.project.id = :projectId");
-		when(query.getResultList()).thenReturn(asList(record));
+		when(query.getResultList()).thenReturn(list(record));
 
-		assertDeepEquals(asSet(repository), dao.repositoriesOf(PROJECT_ID));
+		assertDeepEquals(set(repository), dao.repositoriesOf(PROJECT_ID));
 		verify(query).setParameter("projectId", PROJECT_ID);
 	}
 

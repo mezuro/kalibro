@@ -70,14 +70,14 @@ public class BaseToolTest extends UnitTest {
 	@Test
 	public void checkConstruction() {
 		check();
-		baseTool = new BaseTool(NAME, DESCRIPTION, asSet(SUPPORTED_METRIC), CLASS_NAME);
+		baseTool = new BaseTool(NAME, DESCRIPTION, set(SUPPORTED_METRIC), CLASS_NAME);
 		check();
 	}
 
 	private void check() {
 		assertEquals(NAME, baseTool.getName());
 		assertEquals(DESCRIPTION, baseTool.getDescription());
-		assertEquals(asSet(SUPPORTED_METRIC), baseTool.getSupportedMetrics());
+		assertEquals(set(SUPPORTED_METRIC), baseTool.getSupportedMetrics());
 		assertEquals(CLASS_NAME, baseTool.getCollectorClassName());
 	}
 

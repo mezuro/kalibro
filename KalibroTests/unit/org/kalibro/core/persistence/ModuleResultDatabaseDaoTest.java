@@ -39,7 +39,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		record = mock(ModuleResultRecord.class);
 		query = mock(TypedQuery.class);
 		when(query.getSingleResult()).thenReturn(record);
-		when(query.getResultList()).thenReturn(asList(record));
+		when(query.getResultList()).thenReturn(list(record));
 		when(record.convert()).thenReturn(moduleResult);
 		dao = spy(new ModuleResultDatabaseDao(null));
 	}
@@ -61,7 +61,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldGetChildren() {
 		prepareQuery("JOIN ModuleResult parent ON moduleResult.parent = parent WHERE parent.id = :parentId");
-		assertDeepEquals(asSet(moduleResult), dao.childrenOf(ID));
+		assertDeepEquals(set(moduleResult), dao.childrenOf(ID));
 		verify(query).setParameter("parentId", ID);
 	}
 
@@ -82,7 +82,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 	public void shouldPrepareResultForModule() throws Exception {
 		Module module = new Module(Granularity.PACKAGE, "org");
 		String clause = "WHERE moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
-		doReturn(false).when(dao).exists(clause, "processingId", ID, "moduleName", asList("org"));
+		doReturn(false).when(dao).exists(clause, "processingId", ID, "moduleName", list("org"));
 		doReturn(false).when(dao).exists(clause, "processingId", ID, "moduleName", new ArrayList<String>());
 		prepareQuery(clause);
 
@@ -109,7 +109,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		order.verify(query).getSingleResult();
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("moduleName", asList("org"));
+		order.verify(query).setParameter("moduleName", list("org"));
 		order.verify(query).getSingleResult();
 		order.verify(preparedModule).setGranularity(Granularity.PACKAGE);
 	}

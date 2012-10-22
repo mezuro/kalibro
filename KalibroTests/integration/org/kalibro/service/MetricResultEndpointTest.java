@@ -29,19 +29,19 @@ public class MetricResultEndpointTest extends EndpointTest<MetricResult, MetricR
 
 	@Override
 	protected List<String> fieldsThatShouldBeProxy() {
-		return asList("descendantResults");
+		return list("descendantResults");
 	}
 
 	@Test
 	public void shouldGetDescendantResultsOfMetricResult() {
-		List<Double> descendantResults = asList(6.0, 28.0, 496.0);
+		List<Double> descendantResults = list(6.0, 28.0, 496.0);
 		when(dao.descendantResultsOf(ID)).thenReturn(descendantResults);
 		assertDeepEquals(descendantResults, port.descendantResultsOf(ID));
 	}
 
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
-		when(dao.metricResultsOf(ID)).thenReturn(asSortedSet(entity));
+		when(dao.metricResultsOf(ID)).thenReturn(sortedSet(entity));
 		List<MetricResultXml> metricResults = port.metricResultsOf(ID);
 		assertEquals(1, metricResults.size());
 		assertDeepDtoEquals(metricResults.get(0));

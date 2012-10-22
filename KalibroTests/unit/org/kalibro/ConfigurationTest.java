@@ -82,8 +82,8 @@ public class ConfigurationTest extends UnitTest {
 	@Test
 	public void shouldSetConfigurationOnMetricConfigurations() {
 		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
-		configuration.setMetricConfigurations(asSortedSet(metricConfiguration));
-		assertDeepEquals(asSet(metricConfiguration), configuration.getMetricConfigurations());
+		configuration.setMetricConfigurations(sortedSet(metricConfiguration));
+		assertDeepEquals(set(metricConfiguration), configuration.getMetricConfigurations());
 		verify(metricConfiguration).setConfiguration(configuration);
 	}
 
@@ -110,7 +110,7 @@ public class ConfigurationTest extends UnitTest {
 	@Test
 	public void shouldRemoveMetricConfiguration() {
 		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
-		SortedSet<MetricConfiguration> metricConfigurations = spy(asSortedSet(metricConfiguration));
+		SortedSet<MetricConfiguration> metricConfigurations = spy(sortedSet(metricConfiguration));
 		configuration.setMetricConfigurations(metricConfigurations);
 
 		configuration.removeMetricConfiguration(metricConfiguration);
@@ -120,13 +120,13 @@ public class ConfigurationTest extends UnitTest {
 
 	@Test
 	public void shouldGetCompoundMetrics() {
-		assertDeepEquals(asSet(sc), configuration.getCompoundMetrics());
+		assertDeepEquals(set(sc), configuration.getCompoundMetrics());
 	}
 
 	@Test
 	public void shouldRetrieveNativeMetricsPerBaseTool() {
 		BaseTool baseTool = loadFixture("inexistent", BaseTool.class);
-		assertDeepEquals(asMap(baseTool, baseTool.getSupportedMetrics()), configuration.getNativeMetrics());
+		assertDeepEquals(map(baseTool, baseTool.getSupportedMetrics()), configuration.getNativeMetrics());
 	}
 
 	@Test
@@ -200,14 +200,14 @@ public class ConfigurationTest extends UnitTest {
 		assertFalse(configuration.hasId());
 		configuration.save();
 		assertSame(id, configuration.getId());
-		assertDeepEquals(asSet(metricConfiguration), configuration.getMetricConfigurations());
+		assertDeepEquals(set(metricConfiguration), configuration.getMetricConfigurations());
 	}
 
 	private MetricConfiguration mockMetricConfiguration(Long id) {
 		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
 		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
 		when(DaoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
-		when(metricConfigurationDao.metricConfigurationsOf(id)).thenReturn(asSortedSet(metricConfiguration));
+		when(metricConfigurationDao.metricConfigurationsOf(id)).thenReturn(sortedSet(metricConfiguration));
 		return metricConfiguration;
 	}
 
@@ -228,7 +228,7 @@ public class ConfigurationTest extends UnitTest {
 	@Test
 	public void shouldNotifyMetricConfigurationsOfDeletion() {
 		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
-		configuration.setMetricConfigurations(asSortedSet(metricConfiguration));
+		configuration.setMetricConfigurations(sortedSet(metricConfiguration));
 
 		configuration.delete();
 		verify(metricConfiguration).deleted();

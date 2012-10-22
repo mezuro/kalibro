@@ -21,7 +21,7 @@ public class CollectionRendererTest extends UnitTest {
 
 	@Test
 	public void shouldRenderCollection() {
-		assertTrue(renderer.canRender(asList("42")));
+		assertTrue(renderer.canRender(list("42")));
 	}
 
 	@Test
@@ -34,7 +34,7 @@ public class CollectionRendererTest extends UnitTest {
 
 	@Test
 	public void shouldRenderListString() {
-		assertEquals("My, list", render(asList("My", "list")));
+		assertEquals("My, list", render(list("My", "list")));
 		assertEquals("", render(new ArrayList<String>()));
 	}
 

@@ -37,8 +37,8 @@ public class ProjectClientDaoTest extends ClientTest<// @formatter:off
 
 	@Test
 	public void shouldGetAll() {
-		when(port.allProjects()).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.all());
+		when(port.allProjects()).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.all());
 	}
 
 	@Test

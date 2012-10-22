@@ -37,8 +37,8 @@ public class ModuleResultTest extends UnitTest {
 	@Test
 	public void shouldSetParentOnGettingChildren() {
 		ModuleResult child = new ModuleResult(null, new Module(Granularity.METHOD, "getParent"));
-		result.setChildren(asSortedSet(child));
-		assertDeepEquals(asSet(child), result.getChildren());
+		result.setChildren(sortedSet(child));
+		assertDeepEquals(set(child), result.getChildren());
 		assertSame(result, child.getParent());
 	}
 
@@ -54,7 +54,7 @@ public class ModuleResultTest extends UnitTest {
 	public void shouldSetParentOnAddChild() {
 		ModuleResult child = new ModuleResult(null, new Module(Granularity.METHOD, "getParent"));
 		result.addChild(child);
-		assertDeepEquals(asSet(child), result.getChildren());
+		assertDeepEquals(set(child), result.getChildren());
 		assertSame(result, child.getParent());
 	}
 

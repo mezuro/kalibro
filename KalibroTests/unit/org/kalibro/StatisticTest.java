@@ -27,7 +27,7 @@ public class StatisticTest extends EnumerationTest<Statistic> {
 
 	private void testCalculate(Statistic statistic, Double resultEmpty, Double result2to10, Double result0to10) {
 		assertDoubleEquals(resultEmpty, statistic.calculate(new ArrayList<Double>()));
-		assertDoubleEquals(result2to10, statistic.calculate(asList(2.0, 4.0, 6.0, 8.0, 10.0)));
-		assertDoubleEquals(result0to10, statistic.calculate(asList(0.0, 2.0, 4.0, 6.0, 8.0, 10.0)));
+		assertDoubleEquals(result2to10, statistic.calculate(list(2.0, 4.0, 6.0, 8.0, 10.0)));
+		assertDoubleEquals(result0to10, statistic.calculate(list(0.0, 2.0, 4.0, 6.0, 8.0, 10.0)));
 	}
 }

@@ -1,7 +1,7 @@
 package org.kalibro;
 
 import static org.kalibro.Granularity.METHOD;
-import static org.kalibro.tests.SpecialAssertions.asSet;
+import static org.kalibro.tests.SpecialAssertions.set;
 import static org.powermock.api.mockito.PowerMockito.mock;
 
 import java.io.File;
@@ -29,7 +29,7 @@ public class MetricCollectorStub implements MetricCollector {
 
 	@Override
 	public Set<NativeMetric> supportedMetrics() {
-		return asSet(SUPPORTED_METRIC);
+		return set(SUPPORTED_METRIC);
 	}
 
 	@Override

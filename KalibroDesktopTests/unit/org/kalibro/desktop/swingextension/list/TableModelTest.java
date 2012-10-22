@@ -25,7 +25,7 @@ public class TableModelTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		data = PowerMockito.spy(asList(loadFixture("lcom4-bad", Range.class)));
+		data = PowerMockito.spy(list(loadFixture("lcom4-bad", Range.class)));
 		model = PowerMockito.spy(new MyModel());
 		model.setData(data);
 		model.addColumn(new Column("Label", String.class, 42));
@@ -38,7 +38,7 @@ public class TableModelTest extends UnitTest {
 
 	@Test
 	public void shouldNotifyDataChanged() {
-		model.setData(asList(new Range()));
+		model.setData(list(new Range()));
 		verify(model, atLeastOnce()).fireTableDataChanged();
 	}
 

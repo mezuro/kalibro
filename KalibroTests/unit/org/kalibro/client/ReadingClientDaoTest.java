@@ -36,8 +36,8 @@ public class ReadingClientDaoTest extends
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(port.readingsOf(GROUP_ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.readingsOf(GROUP_ID));
+		when(port.readingsOf(GROUP_ID)).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.readingsOf(GROUP_ID));
 	}
 
 	@Test

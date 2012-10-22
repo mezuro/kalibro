@@ -21,8 +21,8 @@ public class BaseToolClientDaoTest extends
 
 	@Test
 	public void shouldGetAllNames() {
-		when(port.allBaseToolNames()).thenReturn(asList(NAME));
-		assertDeepEquals(asSet(NAME), client.allNames());
+		when(port.allBaseToolNames()).thenReturn(list(NAME));
+		assertDeepEquals(set(NAME), client.allNames());
 	}
 
 	@Test

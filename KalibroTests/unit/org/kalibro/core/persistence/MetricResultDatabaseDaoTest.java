@@ -44,10 +44,10 @@ public class MetricResultDatabaseDaoTest extends UnitTest {
 		TypedQuery<DescendantResultRecord> query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createQuery(
 			"SELECT d FROM DescendantResult d WHERE d.metricResult.id = :metricResultId", DescendantResultRecord.class);
-		when(query.getResultList()).thenReturn(asList(result));
+		when(query.getResultList()).thenReturn(list(result));
 		when(result.convert()).thenReturn(42.0);
 
-		assertDeepEquals(asList(42.0), dao.descendantResultsOf(ID));
+		assertDeepEquals(list(42.0), dao.descendantResultsOf(ID));
 		verify(query).setParameter("metricResultId", ID);
 	}
 
@@ -55,9 +55,9 @@ public class MetricResultDatabaseDaoTest extends UnitTest {
 	public void shouldGetMetricResultsOfModuleResult() {
 		TypedQuery<MetricResultRecord> query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createRecordQuery("WHERE metricResult.moduleResult.id = :moduleResultId");
-		when(query.getResultList()).thenReturn(asList(record));
+		when(query.getResultList()).thenReturn(list(record));
 
-		assertDeepEquals(asSet(metricResult), dao.metricResultsOf(ID));
+		assertDeepEquals(set(metricResult), dao.metricResultsOf(ID));
 		verify(query).setParameter("moduleResultId", ID);
 	}
 

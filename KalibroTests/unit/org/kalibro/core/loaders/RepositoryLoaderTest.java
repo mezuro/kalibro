@@ -70,12 +70,12 @@ public class RepositoryLoaderTest extends UnitTest {
 
 		@Override
 		protected List<String> validationCommands() {
-			return asList(VALIDATION_COMMAND);
+			return list(VALIDATION_COMMAND);
 		}
 
 		@Override
 		protected List<String> loadCommands(String address, boolean update) {
-			return asList(update ? UPDATE_COMMAND : LOAD_COMMAND);
+			return list(update ? UPDATE_COMMAND : LOAD_COMMAND);
 		}
 	}
 }

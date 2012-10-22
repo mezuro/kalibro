@@ -51,9 +51,9 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 	public void shouldGetReadingsOfGroup() {
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createRecordQuery("WHERE reading.group.id = :groupId");
-		when(query.getResultList()).thenReturn(asList(record));
+		when(query.getResultList()).thenReturn(list(record));
 
-		assertDeepEquals(asSet(reading), dao.readingsOf(GROUP_ID));
+		assertDeepEquals(set(reading), dao.readingsOf(GROUP_ID));
 		verify(query).setParameter("groupId", GROUP_ID);
 	}
 

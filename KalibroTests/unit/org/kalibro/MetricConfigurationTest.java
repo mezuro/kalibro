@@ -110,8 +110,8 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void shouldSetConfigurationOnRanges() {
 		Range range = mock(Range.class);
-		metricConfiguration.setRanges(asSortedSet(range));
-		assertDeepEquals(asSet(range), metricConfiguration.getRanges());
+		metricConfiguration.setRanges(sortedSet(range));
+		assertDeepEquals(set(range), metricConfiguration.getRanges());
 		verify(range).setConfiguration(metricConfiguration);
 	}
 
@@ -127,7 +127,7 @@ public class MetricConfigurationTest extends UnitTest {
 	public void shouldGetRangeForValue() {
 		Range range = mock(Range.class);
 		when(range.contains(42.0)).thenReturn(true);
-		metricConfiguration.setRanges(asSortedSet(range));
+		metricConfiguration.setRanges(sortedSet(range));
 
 		assertNull(metricConfiguration.getRangeFor(0.0));
 		assertSame(range, metricConfiguration.getRangeFor(42.0));
@@ -149,7 +149,7 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void shouldRemoveRange() {
 		Range range = mock(Range.class);
-		SortedSet<Range> ranges = spy(asSortedSet(range));
+		SortedSet<Range> ranges = spy(sortedSet(range));
 		metricConfiguration.setRanges(ranges);
 
 		metricConfiguration.removeRange(range);
@@ -192,7 +192,7 @@ public class MetricConfigurationTest extends UnitTest {
 		metricConfiguration.save();
 		assertSame(id, metricConfiguration.getId());
 		assertSame(readingGroup, metricConfiguration.getReadingGroup());
-		assertEquals(asSet(range), metricConfiguration.getRanges());
+		assertEquals(set(range), metricConfiguration.getRanges());
 	}
 
 	private ReadingGroup mockReadingGroup(Long id) {
@@ -207,7 +207,7 @@ public class MetricConfigurationTest extends UnitTest {
 		Range range = mock(Range.class);
 		RangeDao rangeDao = mock(RangeDao.class);
 		when(DaoFactory.getRangeDao()).thenReturn(rangeDao);
-		when(rangeDao.rangesOf(id)).thenReturn(asSortedSet(range));
+		when(rangeDao.rangesOf(id)).thenReturn(sortedSet(range));
 		return range;
 	}
 
@@ -244,7 +244,7 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void shouldNotifyRangesOfDeletion() {
 		Range range = mock(Range.class);
-		metricConfiguration.setRanges(asSortedSet(range));
+		metricConfiguration.setRanges(sortedSet(range));
 		setConfigurationWithId(42L);
 
 		metricConfiguration.delete();

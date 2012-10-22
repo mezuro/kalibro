@@ -28,8 +28,8 @@ public class RepositoryClientDaoTest extends ClientTest<// @formatter:off
 	public void shouldGetSupportedTypes() {
 		RepositoryType[] types = RepositoryType.values();
 		RepositoryType supportedType = types[new Random().nextInt(types.length)];
-		when(port.supportedRepositoryTypes()).thenReturn(asList(supportedType));
-		assertDeepEquals(asSet(supportedType), client.supportedTypes());
+		when(port.supportedRepositoryTypes()).thenReturn(list(supportedType));
+		assertDeepEquals(set(supportedType), client.supportedTypes());
 	}
 
 	@Test
@@ -40,8 +40,8 @@ public class RepositoryClientDaoTest extends ClientTest<// @formatter:off
 
 	@Test
 	public void shouldGetRepositoriesOfProject() {
-		when(port.repositoriesOf(PROJECT_ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.repositoriesOf(PROJECT_ID));
+		when(port.repositoriesOf(PROJECT_ID)).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.repositoriesOf(PROJECT_ID));
 	}
 
 	@Test

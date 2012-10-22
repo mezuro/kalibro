@@ -25,7 +25,7 @@ public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, Reading
 
 	@Override
 	public List<String> fieldsThatShouldBeProxy() {
-		return asList("readings");
+		return list("readings");
 	}
 
 	@Test
@@ -49,8 +49,8 @@ public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, Reading
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.allReadingGroups());
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.allReadingGroups());
 	}
 
 	@Test

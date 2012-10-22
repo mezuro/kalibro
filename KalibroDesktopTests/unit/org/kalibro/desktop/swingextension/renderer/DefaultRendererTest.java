@@ -36,7 +36,7 @@ public class DefaultRendererTest extends UnitTest {
 		assertClassEquals(JPanel.class, render(null));
 		assertClassEquals(JLabel.class, render("My string"));
 		assertClassEquals(JLabel.class, render(this));
-		assertClassEquals(JLabel.class, render(asList("My", "list")));
+		assertClassEquals(JLabel.class, render(list("My", "list")));
 	}
 
 	private Component render(Object value) {

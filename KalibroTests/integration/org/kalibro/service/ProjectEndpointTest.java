@@ -25,7 +25,7 @@ public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, Proje
 
 	@Override
 	protected List<String> fieldsThatShouldBeProxy() {
-		return asList("repositories");
+		return list("repositories");
 	}
 
 	@Test
@@ -43,8 +43,8 @@ public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, Proje
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.allProjects());
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.allProjects());
 	}
 
 	@Test

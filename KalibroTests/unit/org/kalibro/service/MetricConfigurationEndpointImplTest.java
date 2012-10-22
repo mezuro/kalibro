@@ -26,8 +26,8 @@ public class MetricConfigurationEndpointImplTest extends EndpointImplementorTest
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(dao.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.metricConfigurationsOf(CONFIGURATION_ID));
+		when(dao.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test

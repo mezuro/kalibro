@@ -35,7 +35,7 @@ public class ModuleResultClientDaoTest extends
 
 	@Test
 	public void shouldGetChildren() {
-		when(port.childrenOf(ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.childrenOf(ID));
+		when(port.childrenOf(ID)).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.childrenOf(ID));
 	}
 }

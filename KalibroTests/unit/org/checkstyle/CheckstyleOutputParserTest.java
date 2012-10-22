@@ -35,7 +35,7 @@ public class CheckstyleOutputParserTest extends UnitTest {
 	public void setUp() {
 		codeDirectory = mock(File.class);
 		when(codeDirectory.getAbsolutePath()).thenReturn(PATH);
-		Set<NativeMetric> wantedMetrics = asSet((NativeMetric) METRIC);
+		Set<NativeMetric> wantedMetrics = set((NativeMetric) METRIC);
 		parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
 	}
 

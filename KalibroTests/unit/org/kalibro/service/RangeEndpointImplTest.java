@@ -25,8 +25,8 @@ public class RangeEndpointImplTest extends
 
 	@Test
 	public void shouldGetRangesOfGroup() {
-		when(dao.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.rangesOf(METRIC_CONFIGURATION_ID));
+		when(dao.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.rangesOf(METRIC_CONFIGURATION_ID));
 	}
 
 	@Test

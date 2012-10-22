@@ -16,8 +16,8 @@ public class BaseToolEndpointTest extends EndpointTest<BaseTool, BaseToolDao, Ba
 
 	@Test
 	public void shouldGetAllNames() {
-		when(dao.allNames()).thenReturn(asSortedSet(NAME));
-		assertDeepEquals(asList(NAME), port.allBaseToolNames());
+		when(dao.allNames()).thenReturn(sortedSet(NAME));
+		assertDeepEquals(list(NAME), port.allBaseToolNames());
 	}
 
 	@Test

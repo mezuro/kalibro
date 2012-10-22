@@ -20,7 +20,7 @@ public class ReflectionTableModelTest extends UnitTest {
 		model.addColumn(new ReflectionColumn("beginning", 0));
 		model.addColumn(new ReflectionColumn("label", 0));
 		model.addColumn(new ReflectionColumn("color", 0));
-		model.setData(asList(loadFixture("lcom4-bad", Range.class)));
+		model.setData(list(loadFixture("lcom4-bad", Range.class)));
 	}
 
 	@Test

@@ -38,7 +38,7 @@ public class TablePanelTest extends UnitTest {
 		TableModel<Range> model = new ReflectionTableModel<Range>(Range.class);
 		model.addColumn(new ReflectionColumn("label", 15));
 		table = new Table<Range>("ranges", model, 5);
-		table.setData(asList(loadFixture("lcom4-bad", Range.class)));
+		table.setData(list(loadFixture("lcom4-bad", Range.class)));
 		table = PowerMockito.spy(table);
 	}
 

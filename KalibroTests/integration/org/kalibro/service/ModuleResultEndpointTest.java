@@ -25,7 +25,7 @@ public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleR
 
 	@Override
 	protected List<String> fieldsThatShouldBeProxy() {
-		return asList("metricResults", "parent", "children");
+		return list("metricResults", "parent", "children");
 	}
 
 	@Test
@@ -42,7 +42,7 @@ public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleR
 
 	@Test
 	public void shouldGetChildren() {
-		when(dao.childrenOf(ID)).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.childrenOf(ID));
+		when(dao.childrenOf(ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.childrenOf(ID));
 	}
 }

@@ -1,15 +1,23 @@
 package org.checkstyle;
 
 import com.google.common.collect.ImmutableMap;
+import com.puppycrawl.tools.checkstyle.Checker;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 import java.util.*;
 
 import org.kalibro.NativeMetric;
 
-public class CheckstyleConfiguration implements Configuration {
+/**
+ * A module configuration used by Checkstyle to run its checks. Creates a configuration for the module {@link Checker}
+ * based on the set of wanted metrics.
+ * 
+ * @author Carlos Morais
+ * @author Eduardo Morais
+ */
+class CheckstyleConfiguration implements Configuration {
 
-	public static CheckstyleConfiguration checkerConfiguration(Set<NativeMetric> wantedMetrics) {
+	static CheckstyleConfiguration checkerConfiguration(Set<NativeMetric> wantedMetrics) {
 		CheckstyleConfiguration checker = new CheckstyleConfiguration("Checker");
 		for (CheckstyleMetric metric : CheckstyleMetric.supportedMetrics())
 			if (wantedMetrics.contains(metric))
@@ -22,7 +30,7 @@ public class CheckstyleConfiguration implements Configuration {
 	private Map<String, String> messages;
 	private Map<String, CheckstyleConfiguration> children;
 
-	public CheckstyleConfiguration(String name) {
+	CheckstyleConfiguration(String name) {
 		this.name = name;
 		attributes = new ArrayList<String>();
 		messages = new HashMap<String, String>();
@@ -34,7 +42,7 @@ public class CheckstyleConfiguration implements Configuration {
 		return name;
 	}
 
-	protected void addAttributeName(String attributeName) {
+	void addAttribute(String attributeName) {
 		attributes.add(attributeName);
 	}
 
@@ -49,7 +57,7 @@ public class CheckstyleConfiguration implements Configuration {
 		return "-1";
 	}
 
-	protected void addMessageKey(String messageKey) {
+	void addMessageKey(String messageKey) {
 		// Checkstyle does not fire two equal events, so messages must be different
 		messages.put(messageKey, messageKey + "{0}");
 	}
@@ -59,7 +67,7 @@ public class CheckstyleConfiguration implements Configuration {
 		return ImmutableMap.copyOf(messages);
 	}
 
-	protected CheckstyleConfiguration getChildByName(String childName) {
+	CheckstyleConfiguration getChildByName(String childName) {
 		if (!children.containsKey(childName))
 			children.put(childName, new CheckstyleConfiguration(childName));
 		return children.get(childName);

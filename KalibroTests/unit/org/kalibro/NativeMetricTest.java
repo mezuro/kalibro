@@ -18,7 +18,7 @@ public class NativeMetricTest extends UnitTest {
 		assertFalse(metric.isCompound());
 		assertEquals("NativeMetricTest name", metric.getName());
 		assertEquals(METHOD, metric.getScope());
-		assertDeepEquals(asSet(JAVA, CPP), metric.getLanguages());
+		assertDeepEquals(set(JAVA, CPP), metric.getLanguages());
 	}
 
 	@Test

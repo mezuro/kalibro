@@ -79,7 +79,7 @@ public class AbstractModuleResultTest extends UnitTest {
 	public void shouldAddMetricResult() {
 		moduleResult.addMetricResult(cboResult);
 		moduleResult.addMetricResult(lcom4Result);
-		assertDeepEquals(asSet(cboResult, lcom4Result), moduleResult.getMetricResults());
+		assertDeepEquals(set(cboResult, lcom4Result), moduleResult.getMetricResults());
 	}
 
 	@Test

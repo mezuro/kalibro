@@ -25,8 +25,8 @@ public class RangeClientDaoTest extends
 
 	@Test
 	public void shouldGetRangesOfMetricConfiguration() {
-		when(port.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.rangesOf(METRIC_CONFIGURATION_ID));
+		when(port.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.rangesOf(METRIC_CONFIGURATION_ID));
 	}
 
 	@Test

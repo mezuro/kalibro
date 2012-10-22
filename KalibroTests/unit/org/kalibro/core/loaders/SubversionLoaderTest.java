@@ -6,16 +6,16 @@ public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return asList("svn --version");
+		return list("svn --version");
 	}
 
 	@Override
 	protected List<String> expectedLoadCommands() {
-		return asList("svn checkout " + ADDRESS + " .");
+		return list("svn checkout " + ADDRESS + " .");
 	}
 
 	@Override
 	protected List<String> expectedUpdateCommands() {
-		return asList("svn update");
+		return list("svn update");
 	}
 }

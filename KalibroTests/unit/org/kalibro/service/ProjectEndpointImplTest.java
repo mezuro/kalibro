@@ -37,8 +37,8 @@ public class ProjectEndpointImplTest extends
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.allProjects());
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.allProjects());
 	}
 
 	@Test

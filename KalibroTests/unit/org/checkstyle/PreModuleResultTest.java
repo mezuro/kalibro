@@ -20,7 +20,7 @@ public class PreModuleResultTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		Set<NativeMetric> wantedMetrics = asSet((NativeMetric) METRIC);
+		Set<NativeMetric> wantedMetrics = set((NativeMetric) METRIC);
 		result = new PreModuleResult(MODULE, wantedMetrics);
 	}
 

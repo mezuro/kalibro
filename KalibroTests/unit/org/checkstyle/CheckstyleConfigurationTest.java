@@ -2,6 +2,8 @@ package org.checkstyle;
 
 import static org.junit.Assert.*;
 
+import com.puppycrawl.tools.checkstyle.api.Configuration;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.NativeMetric;
@@ -9,61 +11,60 @@ import org.kalibro.tests.UnitTest;
 
 public class CheckstyleConfigurationTest extends UnitTest {
 
+	private static final String NAME = "CheckstyleConfigurationTest name";
+	private static final String ATTRIBUTE = "CheckstyleConfigurationTest attribute";
+	private static final String MESSAGE_KEY = "CheckstyleConfigurationTest message key";
+
 	private CheckstyleConfiguration configuration;
 
 	@Before
 	public void setUp() {
-		configuration = new CheckstyleConfiguration("The module name");
+		configuration = new CheckstyleConfiguration(NAME);
 	}
 
 	@Test
-	public void checkName() {
-		assertEquals("The module name", configuration.getName());
-	}
-
-	@Test
-	public void checkAttributes() {
-		assertArrayEquals(new String[0], configuration.getAttributeNames());
-
-		configuration.addAttributeName("my attribute");
-		assertArrayEquals(new String[]{"my attribute"}, configuration.getAttributeNames());
-	}
-
-	@Test
-	public void attributeShouldBeAlwaysBeOneNegative() {
-		assertEquals("-1", configuration.getAttribute("anything"));
-	}
-
-	@Test
-	public void checkMessages() {
+	public void checkConstruction() {
+		assertEquals(NAME, configuration.getName());
 		assertTrue(configuration.getMessages().isEmpty());
+		assertEquals(0, configuration.getChildren().length);
+		assertEquals(0, configuration.getAttributeNames().length);
+	}
 
-		String key = "my message key";
-		configuration.addMessageKey(key);
-		assertTrue(configuration.getMessages().containsKey(key));
-		assertEquals(key + "{0}", configuration.getMessages().get(key));
+	@Test
+	public void shouldAddAttribute() {
+		configuration.addAttribute(ATTRIBUTE);
+		assertArrayEquals(array(ATTRIBUTE), configuration.getAttributeNames());
+	}
+
+	@Test
+	public void attributeValueShouldAlwaysBeNegative() {
+		assertEquals("-1", configuration.getAttribute(ATTRIBUTE));
+	}
+
+	@Test
+	public void shouldAddMessageKey() {
+		configuration.addMessageKey(MESSAGE_KEY);
+		assertDeepEquals(map(MESSAGE_KEY, MESSAGE_KEY + "{0}"), configuration.getMessages());
 	}
 
 	@Test
 	public void shouldCreateChildOnFirstGetByName() {
-		assertEquals(0, configuration.getChildren().length);
-
 		CheckstyleConfiguration fileLength = configuration.getChildByName("FileLength");
-		assertEquals(1, configuration.getChildren().length);
-		assertSame(fileLength, configuration.getChildByName("FileLength"));
+		assertArrayEquals(array(fileLength), configuration.getChildren());
 	}
 
 	@Test
-	public void shouldCreateCheckerConfigurationFilteringMetrics() {
+	public void shouldCreateCheckerConfigurationForWantedMetrics() {
 		NativeMetric numberOfMethods = CheckstyleMetric.metricFor("too.many.methods");
-		configuration = CheckstyleConfiguration.checkerConfiguration(asSet(numberOfMethods));
+		CheckstyleConfiguration checker = CheckstyleConfiguration.checkerConfiguration(set(numberOfMethods));
 
-		assertEquals(1, configuration.getChildren().length);
+		assertEquals(1, checker.getChildren().length);
+		Configuration treeWalker = checker.getChildren()[0];
 
-		CheckstyleConfiguration treeWalker = configuration.getChildByName("TreeWalker");
 		assertEquals(1, treeWalker.getChildren().length);
+		Configuration methodCount = treeWalker.getChildren()[0];
 
-		CheckstyleConfiguration methodCount = treeWalker.getChildByName("MethodCount");
-		assertTrue(methodCount.getMessages().containsKey("too.many.methods"));
+		assertArrayEquals(array("maxTotal"), methodCount.getAttributeNames());
+		assertDeepEquals(map("too.many.methods", "too.many.methods{0}"), methodCount.getMessages());
 	}
 }

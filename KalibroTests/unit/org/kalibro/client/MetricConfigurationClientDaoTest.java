@@ -26,8 +26,8 @@ public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:o
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(port.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.metricConfigurationsOf(CONFIGURATION_ID));
+		when(port.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test

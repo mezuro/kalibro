@@ -50,7 +50,7 @@ public class ChoiceDialogTest extends UnitTest {
 	@Test
 	public void shouldChooseFromCollection() throws Exception {
 		mockJOptionPane(Language.JAVA);
-		assertTrue(dialog.choose(MESSAGE, asList(OPTIONS)));
+		assertTrue(dialog.choose(MESSAGE, list(OPTIONS)));
 		assertEquals(Language.JAVA, dialog.getChoice());
 	}
 

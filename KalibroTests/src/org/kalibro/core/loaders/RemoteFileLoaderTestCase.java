@@ -8,7 +8,7 @@ public abstract class RemoteFileLoaderTestCase extends RepositoryLoaderTestCase 
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		List<String> commands = asList("wget --version", "rm --version");
+		List<String> commands = list("wget --version", "rm --version");
 		commands.addAll(1, loader().localLoader().validationCommands());
 		return commands;
 	}
@@ -25,7 +25,7 @@ public abstract class RemoteFileLoaderTestCase extends RepositoryLoaderTestCase 
 
 	private List<String> expectedLoadCommands(boolean update) {
 		String temporaryFilePath = "./." + loader().hashCode();
-		List<String> commands = asList("wget " + ADDRESS + " -O " + temporaryFilePath, "rm -f " + temporaryFilePath);
+		List<String> commands = list("wget " + ADDRESS + " -O " + temporaryFilePath, "rm -f " + temporaryFilePath);
 		commands.addAll(1, loader().localLoader().loadCommands(temporaryFilePath, update));
 		return commands;
 	}

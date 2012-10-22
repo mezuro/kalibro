@@ -20,14 +20,14 @@ public class RemoteFileLoaderTest extends UnitTest {
 		localLoader = mock(RepositoryLoader.class);
 		remoteLoader = new FakeRemoteLoader();
 		temporaryFilePath = "./." + remoteLoader.hashCode();
-		when(localLoader.validationCommands()).thenReturn(asList(LOCAL_VALIDATION_COMMAND));
-		when(localLoader.loadCommands(temporaryFilePath, false)).thenReturn(asList(LOCAL_LOAD_COMMAND));
-		when(localLoader.loadCommands(temporaryFilePath, true)).thenReturn(asList(LOCAL_UPDATE_COMMAND));
+		when(localLoader.validationCommands()).thenReturn(list(LOCAL_VALIDATION_COMMAND));
+		when(localLoader.loadCommands(temporaryFilePath, false)).thenReturn(list(LOCAL_LOAD_COMMAND));
+		when(localLoader.loadCommands(temporaryFilePath, true)).thenReturn(list(LOCAL_UPDATE_COMMAND));
 	}
 
 	@Test
 	public void checkValidationCommands() {
-		assertDeepEquals(asList("wget --version", LOCAL_VALIDATION_COMMAND, "rm --version"),
+		assertDeepEquals(list("wget --version", LOCAL_VALIDATION_COMMAND, "rm --version"),
 			remoteLoader.validationCommands());
 	}
 
@@ -38,7 +38,7 @@ public class RemoteFileLoaderTest extends UnitTest {
 	}
 
 	private void checkMergedCommands(boolean update, String localCommand) {
-		assertDeepEquals(asList(
+		assertDeepEquals(list(
 			"wget " + ADDRESS + " -O " + temporaryFilePath,
 			localCommand,
 			"rm -f " + temporaryFilePath),

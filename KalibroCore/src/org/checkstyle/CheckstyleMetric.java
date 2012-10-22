@@ -73,6 +73,6 @@ final class CheckstyleMetric extends NativeMetric {
 		CheckstyleConfiguration module = parent.getChildByName(moduleName);
 		module.addMessageKey(messageKey);
 		if (attributeName != null)
-			module.addAttributeName(attributeName);
+			module.addAttribute(attributeName);
 	}
 }

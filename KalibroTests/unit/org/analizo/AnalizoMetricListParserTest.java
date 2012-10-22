@@ -13,7 +13,7 @@ public class AnalizoMetricListParserTest extends UnitTest {
 
 	@Test
 	public void shouldParseMetricListToSupportedMetrics() throws IOException {
-		assertDeepEquals(asMap(
+		assertDeepEquals(map(
 			new NativeMetric("Total Coupling Factor", SOFTWARE, C, CPP, JAVA), "total_cof",
 			new NativeMetric("Total Lines of Code", SOFTWARE, C, CPP, JAVA), "total_loc",
 			new NativeMetric("Coupling Between Objects", CLASS, C, CPP, JAVA), "cbo",

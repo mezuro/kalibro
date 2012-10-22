@@ -32,7 +32,7 @@ public class AnalizoResultParserTest extends UnitTest {
 
 	@Test
 	public void shouldParseAnalizoOutputToModuleResults() {
-		AnalizoResultParser parser = new AnalizoResultParser(supportedMetrics, asSet(totalLoc, cbo));
+		AnalizoResultParser parser = new AnalizoResultParser(supportedMetrics, set(totalLoc, cbo));
 		Writer<NativeModuleResult> resultWriter = mock(Writer.class);
 		parser.parse(input, resultWriter);
 		verify(resultWriter).write(deepEq(moduleResult(totalLoc, 4.0, "null")));

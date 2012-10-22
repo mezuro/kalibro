@@ -33,13 +33,13 @@ public class RepositoryEndpointTest extends EndpointTest<Repository, RepositoryD
 
 	@Override
 	public List<String> fieldsThatShouldBeProxy() {
-		return asList("configuration");
+		return list("configuration");
 	}
 
 	@Test
 	public void shouldGetSupportedTypes() {
-		when(dao.supportedTypes()).thenReturn(asSortedSet(GIT, LOCAL_DIRECTORY));
-		assertDeepEquals(asList(GIT), port.supportedRepositoryTypes());
+		when(dao.supportedTypes()).thenReturn(sortedSet(GIT, LOCAL_DIRECTORY));
+		assertDeepEquals(list(GIT), port.supportedRepositoryTypes());
 	}
 
 	@Test
@@ -50,8 +50,8 @@ public class RepositoryEndpointTest extends EndpointTest<Repository, RepositoryD
 
 	@Test
 	public void shouldGetRepositoriesOfProject() {
-		when(dao.repositoriesOf(PROJECT_ID)).thenReturn(asSortedSet(entity));
-		assertDeepDtoList(asList(entity), port.repositoriesOf(PROJECT_ID));
+		when(dao.repositoriesOf(PROJECT_ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.repositoriesOf(PROJECT_ID));
 	}
 
 	@Test

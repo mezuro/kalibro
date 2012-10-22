@@ -78,8 +78,8 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldSetGroupOnReadings() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(asSortedSet(reading));
-		assertDeepEquals(asSet(reading), group.getReadings());
+		group.setReadings(sortedSet(reading));
+		assertDeepEquals(set(reading), group.getReadings());
 		verify(reading).setGroup(group);
 	}
 
@@ -106,7 +106,7 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldRemoveReading() {
 		Reading reading = mock(Reading.class);
-		SortedSet<Reading> readings = spy(asSortedSet(reading));
+		SortedSet<Reading> readings = spy(sortedSet(reading));
 		group.setReadings(readings);
 
 		group.removeReading(reading);
@@ -123,14 +123,14 @@ public class ReadingGroupTest extends UnitTest {
 		assertFalse(group.hasId());
 		group.save();
 		assertSame(id, group.getId());
-		assertDeepEquals(asSet(reading), group.getReadings());
+		assertDeepEquals(set(reading), group.getReadings());
 	}
 
 	private Reading mockReading(Long id) {
 		Reading reading = mock(Reading.class);
 		ReadingDao readingDao = mock(ReadingDao.class);
 		when(DaoFactory.getReadingDao()).thenReturn(readingDao);
-		when(readingDao.readingsOf(id)).thenReturn(asSortedSet(reading));
+		when(readingDao.readingsOf(id)).thenReturn(sortedSet(reading));
 		return reading;
 	}
 
@@ -168,7 +168,7 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldNotifyReadingsOfDeletion() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(asSortedSet(reading));
+		group.setReadings(sortedSet(reading));
 		Whitebox.setInternalState(group, "id", 42L);
 
 		group.delete();

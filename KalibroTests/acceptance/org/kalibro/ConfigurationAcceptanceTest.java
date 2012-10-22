@@ -56,7 +56,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(asSet(configuration), Configuration.all());
+		assertDeepEquals(set(configuration), Configuration.all());
 	}
 
 	@Theory

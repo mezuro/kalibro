@@ -50,7 +50,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(asSet(group), ReadingGroup.all());
+		assertDeepEquals(set(group), ReadingGroup.all());
 	}
 
 	@Theory

@@ -48,7 +48,7 @@ public class ProcessSubtaskTest extends UnitTest {
 
 	@Test
 	public void shouldListenToItself() {
-		assertDeepEquals(asSet(subtask), Whitebox.getInternalState(subtask, "listeners"));
+		assertDeepEquals(set(subtask), Whitebox.getInternalState(subtask, "listeners"));
 	}
 
 	@Test

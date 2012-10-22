@@ -63,10 +63,10 @@ public class ConfigurationDatabaseDaoTest extends UnitTest {
 		doReturn(query).when(dao).createQuery(
 			"SELECT snapshot FROM MetricConfigurationSnapshot snapshot WHERE snapshot.processing.id = :processingId",
 			MetricConfigurationSnapshotRecord.class);
-		when(query.getResultList()).thenReturn(asList(snapshotRecord));
+		when(query.getResultList()).thenReturn(list(snapshotRecord));
 		when(snapshotRecord.convert()).thenReturn(snapshot);
 
-		assertDeepEquals(asSet(snapshot), dao.snapshotFor(ID).getMetricConfigurations());
+		assertDeepEquals(set(snapshot), dao.snapshotFor(ID).getMetricConfigurations());
 		verify(query).setParameter("processingId", ID);
 	}
 }
