@@ -20,7 +20,7 @@ public class CheckstyleStub implements MetricCollector {
 		result = new NativeModuleResult(module);
 		Map<String, String> resultsMap = loadResults();
 		for (String metricName : resultsMap.keySet())
-			addMetricResult(CheckstyleMetric.valueOf(metricName), resultsMap.get(metricName));
+			addMetricResult(CheckstyleMetric.metricFor(metricName), resultsMap.get(metricName));
 		return result;
 	}
 

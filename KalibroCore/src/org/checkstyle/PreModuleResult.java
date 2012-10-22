@@ -20,8 +20,8 @@ public class PreModuleResult {
 
 	private void initializeMetricResults(Set<NativeMetric> wantedMetrics) {
 		metricResults = new HashMap<String, PreMetricResult>();
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			if (wantedMetrics.contains(metric.getNativeMetric()))
+		for (CheckstyleMetric metric : CheckstyleMetric.supportedMetrics())
+			if (wantedMetrics.contains(metric))
 				metricResults.put(metric.getMessageKey(), new PreMetricResult(metric));
 	}
 

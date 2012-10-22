@@ -25,8 +25,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class CheckstyleOutputParserTest extends UnitTest {
 
 	private static final String PATH = "/code/directory/absolute/path";
-	private static final CheckstyleMetric METRIC = CheckstyleMetric.FAN_OUT;
-	private static final NativeMetric NATIVE_METRIC = METRIC.getNativeMetric();
+	private static final CheckstyleMetric METRIC = CheckstyleMetric.metricFor("maxLen.file");
 	private static final Double VALUE = 42.0;
 
 	private File codeDirectory;
@@ -36,7 +35,7 @@ public class CheckstyleOutputParserTest extends UnitTest {
 	public void setUp() {
 		codeDirectory = mock(File.class);
 		when(codeDirectory.getAbsolutePath()).thenReturn(PATH);
-		Set<NativeMetric> wantedMetrics = asSet(NATIVE_METRIC);
+		Set<NativeMetric> wantedMetrics = asSet((NativeMetric) METRIC);
 		parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
 	}
 
@@ -79,7 +78,7 @@ public class CheckstyleOutputParserTest extends UnitTest {
 		assertDeepEquals(CheckstyleStub.result().getModule(), moduleResult.getModule());
 
 		NativeMetricResult metricResult = verifyUniqueMetricResult(moduleResult);
-		assertDeepEquals(NATIVE_METRIC, metricResult.getMetric());
+		assertDeepEquals(METRIC, metricResult.getMetric());
 		assertDoubleEquals(value, metricResult.getValue());
 	}
 

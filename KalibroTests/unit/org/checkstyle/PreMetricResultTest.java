@@ -5,7 +5,8 @@ import static org.junit.Assert.assertSame;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.*;
+import org.kalibro.NativeMetricResult;
+import org.kalibro.Statistic;
 import org.kalibro.tests.UnitTest;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -16,7 +17,6 @@ import org.powermock.modules.junit4.PowerMockRunner;
 public class PreMetricResultTest extends UnitTest {
 
 	private CheckstyleMetric metric;
-	private NativeMetric nativeMetric;
 
 	private PreMetricResult result;
 
@@ -28,14 +28,12 @@ public class PreMetricResultTest extends UnitTest {
 
 	private void mockMetric() {
 		metric = PowerMockito.mock(CheckstyleMetric.class);
-		nativeMetric = new NativeMetric("PreMetricResultTest", Granularity.PACKAGE, Language.CPP);
-		PowerMockito.when(metric.getNativeMetric()).thenReturn(nativeMetric);
 		PowerMockito.when(metric.getAggregationType()).thenReturn(Statistic.AVERAGE);
 	}
 
 	@Test
 	public void shouldGetNativeMetric() {
-		assertSame(nativeMetric, result.getResult().getMetric());
+		assertSame(metric, result.getResult().getMetric());
 	}
 
 	@Test

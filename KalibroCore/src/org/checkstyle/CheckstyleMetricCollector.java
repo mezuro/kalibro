@@ -29,10 +29,7 @@ public class CheckstyleMetricCollector implements MetricCollector {
 
 	@Override
 	public Set<NativeMetric> supportedMetrics() {
-		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			supportedMetrics.add(metric.getNativeMetric());
-		return supportedMetrics;
+		return new HashSet<NativeMetric>(CheckstyleMetric.supportedMetrics());
 	}
 
 	@Override

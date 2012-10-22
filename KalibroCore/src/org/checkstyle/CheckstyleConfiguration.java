@@ -9,10 +9,10 @@ import org.kalibro.NativeMetric;
 
 public class CheckstyleConfiguration implements Configuration {
 
-	public static CheckstyleConfiguration checkerConfiguration(Collection<NativeMetric> wantedMetrics) {
+	public static CheckstyleConfiguration checkerConfiguration(Set<NativeMetric> wantedMetrics) {
 		CheckstyleConfiguration checker = new CheckstyleConfiguration("Checker");
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			if (wantedMetrics.contains(metric.getNativeMetric()))
+		for (CheckstyleMetric metric : CheckstyleMetric.supportedMetrics())
+			if (wantedMetrics.contains(metric))
 				metric.addToChecker(checker);
 		return checker;
 	}
@@ -60,7 +60,7 @@ public class CheckstyleConfiguration implements Configuration {
 	}
 
 	protected CheckstyleConfiguration getChildByName(String childName) {
-		if (! children.containsKey(childName))
+		if (!children.containsKey(childName))
 			children.put(childName, new CheckstyleConfiguration(childName));
 		return children.get(childName);
 	}

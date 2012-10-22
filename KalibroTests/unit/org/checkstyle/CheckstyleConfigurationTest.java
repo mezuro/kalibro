@@ -55,8 +55,8 @@ public class CheckstyleConfigurationTest extends UnitTest {
 
 	@Test
 	public void shouldCreateCheckerConfigurationFilteringMetrics() {
-		NativeMetric numberOfMethods = CheckstyleMetric.NUMBER_OF_METHODS.getNativeMetric();
-		configuration = CheckstyleConfiguration.checkerConfiguration(asList(numberOfMethods));
+		NativeMetric numberOfMethods = CheckstyleMetric.metricFor("too.many.methods");
+		configuration = CheckstyleConfiguration.checkerConfiguration(asSet(numberOfMethods));
 
 		assertEquals(1, configuration.getChildren().length);
 

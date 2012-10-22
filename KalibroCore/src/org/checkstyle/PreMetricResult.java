@@ -3,7 +3,6 @@ package org.checkstyle;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.kalibro.NativeMetric;
 import org.kalibro.NativeMetricResult;
 
 class PreMetricResult {
@@ -21,8 +20,7 @@ class PreMetricResult {
 	}
 
 	public NativeMetricResult getResult() {
-		NativeMetric nativeMetric = metric.getNativeMetric();
 		Double value = values.isEmpty() ? 0.0 : metric.getAggregationType().calculate(values);
-		return new NativeMetricResult(nativeMetric, value);
+		return new NativeMetricResult(metric, value);
 	}
 }
