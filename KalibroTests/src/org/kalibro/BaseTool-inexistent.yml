@@ -2,17 +2,24 @@ name: "Inexistent"
 description: "Base tool for testing"
 collectorClassName: "inexistent.Class"
 supportedMetrics:
-  -
+  - !!org.kalibro.NativeMetric
     name: "Coupling Between Objects"
     scope: CLASS
     languages:
       - C
       - CPP
       - JAVA
-  -
+  - !!org.kalibro.NativeMetric
     name: "Lack of Cohesion of Methods"
     scope: CLASS
     languages:
       - C
       - CPP
       - JAVA
+  - !!org.kalibro.NativeMetric
+          name: "Total Coupling Factor"
+          scope: SOFTWARE
+          languages:
+            - C
+            - CPP
+            - JAVA

@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 import org.cvsanaly.entities.MetricResult;
 import org.kalibro.*;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.concurrent.Writer;
 
 public class CvsAnalyMetricCollector implements MetricCollector {
 
@@ -33,7 +34,8 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
 		File tempFile = File.createTempFile("kalibro-cvsanaly-db", ".sqlite");
 		Set<NativeModuleResult> result;
 		try {
@@ -43,11 +45,13 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 			CVSAnalyDatabaseFetcher databaseFetcher = new CVSAnalyDatabaseFetcher(tempFile);
 			List<MetricResult> entities = databaseFetcher.getMetricResults();
 
-			result = convertEntityToNativeModuleResult(entities, metrics);
+			result = convertEntityToNativeModuleResult(entities, wantedMetrics);
 		} finally {
 			tempFile.delete();
 		}
-		return result;
+		for (NativeModuleResult each : result)
+			resultWriter.write(each);
+		resultWriter.close();
 	}
 
 	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities,

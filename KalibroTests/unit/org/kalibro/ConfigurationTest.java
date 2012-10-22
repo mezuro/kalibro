@@ -126,7 +126,7 @@ public class ConfigurationTest extends UnitTest {
 	@Test
 	public void shouldRetrieveNativeMetricsPerBaseTool() {
 		BaseTool baseTool = loadFixture("inexistent", BaseTool.class);
-		assertDeepEquals(asMap(baseTool, asSet(cbo, lcom4)), configuration.getNativeMetrics());
+		assertDeepEquals(asMap(baseTool, baseTool.getSupportedMetrics()), configuration.getNativeMetrics());
 	}
 
 	@Test

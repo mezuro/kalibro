@@ -1,0 +1,7 @@
+ &id1 !!org.kalibro.NativeMetric
+name: "Total Coupling Factor"
+scope: SOFTWARE
+languages:
+  - C
+  - CPP
+  - JAVA

@@ -13,6 +13,7 @@ import org.apache.commons.io.FileUtils;
 import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
+import org.kalibro.core.concurrent.Writer;
 
 public class CheckstyleMetricCollector implements MetricCollector {
 
@@ -35,11 +36,14 @@ public class CheckstyleMetricCollector implements MetricCollector {
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws Exception {
-		Configuration configuration = CheckstyleConfiguration.checkerConfiguration(metrics);
-		CheckstyleOutputParser parser = new CheckstyleOutputParser(codeDirectory, metrics);
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
+		Configuration configuration = CheckstyleConfiguration.checkerConfiguration(wantedMetrics);
+		CheckstyleOutputParser parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
 		runCheckstyle(listFiles(codeDirectory), configuration, parser);
-		return parser.getResults();
+		for (NativeModuleResult result : parser.getResults())
+			resultWriter.write(result);
+		resultWriter.close();
 	}
 
 	private List<File> listFiles(File codeDirectory) {

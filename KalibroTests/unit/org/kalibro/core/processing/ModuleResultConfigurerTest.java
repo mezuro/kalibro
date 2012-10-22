@@ -32,6 +32,9 @@ public class ModuleResultConfigurerTest extends UnitTest {
 		result = new ModuleResult(null, new Module(Granularity.CLASS, "ClassX"));
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(lcom4), LCOM4));
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(cbo), CBO));
+
+		NativeMetric totalCof = loadFixture("total_cof", NativeMetric.class);
+		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(totalCof), 42.0));
 	}
 
 	@Test

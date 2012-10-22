@@ -13,11 +13,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
 import org.kalibro.core.reflection.FieldReflector;
+import org.kalibro.dao.MetricResultDao;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoLazyLoader.class)
 public class DateMetricResultXmlTest extends UnitTest {
 
 	@Test
@@ -31,6 +38,11 @@ public class DateMetricResultXmlTest extends UnitTest {
 		Date date = new Date(new Random().nextLong());
 		MetricResult metricResult = createMetricResult();
 		DateMetricResultXml xml = new DateMetricResultXml(date, metricResult);
+
+		mockStatic(DaoLazyLoader.class);
+		when(DaoLazyLoader.createProxy(MetricResultDao.class, "descendantResultsOf", metricResult.getId()))
+			.thenReturn(metricResult.getDescendantResults());
+
 		assertSame(date, xml.date());
 		assertDeepEquals(metricResult, xml.metricResult());
 	}
