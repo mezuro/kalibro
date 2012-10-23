@@ -49,7 +49,7 @@ public class CheckstyleMetricCollector implements MetricCollector {
 		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
 		Checker checker = new Checker();
 		checker.setModuleClassLoader(Checker.class.getClassLoader());
-		checker.addListener(new CheckstyleListener(codeDirectory, resultWriter));
+		checker.addListener(new CheckstyleListener(codeDirectory, wantedMetrics, resultWriter));
 		checker.configure(CheckstyleConfiguration.checkerConfiguration(wantedMetrics));
 		checker.process(listJavaFiles(codeDirectory));
 		checker.destroy();

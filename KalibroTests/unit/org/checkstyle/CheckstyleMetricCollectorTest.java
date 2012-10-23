@@ -69,7 +69,8 @@ public class CheckstyleMetricCollectorTest extends UnitTest {
 
 	private CheckstyleListener mockListener() throws Exception {
 		CheckstyleListener listener = mock(CheckstyleListener.class);
-		whenNew(CheckstyleListener.class).withArguments(codeDirectory, resultWriter).thenReturn(listener);
+		whenNew(CheckstyleListener.class).withArguments(codeDirectory, wantedMetrics, resultWriter)
+			.thenReturn(listener);
 		return listener;
 	}
 

@@ -1,9 +1,7 @@
 package org.checkstyle;
 
 import java.io.InputStream;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import org.kalibro.Granularity;
@@ -23,31 +21,28 @@ import org.yaml.snakeyaml.introspector.BeanAccess;
 final class CheckstyleMetric extends NativeMetric {
 
 	private static Set<CheckstyleMetric> metrics;
-	private static Map<String, CheckstyleMetric> metricsMap;
 
 	static {
 		initializeMetrics();
 	}
 
-	static Set<CheckstyleMetric> supportedMetrics() {
-		return metrics;
+	static Set<NativeMetric> supportedMetrics() {
+		return new HashSet<NativeMetric>(metrics);
 	}
 
-	static CheckstyleMetric metricFor(String messageKey) {
-		return metricsMap.get(messageKey);
+	static Set<CheckstyleMetric> selectMetrics(Set<NativeMetric> wantedMetrics) {
+		Set<CheckstyleMetric> selectedMetrics = new HashSet<CheckstyleMetric>(metrics);
+		selectedMetrics.retainAll(wantedMetrics);
+		return selectedMetrics;
 	}
 
 	private static void initializeMetrics() {
 		metrics = new HashSet<CheckstyleMetric>();
-		metricsMap = new HashMap<String, CheckstyleMetric>();
 		Yaml yaml = new Yaml();
 		yaml.setBeanAccess(BeanAccess.FIELD);
 		InputStream metricsStream = CheckstyleMetric.class.getResourceAsStream("supported-metrics.yml");
-		for (Object object : yaml.loadAll(metricsStream)) {
-			CheckstyleMetric metric = (CheckstyleMetric) object;
-			metrics.add(metric);
-			metricsMap.put(metric.getMessageKey(), metric);
-		}
+		for (Object object : yaml.loadAll(metricsStream))
+			metrics.add((CheckstyleMetric) object);
 	}
 
 	private String moduleName, attributeName, messageKey;

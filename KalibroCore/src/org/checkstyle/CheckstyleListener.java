@@ -4,95 +4,107 @@ import com.puppycrawl.tools.checkstyle.api.AuditEvent;
 import com.puppycrawl.tools.checkstyle.api.AuditListener;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.text.SimpleDateFormat;
+import java.util.*;
 import java.util.regex.Pattern;
 
-import org.kalibro.Granularity;
-import org.kalibro.Module;
-import org.kalibro.NativeModuleResult;
+import org.apache.commons.io.IOUtils;
+import org.kalibro.*;
+import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.Writer;
 
-public class CheckstyleListener implements AuditListener {
+/**
+ * Listens to Checkstyle events and writes results according to them.
+ * 
+ * @author Carlos Morais
+ * @author Eduardo Morais
+ */
+class CheckstyleListener implements AuditListener {
 
-	private File codeDirectory;
+	private String codePath;
+	private Set<CheckstyleMetric> wantedMetrics;
 	private Writer<NativeModuleResult> resultWriter;
-	private Map<Module, PreModuleResult> resultsMap;
 
-	public CheckstyleListener(File codeDirectory, Writer<NativeModuleResult> resultWriter) {
-		this.codeDirectory = codeDirectory;
+	private Module module;
+	private Map<String, List<Double>> resultsMap;
+
+	private PrintStream logStream;
+
+	CheckstyleListener(File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) {
+		this.codePath = codeDirectory.getAbsolutePath() + File.separator;
+		this.wantedMetrics = CheckstyleMetric.selectMetrics(wantedMetrics);
 		this.resultWriter = resultWriter;
-		resultsMap = new HashMap<Module, PreModuleResult>();
 	}
 
 	@Override
-	public void auditStarted(AuditEvent aEvt) {
-		resultsMap = new HashMap<Module, PreModuleResult>();
+	public void auditStarted(AuditEvent event) {
+		resultsMap = new HashMap<String, List<Double>>();
+	}
+
+	@Override
+	public void fileStarted(AuditEvent event) {
+		String relativeFileName = event.getFileName().replace(codePath, "");
+		String[] nameParts = relativeFileName.split(Pattern.quote(File.separator));
+		module = new Module(Granularity.CLASS, nameParts);
+		for (CheckstyleMetric wantedMetric : wantedMetrics)
+			resultsMap.put(wantedMetric.getMessageKey(), new ArrayList<Double>());
 	}
 
 	@Override
 	public void addError(AuditEvent event) {
 		String messageKey = event.getLocalizedMessage().getKey();
-		Module module = fileNameToModule(event.getFileName());
-		String message = event.getMessage().replace(messageKey, "");
-		Double value = parseValue(message);
-		addMetricResult(module, messageKey, value);
+		String value = event.getMessage().replace(messageKey, "");
+		resultsMap.get(messageKey).add(parse(value));
 	}
 
-	private Module fileNameToModule(String fileName) {
-		String relativeFileName = fileName.replace(codeDirectory.getAbsolutePath() + File.separator, "");
-		String[] parts = relativeFileName.replace(".java", "").split(Pattern.quote(File.separator));
-		return new Module(Granularity.CLASS, parts);
-	}
-
-	private Double parseValue(String message) {
+	private Double parse(String value) {
 		try {
-			return Double.parseDouble(message);
+			return Double.parseDouble(value);
 		} catch (NumberFormatException exception) {
 			return 0.0;
 		}
 	}
 
-	private void addMetricResult(Module module, String messageKey, Double value) {
-		getPreResult(module).addMetricResult(messageKey, value);
+	@Override
+	public void fileFinished(AuditEvent event) {
+		NativeModuleResult moduleResult = new NativeModuleResult(module);
+		for (CheckstyleMetric metric : wantedMetrics)
+			moduleResult.addMetricResult(metricResultFor(metric));
+		resultWriter.write(moduleResult);
 	}
 
-	private PreModuleResult getPreResult(Module module) {
-//		if (!resultsMap.containsKey(module))
-//			resultsMap.put(module, new PreModuleResult(module, resultWriter));
-		return resultsMap.get(module);
-	}
-
-	public Set<NativeModuleResult> getResults() {
-		Set<NativeModuleResult> results = new HashSet<NativeModuleResult>();
-		for (PreModuleResult result : resultsMap.values())
-			results.add(result.getModuleResult());
-		return results;
+	private NativeMetricResult metricResultFor(CheckstyleMetric metric) {
+		List<Double> values = resultsMap.get(metric.getMessageKey());
+		Double value = values.isEmpty() ? 0.0 : metric.getAggregationType().calculate(values);
+		return new NativeMetricResult(metric, value);
 	}
 
 	@Override
-	public void auditFinished(AuditEvent aEvt) {
-		// TODO Auto-generated method stub
-
+	public void auditFinished(AuditEvent event) {
+		resultWriter.close();
 	}
 
 	@Override
-	public void fileStarted(AuditEvent aEvt) {
-		// TODO Auto-generated method stub
-
+	public void addException(AuditEvent event, Throwable throwable) {
+		try {
+			logError(event.getFileName(), throwable);
+		} catch (IOException exception) {
+			return;
+		}
 	}
 
-	@Override
-	public void fileFinished(AuditEvent aEvt) {
-		// TODO Auto-generated method stub
-
+	private void logError(String fileName, Throwable throwable) throws IOException {
+		if (logStream == null)
+			logStream = new PrintStream(new FileOutputStream(createFile(), true));
+		IOUtils.write("\n\nError auditing " + fileName + "\n", logStream);
+		throwable.printStackTrace(logStream);
 	}
 
-	@Override
-	public void addException(AuditEvent aEvt, Throwable aThrowable) {
-		// TODO Auto-generated method stub
-
+	private File createFile() {
+		String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
+		return new File(Environment.logsDirectory(), "checkstyle." + today + ".log");
 	}
 }

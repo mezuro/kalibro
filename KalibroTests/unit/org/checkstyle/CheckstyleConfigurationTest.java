@@ -55,8 +55,8 @@ public class CheckstyleConfigurationTest extends UnitTest {
 
 	@Test
 	public void shouldCreateCheckerConfigurationForWantedMetrics() {
-		NativeMetric numberOfMethods = CheckstyleMetric.metricFor("too.many.methods");
-		CheckstyleConfiguration checker = CheckstyleConfiguration.checkerConfiguration(set(numberOfMethods));
+		NativeMetric fanOut = loadFixture("fanOut", CheckstyleMetric.class);
+		CheckstyleConfiguration checker = CheckstyleConfiguration.checkerConfiguration(set(fanOut));
 
 		assertEquals(1, checker.getChildren().length);
 		Configuration treeWalker = checker.getChildren()[0];
@@ -64,7 +64,7 @@ public class CheckstyleConfigurationTest extends UnitTest {
 		assertEquals(1, treeWalker.getChildren().length);
 		Configuration methodCount = treeWalker.getChildren()[0];
 
-		assertArrayEquals(array("maxTotal"), methodCount.getAttributeNames());
-		assertDeepEquals(map("too.many.methods", "too.many.methods{0}"), methodCount.getMessages());
+		assertArrayEquals(array("max"), methodCount.getAttributeNames());
+		assertDeepEquals(map("classFanOutComplexity", "classFanOutComplexity{0}"), methodCount.getMessages());
 	}
 }

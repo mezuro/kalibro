@@ -19,9 +19,8 @@ class CheckstyleConfiguration implements Configuration {
 
 	static CheckstyleConfiguration checkerConfiguration(Set<NativeMetric> wantedMetrics) {
 		CheckstyleConfiguration checker = new CheckstyleConfiguration("Checker");
-		for (CheckstyleMetric metric : CheckstyleMetric.supportedMetrics())
-			if (wantedMetrics.contains(metric))
-				metric.addToChecker(checker);
+		for (CheckstyleMetric metric : CheckstyleMetric.selectMetrics(wantedMetrics))
+			metric.addToChecker(checker);
 		return checker;
 	}
 
