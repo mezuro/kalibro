@@ -12,7 +12,6 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.NativeMetric;
 import org.kalibro.NativeMetricResult;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.tests.UnitTest;
@@ -29,14 +28,13 @@ public class CheckstyleOutputParserTest extends UnitTest {
 	private static final Double VALUE = 42.0;
 
 	private File codeDirectory;
-	private CheckstyleOutputParser parser;
+	private CheckstyleListener parser;
 
 	@Before
 	public void setUp() {
 		codeDirectory = mock(File.class);
 		when(codeDirectory.getAbsolutePath()).thenReturn(PATH);
-		Set<NativeMetric> wantedMetrics = set((NativeMetric) METRIC);
-		parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
+		parser = new CheckstyleListener(codeDirectory, null);
 	}
 
 	@Test

@@ -12,18 +12,18 @@ import java.util.regex.Pattern;
 
 import org.kalibro.Granularity;
 import org.kalibro.Module;
-import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
+import org.kalibro.core.concurrent.Writer;
 
-public class CheckstyleOutputParser implements AuditListener {
+public class CheckstyleListener implements AuditListener {
 
 	private File codeDirectory;
-	private Set<NativeMetric> wantedMetrics;
+	private Writer<NativeModuleResult> resultWriter;
 	private Map<Module, PreModuleResult> resultsMap;
 
-	public CheckstyleOutputParser(File codeDirectory, Set<NativeMetric> wantedMetrics) {
+	public CheckstyleListener(File codeDirectory, Writer<NativeModuleResult> resultWriter) {
 		this.codeDirectory = codeDirectory;
-		this.wantedMetrics = wantedMetrics;
+		this.resultWriter = resultWriter;
 		resultsMap = new HashMap<Module, PreModuleResult>();
 	}
 
@@ -60,8 +60,8 @@ public class CheckstyleOutputParser implements AuditListener {
 	}
 
 	private PreModuleResult getPreResult(Module module) {
-		if (!resultsMap.containsKey(module))
-			resultsMap.put(module, new PreModuleResult(module, wantedMetrics));
+//		if (!resultsMap.containsKey(module))
+//			resultsMap.put(module, new PreModuleResult(module, resultWriter));
 		return resultsMap.get(module);
 	}
 

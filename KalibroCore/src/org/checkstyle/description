@@ -1,0 +1,3 @@
+Checkstyle is a tool for checking Java source code for adherence to a set of rules.
+The latest version can be found at http://checkstyle.sourceforge.net
+Many checks were configured to work as metrics.

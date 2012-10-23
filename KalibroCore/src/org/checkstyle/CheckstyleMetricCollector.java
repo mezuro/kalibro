@@ -1,21 +1,33 @@
 package org.checkstyle;
 
 import com.puppycrawl.tools.checkstyle.Checker;
-import com.puppycrawl.tools.checkstyle.api.AuditListener;
-import com.puppycrawl.tools.checkstyle.api.Configuration;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 import org.kalibro.MetricCollector;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
 import org.kalibro.core.concurrent.Writer;
 
+/**
+ * Metric collector for Checkstyle.
+ * 
+ * @author Carlos Morais
+ * @author Eduardo Morais
+ */
 public class CheckstyleMetricCollector implements MetricCollector {
+
+	private String description;
+
+	public CheckstyleMetricCollector() throws IOException {
+		description = IOUtils.toString(getClass().getResourceAsStream("description"));
+	}
 
 	@Override
 	public String name() {
@@ -24,7 +36,7 @@ public class CheckstyleMetricCollector implements MetricCollector {
 
 	@Override
 	public String description() {
-		return "";
+		return description;
 	}
 
 	@Override
@@ -35,24 +47,15 @@ public class CheckstyleMetricCollector implements MetricCollector {
 	@Override
 	public void collectMetrics(
 		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
-		Configuration configuration = CheckstyleConfiguration.checkerConfiguration(wantedMetrics);
-		CheckstyleOutputParser parser = new CheckstyleOutputParser(codeDirectory, wantedMetrics);
-		runCheckstyle(listFiles(codeDirectory), configuration, parser);
-		for (NativeModuleResult result : parser.getResults())
-			resultWriter.write(result);
-		resultWriter.close();
-	}
-
-	private List<File> listFiles(File codeDirectory) {
-		return (List<File>) FileUtils.listFiles(codeDirectory, new String[]{"java"}, true);
-	}
-
-	private void runCheckstyle(List<File> files, Configuration configuration, AuditListener listener) throws Exception {
 		Checker checker = new Checker();
 		checker.setModuleClassLoader(Checker.class.getClassLoader());
-		checker.addListener(listener);
-		checker.configure(configuration);
-		checker.process(files);
+		checker.addListener(new CheckstyleListener(codeDirectory, resultWriter));
+		checker.configure(CheckstyleConfiguration.checkerConfiguration(wantedMetrics));
+		checker.process(listJavaFiles(codeDirectory));
 		checker.destroy();
+	}
+
+	private List<File> listJavaFiles(File codeDirectory) {
+		return (List<File>) FileUtils.listFiles(codeDirectory, new String[]{"java"}, true);
 	}
 }
