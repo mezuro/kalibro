@@ -25,6 +25,10 @@ public abstract class SpecialAssertions extends MockitoProxy {
 		assertEquals(expected, actual, 1E-10);
 	}
 
+	public static void assertDoubleEquals(String message, Double expected, Double actual) {
+		assertEquals(message, expected, actual, 1E-10);
+	}
+
 	public static <E extends Comparable<? super E>> void assertSorted(E... elements) {
 		int i = 0;
 		while (i < elements.length - 1)

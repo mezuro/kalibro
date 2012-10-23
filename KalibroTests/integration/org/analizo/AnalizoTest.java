@@ -21,7 +21,7 @@ import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.Writer;
 import org.kalibro.tests.IntegrationTest;
 
-public class AnalizoIntegrationTest extends IntegrationTest {
+public class AnalizoTest extends IntegrationTest {
 
 	@BeforeClass
 	public static void checkAnalizoVersion() {
