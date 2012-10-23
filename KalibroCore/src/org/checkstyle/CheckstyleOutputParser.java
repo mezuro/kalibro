@@ -1,6 +1,7 @@
 package org.checkstyle;
 
 import com.puppycrawl.tools.checkstyle.api.AuditEvent;
+import com.puppycrawl.tools.checkstyle.api.AuditListener;
 
 import java.io.File;
 import java.util.HashMap;
@@ -14,7 +15,7 @@ import org.kalibro.Module;
 import org.kalibro.NativeMetric;
 import org.kalibro.NativeModuleResult;
 
-public class CheckstyleOutputParser extends AuditAdapter {
+public class CheckstyleOutputParser implements AuditListener {
 
 	private File codeDirectory;
 	private Set<NativeMetric> wantedMetrics;
@@ -69,5 +70,29 @@ public class CheckstyleOutputParser extends AuditAdapter {
 		for (PreModuleResult result : resultsMap.values())
 			results.add(result.getModuleResult());
 		return results;
+	}
+
+	@Override
+	public void auditFinished(AuditEvent aEvt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void fileStarted(AuditEvent aEvt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void fileFinished(AuditEvent aEvt) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void addException(AuditEvent aEvt, Throwable aThrowable) {
+		// TODO Auto-generated method stub
+
 	}
 }
