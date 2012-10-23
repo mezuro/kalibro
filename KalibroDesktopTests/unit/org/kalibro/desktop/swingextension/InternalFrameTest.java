@@ -1,0 +1,91 @@
+package org.kalibro.desktop.swingextension;
+
+import static org.junit.Assert.*;
+
+import java.beans.PropertyVetoException;
+
+import javax.swing.WindowConstants;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.Range;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+@RunWith(PowerMockRunner.class)
+@PowerMockIgnore("javax.*")
+@PrepareOnlyThisForTest(InternalFrame.class)
+public class InternalFrameTest extends UnitTest {
+
+	private Range range;
+	private RangeFrame frame;
+
+	@Before
+	public void setUp() {
+		range = loadFixture("lcom4-bad", Range.class);
+		frame = new RangeFrame(range);
+	}
+
+	@Test
+	public void checkTitle() {
+		assertEquals("Range " + range, frame.getTitle());
+	}
+
+	@Test
+	public void shouldBeResizable() {
+		assertTrue(frame.isResizable());
+	}
+
+	@Test
+	public void shouldBeClosable() {
+		assertTrue(frame.isClosable());
+	}
+
+	@Test
+	public void shouldBeMaximizable() {
+		assertTrue(frame.isMaximizable());
+	}
+
+	@Test
+	public void shouldBeIconifiable() {
+		assertTrue(frame.isIconifiable());
+	}
+
+	@Test
+	public void shouldDoNothingOnCloseByDefault() {
+		assertEquals(WindowConstants.DO_NOTHING_ON_CLOSE, frame.getDefaultCloseOperation());
+	}
+
+	@Test
+	public void checkName() {
+		assertEquals("range", frame.getName());
+	}
+
+	@Test
+	public void shouldRetrieveEntity() {
+		assertSame(range, frame.get());
+	}
+
+	@Test
+	public void shouldSelectHidingPropertyVetoException() throws Exception {
+		frame = PowerMockito.spy(frame);
+		frame.select();
+		Mockito.verify(frame).setSelected(true);
+
+		PowerMockito.doThrow(new PropertyVetoException("", null)).when(frame).setSelected(true);
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() {
+				frame.select();
+			}
+		}).throwsException().withMessage("Could not select range frame: " + range)
+			.withCause(PropertyVetoException.class);
+	}
+}

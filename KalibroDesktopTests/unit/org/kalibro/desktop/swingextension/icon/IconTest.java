@@ -1,0 +1,60 @@
+package org.kalibro.desktop.swingextension.icon;
+
+import static org.junit.Assert.assertEquals;
+
+import javax.swing.JInternalFrame;
+
+import org.junit.Before;
+import org.junit.Test;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mockito;
+import org.powermock.api.mockito.PowerMockito;
+
+public class IconTest extends UnitTest {
+
+	private static final int WIDTH = 42;
+	private static final int HEIGHT = 36;
+
+	private Icon icon, oldIcon;
+
+	@Before
+	public void setUp() {
+		icon = new Icon(Icon.KALIBRO);
+		oldIcon = PowerMockito.mock(Icon.class);
+		PowerMockito.when(oldIcon.getIconWidth()).thenReturn(WIDTH);
+		PowerMockito.when(oldIcon.getIconHeight()).thenReturn(HEIGHT);
+	}
+
+	@Test
+	public void shouldNotAcceptInvalidResource() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() {
+				icon = new Icon("inexistent.gif");
+			}
+		}).doThrow(NullPointerException.class);
+	}
+
+	@Test
+	public void shouldScaleForSize() {
+		icon = icon.scaleForSize(WIDTH, HEIGHT);
+		assertEquals(WIDTH, icon.getIconWidth());
+		assertEquals(HEIGHT, icon.getIconHeight());
+	}
+
+	@Test
+	public void shouldReplaceInternalFrameIconScalingForSameSize() {
+		JInternalFrame frame = PowerMockito.mock(JInternalFrame.class);
+		PowerMockito.when(frame.getFrameIcon()).thenReturn(oldIcon);
+		icon.replaceIconOf(frame);
+
+		ArgumentCaptor<Icon> captor = ArgumentCaptor.forClass(Icon.class);
+		Mockito.verify(frame).setFrameIcon(captor.capture());
+		icon = captor.getValue();
+		assertEquals(WIDTH, icon.getIconWidth());
+		assertEquals(HEIGHT, icon.getIconHeight());
+	}
+}
