@@ -1,3 +1,2 @@
 org.analizo.AnalizoMetricCollector
 org.checkstyle.CheckstyleMetricCollector
-org.cvsanaly.CvsAnalyMetricCollector
