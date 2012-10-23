@@ -28,7 +28,7 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 	@Override
 	public Set<NativeMetric> supportedMetrics() {
 		Set<NativeMetric> supportedMetrics = new HashSet<NativeMetric>();
-		for (CVSAnalyMetric metric : CVSAnalyMetric.values())
+		for (CvsAnalyMetric metric : CvsAnalyMetric.values())
 			supportedMetrics.add(metric.getNativeMetric());
 		return supportedMetrics;
 	}
@@ -42,7 +42,7 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 			CommandTask executor = new CommandTask(CVSANALY2_COMMAND_LINE + tempFile.getAbsolutePath(), codeDirectory);
 			executor.execute();
 
-			CVSAnalyDatabaseFetcher databaseFetcher = new CVSAnalyDatabaseFetcher(tempFile);
+			CvsAnalyDatabaseFetcher databaseFetcher = new CvsAnalyDatabaseFetcher(tempFile);
 			List<MetricResult> entities = databaseFetcher.getMetricResults();
 
 			result = convertEntityToNativeModuleResult(entities, wantedMetrics);
@@ -72,7 +72,7 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 
 	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult,
 		Set<NativeMetric> wantedMetrics) {
-		for (CVSAnalyMetric metric : CVSAnalyMetric.values()) {
+		for (CvsAnalyMetric metric : CvsAnalyMetric.values()) {
 			NativeMetric nativeMetric = metric.getNativeMetric();
 			if (wantedMetrics.contains(nativeMetric))
 				nativeModuleResult.addMetricResult(new NativeMetricResult(nativeMetric, metric.getMetricValue(entity)));

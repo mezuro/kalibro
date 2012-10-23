@@ -26,7 +26,7 @@ public class CVSAnalyDatabaseFetcherTest extends UnitTest {
 
 	private static final File DATABASE_PATH = new File("/tmp/teste");
 
-	private CVSAnalyDatabaseFetcher fetcher;
+	private CvsAnalyDatabaseFetcher fetcher;
 	private Map<String, String> expectedPersistenceProperites = createExpectedPersistencePropertiesMap();
 
 	private Map<String, String> createExpectedPersistencePropertiesMap() {
@@ -39,7 +39,7 @@ public class CVSAnalyDatabaseFetcherTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		fetcher = new CVSAnalyDatabaseFetcher(DATABASE_PATH);
+		fetcher = new CvsAnalyDatabaseFetcher(DATABASE_PATH);
 	}
 
 	@Test

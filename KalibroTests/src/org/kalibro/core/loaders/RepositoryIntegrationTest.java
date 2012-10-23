@@ -3,7 +3,6 @@ package org.kalibro.core.loaders;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
@@ -27,8 +26,8 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 	}
 
 	@After
-	public void tearDown() throws IOException {
-		FileUtils.cleanDirectory(projectsDirectory());
+	public void tearDown() {
+		FileUtils.deleteQuietly(projectsDirectory());
 	}
 
 	@Test

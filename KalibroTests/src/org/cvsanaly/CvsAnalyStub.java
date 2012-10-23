@@ -8,41 +8,41 @@ import org.cvsanaly.entities.MetricResult;
 import org.cvsanaly.entities.RepositoryFile;
 import org.kalibro.*;
 
-public final class CVSAnalyStub {
+public final class CvsAnalyStub {
 
 	private static Set<NativeModuleResult> result = generateResult();
 	private static Set<NativeModuleResult> limitedResult = generateLimitedResult();
 
-	private static Map<CVSAnalyMetric, Double> generateHelloWorldResultMap(boolean limited) {
-		Map<CVSAnalyMetric, Double> helloWorldResultMap;
-		helloWorldResultMap = new HashMap<CVSAnalyMetric, Double>(CVSAnalyMetric.values().length);
-		helloWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
-		helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 13.0);
+	private static Map<CvsAnalyMetric, Double> generateHelloWorldResultMap(boolean limited) {
+		Map<CvsAnalyMetric, Double> helloWorldResultMap;
+		helloWorldResultMap = new HashMap<CvsAnalyMetric, Double>(CvsAnalyMetric.values().length);
+		helloWorldResultMap.put(CvsAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
+		helloWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_LINES_OF_CODE, 13.0);
 		if (!limited) {
-			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
-			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
-			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
-			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
-			helloWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 10.0);
-			helloWorldResultMap.put(CVSAnalyMetric.AVERAGE_CYCLOMATIC_COMPLEXITY, 0.0);
-			helloWorldResultMap.put(CVSAnalyMetric.HALSTEAD_VOLUME, 0.0);
+			helloWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
+			helloWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
+			helloWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
+			helloWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
+			helloWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 10.0);
+			helloWorldResultMap.put(CvsAnalyMetric.AVERAGE_CYCLOMATIC_COMPLEXITY, 0.0);
+			helloWorldResultMap.put(CvsAnalyMetric.HALSTEAD_VOLUME, 0.0);
 		}
 		return helloWorldResultMap;
 	}
 
-	private static Map<CVSAnalyMetric, Double> generateByeWorldResultMap(boolean limited) {
-		Map<CVSAnalyMetric, Double> byeWorldResultMap;
-		byeWorldResultMap = new HashMap<CVSAnalyMetric, Double>(CVSAnalyMetric.values().length);
-		byeWorldResultMap.put(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
-		byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE, 8.0);
+	private static Map<CvsAnalyMetric, Double> generateByeWorldResultMap(boolean limited) {
+		Map<CvsAnalyMetric, Double> byeWorldResultMap;
+		byeWorldResultMap = new HashMap<CvsAnalyMetric, Double>(CvsAnalyMetric.values().length);
+		byeWorldResultMap.put(CvsAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY, 0.0);
+		byeWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_LINES_OF_CODE, 8.0);
 		if (!limited) {
-			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
-			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
-			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
-			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
-			byeWorldResultMap.put(CVSAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 6.0);
-			byeWorldResultMap.put(CVSAnalyMetric.AVERAGE_CYCLOMATIC_COMPLEXITY, 0.0);
-			byeWorldResultMap.put(CVSAnalyMetric.HALSTEAD_VOLUME, 0.0);
+			byeWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_BLANK_LINES, 0.0);
+			byeWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_COMMENTED_LINES, 0.0);
+			byeWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_COMMENTS, 0.0);
+			byeWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_FUNCTIONS, 0.0);
+			byeWorldResultMap.put(CvsAnalyMetric.NUMBER_OF_SOURCE_LINES_OF_CODE, 6.0);
+			byeWorldResultMap.put(CvsAnalyMetric.AVERAGE_CYCLOMATIC_COMPLEXITY, 0.0);
+			byeWorldResultMap.put(CvsAnalyMetric.HALSTEAD_VOLUME, 0.0);
 		}
 		return byeWorldResultMap;
 	}
@@ -71,10 +71,10 @@ public final class CVSAnalyStub {
 		return generatedResult;
 	}
 
-	private static NativeModuleResult createNativeModuleResult(String name, Map<CVSAnalyMetric, Double> metricValues) {
+	private static NativeModuleResult createNativeModuleResult(String name, Map<CvsAnalyMetric, Double> metricValues) {
 		NativeModuleResult nativeModuleResult = new NativeModuleResult(new Module(Granularity.CLASS,
 			"aaa", "bbb", name));
-		for (Map.Entry<CVSAnalyMetric, Double> entry : metricValues.entrySet())
+		for (Map.Entry<CvsAnalyMetric, Double> entry : metricValues.entrySet())
 			nativeModuleResult.addMetricResult(
 				new NativeMetricResult(entry.getKey().getNativeMetric(), entry.getValue()));
 		return nativeModuleResult;
@@ -162,7 +162,7 @@ public final class CVSAnalyStub {
 		return limitedResult;
 	}
 
-	private CVSAnalyStub() {
+	private CvsAnalyStub() {
 		return;
 	}
 }

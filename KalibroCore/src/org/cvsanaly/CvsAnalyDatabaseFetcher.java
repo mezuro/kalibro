@@ -13,11 +13,11 @@ import javax.persistence.Persistence;
 
 import org.cvsanaly.entities.MetricResult;
 
-public class CVSAnalyDatabaseFetcher {
+public class CvsAnalyDatabaseFetcher {
 
 	private final File databasePath;
 
-	CVSAnalyDatabaseFetcher(File databasePath) {
+	CvsAnalyDatabaseFetcher(File databasePath) {
 		this.databasePath = databasePath;
 	}
 

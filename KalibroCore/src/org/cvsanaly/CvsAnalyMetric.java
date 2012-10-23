@@ -7,7 +7,8 @@ import org.kalibro.NativeMetric;
 import org.kalibro.core.Identifier;
 import org.kalibro.core.reflection.FieldReflector;
 
-public enum CVSAnalyMetric {
+public enum CvsAnalyMetric {
+
 	NUMBER_OF_SOURCE_LINES_OF_CODE,
 	NUMBER_OF_LINES_OF_CODE,
 	NUMBER_OF_COMMENTS,

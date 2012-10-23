@@ -1,5 +1,6 @@
 package org.cvsanaly;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.startsWith;
 
 import java.io.File;
@@ -8,11 +9,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.core.command.CommandTask;
+import org.kalibro.core.concurrent.Writer;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
@@ -25,73 +27,71 @@ public class CVSAnalyMetricCollectorTest extends UnitTest {
 
 	private CvsAnalyMetricCollector cvsanaly;
 	private CommandTask executor;
-	private CVSAnalyDatabaseFetcher fetcher;
+	private CvsAnalyDatabaseFetcher fetcher;
+
+	private Writer<NativeModuleResult> resultWriter;
 
 	@Before
 	public void setUp() {
 		cvsanaly = new CvsAnalyMetricCollector();
 		executor = PowerMockito.mock(CommandTask.class);
-		fetcher = PowerMockito.mock(CVSAnalyDatabaseFetcher.class);
+		fetcher = PowerMockito.mock(CvsAnalyDatabaseFetcher.class);
+		resultWriter = mock(Writer.class);
 	}
 
 	@Test
 	public void checkBaseTool() {
-		assertDeepEquals(CVSAnalyStub.getBaseTool().getSupportedMetrics(), cvsanaly.supportedMetrics());
+		assertDeepEquals(CvsAnalyStub.getBaseTool().getSupportedMetrics(), cvsanaly.supportedMetrics());
 	}
 
-	@Ignore
 	@Test
 	public void shouldDeleteFileIfAnExceptionOccurs() throws Exception {
-// TODO
-//		File codeDirectory = new File("/");
-//		File databaseFileSpy = mockDatabaseFile();
-//		Set<NativeMetric> metrics = cvsanaly.supportedMetrics();
+		File codeDirectory = new File("/");
+		File databaseFileSpy = mockDatabaseFile();
+		Set<NativeMetric> metrics = cvsanaly.supportedMetrics();
 
 		mockCommandToThrowException();
 		mockFetcher();
 
-//		try {
-//			cvsanaly.collectMetrics(codeDirectory, metrics);
-//		} catch (Exception e) {
-//			assertDifferent(e, null);
-//		}
-//		Mockito.verify(databaseFileSpy).delete();
+		try {
+			cvsanaly.collectMetrics(codeDirectory, metrics, resultWriter);
+		} catch (Exception e) {
+			assertNotNull(e);
+		}
+		Mockito.verify(databaseFileSpy).delete();
 	}
 
-	@Ignore
 	@Test
 	public void shouldCollectAllMetrics() throws Exception {
-		// TODO
-//		File codeDirectory = new File("/");
-//		Set<NativeMetric> metrics = cvsanaly.supportedMetrics();
+		File codeDirectory = new File("/");
+		Set<NativeMetric> metrics = cvsanaly.supportedMetrics();
 
 		mockCommand();
 		mockFetcher();
 
-//		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
-//		Mockito.verify(executor).execute();
-//		assertDeepEquals(CVSAnalyStub.results(), actual);
+		cvsanaly.collectMetrics(codeDirectory, metrics, resultWriter);
+		Mockito.verify(executor).execute();
+		verifyResults(CvsAnalyStub.results());
 	}
 
-	@Ignore
 	@Test
 	public void shouldCollectWantedMetrics() throws Exception {
 		File codeDirectory = new File("/");
 		Set<NativeMetric> metrics = new HashSet<NativeMetric>();
-		metrics.add(CVSAnalyMetric.NUMBER_OF_LINES_OF_CODE.getNativeMetric());
-		metrics.add(CVSAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY.getNativeMetric());
+		metrics.add(CvsAnalyMetric.NUMBER_OF_LINES_OF_CODE.getNativeMetric());
+		metrics.add(CvsAnalyMetric.MAXIMUM_CYCLOMATIC_COMPLEXITY.getNativeMetric());
 
 		mockCommand();
 		mockFetcher();
 
-//		Set<NativeModuleResult> actual = cvsanaly.collectMetrics(codeDirectory, metrics);
+		cvsanaly.collectMetrics(codeDirectory, metrics, resultWriter);
 		Mockito.verify(executor).execute();
-//		assertDeepEquals(CVSAnalyStub.limitedResults(), actual);
+		verifyResults(CvsAnalyStub.limitedResults());
 	}
 
 	private void mockFetcher() throws Exception {
-		PowerMockito.whenNew(CVSAnalyDatabaseFetcher.class).withArguments(any()).thenReturn(fetcher);
-		Mockito.when(fetcher.getMetricResults()).thenReturn(CVSAnalyStub.getExampleEntities());
+		PowerMockito.whenNew(CvsAnalyDatabaseFetcher.class).withArguments(any()).thenReturn(fetcher);
+		Mockito.when(fetcher.getMetricResults()).thenReturn(CvsAnalyStub.getExampleEntities());
 	}
 
 	private void mockCommand() throws Exception {
@@ -110,5 +110,11 @@ public class CVSAnalyMetricCollectorTest extends UnitTest {
 		File databaseFileSpy = spy(new File("/tmp/aaa"));
 		PowerMockito.when(File.createTempFile("kalibro-cvsanaly-db", ".sqlite")).thenReturn(databaseFileSpy);
 		return databaseFileSpy;
+	}
+
+	private void verifyResults(Set<NativeModuleResult> expected) {
+		for (NativeModuleResult moduleResult : expected)
+			verify(resultWriter).write(deepEq(moduleResult));
+		verify(resultWriter).close();
 	}
 }
