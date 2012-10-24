@@ -1,53 +1,55 @@
 package org.kalibro;
 
-import java.io.File;
-import java.util.Collection;
-import java.util.LinkedList;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import org.kalibro.core.Identifier;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProjectDao;
 
+/**
+ * Software project.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("name")
 public class Project extends AbstractEntity<Project> {
+
+	public static SortedSet<Project> all() {
+		return dao().all();
+	}
+
+	private static ProjectDao dao() {
+		return DaoFactory.getProjectDao();
+	}
 
 	private Long id;
 
 	@IdentityField
 	private String name;
 
-	private String license;
 	private String description;
-	private String configurationName;
-	private Repository repository;
-	private Collection<String> mailsToNotify;
-	
-	private Throwable error;
-	private ProjectState state;
+	private Set<Repository> repositories;
 
 	public Project() {
-		setId(null);
-		setName("");
-		setLicense("");
-		setDescription("");
-		setConfigurationName("");
-		setRepository(new Repository());
-		setState(ProjectState.NEW);
-		setMailsToNotify(new LinkedList<String>());
+		this("New project");
 	}
 
-	@Override
-	public String toString() {
-		return name;
+	public Project(String name) {
+		setName(name);
+		setDescription("");
+		setRepositories(new TreeSet<Repository>());
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
+	public boolean hasId() {
+		return id != null;
 	}
 
 	public String getName() {
@@ -58,14 +60,6 @@ public class Project extends AbstractEntity<Project> {
 		this.name = name;
 	}
 
-	public String getLicense() {
-		return license;
-	}
-
-	public void setLicense(String license) {
-		this.license = license;
-	}
-
 	public String getDescription() {
 		return description;
 	}
@@ -74,72 +68,48 @@ public class Project extends AbstractEntity<Project> {
 		this.description = description;
 	}
 
-	public String getConfigurationName() {
-		return configurationName;
+	public SortedSet<Repository> getRepositories() {
+		for (Repository each : repositories)
+			each.setProject(this);
+		return new TreeSet<Repository>(repositories);
 	}
 
-	public void setConfigurationName(String configurationName) {
-		this.configurationName = configurationName;
+	public void setRepositories(SortedSet<Repository> repositories) {
+		this.repositories = repositories;
 	}
 
-	public void load() {
-		repository.load(getDirectory());
+	public void addRepository(Repository repository) {
+		for (Repository each : repositories)
+			each.assertNoConflictWith(repository);
+		repository.setProject(this);
+		repositories.add(repository);
 	}
 
-	public Repository getRepository() {
-		return repository;
+	public void removeRepository(Repository repository) {
+		repositories.remove(repository);
+		repository.setProject(null);
 	}
 
-	public void setRepository(Repository repository) {
-		this.repository = repository;
+	public void save() {
+		throwExceptionIf(name.trim().isEmpty(), "Project requires name.");
+		id = dao().save(this);
+		repositories = DaoFactory.getRepositoryDao().repositoriesOf(id);
 	}
 
-	public ProjectState getState() {
-		if (error != null)
-			return ProjectState.ERROR;
-		return state;
+	public void delete() {
+		if (hasId())
+			dao().delete(id);
+		deleted();
 	}
 
-	public String getStateMessage() {
-		return getState().getMessage(name);
+	private void deleted() {
+		for (Repository repository : repositories)
+			repository.deleted();
+		id = null;
 	}
 
-	public ProjectState getStateWhenErrorOcurred() {
-		assertHasError();
-		return state;
-	}
-
-	public void setState(ProjectState state) {
-		if (state == ProjectState.ERROR)
-			throw new KalibroException("Use setError(Throwable) to put project in error state");
-		error = null;
-		this.state = state;
-	}
-
-	public Throwable getError() {
-		assertHasError();
-		return error;
-	}
-
-	private void assertHasError() {
-		if (error == null)
-			throw new KalibroException("Project " + name + " has no error");
-	}
-
-	public void setError(Throwable error) {
-		this.error = error;
-	}
-
-	public File getDirectory() {
-		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
-		return new File(loadDirectory, id + "-" + Identifier.fromText(name).asVariable());
-	}
-
-	public Collection<String> getMailsToNotify() {
-		return mailsToNotify;
-	}
-
-	public void setMailsToNotify(Collection<String> mailsToNotify) {
-		this.mailsToNotify = mailsToNotify;
+	@Override
+	public String toString() {
+		return name;
 	}
 }

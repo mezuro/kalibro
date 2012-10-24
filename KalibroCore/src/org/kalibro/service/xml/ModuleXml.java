@@ -2,17 +2,26 @@ package org.kalibro.service.xml;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Granularity;
 import org.kalibro.Module;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.dto.ModuleDto;
 
+/**
+ * XML element for {@link Module}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "module")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ModuleXml extends DataTransferObject<Module> {
+public class ModuleXml extends ModuleDto {
 
-	private String name;
+	@XmlElement
+	private String[] name;
+
+	@XmlElement
 	private Granularity granularity;
 
 	public ModuleXml() {
@@ -25,7 +34,12 @@ public class ModuleXml extends DataTransferObject<Module> {
 	}
 
 	@Override
-	public Module convert() {
-		return new Module(granularity, name);
+	public Granularity granularity() {
+		return granularity;
+	}
+
+	@Override
+	public String[] name() {
+		return name;
 	}
 }

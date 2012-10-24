@@ -1,14 +1,18 @@
 package org.kalibro.client;
 
-import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
 
 import org.kalibro.Project;
-import org.kalibro.RepositoryType;
 import org.kalibro.dao.ProjectDao;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ProjectEndpoint;
 import org.kalibro.service.xml.ProjectXmlRequest;
 
+/**
+ * {@link ProjectEndpoint} client implementation of {@link ProjectDao}.
+ * 
+ * @author Carlos Morais
+ */
 class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements ProjectDao {
 
 	ProjectClientDao(String serviceAddress) {
@@ -16,52 +20,27 @@ class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements Projec
 	}
 
 	@Override
-	public void save(Project project) {
-		port.saveProject(new ProjectXmlRequest(project));
+	public boolean exists(Long projectId) {
+		return port.projectExists(projectId);
 	}
 
 	@Override
-	public List<String> getProjectNames() {
-		return port.getProjectNames();
+	public Project get(Long projectId) {
+		return port.getProject(projectId).convert();
 	}
 
 	@Override
-	public boolean hasProject(String projectName) {
-		return port.hasProject(projectName);
+	public SortedSet<Project> all() {
+		return DataTransferObject.toSortedSet(port.allProjects());
 	}
 
 	@Override
-	public Project getProject(String projectName) {
-		return port.getProject(projectName).convert();
+	public Long save(Project project) {
+		return port.saveProject(new ProjectXmlRequest(project));
 	}
 
 	@Override
-	public void removeProject(String projectName) {
-		port.removeProject(projectName);
-	}
-
-	@Override
-	public Set<RepositoryType> getSupportedRepositoryTypes() {
-		return port.getSupportedRepositoryTypes();
-	}
-
-	@Override
-	public void processProject(String projectName) {
-		port.processProject(projectName);
-	}
-
-	@Override
-	public void processPeriodically(String projectName, Integer periodInDays) {
-		port.processPeriodically(projectName, periodInDays);
-	}
-
-	@Override
-	public Integer getProcessPeriod(String projectName) {
-		return port.getProcessPeriod(projectName);
-	}
-
-	@Override
-	public void cancelPeriodicProcess(String projectName) {
-		port.cancelPeriodicProcess(projectName);
+	public void delete(Long projectId) {
+		port.deleteProject(projectId);
 	}
 }

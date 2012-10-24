@@ -31,7 +31,7 @@ public class AbstractEntityTest extends UnitTest {
 
 	@Test
 	public void shouldImportFromFile() throws Exception {
-		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("Person-carlos.yml"), Person.class));
+		assertDeepEquals(entity, AbstractEntity.importFrom(getFile("Person-carlos.yml"), Person.class));
 	}
 
 	@Test
@@ -103,5 +103,18 @@ public class AbstractEntityTest extends UnitTest {
 		whenNew(EntityComparator.class).withNoArguments().thenReturn(comparator);
 		when(comparator.compare(entity, entity)).thenReturn(42);
 		assertEquals(42, entity.compareTo(entity));
+	}
+
+	@Test
+	public void shouldThrowExceptionForCondition() {
+		final String message = "AbstractEntityTest message";
+		entity.throwExceptionIf(false, message);
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				entity.throwExceptionIf(true, message);
+			}
+		}).throwsException().withMessage(message);
 	}
 }

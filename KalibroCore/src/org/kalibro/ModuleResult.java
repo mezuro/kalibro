@@ -1,49 +1,40 @@
 package org.kalibro;
 
-import java.util.*;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
-import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingFields;
-import org.kalibro.core.processing.ModuleResultConfigurer;
+import org.kalibro.core.abstractentity.Ignore;
 
-@SortingFields({"date", "module"})
+/**
+ * Result of processing a {@link Module}. Represents a node in the source tree with the results associated.
+ * 
+ * @author Carlos Morais
+ */
 public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
-	@IdentityField
-	private Date date;
+	private Long id;
 
 	private Double grade;
-	private Map<CompoundMetric, Throwable> compoundMetricsWithError;
 
-	public ModuleResult(Module module, Date date) {
+	@Ignore
+	private ModuleResult parent;
+	private Set<ModuleResult> children;
+
+	/** Should NOT be used. Only for CGLIB proxy creation. */
+	protected ModuleResult() {
+		this(null, null);
+	}
+
+	public ModuleResult(ModuleResult parent, Module module) {
 		super(module);
-		this.date = date;
-		this.compoundMetricsWithError = new TreeMap<CompoundMetric, Throwable>();
-		setGrade(null);
+		setGrade(Double.NaN);
+		this.parent = parent;
+		setChildren(new TreeSet<ModuleResult>());
 	}
 
-	public void setConfiguration(Configuration configuration) {
-		new ModuleResultConfigurer(this, configuration).configure();
-	}
-
-	public void addMetricResults(Collection<NativeMetricResult> nativeResults) {
-		for (NativeMetricResult metricResult : nativeResults)
-			addMetricResult(new MetricResult(metricResult));
-	}
-
-	public void removeCompoundMetrics() {
-		compoundMetricsWithError.clear();
-		for (Metric metric : metricResults.keySet())
-			if (metric.isCompound())
-				removeResultFor(metric);
-	}
-
-	public void removeResultFor(Metric metric) {
-		metricResults.remove(metric);
-	}
-
-	public Date getDate() {
-		return date;
+	public Long getId() {
+		return id;
 	}
 
 	public Double getGrade() {
@@ -54,15 +45,31 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		this.grade = grade;
 	}
 
-	public Set<CompoundMetric> getCompoundMetricsWithError() {
-		return compoundMetricsWithError.keySet();
+	public boolean hasParent() {
+		return parent != null;
 	}
 
-	public Throwable getErrorFor(CompoundMetric metric) {
-		return compoundMetricsWithError.get(metric);
+	public ModuleResult getParent() {
+		return parent;
 	}
 
-	public void addCompoundMetricWithError(CompoundMetric metric, Throwable error) {
-		compoundMetricsWithError.put(metric, error);
+	public SortedSet<ModuleResult> getChildren() {
+		for (ModuleResult child : children)
+			child.parent = this;
+		return new TreeSet<ModuleResult>(children);
+	}
+
+	public void setChildren(SortedSet<ModuleResult> children) {
+		this.children = children;
+	}
+
+	public void addChild(ModuleResult child) {
+		child.parent = this;
+		children.add(child);
+	}
+
+	@Override
+	public String toString() {
+		return getModule().toString();
 	}
 }

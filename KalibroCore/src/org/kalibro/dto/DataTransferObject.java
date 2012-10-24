@@ -3,6 +3,7 @@ package org.kalibro.dto;
 import java.util.*;
 
 import org.kalibro.KalibroError;
+import org.kalibro.core.reflection.FieldReflector;
 
 /**
  * Abstract class for data transfer objects (DTOs).
@@ -48,4 +49,8 @@ public abstract class DataTransferObject<ENTITY> {
 	}
 
 	public abstract ENTITY convert();
+
+	protected void setId(Object entity, Long id) {
+		new FieldReflector(entity).set("id", id);
+	}
 }

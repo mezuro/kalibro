@@ -27,7 +27,8 @@ public interface MetricConfigurationEndpoint {
 	@WebMethod
 	@WebResult(name = "metricConfigurationId")
 	Long saveMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration);
+		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration,
+		@WebParam(name = "configurationId") Long configurationId);
 
 	@WebMethod
 	void deleteMetricConfiguration(@WebParam(name = "metricConfigurationId") Long metricConfigurationId);

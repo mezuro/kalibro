@@ -3,22 +3,20 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.Repository;
-
-public class LocalDirectoryLoader extends ProjectLoader {
+/**
+ * Loader for local directories.
+ * 
+ * @author Carlos Morais
+ */
+public class LocalDirectoryLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("cp --version");
 	}
 
 	@Override
-	public boolean supportsAuthentication() {
-		return false;
-	}
-
-	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
-		return Arrays.asList("cp -ru " + repository.getAddress() + " .");
+	public List<String> loadCommands(String address, boolean update) {
+		return Arrays.asList("cp -ru " + address + " .");
 	}
 }

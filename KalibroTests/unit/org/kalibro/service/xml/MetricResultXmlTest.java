@@ -1,12 +1,21 @@
 package org.kalibro.service.xml;
 
-import org.kalibro.CompoundMetric;
-import org.kalibro.MetricResult;
+import static org.junit.Assert.assertNull;
 
-public class MetricResultXmlTest extends XmlTest<MetricResult> {
+import org.junit.Test;
+
+public class MetricResultXmlTest extends XmlTest {
 
 	@Override
-	protected MetricResult loadFixture() {
-		return new MetricResult(new CompoundMetric(), 42.0);
+	protected void verifyElements() {
+		assertElement("id", Long.class);
+		assertElement("configuration", MetricConfigurationSnapshotXml.class);
+		assertElement("value", Double.class);
+		assertElement("error", ThrowableXml.class);
+	}
+
+	@Test
+	public void checkNullError() {
+		assertNull(new MetricResultXml().error());
 	}
 }

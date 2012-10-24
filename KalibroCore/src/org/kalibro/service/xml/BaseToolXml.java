@@ -1,9 +1,9 @@
 package org.kalibro.service.xml;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -11,18 +11,30 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.BaseTool;
+import org.kalibro.Metric;
 import org.kalibro.NativeMetric;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.dto.BaseToolDto;
 
+/**
+ * XML element for {@link BaseTool}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "baseTool")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class BaseToolXml extends DataTransferObject<BaseTool> {
+public class BaseToolXml extends BaseToolDto {
 
+	@XmlElement
 	private String name;
+
+	@XmlElement
 	private String description;
 
+	@XmlElement
+	private String collectorClassName;
+
 	@XmlElement(name = "supportedMetric")
-	private List<NativeMetricXml> supportedMetrics;
+	private Collection<MetricXmlResponse> supportedMetrics;
 
 	public BaseToolXml() {
 		super();
@@ -31,27 +43,31 @@ public class BaseToolXml extends DataTransferObject<BaseTool> {
 	public BaseToolXml(BaseTool baseTool) {
 		name = baseTool.getName();
 		description = baseTool.getDescription();
-		initializeSupportedMetrics(baseTool);
-	}
-
-	private void initializeSupportedMetrics(BaseTool baseTool) {
-		supportedMetrics = new ArrayList<NativeMetricXml>();
-		for (NativeMetric supportedMetric : baseTool.getSupportedMetrics())
-			supportedMetrics.add(new NativeMetricXml(supportedMetric));
+		collectorClassName = baseTool.getCollectorClassName();
+		supportedMetrics = createDtos(new ArrayList<Metric>(baseTool.getSupportedMetrics()), MetricXmlResponse.class);
 	}
 
 	@Override
-	public BaseTool convert() {
-		BaseTool baseTool = new BaseTool(name);
-		baseTool.setDescription(description);
-		convertSupportedMetrics(baseTool);
-		return baseTool;
+	public String name() {
+		return name;
 	}
 
-	private void convertSupportedMetrics(BaseTool baseTool) {
-		Set<NativeMetric> metrics = new TreeSet<NativeMetric>();
-		for (NativeMetricXml supportedMetric : supportedMetrics)
-			metrics.add(supportedMetric.convert());
-		baseTool.setSupportedMetrics(metrics);
+	@Override
+	public String description() {
+		return description;
+	}
+
+	@Override
+	public String collectorClassName() {
+		return collectorClassName;
+	}
+
+	@Override
+	public Set<NativeMetric> supportedMetrics() {
+		HashSet<NativeMetric> converted = new HashSet<NativeMetric>();
+		if (supportedMetrics != null)
+			for (MetricXmlResponse supportedMetric : supportedMetrics)
+				converted.add((NativeMetric) supportedMetric.convert());
+		return converted;
 	}
 }

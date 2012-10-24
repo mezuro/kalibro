@@ -49,7 +49,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 
 	private void checkServerSettings() {
 		ServerSettings serverSettings = settings.getServerSettings();
-		assertEquals(new File(dotKalibro(), "repositories"), serverSettings.getLoadDirectory());
+		assertEquals(new File(dotKalibro(), "projects"), serverSettings.getLoadDirectory());
 
 		DatabaseSettings databaseSettings = serverSettings.getDatabaseSettings();
 		assertEquals(SupportedDatabase.MYSQL, databaseSettings.getDatabaseType());

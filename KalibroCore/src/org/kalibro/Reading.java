@@ -32,7 +32,6 @@ public class Reading extends AbstractEntity<Reading> {
 	}
 
 	public Reading(String label, Double grade, Color color) {
-		setId(null);
 		setLabel(label);
 		setGrade(grade);
 		setColor(color);
@@ -46,10 +45,6 @@ public class Reading extends AbstractEntity<Reading> {
 		return id != null;
 	}
 
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getLabel() {
 		return label;
 	}
@@ -57,7 +52,8 @@ public class Reading extends AbstractEntity<Reading> {
 	public void setLabel(String label) {
 		if (group != null)
 			for (Reading other : group.getReadings())
-				assertNoLabelConflict(other, label);
+				if (other != this)
+					assertNoLabelConflict(other, label);
 		this.label = label;
 	}
 
@@ -68,8 +64,24 @@ public class Reading extends AbstractEntity<Reading> {
 	public void setGrade(Double grade) {
 		if (group != null)
 			for (Reading other : group.getReadings())
-				assertNoGradeConflict(other, grade);
+				if (other != this)
+					assertNoGradeConflict(other, grade);
 		this.grade = grade;
+	}
+
+	void assertNoConflictWith(Reading other) {
+		assertNoLabelConflict(other, label);
+		assertNoGradeConflict(other, grade);
+	}
+
+	private void assertNoLabelConflict(Reading other, String theLabel) {
+		throwExceptionIf(other.label.equals(theLabel),
+			"Reading with label \"" + theLabel + "\" already exists in the group.");
+	}
+
+	private void assertNoGradeConflict(Reading other, Double theGrade) {
+		throwExceptionIf(other.grade.equals(theGrade),
+			"Reading with grade " + theGrade + " already exists in the group.");
 	}
 
 	public Color getColor() {
@@ -80,35 +92,14 @@ public class Reading extends AbstractEntity<Reading> {
 		this.color = color;
 	}
 
-	void assertNoConflictWith(Reading other) {
-		assertNoLabelConflict(other, label);
-		assertNoGradeConflict(other, grade);
-	}
-
-	private void assertNoLabelConflict(Reading other, String theLabel) {
-		if (other.label.equals(theLabel))
-			throw new KalibroException("Reading with label \"" + theLabel + "\" already exists in the group.");
-	}
-
-	private void assertNoGradeConflict(Reading other, Double theGrade) {
-		if (other.grade.equals(theGrade))
-			throw new KalibroException("Reading with grade " + theGrade + " already exists in the group.");
-	}
-
-	public Long getGroupId() {
-		return group.getId();
-	}
-
 	void setGroup(ReadingGroup group) {
 		this.group = group;
 	}
 
 	public void save() {
-		if (group == null)
-			throw new KalibroException("Reading is not in any group.");
-		if (!group.hasId())
-			throw new KalibroException("Group is not saved. Save group instead");
-		id = dao().save(this);
+		throwExceptionIf(group == null, "Reading is not in any group.");
+		throwExceptionIf(!group.hasId(), "Group is not saved. Save group instead");
+		id = dao().save(this, group.getId());
 	}
 
 	public void delete() {

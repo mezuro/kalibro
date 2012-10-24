@@ -3,27 +3,20 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.Repository;
-
-public class LocalZipLoader extends ProjectLoader {
+/**
+ * Loader for local zip files.
+ * 
+ * @author Carlos Morais
+ */
+public class LocalZipLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("unzip -v");
 	}
 
 	@Override
-	public boolean supportsAuthentication() {
-		return true;
+	public List<String> loadCommands(String address, boolean update) {
+		return Arrays.asList("unzip -u -o " + address + " -d .");
 	}
-
-	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
-		String command = "unzip -u -o";
-		if (repository.hasAuthentication())
-			command += " -P " + repository.getPassword();
-		command += " " + repository.getAddress() + " -d .";
-		return Arrays.asList(command);
-	}
-
 }

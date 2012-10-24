@@ -8,7 +8,6 @@ import java.io.File;
 import javax.persistence.RollbackException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.Theory;
@@ -26,12 +25,6 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 		group = loadFixture("scholar", ReadingGroup.class);
 		file = new File(Environment.dotKalibro(), "ReadingGroup-exported.yml");
 		file.deleteOnExit();
-	}
-
-	@After
-	public void tearDown() {
-		for (ReadingGroup each : ReadingGroup.all())
-			each.delete();
 	}
 
 	@Theory
@@ -57,7 +50,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(asSet(group), ReadingGroup.all());
+		assertDeepEquals(set(group), ReadingGroup.all());
 	}
 
 	@Theory

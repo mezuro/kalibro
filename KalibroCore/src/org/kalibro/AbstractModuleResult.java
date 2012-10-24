@@ -1,46 +1,64 @@
 package org.kalibro;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.TreeMap;
+import java.util.Set;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 
+/**
+ * Abstract representation of a set of metric results collected from the same instance of a {@link Module}.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("module")
-public abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
+abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 	extends AbstractEntity<AbstractModuleResult<METRIC_RESULT>> {
 
 	@IdentityField
-	protected Module module;
+	private Module module;
 
-	protected Map<Metric, METRIC_RESULT> metricResults;
+	private Set<METRIC_RESULT> metricResults;
 
-	public AbstractModuleResult(Module module) {
+	AbstractModuleResult(Module module) {
 		this.module = module;
-		metricResults = new TreeMap<Metric, METRIC_RESULT>();
+		setMetricResults(new TreeSet<METRIC_RESULT>());
 	}
 
-	public Module getModule() {
+	public final Module getModule() {
 		return module;
 	}
 
-	public Collection<METRIC_RESULT> getMetricResults() {
-		return metricResults.values();
+	public final boolean hasResultFor(Metric metric) {
+		return findResultFor(metric) != null;
 	}
 
-	public boolean hasResultFor(Metric metric) {
-		return metricResults.containsKey(metric);
+	public final METRIC_RESULT getResultFor(Metric metric) {
+		METRIC_RESULT metricResult = findResultFor(metric);
+		throwExceptionIf(metricResult == null, "No result found for metric: " + metric);
+		return metricResult;
 	}
 
-	public METRIC_RESULT getResultFor(Metric metric) {
-		if (!hasResultFor(metric))
-			throw new KalibroException("No result found for metric: " + metric);
-		return metricResults.get(metric);
+	private METRIC_RESULT findResultFor(Metric metric) {
+		for (METRIC_RESULT metricResult : metricResults)
+			if (metricResult.getMetric().equals(metric))
+				return metricResult;
+		return null;
 	}
 
-	public void addMetricResult(METRIC_RESULT metricResult) {
-		metricResults.put(metricResult.getMetric(), metricResult);
+	public final SortedSet<METRIC_RESULT> getMetricResults() {
+		return new TreeSet<METRIC_RESULT>(metricResults);
+	}
+
+	public final void setMetricResults(SortedSet<METRIC_RESULT> metricResults) {
+		this.metricResults = metricResults;
+	}
+
+	public final void addMetricResult(METRIC_RESULT metricResult) {
+		if (metricResults.contains(metricResult))
+			metricResults.remove(metricResult);
+		metricResults.add(metricResult);
 	}
 }

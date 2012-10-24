@@ -23,7 +23,7 @@ public class CollectionPrinterTest extends PrinterTestCase<Collection<?>> {
 	public void setUp() {
 		sample = new ArrayList<Object>();
 		sample.add(new ArrayList<String>());
-		sample.add(asList("cat", "dog", "pig"));
+		sample.add(list("cat", "dog", "pig"));
 	}
 
 	@Test

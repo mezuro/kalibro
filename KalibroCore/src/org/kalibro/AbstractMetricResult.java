@@ -4,24 +4,29 @@ import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 
+/**
+ * Abstract representation of metric results.
+ * 
+ * @author Carlos Morais.
+ */
 @SortingFields("metric")
-public abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult> {
+abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult> {
 
 	@IdentityField
-	protected Metric metric;
+	private Metric metric;
 
-	protected Double value;
+	private Double value;
 
-	public AbstractMetricResult(Metric metric, Double value) {
+	AbstractMetricResult(Metric metric, Double value) {
 		this.metric = metric;
 		this.value = value;
 	}
 
-	public Metric getMetric() {
+	public final Metric getMetric() {
 		return metric;
 	}
 
-	public Double getValue() {
+	public final Double getValue() {
 		return value;
 	}
 }

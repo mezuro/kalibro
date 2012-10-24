@@ -51,7 +51,6 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public ReadingGroup(String name) {
-		setId(null);
 		setName(name);
 		setDescription("");
 		setReadings(new TreeSet<Reading>());
@@ -63,10 +62,6 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	public boolean hasId() {
 		return id != null;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -97,7 +92,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 
 	public void addReading(Reading reading) {
 		for (Reading each : readings)
-			reading.assertNoConflictWith(each);
+			each.assertNoConflictWith(reading);
 		reading.setGroup(this);
 		readings.add(reading);
 	}
@@ -108,8 +103,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public void save() {
-		if (name.trim().isEmpty())
-			throw new KalibroException("Reading group requires name.");
+		throwExceptionIf(name.trim().isEmpty(), "Reading group requires name.");
 		id = dao().save(this);
 		readings = DaoFactory.getReadingDao().readingsOf(id);
 	}

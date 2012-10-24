@@ -1,6 +1,8 @@
 package org.kalibro.tests;
 
 import org.hamcrest.Matcher;
+import org.kalibro.core.abstractentity.AbstractEntity;
+import org.mockito.ArgumentMatcher;
 import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.mockito.verification.VerificationMode;
@@ -44,12 +46,30 @@ public abstract class MockitoProxy extends PowerMockito {
 		return Matchers.any(type);
 	}
 
+	public static <T> T anyVararg() {
+		return Matchers.anyVararg();
+	}
+
+	public static <T> T isA(Class<T> type) {
+		return Matchers.isA(type);
+	}
+
 	public static <T> T eq(T expected) {
 		return Matchers.eq(expected);
 	}
 
 	public static <T> T same(T expected) {
 		return Matchers.same(expected);
+	}
+
+	public static <T extends AbstractEntity<? super T>> T deepEq(final T expected) {
+		return Matchers.argThat(new ArgumentMatcher<T>() {
+
+			@Override
+			public boolean matches(Object argument) {
+				return expected.deepEquals(argument);
+			}
+		});
 	}
 
 	public static <T> T argThat(Matcher<T> matcher) {

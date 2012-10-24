@@ -1,14 +1,17 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.RepositoryFixtures.helloWorldRepository;
-
-import org.kalibro.Repository;
-import org.kalibro.RepositoryType;
-
-public class RepositoryRecordTest extends RecordTest<Repository> {
+public class RepositoryRecordTest extends RecordTest {
 
 	@Override
-	protected Repository loadFixture() {
-		return helloWorldRepository(RepositoryType.GIT);
+	protected void verifyColumns() {
+		assertManyToOne("project", ProjectRecord.class).isRequired();
+		shouldHaveId();
+		assertColumn("name", String.class).isRequired();
+		assertColumn("type", String.class).isRequired();
+		assertColumn("address", String.class).isRequired();
+		assertColumn("description", String.class).isNullable();
+		assertColumn("license", String.class).isNullable();
+		assertColumn("processPeriod", Integer.class).isNullable();
+		assertManyToOne("configuration", ConfigurationRecord.class).isRequired();
 	}
 }

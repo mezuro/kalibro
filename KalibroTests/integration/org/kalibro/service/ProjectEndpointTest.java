@@ -1,44 +1,61 @@
 package org.kalibro.service;
 
-import static org.kalibro.ProjectFixtures.newHelloWorld;
+import static org.junit.Assert.*;
+
+import java.util.List;
+import java.util.Random;
 
 import org.junit.Test;
-import org.kalibro.KalibroException;
 import org.kalibro.Project;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.service.xml.ProjectXmlRequest;
+import org.powermock.reflect.Whitebox;
 
 public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, ProjectEndpoint> {
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
 	@Override
 	protected Project loadFixture() {
-		Project fixture = newHelloWorld();
-		fixture.setError(new KalibroException("ProjectEndpointTest exception", new Exception()));
-		return fixture;
+		Project project = new Project("ProjectEndpoint test name");
+		Whitebox.setInternalState(project, "id", ID);
+		return project;
+	}
+
+	@Override
+	protected List<String> fieldsThatShouldBeProxy() {
+		return list("repositories");
 	}
 
 	@Test
-	public void shouldListProjectNames() {
-		when(dao.getProjectNames()).thenReturn(asList("42"));
-		assertDeepEquals(asList("42"), port.getProjectNames());
+	public void shouldConfirmExistence() {
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(port.projectExists(-1L));
+		assertTrue(port.projectExists(ID));
 	}
 
 	@Test
-	public void shouldGetProjectByName() {
-		when(dao.getProject("42")).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.getProject("42"));
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getProject(ID));
 	}
 
 	@Test
-	public void shouldRemoveProjectByName() {
-		port.removeProject("42");
-		verify(dao).removeProject("42");
+	public void shouldGetAll() {
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.allProjects());
 	}
 
 	@Test
-	public void shouldSaveProject() {
-		port.saveProject(new ProjectXmlRequest(entity));
-		verify(dao).save(entity);
+	public void shouldSave() {
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, port.saveProject(new ProjectXmlRequest(entity)));
+	}
+
+	@Test
+	public void shouldDelete() {
+		port.deleteProject(ID);
+		verify(dao).delete(ID);
 	}
 }

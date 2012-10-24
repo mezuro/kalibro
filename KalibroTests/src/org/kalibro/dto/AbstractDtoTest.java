@@ -9,9 +9,9 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
-import org.mockito.internal.util.reflection.Whitebox;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -22,13 +22,13 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 	protected ENTITY entity;
 	protected DataTransferObject<ENTITY> dto;
 
+	private List<LazyLoadExpectation> lazyLoadExpectations;
+
 	@Before
 	public void setUp() throws Exception {
 		entity = loadFixture();
 		createDto();
-		mockStatic(DaoLazyLoader.class);
-		for (LazyLoadExpectation e : lazyLoadExpectations())
-			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.stub);
+		mockLazyLoading();
 	}
 
 	protected abstract ENTITY loadFixture();
@@ -36,13 +36,29 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 	private void createDto() throws Exception {
 		Class<?> dtoClass = Class.forName(getClass().getName().replace("Test", ""));
 		dto = (DataTransferObject<ENTITY>) mock(dtoClass, Mockito.CALLS_REAL_METHODS);
+		FieldReflector reflector = new FieldReflector(entity);
 		for (Method method : dtoClass.getDeclaredMethods())
-			if (Modifier.isAbstract(method.getModifiers()))
-				doReturn(entityField(method.getName())).when(dto, method).withNoArguments();
+			if (Modifier.isAbstract(method.getModifiers()) && reflector.listFields().contains(method.getName()))
+				doReturn(reflector.get(method.getName())).when(dto, method).withNoArguments();
 	}
 
-	private Object entityField(String field) {
-		return Whitebox.getInternalState(entity, field);
+	private void mockLazyLoading() throws Exception {
+		lazyLoadExpectations = new ArrayList<LazyLoadExpectation>();
+		registerLazyLoadExpectations();
+		mockStatic(DaoLazyLoader.class);
+		for (LazyLoadExpectation e : lazyLoadExpectations)
+			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.returnValue);
+	}
+
+	@SuppressWarnings("unused" /* to be overriden */)
+	protected void registerLazyLoadExpectations() throws Exception {
+		return;
+	}
+
+	protected LazyLoadExpectation whenLazy(Class<?> daoClass, String methodName, Object... parameters) {
+		LazyLoadExpectation expectation = new LazyLoadExpectation(daoClass, methodName, parameters);
+		lazyLoadExpectations.add(expectation);
+		return expectation;
 	}
 
 	@Test
@@ -55,21 +71,13 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 	@Test
 	public void shouldConvert() {
 		assertDeepEquals(entity, dto.convert());
-		for (LazyLoadExpectation e : lazyLoadExpectations()) {
+		for (LazyLoadExpectation e : lazyLoadExpectations) {
 			verifyStatic();
 			DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e));
 		}
 	}
 
-	protected List<LazyLoadExpectation> lazyLoadExpectations() {
-		return new ArrayList<LazyLoadExpectation>();
-	}
-
 	private Object parameters(LazyLoadExpectation expectation) {
 		return argThat(new ParametersMatcher(expectation));
-	}
-
-	protected LazyLoadExpectation expectLazy(Object stub, Class<?> daoClass, String methodName, Object... parameters) {
-		return new LazyLoadExpectation(stub, daoClass, methodName, parameters);
 	}
 }

@@ -1,9 +1,12 @@
 package org.kalibro.service.xml;
 
-public class StackTraceElementXmlTest extends XmlTest<StackTraceElement> {
+public class StackTraceElementXmlTest extends XmlTest {
 
 	@Override
-	protected StackTraceElement loadFixture() {
-		return new Exception().getStackTrace()[0];
+	protected void verifyElements() {
+		assertElement("declaringClass", String.class);
+		assertElement("methodName", String.class);
+		assertElement("fileName", String.class);
+		assertElement("lineNumber", Integer.class);
 	}
 }

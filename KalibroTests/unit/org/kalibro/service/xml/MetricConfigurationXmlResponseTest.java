@@ -1,13 +1,31 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.MetricConfigurationFixtures.metricConfiguration;
+import static org.junit.Assert.assertNull;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.MetricConfiguration;
+import org.kalibro.Statistic;
+import org.kalibro.dto.DaoLazyLoader;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-public class MetricConfigurationXmlResponseTest extends XmlTest<MetricConfiguration> {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoLazyLoader.class)
+public class MetricConfigurationXmlResponseTest extends XmlTest {
 
 	@Override
-	protected MetricConfiguration loadFixture() {
-		return metricConfiguration("loc");
+	protected void verifyElements() {
+		assertElement("id", Long.class);
+		assertElement("code", String.class);
+		assertElement("metric", MetricXmlResponse.class);
+		assertElement("baseToolName", String.class);
+		assertElement("weight", Double.class);
+		assertElement("aggregationForm", Statistic.class);
+	}
+
+	@Test
+	public void shouldReturnNullBaseToolForCompoundMetricConfiguration() {
+		assertNull(new MetricConfigurationXmlResponse(new MetricConfiguration()).baseToolName());
 	}
 }

@@ -1,44 +1,67 @@
 package org.kalibro;
 
+import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.kalibro.core.Identifier;
-import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.Ignore;
-import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.abstractentity.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 
+/**
+ * Configuration for a metric. Contains weight, aggregation form and a set of evaluation ranges.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("code")
 public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
+
+	@Print(skip = true)
+	private Long id;
 
 	@IdentityField
 	private String code;
 
 	private Metric metric;
+	private BaseTool baseTool;
+
 	private Double weight;
 	private Statistic aggregationForm;
-	private SortedSet<Range> ranges;
+	private ReadingGroup readingGroup;
+	private Set<Range> ranges;
+
+	@Ignore
+	private Configuration configuration;
 
 	public MetricConfiguration() {
-		// TODO Auto-generated method stub
+		this(new CompoundMetric());
 	}
 
-	public MetricConfiguration(Metric metric) {
+	public MetricConfiguration(CompoundMetric metric) {
+		initialize(metric);
+	}
+
+	public MetricConfiguration(BaseTool baseTool, NativeMetric metric) {
+		this.baseTool = baseTool;
+		initialize(metric);
+	}
+
+	private void initialize(Metric theMetric) {
+		metric = theMetric;
 		setCode(Identifier.fromText(metric.getName()).asVariable());
-		setMetric(metric);
 		setWeight(1.0);
 		setAggregationForm(Statistic.AVERAGE);
-		ranges = new TreeSet<Range>();
+		setReadingGroup(null);
+		setRanges(new TreeSet<Range>());
 	}
 
-	public void assertNoConflictWith(MetricConfiguration other) {
-		if (other.code.equals(this.code))
-			throw new KalibroException("A metric configuration with code '" + code + "' already exists");
-		else if (other.metric.equals(this.metric))
-			throw new KalibroException("There is already a configuration for this metric: " + metric);
+	public Long getId() {
+		return id;
+	}
+
+	public boolean hasId() {
+		return id != null;
 	}
 
 	public String getCode() {
@@ -46,15 +69,29 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	}
 
 	public void setCode(String code) {
+		if (configuration != null)
+			for (MetricConfiguration other : configuration.getMetricConfigurations())
+				if (other != this)
+					assertNoCodeConflict(other, code);
 		this.code = code;
+	}
+
+	void assertNoConflictWith(MetricConfiguration other) {
+		assertNoCodeConflict(other, code);
+		throwExceptionIf(other.metric.equals(metric), "Metric already exists in the configuration: " + metric);
+	}
+
+	private void assertNoCodeConflict(MetricConfiguration other, String theCode) {
+		throwExceptionIf(other.code.equals(theCode),
+			"Metric with code '" + theCode + "' already exists in the configuration.");
 	}
 
 	public Metric getMetric() {
 		return metric;
 	}
 
-	public void setMetric(Metric metric) {
-		this.metric = metric;
+	public BaseTool getBaseTool() {
+		return baseTool;
 	}
 
 	public Double getWeight() {
@@ -73,84 +110,71 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		this.aggregationForm = aggregationForm;
 	}
 
-	public SortedSet<Range> getRanges() {
-		return ranges;
+	public ReadingGroup getReadingGroup() {
+		return readingGroup;
 	}
 
-	public boolean hasRangeFor(Double value) {
-		return findRangeFor(value) != null;
+	public void setReadingGroup(ReadingGroup readingGroup) {
+		this.readingGroup = readingGroup;
+	}
+
+	public SortedSet<Range> getRanges() {
+		for (Range range : ranges)
+			range.setConfiguration(this);
+		return new TreeSet<Range>(ranges);
+	}
+
+	public void setRanges(SortedSet<Range> ranges) {
+		this.ranges = ranges;
 	}
 
 	public Range getRangeFor(Double value) {
-		Range range = findRangeFor(value);
-		if (range == null)
-			throw new KalibroException("No range found for value " + value + " and metric '" + metric + "'");
-		return range;
-	}
-
-	private Range findRangeFor(Double value) {
-		for (Range range : ranges)
+		for (Range range : getRanges())
 			if (range.contains(value))
 				return range;
 		return null;
 	}
 
-	public void addRange(Range newRange) {
-		for (Range range : ranges)
-			if (range.intersectsWith(newRange))
-				throw new KalibroException("New range " + newRange + " would conflict with " + range);
-		ranges.add(newRange);
+	public void addRange(Range range) {
+		for (Range each : ranges)
+			each.assertNoIntersectionWith(range);
+		range.setConfiguration(this);
+		ranges.add(range);
 	}
 
-	public void replaceRange(Double oldBeginning, Range newRange) {
-		Range oldRange = getRangeFor(oldBeginning);
-		removeRange(oldRange);
-		try {
-			addRange(newRange);
-		} catch (KalibroException exception) {
-			addRange(oldRange);
-			throw exception;
-		}
+	public void removeRange(Range range) {
+		ranges.remove(range);
+		range.setConfiguration(null);
 	}
 
-	public boolean removeRange(Range range) {
-		return ranges.remove(range);
-	}
-
-	private Long id;
-
-	@Ignore
-	private Configuration configuration;
-
-	public void setConfiguration(Configuration configuration) {
+	void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
 	}
 
-	void deleted() {
-		id = null;
-	}
-
 	public void save() {
-		dao().save(this);
+		throwExceptionIf(code.trim().isEmpty(), "Metric configuration requires code.");
+		throwExceptionIf(configuration == null, "Metric is not in any configuration.");
+		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
+		id = dao().save(this, configuration.getId());
+		readingGroup = DaoFactory.getReadingGroupDao().readingGroupOf(id);
+		ranges = DaoFactory.getRangeDao().rangesOf(id);
 	}
 
 	public void delete() {
-		dao().delete(id);
+		if (hasId())
+			dao().delete(id);
+		if (configuration != null)
+			configuration.removeMetricConfiguration(this);
+		deleted();
+	}
+
+	void deleted() {
+		for (Range range : ranges)
+			range.deleted();
+		id = null;
 	}
 
 	private MetricConfigurationDao dao() {
 		return DaoFactory.getMetricConfigurationDao();
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Long getConfigurationId() {
-		return configuration.getId();
-	}
-
-	public Long getId() {
-		return id;
 	}
 }

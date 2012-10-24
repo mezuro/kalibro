@@ -2,8 +2,6 @@ package org.kalibro.service;
 
 import static org.junit.Assert.assertSame;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
@@ -14,21 +12,22 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 public class BaseToolEndpointImplTest extends
 	EndpointImplementorTest<BaseTool, BaseToolXml, BaseToolXml, BaseToolDao, BaseToolEndpointImpl> {
 
+	private static final String NAME = "BaseToolEndpointImplTest name";
+
 	@Override
 	protected Class<BaseTool> entityClass() {
 		return BaseTool.class;
 	}
 
 	@Test
-	public void testGetBaseToolNames() {
-		List<String> names = mock(List.class);
-		when(dao.getBaseToolNames()).thenReturn(names);
-		assertSame(names, implementor.getBaseToolNames());
+	public void shouldGetAllNames() {
+		when(dao.allNames()).thenReturn(sortedSet(NAME));
+		assertDeepEquals(list(NAME), implementor.allBaseToolNames());
 	}
 
 	@Test
-	public void testGetBaseTool() {
-		when(dao.getBaseTool("42")).thenReturn(entity);
-		assertSame(response, implementor.getBaseTool("42"));
+	public void shouldGetByName() {
+		when(dao.get(NAME)).thenReturn(entity);
+		assertSame(response, implementor.getBaseTool(NAME));
 	}
 }

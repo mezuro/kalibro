@@ -2,29 +2,20 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
-public class CvsLoaderTest extends ProjectLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.CVS;
-	}
+public class CvsLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return asList("cvs --version");
+		return list("cvs --version");
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return list("cvs -z3 -d " + ADDRESS + " checkout -d . -P .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		if (update)
-			return asList("cvs update");
-		return asList("cvs -z3 -d " + repository.getAddress() + " checkout -d . -P .");
+	protected List<String> expectedUpdateCommands() {
+		return list("cvs update");
 	}
 }

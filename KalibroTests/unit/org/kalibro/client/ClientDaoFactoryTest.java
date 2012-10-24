@@ -8,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ClientDaoFactory.class)
@@ -23,48 +24,23 @@ public class ClientDaoFactoryTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldCreateBaseToolPortDao() throws Exception {
-		assertSame(prepareDao(BaseToolClientDao.class), factory.createBaseToolDao());
+	public void shouldCreateDaos() throws Exception {
+		shouldCreate(BaseToolClientDao.class);
+		shouldCreate(ConfigurationClientDao.class);
+		shouldCreate(MetricConfigurationClientDao.class);
+		shouldCreate(MetricResultClientDao.class);
+		shouldCreate(ModuleResultClientDao.class);
+		shouldCreate(ProcessingClientDao.class);
+		shouldCreate(ProjectClientDao.class);
+		shouldCreate(RangeClientDao.class);
+		shouldCreate(ReadingClientDao.class);
+		shouldCreate(ReadingGroupClientDao.class);
+		shouldCreate(RepositoryClientDao.class);
 	}
 
-	@Test
-	public void shouldCreateConfigurationPortDao() throws Exception {
-		assertSame(prepareDao(ConfigurationClientDao.class), factory.createConfigurationDao());
-	}
-
-	@Test
-	public void shouldCreateMetricConfigurationPortDao() throws Exception {
-		assertSame(prepareDao(MetricConfigurationClientDao.class), factory.createMetricConfigurationDao());
-	}
-
-	@Test
-	public void shouldCreateModuleResultPortDao() throws Exception {
-		assertSame(prepareDao(ModuleResultClientDao.class), factory.createModuleResultDao());
-	}
-
-	@Test
-	public void shouldCreateProjectPortDao() throws Exception {
-		assertSame(prepareDao(ProjectClientDao.class), factory.createProjectDao());
-	}
-
-	@Test
-	public void shouldCreateProjectResultPortDao() throws Exception {
-		assertSame(prepareDao(ProjectResultClientDao.class), factory.createProjectResultDao());
-	}
-
-	@Test
-	public void shouldCreateReadingPortDao() throws Exception {
-		assertSame(prepareDao(ReadingClientDao.class), factory.createReadingDao());
-	}
-
-	@Test
-	public void shouldCreateReadingGroupPortDao() throws Exception {
-		assertSame(prepareDao(ReadingGroupClientDao.class), factory.createReadingGroupDao());
-	}
-
-	private <T> T prepareDao(Class<T> daoClass) throws Exception {
+	private <T> void shouldCreate(Class<T> daoClass) throws Exception {
 		T dao = mock(daoClass);
 		whenNew(daoClass).withArguments(SERVICE_ADDRESS).thenReturn(dao);
-		return dao;
+		assertSame(dao, Whitebox.invokeMethod(factory, "create" + daoClass.getSimpleName().replace("Client", "")));
 	}
 }

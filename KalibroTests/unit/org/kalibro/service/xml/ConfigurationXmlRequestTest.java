@@ -2,26 +2,40 @@ package org.kalibro.service.xml;
 
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-import org.kalibro.Configuration;
+import java.util.Set;
+import java.util.TreeSet;
 
-public class ConfigurationXmlRequestTest extends XmlTest<Configuration> {
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.dto.DataTransferObject;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DataTransferObject.class)
+public class ConfigurationXmlRequestTest extends XmlTest {
 
 	@Override
-	protected Configuration loadFixture() {
-		return loadFixture("analizo", Configuration.class);
+	public void setUp() throws Exception {
+		super.setUp();
+		Set<MetricConfiguration> metricConfigurations = Whitebox.getInternalState(entity, "metricConfigurations");
+		spy(DataTransferObject.class);
+		doReturn(new TreeSet<MetricConfiguration>(metricConfigurations))
+			.when(DataTransferObject.class, "toSortedSet", any());
 	}
 
-	@Test
-	public void verifyElements() {
-		assertElement("id", Long.class, false);
+	@Override
+	protected void verifyElements() {
+		assertElement("id", Long.class);
 		assertElement("name", String.class, true);
-		assertElement("description", String.class, false);
-		assertCollection("metricConfigurations", false, "metricConfiguration");
+		assertElement("description", String.class);
+		assertCollection("metricConfiguration");
 	}
 
 	@Test
-	public void shouldConvertNullMetricConfigurationsIntoEmptyList() {
+	public void shouldConvertNullMetricConfigurationsIntoEmptyCollection() {
 		assertTrue(new ConfigurationXmlRequest().metricConfigurations().isEmpty());
 	}
 }

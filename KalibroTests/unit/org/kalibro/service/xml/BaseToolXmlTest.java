@@ -1,13 +1,21 @@
 package org.kalibro.service.xml;
 
-import static org.kalibro.BaseToolFixtures.analizoStub;
+import static org.junit.Assert.assertTrue;
 
-import org.kalibro.BaseTool;
+import org.junit.Test;
 
-public class BaseToolXmlTest extends XmlTest<BaseTool> {
+public class BaseToolXmlTest extends XmlTest {
 
 	@Override
-	protected BaseTool loadFixture() {
-		return analizoStub();
+	protected void verifyElements() {
+		assertElement("name", String.class);
+		assertElement("description", String.class);
+		assertElement("collectorClassName", String.class);
+		assertCollection("supportedMetric");
+	}
+
+	@Test
+	public void shouldConvertNullSupportedMetricsIntoEmptyCollection() {
+		assertTrue(new BaseToolXml().supportedMetrics().isEmpty());
 	}
 }

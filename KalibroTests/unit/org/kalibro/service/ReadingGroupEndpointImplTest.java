@@ -44,8 +44,8 @@ public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @fo
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(asSortedSet(entity));
-		assertDeepEquals(asList(response), implementor.allReadingGroups());
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.allReadingGroups());
 	}
 
 	@Test

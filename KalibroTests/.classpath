@@ -4,9 +4,10 @@
 	<classpathentry kind="src" path="unit"/>
 	<classpathentry kind="src" path="integration"/>
 	<classpathentry kind="src" path="acceptance"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/KalibroCore"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/KalibroDesktop"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/KalibroService"/>
+	
+	<classpathentry kind="src" path="/KalibroCore" combineaccessrules="false"/>
+	<classpathentry kind="src" path="/KalibroService" combineaccessrules="false"/>
+	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Derby 10.5"/>

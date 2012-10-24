@@ -1,13 +1,16 @@
 package org.kalibro;
 
-import java.util.Collection;
+import java.io.File;
 import java.util.Set;
+import java.util.SortedSet;
 import java.util.TreeSet;
 
-import org.kalibro.core.MetricCollector;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.concurrent.Writer;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
 
 /**
  * A base tool to provide metric results for Kalibro.
@@ -17,73 +20,83 @@ import org.kalibro.core.abstractentity.SortingFields;
 @SortingFields("name")
 public class BaseTool extends AbstractEntity<BaseTool> {
 
+	public static SortedSet<String> allNames() {
+		return dao().allNames();
+	}
+
+	public static BaseTool get(String baseToolName) {
+		return dao().get(baseToolName);
+	}
+
+	private static BaseToolDao dao() {
+		return DaoFactory.getBaseToolDao();
+	}
+
 	@IdentityField
 	private String name;
 
 	private String description;
+	private String collectorClassName;
 	private Set<NativeMetric> supportedMetrics;
 
-	private Class<? extends MetricCollector> collectorClass;
-
-	public BaseTool(String name) {
-		this(name, "");
+	/** Should NOT be used. Only for frameworks. */
+	protected BaseTool() {
+		super();
 	}
 
-	public BaseTool(String name, String description) {
-		setName(name);
-		setDescription(description);
-		supportedMetrics = new TreeSet<NativeMetric>();
+	public BaseTool(String name, String description, Set<NativeMetric> supportedMetrics, String collectorClassName) {
+		this.name = name;
+		this.description = description;
+		this.supportedMetrics = supportedMetrics;
+		this.collectorClassName = collectorClassName;
 	}
 
-	@Override
-	public String toString() {
-		return name;
+	public BaseTool(String collectorClassName) {
+		this.collectorClassName = collectorClassName;
+		MetricCollector collector = createMetricCollector();
+		name = collector.name();
+		description = collector.description();
+		supportedMetrics = collector.supportedMetrics();
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getDescription() {
 		return description;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public SortedSet<NativeMetric> getSupportedMetrics() {
+		return new TreeSet<NativeMetric>(supportedMetrics);
 	}
 
-	public Set<NativeMetric> getSupportedMetrics() {
-		return supportedMetrics;
+	public NativeMetric getSupportedMetric(String metricName) {
+		for (NativeMetric metric : supportedMetrics)
+			if (metric.getName().equals(metricName))
+				return metric;
+		throw new KalibroException("Base tool '" + name + "' does not support metric: " + metricName);
 	}
 
-	public void addSupportedMetric(NativeMetric supportedMetric) {
-		supportedMetric.setOrigin(name);
-		supportedMetrics.add(supportedMetric);
+	public String getCollectorClassName() {
+		return collectorClassName;
 	}
 
-	public void setSupportedMetrics(Collection<NativeMetric> supportedMetrics) {
-		this.supportedMetrics = new TreeSet<NativeMetric>();
-		for (NativeMetric supportedMetric : supportedMetrics)
-			addSupportedMetric(supportedMetric);
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
+		createMetricCollector().collectMetrics(codeDirectory, wantedMetrics, resultWriter);
 	}
 
-	public Class<? extends MetricCollector> getCollectorClass() {
-		return collectorClass;
-	}
-
-	public void setCollectorClass(Class<? extends MetricCollector> collectorClass) {
-		this.collectorClass = collectorClass;
-	}
-
-	public MetricCollector createMetricCollector() {
+	private MetricCollector createMetricCollector() {
 		try {
-			return collectorClass.newInstance();
+			return (MetricCollector) Class.forName(collectorClassName).newInstance();
 		} catch (Exception exception) {
-			throw new KalibroException("Could not create metric collector of base tool '" + name + "'", exception);
+			throw new KalibroException("Could not create metric collector: " + collectorClassName, exception);
 		}
+	}
+
+	@Override
+	public String toString() {
+		return name;
 	}
 }

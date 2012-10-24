@@ -29,7 +29,7 @@ public interface ConfigurationEndpoint {
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	ConfigurationXmlResponse configurationOf(@WebParam(name = "projectId") Long projectId);
+	ConfigurationXmlResponse configurationOf(@WebParam(name = "repositoryId") Long repositoryId);
 
 	@WebMethod
 	@WebResult(name = "configuration")

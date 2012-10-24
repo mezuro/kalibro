@@ -2,8 +2,6 @@ package org.kalibro.client;
 
 import static org.junit.Assert.assertSame;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.kalibro.BaseTool;
 import org.kalibro.service.BaseToolEndpoint;
@@ -22,15 +20,14 @@ public class BaseToolClientDaoTest extends
 	}
 
 	@Test
-	public void testGetBaseToolNames() {
-		List<String> names = mock(List.class);
-		when(port.getBaseToolNames()).thenReturn(names);
-		assertSame(names, client.getBaseToolNames());
+	public void shouldGetAllNames() {
+		when(port.allBaseToolNames()).thenReturn(list(NAME));
+		assertDeepEquals(set(NAME), client.allNames());
 	}
 
 	@Test
-	public void testGetBaseTool() {
+	public void shouldGetByName() {
 		when(port.getBaseTool(NAME)).thenReturn(response);
-		assertSame(entity, client.getBaseTool(NAME));
+		assertSame(entity, client.get(NAME));
 	}
 }

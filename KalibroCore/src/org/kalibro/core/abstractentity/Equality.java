@@ -8,12 +8,16 @@ package org.kalibro.core.abstractentity;
 public abstract class Equality<T> {
 
 	public static boolean areEqual(Object value, Object other) {
-		return evaluate(value, other, new EntityEquality());
+		return areEqual(value, other, false);
 	}
 
 	public static boolean areDeepEqual(Object value, Object other) {
-		return evaluate(value, other, new ArrayEquality(), new DeepEntityEquality(), new ListEquality(),
-			new MapEquality(), new SetEquality(), new StackTraceEquality(), new ThrowableEquality());
+		return areEqual(value, other, true);
+	}
+
+	static boolean areEqual(Object value, Object other, boolean deep) {
+		return evaluate(value, other, new ArrayEquality(deep), new EntityEquality(deep), new ListEquality(deep),
+			new MapEquality(deep), new SetEquality(deep), new StackTraceEquality(), new ThrowableEquality());
 	}
 
 	private static boolean evaluate(Object value, Object other, Equality<?>... specialCases) {

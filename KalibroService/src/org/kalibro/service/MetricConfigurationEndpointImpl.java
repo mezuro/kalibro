@@ -41,8 +41,9 @@ public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpo
 	@Override
 	@WebResult(name = "metricConfigurationId")
 	public Long saveMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration) {
-		return dao.save(metricConfiguration.convert());
+		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration,
+		@WebParam(name = "configurationId") Long configurationId) {
+		return dao.save(metricConfiguration.convert(), configurationId);
 	}
 
 	@Override

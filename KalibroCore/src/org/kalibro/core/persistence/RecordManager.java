@@ -51,24 +51,17 @@ class RecordManager {
 		commitTransaction();
 	}
 
+	private void beginTransaction() {
+		entityManager.getTransaction().begin();
+	}
+
 	private <T> T persist(T record) {
 		T merged = entityManager.merge(record);
 		entityManager.persist(merged);
 		return merged;
 	}
 
-	@Deprecated
-	protected void remove(Object record) {
-		entityManager.remove(entityManager.merge(record));
-	}
-
-	@Deprecated
-	protected void beginTransaction() {
-		entityManager.getTransaction().begin();
-	}
-
-	@Deprecated
-	protected void commitTransaction() {
+	private void commitTransaction() {
 		entityManager.getTransaction().commit();
 	}
 

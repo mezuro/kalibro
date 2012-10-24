@@ -7,20 +7,19 @@ import static org.kalibro.core.reflection.MemberFilterFactory.*;
 import java.lang.reflect.Member;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kalibro.tests.UtilityClassTest;
 
 public class MemberFilterFactoryTest extends UtilityClassTest {
 
-	private Member setTestEnvironment, setUp;
+	private Member never, setUp;
 
 	private MemberFilter filter;
 
 	@Before
 	public void setUp() throws Exception {
 		setUp = getClass().getMethod("setUp");
-		setTestEnvironment = getClass().getMethod("setTestEnvironment");
+		never = getClass().getMethod("never");
 	}
 
 	@Override
@@ -32,65 +31,65 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 	public void shouldCreateModifierMemberFilter() {
 		filter = is(PUBLIC);
 		assertTrue(filter.accept(setUp));
-		assertTrue(filter.accept(setTestEnvironment));
+		assertTrue(filter.accept(never));
 
 		filter = is(STATIC);
 		assertFalse(filter.accept(setUp));
-		assertTrue(filter.accept(setTestEnvironment));
+		assertTrue(filter.accept(never));
 
 		filter = is(SYNCHRONIZED);
 		assertFalse(filter.accept(setUp));
-		assertFalse(filter.accept(setTestEnvironment));
+		assertFalse(filter.accept(never));
 	}
 
 	@Test
 	public void shouldCreateAnnotationMemberFilter() {
 		filter = hasAnnotation(Before.class);
 		assertTrue(filter.accept(setUp));
-		assertFalse(filter.accept(setTestEnvironment));
+		assertFalse(filter.accept(never));
 
-		filter = hasAnnotation(BeforeClass.class);
+		filter = hasAnnotation(Test.class);
 		assertFalse(filter.accept(setUp));
-		assertTrue(filter.accept(setTestEnvironment));
+		assertFalse(filter.accept(never));
 	}
 
 	@Test
 	public void shouldCreateNameMemberFilter() {
-		filter = nameMatches("set.*");
+		filter = nameMatches(".*e.*");
 		assertTrue(filter.accept(setUp));
-		assertTrue(filter.accept(setTestEnvironment));
+		assertTrue(filter.accept(never));
 
 		filter = named("setUp");
 		assertTrue(filter.accept(setUp));
-		assertFalse(filter.accept(setTestEnvironment));
+		assertFalse(filter.accept(never));
 	}
 
 	@Test
 	public void shouldCreateNotMemberFilter() {
 		filter = not(is(STATIC));
 		assertTrue(filter.accept(setUp));
-		assertFalse(filter.accept(setTestEnvironment));
+		assertFalse(filter.accept(never));
 
 		filter = not(is(PRIVATE));
 		assertTrue(filter.accept(setUp));
-		assertTrue(filter.accept(setTestEnvironment));
+		assertTrue(filter.accept(never));
 
 		filter = not(is(PUBLIC));
 		assertFalse(filter.accept(setUp));
-		assertFalse(filter.accept(setTestEnvironment));
+		assertFalse(filter.accept(never));
 	}
 
 	@Test
 	public void shouldCreateAndMemberFilter() {
-		filter = and(is(STATIC), hasAnnotation(BeforeClass.class));
-		assertFalse(filter.accept(setUp));
-		assertTrue(filter.accept(setTestEnvironment));
+		filter = and(not(is(STATIC)), hasAnnotation(Before.class));
+		assertTrue(filter.accept(setUp));
+		assertFalse(filter.accept(never));
 	}
 
 	@Test
 	public void shouldCreateOrMemberFilter() {
-		filter = or(hasAnnotation(Before.class), not(is(STATIC)));
+		filter = or(hasAnnotation(Before.class), is(STATIC));
 		assertTrue(filter.accept(setUp));
-		assertFalse(filter.accept(setTestEnvironment));
+		assertTrue(filter.accept(never));
 	}
 }

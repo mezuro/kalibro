@@ -2,11 +2,18 @@ package org.kalibro;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 
+/**
+ * Abstract representation of source code metric.
+ * 
+ * @author Carlos Morais.
+ */
 @SortingFields({"compound", "scope", "name"})
 public abstract class Metric extends AbstractEntity<Metric> {
 
+	@Print(skip = true)
 	private final boolean compound;
 
 	@IdentityField
@@ -16,46 +23,42 @@ public abstract class Metric extends AbstractEntity<Metric> {
 	private String description;
 
 	protected Metric(boolean compound, String name, Granularity scope) {
-		this(compound, name, scope, "");
-	}
-
-	protected Metric(boolean compound, String name, Granularity scope, String description) {
+		this.compound = compound;
 		setName(name);
 		setScope(scope);
-		setDescription(description);
-		this.compound = compound;
+		setDescription("");
+	}
+
+	public final boolean isCompound() {
+		return compound;
+	}
+
+	public final String getName() {
+		return name;
+	}
+
+	protected void setName(String name) {
+		this.name = name;
+	}
+
+	public final Granularity getScope() {
+		return scope;
+	}
+
+	protected void setScope(Granularity scope) {
+		this.scope = scope;
+	}
+
+	public final String getDescription() {
+		return description;
+	}
+
+	public final void setDescription(String description) {
+		this.description = description;
 	}
 
 	@Override
 	public String toString() {
 		return name;
-	}
-
-	public boolean isCompound() {
-		return compound;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Granularity getScope() {
-		return scope;
-	}
-
-	public void setScope(Granularity scope) {
-		this.scope = scope;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
 	}
 }

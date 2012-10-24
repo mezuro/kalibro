@@ -23,6 +23,7 @@ public class ReadingGroupDatabaseDaoTest extends UnitTest {
 
 	private ReadingGroup group;
 	private ReadingGroupRecord record;
+
 	private ReadingGroupDatabaseDao dao;
 
 	@Before

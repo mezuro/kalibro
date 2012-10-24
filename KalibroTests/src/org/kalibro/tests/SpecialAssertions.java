@@ -25,6 +25,10 @@ public abstract class SpecialAssertions extends MockitoProxy {
 		assertEquals(expected, actual, 1E-10);
 	}
 
+	public static void assertDoubleEquals(String message, Double expected, Double actual) {
+		assertEquals(message, expected, actual, 1E-10);
+	}
+
 	public static <E extends Comparable<? super E>> void assertSorted(E... elements) {
 		int i = 0;
 		while (i < elements.length - 1)
@@ -36,25 +40,33 @@ public abstract class SpecialAssertions extends MockitoProxy {
 	}
 
 	public static <T> void assertDeepEquals(T expected, T actual) {
+		assertDeepEquals("", expected, actual);
+	}
+
+	public static <T> void assertDeepEquals(String message, T expected, T actual) {
 		if (!Equality.areDeepEqual(expected, actual)) {
 			assertEquals(Printer.print(expected), Printer.print(actual));
-			fail("Print is the same but they are not deep equal");
+			fail("Print is the same but they are not deep equal: " + message);
 		}
 	}
 
-	public static <T> List<T> asList(T... elements) {
+	public static <T> T[] array(T... elements) {
+		return elements;
+	}
+
+	public static <T> List<T> list(T... elements) {
 		return new ArrayList<T>(Arrays.asList(elements));
 	}
 
-	public static <T> Set<T> asSet(T... elements) {
+	public static <T> Set<T> set(T... elements) {
 		return new HashSet<T>(Arrays.asList(elements));
 	}
 
-	public static <T> SortedSet<T> asSortedSet(T... elements) {
+	public static <T> SortedSet<T> sortedSet(T... elements) {
 		return new TreeSet<T>(Arrays.asList(elements));
 	}
 
-	public static Map<Object, Object> asMap(Object... elements) {
+	public static Map<Object, Object> map(Object... elements) {
 		Map<Object, Object> map = new HashMap<Object, Object>();
 		for (int i = 0; i < elements.length; i += 2)
 			map.put(elements[i], elements[i + 1]);

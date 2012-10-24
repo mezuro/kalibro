@@ -13,7 +13,7 @@ import org.junit.Test;
 import org.kalibro.core.Identifier;
 import org.kalibro.dto.ConcreteDtoTest;
 
-public abstract class XmlTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
+public abstract class XmlTest extends ConcreteDtoTest {
 
 	@Test
 	public void elementNameShouldBeEntityNameAsVariable() throws ClassNotFoundException {
@@ -33,6 +33,10 @@ public abstract class XmlTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
 		assertEquals(XmlAccessType.FIELD, accessorType.value());
 	}
 
+	protected void assertElement(String field, Class<?> type) {
+		assertElement(field, type, false);
+	}
+
 	protected void assertElement(String field, Class<?> type, boolean required) {
 		assertEquals(type, dtoReflector.getFieldType(field));
 		XmlElement element = dtoReflector.getFieldAnnotation(field, XmlElement.class);
@@ -40,11 +44,22 @@ public abstract class XmlTest<ENTITY> extends ConcreteDtoTest<ENTITY> {
 		assertEquals(required, element.required());
 	}
 
-	protected void assertCollection(String field, boolean required, String elementName) {
-		assertEquals(Collection.class, dtoReflector.getFieldType(field));
+	protected void assertCollection(String elementName) {
+		assertCollection(elementName + 's', elementName);
+	}
+
+	protected void assertCollection(String field, String elementName) {
+		assertTrue(Collection.class.isAssignableFrom(dtoReflector.getFieldType(field)));
 		XmlElement element = dtoReflector.getFieldAnnotation(field, XmlElement.class);
 		assertNotNull(element);
-		assertEquals(required, element.required());
+		assertFalse(element.required());
 		assertEquals(elementName, element.name());
 	}
+
+	@Test
+	public void shouldHaveCorrectElements() {
+		verifyElements();
+	}
+
+	protected abstract void verifyElements();
 }

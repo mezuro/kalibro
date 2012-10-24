@@ -8,23 +8,25 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.tests.UnitTest;
+import org.powermock.reflect.Whitebox;
 
-public abstract class ConcreteDtoTest<ENTITY> extends UnitTest {
+public abstract class ConcreteDtoTest extends UnitTest {
 
-	private Object dto;
-	private ENTITY entity;
-
+	protected Object dto, entity;
 	protected FieldReflector dtoReflector, entityReflector;
 
 	@Before
 	public void setUp() throws Exception {
 		entity = loadFixture();
-		dto = dtoClass().getDeclaredConstructor(entity.getClass()).newInstance(entity);
+		dto = dtoClass().getDeclaredConstructor(entityClass()).newInstance(entity);
 		dtoReflector = new FieldReflector(dto);
 		entityReflector = new FieldReflector(entity);
 	}
 
-	protected abstract ENTITY loadFixture();
+	protected Object loadFixture() throws Exception {
+		Object abstractDtoTest = Class.forName(dtoClass().getSuperclass().getName() + "Test").newInstance();
+		return Whitebox.invokeMethod(abstractDtoTest, "loadFixture");
+	}
 
 	@Test
 	public void shouldHavePublicDefaultConstructor() throws Exception {
@@ -46,10 +48,14 @@ public abstract class ConcreteDtoTest<ENTITY> extends UnitTest {
 	private void verifyField(Method method) throws Exception {
 		String methodName = method.getName();
 		if (entityReflector.listFields().contains(methodName))
-			assertDeepEquals(entityReflector.get(methodName), method.invoke(dto));
+			assertDeepEquals(methodName, entityReflector.get(methodName), method.invoke(dto));
 	}
 
 	protected String entityName() {
-		return entity.getClass().getSimpleName();
+		return entityClass().getSimpleName();
+	}
+
+	protected Class<?> entityClass() {
+		return entity.getClass();
 	}
 }

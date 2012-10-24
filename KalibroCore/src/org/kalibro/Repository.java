@@ -1,45 +1,103 @@
 package org.kalibro;
 
-import java.io.File;
+import java.util.Collection;
+import java.util.LinkedList;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Ignore;
+import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.RepositoryDao;
 
+/**
+ * Source code repository.
+ * 
+ * @author Carlos Morais
+ */
+@SortingFields("name")
 public class Repository extends AbstractEntity<Repository> {
 
-	private RepositoryType type;
+	@IdentityField
+	private Long id;
+
+	@IdentityField
+	private String name;
+
+	private String description;
+	private String license;
 	private String address;
-	private String username;
-	private String password;
+	private RepositoryType type;
+	private Integer processPeriod;
+
+	private Configuration configuration;
+	private Collection<String> mailsToNotify;
+
+	@Ignore
+	private Project project;
 
 	public Repository() {
-		this(RepositoryType.LOCAL_DIRECTORY, "");
+		this("New repository", RepositoryType.LOCAL_DIRECTORY, "");
 	}
 
-	public Repository(RepositoryType type, String address) {
-		this(type, address, "", "");
-	}
-
-	public Repository(RepositoryType type, String address, String username, String password) {
-		setType(type);
+	public Repository(String name, RepositoryType type, String address) {
+		setName(name);
+		setDescription("");
+		setLicense("");
 		setAddress(address);
-		setUsername(username);
-		setPassword(password);
+		setType(type);
+		setProcessPeriod(0);
+		setMailsToNotify(new LinkedList<String>());
 	}
 
-	public boolean hasAuthentication() {
-		return ! (username.isEmpty() && password.isEmpty());
+	public Long getId() {
+		return id;
 	}
 
-	public void load(File loadDirectory) {
-		type.load(this, loadDirectory);
+	public boolean hasId() {
+		return id != null;
 	}
 
-	public RepositoryType getType() {
-		return type;
+	public String getName() {
+		return name;
 	}
 
-	public void setType(RepositoryType type) {
-		this.type = type;
+	public String getCompleteName() {
+		String projectName = (project == null) ? "" : project.getName() + " - ";
+		return projectName + name;
+	}
+
+	public void setName(String name) {
+		if (project != null)
+			for (Repository other : project.getRepositories())
+				if (other != this)
+					assertNoNameConflict(other, name);
+		this.name = name;
+	}
+
+	void assertNoConflictWith(Repository other) {
+		assertNoNameConflict(other, name);
+	}
+
+	private void assertNoNameConflict(Repository other, String theName) {
+		throwExceptionIf(other.name.equals(theName),
+			"Repository named \"" + theName + "\" already exists in the project.");
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public String getLicense() {
+		return license;
+	}
+
+	public void setLicense(String license) {
+		this.license = license;
 	}
 
 	public String getAddress() {
@@ -50,19 +108,79 @@ public class Repository extends AbstractEntity<Repository> {
 		this.address = address;
 	}
 
-	public String getUsername() {
-		return username;
+	public RepositoryType getType() {
+		return type;
 	}
 
-	public void setUsername(String username) {
-		this.username = username;
+	public void setType(RepositoryType type) {
+		this.type = type;
 	}
 
-	public String getPassword() {
-		return password;
+	public Integer getProcessPeriod() {
+		return processPeriod;
 	}
 
-	public void setPassword(String password) {
-		this.password = password;
+	public void setProcessPeriod(Integer processPeriod) {
+		this.processPeriod = processPeriod;
+	}
+
+	public Configuration getConfiguration() {
+		return configuration;
+	}
+
+	public void setConfiguration(Configuration configuration) {
+		this.configuration = configuration;
+	}
+
+	public Collection<String> getMailsToNotify() {
+		return mailsToNotify;
+	}
+
+	public void setMailsToNotify(Collection<String> mailsToNotify) {
+		this.mailsToNotify = mailsToNotify;
+	}
+
+	public Project getProject() {
+		return project;
+	}
+
+	void setProject(Project project) {
+		this.project = project;
+	}
+
+	public void save() {
+		throwExceptionIf(name.trim().isEmpty(), "Repository requires name.");
+		throwExceptionIf(address.trim().isEmpty(), "Repository requires address.");
+		throwExceptionIf(project == null, "Repository is not in any project.");
+		throwExceptionIf(!project.hasId(), "Project is not saved. Save project instead.");
+		throwExceptionIf(configuration == null, "A configuration should be associated with the repository.");
+		throwExceptionIf(!configuration.hasId(), "The configuration associated with the repository is not saved.");
+		id = dao().save(this, project.getId());
+	}
+
+	public void process() {
+		save();
+		dao().process(id);
+	}
+
+	public void cancelProcessing() {
+		if (hasId())
+			dao().cancelProcessing(id);
+	}
+
+	public void delete() {
+		if (hasId())
+			dao().delete(id);
+		if (project != null)
+			project.removeRepository(this);
+		deleted();
+	}
+
+	void deleted() {
+		id = null;
+	}
+
+	private RepositoryDao dao() {
+		return DaoFactory.getRepositoryDao();
 	}
 }

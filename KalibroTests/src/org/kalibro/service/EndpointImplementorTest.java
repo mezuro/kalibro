@@ -42,7 +42,7 @@ public abstract class EndpointImplementorTest<// @formatter:off
 		mockStatic(DataTransferObject.class);
 		when(request.convert()).thenReturn(entity);
 		whenNew(responseClass()).withArguments(entity).thenReturn(response);
-		when(DataTransferObject.createDtos(asSortedSet(entity), responseClass())).thenReturn(asList(response));
+		when(DataTransferObject.createDtos(sortedSet(entity), responseClass())).thenReturn(list(response));
 	}
 
 	private void mockDao() throws Exception {

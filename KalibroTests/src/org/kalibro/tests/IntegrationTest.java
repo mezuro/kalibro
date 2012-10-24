@@ -1,6 +1,6 @@
 package org.kalibro.tests;
 
-import static org.kalibro.core.Environment.logsDirectory;
+import static org.kalibro.core.Environment.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +8,8 @@ import java.io.IOException;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.rules.Timeout;
-import org.kalibro.core.Environment;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
 public abstract class IntegrationTest extends UnitTest {
 
@@ -17,20 +18,26 @@ public abstract class IntegrationTest extends UnitTest {
 		FileUtils.cleanDirectory(logsDirectory());
 	}
 
+	protected static File samplesDirectory() {
+		return new File(dotKalibro(), "samples");
+	}
+
+	protected static File projectsDirectory() {
+		return new File(dotKalibro(), "projects");
+	}
+
+	protected static File helloWorldDirectory() {
+		return new File(projectsDirectory(), "HelloWorld-1.0");
+	}
+
 	@Override
 	protected Timeout testTimeout() {
 		return new Timeout(8000);
 	}
 
-	protected File samplesDirectory() {
-		return new File(Environment.dotKalibro(), "samples");
-	}
-
-	protected File repositoriesDirectory() {
-		return new File(Environment.dotKalibro(), "repositories");
-	}
-
-	protected File helloWorldDirectory() {
-		return new File(repositoriesDirectory(), "HelloWorld-1.0");
+	protected <T> T loadYaml(String name, Class<T> type) {
+		Yaml yaml = new Yaml();
+		yaml.setBeanAccess(BeanAccess.FIELD);
+		return yaml.loadAs(getClass().getResourceAsStream(name + ".yml"), type);
 	}
 }

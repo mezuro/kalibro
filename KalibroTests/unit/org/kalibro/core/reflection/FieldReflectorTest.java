@@ -36,15 +36,15 @@ public class FieldReflectorTest extends UnitTest {
 
 	@Test
 	public void shouldListFields() {
-		assertDeepEquals(asList("reflector", "testTimeout"), reflector.listFields());
+		assertDeepEquals(list("reflector", "testTimeout"), reflector.listFields());
 	}
 
 	@Test
 	public void shouldFilterFields() {
-		assertDeepEquals(asList("testTimeout"), reflector.listFields(named("testTimeout")));
-		assertDeepEquals(asList("reflector"), reflector.listFields(nameMatches(".*lector")));
-		assertDeepEquals(asList("reflector"), reflector.listFields(hasAnnotation(Column.class)));
-		assertDeepEquals(asList("testTimeout"), reflector.listFields(not(is(PRIVATE))));
+		assertDeepEquals(list("testTimeout"), reflector.listFields(named("testTimeout")));
+		assertDeepEquals(list("reflector"), reflector.listFields(nameMatches(".*lector")));
+		assertDeepEquals(list("reflector"), reflector.listFields(hasAnnotation(Column.class)));
+		assertDeepEquals(list("testTimeout"), reflector.listFields(not(is(PRIVATE))));
 	}
 
 	@Test

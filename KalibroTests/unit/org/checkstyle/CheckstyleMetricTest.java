@@ -5,75 +5,80 @@ import static org.junit.Assert.*;
 import static org.kalibro.Granularity.CLASS;
 import static org.kalibro.Language.JAVA;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.NativeMetric;
 import org.kalibro.Statistic;
-import org.kalibro.tests.EnumerationTest;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
+import org.kalibro.tests.UnitTest;
 
-public class CheckstyleMetricTest extends EnumerationTest<CheckstyleMetric> {
+public class CheckstyleMetricTest extends UnitTest {
 
-	@Override
-	protected Class<CheckstyleMetric> enumerationClass() {
-		return CheckstyleMetric.class;
-	}
+	private CheckstyleConfiguration checker, treeWalker;
 
-	private CheckstyleConfiguration configuration;
+	private CheckstyleMetric fanOut, fileLength;
 
 	@Before
 	public void setUp() {
-		configuration = PowerMockito.mock(CheckstyleConfiguration.class);
-		PowerMockito.when(configuration.getChildByName(anyString())).thenReturn(configuration);
+		checker = mock(CheckstyleConfiguration.class);
+		treeWalker = mock(CheckstyleConfiguration.class);
+		when(checker.getChildByName("TreeWalker")).thenReturn(treeWalker);
+
+		fanOut = loadFixture("fanOut", CheckstyleMetric.class);
+		fileLength = loadFixture("fileLength", CheckstyleMetric.class);
 	}
 
 	@Test
-	public void checkMessageKeys() {
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			assertSame(metric, getMetricFor(metric.getMessageKey()));
+	public void shouldGetSupportedMetrics() {
+		Set<NativeMetric> supportedMetrics = supportedMetrics();
+		assertTrue(supportedMetrics.contains(fanOut));
+		assertTrue(supportedMetrics.contains(fileLength));
 	}
 
 	@Test
-	public void checkNativeMetrics() {
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			verifyNativeMetric(metric);
-	}
-
-	private void verifyNativeMetric(CheckstyleMetric metric) {
-		NativeMetric expected = new NativeMetric("" + metric, CLASS, JAVA);
-		expected.setOrigin("Checkstyle");
-		assertDeepEquals(expected, metric.getNativeMetric());
+	public void allSupportedMetricsShouldHaveJavaFilesAsScope() {
+		for (NativeMetric metric : supportedMetrics()) {
+			assertEquals(CLASS, metric.getScope());
+			assertEquals(set(JAVA), metric.getLanguages());
+		}
 	}
 
 	@Test
-	public void checkAggregationType() {
-		for (CheckstyleMetric metric : CheckstyleMetric.values())
-			if (metric.name().startsWith("AVERAGE"))
-				assertEquals(Statistic.AVERAGE, metric.getAggregationType());
-			else if (metric.getAggregationType() == Statistic.COUNT)
-				assertTrue(metric.name().endsWith("S") || metric.name().endsWith("COUNT"));
+	public void shouldSelectWantedMetrics() {
+		Set<NativeMetric> wantedMetrics = set((NativeMetric) fanOut);
+		assertDeepEquals(set(fanOut), selectMetrics(wantedMetrics));
+	}
+
+	@Test
+	public void shouldGetMessageKey() {
+		assertEquals("classFanOutComplexity", fanOut.getMessageKey());
+		assertEquals("maxLen.file", fileLength.getMessageKey());
+	}
+
+	@Test
+	public void shouldGetAggregationType() {
+		assertEquals(Statistic.SUM, fanOut.getAggregationType());
+		assertEquals(Statistic.AVERAGE, fileLength.getAggregationType());
 	}
 
 	@Test
 	public void shouldAddToCheckerIfNotTreeWalker() {
-		FILE_LENGTH.addToChecker(configuration);
-		InOrder order = Mockito.inOrder(configuration);
-		order.verify(configuration).getChildByName("FileLength");
-		order.verify(configuration).addMessageKey(FILE_LENGTH.getMessageKey());
-		order.verify(configuration).addAttributeName("max");
-		Mockito.verifyNoMoreInteractions(configuration);
+		CheckstyleConfiguration fileLengthConf = mock(CheckstyleConfiguration.class);
+		when(checker.getChildByName("FileLength")).thenReturn(fileLengthConf);
+
+		fileLength.addToChecker(checker);
+		verify(fileLengthConf).addMessageKey("maxLen.file");
+		verify(fileLengthConf).addAttribute("max");
 	}
 
 	@Test
 	public void shouldAddToTreeWalkerIfTreeWalker() {
-		FAN_OUT.addToChecker(configuration);
-		InOrder order = Mockito.inOrder(configuration);
-		order.verify(configuration).getChildByName("TreeWalker");
-		order.verify(configuration).getChildByName("ClassFanOutComplexity");
-		order.verify(configuration).addMessageKey(FAN_OUT.getMessageKey());
-		order.verify(configuration).addAttributeName("max");
-		Mockito.verifyNoMoreInteractions(configuration);
+		CheckstyleConfiguration classFanOut = mock(CheckstyleConfiguration.class);
+		when(treeWalker.getChildByName("ClassFanOutComplexity")).thenReturn(classFanOut);
+
+		fanOut.addToChecker(checker);
+		verify(classFanOut).addMessageKey("classFanOutComplexity");
+		verify(classFanOut).addAttribute("max");
 	}
 }

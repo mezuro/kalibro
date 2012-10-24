@@ -14,12 +14,7 @@ public class GranularityTest extends EnumerationTest<Granularity> {
 	}
 
 	@Test
-	public void testSorting() {
-		assertSorted(SOFTWARE, PACKAGE, CLASS, METHOD);
-	}
-
-	@Test
-	public void checkInferredParentGranularity() {
+	public void shouldInferParentGranularity() {
 		assertEquals(CLASS, METHOD.inferParentGranularity());
 		assertEquals(PACKAGE, CLASS.inferParentGranularity());
 		assertEquals(PACKAGE, PACKAGE.inferParentGranularity());

@@ -1,0 +1,2 @@
+org.analizo.AnalizoMetricCollector
+org.checkstyle.CheckstyleMetricCollector

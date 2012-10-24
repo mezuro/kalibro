@@ -13,7 +13,7 @@ public interface MetricConfigurationDao {
 
 	SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId);
 
-	Long save(MetricConfiguration metricConfiguration);
+	Long save(MetricConfiguration metricConfiguration, Long configurationId);
 
 	void delete(Long metricConfigurationId);
 }

@@ -37,15 +37,15 @@ public class ConfigurationClientDaoTest extends ClientTest<// @formatter:off
 	}
 
 	@Test
-	public void shouldGetConfigurationOfProject() {
+	public void shouldGetConfigurationOfRepository() {
 		when(port.configurationOf(ID)).thenReturn(response);
 		assertSame(entity, client.configurationOf(ID));
 	}
 
 	@Test
 	public void shouldGetAll() {
-		when(port.allConfigurations()).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.all());
+		when(port.allConfigurations()).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.all());
 	}
 
 	@Test

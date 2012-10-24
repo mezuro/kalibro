@@ -1,0 +1,11 @@
+!!org.checkstyle.CheckstyleMetric
+name: "File Length"
+description: >
+  If a source file becomes very long it is hard to understand. Therefore long classes should usually be re-factored into
+  several individual classes that focus on a specific task.
+  
+  Default maximum: 2000.
+moduleName: "FileLength"
+attributeName: "max"
+messageKey: "maxLen.file"
+treeWalker: false

@@ -1,9 +1,11 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.BaseToolFixtures.analizoStub;
 import static org.kalibro.Granularity.*;
 import static org.kalibro.Language.*;
+
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Modifier;
 
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;
@@ -11,27 +13,19 @@ import org.kalibro.tests.UnitTest;
 public class NativeMetricTest extends UnitTest {
 
 	@Test
-	public void checkInitialization() {
-		NativeMetric metric = new NativeMetric("", CLASS, JAVA, CPP);
-		assertEquals("", metric.getName());
-		assertEquals(CLASS, metric.getScope());
-		assertDeepEquals(asList(JAVA, CPP), metric.getLanguages());
-		assertEquals("", metric.getDescription());
+	public void checkConstruction() {
+		NativeMetric metric = new NativeMetric("NativeMetricTest name", METHOD, JAVA, CPP);
+		assertFalse(metric.isCompound());
+		assertEquals("NativeMetricTest name", metric.getName());
+		assertEquals(METHOD, metric.getScope());
+		assertDeepEquals(set(JAVA, CPP), metric.getLanguages());
 	}
 
 	@Test
-	public void nativeMetricsShouldNotBeCompound() {
-		for (NativeMetric metric : analizoStub().getSupportedMetrics())
-			assertFalse(metric.isCompound());
-	}
-
-	@Test
-	public void testOrigin() {
-		NativeMetric metric = new NativeMetric("", PACKAGE, C);
-		assertNull(metric.getOrigin());
-
-		String origin = "Analizo";
-		metric.setOrigin(origin);
-		assertSame(origin, metric.getOrigin());
+	public void shouldHaveDefaultConstructorForYamlLoading() throws Exception {
+		Constructor<NativeMetric> constructor = NativeMetric.class.getDeclaredConstructor();
+		assertTrue(Modifier.isPrivate(constructor.getModifiers()));
+		constructor.setAccessible(true);
+		assertDeepEquals(new NativeMetric("", CLASS), constructor.newInstance());
 	}
 }

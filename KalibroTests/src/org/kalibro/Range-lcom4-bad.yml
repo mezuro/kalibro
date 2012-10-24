@@ -1,0 +1,6 @@
+beginning: 1.0
+end: .inf
+reading:
+  color: 0xff0000
+  grade: 0.0
+  label: "Bad"

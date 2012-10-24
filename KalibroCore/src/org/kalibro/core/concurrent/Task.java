@@ -46,7 +46,7 @@ public abstract class Task<T> implements Runnable {
 		future.cancel(true);
 	}
 
-	public TaskReport<T> getReport() {
+	TaskReport<T> getReport() {
 		return report;
 	}
 
@@ -67,7 +67,7 @@ public abstract class Task<T> implements Runnable {
 
 	protected abstract T compute() throws Throwable;
 
-	protected void reportTaskFinished() {
+	private void reportTaskFinished() {
 		for (TaskListener<T> listener : listeners)
 			new TaskListenerNotifier<T>(report, listener).executeInBackground();
 	}

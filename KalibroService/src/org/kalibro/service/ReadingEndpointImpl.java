@@ -31,14 +31,26 @@ public class ReadingEndpointImpl implements ReadingEndpoint {
 
 	@Override
 	@WebResult(name = "reading")
+	public ReadingXml getReading(@WebParam(name = "readingId") Long readingId) {
+		return new ReadingXml(dao.get(readingId));
+	}
+
+	@Override
+	@WebResult(name = "reading")
+	public ReadingXml readingOf(@WebParam(name = "rangeId") Long rangeId) {
+		return new ReadingXml(dao.readingOf(rangeId));
+	}
+
+	@Override
+	@WebResult(name = "reading")
 	public List<ReadingXml> readingsOf(@WebParam(name = "groupId") Long groupId) {
 		return DataTransferObject.createDtos(dao.readingsOf(groupId), ReadingXml.class);
 	}
 
 	@Override
 	@WebResult(name = "readingId")
-	public Long saveReading(@WebParam(name = "reading") ReadingXml reading) {
-		return dao.save(reading.convert());
+	public Long saveReading(@WebParam(name = "reading") ReadingXml reading, @WebParam(name = "groupId") Long groupId) {
+		return dao.save(reading.convert(), groupId);
 	}
 
 	@Override

@@ -1,11 +1,9 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.RepositoryType;
-
-public class LocalTarballTest extends LoaderIntegrationTest {
+public class LocalTarballTest extends RepositoryIntegrationTest {
 
 	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.LOCAL_TARBALL;
+	protected String address() {
+		return repositoriesDirectory().getAbsolutePath() + "/HelloWorld.tar.gz";
 	}
 }

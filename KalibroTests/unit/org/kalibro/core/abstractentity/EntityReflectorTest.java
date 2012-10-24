@@ -21,26 +21,26 @@ public class EntityReflectorTest extends UnitTest {
 
 	@Test
 	public void shouldListIdentityFields() {
-		assertDeepEquals(asList("identityNumber"), reflector(person).listIdentityFields());
-		assertDeepEquals(asList("identityNumber"), reflector(programmer).listIdentityFields());
+		assertDeepEquals(list("identityNumber"), reflector(person).listIdentityFields());
+		assertDeepEquals(list("identityNumber"), reflector(programmer).listIdentityFields());
 	}
 
 	@Test
 	public void withoutSpecifyingAllFieldsShouldBeIdentityFields() {
-		assertDeepEquals(asList("field1", "field2"), reflector(noIdentityEntity).listIdentityFields());
+		assertDeepEquals(list("field1", "field2"), reflector(noIdentityEntity).listIdentityFields());
 	}
 
 	@Test
 	public void shouldListSortingFields() {
 		assertTrue(reflector(noIdentityEntity).listSortingFields().isEmpty());
-		assertDeepEquals(asList("name"), reflector(person).listSortingFields());
-		assertDeepEquals(asList("name"), reflector(programmer).listSortingFields());
+		assertDeepEquals(list("name"), reflector(person).listSortingFields());
+		assertDeepEquals(list("name"), reflector(programmer).listSortingFields());
 	}
 
 	@Test
 	public void shouldListSortedPrintFields() {
-		assertDeepEquals(asList("name", "identityNumber", "relatives", "sex"), reflector(person).listPrintFields());
-		assertDeepEquals(asList("field1"), reflector(new NoIdentityEntity()).listPrintFields());
+		assertDeepEquals(list("name", "identityNumber", "relatives", "sex"), reflector(person).listPrintFields());
+		assertDeepEquals(list("field1"), reflector(new NoIdentityEntity()).listPrintFields());
 	}
 
 	@Test

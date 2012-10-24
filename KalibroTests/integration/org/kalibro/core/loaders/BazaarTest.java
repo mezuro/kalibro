@@ -1,11 +1,9 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.RepositoryType;
-
-public class BazaarTest extends LoaderIntegrationTest {
+public class BazaarTest extends RepositoryIntegrationTest {
 
 	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.BAZAAR;
+	protected String address() {
+		return repositoriesDirectory().getAbsolutePath() + "/HelloWorldBazaar/";
 	}
 }

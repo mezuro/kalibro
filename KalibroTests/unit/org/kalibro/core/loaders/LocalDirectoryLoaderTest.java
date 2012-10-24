@@ -2,27 +2,20 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
-public class LocalDirectoryLoaderTest extends ProjectLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.LOCAL_DIRECTORY;
-	}
+public class LocalDirectoryLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return asList("cp --version");
+		return list("cp --version");
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return list("cp -ru " + ADDRESS + " .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		return asList("cp -ru " + repository.getAddress() + " .");
+	protected List<String> expectedUpdateCommands() {
+		return list("cp -ru " + ADDRESS + " .");
 	}
 }

@@ -1,74 +1,84 @@
 package org.kalibro;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
-
+/**
+ * Result of processing a {@link Metric} for a {@link Module}. Contains the associated {@link MetricConfiguration}
+ * snapshot.
+ * 
+ * @author Carlos Morais
+ */
 public class MetricResult extends AbstractMetricResult {
 
-	private Range range;
-	private Double weight;
-	private Collection<Double> descendentResults = new ArrayList<Double>();
+	private Long id;
 
-	public MetricResult(NativeMetricResult nativeResult) {
-		this(nativeResult.getMetric(), nativeResult.getValue());
+	private MetricConfiguration configuration;
+	private Throwable error;
+	private List<Double> descendantResults;
+
+	public MetricResult(MetricConfiguration configuration, Throwable error) {
+		this(configuration, Double.NaN);
+		this.error = error;
 	}
 
-	public MetricResult(Metric metric, Double value) {
-		super(metric, value);
+	public MetricResult(MetricConfiguration configuration, Double value) {
+		super(configuration.getMetric(), value);
+		this.configuration = configuration;
+		setDescendantResults(new ArrayList<Double>());
 	}
 
-	public void setConfiguration(MetricConfiguration configuration) {
-		if (value.isNaN() && hasStatistics())
-			value = getStatistic(configuration.getAggregationForm());
-		if (configuration.hasRangeFor(value))
-			setRange(configuration.getRangeFor(value));
-		setWeight(configuration.getWeight());
+	public Long getId() {
+		return id;
+	}
+
+	public boolean hasError() {
+		return error != null;
+	}
+
+	public Throwable getError() {
+		return error;
+	}
+
+	public MetricConfiguration getConfiguration() {
+		return configuration;
+	}
+
+	public List<Double> getDescendantResults() {
+		return descendantResults;
+	}
+
+	public void setDescendantResults(List<Double> descendantResults) {
+		this.descendantResults = descendantResults;
+	}
+
+	public void addDescendantResult(Double descendantResult) {
+		descendantResults.add(descendantResult);
+	}
+
+	public Double getAggregatedValue() {
+		if (getValue().isNaN() && !descendantResults.isEmpty())
+			return configuration.getAggregationForm().calculate(descendantResults);
+		return getValue();
 	}
 
 	public boolean hasRange() {
-		return range != null;
-	}
-
-	public Double getGrade() {
-		return getRange().getGrade();
+		return configuration.getRangeFor(getAggregatedValue()) != null;
 	}
 
 	public Range getRange() {
-		if (range == null)
-			throw new KalibroException("No range found for metric '" + metric + "' and value " + value);
-		return range;
+		return configuration.getRangeFor(getAggregatedValue());
 	}
 
-	public void setRange(Range range) {
-		this.range = range;
+	public boolean hasGrade() {
+		return hasRange() && getRange().hasReading();
+	}
+
+	public Double getGrade() {
+		return getRange().getReading().getGrade();
 	}
 
 	public Double getWeight() {
-		return weight;
-	}
-
-	public void setWeight(Double weight) {
-		this.weight = weight;
-	}
-
-	public boolean hasStatistics() {
-		return !descendentResults.isEmpty();
-	}
-
-	public Double getStatistic(Statistic statistic) {
-		return statistic.calculate(descendentResults);
-	}
-
-	public Collection<Double> getDescendentResults() {
-		return descendentResults;
-	}
-
-	public void addDescendentResult(Double descendentResult) {
-		descendentResults.add(descendentResult);
-	}
-
-	public void addDescendentResults(Collection<Double> results) {
-		descendentResults.addAll(results);
+		return configuration.getWeight();
 	}
 }

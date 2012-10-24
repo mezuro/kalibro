@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -8,17 +8,24 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.KalibroError;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.dto.ThrowableDto;
 
+/**
+ * XML element for {@link Throwable}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "throwable")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ThrowableXml extends DataTransferObject<Throwable> {
+public class ThrowableXml extends ThrowableDto {
 
-	private String errorClass;
+	@XmlElement
+	private String throwableClass;
 
-	private String message;
+	@XmlElement
+	private String detailMessage;
 
+	@XmlElement
 	private ThrowableXml cause;
 
 	@XmlElement(name = "stackTraceElement")
@@ -28,41 +35,35 @@ public class ThrowableXml extends DataTransferObject<Throwable> {
 		super();
 	}
 
-	public ThrowableXml(Throwable error) {
-		errorClass = error.getClass().getCanonicalName();
-		message = error.getMessage();
-		if (error.getCause() != null)
-			cause = new ThrowableXml(error.getCause());
-		initializeStackTrace(error);
+	public ThrowableXml(Throwable throwable) {
+		throwableClass = throwable.getClass().getName();
+		detailMessage = throwable.getMessage();
+		stackTrace = createDtos(Arrays.asList(throwable.getStackTrace()), StackTraceElementXml.class);
+		setCause(throwable.getCause());
 	}
 
-	private void initializeStackTrace(Throwable error) {
-		stackTrace = new ArrayList<StackTraceElementXml>();
-		for (StackTraceElement element : error.getStackTrace())
-			stackTrace.add(new StackTraceElementXml(element));
+	private void setCause(Throwable cause) {
+		if (cause != null)
+			this.cause = new ThrowableXml(cause);
 	}
 
 	@Override
-	public Throwable convert() {
-		Throwable error = initializeError();
-		if (cause != null)
-			error.initCause(cause.convert());
-		convertStackTrace(error);
-		return error;
+	public String throwableClass() {
+		return throwableClass;
 	}
 
-	private Throwable initializeError() {
-		try {
-			return (Throwable) Class.forName(errorClass).getConstructor(String.class).newInstance(message);
-		} catch (Exception exception) {
-			throw new KalibroError("Could not convert Error XML to Throwable", exception);
-		}
+	@Override
+	public String detailMessage() {
+		return detailMessage;
 	}
 
-	private void convertStackTrace(Throwable error) {
-		StackTraceElement[] stackTraceConverted = new StackTraceElement[stackTrace.size()];
-		for (int i = 0; i < stackTrace.size(); i++)
-			stackTraceConverted[i] = stackTrace.get(i).convert();
-		error.setStackTrace(stackTraceConverted);
+	@Override
+	public Throwable cause() {
+		return cause == null ? null : cause.convert();
+	}
+
+	@Override
+	public StackTraceElement[] stackTrace() {
+		return toList(stackTrace).toArray(new StackTraceElement[0]);
 	}
 }

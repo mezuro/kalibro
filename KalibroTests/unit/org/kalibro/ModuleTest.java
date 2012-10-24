@@ -3,68 +3,84 @@ package org.kalibro;
 import static org.junit.Assert.*;
 import static org.kalibro.Granularity.*;
 
+import java.util.Arrays;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;
 
 public class ModuleTest extends UnitTest {
 
-	private Module org, kalibro, core, model, module;
+	private Module org, kalibro, module;
 
 	@Before
 	public void setUp() {
-		org = newModule(PACKAGE, "org");
-		kalibro = newModule(PACKAGE, "org", "kalibro");
-		core = newModule(PACKAGE, "org", "kalibro", "core");
-		model = newModule(PACKAGE, "org.kalibro.core.model");
-		module = newModule(CLASS, "org.kalibro.core.model.Module");
+		org = module(PACKAGE, "org");
+		kalibro = module(PACKAGE, "org", "kalibro");
+		module = module(CLASS, "org", "kalibro", "Module");
 	}
 
 	@Test
-	public void toStringShouldBeShortName() {
-		assertEquals(org.getShortName(), "" + org);
-		assertEquals(kalibro.getShortName(), "" + kalibro);
-		assertEquals(core.getShortName(), "" + core);
-		assertEquals(model.getShortName(), "" + model);
-		assertEquals(module.getShortName(), "" + module);
+	public void shouldSortByGranularityThenName() {
+		assertSorted(
+			module(SOFTWARE, "G"), module(SOFTWARE, "H"),
+			module(PACKAGE, "E"), module(PACKAGE, "F"),
+			module(CLASS, "C"), module(CLASS, "D"),
+			module(METHOD, "A"), module(METHOD, "B"));
+	}
+
+	@Test
+	public void shouldIdentifyByName() {
+		assertEquals(org, module(org.getName()));
+		assertEquals(kalibro, module(kalibro.getName()));
+		assertEquals(module, module(module.getName()));
+	}
+
+	private Module module(String... name) {
+		return new Module(METHOD, Arrays.copyOf(name, name.length));
+	}
+
+	private Module module(Granularity granularity, String... name) {
+		return new Module(granularity, name);
+	}
+
+	@Test
+	public void checkConstruction() {
+		assertArrayEquals(new String[]{"org"}, org.getName());
+		assertArrayEquals(new String[]{"org", "kalibro"}, kalibro.getName());
+		assertArrayEquals(new String[]{"org", "kalibro", "Module"}, module.getName());
+		assertEquals(PACKAGE, org.getGranularity());
+		assertEquals(PACKAGE, kalibro.getGranularity());
+		assertEquals(CLASS, module.getGranularity());
 	}
 
 	@Test
 	public void shortNameShouldBeLastName() {
 		assertEquals("org", org.getShortName());
 		assertEquals("kalibro", kalibro.getShortName());
-		assertEquals("core", core.getShortName());
-		assertEquals("model", model.getShortName());
 		assertEquals("Module", module.getShortName());
 	}
 
 	@Test
-	public void shouldRetrieveLongName() {
-		assertEquals("org", org.getName());
-		assertEquals("org.kalibro", kalibro.getName());
-		assertEquals("org.kalibro.core", core.getName());
-		assertEquals("org.kalibro.core.model", model.getName());
-		assertEquals("org.kalibro.core.model.Module", module.getName());
+	public void longNameShouldBeDotSeparated() {
+		assertEquals("org", org.getLongName());
+		assertEquals("org.kalibro", kalibro.getLongName());
+		assertEquals("org.kalibro.Module", module.getLongName());
 	}
 
 	@Test
-	public void shouldInferAncestry() {
-		assertTrue(org.inferAncestry().isEmpty());
-		assertDeepEquals(asList(org), kalibro.inferAncestry());
-		assertDeepEquals(asList(org, kalibro), core.inferAncestry());
-		assertDeepEquals(asList(org, kalibro, core), model.inferAncestry());
-		assertDeepEquals(asList(org, kalibro, core, model), module.inferAncestry());
+	public void shouldInferParent() {
+		assertDeepEquals(kalibro, module.inferParent());
+		assertDeepEquals(org, kalibro.inferParent());
+		assertDeepEquals(new Module(SOFTWARE), org.inferParent());
+
+		assertNull(new Module(SOFTWARE, "any", "name").inferParent());
 	}
 
 	@Test
-	public void shouldSortByGranularityThenName() {
-		assertSorted(newModule(SOFTWARE, "G"), newModule(SOFTWARE, "H"),
-			newModule(PACKAGE, "E"), newModule(PACKAGE, "F"),
-			newModule(CLASS, "C"), newModule(CLASS, "D"),
-			newModule(METHOD, "A"), newModule(METHOD, "B"));
-	}
-
-	private Module newModule(Granularity granularity, String... name) {
-		return new Module(granularity, name);
+	public void toStringShouldBeShortName() {
+		assertEquals(org.getShortName(), "" + org);
+		assertEquals(kalibro.getShortName(), "" + kalibro);
+		assertEquals(module.getShortName(), "" + module);
 	}
 }

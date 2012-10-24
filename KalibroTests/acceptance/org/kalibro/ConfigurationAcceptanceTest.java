@@ -22,7 +22,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		configuration = loadFixture("analizo", Configuration.class);
+		configuration = loadFixture("sc", Configuration.class);
 		file = new File(Environment.dotKalibro(), "Configuration-exported.yml");
 		file.deleteOnExit();
 	}
@@ -56,7 +56,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(asSet(configuration), Configuration.all());
+		assertDeepEquals(set(configuration), Configuration.all());
 	}
 
 	@Theory
@@ -85,6 +85,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldValidateMetricConfigurations() {
 		metricsInSameConfigurationShouldNotHaveDuplicateCodes();
+		metricsInSameConfigurationShouldNotHaveDuplicateMetrics();
 		shouldValidateScripts();
 	}
 
@@ -93,7 +94,14 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		MetricConfiguration metricConfiguration = new MetricConfiguration();
 		metricConfiguration.setCode(code);
 		assertThat(addMetricConfiguration(metricConfiguration)).throwsException()
-			.withMessage("Metric configuration with code \"" + code + "\" already exists in the configuration.");
+			.withMessage("Metric with code '" + code + "' already exists in the configuration.");
+	}
+
+	private void metricsInSameConfigurationShouldNotHaveDuplicateMetrics() {
+		CompoundMetric sc = loadFixture("sc", CompoundMetric.class);
+		MetricConfiguration metricConfiguration = new MetricConfiguration(sc);
+		assertThat(addMetricConfiguration(metricConfiguration)).throwsException()
+			.withMessage("Metric already exists in the configuration: " + sc);
 	}
 
 	private VoidTask addMetricConfiguration(final MetricConfiguration metricConfiguration) {
@@ -107,15 +115,11 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void shouldValidateScripts() {
-		CompoundMetric compoundMetric = new CompoundMetric("Parameters per class");
-		compoundMetric.setScript("return anpm * loc;");
-		MetricConfiguration metricConfiguration = new MetricConfiguration(compoundMetric);
-		metricConfiguration.setCode("ppc");
-		configuration.addMetricConfiguration(metricConfiguration);
 		configuration.validateScripts();
 
-		compoundMetric.setScript("return null;");
-		assertThat(validateScripts()).throwsException().withMessage("Error evaluating Javascript for: ppc");
+		CompoundMetric sc = configuration.getCompoundMetrics().first();
+		sc.setScript("return null;");
+		assertThat(validateScripts()).throwsException().withMessage("Error evaluating Javascript for: sc");
 	}
 
 	private VoidTask validateScripts() {
@@ -131,7 +135,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	@Test
 	public void shouldImportAndExportAsYaml() throws Exception {
 		configuration.exportTo(file);
-		String expectedYaml = loadResource("Configuration-analizo.yml");
+		String expectedYaml = loadResource("Configuration-sc.yml");
 		assertEquals(expectedYaml, FileUtils.readFileToString(file));
 		assertDeepEquals(configuration, Configuration.importFrom(file));
 	}

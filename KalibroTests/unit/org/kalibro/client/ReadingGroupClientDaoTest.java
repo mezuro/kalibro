@@ -44,8 +44,8 @@ public class ReadingGroupClientDaoTest extends ClientTest<// @formatter:off
 
 	@Test
 	public void shouldGetAll() {
-		when(port.allReadingGroups()).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.all());
+		when(port.allReadingGroups()).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.all());
 	}
 
 	@Test

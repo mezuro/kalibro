@@ -1,12 +1,17 @@
 package org.kalibro.dao;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.BaseTool;
 
+/**
+ * Data access object for {@link BaseTool}.
+ * 
+ * @author Carlos Morais
+ */
 public interface BaseToolDao {
 
-	List<String> getBaseToolNames();
+	SortedSet<String> allNames();
 
-	BaseTool getBaseTool(String baseToolName);
+	BaseTool get(String baseToolName);
 }

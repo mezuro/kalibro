@@ -2,29 +2,20 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
-public class GitLoaderTest extends ProjectLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.GIT;
-	}
+public class GitLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	public List<String> expectedValidationCommands() {
-		return asList("git --version");
+		return list("git --version");
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return list("git clone " + ADDRESS + " .");
 	}
 
 	@Override
-	public List<String> expectedLoadCommands(boolean update) {
-		if (update)
-			return asList("git pull origin master");
-		return asList("git clone " + repository.getAddress() + " .");
+	protected List<String> expectedUpdateCommands() {
+		return list("git pull origin master");
 	}
 }

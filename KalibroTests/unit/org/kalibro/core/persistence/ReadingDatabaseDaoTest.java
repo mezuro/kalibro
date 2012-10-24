@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ReadingDatabaseDao.class)
 public class ReadingDatabaseDaoTest extends UnitTest {
 
-	private static final Long READING_ID = new Random().nextLong();
+	private static final Long ID = new Random().nextLong();
 	private static final Long GROUP_ID = new Random().nextLong();
 
 	private Reading reading;
@@ -31,27 +31,36 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 	public void setUp() throws Exception {
 		reading = mock(Reading.class);
 		record = mock(ReadingRecord.class);
-		when(reading.getGroupId()).thenReturn(GROUP_ID);
 		whenNew(ReadingRecord.class).withArguments(reading, GROUP_ID).thenReturn(record);
 		when(record.convert()).thenReturn(reading);
-		when(record.id()).thenReturn(READING_ID);
+		when(record.id()).thenReturn(ID);
 		dao = spy(new ReadingDatabaseDao(null));
+	}
+
+	@Test
+	public void shouldGetReadingOfRange() {
+		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
+		doReturn(query).when(dao).createRecordQuery("JOIN Range range WHERE range.id = :rangeId");
+		when(query.getSingleResult()).thenReturn(record);
+
+		assertSame(reading, dao.readingOf(ID));
+		verify(query).setParameter("rangeId", ID);
 	}
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
 		doReturn(query).when(dao).createRecordQuery("WHERE reading.group.id = :groupId");
-		when(query.getResultList()).thenReturn(asList(record));
+		when(query.getResultList()).thenReturn(list(record));
 
-		assertDeepEquals(asSet(reading), dao.readingsOf(GROUP_ID));
+		assertDeepEquals(set(reading), dao.readingsOf(GROUP_ID));
 		verify(query).setParameter("groupId", GROUP_ID);
 	}
 
 	@Test
 	public void shouldSave() {
 		doReturn(record).when(dao).save(record);
-		assertEquals(READING_ID, dao.save(reading));
+		assertEquals(ID, dao.save(reading, GROUP_ID));
 		verify(dao).save(record);
 	}
 }

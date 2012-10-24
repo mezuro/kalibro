@@ -5,7 +5,12 @@ package org.kalibro;
  * 
  * @author Carlos Morais
  */
-public final class NativeModuleResult extends AbstractModuleResult<NativeMetricResult> {
+public class NativeModuleResult extends AbstractModuleResult<NativeMetricResult> {
+
+	@SuppressWarnings("unused" /* used by SnakeYaml */)
+	private NativeModuleResult() {
+		this(new Module(Granularity.CLASS));
+	}
 
 	/**
 	 * Creates a new NativeModuleResult with no metric results.

@@ -14,8 +14,8 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord> implements
-	MetricConfigurationDao {
+class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord>
+	implements MetricConfigurationDao {
 
 	MetricConfigurationDatabaseDao(RecordManager recordManager) {
 		super(recordManager, MetricConfigurationRecord.class);
@@ -30,7 +30,7 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 	}
 
 	@Override
-	public Long save(MetricConfiguration metricConfiguration) {
-		return save(new MetricConfigurationRecord(metricConfiguration, metricConfiguration.getConfigurationId())).id();
+	public Long save(MetricConfiguration metricConfiguration, Long configurationId) {
+		return save(new MetricConfigurationRecord(metricConfiguration, configurationId)).id();
 	}
 }

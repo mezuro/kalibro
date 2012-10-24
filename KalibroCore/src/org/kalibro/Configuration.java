@@ -45,11 +45,10 @@ public class Configuration extends AbstractEntity<Configuration> {
 	private Set<MetricConfiguration> metricConfigurations;
 
 	public Configuration() {
-		this("");
+		this("New configuration");
 	}
 
 	public Configuration(String name) {
-		setId(null);
 		setName(name);
 		setDescription("");
 		setMetricConfigurations(new TreeSet<MetricConfiguration>());
@@ -61,10 +60,6 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public boolean hasId() {
 		return id != null;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getName() {
@@ -95,7 +90,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public void addMetricConfiguration(MetricConfiguration metricConfiguration) {
 		for (MetricConfiguration each : metricConfigurations)
-			metricConfiguration.assertNoConflictWith(each);
+			each.assertNoConflictWith(metricConfiguration);
 		metricConfiguration.setConfiguration(this);
 		metricConfigurations.add(metricConfiguration);
 	}
@@ -117,19 +112,20 @@ public class Configuration extends AbstractEntity<Configuration> {
 		return compoundMetrics;
 	}
 
-	public Map<String, Set<NativeMetric>> getNativeMetrics() {
-		Map<String, Set<NativeMetric>> nativeMetrics = new HashMap<String, Set<NativeMetric>>();
+	public Map<BaseTool, Set<NativeMetric>> getNativeMetrics() {
+		Map<BaseTool, Set<NativeMetric>> nativeMetrics = new HashMap<BaseTool, Set<NativeMetric>>();
 		for (MetricConfiguration each : metricConfigurations)
 			if (!each.getMetric().isCompound())
-				addNativeMetricTo(nativeMetrics, (NativeMetric) each.getMetric());
+				addNativeMetricTo(nativeMetrics, each);
 		return nativeMetrics;
 	}
 
-	private void addNativeMetricTo(Map<String, Set<NativeMetric>> nativeMetrics, NativeMetric nativeMetric) {
-		String origin = nativeMetric.getOrigin();
+	private void addNativeMetricTo(Map<BaseTool, Set<NativeMetric>> nativeMetrics,
+		MetricConfiguration nativeConfiguration) {
+		BaseTool origin = nativeConfiguration.getBaseTool();
 		if (!nativeMetrics.containsKey(origin))
 			nativeMetrics.put(origin, new HashSet<NativeMetric>());
-		nativeMetrics.get(origin).add(nativeMetric);
+		nativeMetrics.get(origin).add((NativeMetric) nativeConfiguration.getMetric());
 	}
 
 	public boolean containsMetric(Metric metric) {
@@ -138,8 +134,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public MetricConfiguration getConfigurationFor(Metric metric) {
 		MetricConfiguration metricConfiguration = findConfigurationFor(metric);
-		if (metricConfiguration == null)
-			throw new KalibroException("No configuration found for metric: " + metric);
+		throwExceptionIf(metricConfiguration == null, "No configuration found for metric: " + metric);
 		return metricConfiguration;
 	}
 
@@ -151,8 +146,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public void save() {
-		if (name.trim().isEmpty())
-			throw new KalibroException("Configuration requires name.");
+		throwExceptionIf(name.trim().isEmpty(), "Configuration requires name.");
 		id = dao().save(this);
 		metricConfigurations = DaoFactory.getMetricConfigurationDao().metricConfigurationsOf(id);
 	}

@@ -2,29 +2,20 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-import org.kalibro.RepositoryType;
-
-public class MercurialLoaderTest extends ProjectLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.MERCURIAL;
-	}
+public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return asList("hg --version");
+		return list("hg --version");
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return list("hg clone " + ADDRESS + " .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		if (update)
-			return asList("hg pull -u");
-		return asList("hg clone " + repository.getAddress() + " .");
+	protected List<String> expectedUpdateCommands() {
+		return list("hg pull -u");
 	}
 }

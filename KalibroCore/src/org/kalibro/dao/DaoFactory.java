@@ -14,38 +14,50 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
 public abstract class DaoFactory {
 
 	public static BaseToolDao getBaseToolDao() {
-		return getFactory().createBaseToolDao();
+		return createFactory().createBaseToolDao();
 	}
 
 	public static ConfigurationDao getConfigurationDao() {
-		return getFactory().createConfigurationDao();
+		return createFactory().createConfigurationDao();
 	}
 
 	public static MetricConfigurationDao getMetricConfigurationDao() {
-		return getFactory().createMetricConfigurationDao();
+		return createFactory().createMetricConfigurationDao();
+	}
+
+	public static MetricResultDao getMetricResultDao() {
+		return createFactory().createMetricResultDao();
 	}
 
 	public static ModuleResultDao getModuleResultDao() {
-		return getFactory().createModuleResultDao();
+		return createFactory().createModuleResultDao();
+	}
+
+	public static ProcessingDao getProcessingDao() {
+		return createFactory().createProcessingDao();
 	}
 
 	public static ProjectDao getProjectDao() {
-		return getFactory().createProjectDao();
+		return createFactory().createProjectDao();
 	}
 
-	public static ProjectResultDao getProjectResultDao() {
-		return getFactory().createProjectResultDao();
+	public static RangeDao getRangeDao() {
+		return createFactory().createRangeDao();
 	}
 
 	public static ReadingDao getReadingDao() {
-		return getFactory().createReadingDao();
+		return createFactory().createReadingDao();
 	}
 
 	public static ReadingGroupDao getReadingGroupDao() {
-		return getFactory().createReadingGroupDao();
+		return createFactory().createReadingGroupDao();
 	}
 
-	private static DaoFactory getFactory() {
+	public static RepositoryDao getRepositoryDao() {
+		return createFactory().createRepositoryDao();
+	}
+
+	private static DaoFactory createFactory() {
 		KalibroSettings settings = KalibroSettings.load();
 		String serviceAddress = settings.getClientSettings().getServiceAddress();
 		DatabaseSettings databaseSettings = settings.getServerSettings().getDatabaseSettings();
@@ -58,13 +70,19 @@ public abstract class DaoFactory {
 
 	protected abstract MetricConfigurationDao createMetricConfigurationDao();
 
+	protected abstract MetricResultDao createMetricResultDao();
+
 	protected abstract ModuleResultDao createModuleResultDao();
+
+	protected abstract ProcessingDao createProcessingDao();
 
 	protected abstract ProjectDao createProjectDao();
 
-	protected abstract ProjectResultDao createProjectResultDao();
+	protected abstract RangeDao createRangeDao();
 
 	protected abstract ReadingDao createReadingDao();
 
 	protected abstract ReadingGroupDao createReadingGroupDao();
+
+	protected abstract RepositoryDao createRepositoryDao();
 }

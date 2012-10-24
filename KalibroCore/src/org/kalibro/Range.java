@@ -1,56 +1,48 @@
 package org.kalibro;
 
-import java.awt.Color;
+import org.kalibro.core.abstractentity.*;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.RangeDao;
 
-import org.kalibro.core.abstractentity.AbstractEntity;
-import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.SortingFields;
-
+/**
+ * Evaluation range to be associated with a metric result. Contains {@link Reading} and comments.
+ * 
+ * @author Carlos Morais
+ */
 @SortingFields("beginning")
 public class Range extends AbstractEntity<Range> {
 
-	@IdentityField
-	private Double beginning = Double.NEGATIVE_INFINITY;
+	@Print(skip = true)
+	private Long id;
 
-	private Double end = Double.POSITIVE_INFINITY;
-	private String label;
-	private Double grade;
-	private Color color;
+	@IdentityField
+	private Double beginning;
+
+	private Double end;
+	private Reading reading;
 	private String comments;
+
+	@Ignore
+	private MetricConfiguration configuration;
 
 	public Range() {
 		this(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY);
 	}
 
 	public Range(Double beginning, Double end) {
-		this(beginning, end, "", 0.0, Color.WHITE);
-	}
-
-	public Range(Double beginning, Double end, String label, Double grade, Color color) {
 		validate(beginning, end);
-		setBeginning(beginning);
-		setEnd(end);
-		setColor(color);
-		setLabel(label);
-		setGrade(grade);
+		this.beginning = beginning;
+		this.end = end;
+		setReading(null);
 		setComments("");
 	}
 
-	@Override
-	public String toString() {
-		return "[" + beginning + ", " + end + "[";
+	public Long getId() {
+		return id;
 	}
 
-	public boolean isFinite() {
-		return beginning != Double.NEGATIVE_INFINITY && end != Double.POSITIVE_INFINITY;
-	}
-
-	public boolean contains(Double value) {
-		return beginning <= value && value < end;
-	}
-
-	public boolean intersectsWith(Range other) {
-		return this.contains(other.beginning) || other.contains(this.beginning);
+	public boolean hasId() {
+		return id != null;
 	}
 
 	public Double getBeginning() {
@@ -71,33 +63,41 @@ public class Range extends AbstractEntity<Range> {
 		this.end = end;
 	}
 
-	private void validate(Double leftPoint, Double rightPoint) {
-		if (!(leftPoint < rightPoint))
-			throw new KalibroException("[" + leftPoint + ", " + rightPoint + "[ is not a valid range");
+	void assertNoIntersectionWith(Range other) {
+		assertNoIntersection(this, other);
 	}
 
-	public String getLabel() {
-		return label;
+	private void validate(Double theBeginning, Double theEnd) {
+		throwExceptionIf(!(theBeginning < theEnd), "[" + theBeginning + ", " + theEnd + "[ is not a valid range");
+		if (configuration != null)
+			for (Range other : configuration.getRanges())
+				if (other != this)
+					assertNoIntersection(other, new Range(theBeginning, theEnd));
 	}
 
-	public void setLabel(String label) {
-		this.label = label;
+	private void assertNoIntersection(Range range, Range other) {
+		throwExceptionIf(range.contains(other.beginning) || other.contains(range.beginning),
+			"Range " + other + " would conflict with " + range);
 	}
 
-	public Double getGrade() {
-		return grade;
+	public boolean isFinite() {
+		return !(beginning.isInfinite() || end.isInfinite());
 	}
 
-	public void setGrade(Double grade) {
-		this.grade = grade;
+	public boolean contains(Double value) {
+		return beginning <= value && value < end;
 	}
 
-	public Color getColor() {
-		return color;
+	public boolean hasReading() {
+		return reading != null;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
+	public Reading getReading() {
+		return reading;
+	}
+
+	public void setReading(Reading reading) {
+		this.reading = reading;
 	}
 
 	public String getComments() {
@@ -106,5 +106,36 @@ public class Range extends AbstractEntity<Range> {
 
 	public void setComments(String comments) {
 		this.comments = comments;
+	}
+
+	void setConfiguration(MetricConfiguration configuration) {
+		this.configuration = configuration;
+	}
+
+	public void save() {
+		throwExceptionIf(configuration == null, "Range is not in any configuration.");
+		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
+		id = dao().save(this, configuration.getId());
+	}
+
+	public void delete() {
+		if (hasId())
+			dao().delete(id);
+		if (configuration != null)
+			configuration.removeRange(this);
+		deleted();
+	}
+
+	void deleted() {
+		id = null;
+	}
+
+	private RangeDao dao() {
+		return DaoFactory.getRangeDao();
+	}
+
+	@Override
+	public String toString() {
+		return "[" + beginning + ", " + end + "[";
 	}
 }

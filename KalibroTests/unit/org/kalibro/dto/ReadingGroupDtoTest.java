@@ -2,8 +2,6 @@ package org.kalibro.dto;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingDao;
@@ -16,8 +14,8 @@ public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup> {
 	}
 
 	@Override
-	protected List<LazyLoadExpectation> lazyLoadExpectations() {
-		return asList(expectLazy(entity.getReadings(), ReadingDao.class, "readingsOf", entity.getId()));
+	protected void registerLazyLoadExpectations() {
+		whenLazy(ReadingDao.class, "readingsOf", entity.getId()).thenReturn(entity.getReadings());
 	}
 
 	@Test

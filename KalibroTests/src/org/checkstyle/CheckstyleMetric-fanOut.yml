@@ -1,0 +1,11 @@
+!!org.checkstyle.CheckstyleMetric
+name: "Fan Out"
+description: >
+  The number of other classes a given class relies on. Also the square of this has been shown to indicate the amount of
+  maintenance required in functional programs (on a file basis) at least.
+  
+  Default maximum: 20.
+moduleName: "ClassFanOutComplexity"
+attributeName: "max"
+messageKey: "classFanOutComplexity"
+aggregationType: SUM

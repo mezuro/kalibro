@@ -16,7 +16,8 @@ public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:o
 	MetricConfiguration, MetricConfigurationXmlRequest, MetricConfigurationXmlResponse,
 	MetricConfigurationEndpoint, MetricConfigurationClientDao> { // @formatter:on
 
-	private static final Long ID = Math.abs(new Random().nextLong());
+	private static final Long ID = new Random().nextLong();
+	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
 	@Override
 	protected Class<MetricConfiguration> entityClass() {
@@ -25,14 +26,14 @@ public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:o
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(port.metricConfigurationsOf(ID)).thenReturn(asList(response));
-		assertDeepEquals(asSet(entity), client.metricConfigurationsOf(ID));
+		when(port.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(list(response));
+		assertDeepEquals(set(entity), client.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		when(port.saveMetricConfiguration(request)).thenReturn(ID);
-		assertEquals(ID, client.save(entity));
+		when(port.saveMetricConfiguration(request, CONFIGURATION_ID)).thenReturn(ID);
+		assertEquals(ID, client.save(entity, CONFIGURATION_ID));
 	}
 
 	@Test

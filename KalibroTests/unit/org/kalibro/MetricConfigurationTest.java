@@ -1,174 +1,253 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.MetricConfigurationFixtures.*;
-import static org.kalibro.MetricFixtures.analizoMetric;
-import static org.kalibro.RangeFixtures.newRange;
-import static org.kalibro.RangeLabel.*;
+
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.Identifier;
+import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.MetricConfigurationDao;
+import org.kalibro.dao.RangeDao;
+import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
 public class MetricConfigurationTest extends UnitTest {
 
-	private NativeMetric metric;
-	private MetricConfiguration configuration;
+	private MetricConfigurationDao dao;
+
+	private MetricConfiguration metricConfiguration;
 
 	@Before
 	public void setUp() {
-		metric = analizoMetric("amloc");
-		configuration = newMetricConfiguration("amloc");
-	}
-
-	@Test
-	public void checkDefaultAttributes() {
-		MetricConfiguration newConfiguration = new MetricConfiguration(metric);
-		String expectedCode = Identifier.fromText(metric.getName()).asVariable();
-		assertEquals(expectedCode, newConfiguration.getCode());
-		assertSame(metric, newConfiguration.getMetric());
-		assertDoubleEquals(1.0, newConfiguration.getWeight());
-		assertEquals(Statistic.AVERAGE, newConfiguration.getAggregationForm());
-		assertTrue(newConfiguration.getRanges().isEmpty());
-	}
-
-	@Test
-	public void configurationsWithDifferentCodeAndMetricShouldNotConflict() {
-		MetricConfiguration locConfiguration = metricConfiguration("loc");
-		locConfiguration.assertNoConflictWith(configuration);
-		configuration.assertNoConflictWith(locConfiguration);
-	}
-
-	@Test
-	public void configurationsWithSameCodeShouldConflict() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				MetricConfiguration configurationWithSameCode = new MetricConfiguration(analizoMetric("loc"));
-				configurationWithSameCode.setCode(configuration.getCode());
-				configurationWithSameCode.assertNoConflictWith(configuration);
-			}
-		}).throwsException().withMessage("A metric configuration with code 'amloc' already exists");
-	}
-
-	@Test
-	public void configurationsForSameMetricShouldConflict() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				MetricConfiguration configurationForSameMetric = new MetricConfiguration(metric);
-				configurationForSameMetric.assertNoConflictWith(configuration);
-			}
-		}).throwsException().withMessage("There is already a configuration for this metric: " + metric);
-	}
-
-	@Test
-	public void testHasRange() {
-		assertTrue(configuration.hasRangeFor(0.0));
-		assertTrue(configuration.hasRangeFor(7.0));
-		assertTrue(configuration.hasRangeFor(10.0));
-		assertTrue(configuration.hasRangeFor(13.0));
-		assertTrue(configuration.hasRangeFor(19.5));
-		assertTrue(configuration.hasRangeFor(Double.MAX_VALUE));
-		assertFalse(configuration.hasRangeFor(-1.0));
-	}
-
-	@Test
-	public void testGetRange() {
-		assertDeepEquals(newRange("amloc", EXCELLENT), configuration.getRangeFor(0.0));
-		assertDeepEquals(newRange("amloc", GOOD), configuration.getRangeFor(7.0));
-		assertDeepEquals(newRange("amloc", REGULAR), configuration.getRangeFor(10.0));
-		assertDeepEquals(newRange("amloc", WARNING), configuration.getRangeFor(13.0));
-		assertDeepEquals(newRange("amloc", BAD), configuration.getRangeFor(19.5));
-		assertDeepEquals(newRange("amloc", BAD), configuration.getRangeFor(Double.MAX_VALUE));
-	}
-
-	@Test
-	public void testNoRangeFound() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.getRangeFor(-1.0);
-			}
-		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
-	}
-
-	@Test
-	public void testAddRange() {
-		Range newRange = new Range(-1.0, 0.0);
-		configuration.addRange(newRange);
-		assertSame(newRange, configuration.getRangeFor(-1.0));
-	}
-
-	@Test
-	public void testConflictingRange() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.addRange(new Range(6.0, 12.0));
-			}
-		}).throwsException().withMessage("New range [6.0, 12.0[ would conflict with [0.0, 7.0[");
-	}
-
-	@Test
-	public void shouldReplaceExistingRange() {
-		Range newRange = new Range(-1.0, 0.0);
-		configuration.replaceRange(0.0, newRange);
-		assertFalse(configuration.hasRangeFor(0.0));
-		assertSame(newRange, configuration.getRangeFor(-1.0));
-	}
-
-	@Test
-	public void checkErrorReplacingInexistentRange() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.replaceRange(-1.0, new Range(-1.0, 0.0));
-			}
-		}).throwsException().withMessage("No range found for value -1.0 and metric '" + metric + "'");
-	}
-
-	@Test
-	public void checkErrorForConflictingRangeReplace() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.replaceRange(0.0, new Range());
-			}
-		}).throwsException().withMessage("New range [-Infinity, Infinity[ would conflict with [7.0, 10.0[");
-		assertTrue(configuration.hasRangeFor(0.0));
-	}
-
-	@Test
-	public void testRemoveRange() {
-		assertEquals(5, configuration.getRanges().size());
-		assertTrue(configuration.hasRangeFor(Double.MAX_VALUE));
-
-		configuration.removeRange(newRange("amloc", BAD));
-		assertEquals(4, configuration.getRanges().size());
-		assertFalse(configuration.hasRangeFor(Double.MAX_VALUE));
-	}
-
-	@Test
-	public void shouldReturnIfRemovedRangeExisted() {
-		assertTrue(configuration.removeRange(newRange("amloc", BAD)));
-		assertFalse(configuration.removeRange(new Range(-1.0, 0.0)));
+		dao = mock(MetricConfigurationDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getMetricConfigurationDao()).thenReturn(dao);
+		metricConfiguration = new MetricConfiguration();
 	}
 
 	@Test
 	public void shouldSortByCode() {
-		assertSorted(newConfiguration("amloc"), newConfiguration("loc"), newConfiguration("nom"));
+		assertSorted(withCode("amloc"), withCode("dit"), withCode("loc"), withCode("nom"), withCode("rfc"));
 	}
 
-	private MetricConfiguration newConfiguration(String metricCode) {
-		return new MetricConfiguration(analizoMetric(metricCode));
+	@Test
+	public void shouldIdentifyByCode() {
+		assertEquals(metricConfiguration, withCode(metricConfiguration.getCode()));
+	}
+
+	@Test
+	public void checkCompoundConstruction() {
+		assertEquals("newMetric", metricConfiguration.getCode());
+		assertEquals(new CompoundMetric(), metricConfiguration.getMetric());
+		assertNull(metricConfiguration.getBaseTool());
+		checkConstruction();
+	}
+
+	@Test
+	public void checkNativeConstruction() {
+		BaseTool baseTool = mock(BaseTool.class);
+		NativeMetric metric = loadFixture("lcom4", NativeMetric.class);
+		metricConfiguration = new MetricConfiguration(baseTool, metric);
+		assertEquals("lackOfCohesionOfMethods", metricConfiguration.getCode());
+		assertSame(metric, metricConfiguration.getMetric());
+		assertSame(baseTool, metricConfiguration.getBaseTool());
+		checkConstruction();
+	}
+
+	private void checkConstruction() {
+		assertFalse(metricConfiguration.hasId());
+		assertDoubleEquals(1.0, metricConfiguration.getWeight());
+		assertEquals(Statistic.AVERAGE, metricConfiguration.getAggregationForm());
+		assertNull(metricConfiguration.getReadingGroup());
+		assertTrue(metricConfiguration.getRanges().isEmpty());
+	}
+
+	@Test
+	public void shouldNotSetConflictingCode() {
+		Configuration configuration = new Configuration();
+		configuration.addMetricConfiguration(metricConfiguration);
+		configuration.addMetricConfiguration(withCode("code"));
+		metricConfiguration.setCode("original");
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				metricConfiguration.setCode("code");
+			}
+		}).throwsException().withMessage("Metric with code 'code' already exists in the configuration.");
+		assertEquals("original", metricConfiguration.getCode());
+	}
+
+	@Test
+	public void shouldAssertNoConflictWithOtherMetricConfiguration() {
+		metricConfiguration.assertNoConflictWith(withCode("code"));
+
+		final CompoundMetric metric = (CompoundMetric) metricConfiguration.getMetric();
+		metricConfiguration.setCode("other");
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				metricConfiguration.assertNoConflictWith(new MetricConfiguration(metric));
+			}
+		}).throwsException().withMessage("Metric already exists in the configuration: New metric");
+	}
+
+	private MetricConfiguration withCode(String code) {
+		MetricConfiguration newConfiguration = new MetricConfiguration(new CompoundMetric("Other"));
+		newConfiguration.setCode(code);
+		return newConfiguration;
+	}
+
+	@Test
+	public void shouldSetConfigurationOnRanges() {
+		Range range = mock(Range.class);
+		metricConfiguration.setRanges(sortedSet(range));
+		assertDeepEquals(set(range), metricConfiguration.getRanges());
+		verify(range).setConfiguration(metricConfiguration);
+	}
+
+	@Test
+	public void shouldSetRangesWithoutTouchingThem() {
+		// required for lazy loading
+		SortedSet<Range> ranges = mock(SortedSet.class);
+		metricConfiguration.setRanges(ranges);
+		verifyZeroInteractions(ranges);
+	}
+
+	@Test
+	public void shouldGetRangeForValue() {
+		Range range = mock(Range.class);
+		when(range.contains(42.0)).thenReturn(true);
+		metricConfiguration.setRanges(sortedSet(range));
+
+		assertNull(metricConfiguration.getRangeFor(0.0));
+		assertSame(range, metricConfiguration.getRangeFor(42.0));
+	}
+
+	@Test
+	public void shouldAddRangeIfItDoesNotConflictWithExistingOnes() {
+		metricConfiguration.addRange(new Range(0.0, 5.0));
+		metricConfiguration.addRange(new Range(5.0, 10.0));
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				metricConfiguration.addRange(new Range(4.0, 6.0));
+			}
+		}).throwsException().withMessage("Range [4.0, 6.0[ would conflict with [0.0, 5.0[");
+	}
+
+	@Test
+	public void shouldRemoveRange() {
+		Range range = mock(Range.class);
+		SortedSet<Range> ranges = spy(sortedSet(range));
+		metricConfiguration.setRanges(ranges);
+
+		metricConfiguration.removeRange(range);
+		verify(ranges).remove(range);
+		verify(range).setConfiguration(null);
+	}
+
+	@Test
+	public void shouldRequiredCodeAndSavedConfigurationToSave() {
+		metricConfiguration.setCode(" ");
+		saveShouldThrowExceptionWithMessage("Metric configuration requires code.");
+
+		metricConfiguration.setCode("code");
+		saveShouldThrowExceptionWithMessage("Metric is not in any configuration.");
+
+		setConfigurationWithId(null);
+		saveShouldThrowExceptionWithMessage("Configuration is not saved. Save configuration instead");
+	}
+
+	private void saveShouldThrowExceptionWithMessage(String message) {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				metricConfiguration.save();
+			}
+		}).throwsException().withMessage(message);
+	}
+
+	@Test
+	public void shouldUpdateIdReadingGroupAndRangesOnSave() {
+		Long id = mock(Long.class);
+		Long configurationId = mock(Long.class);
+		ReadingGroup readingGroup = mockReadingGroup(id);
+		Range range = mockRange(id);
+		setConfigurationWithId(configurationId);
+		when(dao.save(metricConfiguration, configurationId)).thenReturn(id);
+
+		assertFalse(metricConfiguration.hasId());
+		metricConfiguration.save();
+		assertSame(id, metricConfiguration.getId());
+		assertSame(readingGroup, metricConfiguration.getReadingGroup());
+		assertEquals(set(range), metricConfiguration.getRanges());
+	}
+
+	private ReadingGroup mockReadingGroup(Long id) {
+		ReadingGroup readingGroup = mock(ReadingGroup.class);
+		ReadingGroupDao readingGroupDao = mock(ReadingGroupDao.class);
+		when(DaoFactory.getReadingGroupDao()).thenReturn(readingGroupDao);
+		when(readingGroupDao.readingGroupOf(id)).thenReturn(readingGroup);
+		return readingGroup;
+	}
+
+	private Range mockRange(Long id) {
+		Range range = mock(Range.class);
+		RangeDao rangeDao = mock(RangeDao.class);
+		when(DaoFactory.getRangeDao()).thenReturn(rangeDao);
+		when(rangeDao.rangesOf(id)).thenReturn(sortedSet(range));
+		return range;
+	}
+
+	@Test
+	public void shouldDeleteIfHasId() {
+		assertFalse(metricConfiguration.hasId());
+		metricConfiguration.delete();
+		verify(dao, never()).delete(any(Long.class));
+
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(metricConfiguration, "id", id);
+		assertTrue(metricConfiguration.hasId());
+
+		metricConfiguration.delete();
+		verify(dao).delete(id);
+		assertFalse(metricConfiguration.hasId());
+	}
+
+	@Test
+	public void shouldRemoveFromConfigurationOnDelete() {
+		Configuration configuration = setConfigurationWithId(42L);
+		metricConfiguration.delete();
+		verify(configuration).removeMetricConfiguration(metricConfiguration);
+	}
+
+	private Configuration setConfigurationWithId(Long id) {
+		Configuration configuration = mock(Configuration.class);
+		when(configuration.hasId()).thenReturn(id != null);
+		when(configuration.getId()).thenReturn(id);
+		metricConfiguration.setConfiguration(configuration);
+		return configuration;
+	}
+
+	@Test
+	public void shouldNotifyRangesOfDeletion() {
+		Range range = mock(Range.class);
+		metricConfiguration.setRanges(sortedSet(range));
+		setConfigurationWithId(42L);
+
+		metricConfiguration.delete();
+		verify(range).deleted();
 	}
 }

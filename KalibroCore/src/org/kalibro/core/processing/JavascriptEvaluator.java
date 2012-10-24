@@ -1,16 +1,22 @@
 package org.kalibro.core.processing;
 
+import org.kalibro.CompoundMetric;
 import org.kalibro.KalibroException;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.Function;
 import org.mozilla.javascript.Scriptable;
 
-public class JavascriptEvaluator {
+/**
+ * Compiles and runs Javascripts. Needed for {@link CompoundMetric} result evaluation.
+ * 
+ * @author Carlos Morais
+ */
+class JavascriptEvaluator {
 
 	private Context context;
 	private Scriptable script;
 
-	public JavascriptEvaluator() {
+	JavascriptEvaluator() {
 		context = Context.enter();
 		script = context.initStandardObjects();
 	}

@@ -1,14 +1,13 @@
 package org.kalibro;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
 
 /**
- * Represent a piece of software, in one level of abstraction, determined by its {@link Granularity}.
+ * Represents a piece of software, in the level of abstraction determined by its {@link Granularity}.
  * 
  * @author Carlos Morais
  */
@@ -16,59 +15,36 @@ import org.kalibro.core.abstractentity.SortingFields;
 public class Module extends AbstractEntity<Module> {
 
 	@IdentityField
-	protected String name;
+	private String[] name;
 
-	protected Granularity granularity;
+	private Granularity granularity;
 
 	/**
-	 * Creates a new Module. <br/>
-	 * For example, the following code initializes the class org.junit.Assert: <br/>
-	 * {@code new Module(Granularity.CLASS, "org", "junit", "Assert")}'
+	 * Creates a new Module with the specified granularity and complete name.<br/>
+	 * For example, the following code creates a module representing this very class:<br/>
+	 * {@code new Module(Granularity.CLASS, "org", "kalibro", "Module")}'
 	 * 
 	 * @param granularity See {@link Granularity}.
-	 * @param name Complete name of the module, with separated packages.
+	 * @param name Complete name of the module, with separated packages/directories.
 	 */
 	public Module(Granularity granularity, String... name) {
+		this.name = name;
 		setGranularity(granularity);
-		setName(name[0]);
-		for (int i = 1; i < name.length; i++)
-			this.name += "." + name[i];
 	}
 
-	@Override
-	public String toString() {
-		return getShortName();
-	}
-
-	public String getShortName() {
-		return name.substring(name.lastIndexOf('.') + 1);
-	}
-
-	public List<Module> inferAncestry() {
-		List<Module> ancestry = new ArrayList<Module>();
-		if (hasParent()) {
-			Module parent = inferParent();
-			ancestry.addAll(parent.inferAncestry());
-			ancestry.add(parent);
-		}
-		return ancestry;
-	}
-
-	private boolean hasParent() {
-		return name.contains(".");
-	}
-
-	private Module inferParent() {
-		String parentName = name.substring(0, name.lastIndexOf('.'));
-		return new Module(granularity.inferParentGranularity(), parentName);
-	}
-
-	public String getName() {
+	public String[] getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
+	public String getShortName() {
+		return name[name.length - 1];
+	}
+
+	public String getLongName() {
+		String longName = "";
+		for (String namePart : name)
+			longName += "." + namePart;
+		return longName.substring(1);
 	}
 
 	public Granularity getGranularity() {
@@ -77,5 +53,18 @@ public class Module extends AbstractEntity<Module> {
 
 	public void setGranularity(Granularity granularity) {
 		this.granularity = granularity;
+	}
+
+	public Module inferParent() {
+		if (granularity == Granularity.SOFTWARE)
+			return null;
+		if (name.length <= 1)
+			return new Module(Granularity.SOFTWARE);
+		return new Module(granularity.inferParentGranularity(), Arrays.copyOf(name, name.length - 1));
+	}
+
+	@Override
+	public String toString() {
+		return getShortName();
 	}
 }

@@ -1,7 +1,5 @@
 package org.kalibro.service;
 
-import static org.kalibro.BaseToolFixtures.newAnalizoStub;
-
 import org.junit.Test;
 import org.kalibro.BaseTool;
 import org.kalibro.client.EndpointTest;
@@ -9,22 +7,22 @@ import org.kalibro.dao.BaseToolDao;
 
 public class BaseToolEndpointTest extends EndpointTest<BaseTool, BaseToolDao, BaseToolEndpoint> {
 
+	private static final String NAME = mock(String.class);
+
 	@Override
 	protected BaseTool loadFixture() {
-		BaseTool fixture = newAnalizoStub();
-		fixture.setCollectorClass(null);
-		return fixture;
+		return loadFixture("inexistent", BaseTool.class);
 	}
 
 	@Test
-	public void shouldListBaseToolNames() {
-		when(dao.getBaseToolNames()).thenReturn(asList("42"));
-		assertDeepEquals(asList("42"), port.getBaseToolNames());
+	public void shouldGetAllNames() {
+		when(dao.allNames()).thenReturn(sortedSet(NAME));
+		assertDeepEquals(list(NAME), port.allBaseToolNames());
 	}
 
 	@Test
-	public void shouldGetBaseToolByName() {
-		when(dao.getBaseTool("42")).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.getBaseTool("42"));
+	public void shouldGetByName() {
+		when(dao.get(NAME)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getBaseTool(NAME));
 	}
 }

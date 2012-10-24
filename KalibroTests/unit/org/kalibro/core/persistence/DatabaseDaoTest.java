@@ -37,9 +37,9 @@ public class DatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldConfirmExistence() {
 		Query query = mock(Query.class);
-		when(recordManager.createQuery("SELECT 1 FROM Person WHERE id = :id")).thenReturn(query);
+		when(recordManager.createQuery("SELECT 1 FROM Person person WHERE person.id = :id")).thenReturn(query);
 
-		when(query.getResultList()).thenReturn(asList(1));
+		when(query.getResultList()).thenReturn(list(1));
 		assertTrue(dao.exists(ID));
 		verify(query).setParameter("id", ID);
 
@@ -58,8 +58,8 @@ public class DatabaseDaoTest extends UnitTest {
 	public void shouldGetAll() {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
 		when(recordManager.createQuery("SELECT person FROM Person person ", PersonRecord.class)).thenReturn(query);
-		when(query.getResultList()).thenReturn(asList(record));
-		assertDeepEquals(asSet(person), dao.all());
+		when(query.getResultList()).thenReturn(list(record));
+		assertDeepEquals(set(person), dao.all());
 	}
 
 	@Test
