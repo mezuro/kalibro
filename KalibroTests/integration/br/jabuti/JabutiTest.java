@@ -1,30 +1,17 @@
 package br.jabuti;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.io.*;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.Timeout;
-import org.kalibro.IntegrationTest;
-import org.kalibro.KalibroException;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.*;
+import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.concurrent.Writer;
+import org.kalibro.tests.IntegrationTest;
 
 public class JabutiTest extends IntegrationTest {
 
@@ -43,27 +30,26 @@ public class JabutiTest extends IntegrationTest {
 	@Before
 	public void setUp() throws Exception {
 		jabuti = new JabutiMetricCollector();
-		jabuti.getBaseTool();
 		project = new File(samplesDirectory(), "jabuti");
 		metrics = new HashSet<NativeMetric>();
 		allNodesEI = new NativeMetric("All Nodes Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesEI);
-		allNodesED = new NativeMetric("All Nodes Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
+		allNodesED = new NativeMetric("All Nodes Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesED);
 		allEdgesEI = new NativeMetric("All Edges Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesEI);
-		allEdgesED = new NativeMetric("All Edges Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
+		allEdgesED = new NativeMetric("All Edges Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesED);
-		allUsesEI = new NativeMetric("All Uses Exception Independent",  Granularity.SOFTWARE, Language.JAVA);
+		allUsesEI = new NativeMetric("All Uses Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesEI);
-		allUsesED = new NativeMetric("All Uses Exception Dependent",    Granularity.SOFTWARE, Language.JAVA);
+		allUsesED = new NativeMetric("All Uses Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesED);
-		allPotEI = new NativeMetric("All Pot Exception Independent",   Granularity.SOFTWARE, Language.JAVA);
+		allPotEI = new NativeMetric("All Pot Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotEI);
-		allPotED = new NativeMetric("All Pot Exception Dependent",     Granularity.SOFTWARE, Language.JAVA);
+		allPotED = new NativeMetric("All Pot Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotED);
 	}
-	
+
 	@Test
 	public void jabutiInstallTest() {
 		assertTrue(new File("/usr/local/bin/jabuti").isFile());
@@ -74,57 +60,49 @@ public class JabutiTest extends IntegrationTest {
 	public void vendingProjectTest() {
 		assertTrue(new File(samplesDirectory(), "jabuti").isDirectory());
 	}
-	
+
 	@Test
 	public void checkBaseTool() {
-		BaseTool baseTool = jabuti.getBaseTool();
-		assertNotNull(baseTool);
-		assertEquals(JabutiMetricCollector.class, baseTool.getCollectorClass());
-		assertNotNull(baseTool.getSupportedMetrics());
+		assertEquals("", jabuti.name());
+		assertEquals("", jabuti.description());
+		assertDeepEquals(metrics, jabuti.supportedMetrics());
 	}
 
 	@Override
 	protected Timeout testTimeout() {
 		return new Timeout(90000);
 	}
-	
+
 	@Test
 	public void collectMetricsOk() throws Exception {
-		jabuti.getBaseTool();
-		Set<NativeModuleResult> result = jabuti.collectMetrics(project, metrics);
-		assertNotNull(result);
-		assertEquals(3, result.size());
+		Producer<NativeModuleResult> producer = new Producer<NativeModuleResult>();
+		Writer<NativeModuleResult> resultWriter = producer.createWriter();
+		jabuti.collectMetrics(project, metrics, resultWriter);
+
+		assertTrue(producer.iterator().hasNext());
 	}
-	
-	@Test(expected=KalibroException.class)
-	public void collectMetricsFail() throws Exception {		
-		jabuti.collectMetrics(new File("/tmp"), metrics);		
+
+	@Test(expected = KalibroException.class)
+	public void collectMetricsFail() throws Exception {
+		jabuti.collectMetrics(new File("/tmp"), metrics, new Producer<NativeModuleResult>().createWriter());
 	}
-	
-	@Test
-	public void listSizeResultTest() {
-		assertEquals(metrics.size(), jabuti.getBaseTool().getSupportedMetrics().size());
-	}
-	
-	@Test
-	public void listMetricSupportedTest() {
-		assertEquals(metrics, jabuti.getBaseTool().getSupportedMetrics());
-	}
-	
+
 	@Test
 	public void shouldParseResultsOutputToModuleResults() throws Exception {
-		Set<NativeModuleResult> results = jabuti.collectMetrics(project, metrics);
-		assertNotNull(results);
-		assertFalse(results.isEmpty());
+		Producer<NativeModuleResult> producer = new Producer<NativeModuleResult>();
+		Writer<NativeModuleResult> resultWriter = producer.createWriter();
+		jabuti.collectMetrics(project, metrics, resultWriter);
+		Iterator<NativeModuleResult> results = producer.iterator();
+		assertFalse(results.hasNext());
 
 		Map<Integer, Map<Integer, Double>> resultFile = this.outputJabutiMap();
 		// Test Run Global
-		for (int j =0; j < 3; j++) {
-			NativeModuleResult result = results.toArray(new NativeModuleResult[0])[j];
+		for (int j = 0; j < 3; j++) {
+			NativeModuleResult result = results.next();
 			assertEquals(metrics.size(), result.getMetricResults().size());
 			Map<Integer, Double> valueMap = resultFile.get(j);
-			
-			for (int y =0; y < 8; y++) {
+
+			for (int y = 0; y < 8; y++) {
 				switch (y) {
 					case 0:
 						assertEquals(valueMap.get(y), result.getResultFor(allNodesEI).getValue());
@@ -153,9 +131,9 @@ public class JabutiTest extends IntegrationTest {
 				}
 			}
 		}
-		
+
 	}
-	
+
 	private Map<Integer, Map<Integer, Double>> outputJabutiMap() throws IOException {
 		InputStream in = JabutiTest.class.getResourceAsStream("Jabuti-Output-Vending.txt");
 		BufferedReader buffer = new BufferedReader(new InputStreamReader(in));
@@ -165,19 +143,19 @@ public class JabutiTest extends IntegrationTest {
 		Map<Integer, Double> value = null;
 		int x = 0;
 		int y = 0;
-		while((line = buffer.readLine()) != null) {
+		while ((line = buffer.readLine()) != null) {
 			if ("---".equals(line)) {
-				x++; 
+				x++;
 				y = 0;
 				buffer.readLine();
 				value = new HashMap<Integer, Double>();
 				continue;
 			}
 			value.put(y, new Double(line.split(":")[1].replace("\t", "").trim()));
-			map.put(x-1, value);
+			map.put(x - 1, value);
 			y++;
 		}
-		
+
 		return map;
 	}
 
