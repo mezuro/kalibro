@@ -18,14 +18,15 @@ public class PrinterTest extends UnitTest {
 	@Test
 	public void checkSpecialPrinters() throws Exception {
 		Printer<?>[] printers = Whitebox.invokeMethod(Printer.class, "specialPrinters");
-		assertEquals(7, printers.length);
+		assertEquals(8, printers.length);
 		assertClassEquals(ArrayPrinter.class, printers[0]);
 		assertClassEquals(CollectionPrinter.class, printers[1]);
 		assertClassEquals(ColorPrinter.class, printers[2]);
-		assertClassEquals(EntityPrinter.class, printers[3]);
-		assertClassEquals(EnumPrinter.class, printers[4]);
-		assertClassEquals(MapPrinter.class, printers[5]);
-		assertClassEquals(StringPrinter.class, printers[6]);
+		assertClassEquals(DoublePrinter.class, printers[3]);
+		assertClassEquals(EntityPrinter.class, printers[4]);
+		assertClassEquals(EnumPrinter.class, printers[5]);
+		assertClassEquals(MapPrinter.class, printers[6]);
+		assertClassEquals(StringPrinter.class, printers[7]);
 	}
 
 	@Test
@@ -39,12 +40,12 @@ public class PrinterTest extends UnitTest {
 	private class CascadePrinter extends Printer<String[]> {
 
 		@Override
-		protected boolean canPrint(Object object) {
+		boolean canPrint(Object object) {
 			return object instanceof String[];
 		}
 
 		@Override
-		protected void doPrint(String[] array, String comment) {
+		void doPrint(String[] array, String comment) {
 			if (array.length == 0) {
 				printSubItem("", "FIM");
 				return;
