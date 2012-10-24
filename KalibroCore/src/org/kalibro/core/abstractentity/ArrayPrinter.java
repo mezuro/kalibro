@@ -7,13 +7,11 @@ package org.kalibro.core.abstractentity;
  */
 class ArrayPrinter extends Printer<Object[]> {
 
-	@Override
-	protected boolean canPrint(Object value) {
+	@Override boolean canPrint(Object value) {
 		return value instanceof Object[];
 	}
 
-	@Override
-	protected void doPrint(Object[] array, String comment) {
+	@Override void doPrint(Object[] array, String comment) {
 		if (array.length == 0) {
 			printString(" []");
 			printComment(comment);

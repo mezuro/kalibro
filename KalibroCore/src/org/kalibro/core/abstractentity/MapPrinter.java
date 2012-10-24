@@ -9,13 +9,11 @@ import java.util.Map;
  */
 class MapPrinter extends Printer<Map<?, ?>> {
 
-	@Override
-	protected boolean canPrint(Object object) {
+	@Override boolean canPrint(Object object) {
 		return object instanceof Map;
 	}
 
-	@Override
-	protected void doPrint(Map<?, ?> map, String comment) {
+	@Override void doPrint(Map<?, ?> map, String comment) {
 		if (map.isEmpty()) {
 			printString(" {}");
 			printComment(comment);

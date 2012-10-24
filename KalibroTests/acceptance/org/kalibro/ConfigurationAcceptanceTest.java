@@ -94,7 +94,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		MetricConfiguration metricConfiguration = new MetricConfiguration();
 		metricConfiguration.setCode(code);
 		assertThat(addMetricConfiguration(metricConfiguration)).throwsException()
-			.withMessage("Metric configuration with code \"" + code + "\" already exists in the configuration.");
+			.withMessage("Metric with code '" + code + "' already exists in the configuration.");
 	}
 
 	private void metricsInSameConfigurationShouldNotHaveDuplicateMetrics() {
