@@ -1,6 +1,7 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
+import static org.kalibro.Granularity.*;
 
 import java.util.Random;
 
@@ -51,9 +52,9 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	}
 
 	private void stubModuleResultPreparation() {
-		Module softwareModule = new Module(Granularity.SOFTWARE, REPOSITORY_NAME);
-		Module classModule = new Module(Granularity.CLASS, "HelloWorld");
-		assertEquals(new Module(Granularity.CLASS, "HelloWorld"), classModule);
+		Module softwareModule = new Module(SOFTWARE, REPOSITORY_NAME);
+		Module classModule = new Module(CLASS, "HelloWorld");
+		assertEquals(new Module(CLASS, "HelloWorld"), classModule);
 		softwareResult = new ModuleResult(null, softwareModule);
 		classResult = new ModuleResult(softwareResult, classModule);
 		when(moduleResultDao.prepareResultFor(softwareModule, PROCESSING_ID)).thenReturn(softwareResult);
@@ -72,10 +73,20 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	private Producer<NativeModuleResult> stubProducer() {
 		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
 		Writer<NativeModuleResult> writer = resultProducer.createWriter();
-		writer.write(loadFixture("HelloWorld-Class", NativeModuleResult.class));
-		writer.write(loadFixture("HelloWorld-Software", NativeModuleResult.class));
+		writer.write(newResult(new Module(CLASS, "HelloWorld"), "cbo", 0.0, "lcom4", 1.0));
+		writer.write(newResult(new Module(SOFTWARE, "null"), "total_cof", 1.0));
 		writer.close();
 		return resultProducer;
+	}
+
+	private NativeModuleResult newResult(Module module, Object... results) {
+		NativeModuleResult moduleResult = new NativeModuleResult(module);
+		for (int i = 0; i < results.length; i += 2) {
+			NativeMetric metric = loadFixture(results[i].toString(), NativeMetric.class);
+			Double value = (Double) results[i + 1];
+			moduleResult.addMetricResult(new NativeMetricResult(metric, value));
+		}
+		return moduleResult;
 	}
 
 	@Test
