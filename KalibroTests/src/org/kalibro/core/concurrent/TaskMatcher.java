@@ -40,7 +40,7 @@ public class TaskMatcher {
 
 	public ThrowableMatcher doThrow(Class<? extends Throwable> throwableClass) {
 		Throwable throwed = doCatch(throwableClass);
-		assertClassEquals(throwableClass, throwed);
+		assertClassEquals("" + throwed.getStackTrace()[0], throwableClass, throwed);
 		return new ThrowableMatcher(throwed);
 	}
 
