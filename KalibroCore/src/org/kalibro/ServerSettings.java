@@ -19,7 +19,7 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 	private DatabaseSettings databaseSettings;
 
 	public ServerSettings() {
-		setLoadDirectory(new File(Environment.dotKalibro(), "repositories"));
+		setLoadDirectory(new File(Environment.dotKalibro(), "projects"));
 		setDatabaseSettings(new DatabaseSettings());
 	}
 

@@ -1,47 +1,36 @@
 package org.kalibro.core.persistence;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
+import java.util.SortedSet;
+
+import javax.persistence.TypedQuery;
+
+import org.kalibro.MetricConfiguration;
 import org.kalibro.core.persistence.record.MetricConfigurationRecord;
-import org.kalibro.core.persistence.record.RangeRecord;
 import org.kalibro.dao.MetricConfigurationDao;
+import org.kalibro.dto.DataTransferObject;
 
-class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord> implements
-	MetricConfigurationDao {
+/**
+ * Database access implementation for {@link MetricConfigurationDao}.
+ * 
+ * @author Carlos Morais
+ */
+class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord>
+	implements MetricConfigurationDao {
 
-	private ConfigurationDatabaseDao configurationDao;
-
-	protected MetricConfigurationDatabaseDao(RecordManager recordManager) {
+	MetricConfigurationDatabaseDao(RecordManager recordManager) {
 		super(recordManager, MetricConfigurationRecord.class);
-		configurationDao = new ConfigurationDatabaseDao(recordManager);
 	}
 
 	@Override
-	public void save(MetricConfiguration metricConfiguration, String configurationName) {
-		Configuration configuration = getConfiguration(configurationName);
-		String metricName = metricConfiguration.getMetric().getName();
-		if (configuration.containsMetric(metricName))
-			configuration.replaceMetricConfiguration(metricName, metricConfiguration);
-		else
-			configuration.addMetricConfiguration(metricConfiguration);
-		recordManager.evictFromCache(RangeRecord.class);
-		configurationDao.save(configuration);
+	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
+		TypedQuery<MetricConfigurationRecord> query = createRecordQuery(
+			"WHERE metricConfiguration.configuration.id = :configurationId");
+		query.setParameter("configurationId", configurationId);
+		return DataTransferObject.toSortedSet(query.getResultList());
 	}
 
 	@Override
-	public MetricConfiguration getMetricConfiguration(String configurationName, String metricName) {
-		Configuration configuration = getConfiguration(configurationName);
-		return configuration.getConfigurationFor(metricName);
-	}
-
-	@Override
-	public void removeMetricConfiguration(String configurationName, String metricName) {
-		Configuration configuration = getConfiguration(configurationName);
-		configuration.removeMetric(metricName);
-		configurationDao.save(configuration);
-	}
-
-	private Configuration getConfiguration(String configurationName) {
-		return configurationDao.getConfiguration(configurationName);
+	public Long save(MetricConfiguration metricConfiguration, Long configurationId) {
+		return save(new MetricConfigurationRecord(metricConfiguration, configurationId)).id();
 	}
 }

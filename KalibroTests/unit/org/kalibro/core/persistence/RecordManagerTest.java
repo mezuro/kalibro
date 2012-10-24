@@ -2,7 +2,7 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
+import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -11,14 +11,15 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.mockito.verification.VerificationMode;
 import org.powermock.reflect.Whitebox;
 
-public class RecordManagerTest extends TestCase {
+public class RecordManagerTest extends UnitTest {
 
+	private static final String QUERY = "RecordManagerTest query";
 	private static final String MERGED = "RecordManagerTest merged";
 	private static final String UNMERGED = "RecordManagerTest unmerged";
 
@@ -38,22 +39,23 @@ public class RecordManagerTest extends TestCase {
 
 	@Test
 	public void shouldGetById() {
-		when(entityManager.find(Integer.class, 28L)).thenReturn(42);
-		assertEquals(42, recordManager.getById(28L, Integer.class).intValue());
+		Long id = new Random().nextLong();
+		when(entityManager.find(RecordManagerTest.class, id)).thenReturn(this);
+		assertSame(this, recordManager.getById(id, RecordManagerTest.class));
 	}
 
 	@Test
 	public void shouldCreateQuery() {
 		Query query = mock(Query.class);
-		when(entityManager.createQuery("42")).thenReturn(query);
-		assertSame(query, recordManager.createQuery("42"));
+		when(entityManager.createQuery(QUERY)).thenReturn(query);
+		assertSame(query, recordManager.createQuery(QUERY));
 	}
 
 	@Test
 	public void shouldCreateTypedQuery() {
 		TypedQuery<String> query = mock(TypedQuery.class);
-		when(entityManager.createQuery("42", String.class)).thenReturn(query);
-		assertSame(query, recordManager.createQuery("42", String.class));
+		when(entityManager.createQuery(QUERY, String.class)).thenReturn(query);
+		assertSame(query, recordManager.createQuery(QUERY, String.class));
 	}
 
 	@Test
@@ -71,7 +73,7 @@ public class RecordManagerTest extends TestCase {
 
 	@Test
 	public void shouldMergeAndSaveCollection() throws Exception {
-		recordManager.saveAll(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
+		recordManager.saveAll(list(UNMERGED, UNMERGED, UNMERGED));
 		verifyWithinTransaction(entityManager, times(3), "persist", MERGED);
 	}
 

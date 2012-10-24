@@ -5,7 +5,7 @@ import static org.kalibro.core.abstractentity.HashCodeCalculator.hash;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.UtilityClassTest;
+import org.kalibro.tests.UtilityClassTest;
 
 public class HashCodeCalculatorTest extends UtilityClassTest {
 

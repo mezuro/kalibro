@@ -3,37 +3,56 @@ package org.analizo;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.core.MetricCollector;
+import org.apache.commons.io.IOUtils;
+import org.kalibro.MetricCollector;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.core.command.CommandTask;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeModuleResult;
+import org.kalibro.core.concurrent.Writer;
 
+/**
+ * Metric collector for Analizo.
+ * 
+ * @author Carlos Morais
+ */
 public class AnalizoMetricCollector implements MetricCollector {
 
-	private static final String COMMAND = "analizo metrics ";
-
-	private AnalizoOutputParser outputParser;
+	private String description;
+	private Map<NativeMetric, String> supportedMetrics;
 
 	public AnalizoMetricCollector() throws IOException {
-		InputStream metricListOutput = new CommandTask(COMMAND + "--list").executeAndGetOuput();
-		outputParser = new AnalizoOutputParser(metricListOutput);
+		description = IOUtils.toString(getClass().getResourceAsStream("description"));
+		supportedMetrics = new AnalizoMetricListParser(executeAnalizo("--list")).getSupportedMetrics();
 	}
 
 	@Override
-	public BaseTool getBaseTool() {
-		BaseTool baseTool = new BaseTool("Analizo");
-		baseTool.setCollectorClass(AnalizoMetricCollector.class);
-		baseTool.setSupportedMetrics(outputParser.getSupportedMetrics());
-		return baseTool;
+	public String name() {
+		return "Analizo";
 	}
 
 	@Override
-	public Set<NativeModuleResult> collectMetrics(File codeDirectory, Set<NativeMetric> metrics) throws IOException {
-		String command = COMMAND + codeDirectory.getAbsolutePath();
-		InputStream analizoOuput = new CommandTask(command).executeAndGetOuput();
-		return outputParser.parseResults(analizoOuput, metrics);
+	public String description() {
+		return description;
+	}
+
+	@Override
+	public Set<NativeMetric> supportedMetrics() {
+		return supportedMetrics.keySet();
+	}
+
+	@Override
+	public void collectMetrics(
+		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
+		InputStream analizoOutput = executeAnalizo(codeDirectory.getAbsolutePath());
+		AnalizoResultParser resultParser = new AnalizoResultParser(supportedMetrics, wantedMetrics);
+		resultParser.parse(analizoOutput, resultWriter);
+		resultWriter.close();
+	}
+
+	private InputStream executeAnalizo(String argument) throws IOException {
+		return new CommandTask("analizo metrics " + argument).executeAndGetOuput();
 	}
 }

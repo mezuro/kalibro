@@ -1,15 +1,14 @@
 package org.kalibro.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.Reading;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.xml.ReadingXml;
 
 /**
@@ -26,23 +25,32 @@ public class ReadingEndpointImpl implements ReadingEndpoint {
 		this(DaoFactory.getReadingDao());
 	}
 
-	protected ReadingEndpointImpl(ReadingDao readingDao) {
+	public ReadingEndpointImpl(ReadingDao readingDao) {
 		dao = readingDao;
 	}
 
 	@Override
 	@WebResult(name = "reading")
+	public ReadingXml getReading(@WebParam(name = "readingId") Long readingId) {
+		return new ReadingXml(dao.get(readingId));
+	}
+
+	@Override
+	@WebResult(name = "reading")
+	public ReadingXml readingOf(@WebParam(name = "rangeId") Long rangeId) {
+		return new ReadingXml(dao.readingOf(rangeId));
+	}
+
+	@Override
+	@WebResult(name = "reading")
 	public List<ReadingXml> readingsOf(@WebParam(name = "groupId") Long groupId) {
-		List<ReadingXml> readings = new ArrayList<ReadingXml>();
-		for (Reading reading : dao.readingsOf(groupId))
-			readings.add(new ReadingXml(reading));
-		return readings;
+		return DataTransferObject.createDtos(dao.readingsOf(groupId), ReadingXml.class);
 	}
 
 	@Override
 	@WebResult(name = "readingId")
-	public Long saveReading(@WebParam(name = "reading") ReadingXml reading) {
-		return dao.save(reading.convert());
+	public Long saveReading(@WebParam(name = "reading") ReadingXml reading, @WebParam(name = "groupId") Long groupId) {
+		return dao.save(reading.convert(), groupId);
 	}
 
 	@Override

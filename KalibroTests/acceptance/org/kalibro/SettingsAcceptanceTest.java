@@ -11,15 +11,18 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.AcceptanceTest;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class SettingsAcceptanceTest extends AcceptanceTest {
 
+	private File settingsFile;
 	private KalibroSettings settings;
 
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings();
+		settingsFile = new File(dotKalibro(), "kalibro.settings");
 		settingsFile.delete();
 	}
 
@@ -37,7 +40,7 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 
 	private void checkServerSettings() {
 		ServerSettings serverSettings = settings.getServerSettings();
-		assertEquals(new File(dotKalibro(), "repositories"), serverSettings.getLoadDirectory());
+		assertEquals(new File(dotKalibro(), "projects"), serverSettings.getLoadDirectory());
 
 		DatabaseSettings databaseSettings = serverSettings.getDatabaseSettings();
 		assertEquals(SupportedDatabase.MYSQL, databaseSettings.getDatabaseType());
@@ -64,18 +67,12 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenLoadingInexistentSettings() {
+	public void shouldThrowExceptionWhenCannotLoadSettings() throws IOException {
 		shouldLoadWithError(FileNotFoundException.class);
-	}
 
-	@Test
-	public void shouldThrowExceptionWhenLoadingFromCorruptedSettingsFile() throws IOException {
 		FileUtils.writeStringToFile(settingsFile, "something weird");
 		shouldLoadWithError(ConstructorException.class);
-	}
 
-	@Test
-	public void shouldThrowExceptionWhenLoadingFromNotReadableSettingsFile() {
 		settings.save();
 		settingsFile.setReadable(false);
 		shouldLoadWithError(FileNotFoundException.class);

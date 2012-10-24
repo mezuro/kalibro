@@ -1,56 +1,37 @@
 package org.kalibro.core.persistence.record;
 
-import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.MetricResultFixtures.newMetricResult;
-import static org.kalibro.core.model.ModuleFixtures.helloWorldClass;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+import static org.junit.Assert.assertNull;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.MetricResult;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.ProjectResultFixtures;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.MetricResult;
+import org.powermock.reflect.Whitebox;
 
-public class MetricResultRecordTest extends DtoTestCase<MetricResult, MetricResultRecord> {
+public class MetricResultRecordTest extends RecordTest {
 
-	private ProjectResult projectResult;
-
-	@Before
-	public void setUp() {
-		projectResult = ProjectResultFixtures.helloWorldResult();
+	@Override
+	public void shouldRetrieveEntityFieldsAsTheyWere() throws Exception {
+		MetricConfiguration configuration = ((MetricResult) entity).getConfiguration();
+		MetricConfigurationSnapshotRecord record = mock(MetricConfigurationSnapshotRecord.class);
+		when(record.convert()).thenReturn(configuration);
+		Whitebox.setInternalState(dto, "configuration", record);
+		super.shouldRetrieveEntityFieldsAsTheyWere();
 	}
 
 	@Override
-	protected MetricResultRecord newDtoUsingDefaultConstructor() {
-		return new MetricResultRecord();
-	}
-
-	@Override
-	protected Collection<MetricResult> entitiesForTestingConversion() {
-		Double[] specialvalues = new Double[]{Double.NaN, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY};
-		MetricResult metricResult = newMetricResult("loc", 42.0, specialvalues);
-		return Arrays.asList(metricResult);
-	}
-
-	@Override
-	protected MetricResultRecord createDto(MetricResult metricResult) {
-		return new MetricResultRecord(metricResult, helloWorldClass(), projectResult);
+	protected void verifyColumns() {
+		assertManyToOne("moduleResult", ModuleResultRecord.class).isRequired();
+		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isRequired();
+		shouldHaveId();
+		assertColumn("value", Long.class).isRequired();
+		assertOneToOne("error", ThrowableRecord.class).isOptional();
+		assertOneToMany("descendantResults").isMappedBy("metricResult");
 	}
 
 	@Test
-	public void shouldConvertModuleResult() {
-		ModuleResult moduleResult = newHelloWorldClassResult(projectResult.getDate());
-		List<MetricResultRecord> metricResults = MetricResultRecord.createRecords(moduleResult, projectResult);
-		List<ModuleResult> converted = MetricResultRecord.convertIntoModuleResults(metricResults);
-
-		assertEquals(1, converted.size());
-		ModuleResult convertedResult = converted.get(0);
-		assertDeepEquals(moduleResult, convertedResult);
+	public void shouldConvertNullErrorForNormalResult() {
+		MetricResult normalResult = new MetricResult(new MetricConfiguration(), 42.0);
+		normalResult.addDescendantResult(28.0);
+		assertNull(new MetricResultRecord(normalResult).error());
 	}
 }

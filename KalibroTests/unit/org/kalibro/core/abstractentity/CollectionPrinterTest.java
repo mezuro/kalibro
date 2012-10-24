@@ -3,7 +3,6 @@ package org.kalibro.core.abstractentity;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 
@@ -24,7 +23,7 @@ public class CollectionPrinterTest extends PrinterTestCase<Collection<?>> {
 	public void setUp() {
 		sample = new ArrayList<Object>();
 		sample.add(new ArrayList<String>());
-		sample.add(Arrays.asList("cat", "dog", "pig"));
+		sample.add(list("cat", "dog", "pig"));
 	}
 
 	@Test

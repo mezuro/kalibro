@@ -1,11 +1,9 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.core.model.enums.RepositoryType;
-
-public class GitTest extends LoaderIntegrationTest {
+public class GitTest extends RepositoryIntegrationTest {
 
 	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.GIT;
+	protected String address() {
+		return repositoriesDirectory().getAbsolutePath() + "/HelloWorldGit/";
 	}
 }

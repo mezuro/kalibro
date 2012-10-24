@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 import org.apache.commons.io.FileUtils;
 import org.kalibro.KalibroException;
-import org.kalibro.util.Identifier;
+import org.kalibro.core.Identifier;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
@@ -70,5 +70,10 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 	@Override
 	public int compareTo(T other) {
 		return new EntityComparator<T>().compare(this, other);
+	}
+
+	protected void throwExceptionIf(boolean condition, String message) {
+		if (condition)
+			throw new KalibroException(message);
 	}
 }

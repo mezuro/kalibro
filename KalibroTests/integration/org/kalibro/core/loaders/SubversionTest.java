@@ -1,11 +1,9 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.core.model.enums.RepositoryType;
-
-public class SubversionTest extends LoaderIntegrationTest {
+public class SubversionTest extends RepositoryIntegrationTest {
 
 	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.SUBVERSION;
+	protected String address() {
+		return "file://" + repositoriesDirectory().getAbsolutePath() + "/HelloWorldSubversion";
 	}
 }

@@ -1,78 +1,67 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertTrue;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricFixtures.analizoMetric;
+import static org.junit.Assert.*;
 
-import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.dao.ConfigurationDaoFake;
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.Configuration;
+import org.kalibro.client.EndpointTest;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.powermock.reflect.Whitebox;
 
-public class ConfigurationEndpointTest extends EndpointTest {
+public class ConfigurationEndpointTest extends EndpointTest<Configuration, ConfigurationDao, ConfigurationEndpoint> {
 
-	private Configuration sample;
-	private ConfigurationEndpoint port;
+	private static final Long ID = Math.abs(new Random().nextLong());
 
-	@Before
-	public void setUp() throws MalformedURLException {
-		sample = newConfiguration();
-		ConfigurationDaoFake daoFake = new ConfigurationDaoFake();
-		daoFake.save(sample);
-		port = publishAndGetPort(new ConfigurationEndpointImpl(daoFake), ConfigurationEndpoint.class);
+	@Override
+	public Configuration loadFixture() {
+		Configuration configuration = loadFixture("sc", Configuration.class);
+		Whitebox.setInternalState(configuration, "id", ID);
+		return configuration;
+	}
+
+	@Override
+	public List<String> fieldsThatShouldBeProxy() {
+		return list("metricConfigurations");
 	}
 
 	@Test
-	public void shouldListConfigurationNames() {
-		assertDeepList(port.getConfigurationNames(), sample.getName());
+	public void shouldConfirmExistence() {
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(port.configurationExists(-1L));
+		assertTrue(port.configurationExists(ID));
 	}
 
 	@Test
-	public void shouldGetConfigurationByName() {
-		assertDeepEquals(sample, port.getConfiguration(sample.getName()).convert());
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getConfiguration(ID));
 	}
 
 	@Test
-	public void shouldRemoveConfigurationByName() {
-		port.removeConfiguration(sample.getName());
-		assertTrue(port.getConfigurationNames().isEmpty());
+	public void shouldGetConfigurationOfRepository() {
+		when(dao.configurationOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.configurationOf(ID));
 	}
 
 	@Test
-	public void shouldSaveConfiguration() {
-		testSaveConfiguration(newConfiguration("loc"));
+	public void shouldGetAll() {
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.allConfigurations());
 	}
 
 	@Test
-	public void shouldSaveEmptyConfiguration() {
-		testSaveConfiguration(newConfiguration());
+	public void shouldSave() {
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, port.saveConfiguration(new ConfigurationXmlRequest(entity)));
 	}
 
 	@Test
-	public void shouldSaveConfigurationWithoutRanges() {
-		Configuration newConfiguration = newConfiguration();
-		newConfiguration.addMetricConfiguration(new MetricConfiguration(analizoMetric("loc")));
-		testSaveConfiguration(newConfiguration);
-	}
-
-	@Test
-	public void shouldSaveMetricWithoutLanguages() {
-		NativeMetric nativeMetric = new NativeMetric("name", Granularity.METHOD);
-		nativeMetric.setOrigin("origin");
-		Configuration newConfiguration = new Configuration();
-		newConfiguration.addMetricConfiguration(new MetricConfiguration(nativeMetric));
-		testSaveConfiguration(newConfiguration);
-	}
-
-	private void testSaveConfiguration(Configuration newConfiguration) {
-		newConfiguration.setName("ConfigurationEndpointTest configuration");
-		port.saveConfiguration(new ConfigurationXml(newConfiguration));
-		assertDeepList(port.getConfigurationNames(), newConfiguration.getName(), sample.getName());
+	public void shouldDelete() {
+		port.deleteConfiguration(ID);
+		verify(dao).delete(ID);
 	}
 }

@@ -1,95 +1,88 @@
 package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.*;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.MetricResult;
+import org.kalibro.dto.MetricResultDto;
 
+/**
+ * Java Persistence API entity for {@link MetricResult}.
+ * 
+ * @author Carlos Morais
+ */
 @Entity(name = "MetricResult")
-@PrimaryKey(columns = {
-	@Column(name = "project"),
-	@Column(name = "date"),
-	@Column(name = "moduleName"),
-	@Column(name = "metricName")})
-public class MetricResultRecord extends DataTransferObject<MetricResult> {
+@Table(name = "\"METRIC_RESULT\"")
+public class MetricResultRecord extends MetricResultDto {
 
-	public static List<MetricResultRecord> createRecords(ModuleResult moduleResult, ProjectResult projectResult) {
-		List<MetricResultRecord> records = new ArrayList<MetricResultRecord>();
-		for (MetricResult metricResult : moduleResult.getMetricResults())
-			if (!metricResult.getMetric().isCompound())
-				records.add(new MetricResultRecord(metricResult, moduleResult.getModule(), projectResult));
-		return records;
-	}
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"module_result\"", nullable = false, referencedColumnName = "\"id\"")
+	@SuppressWarnings("unused" /* used by JPA */)
+	private ModuleResultRecord moduleResult;
 
-	public static List<ModuleResult> convertIntoModuleResults(List<MetricResultRecord> metricResults) {
-		List<ModuleResult> moduleResults = new ArrayList<ModuleResult>();
-		for (MetricResultRecord metricResult : metricResults)
-			getCurrentResult(metricResult, moduleResults).addMetricResult(metricResult.convert());
-		return moduleResults;
-	}
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
+	private MetricConfigurationSnapshotRecord configuration;
 
-	private static ModuleResult getCurrentResult(MetricResultRecord metricResult, List<ModuleResult> results) {
-		ModuleResult moduleResult = metricResult.module.convertIntoModuleResult();
-		if (!results.contains(moduleResult))
-			results.add(moduleResult);
-		return results.get(results.size() - 1);
-	}
+	@Id
+	@GeneratedValue
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
 
-	@ManyToOne(optional = false)
-	@JoinColumns({
-		@JoinColumn(name = "project", nullable = false, referencedColumnName = "project"),
-		@JoinColumn(name = "date", nullable = false, referencedColumnName = "date"),
-		@JoinColumn(name = "moduleName", nullable = false, referencedColumnName = "name")})
-	private ModuleRecord module;
-
-	@ManyToOne(optional = false)
-	@JoinColumns({
-		@JoinColumn(name = "metricName", nullable = false, referencedColumnName = "name"),
-		@JoinColumn(name = "metricOrigin", nullable = false, referencedColumnName = "origin")})
-	private NativeMetricRecord metric;
-
-	@Column(nullable = false)
+	@Column(name = "\"value\"", nullable = false)
 	private Long value;
 
-	@OrderColumn
-	@ElementCollection
-	private List<Long> descendentResults;
+	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
+	private ThrowableRecord error;
+
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "metricResult", orphanRemoval = true)
+	private Collection<DescendantResultRecord> descendantResults;
 
 	public MetricResultRecord() {
 		super();
 	}
 
-	public MetricResultRecord(MetricResult metricResult, Module module, ProjectResult projectResult) {
-		initializeModule(module, projectResult);
-		metric = new NativeMetricRecord((NativeMetric) metricResult.getMetric());
+	public MetricResultRecord(MetricResult metricResult) {
+		this(metricResult, null);
+	}
+
+	public MetricResultRecord(MetricResult metricResult, ModuleResultRecord moduleResult) {
+		this.moduleResult = moduleResult;
+		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
+		id = metricResult.getId();
 		value = Double.doubleToLongBits(metricResult.getValue());
-		initializeDescendentResults(metricResult);
+		error = metricResult.hasError() ? new ThrowableRecord(metricResult.getError()) : null;
+		setDescendantResults(metricResult.getDescendantResults());
 	}
 
-	private void initializeModule(Module entity, ProjectResult projectResult) {
-		ModuleNode moduleNode = new ModuleNode(entity);
-		module = new ModuleRecord(moduleNode, projectResult);
-	}
-
-	private void initializeDescendentResults(MetricResult metricResult) {
-		descendentResults = new ArrayList<Long>();
-		for (Double result : metricResult.getDescendentResults())
-			descendentResults.add(Double.doubleToLongBits(result));
+	private void setDescendantResults(List<Double> descendantResults) {
+		this.descendantResults = new ArrayList<DescendantResultRecord>();
+		for (Double descendantResult : descendantResults)
+			this.descendantResults.add(new DescendantResultRecord(descendantResult));
 	}
 
 	@Override
-	public MetricResult convert() {
-		MetricResult metricResult = new MetricResult(metric.convert(), Double.longBitsToDouble(value));
-		convertResults(metricResult);
-		return metricResult;
+	public Long id() {
+		return id;
 	}
 
-	private void convertResults(MetricResult metricResult) {
-		for (Long result : descendentResults)
-			metricResult.addDescendentResult(Double.longBitsToDouble(result));
+	@Override
+	public MetricConfiguration configuration() {
+		return configuration.convert();
+	}
+
+	@Override
+	public Double value() {
+		return Double.longBitsToDouble(value);
+	}
+
+	@Override
+	public Throwable error() {
+		return error == null ? null : error.convert();
 	}
 }

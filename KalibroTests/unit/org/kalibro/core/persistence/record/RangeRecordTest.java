@@ -1,28 +1,26 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.SortedSet;
+import static org.junit.Assert.assertNull;
 
-import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.MetricConfigurationFixtures;
-import org.kalibro.core.model.Range;
+import org.junit.Test;
+import org.kalibro.Range;
+import org.powermock.reflect.Whitebox;
 
-public class RangeRecordTest extends DtoTestCase<Range, RangeRecord> {
+public class RangeRecordTest extends RecordTest {
 
 	@Override
-	protected RangeRecord newDtoUsingDefaultConstructor() {
-		return new RangeRecord();
+	protected void verifyColumns() {
+		assertManyToOne("configuration", MetricConfigurationRecord.class).isRequired();
+		shouldHaveId();
+		assertColumn("beginning", Long.class).isRequired();
+		assertColumn("end", Long.class).isRequired();
+		assertColumn("comments", String.class).isNullable();
+		assertManyToOne("reading", ReadingRecord.class).isOptional();
 	}
 
-	@Override
-	protected Collection<Range> entitiesForTestingConversion() {
-		SortedSet<Range> ranges = MetricConfigurationFixtures.metricConfiguration("amloc").getRanges();
-		return new ArrayList<Range>(ranges);
-	}
-
-	@Override
-	protected RangeRecord createDto(Range range) {
-		return new RangeRecord(range, null);
+	@Test
+	public void shouldConstructWithoutReading() {
+		RangeRecord record = new RangeRecord(new Range());
+		assertNull(Whitebox.getInternalState(record, "reading"));
 	}
 }

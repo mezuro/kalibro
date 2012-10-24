@@ -1,50 +1,52 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.Matchers.eq;
 
-import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Reading;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.service.xml.ReadingXml;
 
-public class ReadingEndpointTest extends EndpointTest {
+public class ReadingEndpointTest extends EndpointTest<Reading, ReadingDao, ReadingEndpoint> {
 
-	private Reading fixture;
-	private ReadingDao dao;
+	private static final Long ID = new Random().nextLong();
+	private static final Long GROUP_ID = new Random().nextLong();
 
-	private ReadingEndpoint port;
+	@Override
+	protected Reading loadFixture() {
+		return loadFixture("excellent", Reading.class);
+	}
 
-	@Before
-	public void setUp() throws MalformedURLException {
-		fixture = loadFixture("/org/kalibro/reading-excellent", Reading.class);
-		dao = mock(ReadingDao.class);
-		port = publishAndGetPort(new ReadingEndpointImpl(dao), ReadingEndpoint.class);
+	@Test
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getReading(ID));
+	}
+
+	@Test
+	public void shouldGetReadingOfRange() {
+		when(dao.readingOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.readingOf(ID));
 	}
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(42L)).thenReturn(Arrays.asList(fixture));
-
-		List<ReadingXml> readings = port.readingsOf(42L);
-		assertEquals(1, readings.size());
-		assertDeepEquals(fixture, readings.get(0).convert());
+		when(dao.readingsOf(GROUP_ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.readingsOf(GROUP_ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(eq(fixture))).thenReturn(42L);
-		assertEquals(42L, port.saveReading(new ReadingXml(fixture)).longValue());
+		when(dao.save(entity, GROUP_ID)).thenReturn(ID);
+		assertEquals(ID, port.saveReading(new ReadingXml(entity), GROUP_ID));
 	}
 
 	@Test
 	public void shouldDelete() {
-		port.deleteReading(42L);
-		verify(dao).delete(42L);
+		port.deleteReading(ID);
+		verify(dao).delete(ID);
 	}
 }

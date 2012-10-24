@@ -1,72 +1,67 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.eq;
 
-import java.net.MalformedURLException;
-import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
-import org.kalibro.service.xml.ReadingGroupXmlResponse;
 import org.powermock.reflect.Whitebox;
 
-public class ReadingGroupEndpointTest extends EndpointTest {
+public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, ReadingGroupDao, ReadingGroupEndpoint> {
 
-	private ReadingGroup fixture;
-	private ReadingGroupDao dao;
+	private static final Long ID = Math.abs(new Random().nextLong());
 
-	private ReadingGroupEndpoint port;
+	@Override
+	public ReadingGroup loadFixture() {
+		ReadingGroup readingGroup = loadFixture("scholar", ReadingGroup.class);
+		Whitebox.setInternalState(readingGroup, "id", ID);
+		return readingGroup;
+	}
 
-	@Before
-	public void setUp() throws MalformedURLException {
-		fixture = loadFixture("/org/kalibro/readingGroup-scholar", ReadingGroup.class);
-		fixture.setId(0L);
-		dao = mock(ReadingGroupDao.class);
-		port = publishAndGetPort(new ReadingGroupEndpointImpl(dao), ReadingGroupEndpoint.class);
+	@Override
+	public List<String> fieldsThatShouldBeProxy() {
+		return list("readings");
 	}
 
 	@Test
-	public void shouldGetAll() {
-		when(dao.all()).thenReturn(Arrays.asList(fixture));
-
-		List<ReadingGroupXmlResponse> groups = port.allReadingGroups();
-		assertEquals(1, groups.size());
-		assertCorrectResponse(groups.get(0));
+	public void shouldConfirmExistence() {
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(port.readingGroupExists(-1L));
+		assertTrue(port.readingGroupExists(ID));
 	}
 
 	@Test
 	public void shouldGetById() {
-		when(dao.get(42L)).thenReturn(fixture);
-		assertCorrectResponse(port.getReadingGroup(42L));
+		when(dao.get(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getReadingGroup(ID));
 	}
 
-	private void assertCorrectResponse(ReadingGroupXmlResponse response) {
-		ReadingGroup group = response.convert();
-		readingsShouldBeProxy(group);
-		assertDeepEquals(fixture, group);
+	@Test
+	public void shouldGetReadingGroupOfMetricConfiguration() {
+		when(dao.readingGroupOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.readingGroupOf(ID));
 	}
 
-	private void readingsShouldBeProxy(ReadingGroup group) {
-		List<Reading> readings = Whitebox.getInternalState(group, "readings");
-		assertTrue(readings.getClass().getName().contains("EnhancerByCGLIB"));
-		group.setReadings(fixture.getReadings());
+	@Test
+	public void shouldGetAll() {
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.allReadingGroups());
 	}
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(eq(fixture))).thenReturn(42L);
-		assertEquals(42L, port.saveReadingGroup(new ReadingGroupXmlRequest(fixture)).longValue());
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, port.saveReadingGroup(new ReadingGroupXmlRequest(entity)));
 	}
 
 	@Test
 	public void shouldDelete() {
-		port.deleteReadingGroup(42L);
-		verify(dao).delete(42L);
+		port.deleteReadingGroup(ID);
+		verify(dao).delete(ID);
 	}
 }

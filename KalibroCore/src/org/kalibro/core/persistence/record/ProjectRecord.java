@@ -1,88 +1,70 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.enums.ProjectState.*;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.Project;
+import org.kalibro.Repository;
+import org.kalibro.dto.ProjectDto;
 
+/**
+ * Java Persistence API entity for {@link Project}.
+ * 
+ * @author Carlos Morais
+ */
 @Entity(name = "Project")
-public class ProjectRecord extends DataTransferObject<Project> {
+@Table(name = "\"PROJECT\"")
+public class ProjectRecord extends ProjectDto {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "id")
+	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "\"name\"", nullable = false, unique = true)
 	private String name;
 
-	@Column(nullable = false)
-	private String license;
-
-	@Column
+	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "project", optional = false, orphanRemoval = true)
-	private RepositoryRecord repository;
-
-	@Column(nullable = false)
-	private String state;
-
-	@Column
-	private Throwable error;
-
-	@ManyToOne(optional = false)
-	@JoinColumn(nullable = false, referencedColumnName = "id")
-	private ConfigurationRecord configuration;
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
+	private Collection<RepositoryRecord> repositories;
 
 	public ProjectRecord() {
 		super();
 	}
 
-	public ProjectRecord(Project project, Long configurationId) {
-		id = project.getId();
+	public ProjectRecord(Long id) {
+		this.id = id;
+	}
+
+	public ProjectRecord(Project project) {
+		this(project.getId());
 		name = project.getName();
-		license = project.getLicense();
 		description = project.getDescription();
-		repository = new RepositoryRecord(project.getRepository(), this);
-		initializeConfiguration(configurationId);
-		initializeState(project);
-		initializeError(project);
+		setRepositories(project.getRepositories());
 	}
 
-	private void initializeConfiguration(Long configurationId) {
-		Configuration entity = new Configuration();
-		entity.setId(configurationId);
-		configuration = new ConfigurationRecord(entity);
-	}
-
-	private void initializeState(Project project) {
-		ProjectState projectState = project.getState();
-		if (projectState == ERROR)
-			projectState = project.getStateWhenErrorOcurred();
-		state = projectState.name();
-	}
-
-	private void initializeError(Project project) {
-		if (project.getState() == ERROR)
-			error = project.getError();
+	private void setRepositories(Collection<Repository> repositories) {
+		this.repositories = new ArrayList<RepositoryRecord>();
+		for (Repository repository : repositories)
+			this.repositories.add(new RepositoryRecord(repository, this));
 	}
 
 	@Override
-	public Project convert() {
-		Project project = new Project();
-		project.setId(id);
-		project.setName(name);
-		project.setLicense(license);
-		project.setDescription(description);
-		project.setRepository(repository.convert());
-		project.setConfigurationName(configuration.getName());
-		project.setState(ProjectState.valueOf(state));
-		project.setError(error);
-		return project;
+	public Long id() {
+		return id;
+	}
+
+	@Override
+	public String name() {
+		return name;
+	}
+
+	@Override
+	public String description() {
+		return description;
 	}
 }

@@ -1,10 +1,8 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldResultMap;
-import static org.kalibro.core.model.ProjectFixtures.*;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
@@ -12,71 +10,61 @@ import java.util.Set;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroSettings;
-import org.kalibro.ServerSettings;
-import org.kalibro.TestCase;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.enums.ProjectState;
-import org.kalibro.dao.BaseToolDao;
-import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.dao.DaoFactory;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.kalibro.*;
+import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.concurrent.Writer;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DaoFactory.class, KalibroSettings.class})
-public class CollectMetricsTaskTest extends TestCase {
+@PrepareOnlyThisForTest({CollectMetricsTask.class, ProcessSubtask.class})
+public class CollectMetricsTaskTest extends UnitTest {
 
-	private BaseTool baseTool;
-	private ProjectResult projectResult;
+	private File codeDirectory;
+	private Configuration configuration;
+	private Writer<NativeModuleResult> resultWriter;
 
 	private CollectMetricsTask collectTask;
 
 	@Before
-	public void setUp() {
-		baseTool = analizoStub();
-		projectResult = new ProjectResult(helloWorld());
-		mockKalibro();
-		collectTask = new CollectMetricsTask(projectResult);
+	public void setUp() throws Exception {
+		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(mock(DatabaseDaoFactory.class));
+		codeDirectory = mock(File.class);
+		collectTask = new CollectMetricsTask(mockProcessing(), codeDirectory, mockProducer());
 	}
 
-	private void mockKalibro() {
-		KalibroSettings settings = mock(KalibroSettings.class);
-		mockStatic(KalibroSettings.class);
-		when(KalibroSettings.load()).thenReturn(settings);
-		when(settings.getServerSettings()).thenReturn(mock(ServerSettings.class));
-		mockConfiguration();
-		mockBaseTool();
+	private Processing mockProcessing() {
+		configuration = mock(Configuration.class);
+		Repository repository = mock(Repository.class);
+		Processing processing = mock(Processing.class);
+		when(processing.getRepository()).thenReturn(repository);
+		when(repository.getConfiguration()).thenReturn(configuration);
+		return processing;
 	}
 
-	private void mockConfiguration() {
-		ConfigurationDao configurationDao = mock(ConfigurationDao.class);
-		Configuration configuration = mock(Configuration.class);
-		Map<String, Set<NativeMetric>> metricsMap = new HashMap<String, Set<NativeMetric>>();
-		metricsMap.put("Analizo", baseTool.getSupportedMetrics());
-
-		mockStatic(DaoFactory.class);
-		when(DaoFactory.getConfigurationDao()).thenReturn(configurationDao);
-		when(configurationDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
-		when(configuration.getNativeMetrics()).thenReturn(metricsMap);
-	}
-
-	private void mockBaseTool() {
-		BaseToolDao baseToolDao = mock(BaseToolDao.class);
-		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
-		when(baseToolDao.getBaseTool(baseTool.getName())).thenReturn(baseTool);
+	private Producer<NativeModuleResult> mockProducer() {
+		resultWriter = mock(Writer.class);
+		Producer<NativeModuleResult> producer = mock(Producer.class);
+		when(producer.createWriter()).thenReturn(resultWriter);
+		return producer;
 	}
 
 	@Test
-	public void checkTaskState() {
-		assertEquals(ProjectState.COLLECTING, collectTask.getTaskState());
+	public void shouldCollectMetricsFromBaseTools() throws Exception {
+		BaseTool baseTool = mock(BaseTool.class);
+		Set<NativeMetric> wantedMetrics = mock(Set.class);
+		Map<BaseTool, Set<NativeMetric>> wantedMetricsMap = new HashMap<BaseTool, Set<NativeMetric>>();
+		wantedMetricsMap.put(baseTool, wantedMetrics);
+		when(configuration.getNativeMetrics()).thenReturn(wantedMetricsMap);
+
+		collectTask.compute();
+		verify(baseTool).collectMetrics(codeDirectory, wantedMetrics, resultWriter);
 	}
 
 	@Test
-	public void shouldReturnCollectedResults() throws Exception {
-		assertDeepEquals(newHelloWorldResultMap(projectResult.getDate()), collectTask.compute());
+	public void nextStateShouldBeAnalyzing() {
+		assertEquals(ProcessState.ANALYZING, collectTask.getNextState());
 	}
 }

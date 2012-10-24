@@ -1,29 +1,37 @@
 package org.kalibro.client;
 
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.service.MetricConfigurationEndpoint;
-import org.kalibro.service.entities.MetricConfigurationXml;
+import java.util.SortedSet;
 
+import org.kalibro.MetricConfiguration;
+import org.kalibro.dao.MetricConfigurationDao;
+import org.kalibro.dto.DataTransferObject;
+import org.kalibro.service.MetricConfigurationEndpoint;
+import org.kalibro.service.xml.MetricConfigurationXmlRequest;
+
+/**
+ * {@link MetricConfigurationEndpoint} client implementation of {@link MetricConfigurationDao}.
+ * 
+ * @author Carlos Morais
+ */
 class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEndpoint> implements
 	MetricConfigurationDao {
 
-	protected MetricConfigurationClientDao(String serviceAddress) {
+	MetricConfigurationClientDao(String serviceAddress) {
 		super(serviceAddress, MetricConfigurationEndpoint.class);
 	}
 
 	@Override
-	public void save(MetricConfiguration metricConfiguration, String configurationName) {
-		port.saveMetricConfiguration(new MetricConfigurationXml(metricConfiguration), configurationName);
+	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
+		return DataTransferObject.toSortedSet(port.metricConfigurationsOf(configurationId));
 	}
 
 	@Override
-	public MetricConfiguration getMetricConfiguration(String configurationName, String metricName) {
-		return port.getMetricConfiguration(configurationName, metricName).convert();
+	public Long save(MetricConfiguration metricConfiguration, Long configurationId) {
+		return port.saveMetricConfiguration(new MetricConfigurationXmlRequest(metricConfiguration), configurationId);
 	}
 
 	@Override
-	public void removeMetricConfiguration(String configurationName, String metricName) {
-		port.removeMetricConfiguration(configurationName, metricName);
+	public void delete(Long metricConfigurationId) {
+		port.deleteMetricConfiguration(metricConfigurationId);
 	}
 }

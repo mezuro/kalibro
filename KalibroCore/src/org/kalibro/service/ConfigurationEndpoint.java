@@ -7,26 +7,38 @@ import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.service.entities.ConfigurationXml;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.kalibro.service.xml.ConfigurationXmlResponse;
 
+/**
+ * End point to make {@link ConfigurationDao} interface available as Web service.
+ * 
+ * @author Carlos Morais
+ */
 @WebService(name = "ConfigurationEndpoint", serviceName = "ConfigurationEndpointService")
 public interface ConfigurationEndpoint {
 
 	@WebMethod
-	void saveConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration);
-
-	@WebMethod
-	@WebResult(name = "configurationName")
-	List<String> getConfigurationNames();
-
-	@WebMethod
-	@WebResult(name = "hasConfiguration")
-	boolean hasConfiguration(@WebParam(name = "configurationName") String configurationName);
+	@WebResult(name = "exists")
+	boolean configurationExists(@WebParam(name = "configurationId") Long configurationId);
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	ConfigurationXml getConfiguration(@WebParam(name = "configurationName") String configurationName);
+	ConfigurationXmlResponse getConfiguration(@WebParam(name = "configurationId") Long configurationId);
 
 	@WebMethod
-	void removeConfiguration(@WebParam(name = "configurationName") String configurationName);
+	@WebResult(name = "configuration")
+	ConfigurationXmlResponse configurationOf(@WebParam(name = "repositoryId") Long repositoryId);
+
+	@WebMethod
+	@WebResult(name = "configuration")
+	List<ConfigurationXmlResponse> allConfigurations();
+
+	@WebMethod
+	@WebResult(name = "configurationId")
+	Long saveConfiguration(@WebParam(name = "configuration") ConfigurationXmlRequest configuration);
+
+	@WebMethod
+	void deleteConfiguration(@WebParam(name = "configurationId") Long configurationId);
 }

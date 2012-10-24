@@ -9,13 +9,11 @@ import java.util.Collection;
  */
 class CollectionPrinter extends Printer<Collection<?>> {
 
-	@Override
-	protected boolean canPrint(Object object) {
+	@Override boolean canPrint(Object object) {
 		return object instanceof Collection;
 	}
 
-	@Override
-	protected void doPrint(Collection<?> collection, String comment) {
+	@Override void doPrint(Collection<?> collection, String comment) {
 		if (collection.isEmpty()) {
 			printString(" []");
 			printComment(comment);

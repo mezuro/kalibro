@@ -1,5 +1,6 @@
 package org.kalibro.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebParam;
@@ -8,8 +9,13 @@ import javax.jws.WebService;
 
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.service.entities.BaseToolXml;
+import org.kalibro.service.xml.BaseToolXml;
 
+/**
+ * Implementation of {@link BaseToolEndpoint}.
+ * 
+ * @author Carlos Morais
+ */
 @WebService(name = "BaseToolEndpoint", serviceName = "BaseToolEndpointService")
 public class BaseToolEndpointImpl implements BaseToolEndpoint {
 
@@ -19,19 +25,19 @@ public class BaseToolEndpointImpl implements BaseToolEndpoint {
 		this(DaoFactory.getBaseToolDao());
 	}
 
-	protected BaseToolEndpointImpl(BaseToolDao baseToolDao) {
+	public BaseToolEndpointImpl(BaseToolDao baseToolDao) {
 		dao = baseToolDao;
 	}
 
 	@Override
 	@WebResult(name = "baseToolName")
-	public List<String> getBaseToolNames() {
-		return dao.getBaseToolNames();
+	public List<String> allBaseToolNames() {
+		return new ArrayList<String>(dao.allNames());
 	}
 
 	@Override
 	@WebResult(name = "baseTool")
 	public BaseToolXml getBaseTool(@WebParam(name = "baseToolName") String baseToolName) {
-		return new BaseToolXml(dao.getBaseTool(baseToolName));
+		return new BaseToolXml(dao.get(baseToolName));
 	}
 }

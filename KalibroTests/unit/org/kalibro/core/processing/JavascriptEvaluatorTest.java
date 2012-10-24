@@ -1,12 +1,11 @@
 package org.kalibro.core.processing;
 
-import java.lang.reflect.Constructor;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.ThrowableMatcher;
+import org.kalibro.tests.UnitTest;
 import org.mozilla.javascript.Context;
 import org.mozilla.javascript.EcmaError;
 import org.mozilla.javascript.EvaluatorException;
@@ -15,13 +14,13 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Context.class)
-public class JavascriptEvaluatorTest extends TestCase {
+public class JavascriptEvaluatorTest extends UnitTest {
 
-	private ScriptEvaluator evaluator;
+	private JavascriptEvaluator evaluator;
 
 	@Before
 	public void setUp() {
-		evaluator = JavascriptEvaluator.create();
+		evaluator = new JavascriptEvaluator();
 	}
 
 	@Test
@@ -66,53 +65,30 @@ public class JavascriptEvaluatorTest extends TestCase {
 	}
 
 	@Test
-	public void shouldRemove() {
-		evaluator.addVariable("variable", 42.0);
-		assertDoubleEquals(42.0, evaluator.evaluate("variable"));
-
-		evaluator.remove("variable");
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				evaluator.evaluate("variable");
-			}
-		}).doThrow(ClassCastException.class);
+	public void shouldValidateSyntax() {
+		shouldThrowExceptionEvaluating("riturn 0;").withCause(EvaluatorException.class);
 	}
 
 	@Test
-	public void checkSyntaxError() {
-		assertInvalid("riturn 0;", EvaluatorException.class);
+	public void shouldValidateReferences() {
+		shouldThrowExceptionEvaluating("return something;").withCause(EcmaError.class);
 	}
 
 	@Test
-	public void checkUnknownVariable() {
-		assertInvalid("return something;", EcmaError.class);
+	public void shouldReturnDouble() {
+		shouldThrowExceptionEvaluating("acc = null;").withCause(ClassCastException.class);
+		shouldThrowExceptionEvaluating("return null;").withCause(NullPointerException.class);
+		shouldThrowExceptionEvaluating("return 'My string';").withCause(ClassCastException.class);
 	}
 
-	@Test
-	public void checkNoReturn() {
-		assertInvalid("acc = null;", ClassCastException.class);
-	}
-
-	@Test
-	public void checkNullReturn() {
-		assertInvalid("return null;", NullPointerException.class);
-	}
-
-	@Test
-	public void checkNotNumberReturn() {
-		assertInvalid("return 'My string';", ClassCastException.class);
-	}
-
-	private void assertInvalid(final String body, Class<? extends Exception> exceptionClass) {
-		assertThat(new VoidTask() {
+	private ThrowableMatcher shouldThrowExceptionEvaluating(final String body) {
+		return assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				addFunctionAndExecute("f", body);
 			}
-		}).doThrow(exceptionClass);
+		}).throwsException();
 	}
 
 	private Double addFunctionAndExecute(String functionName, String body) {
@@ -121,17 +97,10 @@ public class JavascriptEvaluatorTest extends TestCase {
 	}
 
 	@Test
-	public void shouldExitContextOnFinalize() throws Throwable {
-		evaluator = createEvaluator();
-		mockStatic(Context.class);
-		((JavascriptEvaluator) evaluator).finalize();
+	public void shouldExitContextOnClose() {
+		spy(Context.class);
+		evaluator.close();
 		verifyStatic();
 		Context.exit();
-	}
-
-	private JavascriptEvaluator createEvaluator() throws Exception {
-		Constructor<JavascriptEvaluator> constructor = JavascriptEvaluator.class.getDeclaredConstructor();
-		constructor.setAccessible(true);
-		return constructor.newInstance();
 	}
 }

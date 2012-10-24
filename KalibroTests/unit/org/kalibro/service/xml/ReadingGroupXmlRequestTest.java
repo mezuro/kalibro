@@ -1,25 +1,21 @@
 package org.kalibro.service.xml;
 
+import static org.junit.Assert.assertTrue;
+
 import org.junit.Test;
-import org.kalibro.ReadingGroup;
 
-public class ReadingGroupXmlRequestTest extends XmlTest<ReadingGroup, ReadingGroupXmlRequest> {
-
-	@Override
-	protected ReadingGroup loadFixture() {
-		return loadFixture("scholar", ReadingGroup.class);
-	}
+public class ReadingGroupXmlRequestTest extends XmlTest {
 
 	@Override
-	protected Class<ReadingGroupXmlRequest> dtoClass() {
-		return ReadingGroupXmlRequest.class;
+	protected void verifyElements() {
+		assertElement("id", Long.class);
+		assertElement("name", String.class, true);
+		assertElement("description", String.class);
+		assertCollection("reading");
 	}
 
 	@Test
-	public void verifyElements() {
-		assertElement("id", Long.class, false);
-		assertElement("name", String.class, true);
-		assertElement("description", String.class, false);
-		assertCollection("readings", false, "reading");
+	public void shouldConvertNullReadingsIntoEmptyList() {
+		assertTrue(new ReadingGroupXmlRequest().readings().isEmpty());
 	}
 }

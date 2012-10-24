@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import javax.persistence.TypedQuery;
 
@@ -14,27 +14,28 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-public class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements ReadingDao {
+class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements ReadingDao {
 
-	protected ReadingDatabaseDao(RecordManager recordManager) {
+	ReadingDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ReadingRecord.class);
 	}
 
 	@Override
-	public List<Reading> readingsOf(Long groupId) {
-		TypedQuery<ReadingRecord> query = createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
+	public Reading readingOf(Long rangeId) {
+		TypedQuery<ReadingRecord> query = createRecordQuery("JOIN Range range WHERE range.id = :rangeId");
+		query.setParameter("rangeId", rangeId);
+		return query.getSingleResult().convert();
+	}
+
+	@Override
+	public SortedSet<Reading> readingsOf(Long groupId) {
+		TypedQuery<ReadingRecord> query = createRecordQuery("WHERE reading.group.id = :groupId");
 		query.setParameter("groupId", groupId);
-		return DataTransferObject.convert(query.getResultList());
+		return DataTransferObject.toSortedSet(query.getResultList());
 	}
 
 	@Override
-	public Long save(Reading reading) {
-		ReadingRecord record = new ReadingRecord(reading, reading.getGroupId());
-		return save(record).id();
-	}
-
-	@Override
-	public void delete(Long readingId) {
-		deleteById(readingId);
+	public Long save(Reading reading, Long groupId) {
+		return save(new ReadingRecord(reading, groupId)).id();
 	}
 }

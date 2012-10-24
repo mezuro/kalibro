@@ -1,11 +1,10 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
+import java.awt.Color;
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,17 +14,18 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.dao.ReadingGroupDao;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, DaoFactory.class})
-public class ReadingGroupTest extends TestCase {
+public class ReadingGroupTest extends UnitTest {
+
+	private ReadingGroupDao dao;
 
 	private ReadingGroup group;
-	private ReadingGroupDao dao;
 
 	@Before
 	public void setUp() {
@@ -33,11 +33,6 @@ public class ReadingGroupTest extends TestCase {
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getReadingGroupDao()).thenReturn(dao);
 		group = loadFixture("scholar", ReadingGroup.class);
-	}
-
-	@Test
-	public void shouldSortByName() {
-		assertSorted(new ReadingGroup("A"), new ReadingGroup("B"), new ReadingGroup("X"), new ReadingGroup("Z"));
 	}
 
 	@Test
@@ -51,14 +46,28 @@ public class ReadingGroupTest extends TestCase {
 	}
 
 	@Test
-	public void shouldGetAllReadings() {
-		List<ReadingGroup> list = mock(List.class);
-		when(dao.all()).thenReturn(list);
-		assertSame(list, ReadingGroup.all());
+	public void shouldGetAllReadingGroups() {
+		SortedSet<ReadingGroup> groups = mock(SortedSet.class);
+		when(dao.all()).thenReturn(groups);
+		assertSame(groups, ReadingGroup.all());
 	}
 
 	@Test
-	public void checkDefaultGroup() {
+	public void shouldSortByName() {
+		assertSorted(withName("A"), withName("B"), withName("C"), withName("X"), withName("Y"), withName("Z"));
+	}
+
+	@Test
+	public void shouldIdentifyByName() {
+		assertEquals(group, withName(group.getName()));
+	}
+
+	private ReadingGroup withName(String name) {
+		return new ReadingGroup(name);
+	}
+
+	@Test
+	public void checkConstruction() {
 		group = new ReadingGroup();
 		assertFalse(group.hasId());
 		assertEquals("", group.getName());
@@ -69,55 +78,60 @@ public class ReadingGroupTest extends TestCase {
 	@Test
 	public void shouldSetGroupOnReadings() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(Arrays.asList(reading));
-		assertDeepList(group.getReadings(), reading);
+		group.setReadings(sortedSet(reading));
+		assertDeepEquals(set(reading), group.getReadings());
 		verify(reading).setGroup(group);
 	}
 
 	@Test
 	public void shouldSetReadingsWithoutTouchingThem() {
 		// required for lazy loading
-		List<Reading> readings = mock(List.class);
+		SortedSet<Reading> readings = mock(SortedSet.class);
 		group.setReadings(readings);
 		verifyZeroInteractions(readings);
 	}
 
 	@Test
 	public void shouldAddReadingIfItDoesNotConflictWithExistingOnes() {
-		Reading reading = mock(Reading.class);
-		List<Reading> existents = group.getReadings();
-		group.addReading(reading);
+		group.addReading(new Reading("label", 42.0, Color.WHITE));
+		assertThat(new VoidTask() {
 
-		InOrder order = Mockito.inOrder(reading);
-		for (Reading existent : existents)
-			order.verify(reading).assertNoConflictWith(existent);
-		order.verify(reading).setGroup(group);
-
-		assertTrue(group.getReadings().contains(reading));
+			@Override
+			protected void perform() throws Throwable {
+				group.addReading(new Reading());
+			}
+		}).throwsException().withMessage("Reading with grade 0.0 already exists in the group.");
 	}
 
 	@Test
 	public void shouldRemoveReading() {
 		Reading reading = mock(Reading.class);
-		group.addReading(reading);
-		group.removeReading(reading);
+		SortedSet<Reading> readings = spy(sortedSet(reading));
+		group.setReadings(readings);
 
-		assertFalse(group.getReadings().contains(reading));
+		group.removeReading(reading);
+		verify(readings).remove(reading);
 		verify(reading).setGroup(null);
 	}
 
 	@Test
 	public void shouldUpdateIdAndReadingsOnSave() {
-		Reading reading = mock(Reading.class);
-		ReadingDao readingDao = mock(ReadingDao.class);
-		when(dao.save(group)).thenReturn(42L);
-		when(DaoFactory.getReadingDao()).thenReturn(readingDao);
-		when(readingDao.readingsOf(42L)).thenReturn(Arrays.asList(reading));
+		Long id = mock(Long.class);
+		Reading reading = mockReading(id);
+		when(dao.save(group)).thenReturn(id);
 
 		assertFalse(group.hasId());
 		group.save();
-		assertEquals(42L, group.getId().longValue());
-		assertDeepList(group.getReadings(), reading);
+		assertSame(id, group.getId());
+		assertDeepEquals(set(reading), group.getReadings());
+	}
+
+	private Reading mockReading(Long id) {
+		Reading reading = mock(Reading.class);
+		ReadingDao readingDao = mock(ReadingDao.class);
+		when(DaoFactory.getReadingDao()).thenReturn(readingDao);
+		when(readingDao.readingsOf(id)).thenReturn(sortedSet(reading));
+		return reading;
 	}
 
 	@Test
@@ -142,21 +156,27 @@ public class ReadingGroupTest extends TestCase {
 		group.delete();
 		verify(dao, never()).delete(any(Long.class));
 
-		group.setId(42L);
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(group, "id", id);
 
 		assertTrue(group.hasId());
 		group.delete();
-		verify(dao).delete(42L);
+		verify(dao).delete(id);
 		assertFalse(group.hasId());
 	}
 
 	@Test
-	public void shouldRemoveReadingIdsOnDelete() {
+	public void shouldNotifyReadingsOfDeletion() {
 		Reading reading = mock(Reading.class);
-		group.setReadings(Arrays.asList(reading));
-		group.setId(42L);
+		group.setReadings(sortedSet(reading));
+		Whitebox.setInternalState(group, "id", 42L);
 
 		group.delete();
-		verify(reading).setId(null);
+		verify(reading).deleted();
+	}
+
+	@Test
+	public void toStringShouldBeName() {
+		assertEquals(group.getName(), "" + group);
 	}
 }

@@ -4,17 +4,21 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class EntityEqualityTest extends TestCase {
+public class EntityEqualityTest extends UnitTest {
 
-	private Person carlos;
+	private Person carlos, otherCarlos;
+	private Programmer programmerCarlos;
+
 	private EntityEquality equality;
 
 	@Before
 	public void setUp() {
 		carlos = loadFixture("carlos", Person.class);
-		equality = new EntityEquality();
+		otherCarlos = loadFixture("carlos", Person.class);
+		programmerCarlos = loadFixture("carlos", Programmer.class);
+		equality = new EntityEquality(false);
 	}
 
 	@Test
@@ -53,6 +57,32 @@ public class EntityEqualityTest extends TestCase {
 		return equality.equals(carlos, other);
 	}
 
+	@Test
+	public void classesShouldBeTheSameIfDeep() {
+		assertFalse(deepEqualTo(programmerCarlos));
+	}
+
+	@Test
+	public void allFieldsShouldBeEqualIfDeep() {
+		assertTrue(deepEqualTo(otherCarlos));
+
+		otherCarlos.setSex("M");
+		assertFalse(deepEqualTo(otherCarlos));
+	}
+
+	@Test
+	public void allSubEntitiesShouldBeEqualIfDeep() {
+		assertTrue(deepEqualTo(otherCarlos));
+
+		otherCarlos.getRelatives().get("sister").setSex("F");
+		assertFalse(deepEqualTo(otherCarlos));
+	}
+
+	private boolean deepEqualTo(AbstractEntity<?> other) {
+		equality = new EntityEquality(true);
+		return equality.equals(carlos, other);
+	}
+
 	private class PersonImitation extends AbstractEntity<PersonImitation> {
 
 		@IdentityField
@@ -63,4 +93,5 @@ public class EntityEqualityTest extends TestCase {
 			this.identityNumber = person.getIdentityNumber();
 		}
 	}
+
 }

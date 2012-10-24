@@ -1,54 +1,33 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.assertSame;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.model.BaseTool;
+import org.kalibro.BaseTool;
 import org.kalibro.dao.BaseToolDao;
-import org.kalibro.dao.DaoFactory;
-import org.kalibro.service.entities.BaseToolXmlTest;
-import org.powermock.api.mockito.PowerMockito;
+import org.kalibro.service.xml.BaseToolXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoFactory.class)
-public class BaseToolEndpointImplTest extends TestCase {
+@PrepareForTest(BaseToolEndpointImpl.class)
+public class BaseToolEndpointImplTest extends
+	EndpointImplementorTest<BaseTool, BaseToolXml, BaseToolXml, BaseToolDao, BaseToolEndpointImpl> {
 
-	private BaseToolDao dao;
-	private BaseTool baseTool;
-	private BaseToolEndpointImpl endpoint;
+	private static final String NAME = "BaseToolEndpointImplTest name";
 
-	@Before
-	public void setUp() {
-		mockDao();
-		baseTool = analizoStub();
-		endpoint = new BaseToolEndpointImpl();
-	}
-
-	private void mockDao() {
-		dao = PowerMockito.mock(BaseToolDao.class);
-		PowerMockito.mockStatic(DaoFactory.class);
-		PowerMockito.when(DaoFactory.getBaseToolDao()).thenReturn(dao);
+	@Override
+	protected Class<BaseTool> entityClass() {
+		return BaseTool.class;
 	}
 
 	@Test
-	public void testGetBaseToolNames() {
-		List<String> names = new ArrayList<String>();
-		PowerMockito.when(dao.getBaseToolNames()).thenReturn(names);
-		assertSame(names, endpoint.getBaseToolNames());
+	public void shouldGetAllNames() {
+		when(dao.allNames()).thenReturn(sortedSet(NAME));
+		assertDeepEquals(list(NAME), implementor.allBaseToolNames());
 	}
 
 	@Test
-	public void testGetBaseTool() {
-		PowerMockito.when(dao.getBaseTool("42")).thenReturn(baseTool);
-		new BaseToolXmlTest().assertCorrectConversion(baseTool, endpoint.getBaseTool("42").convert());
+	public void shouldGetByName() {
+		when(dao.get(NAME)).thenReturn(entity);
+		assertSame(response, implementor.getBaseTool(NAME));
 	}
 }

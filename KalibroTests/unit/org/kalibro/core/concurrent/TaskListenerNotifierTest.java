@@ -1,9 +1,9 @@
 package org.kalibro.core.concurrent;
 
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class TaskListenerNotifierTest extends TestCase {
+public class TaskListenerNotifierTest extends UnitTest {
 
 	@Test
 	public void shouldNotifyListener() {

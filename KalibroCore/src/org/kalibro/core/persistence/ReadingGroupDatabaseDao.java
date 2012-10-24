@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import java.util.List;
+import javax.persistence.TypedQuery;
 
 import org.kalibro.ReadingGroup;
 import org.kalibro.core.persistence.record.ReadingGroupRecord;
@@ -11,34 +11,21 @@ import org.kalibro.dao.ReadingGroupDao;
  * 
  * @author Carlos Morais
  */
-public class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGroupRecord> implements ReadingGroupDao {
+class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGroupRecord> implements ReadingGroupDao {
 
-	protected ReadingGroupDatabaseDao(RecordManager recordManager) {
+	ReadingGroupDatabaseDao(RecordManager recordManager) {
 		super(recordManager, ReadingGroupRecord.class);
 	}
 
 	@Override
-	public boolean exists(Long groupId) {
-		return existsWithId(groupId);
-	}
-
-	@Override
-	public ReadingGroup get(Long groupId) {
-		return getById(groupId);
-	}
-
-	@Override
-	public List<ReadingGroup> all() {
-		return allOrderedByName();
+	public ReadingGroup readingGroupOf(Long metricConfigurationId) {
+		TypedQuery<ReadingGroupRecord> query = createRecordQuery("JOIN MetricConfiguration mConf WHERE mConf.id = :id");
+		query.setParameter("id", metricConfigurationId);
+		return query.getSingleResult().convert();
 	}
 
 	@Override
 	public Long save(ReadingGroup group) {
 		return save(new ReadingGroupRecord(group)).id();
-	}
-
-	@Override
-	public void delete(Long groupId) {
-		deleteById(groupId);
 	}
 }

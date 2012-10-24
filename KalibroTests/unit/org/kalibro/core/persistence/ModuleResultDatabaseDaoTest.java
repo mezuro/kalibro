@@ -1,112 +1,116 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.anyString;
+import static org.junit.Assert.assertSame;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Random;
 
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.model.ProjectResultFixtures;
-import org.kalibro.core.persistence.record.MetricResultRecord;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
+import org.kalibro.ModuleResult;
+import org.kalibro.core.persistence.record.ModuleResultRecord;
+import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({MetricResultRecord.class, ModuleResultDatabaseDao.class})
-public class ModuleResultDatabaseDaoTest extends TestCase {
+@PrepareForTest({ModuleResult.class, ModuleResultDatabaseDao.class})
+public class ModuleResultDatabaseDaoTest extends UnitTest {
 
-	private static final Date DATE = new Date();
-	private static final String MODULE_NAME = "ModuleResultDatabaseDaoTest module";
-	private static final String PROJECT_NAME = "ModuleResultDatabaseDaoTest project";
-	private static final String QUERY = "SELECT result FROM MetricResult result " +
-		"WHERE result.module.projectResult.project.name = :projectName AND result.module.name = :moduleName";
+	private static final Long ID = new Random().nextLong();
 
 	private ModuleResult moduleResult;
-	private ProjectResult projectResult;
-	private Configuration configuration;
-	private List<MetricResultRecord> records;
-
-	private RecordManager recordManager;
-	private TypedQuery<MetricResultRecord> query;
+	private ModuleResultRecord record;
+	private TypedQuery<ModuleResultRecord> query;
 
 	private ModuleResultDatabaseDao dao;
 
 	@Before
-	public void setUp() throws Exception {
-		projectResult = ProjectResultFixtures.newHelloWorldResult(DATE);
-		projectResult.getProject().setName(PROJECT_NAME);
-		mockRecords();
-		recordManager = mock(RecordManager.class);
-		dao = spy(new ModuleResultDatabaseDao(recordManager));
-		mockQueries();
-	}
-
-	private void mockRecords() {
+	public void setUp() {
 		moduleResult = mock(ModuleResult.class);
-		configuration = mock(Configuration.class);
-		records = mock(List.class);
-		mockStatic(MetricResultRecord.class);
-		when(MetricResultRecord.createRecords(moduleResult, projectResult)).thenReturn(records);
-		when(MetricResultRecord.convertIntoModuleResults(records)).thenReturn(Arrays.asList(moduleResult));
-	}
-
-	private void mockQueries() throws Exception {
+		record = mock(ModuleResultRecord.class);
 		query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery(anyString());
-		when(query.getResultList()).thenReturn(records);
-
-		ConfigurationDatabaseDao configDao = mock(ConfigurationDatabaseDao.class);
-		whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).thenReturn(configDao);
-		when(configDao.getConfigurationFor(PROJECT_NAME)).thenReturn(configuration);
+		when(query.getSingleResult()).thenReturn(record);
+		when(query.getResultList()).thenReturn(list(record));
+		when(record.convert()).thenReturn(moduleResult);
+		dao = spy(new ModuleResultDatabaseDao(null));
 	}
 
 	@Test
-	public void testSave() {
-		dao.save(moduleResult, projectResult);
-		Mockito.verify(recordManager).saveAll(records);
+	public void shouldGetResultsRootOfProcessing() {
+		prepareQuery("WHERE moduleResult.processing.id = :processingId AND moduleResult.parent = null");
+		assertSame(moduleResult, dao.resultsRootOf(ID));
+		verify(query).setParameter("processingId", ID);
 	}
 
 	@Test
-	public void testGetModuleResult() {
-		assertSame(moduleResult, dao.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE));
-
-		Mockito.verify(dao).createRecordQuery(QUERY + " AND result.module.projectResult.date = :date");
-		Mockito.verify(query).setParameter("projectName", PROJECT_NAME);
-		Mockito.verify(query).setParameter("moduleName", MODULE_NAME);
-		Mockito.verify(query).setParameter("date", DATE.getTime());
+	public void shouldGetParent() {
+		prepareQuery("JOIN ModuleResult child ON child.parent = moduleResult WHERE child.id = :childId");
+		assertSame(moduleResult, dao.parentOf(ID));
+		verify(query).setParameter("childId", ID);
 	}
 
 	@Test
-	public void testGetResultHistory() {
-		List<ModuleResult> resultHistory = dao.getResultHistory(PROJECT_NAME, MODULE_NAME);
-		assertEquals(1, resultHistory.size());
-		assertSame(moduleResult, resultHistory.get(0));
-
-		Mockito.verify(dao).createRecordQuery(QUERY + " ORDER BY result.module.projectResult.date");
-		Mockito.verify(query).setParameter("projectName", PROJECT_NAME);
-		Mockito.verify(query).setParameter("moduleName", MODULE_NAME);
+	public void shouldGetChildren() {
+		prepareQuery("JOIN ModuleResult parent ON moduleResult.parent = parent WHERE parent.id = :parentId");
+		assertDeepEquals(set(moduleResult), dao.childrenOf(ID));
+		verify(query).setParameter("parentId", ID);
 	}
 
 	@Test
-	public void shouldConfigureModuleResult() {
-		dao.getModuleResult(PROJECT_NAME, MODULE_NAME, DATE);
-		Mockito.verify(moduleResult).setConfiguration(configuration);
+	public void shouldSave() throws Exception {
+		whenNew(ModuleResultRecord.class).withArguments(moduleResult, ID).thenReturn(record);
+		doReturn(null).when(dao).save(record);
+		dao.save(moduleResult, ID);
+		verify(dao).save(record);
+	}
+
+	@Override
+	protected Timeout testTimeout() {
+		return new Timeout(0);
 	}
 
 	@Test
-	public void shouldConfigureResultHistory() {
-		dao.getResultHistory(PROJECT_NAME, MODULE_NAME);
-		Mockito.verify(moduleResult).setConfiguration(configuration);
+	public void shouldPrepareResultForModule() throws Exception {
+		Module module = new Module(Granularity.PACKAGE, "org");
+		String clause = "WHERE moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
+		doReturn(false).when(dao).exists(clause, "processingId", ID, "moduleName", list("org"));
+		doReturn(false).when(dao).exists(clause, "processingId", ID, "moduleName", new ArrayList<String>());
+		prepareQuery(clause);
+
+		Module preparedModule = mock(Module.class);
+		whenNew(ModuleResultRecord.class)
+			.withParameterTypes(Module.class, ModuleResultRecord.class, Long.class)
+			.withArguments(any(Module.class), any(ModuleResultRecord.class), eq(ID)).thenReturn(record);
+		doReturn(null).when(dao).save(record);
+		when(moduleResult.getModule()).thenReturn(preparedModule);
+
+		assertSame(moduleResult, dao.prepareResultFor(module, ID));
+		verifyCallsInOrder(preparedModule);
+	}
+
+	private void prepareQuery(String clauses) {
+		doReturn(query).when(dao).createRecordQuery(clauses);
+	}
+
+	private void verifyCallsInOrder(Module preparedModule) {
+		InOrder order = Mockito.inOrder(dao, query, dao, query, preparedModule);
+		order.verify(dao).save(record);
+		order.verify(query).setParameter("processingId", ID);
+		order.verify(query).setParameter("moduleName", new ArrayList<String>());
+		order.verify(query).getSingleResult();
+		order.verify(dao).save(record);
+		order.verify(query).setParameter("processingId", ID);
+		order.verify(query).setParameter("moduleName", list("org"));
+		order.verify(query).getSingleResult();
+		order.verify(preparedModule).setGranularity(Granularity.PACKAGE);
 	}
 }

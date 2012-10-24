@@ -1,6 +1,6 @@
 package org.kalibro.dao;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.Reading;
 
@@ -11,9 +11,13 @@ import org.kalibro.Reading;
  */
 public interface ReadingDao {
 
-	List<Reading> readingsOf(Long groupId);
+	Reading get(Long readingId);
 
-	Long save(Reading reading);
+	Reading readingOf(Long rangeId);
+
+	SortedSet<Reading> readingsOf(Long groupId);
+
+	Long save(Reading reading, Long groupId);
 
 	void delete(Long readingId);
 }

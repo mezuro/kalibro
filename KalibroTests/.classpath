@@ -6,7 +6,6 @@
 	<classpathentry kind="src" path="acceptance"/>
 	
 	<classpathentry kind="src" path="/KalibroCore" combineaccessrules="false"/>
-	<classpathentry kind="src" path="/KalibroDesktop" combineaccessrules="false"/>
 	<classpathentry kind="src" path="/KalibroService" combineaccessrules="false"/>
 	
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>

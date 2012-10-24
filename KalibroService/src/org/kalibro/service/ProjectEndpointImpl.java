@@ -1,19 +1,22 @@
 package org.kalibro.service;
 
 import java.util.List;
-import java.util.Set;
-import java.util.TreeSet;
 
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.core.model.enums.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.entities.ProjectXml;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.dto.DataTransferObject;
+import org.kalibro.service.xml.ProjectXmlRequest;
+import org.kalibro.service.xml.ProjectXmlResponse;
 
+/**
+ * Implementation of {@link ProjectEndpoint}.
+ * 
+ * @author Carlos Morais
+ */
 @WebService(name = "ProjectEndpoint", serviceName = "ProjectEndpointService")
 public class ProjectEndpointImpl implements ProjectEndpoint {
 
@@ -23,68 +26,36 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 		this(DaoFactory.getProjectDao());
 	}
 
-	protected ProjectEndpointImpl(ProjectDao projectDao) {
+	public ProjectEndpointImpl(ProjectDao projectDao) {
 		dao = projectDao;
 	}
 
 	@Override
-	public void saveProject(@WebParam(name = "project") RawProjectXml project) {
-		dao.save(project.convert());
-	}
-
-	@Override
-	@WebResult(name = "projectName")
-	public List<String> getProjectNames() {
-		return dao.getProjectNames();
-	}
-
-	@Override
-	@WebResult(name = "hasProject")
-	public boolean hasProject(@WebParam(name = "projectName") String projectName) {
-		return dao.hasProject(projectName);
+	@WebResult(name = "exists")
+	public boolean projectExists(@WebParam(name = "projectId") Long projectId) {
+		return dao.exists(projectId);
 	}
 
 	@Override
 	@WebResult(name = "project")
-	public ProjectXml getProject(@WebParam(name = "projectName") String projectName) {
-		return new ProjectXml(dao.getProject(projectName));
+	public ProjectXmlResponse getProject(@WebParam(name = "projectId") Long projectId) {
+		return new ProjectXmlResponse(dao.get(projectId));
 	}
 
 	@Override
-	public void removeProject(@WebParam(name = "projectName") String projectName) {
-		dao.removeProject(projectName);
+	@WebResult(name = "project")
+	public List<ProjectXmlResponse> allProjects() {
+		return DataTransferObject.createDtos(dao.all(), ProjectXmlResponse.class);
 	}
 
 	@Override
-	@WebResult(name = "repositoryType")
-	public Set<RepositoryType> getSupportedRepositoryTypes() {
-		Set<RepositoryType> types = new TreeSet<RepositoryType>();
-		for (RepositoryType type : dao.getSupportedRepositoryTypes())
-			if (!type.isLocal())
-				types.add(type);
-		return types;
+	@WebResult(name = "projectId")
+	public Long saveProject(@WebParam(name = "project") ProjectXmlRequest project) {
+		return dao.save(project.convert());
 	}
 
 	@Override
-	public void processProject(@WebParam(name = "projectName") String projectName) {
-		dao.processProject(projectName);
-	}
-
-	@Override
-	public void processPeriodically(
-		@WebParam(name = "projectName") String projectName,
-		@WebParam(name = "periodInDays") Integer periodInDays) {
-		dao.processPeriodically(projectName, periodInDays);
-	}
-
-	@Override
-	@WebResult(name = "period")
-	public Integer getProcessPeriod(@WebParam(name = "projectName") String projectName) {
-		return dao.getProcessPeriod(projectName);
-	}
-
-	@Override
-	public void cancelPeriodicProcess(@WebParam(name = "projectName") String projectName) {
-		dao.cancelPeriodicProcess(projectName);
+	public void deleteProject(@WebParam(name = "projectId") Long projectId) {
+		dao.delete(projectId);
 	}
 }

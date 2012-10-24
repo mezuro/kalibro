@@ -1,29 +1,21 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
-
-public class LocalTarballLoaderTest extends ProjectLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.LOCAL_TARBALL;
-	}
+public class LocalTarballLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("tar --version");
+		return list("tar --version");
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return list("tar -x --keep-newer-files -f " + ADDRESS + " -C .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		return Arrays.asList("tar -x --keep-newer-files -f " + repository.getAddress() + " -C .");
+	protected List<String> expectedUpdateCommands() {
+		return list("tar -x --keep-newer-files -f " + ADDRESS + " -C .");
 	}
 }

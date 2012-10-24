@@ -2,7 +2,7 @@ package org.kalibro.dto;
 
 import org.kalibro.Reading;
 
-public class ReadingDtoTest extends AbstractDtoTest<Reading, ReadingDto> {
+public class ReadingDtoTest extends AbstractDtoTest<Reading> {
 
 	@Override
 	protected Reading loadFixture() {

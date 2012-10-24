@@ -1,44 +1,33 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
-import static org.kalibro.core.model.ProjectFixtures.*;
+import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
 import java.util.Collection;
 
-import org.junit.Before;
-import org.junit.runner.RunWith;
-import org.kalibro.DtoTestCase;
-import org.kalibro.KalibroException;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Project;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
+import org.junit.Test;
+import org.kalibro.Configuration;
+import org.kalibro.Project;
+import org.kalibro.Repository;
+import org.powermock.reflect.Whitebox;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(ProjectRecord.class)
-public class ProjectRecordTest extends DtoTestCase<Project, ProjectRecord> {
-
-	@Before
-	public void setUp() throws Exception {
-		whenNew(Configuration.class).withNoArguments().thenReturn(kalibroConfiguration());
-	}
+public class ProjectRecordTest extends RecordTest {
 
 	@Override
-	protected ProjectRecord newDtoUsingDefaultConstructor() {
-		return new ProjectRecord();
+	protected void verifyColumns() {
+		shouldHaveId();
+		assertColumn("name", String.class).isRequired().isUnique();
+		assertColumn("description", String.class).isNullable();
+		assertOneToMany("repositories").isMappedBy("project");
 	}
 
-	@Override
-	protected Collection<Project> entitiesForTestingConversion() {
-		Project normal = helloWorld();
-		Project withError = newHelloWorld();
-		withError.setError(new KalibroException("ProjectRecordTest", new Exception()));
-		return Arrays.asList(normal, withError);
-	}
+	@Test
+	public void shouldConstructWithRepositories() {
+		Repository repository = new Repository();
+		repository.setConfiguration(new Configuration());
 
-	@Override
-	protected ProjectRecord createDto(Project project) {
-		return new ProjectRecord(project, 42L);
+		Project project = new Project();
+		project.addRepository(repository);
+		ProjectRecord record = new ProjectRecord(project);
+		assertEquals(1, Whitebox.getInternalState(record, Collection.class).size());
 	}
 }

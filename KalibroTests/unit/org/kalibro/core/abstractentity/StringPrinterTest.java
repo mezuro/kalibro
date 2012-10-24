@@ -24,7 +24,7 @@ public class StringPrinterTest extends PrinterTestCase<String> {
 	}
 
 	@Test
-	public void shouldExcapeSpecialCharacters() throws Exception {
+	public void shouldEscapeSpecialCharacters() throws Exception {
 		assertEquals(" \"\\tMy\\n\\\"special\\\"\\nstring\" # special string", print(STRING, "special string"));
 	}
 

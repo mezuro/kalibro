@@ -2,52 +2,61 @@ package org.kalibro.service;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.service.xml.ReadingGroupXmlRequest;
 import org.kalibro.service.xml.ReadingGroupXmlResponse;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 
-public class ReadingGroupEndpointImplTest extends EndpointImplementationTest<// @formatter:off
+@PrepareForTest(ReadingGroupEndpointImpl.class)
+public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @formatter:off
 	ReadingGroup, ReadingGroupXmlRequest, ReadingGroupXmlResponse,
 	ReadingGroupDao, ReadingGroupEndpointImpl> {// @formatter:on
 
+	private static final Long ID = Math.abs(new Random().nextLong());
+
 	@Override
-	protected Class<?>[] parameterClasses() {
-		return new Class<?>[]{ReadingGroup.class, ReadingGroupXmlRequest.class, ReadingGroupXmlResponse.class,
-			ReadingGroupDao.class, ReadingGroupEndpointImpl.class};
+	protected Class<ReadingGroup> entityClass() {
+		return ReadingGroup.class;
 	}
 
 	@Test
 	public void shouldConfirmExistence() {
-		when(dao.exists(42L)).thenReturn(true);
-		assertFalse(endpoint.readingGroupExists(28L));
-		assertTrue(endpoint.readingGroupExists(42L));
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(implementor.readingGroupExists(-1L));
+		assertTrue(implementor.readingGroupExists(ID));
 	}
 
 	@Test
 	public void shouldGetById() {
-		when(dao.get(42L)).thenReturn(entity);
-		assertSame(response, endpoint.getReadingGroup(42L));
+		when(dao.get(ID)).thenReturn(entity);
+		assertSame(response, implementor.getReadingGroup(ID));
+	}
+
+	@Test
+	public void shouldGetReadingGroupOfMetricConfiguration() {
+		when(dao.readingGroupOf(ID)).thenReturn(entity);
+		assertSame(response, implementor.readingGroupOf(ID));
 	}
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(Arrays.asList(entity));
-		assertDeepList(endpoint.allReadingGroups(), response);
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(response), implementor.allReadingGroups());
 	}
 
 	@Test
 	public void shouldSave() {
-		when(dao.save(entity)).thenReturn(42L);
-		assertEquals(42L, endpoint.saveReadingGroup(request).longValue());
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, implementor.saveReadingGroup(request));
 	}
 
 	@Test
 	public void shouldDelete() {
-		endpoint.deleteReadingGroup(42L);
-		verify(dao).delete(42L);
+		implementor.deleteReadingGroup(ID);
+		verify(dao).delete(ID);
 	}
 }

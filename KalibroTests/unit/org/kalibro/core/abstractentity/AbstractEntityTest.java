@@ -10,14 +10,14 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, Equality.class, FileUtils.class, HashCodeCalculator.class, Printer.class})
-public class AbstractEntityTest extends TestCase {
+public class AbstractEntityTest extends UnitTest {
 
 	private File file;
 	private Person entity;
@@ -31,7 +31,7 @@ public class AbstractEntityTest extends TestCase {
 
 	@Test
 	public void shouldImportFromFile() throws Exception {
-		assertDeepEquals(entity, AbstractEntity.importFrom(getResource("Person-carlos.yml"), Person.class));
+		assertDeepEquals(entity, AbstractEntity.importFrom(getFile("Person-carlos.yml"), Person.class));
 	}
 
 	@Test
@@ -103,5 +103,18 @@ public class AbstractEntityTest extends TestCase {
 		whenNew(EntityComparator.class).withNoArguments().thenReturn(comparator);
 		when(comparator.compare(entity, entity)).thenReturn(42);
 		assertEquals(42, entity.compareTo(entity));
+	}
+
+	@Test
+	public void shouldThrowExceptionForCondition() {
+		final String message = "AbstractEntityTest message";
+		entity.throwExceptionIf(false, message);
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				entity.throwExceptionIf(true, message);
+			}
+		}).throwsException().withMessage(message);
 	}
 }

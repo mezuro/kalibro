@@ -3,11 +3,17 @@ package org.kalibro.core.abstractentity;
 import java.util.Set;
 
 /**
- * Determines equality of sets deeply for each element. Two sets are equal if they contain the same elements.
+ * Determines equality of sets. Two sets are equal if they contain the same elements.
  * 
  * @author Carlos Morais
  */
 class SetEquality extends Equality<Set<?>> {
+
+	private boolean deep;
+
+	public SetEquality(boolean deep) {
+		this.deep = deep;
+	}
 
 	@Override
 	protected boolean canEvaluate(Object value) {
@@ -26,7 +32,7 @@ class SetEquality extends Equality<Set<?>> {
 
 	private boolean contains(Set<?> set, Object object) {
 		for (Object element : set)
-			if (areDeepEqual(element, object))
+			if (areEqual(element, object, deep))
 				return true;
 		return false;
 	}

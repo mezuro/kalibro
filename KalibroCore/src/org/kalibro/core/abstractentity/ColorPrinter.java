@@ -9,13 +9,11 @@ import java.awt.Color;
  */
 class ColorPrinter extends Printer<Color> {
 
-	@Override
-	protected boolean canPrint(Object object) {
+	@Override boolean canPrint(Object object) {
 		return object instanceof Color;
 	}
 
-	@Override
-	protected void doPrint(Color color, String comment) {
+	@Override void doPrint(Color color, String comment) {
 		printString(" 0x" + Integer.toHexString(color.getRGB()).substring(2));
 		printComment(comment);
 	}

@@ -17,21 +17,25 @@ abstract class EndpointClient<ENDPOINT> {
 
 	private static final String NAMESPACE = "http://service.kalibro.org/";
 
-	protected ENDPOINT port;
-
-	protected EndpointClient(String serviceAddress, Class<ENDPOINT> endpointClass) {
+	static <ENDPOINT> ENDPOINT getPort(String serviceAddress, Class<ENDPOINT> endpointClass) {
 		String endpointName = endpointClass.getSimpleName();
-		URL wsdlLocation = getWsdlLocation(endpointName, serviceAddress);
+		URL wsdlLocation = wsdlLocation(endpointName, serviceAddress);
 		QName serviceName = new QName(NAMESPACE, endpointName + "Service");
 		QName portName = new QName(NAMESPACE, endpointName + "Port");
-		port = Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
+		return Service.create(wsdlLocation, serviceName).getPort(portName, endpointClass);
 	}
 
-	private URL getWsdlLocation(String endpointName, String serviceAddress) {
+	private static URL wsdlLocation(String endpointName, String serviceAddress) {
 		try {
 			return new URL(serviceAddress + endpointName + "/?wsdl");
 		} catch (MalformedURLException exception) {
 			throw new KalibroException("Invalid service address: " + serviceAddress, exception);
 		}
+	}
+
+	ENDPOINT port;
+
+	EndpointClient(String serviceAddress, Class<ENDPOINT> endpointClass) {
+		port = getPort(serviceAddress, endpointClass);
 	}
 }

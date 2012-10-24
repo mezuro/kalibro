@@ -3,18 +3,20 @@ package org.kalibro.core.persistence;
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Random;
 
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.persistence.PersonDatabaseDao.Person;
 import org.kalibro.core.persistence.PersonDatabaseDao.PersonRecord;
+import org.kalibro.tests.UnitTest;
 
-public class DatabaseDaoTest extends TestCase {
+public class DatabaseDaoTest extends UnitTest {
+
+	private static final Long ID = Math.abs(new Random().nextLong());
 
 	private Person person;
 	private PersonRecord record;
@@ -35,31 +37,29 @@ public class DatabaseDaoTest extends TestCase {
 	@Test
 	public void shouldConfirmExistence() {
 		Query query = mock(Query.class);
-		when(recordManager.createQuery("SELECT 1 FROM Person WHERE id = :id")).thenReturn(query);
+		when(recordManager.createQuery("SELECT 1 FROM Person person WHERE person.id = :id")).thenReturn(query);
 
-		when(query.getResultList()).thenReturn(Arrays.asList(1));
-		assertTrue(dao.existsWithId(42L));
-		verify(query).setParameter("id", 42L);
+		when(query.getResultList()).thenReturn(list(1));
+		assertTrue(dao.exists(ID));
+		verify(query).setParameter("id", ID);
 
 		when(query.getResultList()).thenReturn(new ArrayList<Integer>());
-		assertFalse(dao.existsWithId(28L));
-		verify(query).setParameter("id", 28L);
+		assertFalse(dao.exists(-1L));
+		verify(query).setParameter("id", -1L);
 	}
 
 	@Test
 	public void shouldGetById() {
-		when(recordManager.getById(42L, PersonRecord.class)).thenReturn(record);
-		assertSame(person, dao.getById(42L));
+		when(recordManager.getById(ID, PersonRecord.class)).thenReturn(record);
+		assertSame(person, dao.get(ID));
 	}
 
 	@Test
-	public void shouldGetAllOrderedByName() {
+	public void shouldGetAll() {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
-		String queryString = "SELECT person FROM Person person ORDER BY lower(person.name)";
-		when(recordManager.createQuery(queryString, PersonRecord.class)).thenReturn(query);
-		when(query.getResultList()).thenReturn(Arrays.asList(record));
-
-		assertDeepList(dao.allOrderedByName(), person);
+		when(recordManager.createQuery("SELECT person FROM Person person ", PersonRecord.class)).thenReturn(query);
+		when(query.getResultList()).thenReturn(list(record));
+		assertDeepEquals(set(person), dao.all());
 	}
 
 	@Test
@@ -71,10 +71,9 @@ public class DatabaseDaoTest extends TestCase {
 	@Test
 	public void shouldDeleteById() {
 		Query query = mock(Query.class);
-		String queryString = "DELETE FROM Person WHERE id = :id";
-		when(recordManager.createQuery(queryString)).thenReturn(query);
+		when(recordManager.createQuery("DELETE FROM Person WHERE id = :id")).thenReturn(query);
 
-		dao.deleteById(42L);
+		dao.delete(ID);
 		verify(recordManager).executeUpdate(query);
 	}
 }

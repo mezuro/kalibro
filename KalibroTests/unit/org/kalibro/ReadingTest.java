@@ -1,7 +1,7 @@
 package org.kalibro;
 
+import static java.lang.Double.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.awt.Color;
 
@@ -11,15 +11,18 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
-public class ReadingTest extends TestCase {
+public class ReadingTest extends UnitTest {
+
+	private ReadingDao dao;
 
 	private Reading reading;
-	private ReadingDao dao;
 
 	@Before
 	public void setUp() {
@@ -31,11 +34,16 @@ public class ReadingTest extends TestCase {
 
 	@Test
 	public void shouldSortByGrade() {
-		assertSorted(reading(Double.NEGATIVE_INFINITY), reading(0.0), reading(42.0), reading(Double.POSITIVE_INFINITY));
+		assertSorted(withGrade(NEGATIVE_INFINITY), withGrade(0.0), withGrade(42.0), withGrade(POSITIVE_INFINITY));
 	}
 
 	@Test
-	public void checkDefaultReading() {
+	public void shouldIdentifyByLabel() {
+		assertEquals(reading, withLabel(reading.getLabel()));
+	}
+
+	@Test
+	public void checkConstruction() {
 		reading = new Reading();
 		assertFalse(reading.hasId());
 		assertEquals("", reading.getLabel());
@@ -44,76 +52,79 @@ public class ReadingTest extends TestCase {
 	}
 
 	@Test
-	public void readingsWithSameLabelShouldConflict() {
-		String label = reading.getLabel();
-		shouldConflictWith(reading(label), "Reading with label \"" + label + "\" already exists in the group.");
-	}
-
-	@Test
-	public void readingsWithSameGradeShouldConflict() {
-		Double grade = reading.getGrade();
-		shouldConflictWith(reading(grade), "Reading with grade " + grade + " already exists in the group.");
-	}
-
-	private Reading reading(String label) {
-		return new Reading(label, 42.0, Color.MAGENTA);
-	}
-
-	private Reading reading(Double grade) {
-		return new Reading("ReadingTest label", grade, Color.MAGENTA);
-	}
-
-	private void shouldConflictWith(final Reading other, String message) {
+	public void shouldNotSetConflictingLabel() {
+		ReadingGroup group = new ReadingGroup();
+		group.addReading(reading);
+		group.addReading(withLabel("label"));
+		reading.setLabel("original");
 		assertThat(new VoidTask() {
 
 			@Override
-			protected void perform() {
-				reading.assertNoConflictWith(other);
+			protected void perform() throws Throwable {
+				reading.setLabel("label");
 			}
-		}).throwsException().withMessage(message);
+		}).throwsException().withMessage("Reading with label \"label\" already exists in the group.");
+		assertEquals("original", reading.getLabel());
 	}
 
 	@Test
-	public void readingsWithSameColorShouldNotConflict() {
-		reading.assertNoConflictWith(new Reading("", 42.0, reading.getColor()));
+	public void shouldNotSetConflictingGrade() {
+		ReadingGroup group = new ReadingGroup();
+		group.addReading(reading);
+		group.addReading(withGrade(-1.0));
+		reading.setGrade(42.0);
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				reading.setGrade(-1.0);
+			}
+		}).throwsException().withMessage("Reading with grade -1.0 already exists in the group.");
+		assertDoubleEquals(42.0, reading.getGrade());
 	}
 
 	@Test
-	public void shouldGetGroupId() {
-		// required for proper saving
-		setReadingGroupWithId(42L);
-		assertEquals(42L, reading.getGroupId().longValue());
+	public void shouldAssertNoConflictWithOtherReading() {
+		reading.assertNoConflictWith(new Reading());
+		reading.assertNoConflictWith(new Reading("", 0.0, reading.getColor()));
+	}
+
+	private Reading withLabel(String label) {
+		return new Reading(label, 0.0, Color.WHITE);
+	}
+
+	private Reading withGrade(Double grade) {
+		return new Reading("", grade, Color.WHITE);
 	}
 
 	@Test
-	public void shouldNotSaveIfNotGrouped() {
-		assertThat(save()).throwsException().withMessage("Reading is not in any group.");
-	}
+	public void shouldRequireSavedGroupToSave() {
+		saveShouldThrowExceptionWithMessage("Reading is not in any group.");
 
-	@Test
-	public void shouldNotSaveIfGroupHasNoId() {
 		setReadingGroupWithId(null);
-		assertThat(save()).throwsException().withMessage("Group is not saved. Save group instead");
+		saveShouldThrowExceptionWithMessage("Group is not saved. Save group instead");
 	}
 
-	private VoidTask save() {
-		return new VoidTask() {
+	private void saveShouldThrowExceptionWithMessage(String message) {
+		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				reading.save();
 			}
-		};
+		}).throwsException().withMessage(message);
 	}
 
 	@Test
 	public void shouldUpdateIdOnSave() {
-		setReadingGroupWithId(28L);
-		when(dao.save(reading)).thenReturn(42L);
+		Long id = mock(Long.class);
+		Long groupId = mock(Long.class);
+		setReadingGroupWithId(groupId);
+		when(dao.save(reading, groupId)).thenReturn(id);
 
 		assertFalse(reading.hasId());
 		reading.save();
-		assertEquals(42L, reading.getId().longValue());
+		assertSame(id, reading.getId());
 	}
 
 	@Test
@@ -122,11 +133,12 @@ public class ReadingTest extends TestCase {
 		reading.delete();
 		verify(dao, never()).delete(any(Long.class));
 
-		reading.setId(42L);
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(reading, "id", id);
 
 		assertTrue(reading.hasId());
 		reading.delete();
-		verify(dao).delete(42L);
+		verify(dao).delete(id);
 		assertFalse(reading.hasId());
 	}
 
@@ -143,5 +155,10 @@ public class ReadingTest extends TestCase {
 		when(group.getId()).thenReturn(id);
 		reading.setGroup(group);
 		return group;
+	}
+
+	@Test
+	public void toStringShouldHaveGradeAndLabel() {
+		assertEquals("10.0 - Excellent", "" + reading);
 	}
 }

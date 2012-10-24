@@ -1,31 +1,47 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.ConfigurationFixtures.kalibroConfiguration;
-import static org.kalibro.core.model.MetricFixtures.sc;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.BaseTool;
+import org.kalibro.CompoundMetric;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
-import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.MetricConfiguration;
-
-public class MetricConfigurationRecordTest extends DtoTestCase<MetricConfiguration, MetricConfigurationRecord> {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
+public class MetricConfigurationRecordTest extends RecordTest {
 
 	@Override
-	protected MetricConfigurationRecord newDtoUsingDefaultConstructor() {
-		return new MetricConfigurationRecord();
+	public void setUp() throws Exception {
+		super.setUp();
+		BaseToolDao baseToolDao = mock(BaseToolDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
+		when(baseToolDao.get("Inexistent")).thenReturn(loadFixture("inexistent", BaseTool.class));
 	}
 
 	@Override
-	protected Collection<MetricConfiguration> entitiesForTestingConversion() {
-		Collection<MetricConfiguration> configurations = kalibroConfiguration().getMetricConfigurations();
-		ArrayList<MetricConfiguration> entities = new ArrayList<MetricConfiguration>(configurations);
-		entities.add(new MetricConfiguration(sc()));
-		return entities;
+	protected void verifyColumns() {
+		assertManyToOne("configuration", ConfigurationRecord.class).isRequired();
+		shouldHaveId();
+		assertColumn("code", String.class).isRequired();
+		assertColumn("weight", Long.class).isRequired();
+		assertColumn("aggregationForm", String.class).isRequired();
+		assertManyToOne("readingGroup", ReadingGroupRecord.class).isOptional();
+		assertColumn("compound", Boolean.class).isRequired();
+		assertColumn("metricName", String.class).isRequired();
+		assertColumn("metricScope", String.class).isRequired();
+		assertColumn("metricDescription", String.class).isNullable();
+		assertColumn("metricOrigin", String.class).isRequired();
+		assertOneToMany("ranges").isMappedBy("configuration");
 	}
 
-	@Override
-	protected MetricConfigurationRecord createDto(MetricConfiguration metricConfiguration) {
-		return new MetricConfigurationRecord(metricConfiguration, null);
+	@Test
+	public void shouldAlsoConvertCompoundMetric() {
+		CompoundMetric metric = loadFixture("sc", CompoundMetric.class);
+		assertDeepEquals(metric, new MetricConfigurationRecord(new MetricConfiguration(metric)).metric());
 	}
 }

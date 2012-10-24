@@ -1,0 +1,3 @@
+br.jabuti.JabutiMetricCollector
+org.analizo.AnalizoMetricCollector
+org.checkstyle.CheckstyleMetricCollector
