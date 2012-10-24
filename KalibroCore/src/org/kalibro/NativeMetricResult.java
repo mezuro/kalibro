@@ -7,11 +7,6 @@ package org.kalibro;
  */
 public class NativeMetricResult extends AbstractMetricResult {
 
-	@SuppressWarnings("unused" /* used by SnakeYaml */)
-	private NativeMetricResult() {
-		this(new NativeMetric("", Granularity.CLASS), Double.NaN);
-	}
-
 	/**
 	 * Creates an instance of NativeMetricResult.
 	 * 
