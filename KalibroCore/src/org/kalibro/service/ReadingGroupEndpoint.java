@@ -8,8 +8,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.ReadingGroupDao;
-import org.kalibro.service.xml.ReadingGroupXmlRequest;
-import org.kalibro.service.xml.ReadingGroupXmlResponse;
+import org.kalibro.service.xml.ReadingGroupXml;
 
 /**
  * End point to make {@link ReadingGroupDao} interface available as Web service.
@@ -25,19 +24,19 @@ public interface ReadingGroupEndpoint {
 
 	@WebMethod
 	@WebResult(name = "readingGroup")
-	ReadingGroupXmlResponse getReadingGroup(@WebParam(name = "groupId") Long groupId);
+	ReadingGroupXml getReadingGroup(@WebParam(name = "groupId") Long groupId);
 
 	@WebMethod
 	@WebResult(name = "readingGroup")
-	ReadingGroupXmlResponse readingGroupOf(@WebParam(name = "metricConfigurationId") Long metricConfigurationId);
+	ReadingGroupXml readingGroupOf(@WebParam(name = "metricConfigurationId") Long metricConfigurationId);
 
 	@WebMethod
 	@WebResult(name = "readingGroup")
-	List<ReadingGroupXmlResponse> allReadingGroups();
+	List<ReadingGroupXml> allReadingGroups();
 
 	@WebMethod
 	@WebResult(name = "readingGroupId")
-	Long saveReadingGroup(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group);
+	Long saveReadingGroup(@WebParam(name = "readingGroup") ReadingGroupXml group);
 
 	@WebMethod
 	void deleteReadingGroup(@WebParam(name = "groupId") Long groupId);

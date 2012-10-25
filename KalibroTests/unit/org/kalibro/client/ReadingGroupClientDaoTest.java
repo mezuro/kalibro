@@ -7,14 +7,12 @@ import java.util.Random;
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
 import org.kalibro.service.ReadingGroupEndpoint;
-import org.kalibro.service.xml.ReadingGroupXmlRequest;
-import org.kalibro.service.xml.ReadingGroupXmlResponse;
+import org.kalibro.service.xml.ReadingGroupXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(ReadingGroupClientDao.class)
 public class ReadingGroupClientDaoTest extends ClientTest<// @formatter:off
-	ReadingGroup, ReadingGroupXmlRequest, ReadingGroupXmlResponse,
-	ReadingGroupEndpoint, ReadingGroupClientDao> {// @formatter:on
+	ReadingGroup, ReadingGroupXml, ReadingGroupXml,	ReadingGroupEndpoint, ReadingGroupClientDao> {// @formatter:on
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 

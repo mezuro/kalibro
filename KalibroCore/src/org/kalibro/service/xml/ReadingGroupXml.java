@@ -9,28 +9,28 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
 /**
- * XML element for {@link ReadingGroup} responses.
+ * XML element for {@link ReadingGroup} requests.
  * 
  * @author Carlos Morais
  */
 @XmlRootElement(name = "readingGroup")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ReadingGroupXmlResponse extends ReadingGroupDto {
+public class ReadingGroupXml extends ReadingGroupDto {
 
 	@XmlElement
 	private Long id;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private String name;
 
 	@XmlElement
 	private String description;
 
-	public ReadingGroupXmlResponse() {
+	public ReadingGroupXml() {
 		super();
 	}
 
-	public ReadingGroupXmlResponse(ReadingGroup group) {
+	public ReadingGroupXml(ReadingGroup group) {
 		id = group.getId();
 		name = group.getName();
 		description = group.getDescription();
