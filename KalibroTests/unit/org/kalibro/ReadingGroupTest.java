@@ -12,7 +12,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ReadingDao;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -40,9 +39,7 @@ public class ReadingGroupTest extends UnitTest {
 		File file = mock(File.class);
 		mockStatic(AbstractEntity.class);
 		when(AbstractEntity.class, "importFrom", file, ReadingGroup.class).thenReturn(group);
-
 		assertSame(group, ReadingGroup.importFrom(file));
-		verifyPrivate(AbstractEntity.class).invoke("importFrom", file, ReadingGroup.class);
 	}
 
 	@Test
@@ -115,61 +112,66 @@ public class ReadingGroupTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldUpdateIdAndReadingsOnSave() {
-		Long id = mock(Long.class);
-		Reading reading = mockReading(id);
-		when(dao.save(group)).thenReturn(id);
+	public void shouldAssertSaved() {
+		prepareSave(42L);
 
-		assertFalse(group.hasId());
-		group.save();
-		assertSame(id, group.getId());
-		assertDeepEquals(set(reading), group.getReadings());
-	}
+		group.assertSaved();
+		verify(dao).save(group);
 
-	private Reading mockReading(Long id) {
-		Reading reading = mock(Reading.class);
-		ReadingDao readingDao = mock(ReadingDao.class);
-		when(DaoFactory.getReadingDao()).thenReturn(readingDao);
-		when(readingDao.readingsOf(id)).thenReturn(sortedSet(reading));
-		return reading;
+		group.assertSaved();
+		verifyNoMoreInteractions(dao);
 	}
 
 	@Test
 	public void shouldRequiredNameToSave() {
 		group.setName(" ");
-		assertThat(save()).throwsException().withMessage("Reading group requires name.");
-	}
-
-	private VoidTask save() {
-		return new VoidTask() {
+		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				group.save();
 			}
-		};
+		}).throwsException().withMessage("Reading group requires name.");
+	}
+
+	@Test
+	public void shouldUpdateIdAndSaveReadingsOnSave() {
+		Long id = mock(Long.class);
+		Reading reading = mock(Reading.class);
+		prepareSave(id, reading);
+
+		assertFalse(group.hasId());
+		group.save();
+		assertSame(id, group.getId());
+		verify(reading).save();
+	}
+
+	private void prepareSave(Long id, Reading... readings) {
+		group.setReadings(sortedSet(readings));
+		when(dao.save(group)).thenReturn(id);
+	}
+
+	@Test
+	public void shouldIgnoreDeleteIfIsNotSaved() {
+		group.delete();
+		verify(dao, never()).delete(any(Long.class));
 	}
 
 	@Test
 	public void shouldDeleteIfHasId() {
-		assertFalse(group.hasId());
-		group.delete();
-		verify(dao, never()).delete(any(Long.class));
-
 		Long id = mock(Long.class);
 		Whitebox.setInternalState(group, "id", id);
 
 		assertTrue(group.hasId());
 		group.delete();
-		verify(dao).delete(id);
 		assertFalse(group.hasId());
+		verify(dao).delete(id);
 	}
 
 	@Test
 	public void shouldNotifyReadingsOfDeletion() {
 		Reading reading = mock(Reading.class);
 		group.setReadings(sortedSet(reading));
-		Whitebox.setInternalState(group, "id", 42L);
 
 		group.delete();
 		verify(reading).deleted();

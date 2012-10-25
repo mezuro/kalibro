@@ -12,6 +12,8 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -53,9 +55,7 @@ public class ReadingTest extends UnitTest {
 
 	@Test
 	public void shouldNotSetConflictingLabel() {
-		ReadingGroup group = new ReadingGroup();
-		group.addReading(reading);
-		group.addReading(withLabel("label"));
+		groupWith(withLabel("label"));
 		reading.setLabel("original");
 		assertThat(new VoidTask() {
 
@@ -69,9 +69,7 @@ public class ReadingTest extends UnitTest {
 
 	@Test
 	public void shouldNotSetConflictingGrade() {
-		ReadingGroup group = new ReadingGroup();
-		group.addReading(reading);
-		group.addReading(withGrade(-1.0));
+		groupWith(withGrade(-1.0));
 		reading.setGrade(42.0);
 		assertThat(new VoidTask() {
 
@@ -81,6 +79,12 @@ public class ReadingTest extends UnitTest {
 			}
 		}).throwsException().withMessage("Reading with grade -1.0 already exists in the group.");
 		assertDoubleEquals(42.0, reading.getGrade());
+	}
+
+	private void groupWith(Reading other) {
+		ReadingGroup group = new ReadingGroup();
+		group.addReading(reading);
+		group.addReading(other);
 	}
 
 	@Test
@@ -98,28 +102,32 @@ public class ReadingTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRequireSavedGroupToSave() {
-		saveShouldThrowExceptionWithMessage("Reading is not in any group.");
-
-		setReadingGroupWithId(null);
-		saveShouldThrowExceptionWithMessage("Group is not saved. Save group instead");
-	}
-
-	private void saveShouldThrowExceptionWithMessage(String message) {
+	public void shouldRequireGroupToSave() {
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				reading.save();
 			}
-		}).throwsException().withMessage(message);
+		}).throwsException().withMessage("Reading is not in any group.");
+	}
+
+	@Test
+	public void shouldAssertGroupSavedBeforeSave() {
+		Long groupId = mock(Long.class);
+		ReadingGroup group = groupWithId(groupId);
+
+		reading.save();
+		InOrder order = Mockito.inOrder(group, dao);
+		order.verify(group).assertSaved();
+		order.verify(dao).save(reading, groupId);
 	}
 
 	@Test
 	public void shouldUpdateIdOnSave() {
 		Long id = mock(Long.class);
 		Long groupId = mock(Long.class);
-		setReadingGroupWithId(groupId);
+		groupWithId(groupId);
 		when(dao.save(reading, groupId)).thenReturn(id);
 
 		assertFalse(reading.hasId());
@@ -128,30 +136,31 @@ public class ReadingTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldDeleteIfHasId() {
-		assertFalse(reading.hasId());
+	public void shouldIgnoreDeleteIfIsNotSaved() {
 		reading.delete();
 		verify(dao, never()).delete(any(Long.class));
+	}
 
+	@Test
+	public void shouldDeleteIfSaved() {
 		Long id = mock(Long.class);
 		Whitebox.setInternalState(reading, "id", id);
 
 		assertTrue(reading.hasId());
 		reading.delete();
-		verify(dao).delete(id);
 		assertFalse(reading.hasId());
+		verify(dao).delete(id);
 	}
 
 	@Test
 	public void shouldRemoveFromGroupOnDelete() {
-		ReadingGroup group = setReadingGroupWithId(42L);
+		ReadingGroup group = groupWithId(null);
 		reading.delete();
 		verify(group).removeReading(reading);
 	}
 
-	private ReadingGroup setReadingGroupWithId(Long id) {
+	private ReadingGroup groupWithId(Long id) {
 		ReadingGroup group = mock(ReadingGroup.class);
-		when(group.hasId()).thenReturn(id != null);
 		when(group.getId()).thenReturn(id);
 		reading.setGroup(group);
 		return group;

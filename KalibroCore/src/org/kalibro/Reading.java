@@ -19,9 +19,13 @@ public class Reading extends AbstractEntity<Reading> {
 	private Long id;
 
 	@IdentityField
+	@Print(order = 1)
 	private String label;
 
+	@Print(order = 2)
 	private Double grade;
+
+	@Print(order = 3)
 	private Color color;
 
 	@Ignore
@@ -98,7 +102,7 @@ public class Reading extends AbstractEntity<Reading> {
 
 	public void save() {
 		throwExceptionIf(group == null, "Reading is not in any group.");
-		throwExceptionIf(!group.hasId(), "Group is not saved. Save group instead");
+		group.assertSaved();
 		id = dao().save(this, group.getId());
 	}
 
