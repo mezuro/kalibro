@@ -7,6 +7,6 @@ public class ReadingGroupRecordTest extends RecordTest {
 		shouldHaveId();
 		assertColumn("name", String.class).isRequired().isUnique();
 		assertColumn("description", String.class).isNullable();
-		assertOneToMany("readings", false).isMappedBy("group");
+		assertOneToMany("readings").doesNotCascade().isMappedBy("group");
 	}
 }

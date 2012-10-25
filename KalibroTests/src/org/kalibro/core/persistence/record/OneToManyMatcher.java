@@ -14,14 +14,23 @@ class OneToManyMatcher {
 		this.oneToMany = oneToMany;
 	}
 
-	OneToManyMatcher cascades(boolean shouldCascade) {
-		if (shouldCascade) {
-			assertArrayEquals("@OneToMany should cascade.", new CascadeType[]{CascadeType.ALL}, oneToMany.cascade());
-			assertTrue("@OneToMany should remove orphans.", oneToMany.orphanRemoval());
-		} else {
-			assertArrayEquals("@OneToMany should NOT cascade", new CascadeType[]{}, oneToMany.cascade());
-			assertFalse("@OneToMany should NOT remove orphans.", oneToMany.orphanRemoval());
-		}
+	OneToManyMatcher cascades() {
+		assertArrayEquals("@OneToMany should cascade", new CascadeType[]{CascadeType.ALL}, oneToMany.cascade());
+		return this;
+	}
+
+	OneToManyMatcher doesNotCascade() {
+		assertArrayEquals("@OneToMany should NOT cascade", new CascadeType[]{}, oneToMany.cascade());
+		return this;
+	}
+
+	OneToManyMatcher removeOrphans() {
+		assertTrue("@OneToMany should remove orphans", oneToMany.orphanRemoval());
+		return this;
+	}
+
+	OneToManyMatcher doesNotRemoveOrphans() {
+		assertFalse("@OneToMany should NOT remove orphans", oneToMany.orphanRemoval());
 		return this;
 	}
 

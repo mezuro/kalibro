@@ -7,6 +7,6 @@ public class ConfigurationRecordTest extends RecordTest {
 		shouldHaveId();
 		assertColumn("name", String.class).isRequired().isUnique();
 		assertColumn("description", String.class).isNullable();
-		assertOneToMany("metricConfigurations").isMappedBy("configuration");
+		assertOneToMany("metricConfigurations").cascades().isMappedBy("configuration");
 	}
 }

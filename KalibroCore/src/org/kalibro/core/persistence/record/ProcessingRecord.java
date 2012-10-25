@@ -33,7 +33,7 @@ public class ProcessingRecord extends ProcessingDto {
 	@Column(name = "\"state\"", nullable = false)
 	private String state;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
