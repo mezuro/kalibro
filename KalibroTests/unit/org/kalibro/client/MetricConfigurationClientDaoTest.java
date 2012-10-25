@@ -7,13 +7,12 @@ import java.util.Random;
 import org.junit.Test;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.service.MetricConfigurationEndpoint;
-import org.kalibro.service.xml.MetricConfigurationXmlRequest;
-import org.kalibro.service.xml.MetricConfigurationXmlResponse;
+import org.kalibro.service.xml.MetricConfigurationXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(MetricConfigurationClientDao.class)
 public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:off
-	MetricConfiguration, MetricConfigurationXmlRequest, MetricConfigurationXmlResponse,
+	MetricConfiguration, MetricConfigurationXml, MetricConfigurationXml,
 	MetricConfigurationEndpoint, MetricConfigurationClientDao> { // @formatter:on
 
 	private static final Long ID = new Random().nextLong();

@@ -1,22 +1,26 @@
 package org.kalibro.service.xml;
 
-import java.util.List;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.*;
+import org.kalibro.Metric;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.ReadingGroup;
+import org.kalibro.Statistic;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.MetricConfigurationDto;
 
+/**
+ * XML element for {@link MetricConfiguration}.
+ * 
+ * @author Carlos Morais
+ */
 @XmlRootElement(name = "metricConfiguration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricConfigurationXmlRequest extends MetricConfigurationDto {
+public class MetricConfigurationXml extends MetricConfigurationDto {
 
 	@XmlElement
 	private Long id;
@@ -39,14 +43,11 @@ public class MetricConfigurationXmlRequest extends MetricConfigurationDto {
 	@XmlElement
 	private Long readingGroupId;
 
-	@XmlElement(name = "range")
-	private List<RangeXml> ranges;
-
-	public MetricConfigurationXmlRequest() {
+	public MetricConfigurationXml() {
 		super();
 	}
 
-	public MetricConfigurationXmlRequest(MetricConfiguration metricConfiguration) {
+	public MetricConfigurationXml(MetricConfiguration metricConfiguration) {
 		id = metricConfiguration.getId();
 		code = metricConfiguration.getCode();
 		metric = new MetricXmlRequest(metricConfiguration.getMetric());
@@ -54,13 +55,7 @@ public class MetricConfigurationXmlRequest extends MetricConfigurationDto {
 			baseToolName = metricConfiguration.getBaseTool().getName();
 		weight = metricConfiguration.getWeight();
 		aggregationForm = metricConfiguration.getAggregationForm();
-		setReadingGroup(metricConfiguration.getReadingGroup());
-		ranges = createDtos(metricConfiguration.getRanges(), RangeXml.class);
-	}
-
-	private void setReadingGroup(ReadingGroup readingGroup) {
-		if (readingGroup != null)
-			readingGroupId = readingGroup.getId();
+		readingGroupId = metricConfiguration.hasReadingGroup() ? metricConfiguration.getReadingGroup().getId() : null;
 	}
 
 	@Override
@@ -97,10 +92,5 @@ public class MetricConfigurationXmlRequest extends MetricConfigurationDto {
 	public ReadingGroup readingGroup() {
 		return readingGroupId == null ? null :
 			(ReadingGroup) DaoLazyLoader.createProxy(ReadingGroupDao.class, "get", readingGroupId);
-	}
-
-	@Override
-	public SortedSet<Range> ranges() {
-		return ranges == null ? new TreeSet<Range>() : toSortedSet(ranges);
 	}
 }

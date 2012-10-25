@@ -50,7 +50,7 @@ public class ConfigurationRecord extends ConfigurationDto {
 	private void setMetricConfigurations(Collection<MetricConfiguration> metricConfigurations) {
 		this.metricConfigurations = new ArrayList<MetricConfigurationRecord>();
 		for (MetricConfiguration metricConfiguration : metricConfigurations)
-			this.metricConfigurations.add(new MetricConfigurationRecord(metricConfiguration, this));
+			this.metricConfigurations.add(new MetricConfigurationRecord(metricConfiguration, id));
 	}
 
 	@Override

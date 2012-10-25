@@ -7,10 +7,12 @@ import org.junit.runner.RunWith;
 import org.kalibro.BaseTool;
 import org.kalibro.CompoundMetric;
 import org.kalibro.MetricConfiguration;
+import org.kalibro.ReadingGroup;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
@@ -19,6 +21,11 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		mockBaseTool();
+		Whitebox.setInternalState(entity, "readingGroup", (ReadingGroup) null);
+	}
+
+	private void mockBaseTool() {
 		BaseToolDao baseToolDao = mock(BaseToolDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
@@ -42,7 +49,7 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 		assertColumn("metricScope", String.class).isRequired();
 		assertColumn("metricDescription", String.class).isNullable();
 		assertColumn("metricOrigin", String.class).isRequired();
-		assertOneToMany("ranges").cascades().isMappedBy("configurationSnapshot");
+		assertOneToMany("ranges").cascades().isMappedBy("configurationSnapshot").removeOrphans();
 	}
 
 	@Test

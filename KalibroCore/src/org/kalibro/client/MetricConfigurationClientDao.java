@@ -6,7 +6,7 @@ import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.MetricConfigurationEndpoint;
-import org.kalibro.service.xml.MetricConfigurationXmlRequest;
+import org.kalibro.service.xml.MetricConfigurationXml;
 
 /**
  * {@link MetricConfigurationEndpoint} client implementation of {@link MetricConfigurationDao}.
@@ -27,7 +27,7 @@ class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEnd
 
 	@Override
 	public Long save(MetricConfiguration metricConfiguration, Long configurationId) {
-		return port.saveMetricConfiguration(new MetricConfigurationXmlRequest(metricConfiguration), configurationId);
+		return port.saveMetricConfiguration(new MetricConfigurationXml(metricConfiguration), configurationId);
 	}
 
 	@Override
