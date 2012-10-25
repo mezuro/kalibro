@@ -8,8 +8,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.service.xml.ConfigurationXmlRequest;
-import org.kalibro.service.xml.ConfigurationXmlResponse;
+import org.kalibro.service.xml.ConfigurationXml;
 
 /**
  * End point to make {@link ConfigurationDao} interface available as Web service.
@@ -25,19 +24,19 @@ public interface ConfigurationEndpoint {
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	ConfigurationXmlResponse getConfiguration(@WebParam(name = "configurationId") Long configurationId);
+	ConfigurationXml getConfiguration(@WebParam(name = "configurationId") Long configurationId);
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	ConfigurationXmlResponse configurationOf(@WebParam(name = "repositoryId") Long repositoryId);
+	ConfigurationXml configurationOf(@WebParam(name = "repositoryId") Long repositoryId);
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	List<ConfigurationXmlResponse> allConfigurations();
+	List<ConfigurationXml> allConfigurations();
 
 	@WebMethod
 	@WebResult(name = "configurationId")
-	Long saveConfiguration(@WebParam(name = "configuration") ConfigurationXmlRequest configuration);
+	Long saveConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration);
 
 	@WebMethod
 	void deleteConfiguration(@WebParam(name = "configurationId") Long configurationId);

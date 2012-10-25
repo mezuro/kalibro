@@ -7,13 +7,12 @@ import java.util.Random;
 import org.junit.Test;
 import org.kalibro.Configuration;
 import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.service.xml.ConfigurationXmlRequest;
-import org.kalibro.service.xml.ConfigurationXmlResponse;
+import org.kalibro.service.xml.ConfigurationXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(ConfigurationEndpointImpl.class)
 public class ConfigurationEndpointImplTest extends EndpointImplementorTest
-	<Configuration, ConfigurationXmlRequest, ConfigurationXmlResponse, ConfigurationDao, ConfigurationEndpointImpl> {
+	<Configuration, ConfigurationXml, ConfigurationXml, ConfigurationDao, ConfigurationEndpointImpl> {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
