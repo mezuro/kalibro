@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.kalibro.Range;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.RangeDao;
-import org.kalibro.service.xml.RangeXmlRequest;
+import org.kalibro.service.xml.RangeXml;
 import org.powermock.reflect.Whitebox;
 
 public class RangeEndpointTest extends EndpointTest<Range, RangeDao, RangeEndpoint> {
@@ -19,8 +19,9 @@ public class RangeEndpointTest extends EndpointTest<Range, RangeDao, RangeEndpoi
 
 	@Override
 	public Range loadFixture() {
-		Range range = new Range();
+		Range range = loadFixture("lcom4-bad", Range.class);
 		Whitebox.setInternalState(range, "id", ID);
+		Whitebox.setInternalState(range.getReading(), "id", ID);
 		return range;
 	}
 
@@ -38,7 +39,7 @@ public class RangeEndpointTest extends EndpointTest<Range, RangeDao, RangeEndpoi
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity, METRIC_CONFIGURATION_ID)).thenReturn(ID);
-		assertEquals(ID, port.saveRange(new RangeXmlRequest(entity), METRIC_CONFIGURATION_ID));
+		assertEquals(ID, port.saveRange(new RangeXml(entity), METRIC_CONFIGURATION_ID));
 	}
 
 	@Test

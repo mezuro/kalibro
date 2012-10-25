@@ -9,7 +9,7 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
 /**
- * XML element for {@link ReadingGroup} requests.
+ * XML element for {@link ReadingGroup}.
  * 
  * @author Carlos Morais
  */

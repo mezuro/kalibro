@@ -40,7 +40,7 @@ public class MetricConfigurationXmlRequest extends MetricConfigurationDto {
 	private Long readingGroupId;
 
 	@XmlElement(name = "range")
-	private List<RangeXmlRequest> ranges;
+	private List<RangeXml> ranges;
 
 	public MetricConfigurationXmlRequest() {
 		super();
@@ -55,7 +55,7 @@ public class MetricConfigurationXmlRequest extends MetricConfigurationDto {
 		weight = metricConfiguration.getWeight();
 		aggregationForm = metricConfiguration.getAggregationForm();
 		setReadingGroup(metricConfiguration.getReadingGroup());
-		ranges = createDtos(metricConfiguration.getRanges(), RangeXmlRequest.class);
+		ranges = createDtos(metricConfiguration.getRanges(), RangeXml.class);
 	}
 
 	private void setReadingGroup(ReadingGroup readingGroup) {

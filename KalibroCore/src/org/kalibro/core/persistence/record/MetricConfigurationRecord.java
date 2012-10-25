@@ -103,7 +103,7 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	private void setRanges(Collection<Range> ranges) {
 		this.ranges = new ArrayList<RangeRecord>();
 		for (Range range : ranges)
-			this.ranges.add(new RangeRecord(range, this));
+			this.ranges.add(new RangeRecord(range, id));
 	}
 
 	@Override

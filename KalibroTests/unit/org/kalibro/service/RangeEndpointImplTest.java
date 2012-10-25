@@ -7,13 +7,12 @@ import java.util.Random;
 import org.junit.Test;
 import org.kalibro.Range;
 import org.kalibro.dao.RangeDao;
-import org.kalibro.service.xml.RangeXmlRequest;
-import org.kalibro.service.xml.RangeXmlResponse;
+import org.kalibro.service.xml.RangeXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(RangeEndpointImpl.class)
 public class RangeEndpointImplTest extends
-	EndpointImplementorTest<Range, RangeXmlRequest, RangeXmlResponse, RangeDao, RangeEndpointImpl> {
+	EndpointImplementorTest<Range, RangeXml, RangeXml, RangeDao, RangeEndpointImpl> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long METRIC_CONFIGURATION_ID = new Random().nextLong();
