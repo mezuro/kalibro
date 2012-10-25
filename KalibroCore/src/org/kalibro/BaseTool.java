@@ -39,9 +39,9 @@ public class BaseTool extends AbstractEntity<BaseTool> {
 	private String collectorClassName;
 	private Set<NativeMetric> supportedMetrics;
 
-	/** Should NOT be used. Only for frameworks. */
-	protected BaseTool() {
-		super();
+	/** Should NOT be used. Only for frameworks (CGLIB, SnakeYaml) */
+	BaseTool() {
+		return;
 	}
 
 	public BaseTool(String name, String description, Set<NativeMetric> supportedMetrics, String collectorClassName) {

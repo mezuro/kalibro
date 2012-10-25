@@ -11,11 +11,11 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.Theory;
-import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
@@ -31,23 +31,20 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		configuration.delete();
-	}
-
-	@Override
-	protected Timeout testTimeout() {
-		return new Timeout(0);
+		for (ReadingGroup group : ReadingGroup.all())
+			group.delete();
 	}
 
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
 		changeDatabase(databaseType);
+		changeBaseTool();
 		assertNotSaved();
 
 		configuration.save();
 		assertSaved();
 
-		configuration.setDescription("Another description");
+		configuration.setDescription("ConfigurationAcceptanceTest description");
 		assertFalse(Configuration.all().first().deepEquals(configuration));
 
 		configuration.save();
@@ -55,6 +52,13 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 		configuration.delete();
 		assertNotSaved();
+	}
+
+	private void changeBaseTool() {
+		BaseTool analizo = new BaseTool("org.analizo.AnalizoMetricCollector");
+		for (MetricConfiguration each : configuration.getMetricConfigurations())
+			if (!each.getMetric().isCompound())
+				Whitebox.setInternalState(each, "baseTool", analizo);
 	}
 
 	private void assertNotSaved() {
@@ -68,14 +72,8 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	@Theory
 	public void shouldValidateBeforeSave(SupportedDatabase databaseType) {
 		changeDatabase(databaseType);
-		shouldValidateScripts();
 		nameShouldBeRequiredAndUnique();
-	}
-
-	private void shouldValidateScripts() {
-		CompoundMetric sc = configuration.getCompoundMetrics().first();
-		sc.setScript("return null;");
-		assertSave().throwsException().withMessage("Error evaluating Javascript for: sc");
+		shouldValidateScripts();
 	}
 
 	private void nameShouldBeRequiredAndUnique() {
@@ -87,6 +85,12 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 		configuration = new Configuration("Unique");
 		assertSave().doThrow(RollbackException.class);
+	}
+
+	private void shouldValidateScripts() {
+		CompoundMetric sc = configuration.getCompoundMetrics().first();
+		sc.setScript("return null;");
+		assertSave().throwsException().withMessage("Error evaluating Javascript for: sc");
 	}
 
 	private TaskMatcher assertSave() {
