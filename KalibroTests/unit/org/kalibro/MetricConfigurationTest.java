@@ -10,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.dao.RangeDao;
-import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -48,7 +46,7 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void checkCompoundConstruction() {
 		assertEquals("newMetric", metricConfiguration.getCode());
-		assertEquals(new CompoundMetric(), metricConfiguration.getMetric());
+		assertDeepEquals(new CompoundMetric(), metricConfiguration.getMetric());
 		assertNull(metricConfiguration.getBaseTool());
 		checkConstruction();
 	}
@@ -92,16 +90,6 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void shouldAssertNoConflictWithOtherMetricConfiguration() {
 		metricConfiguration.assertNoConflictWith(withCode("code"));
-
-		final CompoundMetric metric = (CompoundMetric) metricConfiguration.getMetric();
-		metricConfiguration.setCode("other");
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws Throwable {
-				metricConfiguration.assertNoConflictWith(new MetricConfiguration(metric));
-			}
-		}).throwsException().withMessage("Metric already exists in the configuration: New metric");
 	}
 
 	private MetricConfiguration withCode(String code) {
@@ -152,24 +140,33 @@ public class MetricConfigurationTest extends UnitTest {
 	@Test
 	public void shouldRemoveRange() {
 		Range range = mock(Range.class);
-		SortedSet<Range> ranges = spy(sortedSet(range));
+		SortedSet<Range> ranges = sortedSet(range);
 		metricConfiguration.setRanges(ranges);
 
 		metricConfiguration.removeRange(range);
-		verify(ranges).remove(range);
+		assertTrue(metricConfiguration.getRanges().isEmpty());
 		verify(range).setConfiguration(null);
 	}
 
 	@Test
-	public void shouldRequiredCodeAndSavedConfigurationToSave() {
+	public void shouldAssertSaved() {
+		Long configurationId = mock(Long.class);
+		configurationWithId(configurationId);
+
+		metricConfiguration.assertSaved();
+		verify(dao).save(metricConfiguration, configurationId);
+
+		metricConfiguration.assertSaved();
+		verifyNoMoreInteractions(dao);
+	}
+
+	@Test
+	public void shouldRequiredCodeAndConfigurationToSave() {
 		metricConfiguration.setCode(" ");
 		saveShouldThrowExceptionWithMessage("Metric configuration requires code.");
 
 		metricConfiguration.setCode("code");
 		saveShouldThrowExceptionWithMessage("Metric is not in any configuration.");
-
-		setConfigurationWithId(null);
-		saveShouldThrowExceptionWithMessage("Configuration is not saved. Save configuration instead");
 	}
 
 	private void saveShouldThrowExceptionWithMessage(String message) {
@@ -183,76 +180,73 @@ public class MetricConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSaveReadingGroupBeforeSave() {
-		mockReadingGroup(null);
-		mockRange(null);
+	public void shouldAssertConfigurationSavedBeforeSave() {
 		Long configurationId = mock(Long.class);
-		setConfigurationWithId(configurationId);
-
-		ReadingGroup readingGroup = mock(ReadingGroup.class);
-		metricConfiguration.setReadingGroup(readingGroup);
+		Configuration configuration = configurationWithId(configurationId);
 
 		metricConfiguration.save();
-		InOrder order = Mockito.inOrder(readingGroup, dao);
-		order.verify(readingGroup).save();
+		InOrder order = Mockito.inOrder(configuration, dao);
+		order.verify(configuration).assertSaved();
 		order.verify(dao).save(metricConfiguration, configurationId);
 	}
 
 	@Test
-	public void shouldUpdateIdReadingGroupAndRangesOnSave() {
+	public void shouldAssertReadingGroupSavedBeforeSave() {
+		ReadingGroup readingGroup = mock(ReadingGroup.class);
+		Long configurationId = mock(Long.class);
+		configurationWithId(configurationId);
+		metricConfiguration.setReadingGroup(readingGroup);
+
+		metricConfiguration.save();
+		InOrder order = Mockito.inOrder(readingGroup, dao);
+		order.verify(readingGroup).assertSaved();
+		order.verify(dao).save(metricConfiguration, configurationId);
+	}
+
+	@Test
+	public void shouldUpdateIdAndSaveRangesOnSave() {
 		Long id = mock(Long.class);
 		Long configurationId = mock(Long.class);
-		ReadingGroup readingGroup = mockReadingGroup(id);
-		Range range = mockRange(id);
-		setConfigurationWithId(configurationId);
-		when(dao.save(metricConfiguration, configurationId)).thenReturn(id);
+		Range range = mock(Range.class);
+		prepareSave(id, configurationId, range);
 
 		assertFalse(metricConfiguration.hasId());
 		metricConfiguration.save();
 		assertSame(id, metricConfiguration.getId());
-		assertSame(readingGroup, metricConfiguration.getReadingGroup());
-		assertEquals(set(range), metricConfiguration.getRanges());
+		verify(range).save();
 	}
 
-	private ReadingGroup mockReadingGroup(Long id) {
-		ReadingGroup readingGroup = mock(ReadingGroup.class);
-		ReadingGroupDao readingGroupDao = mock(ReadingGroupDao.class);
-		when(DaoFactory.getReadingGroupDao()).thenReturn(readingGroupDao);
-		when(readingGroupDao.readingGroupOf(id)).thenReturn(readingGroup);
-		return readingGroup;
-	}
-
-	private Range mockRange(Long id) {
-		Range range = mock(Range.class);
-		RangeDao rangeDao = mock(RangeDao.class);
-		when(DaoFactory.getRangeDao()).thenReturn(rangeDao);
-		when(rangeDao.rangesOf(id)).thenReturn(sortedSet(range));
-		return range;
+	private void prepareSave(Long id, Long configurationId, Range... ranges) {
+		configurationWithId(configurationId);
+		metricConfiguration.setRanges(sortedSet(ranges));
+		when(dao.save(metricConfiguration, configurationId)).thenReturn(id);
 	}
 
 	@Test
-	public void shouldDeleteIfHasId() {
-		assertFalse(metricConfiguration.hasId());
+	public void shouldIgnoreDeleteIfIsNotSaved() {
 		metricConfiguration.delete();
 		verify(dao, never()).delete(any(Long.class));
+	}
 
+	@Test
+	public void shouldDeleteIfSaved() {
 		Long id = mock(Long.class);
 		Whitebox.setInternalState(metricConfiguration, "id", id);
-		assertTrue(metricConfiguration.hasId());
 
+		assertTrue(metricConfiguration.hasId());
 		metricConfiguration.delete();
-		verify(dao).delete(id);
 		assertFalse(metricConfiguration.hasId());
+		verify(dao).delete(id);
 	}
 
 	@Test
 	public void shouldRemoveFromConfigurationOnDelete() {
-		Configuration configuration = setConfigurationWithId(42L);
+		Configuration configuration = configurationWithId(42L);
 		metricConfiguration.delete();
 		verify(configuration).removeMetricConfiguration(metricConfiguration);
 	}
 
-	private Configuration setConfigurationWithId(Long id) {
+	private Configuration configurationWithId(Long id) {
 		Configuration configuration = mock(Configuration.class);
 		when(configuration.hasId()).thenReturn(id != null);
 		when(configuration.getId()).thenReturn(id);
@@ -264,7 +258,6 @@ public class MetricConfigurationTest extends UnitTest {
 	public void shouldNotifyRangesOfDeletion() {
 		Range range = mock(Range.class);
 		metricConfiguration.setRanges(sortedSet(range));
-		setConfigurationWithId(42L);
 
 		metricConfiguration.delete();
 		verify(range).deleted();

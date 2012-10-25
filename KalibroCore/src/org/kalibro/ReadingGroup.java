@@ -47,7 +47,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	private Set<Reading> readings;
 
 	public ReadingGroup() {
-		this("");
+		this("New group");
 	}
 
 	public ReadingGroup(String name) {
@@ -100,7 +100,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		readings.add(reading);
 	}
 
-	void removeReading(Reading reading) {
+	public void removeReading(Reading reading) {
 		readings = getReadings();
 		readings.remove(reading);
 		reading.setGroup(null);

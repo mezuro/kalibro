@@ -102,6 +102,18 @@ public class ReadingTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldAssertSaved() {
+		Long groupId = mock(Long.class);
+		groupWithId(groupId);
+
+		reading.assertSaved();
+		verify(dao).save(reading, groupId);
+
+		reading.assertSaved();
+		verifyNoMoreInteractions(dao);
+	}
+
+	@Test
 	public void shouldRequireGroupToSave() {
 		assertThat(new VoidTask() {
 

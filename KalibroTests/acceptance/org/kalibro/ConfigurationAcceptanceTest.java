@@ -13,6 +13,7 @@ import org.junit.Test;
 import org.junit.experimental.theories.Theory;
 import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
+import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
@@ -65,76 +66,37 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void nameShouldBeRequiredAndUnique(SupportedDatabase databaseType) {
+	public void shouldValidateBeforeSave(SupportedDatabase databaseType) {
 		changeDatabase(databaseType);
+		shouldValidateScripts();
+		nameShouldBeRequiredAndUnique();
+	}
+
+	private void shouldValidateScripts() {
+		CompoundMetric sc = configuration.getCompoundMetrics().first();
+		sc.setScript("return null;");
+		assertSave().throwsException().withMessage("Error evaluating Javascript for: sc");
+	}
+
+	private void nameShouldBeRequiredAndUnique() {
 		configuration.setName(" ");
-		assertThat(save()).throwsException().withMessage("Configuration requires name.");
+		assertSave().throwsException().withMessage("Configuration requires name.");
 
 		configuration.setName("Unique");
 		configuration.save();
 
 		configuration = new Configuration("Unique");
-		assertThat(save()).doThrow(RollbackException.class);
+		assertSave().doThrow(RollbackException.class);
 	}
 
-	private VoidTask save() {
-		return new VoidTask() {
+	private TaskMatcher assertSave() {
+		return assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				configuration.save();
 			}
-		};
-	}
-
-	@Test
-	public void shouldValidateMetricConfigurations() {
-		metricsInSameConfigurationShouldNotHaveDuplicateCodes();
-		metricsInSameConfigurationShouldNotHaveDuplicateMetrics();
-		shouldValidateScripts();
-	}
-
-	private void metricsInSameConfigurationShouldNotHaveDuplicateCodes() {
-		String code = configuration.getMetricConfigurations().first().getCode();
-		MetricConfiguration metricConfiguration = new MetricConfiguration();
-		metricConfiguration.setCode(code);
-		assertThat(addMetricConfiguration(metricConfiguration)).throwsException()
-			.withMessage("Metric with code '" + code + "' already exists in the configuration.");
-	}
-
-	private void metricsInSameConfigurationShouldNotHaveDuplicateMetrics() {
-		CompoundMetric sc = loadFixture("sc", CompoundMetric.class);
-		MetricConfiguration metricConfiguration = new MetricConfiguration(sc);
-		assertThat(addMetricConfiguration(metricConfiguration)).throwsException()
-			.withMessage("Metric already exists in the configuration: " + sc);
-	}
-
-	private VoidTask addMetricConfiguration(final MetricConfiguration metricConfiguration) {
-		return new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.addMetricConfiguration(metricConfiguration);
-			}
-		};
-	}
-
-	private void shouldValidateScripts() {
-		configuration.validateScripts();
-
-		CompoundMetric sc = configuration.getCompoundMetrics().first();
-		sc.setScript("return null;");
-		assertThat(validateScripts()).throwsException().withMessage("Error evaluating Javascript for: sc");
-	}
-
-	private VoidTask validateScripts() {
-		return new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.validateScripts();
-			}
-		};
+		});
 	}
 
 	@Test

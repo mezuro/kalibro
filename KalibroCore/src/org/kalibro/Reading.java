@@ -100,6 +100,11 @@ public class Reading extends AbstractEntity<Reading> {
 		this.group = group;
 	}
 
+	void assertSaved() {
+		if (!hasId())
+			save();
+	}
+
 	public void save() {
 		throwExceptionIf(group == null, "Reading is not in any group.");
 		group.assertSaved();

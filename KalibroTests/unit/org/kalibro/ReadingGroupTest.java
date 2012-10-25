@@ -67,7 +67,7 @@ public class ReadingGroupTest extends UnitTest {
 	public void checkConstruction() {
 		group = new ReadingGroup();
 		assertFalse(group.hasId());
-		assertEquals("", group.getName());
+		assertEquals("New group", group.getName());
 		assertEquals("", group.getDescription());
 		assertTrue(group.getReadings().isEmpty());
 	}
@@ -103,11 +103,11 @@ public class ReadingGroupTest extends UnitTest {
 	@Test
 	public void shouldRemoveReading() {
 		Reading reading = mock(Reading.class);
-		SortedSet<Reading> readings = spy(sortedSet(reading));
+		SortedSet<Reading> readings = sortedSet(reading);
 		group.setReadings(readings);
 
 		group.removeReading(reading);
-		verify(readings).remove(reading);
+		assertTrue(group.getReadings().isEmpty());
 		verify(reading).setGroup(null);
 	}
 
@@ -158,7 +158,7 @@ public class ReadingGroupTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldDeleteIfHasId() {
+	public void shouldDeleteIfSaved() {
 		Long id = mock(Long.class);
 		Whitebox.setInternalState(group, "id", id);
 

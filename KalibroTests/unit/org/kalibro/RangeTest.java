@@ -51,6 +51,7 @@ public class RangeTest extends UnitTest {
 		assertDoubleEquals(NEGATIVE_INFINITY, range.getBeginning());
 		assertDoubleEquals(POSITIVE_INFINITY, range.getEnd());
 		assertFalse(range.hasReading());
+		assertNull(range.getReading());
 		assertEquals("", range.getComments());
 	}
 
@@ -160,45 +161,37 @@ public class RangeTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldAcceptAnyReading() {
-		assertFalse(range.hasReading());
-
-		Reading reading = mock(Reading.class);
-		range.setReading(reading);
-
-		assertTrue(range.hasReading());
-		assertSame(reading, range.getReading());
-	}
-
-	@Test
-	public void shouldRequiredSavedConfigurationToSave() {
-		saveShouldThrowExceptionWithMessage("Range is not in any configuration.");
-
-		setConfigurationWithId(null);
-		saveShouldThrowExceptionWithMessage("Configuration is not saved. Save configuration instead");
-	}
-
-	private void saveShouldThrowExceptionWithMessage(String message) {
+	public void shouldRequiredConfigurationToSave() {
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				range.save();
 			}
-		}).throwsException().withMessage(message);
+		}).throwsException().withMessage("Range is not in any configuration.");
 	}
 
 	@Test
-	public void shouldSaveReadingBeforeSave() {
+	public void shouldAssertConfigurationSavedBeforeSave() {
+		Long configurationId = mock(Long.class);
+		MetricConfiguration configuration = setConfigurationWithId(configurationId);
+
+		range.save();
+		InOrder order = Mockito.inOrder(configuration, dao);
+		order.verify(configuration).assertSaved();
+		order.verify(dao).save(range, configurationId);
+	}
+
+	@Test
+	public void shouldAssertReadingSavedBeforeSave() {
+		Reading reading = mock(Reading.class);
 		Long configurationId = mock(Long.class);
 		setConfigurationWithId(configurationId);
-
-		Reading reading = mock(Reading.class);
 		range.setReading(reading);
 
 		range.save();
 		InOrder order = Mockito.inOrder(reading, dao);
-		order.verify(reading).save();
+		order.verify(reading).assertSaved();
 		order.verify(dao).save(range, configurationId);
 	}
 
@@ -215,22 +208,24 @@ public class RangeTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldDeleteIfHasId() {
-		assertFalse(range.hasId());
+	public void shouldIgnoreDeleteIfIsNotSaved() {
 		range.delete();
 		verify(dao, never()).delete(any(Long.class));
+	}
 
+	@Test
+	public void shouldDeleteIfSaved() {
 		Long id = mock(Long.class);
 		Whitebox.setInternalState(range, "id", id);
 
 		assertTrue(range.hasId());
 		range.delete();
-		verify(dao).delete(id);
 		assertFalse(range.hasId());
+		verify(dao).delete(id);
 	}
 
 	@Test
-	public void shouldRemoveFromGroupOnDelete() {
+	public void shouldRemoveFromConfigurationOnDelete() {
 		MetricConfiguration configuration = setConfigurationWithId(42L);
 		range.delete();
 		verify(configuration).removeRange(range);
@@ -242,5 +237,10 @@ public class RangeTest extends UnitTest {
 		when(configuration.getId()).thenReturn(id);
 		range.setConfiguration(configuration);
 		return configuration;
+	}
+
+	@Test
+	public void toStringShouldHaveBeginningAndEnd() {
+		assertEquals("[0.0, 10.0[", "" + new Range(0.0, 10.0));
 	}
 }
