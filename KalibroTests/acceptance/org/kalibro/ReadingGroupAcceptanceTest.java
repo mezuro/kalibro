@@ -2,7 +2,6 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
-import java.awt.Color;
 import java.io.File;
 
 import javax.persistence.RollbackException;
@@ -72,35 +71,6 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 			@Override
 			protected void perform() {
 				group.save();
-			}
-		};
-	}
-
-	@Test
-	public void readingsInSameGroupShouldNotHaveDuplicateLabelsOrGrade() {
-		Reading existent = group.getReadings().first();
-		existent.setLabel("label");
-		existent.setGrade(-1.0);
-		assertThat(add(reading("label"))).throwsException()
-			.withMessage("Reading with label \"label\" already exists in the group.");
-		assertThat(add(reading(-1.0))).throwsException()
-			.withMessage("Reading with grade -1.0 already exists in the group.");
-	}
-
-	private Reading reading(String label) {
-		return new Reading(label, 42.0, Color.MAGENTA);
-	}
-
-	private Reading reading(Double grade) {
-		return new Reading("ReadingGroupAcceptanceTest label", grade, Color.MAGENTA);
-	}
-
-	private VoidTask add(final Reading reading) {
-		return new VoidTask() {
-
-			@Override
-			protected void perform() {
-				group.addReading(reading);
 			}
 		};
 	}

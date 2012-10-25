@@ -101,6 +101,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	void removeReading(Reading reading) {
+		readings = getReadings();
 		readings.remove(reading);
 		reading.setGroup(null);
 	}
@@ -113,7 +114,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	public void save() {
 		throwExceptionIf(name.trim().isEmpty(), "Reading group requires name.");
 		id = dao().save(this);
-		for (Reading reading : readings)
+		for (Reading reading : getReadings())
 			reading.save();
 	}
 
