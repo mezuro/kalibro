@@ -10,6 +10,8 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RangeDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -184,6 +186,20 @@ public class RangeTest extends UnitTest {
 				range.save();
 			}
 		}).throwsException().withMessage(message);
+	}
+
+	@Test
+	public void shouldSaveReadingBeforeSave() {
+		Long configurationId = mock(Long.class);
+		setConfigurationWithId(configurationId);
+
+		Reading reading = mock(Reading.class);
+		range.setReading(reading);
+
+		range.save();
+		InOrder order = Mockito.inOrder(reading, dao);
+		order.verify(reading).save();
+		order.verify(dao).save(range, configurationId);
 	}
 
 	@Test

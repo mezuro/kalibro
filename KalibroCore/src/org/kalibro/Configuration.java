@@ -147,8 +147,14 @@ public class Configuration extends AbstractEntity<Configuration> {
 
 	public void save() {
 		throwExceptionIf(name.trim().isEmpty(), "Configuration requires name.");
+		assertAllReadingGroupsSaved();
 		id = dao().save(this);
 		metricConfigurations = DaoFactory.getMetricConfigurationDao().metricConfigurationsOf(id);
+	}
+
+	private void assertAllReadingGroupsSaved() {
+		for (MetricConfiguration metricConfiguration : metricConfigurations)
+			metricConfiguration.assertReadingGroupSaved();
 	}
 
 	public void delete() {

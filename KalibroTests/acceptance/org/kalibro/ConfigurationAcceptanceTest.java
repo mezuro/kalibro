@@ -11,6 +11,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.Theory;
+import org.junit.rules.Timeout;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
@@ -29,8 +30,12 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@After
 	public void tearDown() {
-		for (Configuration each : Configuration.all())
-			each.delete();
+		configuration.delete();
+	}
+
+	@Override
+	protected Timeout testTimeout() {
+		return new Timeout(0);
 	}
 
 	@Theory

@@ -110,6 +110,10 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		this.aggregationForm = aggregationForm;
 	}
 
+	public boolean hasReadingGroup() {
+		return readingGroup != null;
+	}
+
 	public ReadingGroup getReadingGroup() {
 		return readingGroup;
 	}
@@ -155,9 +159,15 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		throwExceptionIf(code.trim().isEmpty(), "Metric configuration requires code.");
 		throwExceptionIf(configuration == null, "Metric is not in any configuration.");
 		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
+		assertReadingGroupSaved();
 		id = dao().save(this, configuration.getId());
 		readingGroup = DaoFactory.getReadingGroupDao().readingGroupOf(id);
 		ranges = DaoFactory.getRangeDao().rangesOf(id);
+	}
+
+	void assertReadingGroupSaved() {
+		if (hasReadingGroup() && !readingGroup.hasId())
+			readingGroup.save();
 	}
 
 	public void delete() {

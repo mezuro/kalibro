@@ -14,6 +14,8 @@ import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -192,10 +194,26 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldAssertAllReadingGroupsAreSavedBeforeSave() {
+		mockMetricConfiguration(null);
+
+		ReadingGroup readingGroup = mock(ReadingGroup.class);
+		configuration.getConfigurationFor(lcom4).setReadingGroup(readingGroup);
+
+		configuration.save();
+		InOrder order = Mockito.inOrder(readingGroup, dao);
+		order.verify(readingGroup).save();
+		order.verify(dao).save(configuration);
+	}
+
+	@Test
 	public void shouldUpdateIdAndMetricConfigurationsOnSave() {
 		Long id = mock(Long.class);
 		MetricConfiguration metricConfiguration = mockMetricConfiguration(id);
 		when(dao.save(configuration)).thenReturn(id);
+
+		ReadingGroup readingGroup = mock(ReadingGroup.class);
+		configuration.getConfigurationFor(lcom4).setReadingGroup(readingGroup);
 
 		assertFalse(configuration.hasId());
 		configuration.save();

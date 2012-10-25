@@ -115,6 +115,8 @@ public class Range extends AbstractEntity<Range> {
 	public void save() {
 		throwExceptionIf(configuration == null, "Range is not in any configuration.");
 		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
+		if (hasReading() && !reading.hasId())
+			reading.save();
 		id = dao().save(this, configuration.getId());
 	}
 

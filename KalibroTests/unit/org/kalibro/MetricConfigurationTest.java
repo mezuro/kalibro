@@ -13,6 +13,8 @@ import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.dao.RangeDao;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -66,6 +68,7 @@ public class MetricConfigurationTest extends UnitTest {
 		assertFalse(metricConfiguration.hasId());
 		assertDoubleEquals(1.0, metricConfiguration.getWeight());
 		assertEquals(Statistic.AVERAGE, metricConfiguration.getAggregationForm());
+		assertFalse(metricConfiguration.hasReadingGroup());
 		assertNull(metricConfiguration.getReadingGroup());
 		assertTrue(metricConfiguration.getRanges().isEmpty());
 	}
@@ -177,6 +180,22 @@ public class MetricConfigurationTest extends UnitTest {
 				metricConfiguration.save();
 			}
 		}).throwsException().withMessage(message);
+	}
+
+	@Test
+	public void shouldSaveReadingGroupBeforeSave() {
+		mockReadingGroup(null);
+		mockRange(null);
+		Long configurationId = mock(Long.class);
+		setConfigurationWithId(configurationId);
+
+		ReadingGroup readingGroup = mock(ReadingGroup.class);
+		metricConfiguration.setReadingGroup(readingGroup);
+
+		metricConfiguration.save();
+		InOrder order = Mockito.inOrder(readingGroup, dao);
+		order.verify(readingGroup).save();
+		order.verify(dao).save(metricConfiguration, configurationId);
 	}
 
 	@Test
