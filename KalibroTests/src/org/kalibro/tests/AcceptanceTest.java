@@ -12,6 +12,8 @@ import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.SupportedDatabase;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(Theories.class)
 public abstract class AcceptanceTest extends IntegrationTest {
@@ -32,6 +34,7 @@ public abstract class AcceptanceTest extends IntegrationTest {
 		DatabaseSettings databaseSettigs = loadFixture(databaseType.name(), DatabaseSettings.class);
 		settings.getServerSettings().setDatabaseSettings(databaseSettigs);
 		settings.save();
+		Whitebox.setInternalState(DatabaseDaoFactory.class, "currentSettings", (DatabaseSettings) null);
 	}
 
 	@Override

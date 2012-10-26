@@ -14,7 +14,6 @@ import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
-import org.powermock.reflect.Whitebox;
 
 public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
@@ -22,20 +21,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		configuration = loadFixture("sc", Configuration.class);
-		BaseTool analizo = new BaseTool("org.analizo.AnalizoMetricCollector");
-		for (MetricConfiguration each : configuration.getMetricConfigurations())
-			if (!each.getMetric().isCompound())
-				Whitebox.setInternalState(each, "baseTool", analizo);
-	}
-
-	@Override
-	protected void prepareSettings(SupportedDatabase databaseType) {
-		super.prepareSettings(databaseType);
-		for (Configuration each : Configuration.all())
-			each.delete();
-		for (ReadingGroup group : ReadingGroup.all())
-			group.delete();
+		configuration = loadFixture("sc-analizo", Configuration.class);
 	}
 
 	@Theory

@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import org.kalibro.core.abstractentity.Print;
+
 /**
  * Metric provided by a base tool.
  * 
@@ -12,6 +14,7 @@ import java.util.TreeSet;
  */
 public class NativeMetric extends Metric {
 
+	@Print(order = 4)
 	private Set<Language> languages;
 
 	@SuppressWarnings("unused" /* used by SnakeYaml */)

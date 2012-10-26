@@ -5,9 +5,9 @@ metricConfigurations:
   - &id2 !!org.kalibro.MetricConfiguration
     code: "sc"
     metric: &id3 !!org.kalibro.CompoundMetric
-      description: ""
       name: "Structural Complexity"
       scope: CLASS
+      description: ""
       script: "return cbo * lcom4"
     baseTool: null
     weight: 1.0
@@ -17,35 +17,35 @@ metricConfigurations:
   - &id4 !!org.kalibro.MetricConfiguration
     code: "cbo"
     metric: &id5 !!org.kalibro.NativeMetric
+      name: "Coupling Between Objects"
+      scope: CLASS
       description: ""
       languages:
         - C
         - CPP
         - JAVA
-      name: "Coupling Between Objects"
-      scope: CLASS
     baseTool: &id6 !!org.kalibro.BaseTool
       collectorClassName: "inexistent.Class"
-      description: "Base tool for testing"
       name: "Inexistent"
+      description: "Base tool for testing"
       supportedMetrics:
         - *id5
         - &id7 !!org.kalibro.NativeMetric
-          description: ""
-          languages:
-            - C
-            - CPP
-            - JAVA
           name: "Lack of Cohesion of Methods"
           scope: CLASS
-        - &id8 !!org.kalibro.NativeMetric
           description: ""
           languages:
             - C
             - CPP
             - JAVA
+        - &id8 !!org.kalibro.NativeMetric
           name: "Total Coupling Factor"
           scope: SOFTWARE
+          description: ""
+          languages:
+            - C
+            - CPP
+            - JAVA
     weight: 1.0
     aggregationForm: AVERAGE
     readingGroup: null

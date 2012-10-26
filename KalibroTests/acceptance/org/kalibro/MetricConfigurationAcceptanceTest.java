@@ -16,13 +16,7 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		configuration = loadFixture("sc", Configuration.class);
-	}
-
-	@Override
-	protected void prepareSettings(SupportedDatabase databaseType) {
-		super.prepareSettings(databaseType);
-		configuration.delete();
+		configuration = loadFixture("sc-analizo", Configuration.class);
 	}
 
 	@Theory
