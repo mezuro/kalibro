@@ -39,13 +39,14 @@ public class ConfigurationDatabaseDaoTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetConfigurationOfProject() {
+	public void shouldGetConfigurationOfRepository() {
+		String from = "Repository repository JOIN repository.configuration configuration";
 		TypedQuery<ConfigurationRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("JOIN Project project WHERE project.id = :projectId");
+		doReturn(query).when(dao).createRecordQuery(from, "repository.id = :repositoryId");
 		when(query.getSingleResult()).thenReturn(record);
 
 		assertSame(configuration, dao.configurationOf(ID));
-		verify(query).setParameter("projectId", ID);
+		verify(query).setParameter("repositoryId", ID);
 	}
 
 	@Test

@@ -44,8 +44,23 @@ public class DatabaseDaoTest extends UnitTest {
 		verify(query).setParameter("id", ID);
 
 		when(query.getResultList()).thenReturn(new ArrayList<Integer>());
-		assertFalse(dao.exists(-1L));
-		verify(query).setParameter("id", -1L);
+		assertFalse(dao.exists(-ID));
+		verify(query).setParameter("id", -ID);
+	}
+
+	@Test
+	public void shouldConfirmExistenceWithClause() {
+		Query query = mock(Query.class);
+		String clause = "WHERE person.parent.id = :parentId";
+		when(recordManager.createQuery("SELECT 1 FROM Person person " + clause)).thenReturn(query);
+
+		when(query.getResultList()).thenReturn(list(1));
+		assertTrue(dao.exists(clause, "parentId", ID));
+		verify(query).setParameter("parentId", ID);
+
+		when(query.getResultList()).thenReturn(new ArrayList<Integer>());
+		assertFalse(dao.exists(clause, "parentId", -ID));
+		verify(query).setParameter("parentId", -ID);
 	}
 
 	@Test
@@ -57,9 +72,19 @@ public class DatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldGetAll() {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
-		when(recordManager.createQuery("SELECT person FROM Person person ", PersonRecord.class)).thenReturn(query);
+		when(recordManager.createQuery("SELECT person FROM Person person", PersonRecord.class)).thenReturn(query);
 		when(query.getResultList()).thenReturn(list(record));
 		assertDeepEquals(set(person), dao.all());
+	}
+
+	@Test
+	public void shouldCreateRecordQueryWithClauses() {
+		String from = "Person parent JOIN parent.children child";
+		String where = "child.id = :id";
+		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
+		when(recordManager.createQuery("SELECT person FROM " + from + " WHERE " + where, PersonRecord.class))
+			.thenReturn(query);
+		assertSame(query, dao.createRecordQuery(from, where));
 	}
 
 	@Test

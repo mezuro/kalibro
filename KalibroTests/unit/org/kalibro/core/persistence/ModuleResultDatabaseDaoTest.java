@@ -9,7 +9,6 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.kalibro.Granularity;
 import org.kalibro.Module;
@@ -46,21 +45,21 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetResultsRootOfProcessing() {
-		prepareQuery("WHERE moduleResult.processing.id = :processingId AND moduleResult.parent = null");
+		prepareQuery("moduleResult.processing.id = :processingId AND moduleResult.parent = null");
 		assertSame(moduleResult, dao.resultsRootOf(ID));
 		verify(query).setParameter("processingId", ID);
 	}
 
 	@Test
 	public void shouldGetParent() {
-		prepareQuery("JOIN ModuleResult child ON child.parent = moduleResult WHERE child.id = :childId");
+		prepareQuery("ModuleResult child JOIN child.parent moduleResult", "child.id = :childId");
 		assertSame(moduleResult, dao.parentOf(ID));
 		verify(query).setParameter("childId", ID);
 	}
 
 	@Test
 	public void shouldGetChildren() {
-		prepareQuery("JOIN ModuleResult parent ON moduleResult.parent = parent WHERE parent.id = :parentId");
+		prepareQuery("ModuleResult parent ON parent.children moduleResult", "parent.id = :parentId");
 		assertDeepEquals(set(moduleResult), dao.childrenOf(ID));
 		verify(query).setParameter("parentId", ID);
 	}
@@ -73,18 +72,13 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		verify(dao).save(record);
 	}
 
-	@Override
-	protected Timeout testTimeout() {
-		return new Timeout(0);
-	}
-
 	@Test
 	public void shouldPrepareResultForModule() throws Exception {
 		Module module = new Module(Granularity.PACKAGE, "org");
-		String clause = "WHERE moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
-		doReturn(false).when(dao).exists(clause, "processingId", ID, "moduleName", list("org"));
-		doReturn(false).when(dao).exists(clause, "processingId", ID, "moduleName", new ArrayList<String>());
-		prepareQuery(clause);
+		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
+		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", list("org"));
+		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", new ArrayList<String>());
+		prepareQuery(where);
 
 		Module preparedModule = mock(Module.class);
 		whenNew(ModuleResultRecord.class)
@@ -97,8 +91,12 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		verifyCallsInOrder(preparedModule);
 	}
 
-	private void prepareQuery(String clauses) {
-		doReturn(query).when(dao).createRecordQuery(clauses);
+	private void prepareQuery(String where) {
+		doReturn(query).when(dao).createRecordQuery(where);
+	}
+
+	private void prepareQuery(String from, String where) {
+		doReturn(query).when(dao).createRecordQuery(from, where);
 	}
 
 	private void verifyCallsInOrder(Module preparedModule) {

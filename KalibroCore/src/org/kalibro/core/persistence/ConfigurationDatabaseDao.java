@@ -21,9 +21,10 @@ public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, Configu
 	}
 
 	@Override
-	public Configuration configurationOf(Long projectId) {
-		TypedQuery<ConfigurationRecord> query = createRecordQuery("JOIN Project project WHERE project.id = :projectId");
-		query.setParameter("projectId", projectId);
+	public Configuration configurationOf(Long repositoryId) {
+		String from = "Repository repository JOIN repository.configuration configuration";
+		TypedQuery<ConfigurationRecord> query = createRecordQuery(from, "repository.id = :repositoryId");
+		query.setParameter("repositoryId", repositoryId);
 		return query.getSingleResult().convert();
 	}
 

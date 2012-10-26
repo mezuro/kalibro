@@ -22,14 +22,15 @@ class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements 
 
 	@Override
 	public Reading readingOf(Long rangeId) {
-		TypedQuery<ReadingRecord> query = createRecordQuery("JOIN Range range WHERE range.id = :rangeId");
+		String from = "Range range JOIN range.reading reading";
+		TypedQuery<ReadingRecord> query = createRecordQuery(from, "range.id = :rangeId");
 		query.setParameter("rangeId", rangeId);
 		return query.getSingleResult().convert();
 	}
 
 	@Override
 	public SortedSet<Reading> readingsOf(Long groupId) {
-		TypedQuery<ReadingRecord> query = createRecordQuery("WHERE reading.group.id = :groupId");
+		TypedQuery<ReadingRecord> query = createRecordQuery("reading.group.id = :groupId");
 		query.setParameter("groupId", groupId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}

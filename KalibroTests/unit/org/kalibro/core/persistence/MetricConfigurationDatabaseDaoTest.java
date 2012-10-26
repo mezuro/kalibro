@@ -41,7 +41,7 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
 		TypedQuery<MetricConfigurationRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("WHERE metricConfiguration.configuration.id = :configurationId");
+		doReturn(query).when(dao).createRecordQuery("metricConfiguration.configuration.id = :configurationId");
 		when(query.getResultList()).thenReturn(list(record));
 
 		assertDeepEquals(set(metricConfiguration), dao.metricConfigurationsOf(CONFIGURATION_ID));

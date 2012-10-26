@@ -19,7 +19,8 @@ class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGroupReco
 
 	@Override
 	public ReadingGroup readingGroupOf(Long metricConfigurationId) {
-		TypedQuery<ReadingGroupRecord> query = createRecordQuery("JOIN MetricConfiguration mConf WHERE mConf.id = :id");
+		String from = "MetricConfiguration metricConfiguration JOIN metricConfiguration.readingGroup readingGroup";
+		TypedQuery<ReadingGroupRecord> query = createRecordQuery(from, "metricConfiguration.id = :id");
 		query.setParameter("id", metricConfigurationId);
 		return query.getSingleResult().convert();
 	}

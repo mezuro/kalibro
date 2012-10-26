@@ -55,15 +55,15 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 
 	@Override
 	public Repository repositoryOf(Long processingId) {
-		TypedQuery<RepositoryRecord> query;
-		query = createRecordQuery("JOIN Processing processing WHERE processing.id = :processingId");
+		String from = "Processing processing JOIN processing.repository repository";
+		TypedQuery<RepositoryRecord> query = createRecordQuery(from, "processing.id = :processingId");
 		query.setParameter("processingId", processingId);
 		return query.getSingleResult().convert();
 	}
 
 	@Override
 	public SortedSet<Repository> repositoriesOf(Long projectId) {
-		TypedQuery<RepositoryRecord> query = createRecordQuery("WHERE repository.project.id = :projectId");
+		TypedQuery<RepositoryRecord> query = createRecordQuery("repository.project.id = :projectId");
 		query.setParameter("projectId", projectId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}

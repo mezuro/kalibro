@@ -40,7 +40,26 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	public SortedSet<ENTITY> all() {
-		return DataTransferObject.toSortedSet(createRecordQuery("").getResultList());
+		return DataTransferObject.toSortedSet(createRecordQuery(null).getResultList());
+	}
+
+	protected TypedQuery<RECORD> createRecordQuery(String where) {
+		return createRecordQuery(entityName() + " " + alias(), where);
+	}
+
+	protected TypedQuery<RECORD> createRecordQuery(String from, String where) {
+		String queryString = "SELECT " + alias() + " FROM " + from;
+		if (where != null)
+			queryString += " WHERE " + where;
+		return createQuery(queryString, recordClass);
+	}
+
+	protected <T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
+		return recordManager.createQuery(queryString, resultClass);
+	}
+
+	private String alias() {
+		return Identifier.fromVariable(entityName()).asVariable();
 	}
 
 	protected <T> T save(T record) {
@@ -51,19 +70,6 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 		Query query = recordManager.createQuery("DELETE FROM " + entityName() + " WHERE id = :id");
 		query.setParameter("id", recordId);
 		recordManager.executeUpdate(query);
-	}
-
-	protected TypedQuery<RECORD> createRecordQuery(String clauses) {
-		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias() + " " + clauses;
-		return createQuery(queryString, recordClass);
-	}
-
-	protected <T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
-		return recordManager.createQuery(queryString, resultClass);
-	}
-
-	private String alias() {
-		return Identifier.fromVariable(entityName()).asVariable();
 	}
 
 	private String entityName() {

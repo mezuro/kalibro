@@ -31,8 +31,7 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public SortedSet<MetricResult> metricResultsOf(Long moduleResultId) {
-		TypedQuery<MetricResultRecord> query = createRecordQuery(
-			"WHERE metricResult.moduleResult.id = :moduleResultId");
+		TypedQuery<MetricResultRecord> query = createRecordQuery("metricResult.moduleResult.id = :moduleResultId");
 		query.setParameter("moduleResultId", moduleResultId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
