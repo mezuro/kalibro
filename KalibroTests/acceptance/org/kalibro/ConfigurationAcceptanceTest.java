@@ -26,7 +26,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
-		prepareSettings(databaseType);
+		resetDatabase(databaseType);
 		assertNotSaved();
 
 		configuration.save();
@@ -52,7 +52,7 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Theory
 	public void shouldValidateOnSave(SupportedDatabase databaseType) {
-		prepareSettings(databaseType);
+		resetDatabase(databaseType);
 		shouldValidateScripts();
 		nameShouldBeUnique();
 		nameShouldBeRequired();

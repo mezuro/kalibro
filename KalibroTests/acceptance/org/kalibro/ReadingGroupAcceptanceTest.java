@@ -26,7 +26,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
-		prepareSettings(databaseType);
+		resetDatabase(databaseType);
 		assertNotSaved();
 
 		group.save();
@@ -52,7 +52,7 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
 	@Theory
 	public void shouldValidateOnSave(SupportedDatabase databaseType) {
-		prepareSettings(databaseType);
+		resetDatabase(databaseType);
 		nameShouldBeUnique();
 		nameShouldBeRequired();
 	}

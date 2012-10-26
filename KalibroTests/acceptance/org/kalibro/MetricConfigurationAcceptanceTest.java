@@ -21,7 +21,7 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
-		prepareSettings(databaseType);
+		resetDatabase(databaseType);
 		configuration.save();
 		metricConfiguration = configuration.getMetricConfigurations().first();
 

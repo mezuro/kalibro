@@ -21,7 +21,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
-		prepareSettings(databaseType);
+		resetDatabase(databaseType);
 		group.save();
 		assertDeepEquals(reading, saved());
 

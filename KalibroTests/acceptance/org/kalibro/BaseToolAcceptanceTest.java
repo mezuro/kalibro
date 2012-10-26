@@ -2,16 +2,10 @@ package org.kalibro;
 
 import org.analizo.AnalizoMetricCollector;
 import org.checkstyle.CheckstyleMetricCollector;
-import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.AcceptanceTest;
 
 public class BaseToolAcceptanceTest extends AcceptanceTest {
-
-	@Before
-	public void setUp() {
-		prepareSettings(SupportedDatabase.APACHE_DERBY);
-	}
 
 	@Test
 	public void shouldGetBaseToolNames() {
