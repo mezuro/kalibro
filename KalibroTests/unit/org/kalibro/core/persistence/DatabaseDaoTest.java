@@ -102,10 +102,7 @@ public class DatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldDeleteById() {
-		Query query = mock(Query.class);
-		when(recordManager.createQuery("DELETE FROM Person WHERE id = :id")).thenReturn(query);
-
 		dao.delete(ID);
-		verify(recordManager).executeUpdate(query);
+		verify(recordManager).removeById(ID, PersonRecord.class);
 	}
 }

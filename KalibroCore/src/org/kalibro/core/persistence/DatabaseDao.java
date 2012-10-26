@@ -67,9 +67,7 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	public void delete(Long recordId) {
-		Query query = recordManager.createQuery("DELETE FROM " + entityName() + " WHERE id = :id");
-		query.setParameter("id", recordId);
-		recordManager.executeUpdate(query);
+		recordManager.removeById(recordId, recordClass);
 	}
 
 	private String entityName() {
