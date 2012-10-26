@@ -7,13 +7,12 @@ import java.util.Random;
 import org.junit.Test;
 import org.kalibro.Project;
 import org.kalibro.service.ProjectEndpoint;
-import org.kalibro.service.xml.ProjectXmlRequest;
-import org.kalibro.service.xml.ProjectXmlResponse;
+import org.kalibro.service.xml.ProjectXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(ProjectClientDao.class)
 public class ProjectClientDaoTest extends ClientTest<// @formatter:off
-	Project, ProjectXmlRequest, ProjectXmlResponse,	ProjectEndpoint, ProjectClientDao> {// @formatter:on
+	Project, ProjectXml, ProjectXml, ProjectEndpoint, ProjectClientDao> {// @formatter:on
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 

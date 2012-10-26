@@ -9,28 +9,28 @@ import org.kalibro.Project;
 import org.kalibro.dto.ProjectDto;
 
 /**
- * XML element for {@link Project} responses.
+ * XML element for {@link Project}.
  * 
  * @author Carlos Morais
  */
 @XmlRootElement(name = "project")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProjectXmlResponse extends ProjectDto {
+public class ProjectXml extends ProjectDto {
 
 	@XmlElement
 	private Long id;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private String name;
 
 	@XmlElement
 	private String description;
 
-	public ProjectXmlResponse() {
+	public ProjectXml() {
 		super();
 	}
 
-	public ProjectXmlResponse(Project project) {
+	public ProjectXml(Project project) {
 		id = project.getId();
 		name = project.getName();
 		description = project.getDescription();
