@@ -7,7 +7,6 @@ import java.io.File;
 import javax.persistence.RollbackException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.theories.Theory;
@@ -19,32 +18,35 @@ import org.powermock.reflect.Whitebox;
 
 public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
-	private File file;
 	private Configuration configuration;
 
 	@Before
 	public void setUp() {
 		configuration = loadFixture("sc", Configuration.class);
-		file = new File(Environment.dotKalibro(), "Configuration-exported.yml");
-		file.deleteOnExit();
+		BaseTool analizo = new BaseTool("org.analizo.AnalizoMetricCollector");
+		for (MetricConfiguration each : configuration.getMetricConfigurations())
+			if (!each.getMetric().isCompound())
+				Whitebox.setInternalState(each, "baseTool", analizo);
 	}
 
-	@After
-	public void tearDown() {
+	@Override
+	protected void prepareSettings(SupportedDatabase databaseType) {
+		super.prepareSettings(databaseType);
+		for (Configuration each : Configuration.all())
+			each.delete();
 		for (ReadingGroup group : ReadingGroup.all())
 			group.delete();
 	}
 
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
-		changeDatabase(databaseType);
-		changeBaseTool();
+		prepareSettings(databaseType);
 		assertNotSaved();
 
 		configuration.save();
 		assertSaved();
 
-		configuration.setDescription("ConfigurationAcceptanceTest description");
+		configuration.setName("ConfigurationAcceptanceTest name");
 		assertFalse(Configuration.all().first().deepEquals(configuration));
 
 		configuration.save();
@@ -52,13 +54,6 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 		configuration.delete();
 		assertNotSaved();
-	}
-
-	private void changeBaseTool() {
-		BaseTool analizo = new BaseTool("org.analizo.AnalizoMetricCollector");
-		for (MetricConfiguration each : configuration.getMetricConfigurations())
-			if (!each.getMetric().isCompound())
-				Whitebox.setInternalState(each, "baseTool", analizo);
 	}
 
 	private void assertNotSaved() {
@@ -70,27 +65,28 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void shouldValidateBeforeSave(SupportedDatabase databaseType) {
-		changeDatabase(databaseType);
-		nameShouldBeRequiredAndUnique();
+	public void shouldValidateOnSave(SupportedDatabase databaseType) {
+		prepareSettings(databaseType);
 		shouldValidateScripts();
-	}
-
-	private void nameShouldBeRequiredAndUnique() {
-		configuration.setName(" ");
-		assertSave().throwsException().withMessage("Configuration requires name.");
-
-		configuration.setName("Unique");
-		configuration.save();
-
-		configuration = new Configuration("Unique");
-		assertSave().doThrow(RollbackException.class);
+		nameShouldBeUnique();
+		nameShouldBeRequired();
 	}
 
 	private void shouldValidateScripts() {
 		CompoundMetric sc = configuration.getCompoundMetrics().first();
 		sc.setScript("return null;");
 		assertSave().throwsException().withMessage("Error evaluating Javascript for: sc");
+		sc.setScript("return cbo * lcom4;");
+	}
+
+	private void nameShouldBeUnique() {
+		new Configuration(configuration.getName()).save();
+		assertSave().doThrow(RollbackException.class);
+	}
+
+	private void nameShouldBeRequired() {
+		configuration.setName(" ");
+		assertSave().throwsException().withMessage("Configuration requires name.");
 	}
 
 	private TaskMatcher assertSave() {
@@ -105,9 +101,12 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldImportAndExportAsYaml() throws Exception {
+		configuration = loadFixture("sc", Configuration.class);
+		File file = new File(Environment.dotKalibro(), "Configuration-exported.yml");
+		file.deleteOnExit();
+
 		configuration.exportTo(file);
-		String expectedYaml = loadResource("Configuration-sc.yml");
-		assertEquals(expectedYaml, FileUtils.readFileToString(file));
+		assertEquals(loadResource("Configuration-sc.yml"), FileUtils.readFileToString(file));
 		assertDeepEquals(configuration, Configuration.importFrom(file));
 	}
 }

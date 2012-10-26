@@ -1,12 +1,10 @@
 package org.kalibro.tests;
 
-import static org.kalibro.SupportedDatabase.APACHE_DERBY;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 
 import org.junit.AfterClass;
-import org.junit.BeforeClass;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.rules.Timeout;
@@ -23,18 +21,13 @@ public abstract class AcceptanceTest extends IntegrationTest {
 		return SupportedDatabase.values();
 	}
 
-	@BeforeClass
-	public static void prepareSettings() {
-		changeDatabase(APACHE_DERBY);
-	}
-
 	@AfterClass
 	public static void deleteSettings() {
 		new File(System.getProperty("user.dir") + "/derby.log").delete();
 		new File(dotKalibro(), "kalibro.settings").delete();
 	}
 
-	protected static void changeDatabase(SupportedDatabase databaseType) {
+	protected void prepareSettings(SupportedDatabase databaseType) {
 		KalibroSettings settings = new KalibroSettings();
 		DatabaseSettings databaseSettigs = loadFixture(databaseType.name(), DatabaseSettings.class);
 		settings.getServerSettings().setDatabaseSettings(databaseSettigs);
