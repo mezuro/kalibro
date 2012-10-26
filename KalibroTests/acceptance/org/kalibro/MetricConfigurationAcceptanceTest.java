@@ -11,23 +11,23 @@ import org.kalibro.tests.AcceptanceTest;
 
 public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 
-	private MetricConfiguration metricConfiguration;
 	private Configuration configuration;
+	private MetricConfiguration metricConfiguration;
 
 	@Before
 	public void setUp() {
 		configuration = loadFixture("sc-analizo", Configuration.class);
+		metricConfiguration = configuration.getMetricConfigurations().first();
 	}
 
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
 		resetDatabase(databaseType);
 		configuration.save();
-		metricConfiguration = configuration.getMetricConfigurations().first();
 
 		assertDeepEquals(metricConfiguration, saved());
 
-		metricConfiguration.setWeight(0.0);
+		metricConfiguration.setCode("MetricConfigurationAcceptanceTestCode");
 		assertFalse(metricConfiguration.deepEquals(saved()));
 
 		metricConfiguration.save();

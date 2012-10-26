@@ -10,8 +10,8 @@ import org.kalibro.tests.AcceptanceTest;
 
 public class ReadingAcceptanceTest extends AcceptanceTest {
 
-	private Reading reading;
 	private ReadingGroup group;
+	private Reading reading;
 
 	@Before
 	public void setUp() {

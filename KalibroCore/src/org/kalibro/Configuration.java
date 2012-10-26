@@ -99,6 +99,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public void removeMetricConfiguration(MetricConfiguration metricConfiguration) {
+		metricConfigurations = getMetricConfigurations();
 		metricConfigurations.remove(metricConfiguration);
 		metricConfiguration.setConfiguration(null);
 	}
