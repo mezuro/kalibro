@@ -1,12 +1,16 @@
 package org.kalibro.core.abstractentity;
 
-import static org.kalibro.core.reflection.MemberFilterFactory.hasAnnotation;
+import static org.kalibro.core.reflection.MemberFilterFactory.*;
 
 import java.lang.reflect.AccessibleObject;
 import java.util.*;
 
+import net.sf.cglib.proxy.MethodInterceptor;
+
 import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.core.reflection.MemberFilterAdapter;
+import org.kalibro.core.reflection.MethodReflector;
+import org.kalibro.dto.DaoLazyLoader;
 
 /**
  * Specialized {@link FieldReflector} for entities.
@@ -15,8 +19,18 @@ import org.kalibro.core.reflection.MemberFilterAdapter;
  */
 class EntityReflector extends FieldReflector {
 
+	private static AbstractEntity<?> unwrap(AbstractEntity<?> entity) {
+		if (!entity.getClass().getName().contains("EnhancerByCGLIB"))
+			return entity;
+		FieldReflector proxyReflector = new FieldReflector(entity, not(hasType(MethodInterceptor.class)));
+		String loaderField = proxyReflector.listFields().get(0);
+		Object loader = proxyReflector.get(loaderField);
+		new MethodReflector(DaoLazyLoader.class).invoke(loader, "load");
+		return (AbstractEntity<?>) new FieldReflector(loader).get("target");
+	}
+
 	protected EntityReflector(AbstractEntity<?> entity) {
-		super(entity, hasAnnotation(Ignore.class));
+		super(unwrap(entity), or(DEFAULT_IGNORE_FILTER, hasAnnotation(Ignore.class)));
 	}
 
 	protected List<String> listIdentityFields() {
