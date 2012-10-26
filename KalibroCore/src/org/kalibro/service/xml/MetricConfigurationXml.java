@@ -29,7 +29,7 @@ public class MetricConfigurationXml extends MetricConfigurationDto {
 	private String code;
 
 	@XmlElement(required = true)
-	private MetricXmlRequest metric;
+	private MetricXml metric;
 
 	@XmlElement
 	private String baseToolName;
@@ -50,7 +50,7 @@ public class MetricConfigurationXml extends MetricConfigurationDto {
 	public MetricConfigurationXml(MetricConfiguration metricConfiguration) {
 		id = metricConfiguration.getId();
 		code = metricConfiguration.getCode();
-		metric = new MetricXmlRequest(metricConfiguration.getMetric());
+		metric = new MetricXml(metricConfiguration.getMetric());
 		if (!metric.compound())
 			baseToolName = metricConfiguration.getBaseTool().getName();
 		weight = metricConfiguration.getWeight();

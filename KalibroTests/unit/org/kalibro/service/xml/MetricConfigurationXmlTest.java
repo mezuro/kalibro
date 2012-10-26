@@ -32,7 +32,7 @@ public class MetricConfigurationXmlTest extends XmlTest {
 	protected void verifyElements() {
 		assertElement("id", Long.class);
 		assertElement("code", String.class, true);
-		assertElement("metric", MetricXmlRequest.class, true);
+		assertElement("metric", MetricXml.class, true);
 		assertElement("baseToolName", String.class);
 		assertElement("weight", Double.class, true);
 		assertElement("aggregationForm", Statistic.class, true);
