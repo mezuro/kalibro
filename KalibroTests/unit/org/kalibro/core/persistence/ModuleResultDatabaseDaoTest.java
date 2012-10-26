@@ -40,7 +40,7 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 		when(query.getSingleResult()).thenReturn(record);
 		when(query.getResultList()).thenReturn(list(record));
 		when(record.convert()).thenReturn(moduleResult);
-		dao = spy(new ModuleResultDatabaseDao(null));
+		dao = spy(new ModuleResultDatabaseDao());
 	}
 
 	@Test

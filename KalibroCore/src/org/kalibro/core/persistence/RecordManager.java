@@ -64,10 +64,4 @@ class RecordManager {
 	private void commitTransaction() {
 		entityManager.getTransaction().commit();
 	}
-
-	@Override
-	protected void finalize() throws Throwable {
-		entityManager.close();
-		super.finalize();
-	}
 }

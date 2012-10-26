@@ -34,7 +34,7 @@ public class RangeDatabaseDaoTest extends UnitTest {
 		whenNew(RangeRecord.class).withArguments(range, CONFIGURATION_ID).thenReturn(record);
 		when(record.convert()).thenReturn(range);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new RangeDatabaseDao(null));
+		dao = spy(new RangeDatabaseDao());
 	}
 
 	@Test

@@ -35,7 +35,7 @@ public class MetricConfigurationDatabaseDaoTest extends UnitTest {
 			.thenReturn(record);
 		when(record.convert()).thenReturn(metricConfiguration);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new MetricConfigurationDatabaseDao(null));
+		dao = spy(new MetricConfigurationDatabaseDao());
 	}
 
 	@Test

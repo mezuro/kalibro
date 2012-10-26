@@ -16,8 +16,8 @@ import org.kalibro.dto.DataTransferObject;
  */
 class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> implements RangeDao {
 
-	RangeDatabaseDao(RecordManager recordManager) {
-		super(recordManager, RangeRecord.class);
+	RangeDatabaseDao() {
+		super(RangeRecord.class);
 	}
 
 	@Override

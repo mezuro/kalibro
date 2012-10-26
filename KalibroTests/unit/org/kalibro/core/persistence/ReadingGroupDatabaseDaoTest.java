@@ -33,7 +33,7 @@ public class ReadingGroupDatabaseDaoTest extends UnitTest {
 		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
 		when(record.id()).thenReturn(ID);
 		when(record.convert()).thenReturn(group);
-		dao = spy(new ReadingGroupDatabaseDao(null));
+		dao = spy(new ReadingGroupDatabaseDao());
 	}
 
 	@Test

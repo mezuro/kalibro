@@ -16,8 +16,8 @@ import org.kalibro.dto.DataTransferObject;
 public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements
 	ConfigurationDao {
 
-	ConfigurationDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ConfigurationRecord.class);
+	ConfigurationDatabaseDao() {
+		super(ConfigurationRecord.class);
 	}
 
 	@Override

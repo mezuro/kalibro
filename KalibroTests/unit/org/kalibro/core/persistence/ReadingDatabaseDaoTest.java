@@ -34,7 +34,7 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 		whenNew(ReadingRecord.class).withArguments(reading, GROUP_ID).thenReturn(record);
 		when(record.convert()).thenReturn(reading);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new ReadingDatabaseDao(null));
+		dao = spy(new ReadingDatabaseDao());
 	}
 
 	@Test

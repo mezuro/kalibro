@@ -13,8 +13,8 @@ import org.kalibro.dao.ReadingGroupDao;
  */
 class ReadingGroupDatabaseDao extends DatabaseDao<ReadingGroup, ReadingGroupRecord> implements ReadingGroupDao {
 
-	ReadingGroupDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ReadingGroupRecord.class);
+	ReadingGroupDatabaseDao() {
+		super(ReadingGroupRecord.class);
 	}
 
 	@Override

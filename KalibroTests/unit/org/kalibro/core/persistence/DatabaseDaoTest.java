@@ -10,10 +10,15 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.core.persistence.PersonDatabaseDao.Person;
 import org.kalibro.core.persistence.PersonDatabaseDao.PersonRecord;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DatabaseDaoFactory.class)
 public class DatabaseDaoTest extends UnitTest {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
@@ -29,9 +34,11 @@ public class DatabaseDaoTest extends UnitTest {
 		person = mock(Person.class);
 		record = mock(PersonRecord.class);
 		recordManager = mock(RecordManager.class);
+		mockStatic(DatabaseDaoFactory.class);
+		when(DatabaseDaoFactory.createRecordManager()).thenReturn(recordManager);
 		when(record.convert()).thenReturn(person);
 
-		dao = new PersonDatabaseDao(recordManager);
+		dao = new PersonDatabaseDao();
 	}
 
 	@Test

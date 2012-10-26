@@ -88,10 +88,4 @@ public class RecordManagerTest extends UnitTest {
 		Whitebox.invokeMethod(order.verify(mock, mode), method, arguments);
 		order.verify(transaction).commit();
 	}
-
-	@Test
-	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
-		recordManager.finalize();
-		verify(entityManager).close();
-	}
 }

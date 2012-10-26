@@ -21,8 +21,8 @@ import org.kalibro.dao.ProcessingDao;
  */
 public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRecord> implements ProcessingDao {
 
-	ProcessingDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ProcessingRecord.class);
+	ProcessingDatabaseDao() {
+		super(ProcessingRecord.class);
 	}
 
 	@Override

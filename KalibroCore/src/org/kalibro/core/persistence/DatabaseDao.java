@@ -16,12 +16,12 @@ import org.kalibro.dto.DataTransferObject;
  */
 abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
-	private RecordManager recordManager;
 	private Class<RECORD> recordClass;
+	private RecordManager recordManager;
 
-	DatabaseDao(RecordManager recordManager, Class<RECORD> recordClass) {
-		this.recordManager = recordManager;
+	DatabaseDao(Class<RECORD> recordClass) {
 		this.recordClass = recordClass;
+		this.recordManager = DatabaseDaoFactory.createRecordManager();
 	}
 
 	public boolean exists(Long recordId) {

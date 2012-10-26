@@ -20,8 +20,8 @@ import org.kalibro.dto.DataTransferObject;
  */
 public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleResultRecord> implements ModuleResultDao {
 
-	ModuleResultDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ModuleResultRecord.class);
+	ModuleResultDatabaseDao() {
+		super(ModuleResultRecord.class);
 	}
 
 	@Override

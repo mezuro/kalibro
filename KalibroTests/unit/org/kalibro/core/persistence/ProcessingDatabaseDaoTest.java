@@ -40,7 +40,7 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 		record = mock(ProcessingRecord.class);
 		when(record.convert()).thenReturn(processing);
 		whenNew(ProcessingRecord.class).withArguments(processing).thenReturn(record);
-		dao = spy(new ProcessingDatabaseDao(null));
+		dao = spy(new ProcessingDatabaseDao());
 		doReturn(record).when(dao).save(record);
 	}
 

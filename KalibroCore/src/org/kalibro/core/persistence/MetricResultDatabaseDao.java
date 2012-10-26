@@ -17,8 +17,8 @@ import org.kalibro.dto.DataTransferObject;
  */
 class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements MetricResultDao {
 
-	MetricResultDatabaseDao(RecordManager recordManager) {
-		super(recordManager, MetricResultRecord.class);
+	MetricResultDatabaseDao() {
+		super(MetricResultRecord.class);
 	}
 
 	@Override

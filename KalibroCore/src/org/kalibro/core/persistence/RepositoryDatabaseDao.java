@@ -27,8 +27,8 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 
 	private Map<Long, ProcessTask> processTasks;
 
-	RepositoryDatabaseDao(RecordManager recordManager) {
-		super(recordManager, RepositoryRecord.class);
+	RepositoryDatabaseDao() {
+		super(RepositoryRecord.class);
 		processTasks = new HashMap<Long, ProcessTask>();
 	}
 

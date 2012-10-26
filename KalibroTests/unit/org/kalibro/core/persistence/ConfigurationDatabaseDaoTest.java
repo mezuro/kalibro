@@ -35,7 +35,7 @@ public class ConfigurationDatabaseDaoTest extends UnitTest {
 		whenNew(ConfigurationRecord.class).withArguments(configuration).thenReturn(record);
 		when(record.convert()).thenReturn(configuration);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new ConfigurationDatabaseDao(null));
+		dao = spy(new ConfigurationDatabaseDao());
 	}
 
 	@Test

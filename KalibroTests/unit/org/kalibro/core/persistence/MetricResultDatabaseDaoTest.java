@@ -35,7 +35,7 @@ public class MetricResultDatabaseDaoTest extends UnitTest {
 		metricResult = mock(MetricResult.class);
 		record = mock(MetricResultRecord.class);
 		when(record.convert()).thenReturn(metricResult);
-		dao = spy(new MetricResultDatabaseDao(null));
+		dao = spy(new MetricResultDatabaseDao());
 	}
 
 	@Test
