@@ -12,7 +12,7 @@ final class ModifierMemberFilter implements MemberFilter {
 
 	private int modifier;
 
-	protected ModifierMemberFilter(int modifier) {
+	ModifierMemberFilter(int modifier) {
 		this.modifier = modifier;
 	}
 
