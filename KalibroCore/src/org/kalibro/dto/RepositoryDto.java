@@ -3,7 +3,6 @@ package org.kalibro.dto;
 import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
-import org.kalibro.dao.ConfigurationDao;
 
 /**
  * Data transfer object for {@link Repository}.
@@ -37,7 +36,5 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 
 	public abstract Integer processPeriod();
 
-	public Configuration configuration() {
-		return DaoLazyLoader.createProxy(ConfigurationDao.class, "configurationOf", id());
-	}
+	public abstract Configuration configuration();
 }

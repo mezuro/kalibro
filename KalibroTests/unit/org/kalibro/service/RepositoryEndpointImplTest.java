@@ -9,13 +9,12 @@ import org.junit.Test;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.RepositoryDao;
-import org.kalibro.service.xml.RepositoryXmlRequest;
-import org.kalibro.service.xml.RepositoryXmlResponse;
+import org.kalibro.service.xml.RepositoryXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest({RepositoryEndpointImpl.class, RepositoryType.class})
 public class RepositoryEndpointImplTest extends EndpointImplementorTest<// @formatter:off
-	Repository, RepositoryXmlRequest, RepositoryXmlResponse, RepositoryDao, RepositoryEndpointImpl> {// @formatter:on
+	Repository, RepositoryXml, RepositoryXml, RepositoryDao, RepositoryEndpointImpl> {// @formatter:on
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long PROJECT_ID = new Random().nextLong();

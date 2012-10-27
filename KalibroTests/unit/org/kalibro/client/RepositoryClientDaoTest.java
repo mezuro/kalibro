@@ -8,13 +8,12 @@ import org.junit.Test;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.service.RepositoryEndpoint;
-import org.kalibro.service.xml.RepositoryXmlRequest;
-import org.kalibro.service.xml.RepositoryXmlResponse;
+import org.kalibro.service.xml.RepositoryXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(RepositoryClientDao.class)
 public class RepositoryClientDaoTest extends ClientTest<// @formatter:off
-	Repository, RepositoryXmlRequest, RepositoryXmlResponse, RepositoryEndpoint, RepositoryClientDao> {// @formatter:on
+	Repository, RepositoryXml, RepositoryXml, RepositoryEndpoint, RepositoryClientDao> {// @formatter:on
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long PROJECT_ID = new Random().nextLong();
