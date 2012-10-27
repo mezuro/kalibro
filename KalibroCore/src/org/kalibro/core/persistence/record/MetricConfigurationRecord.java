@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingGroupDao;
@@ -57,6 +58,7 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	@JoinColumn(name = "\"reading_group\"", referencedColumnName = "\"id\"")
 	private ReadingGroupRecord readingGroup;
 
+	@PrivateOwned
 	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<RangeRecord> ranges;

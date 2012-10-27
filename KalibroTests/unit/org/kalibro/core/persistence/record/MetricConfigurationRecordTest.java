@@ -54,7 +54,7 @@ public class MetricConfigurationRecordTest extends RecordTest {
 		assertColumn("metricScope", String.class).isRequired();
 		assertColumn("metricDescription", String.class).isNullable();
 		assertColumn("metricOrigin", String.class).isRequired();
-		assertOneToMany("ranges").doesNotCascade().isMappedBy("configuration").removeOrphans();
+		assertOneToMany("ranges").doesNotCascade().isMappedBy("configuration");
 	}
 
 	@Test

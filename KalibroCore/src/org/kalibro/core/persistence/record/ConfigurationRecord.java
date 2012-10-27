@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kalibro.Configuration;
 import org.kalibro.dto.ConfigurationDto;
 
@@ -27,6 +28,7 @@ public class ConfigurationRecord extends ConfigurationDto {
 	@Column(name = "\"description\"")
 	private String description;
 
+	@PrivateOwned
 	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<MetricConfigurationRecord> metricConfigurations;

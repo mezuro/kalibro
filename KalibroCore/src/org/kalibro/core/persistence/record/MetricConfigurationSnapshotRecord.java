@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dto.MetricConfigurationDto;
@@ -52,6 +53,7 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	@Column(name = "\"metric_origin\"", nullable = false)
 	private String metricOrigin;
 
+	@PrivateOwned
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationSnapshot", orphanRemoval = true)
 	private Collection<RangeSnapshotRecord> ranges;
 
