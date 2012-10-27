@@ -49,8 +49,8 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	private void updateEntityManager(Map<String, String> properties) {
-		if (entityManager != null)
-			entityManager.getEntityManagerFactory().close();
+		if (entityManager != null && entityManager.isOpen())
+			entityManager.close();
 		entityManager = Persistence.createEntityManagerFactory("Kalibro", properties).createEntityManager();
 	}
 

@@ -26,8 +26,8 @@ import org.powermock.reflect.Whitebox;
 public class DatabaseDaoFactoryTest extends UnitTest {
 
 	private DatabaseSettings settings;
+	private EntityManager entityManager;
 	private RecordManager recordManager;
-	private EntityManagerFactory entityManagerFactory;
 
 	private DatabaseDaoFactory factory;
 
@@ -47,8 +47,8 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 	}
 
 	private void mockPersistence() throws Exception {
-		EntityManager entityManager = mock(EntityManager.class);
-		entityManagerFactory = mock(EntityManagerFactory.class);
+		EntityManagerFactory entityManagerFactory = mock(EntityManagerFactory.class);
+		entityManager = mock(EntityManager.class);
 		recordManager = mock(RecordManager.class);
 		mockStatic(Persistence.class);
 		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(entityManagerFactory);
@@ -82,11 +82,14 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldClosePreviousEntityManagerFactory() {
+	public void shouldClosePreviousEntityManagerIfOpen() {
+		when(entityManager.isOpen()).thenReturn(true);
+
 		DatabaseSettings newSettings = new DatabaseSettings();
-		newSettings.setPassword("pass");
+		newSettings.setPassword("x");
 		new DatabaseDaoFactory(newSettings);
-		verify(entityManagerFactory).close();
+
+		verify(entityManager).close();
 	}
 
 	@Test
