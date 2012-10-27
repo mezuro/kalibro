@@ -11,9 +11,8 @@ import org.kalibro.service.xml.MetricConfigurationXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(MetricConfigurationClientDao.class)
-public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:off
-	MetricConfiguration, MetricConfigurationXml, MetricConfigurationXml,
-	MetricConfigurationEndpoint, MetricConfigurationClientDao> { // @formatter:on
+public class MetricConfigurationClientDaoTest extends
+	ClientTest<MetricConfiguration, MetricConfigurationXml, MetricConfigurationEndpoint, MetricConfigurationClientDao> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long CONFIGURATION_ID = new Random().nextLong();
@@ -25,13 +24,13 @@ public class MetricConfigurationClientDaoTest extends ClientTest<// @formatter:o
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(port.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(list(response));
+		when(port.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		when(port.saveMetricConfiguration(request, CONFIGURATION_ID)).thenReturn(ID);
+		when(port.saveMetricConfiguration(xml, CONFIGURATION_ID)).thenReturn(ID);
 		assertEquals(ID, client.save(entity, CONFIGURATION_ID));
 	}
 

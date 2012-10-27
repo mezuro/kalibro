@@ -13,7 +13,7 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest({DateMetricResultXml.class, MetricResultClientDao.class})
 public class MetricResultClientDaoTest extends
-	ClientTest<MetricResult, MetricResultXml, MetricResultXml, MetricResultEndpoint, MetricResultClientDao> {
+	ClientTest<MetricResult, MetricResultXml, MetricResultEndpoint, MetricResultClientDao> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final String METRIC_NAME = "MetricResultClientDaoTest metric name";
@@ -32,7 +32,7 @@ public class MetricResultClientDaoTest extends
 
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
-		when(port.metricResultsOf(ID)).thenReturn(list(response));
+		when(port.metricResultsOf(ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.metricResultsOf(ID));
 	}
 
@@ -41,7 +41,7 @@ public class MetricResultClientDaoTest extends
 		Date date = new Date(1);
 		List<DateMetricResultXml> history = new ArrayList<DateMetricResultXml>();
 		history.add(new DateMetricResultXml(date, entity));
-		when(request.convert()).thenReturn(entity);
+		when(xml.convert()).thenReturn(entity);
 		when(port.historyOf(METRIC_NAME, ID)).thenReturn(history);
 
 		SortedMap<Date, MetricResult> map = client.historyOf(METRIC_NAME, ID);

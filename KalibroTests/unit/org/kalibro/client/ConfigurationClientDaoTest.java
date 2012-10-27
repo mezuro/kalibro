@@ -12,7 +12,7 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(ConfigurationClientDao.class)
 public class ConfigurationClientDaoTest extends
-	ClientTest<Configuration, ConfigurationXml, ConfigurationXml, ConfigurationEndpoint, ConfigurationClientDao> {
+	ClientTest<Configuration, ConfigurationXml, ConfigurationEndpoint, ConfigurationClientDao> {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
@@ -30,25 +30,25 @@ public class ConfigurationClientDaoTest extends
 
 	@Test
 	public void shouldGetById() {
-		when(port.getConfiguration(ID)).thenReturn(response);
+		when(port.getConfiguration(ID)).thenReturn(xml);
 		assertSame(entity, client.get(ID));
 	}
 
 	@Test
 	public void shouldGetConfigurationOfRepository() {
-		when(port.configurationOf(ID)).thenReturn(response);
+		when(port.configurationOf(ID)).thenReturn(xml);
 		assertSame(entity, client.configurationOf(ID));
 	}
 
 	@Test
 	public void shouldGetAll() {
-		when(port.allConfigurations()).thenReturn(list(response));
+		when(port.allConfigurations()).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.all());
 	}
 
 	@Test
 	public void shouldSave() {
-		when(port.saveConfiguration(request)).thenReturn(ID);
+		when(port.saveConfiguration(xml)).thenReturn(ID);
 		assertEquals(ID, client.save(entity));
 	}
 

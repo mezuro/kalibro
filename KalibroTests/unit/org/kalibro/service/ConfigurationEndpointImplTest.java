@@ -11,8 +11,8 @@ import org.kalibro.service.xml.ConfigurationXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(ConfigurationEndpointImpl.class)
-public class ConfigurationEndpointImplTest extends EndpointImplementorTest
-	<Configuration, ConfigurationXml, ConfigurationXml, ConfigurationDao, ConfigurationEndpointImpl> {
+public class ConfigurationEndpointImplTest extends
+	EndpointImplementorTest<Configuration, ConfigurationXml, ConfigurationDao, ConfigurationEndpointImpl> {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
@@ -31,25 +31,25 @@ public class ConfigurationEndpointImplTest extends EndpointImplementorTest
 	@Test
 	public void shouldGetById() {
 		when(dao.get(ID)).thenReturn(entity);
-		assertSame(response, implementor.getConfiguration(ID));
+		assertSame(xml, implementor.getConfiguration(ID));
 	}
 
 	@Test
 	public void shouldGetConfigurationOfProject() {
 		when(dao.configurationOf(ID)).thenReturn(entity);
-		assertSame(response, implementor.configurationOf(ID));
+		assertSame(xml, implementor.configurationOf(ID));
 	}
 
 	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(sortedSet(entity));
-		assertDeepEquals(list(response), implementor.allConfigurations());
+		assertDeepEquals(list(xml), implementor.allConfigurations());
 	}
 
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, implementor.saveConfiguration(request));
+		assertEquals(ID, implementor.saveConfiguration(xml));
 	}
 
 	@Test

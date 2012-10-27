@@ -11,7 +11,7 @@ import org.kalibro.service.xml.RangeXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(RangeClientDao.class)
-public class RangeClientDaoTest extends ClientTest<Range, RangeXml, RangeXml, RangeEndpoint, RangeClientDao> {
+public class RangeClientDaoTest extends ClientTest<Range, RangeXml, RangeEndpoint, RangeClientDao> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long METRIC_CONFIGURATION_ID = new Random().nextLong();
@@ -23,13 +23,13 @@ public class RangeClientDaoTest extends ClientTest<Range, RangeXml, RangeXml, Ra
 
 	@Test
 	public void shouldGetRangesOfMetricConfiguration() {
-		when(port.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(list(response));
+		when(port.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.rangesOf(METRIC_CONFIGURATION_ID));
 	}
 
 	@Test
 	public void shouldSave() {
-		when(port.saveRange(request, METRIC_CONFIGURATION_ID)).thenReturn(ID);
+		when(port.saveRange(xml, METRIC_CONFIGURATION_ID)).thenReturn(ID);
 		assertEquals(ID, client.save(entity, METRIC_CONFIGURATION_ID));
 	}
 

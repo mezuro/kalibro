@@ -14,7 +14,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest({ProcessingEndpointImpl.class, ProcessState.class})
 public class ProcessingEndpointImplTest extends
-	EndpointImplementorTest<Processing, ProcessingXml, ProcessingXml, ProcessingDao, ProcessingEndpointImpl> {
+	EndpointImplementorTest<Processing, ProcessingXml, ProcessingDao, ProcessingEndpointImpl> {
 
 	private static final Long REPOSITORY_ID = Math.abs(new Random().nextLong());
 	private static final Date DATE = new Date(new Random().nextLong());
@@ -62,30 +62,30 @@ public class ProcessingEndpointImplTest extends
 	@Test
 	public void shouldGetLastReadyProcessing() {
 		when(dao.lastReadyProcessing(REPOSITORY_ID)).thenReturn(entity);
-		assertSame(response, implementor.lastReadyProcessing(REPOSITORY_ID));
+		assertSame(xml, implementor.lastReadyProcessing(REPOSITORY_ID));
 	}
 
 	@Test
 	public void shouldGetFirstProcessing() {
 		when(dao.firstProcessing(REPOSITORY_ID)).thenReturn(entity);
-		assertSame(response, implementor.firstProcessing(REPOSITORY_ID));
+		assertSame(xml, implementor.firstProcessing(REPOSITORY_ID));
 	}
 
 	@Test
 	public void shouldGetLastProcessing() {
 		when(dao.lastProcessing(REPOSITORY_ID)).thenReturn(entity);
-		assertSame(response, implementor.lastProcessing(REPOSITORY_ID));
+		assertSame(xml, implementor.lastProcessing(REPOSITORY_ID));
 	}
 
 	@Test
 	public void shouldGetFirstProcessingAfterDate() {
 		when(dao.firstProcessingAfter(DATE, REPOSITORY_ID)).thenReturn(entity);
-		assertSame(response, implementor.firstProcessingAfter(DATE, REPOSITORY_ID));
+		assertSame(xml, implementor.firstProcessingAfter(DATE, REPOSITORY_ID));
 	}
 
 	@Test
 	public void shouldGetLastProcessingBeforeDate() {
 		when(dao.lastProcessingBefore(DATE, REPOSITORY_ID)).thenReturn(entity);
-		assertSame(response, implementor.lastProcessingBefore(DATE, REPOSITORY_ID));
+		assertSame(xml, implementor.lastProcessingBefore(DATE, REPOSITORY_ID));
 	}
 }

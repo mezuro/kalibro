@@ -11,8 +11,7 @@ import org.kalibro.service.xml.RangeXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(RangeEndpointImpl.class)
-public class RangeEndpointImplTest extends
-	EndpointImplementorTest<Range, RangeXml, RangeXml, RangeDao, RangeEndpointImpl> {
+public class RangeEndpointImplTest extends EndpointImplementorTest<Range, RangeXml, RangeDao, RangeEndpointImpl> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long METRIC_CONFIGURATION_ID = new Random().nextLong();
@@ -25,13 +24,13 @@ public class RangeEndpointImplTest extends
 	@Test
 	public void shouldGetRangesOfGroup() {
 		when(dao.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(sortedSet(entity));
-		assertDeepEquals(list(response), implementor.rangesOf(METRIC_CONFIGURATION_ID));
+		assertDeepEquals(list(xml), implementor.rangesOf(METRIC_CONFIGURATION_ID));
 	}
 
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity, METRIC_CONFIGURATION_ID)).thenReturn(ID);
-		assertEquals(ID, implementor.saveRange(request, METRIC_CONFIGURATION_ID));
+		assertEquals(ID, implementor.saveRange(xml, METRIC_CONFIGURATION_ID));
 	}
 
 	@Test

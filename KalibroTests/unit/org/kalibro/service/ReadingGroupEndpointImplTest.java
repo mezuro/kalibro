@@ -11,8 +11,8 @@ import org.kalibro.service.xml.ReadingGroupXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(ReadingGroupEndpointImpl.class)
-public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @formatter:off
-	ReadingGroup, ReadingGroupXml, ReadingGroupXml,	ReadingGroupDao, ReadingGroupEndpointImpl> {// @formatter:on
+public class ReadingGroupEndpointImplTest extends
+	EndpointImplementorTest<ReadingGroup, ReadingGroupXml, ReadingGroupDao, ReadingGroupEndpointImpl> {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
@@ -31,25 +31,25 @@ public class ReadingGroupEndpointImplTest extends EndpointImplementorTest<// @fo
 	@Test
 	public void shouldGetById() {
 		when(dao.get(ID)).thenReturn(entity);
-		assertSame(response, implementor.getReadingGroup(ID));
+		assertSame(xml, implementor.getReadingGroup(ID));
 	}
 
 	@Test
 	public void shouldGetReadingGroupOfMetricConfiguration() {
 		when(dao.readingGroupOf(ID)).thenReturn(entity);
-		assertSame(response, implementor.readingGroupOf(ID));
+		assertSame(xml, implementor.readingGroupOf(ID));
 	}
 
 	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(sortedSet(entity));
-		assertDeepEquals(list(response), implementor.allReadingGroups());
+		assertDeepEquals(list(xml), implementor.allReadingGroups());
 	}
 
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, implementor.saveReadingGroup(request));
+		assertEquals(ID, implementor.saveReadingGroup(xml));
 	}
 
 	@Test
