@@ -27,16 +27,12 @@ public class DatabaseDaoFactory extends DaoFactory {
 		return new RecordManager(entityManager);
 	}
 
-	public DatabaseDaoFactory() {
-		this(KalibroSettings.load().getServerSettings().getDatabaseSettings());
-	}
-
-	public DatabaseDaoFactory(DatabaseSettings settings) {
+	private static synchronized void initialize(DatabaseSettings settings) {
 		if (!settings.deepEquals(currentSettings))
 			updateSettings(settings);
 	}
 
-	private void updateSettings(DatabaseSettings settings) {
+	private static void updateSettings(DatabaseSettings settings) {
 		currentSettings = settings;
 		Map<String, String> properties = new HashMap<String, String>();
 		properties.put(DDL_GENERATION, Environment.ddlGeneration());
@@ -48,10 +44,18 @@ public class DatabaseDaoFactory extends DaoFactory {
 		updateEntityManager(properties);
 	}
 
-	private void updateEntityManager(Map<String, String> properties) {
+	private static void updateEntityManager(Map<String, String> properties) {
 		if (entityManager != null && entityManager.isOpen())
 			entityManager.close();
 		entityManager = Persistence.createEntityManagerFactory("Kalibro", properties).createEntityManager();
+	}
+
+	public DatabaseDaoFactory() {
+		this(KalibroSettings.load().getServerSettings().getDatabaseSettings());
+	}
+
+	public DatabaseDaoFactory(DatabaseSettings settings) {
+		initialize(settings);
 	}
 
 	@Override
