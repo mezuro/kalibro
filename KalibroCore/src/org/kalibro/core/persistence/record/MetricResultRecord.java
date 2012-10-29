@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
 import org.kalibro.dto.MetricResultDto;
@@ -19,9 +20,9 @@ import org.kalibro.dto.MetricResultDto;
 @Table(name = "\"METRIC_RESULT\"")
 public class MetricResultRecord extends MetricResultDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"module_result\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private ModuleResultRecord moduleResult;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -36,10 +37,12 @@ public class MetricResultRecord extends MetricResultDto {
 	@Column(name = "\"value\"", nullable = false)
 	private Long value;
 
+	@CascadeOnDelete
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
+	@CascadeOnDelete
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "metricResult", orphanRemoval = true)
 	private Collection<DescendantResultRecord> descendantResults;
 

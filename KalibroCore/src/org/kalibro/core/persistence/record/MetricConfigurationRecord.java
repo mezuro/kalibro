@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingGroupDao;
@@ -19,9 +20,9 @@ import org.kalibro.dto.MetricConfigurationDto;
 @Table(name = "\"METRIC_CONFIGURATION\"")
 public class MetricConfigurationRecord extends MetricConfigurationDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private ConfigurationRecord configuration;
 
 	@Id
@@ -57,8 +58,9 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	@JoinColumn(name = "\"reading_group\"", referencedColumnName = "\"id\"")
 	private ReadingGroupRecord readingGroup;
 
-	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
+	@CascadeOnDelete
 	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	private Collection<RangeRecord> ranges;
 
 	public MetricConfigurationRecord() {

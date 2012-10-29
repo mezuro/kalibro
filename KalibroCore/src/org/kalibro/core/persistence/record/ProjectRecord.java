@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Project;
 import org.kalibro.dto.ProjectDto;
 
@@ -27,8 +28,9 @@ public class ProjectRecord extends ProjectDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(mappedBy = "project", orphanRemoval = true)
+	@CascadeOnDelete
 	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "project", orphanRemoval = true)
 	private Collection<RepositoryRecord> repositories;
 
 	public ProjectRecord() {

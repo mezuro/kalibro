@@ -17,9 +17,9 @@ import org.kalibro.dto.RangeDto;
 @Table(name = "\"RANGE\"")
 public class RangeRecord extends RangeDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private MetricConfigurationRecord configuration;
 
 	@Id

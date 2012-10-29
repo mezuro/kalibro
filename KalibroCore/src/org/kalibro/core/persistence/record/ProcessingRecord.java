@@ -4,6 +4,7 @@ import java.util.*;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.dto.ProcessingDto;
@@ -17,9 +18,9 @@ import org.kalibro.dto.ProcessingDto;
 @Table(name = "\"PROCESSING\"")
 public class ProcessingRecord extends ProcessingDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"repository\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private RepositoryRecord repository;
 
 	@Id
@@ -33,10 +34,12 @@ public class ProcessingRecord extends ProcessingDto {
 	@Column(name = "\"state\"", nullable = false)
 	private String state;
 
+	@CascadeOnDelete
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
+	@CascadeOnDelete
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "processing", orphanRemoval = true)
 	private Collection<ProcessTimeRecord> processTimes;
 

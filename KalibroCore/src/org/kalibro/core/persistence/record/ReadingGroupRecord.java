@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
@@ -27,8 +28,9 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(mappedBy = "group", orphanRemoval = true)
+	@CascadeOnDelete
 	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "group", orphanRemoval = true)
 	private Collection<ReadingRecord> readings;
 
 	public ReadingGroupRecord() {
