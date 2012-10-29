@@ -4,8 +4,17 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.BaseTool;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
 public class EntityReflectorTest extends UnitTest {
 
 	private Person person;
@@ -17,6 +26,19 @@ public class EntityReflectorTest extends UnitTest {
 		person = loadFixture("carlos", Person.class);
 		programmer = loadFixture("carlos", Programmer.class);
 		noIdentityEntity = new NoIdentityEntity();
+	}
+
+	@Test
+	public void shouldUnwrapLazyLoaderProxies() {
+		BaseTool entity = loadFixture("inexistent", BaseTool.class);
+		BaseToolDao dao = mock(BaseToolDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getBaseToolDao()).thenReturn(dao);
+		when(dao.get("")).thenReturn(entity);
+
+		BaseTool proxy = DaoLazyLoader.createProxy(BaseToolDao.class, "get", "");
+		assertNotSame(entity, proxy);
+		assertSame(entity, new EntityReflector(proxy).getObject());
 	}
 
 	@Test

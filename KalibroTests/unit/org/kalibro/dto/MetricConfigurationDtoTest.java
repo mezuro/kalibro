@@ -5,7 +5,6 @@ import org.kalibro.CompoundMetric;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.RangeDao;
-import org.kalibro.dao.ReadingGroupDao;
 
 public class MetricConfigurationDtoTest extends AbstractDtoTest<MetricConfiguration> {
 
@@ -24,7 +23,6 @@ public class MetricConfigurationDtoTest extends AbstractDtoTest<MetricConfigurat
 			doReturn("Inexistent").when(dto, "baseToolName");
 			whenLazy(BaseToolDao.class, "get", "Inexistent").thenReturn(entity.getBaseTool());
 		}
-		whenLazy(ReadingGroupDao.class, "readingGroupOf", entity.getId()).thenReturn(entity.getReadingGroup());
 		whenLazy(RangeDao.class, "rangesOf", entity.getId()).thenReturn(entity.getRanges());
 	}
 

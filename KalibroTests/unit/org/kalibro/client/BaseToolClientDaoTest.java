@@ -9,8 +9,7 @@ import org.kalibro.service.xml.BaseToolXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(BaseToolClientDao.class)
-public class BaseToolClientDaoTest extends
-	ClientTest<BaseTool, BaseToolXml, BaseToolXml, BaseToolEndpoint, BaseToolClientDao> {
+public class BaseToolClientDaoTest extends ClientTest<BaseTool, BaseToolXml, BaseToolEndpoint, BaseToolClientDao> {
 
 	private static final String NAME = "BaseToolClientDaoTest name";
 
@@ -27,7 +26,7 @@ public class BaseToolClientDaoTest extends
 
 	@Test
 	public void shouldGetByName() {
-		when(port.getBaseTool(NAME)).thenReturn(response);
+		when(port.getBaseTool(NAME)).thenReturn(xml);
 		assertSame(entity, client.get(NAME));
 	}
 }

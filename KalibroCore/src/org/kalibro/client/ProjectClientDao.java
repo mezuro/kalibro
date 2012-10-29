@@ -6,7 +6,7 @@ import org.kalibro.Project;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ProjectEndpoint;
-import org.kalibro.service.xml.ProjectXmlRequest;
+import org.kalibro.service.xml.ProjectXml;
 
 /**
  * {@link ProjectEndpoint} client implementation of {@link ProjectDao}.
@@ -36,7 +36,7 @@ class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements Projec
 
 	@Override
 	public Long save(Project project) {
-		return port.saveProject(new ProjectXmlRequest(project));
+		return port.saveProject(new ProjectXml(project));
 	}
 
 	@Override

@@ -36,7 +36,7 @@ public class MetricResultRecord extends MetricResultDto {
 	@Column(name = "\"value\"", nullable = false)
 	private Long value;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 

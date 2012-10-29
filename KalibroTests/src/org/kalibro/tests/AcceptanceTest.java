@@ -1,6 +1,5 @@
 package org.kalibro.tests;
 
-import static org.kalibro.SupportedDatabase.APACHE_DERBY;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
@@ -11,9 +10,7 @@ import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
-import org.kalibro.DatabaseSettings;
-import org.kalibro.KalibroSettings;
-import org.kalibro.SupportedDatabase;
+import org.kalibro.*;
 
 @RunWith(Theories.class)
 public abstract class AcceptanceTest extends IntegrationTest {
@@ -25,7 +22,14 @@ public abstract class AcceptanceTest extends IntegrationTest {
 
 	@BeforeClass
 	public static void prepareSettings() {
-		changeDatabase(APACHE_DERBY);
+		prepareSettings(SupportedDatabase.APACHE_DERBY);
+	}
+
+	private static void prepareSettings(SupportedDatabase databaseType) {
+		KalibroSettings settings = new KalibroSettings();
+		DatabaseSettings databaseSettigs = loadFixture(databaseType.name(), DatabaseSettings.class);
+		settings.getServerSettings().setDatabaseSettings(databaseSettigs);
+		settings.save();
 	}
 
 	@AfterClass
@@ -34,11 +38,14 @@ public abstract class AcceptanceTest extends IntegrationTest {
 		new File(dotKalibro(), "kalibro.settings").delete();
 	}
 
-	protected static void changeDatabase(SupportedDatabase databaseType) {
-		KalibroSettings settings = new KalibroSettings();
-		DatabaseSettings databaseSettigs = loadFixture(databaseType.name(), DatabaseSettings.class);
-		settings.getServerSettings().setDatabaseSettings(databaseSettigs);
-		settings.save();
+	protected void resetDatabase(SupportedDatabase databaseType) {
+		prepareSettings(databaseType);
+		for (Project project : Project.all())
+			project.delete();
+		for (Configuration configuration : Configuration.all())
+			configuration.delete();
+		for (ReadingGroup group : ReadingGroup.all())
+			group.delete();
 	}
 
 	@Override

@@ -12,7 +12,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(ReadingEndpointImpl.class)
 public class ReadingEndpointImplTest extends
-	EndpointImplementorTest<Reading, ReadingXml, ReadingXml, ReadingDao, ReadingEndpointImpl> {
+	EndpointImplementorTest<Reading, ReadingXml, ReadingDao, ReadingEndpointImpl> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long GROUP_ID = new Random().nextLong();
@@ -25,25 +25,25 @@ public class ReadingEndpointImplTest extends
 	@Test
 	public void shouldGetById() {
 		when(dao.get(ID)).thenReturn(entity);
-		assertSame(response, implementor.getReading(ID));
+		assertSame(xml, implementor.getReading(ID));
 	}
 
 	@Test
 	public void shouldGetReadingOfRange() {
 		when(dao.readingOf(ID)).thenReturn(entity);
-		assertSame(response, implementor.readingOf(ID));
+		assertSame(xml, implementor.readingOf(ID));
 	}
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
 		when(dao.readingsOf(GROUP_ID)).thenReturn(sortedSet(entity));
-		assertDeepEquals(list(response), implementor.readingsOf(GROUP_ID));
+		assertDeepEquals(list(xml), implementor.readingsOf(GROUP_ID));
 	}
 
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity, GROUP_ID)).thenReturn(ID);
-		assertEquals(ID, implementor.saveReading(request, GROUP_ID));
+		assertEquals(ID, implementor.saveReading(xml, GROUP_ID));
 	}
 
 	@Test

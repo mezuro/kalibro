@@ -10,7 +10,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(BaseToolEndpointImpl.class)
 public class BaseToolEndpointImplTest extends
-	EndpointImplementorTest<BaseTool, BaseToolXml, BaseToolXml, BaseToolDao, BaseToolEndpointImpl> {
+	EndpointImplementorTest<BaseTool, BaseToolXml, BaseToolDao, BaseToolEndpointImpl> {
 
 	private static final String NAME = "BaseToolEndpointImplTest name";
 
@@ -28,6 +28,6 @@ public class BaseToolEndpointImplTest extends
 	@Test
 	public void shouldGetByName() {
 		when(dao.get(NAME)).thenReturn(entity);
-		assertSame(response, implementor.getBaseTool(NAME));
+		assertSame(xml, implementor.getBaseTool(NAME));
 	}
 }

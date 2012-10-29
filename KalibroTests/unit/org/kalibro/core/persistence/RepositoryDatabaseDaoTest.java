@@ -38,7 +38,7 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 		whenNew(RepositoryRecord.class).withArguments(repository, PROJECT_ID).thenReturn(record);
 		when(record.convert()).thenReturn(repository);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new RepositoryDatabaseDao(null));
+		dao = spy(new RepositoryDatabaseDao());
 	}
 
 	@Test
@@ -53,8 +53,9 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetRepositoryOfProcessing() {
+		String from = "Processing processing JOIN processing.repository repository";
 		TypedQuery<RepositoryRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("JOIN Processing processing WHERE processing.id = :processingId");
+		doReturn(query).when(dao).createRecordQuery(from, "processing.id = :processingId");
 		when(query.getSingleResult()).thenReturn(record);
 
 		assertSame(repository, dao.repositoryOf(ID));
@@ -64,7 +65,7 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldGetRepositoriesOfProject() {
 		TypedQuery<RepositoryRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("WHERE repository.project.id = :projectId");
+		doReturn(query).when(dao).createRecordQuery("repository.project.id = :projectId");
 		when(query.getResultList()).thenReturn(list(record));
 
 		assertDeepEquals(set(repository), dao.repositoriesOf(PROJECT_ID));

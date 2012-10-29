@@ -11,7 +11,7 @@ final class NotMemberFilter implements MemberFilter {
 
 	private MemberFilter filter;
 
-	protected NotMemberFilter(MemberFilter filter) {
+	NotMemberFilter(MemberFilter filter) {
 		this.filter = filter;
 	}
 

@@ -34,13 +34,13 @@ public class RangeDatabaseDaoTest extends UnitTest {
 		whenNew(RangeRecord.class).withArguments(range, CONFIGURATION_ID).thenReturn(record);
 		when(record.convert()).thenReturn(range);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new RangeDatabaseDao(null));
+		dao = spy(new RangeDatabaseDao());
 	}
 
 	@Test
 	public void shouldGetRangesOfMetricConfiguration() {
 		TypedQuery<RangeRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("WHERE range.configuration.id = :configurationId");
+		doReturn(query).when(dao).createRecordQuery("range.configuration.id = :configurationId");
 		when(query.getResultList()).thenReturn(list(record));
 
 		assertDeepEquals(set(range), dao.rangesOf(CONFIGURATION_ID));

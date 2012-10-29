@@ -33,13 +33,14 @@ public class ReadingGroupDatabaseDaoTest extends UnitTest {
 		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
 		when(record.id()).thenReturn(ID);
 		when(record.convert()).thenReturn(group);
-		dao = spy(new ReadingGroupDatabaseDao(null));
+		dao = spy(new ReadingGroupDatabaseDao());
 	}
 
 	@Test
 	public void shouldGetReadingGroupOfMetricConfiguration() {
+		String from = "MetricConfiguration metricConfiguration JOIN metricConfiguration.readingGroup readingGroup";
 		TypedQuery<ReadingGroupRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("JOIN MetricConfiguration mConf WHERE mConf.id = :id");
+		doReturn(query).when(dao).createRecordQuery(from, "metricConfiguration.id = :id");
 		when(query.getSingleResult()).thenReturn(record);
 
 		assertSame(group, dao.readingGroupOf(ID));

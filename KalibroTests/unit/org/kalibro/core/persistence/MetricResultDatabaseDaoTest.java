@@ -35,7 +35,7 @@ public class MetricResultDatabaseDaoTest extends UnitTest {
 		metricResult = mock(MetricResult.class);
 		record = mock(MetricResultRecord.class);
 		when(record.convert()).thenReturn(metricResult);
-		dao = spy(new MetricResultDatabaseDao(null));
+		dao = spy(new MetricResultDatabaseDao());
 	}
 
 	@Test
@@ -54,7 +54,7 @@ public class MetricResultDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
 		TypedQuery<MetricResultRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("WHERE metricResult.moduleResult.id = :moduleResultId");
+		doReturn(query).when(dao).createRecordQuery("metricResult.moduleResult.id = :moduleResultId");
 		when(query.getResultList()).thenReturn(list(record));
 
 		assertDeepEquals(set(metricResult), dao.metricResultsOf(ID));

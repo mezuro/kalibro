@@ -2,6 +2,8 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
+import java.util.Random;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,6 +11,8 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RepositoryDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -17,16 +21,34 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(DaoFactory.class)
 public class RepositoryTest extends UnitTest {
 
+	private static final Long ID = new Random().nextLong();
+	private static final Long PROJECT_ID = new Random().nextLong();
+
 	private RepositoryDao dao;
+
+	private Project project;
+	private Configuration configuration;
 
 	private Repository repository;
 
 	@Before
 	public void setUp() {
+		project = mock(Project.class);
+		configuration = mock(Configuration.class);
+		when(project.getId()).thenReturn(PROJECT_ID);
+
+		repository = new Repository();
+		repository.setConfiguration(configuration);
+		repository.setProject(project);
+		repository.setAddress("/");
+		mockDao();
+	}
+
+	private void mockDao() {
 		dao = mock(RepositoryDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getRepositoryDao()).thenReturn(dao);
-		repository = new Repository();
+		when(dao.save(repository, PROJECT_ID)).thenReturn(ID);
 	}
 
 	@Test
@@ -35,15 +57,13 @@ public class RepositoryTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldIdentifyByNameAndId() {
-		Repository other = withName(repository.getName());
-		assertEquals(repository, other);
-		Whitebox.setInternalState(other, "id", 1L);
-		assertDifferent(repository, other);
+	public void shouldIdentifyByName() {
+		assertEquals(repository, withName(repository.getName()));
 	}
 
 	@Test
 	public void checkConstruction() {
+		repository = new Repository();
 		assertFalse(repository.hasId());
 		assertEquals("New repository", repository.getName());
 		assertEquals("", repository.getDescription());
@@ -57,14 +77,16 @@ public class RepositoryTest extends UnitTest {
 
 	@Test
 	public void shouldGetCompleteName() {
+		repository.setProject(null);
 		assertEquals("New repository", repository.getCompleteName());
+
 		repository.setProject(new Project());
 		assertEquals("New project - New repository", repository.getCompleteName());
 	}
 
 	@Test
 	public void shouldNotSetConflictingName() {
-		Project project = new Project();
+		project = new Project();
 		project.addRepository(repository);
 		project.addRepository(withName("name"));
 		repository.setName("original");
@@ -88,27 +110,24 @@ public class RepositoryTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRequireNameAddressSavedProjectAndConfigurationToSave() {
-		saveShouldThrowExceptionWithMessage("Repository requires address.");
-
-		repository.setAddress("/");
+	public void shouldRequireNameAddressProjectAndConfigurationToSave() {
 		repository.setName(" ");
-		saveShouldThrowExceptionWithMessage("Repository requires name.");
+		assertSaveThrowsExceptionWithMessage("Repository requires name.");
 
 		repository.setName("name");
-		saveShouldThrowExceptionWithMessage("Repository is not in any project.");
+		repository.setAddress(" ");
+		assertSaveThrowsExceptionWithMessage("Repository requires address.");
 
-		setProjectWithId(null);
-		saveShouldThrowExceptionWithMessage("Project is not saved. Save project instead.");
+		repository.setAddress("/");
+		repository.setProject(null);
+		assertSaveThrowsExceptionWithMessage("Repository is not in any project.");
 
-		setProjectWithId(1L);
-		saveShouldThrowExceptionWithMessage("A configuration should be associated with the repository.");
-
-		setConfigurationWithId(null);
-		saveShouldThrowExceptionWithMessage("The configuration associated with the repository is not saved.");
+		repository.setProject(project);
+		repository.setConfiguration(null);
+		assertSaveThrowsExceptionWithMessage("A configuration should be associated with the repository.");
 	}
 
-	private void saveShouldThrowExceptionWithMessage(String message) {
+	private void assertSaveThrowsExceptionWithMessage(String message) {
 		assertThat(new VoidTask() {
 
 			@Override
@@ -119,73 +138,60 @@ public class RepositoryTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldUpdateIdOnSave() {
-		Long id = prepareSave();
-		assertFalse(repository.hasId());
+	public void shouldAssertProjectAndConfigurationSavedBeforeSave() {
 		repository.save();
-		assertSame(id, repository.getId());
+		InOrder order = Mockito.inOrder(project, configuration, dao);
+		order.verify(project).assertSaved();
+		order.verify(configuration).assertSaved();
+		order.verify(dao).save(repository, PROJECT_ID);
 	}
 
 	@Test
-	public void shouldProcess() {
-		Long id = prepareSave();
-		repository.process();
-		verify(dao).process(id);
+	public void shouldUpdateIdOnSave() {
+		assertFalse(repository.hasId());
+		repository.save();
+		assertEquals(ID, repository.getId());
 	}
 
-	private Long prepareSave() {
-		Long id = mock(Long.class);
-		Long projectId = mock(Long.class);
-		setProjectWithId(projectId);
-		setConfigurationWithId(42L);
-		repository.setAddress("/");
-		when(dao.save(repository, projectId)).thenReturn(id);
-		return id;
+	@Test
+	public void shouldSaveBeforeProcess() {
+		repository.process();
+		InOrder order = Mockito.inOrder(dao);
+		order.verify(dao).save(repository, PROJECT_ID);
+		order.verify(dao).process(ID);
 	}
 
 	@Test
 	public void shouldCancelProcessing() {
-		Long id = mock(Long.class);
-		Whitebox.setInternalState(repository, "id", id);
+		Whitebox.setInternalState(repository, "id", ID);
 		repository.cancelProcessing();
-		verify(dao).cancelProcessing(id);
+		verify(dao).cancelProcessing(ID);
 	}
 
 	@Test
-	public void shouldDeleteIfHasId() {
-		assertFalse(repository.hasId());
+	public void shouldIgnoreDeleteIfIsNotSaved() {
 		repository.delete();
 		verify(dao, never()).delete(any(Long.class));
+	}
 
-		Long id = mock(Long.class);
-		Whitebox.setInternalState(repository, "id", id);
+	@Test
+	public void shouldDeleteIfSaved() {
+		Whitebox.setInternalState(repository, "id", ID);
 
 		assertTrue(repository.hasId());
 		repository.delete();
-		verify(dao).delete(id);
 		assertFalse(repository.hasId());
+		verify(dao).delete(ID);
 	}
 
 	@Test
-	public void shouldRemoveFromprojectOnDelete() {
-		Project project = setProjectWithId(42L);
+	public void shouldRemoveFromProjectOnDelete() {
 		repository.delete();
 		verify(project).removeRepository(repository);
 	}
 
-	private Project setProjectWithId(Long id) {
-		Project project = mock(Project.class);
-		when(project.hasId()).thenReturn(id != null);
-		when(project.getId()).thenReturn(id);
-		repository.setProject(project);
-		return project;
-	}
-
-	private Configuration setConfigurationWithId(Long id) {
-		Configuration configuration = mock(Configuration.class);
-		when(configuration.hasId()).thenReturn(id != null);
-		when(configuration.getId()).thenReturn(id);
-		repository.setConfiguration(configuration);
-		return configuration;
+	@Test
+	public void toStringShouldBeCompleteName() {
+		assertEquals(repository.getCompleteName(), "" + repository);
 	}
 }

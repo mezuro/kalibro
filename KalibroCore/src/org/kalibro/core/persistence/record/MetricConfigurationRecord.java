@@ -1,12 +1,13 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
 
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ReadingGroupDao;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.MetricConfigurationDto;
 
 /**
@@ -37,11 +38,6 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	@Column(name = "\"aggregation_form\"", nullable = false)
 	private String aggregationForm;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"reading_group\"", referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
-	private ReadingGroupRecord readingGroup;
-
 	@Column(name = "\"compound\"", nullable = false)
 	private Boolean compound;
 
@@ -57,7 +53,12 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	@Column(name = "\"metric_origin\"", nullable = false)
 	private String metricOrigin;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configuration", orphanRemoval = true)
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "\"reading_group\"", referencedColumnName = "\"id\"")
+	private ReadingGroupRecord readingGroup;
+
+	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
+	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<RangeRecord> ranges;
 
 	public MetricConfigurationRecord() {
@@ -69,27 +70,17 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	}
 
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
-		this(metricConfiguration, (Long) null);
+		this(metricConfiguration, null);
 	}
 
-	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, Long configurationId) {
-		this(metricConfiguration, new ConfigurationRecord(configurationId));
-	}
-
-	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, ConfigurationRecord configurationRecord) {
-		this(metricConfiguration.getId());
-		configuration = configurationRecord;
-		code = metricConfiguration.getCode();
-		weight = Double.doubleToLongBits(metricConfiguration.getWeight());
-		aggregationForm = metricConfiguration.getAggregationForm().name();
-		setReadingGroup(metricConfiguration.getReadingGroup());
-		setMetric(metricConfiguration.getMetric(), metricConfiguration.getBaseTool());
-		setRanges(metricConfiguration.getRanges());
-	}
-
-	private void setReadingGroup(ReadingGroup readingGroup) {
-		if (readingGroup != null)
-			this.readingGroup = new ReadingGroupRecord(readingGroup.getId());
+	public MetricConfigurationRecord(MetricConfiguration entity, Long configurationId) {
+		this(entity.getId());
+		configuration = new ConfigurationRecord(configurationId);
+		code = entity.getCode();
+		weight = Double.doubleToLongBits(entity.getWeight());
+		aggregationForm = entity.getAggregationForm().name();
+		readingGroup = entity.hasReadingGroup() ? new ReadingGroupRecord(entity.getReadingGroup().getId()) : null;
+		setMetric(entity.getMetric(), entity.getBaseTool());
 	}
 
 	private void setMetric(Metric metric, BaseTool baseTool) {
@@ -98,12 +89,6 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 		metricScope = metric.getScope().name();
 		metricDescription = metric.getDescription();
 		metricOrigin = compound ? ((CompoundMetric) metric).getScript() : baseTool.getName();
-	}
-
-	private void setRanges(Collection<Range> ranges) {
-		this.ranges = new ArrayList<RangeRecord>();
-		for (Range range : ranges)
-			this.ranges.add(new RangeRecord(range, this));
 	}
 
 	@Override
@@ -146,5 +131,11 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	@Override
 	public String baseToolName() {
 		return metricOrigin;
+	}
+
+	@Override
+	public ReadingGroup readingGroup() {
+		return readingGroup == null ? null :
+			(ReadingGroup) DaoLazyLoader.createProxy(ReadingGroupDao.class, "readingGroupOf", id);
 	}
 }

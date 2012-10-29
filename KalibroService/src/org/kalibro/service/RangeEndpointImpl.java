@@ -9,8 +9,7 @@ import javax.jws.WebService;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RangeDao;
 import org.kalibro.dto.DataTransferObject;
-import org.kalibro.service.xml.RangeXmlRequest;
-import org.kalibro.service.xml.RangeXmlResponse;
+import org.kalibro.service.xml.RangeXml;
 
 /**
  * Implementation of {@link RangeEndpoint}.
@@ -32,14 +31,14 @@ public class RangeEndpointImpl implements RangeEndpoint {
 
 	@Override
 	@WebResult(name = "range")
-	public List<RangeXmlResponse> rangesOf(@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
-		return DataTransferObject.createDtos(dao.rangesOf(metricConfigurationId), RangeXmlResponse.class);
+	public List<RangeXml> rangesOf(@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
+		return DataTransferObject.createDtos(dao.rangesOf(metricConfigurationId), RangeXml.class);
 	}
 
 	@Override
 	@WebResult(name = "rangeId")
 	public Long saveRange(
-		@WebParam(name = "range") RangeXmlRequest range,
+		@WebParam(name = "range") RangeXml range,
 		@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
 		return dao.save(range.convert(), metricConfigurationId);
 	}

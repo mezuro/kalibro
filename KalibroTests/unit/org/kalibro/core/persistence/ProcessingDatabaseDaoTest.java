@@ -22,7 +22,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ProcessingDatabaseDao.class)
 public class ProcessingDatabaseDaoTest extends UnitTest {
 
-	private static final String CLAUSE = "WHERE processing.repository.id = :repositoryId";
+	private static final String WHERE = "processing.repository.id = :repositoryId";
+	private static final String CLAUSE = "WHERE " + WHERE;
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 	private static final Long TIME = Math.abs(new Random().nextLong());
@@ -39,7 +40,7 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 		record = mock(ProcessingRecord.class);
 		when(record.convert()).thenReturn(processing);
 		whenNew(ProcessingRecord.class).withArguments(processing).thenReturn(record);
-		dao = spy(new ProcessingDatabaseDao(null));
+		dao = spy(new ProcessingDatabaseDao());
 		doReturn(record).when(dao).save(record);
 	}
 
@@ -105,7 +106,7 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetLastReadyProcessing() {
-		TypedQuery<ProcessingRecord> query = prepareQuery(CLAUSE + " AND processing.date = " +
+		TypedQuery<ProcessingRecord> query = prepareQuery(WHERE + " AND processing.date = " +
 			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId AND p.state = 'READY')");
 		assertSame(processing, dao.lastReadyProcessing(ID));
 		verify(query).setParameter("repositoryId", ID);
@@ -113,7 +114,7 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetFirstProcessing() {
-		TypedQuery<ProcessingRecord> query = prepareQuery(CLAUSE + " AND processing.date = " +
+		TypedQuery<ProcessingRecord> query = prepareQuery(WHERE + " AND processing.date = " +
 			"(SELECT min(p.date) FROM Processing p WHERE p.repository.id = :repositoryId)");
 		assertSame(processing, dao.firstProcessing(ID));
 		verify(query).setParameter("repositoryId", ID);
@@ -121,7 +122,7 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetLastProcessing() {
-		TypedQuery<ProcessingRecord> query = prepareQuery(CLAUSE + " AND processing.date = " +
+		TypedQuery<ProcessingRecord> query = prepareQuery(WHERE + " AND processing.date = " +
 			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId)");
 		assertSame(processing, dao.lastProcessing(ID));
 		verify(query).setParameter("repositoryId", ID);
@@ -129,7 +130,7 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetFirstProcessingAfterDate() {
-		TypedQuery<ProcessingRecord> query = prepareQuery(CLAUSE + " AND processing.date = " +
+		TypedQuery<ProcessingRecord> query = prepareQuery(WHERE + " AND processing.date = " +
 			"(SELECT min(p.date) FROM Processing p WHERE p.repository.id = :repositoryId AND p.date > :date)");
 		assertSame(processing, dao.firstProcessingAfter(DATE, ID));
 		verify(query).setParameter("repositoryId", ID);
@@ -138,16 +139,16 @@ public class ProcessingDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetLastProcessingBeforeDate() {
-		TypedQuery<ProcessingRecord> query = prepareQuery(CLAUSE + " AND processing.date = " +
+		TypedQuery<ProcessingRecord> query = prepareQuery(WHERE + " AND processing.date = " +
 			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId AND p.date < :date)");
 		assertSame(processing, dao.lastProcessingBefore(DATE, ID));
 		verify(query).setParameter("repositoryId", ID);
 		verify(query).setParameter("date", TIME);
 	}
 
-	private TypedQuery<ProcessingRecord> prepareQuery(String clauses) {
+	private TypedQuery<ProcessingRecord> prepareQuery(String where) {
 		TypedQuery<ProcessingRecord> query = PowerMockito.mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery(clauses);
+		doReturn(query).when(dao).createRecordQuery(where);
 		when(query.getSingleResult()).thenReturn(record);
 		return query;
 	}

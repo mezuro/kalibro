@@ -10,7 +10,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.dao.RepositoryDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -97,58 +96,65 @@ public class ProjectTest extends UnitTest {
 		project.setRepositories(repositories);
 
 		project.removeRepository(repository);
-		verify(repositories).remove(repository);
+		assertTrue(project.getRepositories().isEmpty());
 		verify(repository).setProject(null);
+	}
+
+	@Test
+	public void shouldAssertSaved() {
+		prepareSave(42L);
+
+		project.assertSaved();
+		verify(dao).save(project);
+
+		project.assertSaved();
+		verifyNoMoreInteractions(dao);
 	}
 
 	@Test
 	public void shouldRequiredNameToSave() {
 		project.setName(" ");
-		assertThat(save()).throwsException().withMessage("Project requires name.");
-	}
-
-	private VoidTask save() {
-		return new VoidTask() {
+		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				project.save();
 			}
-		};
+		}).throwsException().withMessage("Project requires name.");
 	}
 
 	@Test
-	public void shouldUpdateIdAndRepositoriesOnSave() {
+	public void shouldUpdateIdAndSaveRepositoriesOnSave() {
 		Long id = mock(Long.class);
-		Repository repository = mockRepository(id);
-		when(dao.save(project)).thenReturn(id);
+		Repository repository = mock(Repository.class);
+		prepareSave(id, repository);
 
 		assertFalse(project.hasId());
 		project.save();
 		assertSame(id, project.getId());
-		assertDeepEquals(set(repository), project.getRepositories());
+		verify(repository).save();
 	}
 
-	private Repository mockRepository(Long id) {
-		Repository repository = mock(Repository.class);
-		RepositoryDao repositoryDao = mock(RepositoryDao.class);
-		when(DaoFactory.getRepositoryDao()).thenReturn(repositoryDao);
-		when(repositoryDao.repositoriesOf(id)).thenReturn(sortedSet(repository));
-		return repository;
+	private void prepareSave(Long id, Repository... repositories) {
+		project.setRepositories(sortedSet(repositories));
+		when(dao.save(project)).thenReturn(id);
 	}
 
 	@Test
-	public void shouldDeleteIfHasId() {
-		assertFalse(project.hasId());
+	public void shouldIgnoreDeleteIfIsNotSaved() {
 		project.delete();
 		verify(dao, never()).delete(any(Long.class));
+	}
 
-		Whitebox.setInternalState(project, "id", 42L);
+	@Test
+	public void shouldDeleteIfSaved() {
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(project, "id", id);
+
 		assertTrue(project.hasId());
-
 		project.delete();
-		verify(dao).delete(42L);
 		assertFalse(project.hasId());
+		verify(dao).delete(id);
 	}
 
 	@Test

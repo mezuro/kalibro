@@ -131,4 +131,9 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	public String baseToolName() {
 		return metricOrigin;
 	}
+
+	@Override
+	public ReadingGroup readingGroup() {
+		return null;
+	}
 }

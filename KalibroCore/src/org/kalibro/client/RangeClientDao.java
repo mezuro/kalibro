@@ -6,7 +6,7 @@ import org.kalibro.Range;
 import org.kalibro.dao.RangeDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.RangeEndpoint;
-import org.kalibro.service.xml.RangeXmlRequest;
+import org.kalibro.service.xml.RangeXml;
 
 /**
  * {@link RangeEndpoint} client implementation of {@link RangeDao}.
@@ -26,7 +26,7 @@ class RangeClientDao extends EndpointClient<RangeEndpoint> implements RangeDao {
 
 	@Override
 	public Long save(Range range, Long metricConfigurationId) {
-		return port.saveRange(new RangeXmlRequest(range), metricConfigurationId);
+		return port.saveRange(new RangeXml(range), metricConfigurationId);
 	}
 
 	@Override

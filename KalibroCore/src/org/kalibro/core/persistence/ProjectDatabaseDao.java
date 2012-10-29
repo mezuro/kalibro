@@ -11,8 +11,8 @@ import org.kalibro.dao.ProjectDao;
  */
 class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements ProjectDao {
 
-	ProjectDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ProjectRecord.class);
+	ProjectDatabaseDao() {
+		super(ProjectRecord.class);
 	}
 
 	@Override

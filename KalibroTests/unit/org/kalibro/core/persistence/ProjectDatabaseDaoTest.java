@@ -31,7 +31,7 @@ public class ProjectDatabaseDaoTest extends UnitTest {
 		whenNew(ProjectRecord.class).withArguments(project).thenReturn(record);
 		when(record.convert()).thenReturn(project);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new ProjectDatabaseDao(null));
+		dao = spy(new ProjectDatabaseDao());
 	}
 
 	@Test

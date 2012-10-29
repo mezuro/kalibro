@@ -1,5 +1,7 @@
 package org.kalibro;
 
+import org.kalibro.core.abstractentity.Print;
+
 /**
  * Metric calculated based on the results of other metrics, using a script.
  * 
@@ -7,6 +9,7 @@ package org.kalibro;
  */
 public class CompoundMetric extends Metric {
 
+	@Print(order = 4)
 	private String script;
 
 	public CompoundMetric() {

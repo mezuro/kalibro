@@ -6,7 +6,7 @@ import org.kalibro.Configuration;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ConfigurationEndpoint;
-import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.kalibro.service.xml.ConfigurationXml;
 
 /**
  * {@link ConfigurationEndpoint} client implementation of {@link ConfigurationDao}.
@@ -41,7 +41,7 @@ class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> imple
 
 	@Override
 	public Long save(Configuration configuration) {
-		return port.saveConfiguration(new ConfigurationXmlRequest(configuration));
+		return port.saveConfiguration(new ConfigurationXml(configuration));
 	}
 
 	@Override

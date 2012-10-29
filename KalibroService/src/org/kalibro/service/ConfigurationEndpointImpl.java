@@ -9,8 +9,7 @@ import javax.jws.WebService;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dto.DataTransferObject;
-import org.kalibro.service.xml.ConfigurationXmlRequest;
-import org.kalibro.service.xml.ConfigurationXmlResponse;
+import org.kalibro.service.xml.ConfigurationXml;
 
 /**
  * Implementation of {@link ConfigurationEndpoint}.
@@ -38,25 +37,25 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
 	@Override
 	@WebResult(name = "configuration")
-	public ConfigurationXmlResponse getConfiguration(@WebParam(name = "configurationId") Long configurationId) {
-		return new ConfigurationXmlResponse(dao.get(configurationId));
+	public ConfigurationXml getConfiguration(@WebParam(name = "configurationId") Long configurationId) {
+		return new ConfigurationXml(dao.get(configurationId));
 	}
 
 	@Override
 	@WebResult(name = "configuration")
-	public ConfigurationXmlResponse configurationOf(@WebParam(name = "repositoryId") Long repositoryId) {
-		return new ConfigurationXmlResponse(dao.configurationOf(repositoryId));
+	public ConfigurationXml configurationOf(@WebParam(name = "repositoryId") Long repositoryId) {
+		return new ConfigurationXml(dao.configurationOf(repositoryId));
 	}
 
 	@Override
 	@WebResult(name = "configuration")
-	public List<ConfigurationXmlResponse> allConfigurations() {
-		return DataTransferObject.createDtos(dao.all(), ConfigurationXmlResponse.class);
+	public List<ConfigurationXml> allConfigurations() {
+		return DataTransferObject.createDtos(dao.all(), ConfigurationXml.class);
 	}
 
 	@Override
 	@WebResult(name = "configurationId")
-	public Long saveConfiguration(@WebParam(name = "configuration") ConfigurationXmlRequest configuration) {
+	public Long saveConfiguration(@WebParam(name = "configuration") ConfigurationXml configuration) {
 		return dao.save(configuration.convert());
 	}
 

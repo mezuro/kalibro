@@ -8,6 +8,6 @@ public class ThrowableRecordTest extends RecordTest {
 		assertColumn("throwableClass", String.class).isRequired();
 		assertColumn("detailMessage", String.class).isNullable();
 		assertOrderedOneToMany("stackTrace").isMappedBy("throwable");
-		assertOneToOne("cause", ThrowableRecord.class).isOptional();
+		shouldHaveError("cause");
 	}
 }

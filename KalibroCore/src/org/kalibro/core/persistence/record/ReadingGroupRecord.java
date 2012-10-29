@@ -1,11 +1,9 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
@@ -29,7 +27,8 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "group", orphanRemoval = true)
+	@OneToMany(mappedBy = "group", orphanRemoval = true)
+	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<ReadingRecord> readings;
 
 	public ReadingGroupRecord() {
@@ -44,13 +43,6 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 		this(readingGroup.getId());
 		name = readingGroup.getName();
 		description = readingGroup.getDescription();
-		setReadings(readingGroup.getReadings());
-	}
-
-	private void setReadings(Collection<Reading> readings) {
-		this.readings = new ArrayList<ReadingRecord>();
-		for (Reading reading : readings)
-			this.readings.add(new ReadingRecord(reading, this));
 	}
 
 	@Override

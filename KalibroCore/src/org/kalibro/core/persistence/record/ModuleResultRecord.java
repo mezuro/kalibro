@@ -53,7 +53,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ModuleResultRecord parent;
 
-	@OneToMany(mappedBy = "parent")
+	@OneToMany(mappedBy = "parent", orphanRemoval = true)
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<ModuleResultRecord> children;
 

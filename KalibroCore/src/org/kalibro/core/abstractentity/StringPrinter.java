@@ -7,11 +7,13 @@ package org.kalibro.core.abstractentity;
  */
 class StringPrinter extends Printer<String> {
 
-	@Override boolean canPrint(Object object) {
+	@Override
+	boolean canPrint(Object object) {
 		return object instanceof String;
 	}
 
-	@Override void doPrint(String string, String comment) {
+	@Override
+	void doPrint(String string, String comment) {
 		printString(" \"" + string.replace("\n", "\\n").replace("\t", "\\t").replace("\"", "\\\"") + "\"");
 		printComment(comment);
 	}

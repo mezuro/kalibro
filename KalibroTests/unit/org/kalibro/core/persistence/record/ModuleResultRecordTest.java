@@ -18,8 +18,8 @@ public class ModuleResultRecordTest extends RecordTest {
 		assertColumn("moduleGranularity", String.class).isRequired();
 		assertColumn("grade", Long.class).isNullable();
 		assertManyToOne("parent", ModuleResultRecord.class).isOptional();
-		assertOneToMany("children", false).isMappedBy("parent");
-		assertOneToMany("metricResults").isMappedBy("moduleResult");
+		assertOneToMany("children").doesNotCascade().isMappedBy("parent");
+		assertOneToMany("metricResults").cascades().isMappedBy("moduleResult");
 	}
 
 	@Test

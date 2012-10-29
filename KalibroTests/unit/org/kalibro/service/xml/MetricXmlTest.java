@@ -7,7 +7,7 @@ import org.kalibro.CompoundMetric;
 import org.kalibro.Granularity;
 import org.kalibro.Metric;
 
-public class MetricXmlResponseTest extends XmlTest {
+public class MetricXmlTest extends XmlTest {
 
 	@Override
 	protected Class<?> entityClass() {
@@ -16,9 +16,9 @@ public class MetricXmlResponseTest extends XmlTest {
 
 	@Override
 	protected void verifyElements() {
-		assertElement("compound", boolean.class);
-		assertElement("name", String.class);
-		assertElement("scope", Granularity.class);
+		assertElement("compound", boolean.class, true);
+		assertElement("name", String.class, true);
+		assertElement("scope", Granularity.class, true);
 		assertElement("description", String.class);
 		assertElement("script", String.class);
 		assertCollection("language");
@@ -27,11 +27,11 @@ public class MetricXmlResponseTest extends XmlTest {
 	@Test
 	public void shouldConvertScriptOfCompoundMetric() {
 		CompoundMetric metric = loadFixture("sc", CompoundMetric.class);
-		assertEquals(metric.getScript(), new MetricXmlResponse(metric).script());
+		assertEquals(metric.getScript(), new MetricXml(metric).script());
 	}
 
 	@Test
 	public void shouldConvertNullLanguagesIntoEmptyCollection() {
-		assertTrue(new MetricXmlResponse().languages().isEmpty());
+		assertTrue(new MetricXml().languages().isEmpty());
 	}
 }

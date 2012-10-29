@@ -40,7 +40,7 @@ public class TaskMatcher {
 
 	public ThrowableMatcher doThrow(Class<? extends Throwable> throwableClass) {
 		Throwable throwed = doCatch(throwableClass);
-		assertClassEquals(throwableClass, throwed);
+		assertClassEquals("" + throwed.getStackTrace()[0], throwableClass, throwed);
 		return new ThrowableMatcher(throwed);
 	}
 
@@ -51,10 +51,10 @@ public class TaskMatcher {
 	private Throwable doCatch(Object expected) {
 		try {
 			task.compute();
-			fail("Expected but not throwed:\n" + expected);
-			return null;
 		} catch (Throwable throwed) {
 			return throwed;
 		}
+		fail("Expected but not throwed:\n" + expected);
+		return null;
 	}
 }

@@ -34,13 +34,14 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 		whenNew(ReadingRecord.class).withArguments(reading, GROUP_ID).thenReturn(record);
 		when(record.convert()).thenReturn(reading);
 		when(record.id()).thenReturn(ID);
-		dao = spy(new ReadingDatabaseDao(null));
+		dao = spy(new ReadingDatabaseDao());
 	}
 
 	@Test
 	public void shouldGetReadingOfRange() {
+		String from = "Range range JOIN range.reading reading";
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("JOIN Range range WHERE range.id = :rangeId");
+		doReturn(query).when(dao).createRecordQuery(from, "range.id = :rangeId");
 		when(query.getSingleResult()).thenReturn(record);
 
 		assertSame(reading, dao.readingOf(ID));
@@ -50,7 +51,7 @@ public class ReadingDatabaseDaoTest extends UnitTest {
 	@Test
 	public void shouldGetReadingsOfGroup() {
 		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("WHERE reading.group.id = :groupId");
+		doReturn(query).when(dao).createRecordQuery("reading.group.id = :groupId");
 		when(query.getResultList()).thenReturn(list(record));
 
 		assertDeepEquals(set(reading), dao.readingsOf(GROUP_ID));

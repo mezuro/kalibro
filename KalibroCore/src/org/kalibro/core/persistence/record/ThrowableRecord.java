@@ -32,7 +32,7 @@ public class ThrowableRecord extends ThrowableDto {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
 	private List<StackTraceElementRecord> stackTrace;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"cause\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord cause;
 

@@ -2,8 +2,11 @@ package org.kalibro.core.persistence.record;
 
 import javax.persistence.*;
 
+import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
@@ -57,16 +60,12 @@ public class RepositoryRecord extends RepositoryDto {
 	}
 
 	public RepositoryRecord(Repository repository) {
-		this(repository, (Long) null);
+		this(repository, null);
 	}
 
 	public RepositoryRecord(Repository repository, Long projectId) {
-		this(repository, new ProjectRecord(projectId));
-	}
-
-	public RepositoryRecord(Repository repository, ProjectRecord projectRecord) {
 		this(repository.getId());
-		project = projectRecord;
+		project = new ProjectRecord(projectId);
 		name = repository.getName();
 		type = repository.getType().name();
 		address = repository.getAddress();
@@ -109,5 +108,10 @@ public class RepositoryRecord extends RepositoryDto {
 	@Override
 	public Integer processPeriod() {
 		return processPeriod;
+	}
+
+	@Override
+	public Configuration configuration() {
+		return DaoLazyLoader.createProxy(ConfigurationDao.class, "configurationOf", id);
 	}
 }

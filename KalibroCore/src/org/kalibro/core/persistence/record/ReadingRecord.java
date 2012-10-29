@@ -44,19 +44,15 @@ public class ReadingRecord extends ReadingDto {
 	}
 
 	public ReadingRecord(Reading reading) {
-		this(reading, (Long) null);
+		this(reading, null);
 	}
 
 	public ReadingRecord(Reading reading, Long groupId) {
-		this(reading, new ReadingGroupRecord(groupId));
-	}
-
-	public ReadingRecord(Reading reading, ReadingGroupRecord groupRecord) {
 		this(reading.getId());
 		label = reading.getLabel();
 		grade = Double.doubleToLongBits(reading.getGrade());
 		color = reading.getColor().getRGB();
-		group = groupRecord;
+		group = new ReadingGroupRecord(groupId);
 	}
 
 	@Override

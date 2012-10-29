@@ -7,11 +7,13 @@ package org.kalibro.core.abstractentity;
  */
 class DoublePrinter extends Printer<Double> {
 
-	@Override boolean canPrint(Object object) {
+	@Override
+	boolean canPrint(Object object) {
 		return object instanceof Double;
 	}
 
-	@Override void doPrint(Double value, String comment) {
+	@Override
+	void doPrint(Double value, String comment) {
 		printString(" " + convert(value));
 		printComment(comment);
 	}

@@ -17,7 +17,6 @@ import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
-import org.mockito.stubbing.OngoingStubbing;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -27,12 +26,15 @@ import org.powermock.reflect.Whitebox;
 public class DatabaseDaoFactoryTest extends UnitTest {
 
 	private DatabaseSettings settings;
+	private EntityManager entityManager;
 	private RecordManager recordManager;
 
 	private DatabaseDaoFactory factory;
 
 	@Before
 	public void setUp() throws Exception {
+		Whitebox.setInternalState(DatabaseDaoFactory.class, "entityManager", (EntityManager) null);
+		Whitebox.setInternalState(DatabaseDaoFactory.class, "currentSettings", (DatabaseSettings) null);
 		mockDatabaseSettings();
 		mockPersistence();
 		factory = new DatabaseDaoFactory();
@@ -46,12 +48,18 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 
 	private void mockPersistence() throws Exception {
 		EntityManagerFactory entityManagerFactory = mock(EntityManagerFactory.class);
-		EntityManager entityManager = mock(EntityManager.class);
+		entityManager = mock(EntityManager.class);
 		recordManager = mock(RecordManager.class);
 		mockStatic(Persistence.class);
 		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(entityManagerFactory);
 		when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
+		when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
 		whenNew(RecordManager.class).withArguments(entityManager).thenReturn(recordManager);
+	}
+
+	@Test
+	public void shouldCreateRecordManager() {
+		assertSame(recordManager, DatabaseDaoFactory.createRecordManager());
 	}
 
 	@Test
@@ -74,6 +82,17 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldClosePreviousEntityManagerIfOpen() {
+		when(entityManager.isOpen()).thenReturn(true);
+
+		DatabaseSettings newSettings = new DatabaseSettings();
+		newSettings.setPassword("x");
+		new DatabaseDaoFactory(newSettings);
+
+		verify(entityManager).close();
+	}
+
+	@Test
 	public void shouldCreateDaos() throws Exception {
 		shouldCreate(BaseToolDatabaseDao.class);
 		shouldCreate(ConfigurationDatabaseDao.class);
@@ -90,14 +109,8 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 
 	private <T> void shouldCreate(Class<T> daoClass) throws Exception {
 		T dao = mock(daoClass);
-		whenCreate(daoClass).thenReturn(dao);
+		whenNew(daoClass).withNoArguments().thenReturn(dao);
 		String methodName = "create" + daoClass.getSimpleName().replace("Database", "");
-		assertSame(dao, Whitebox.invokeMethod(factory, methodName));
-	}
-
-	private <T> OngoingStubbing<T> whenCreate(Class<T> daoClass) throws Exception {
-		if (daoClass.getDeclaredConstructors()[0].getParameterTypes().length == 0)
-			return whenNew(daoClass).withNoArguments();
-		return whenNew(daoClass).withArguments(recordManager);
+		assertSame("Unexpected return of " + methodName, dao, Whitebox.invokeMethod(factory, methodName));
 	}
 }
