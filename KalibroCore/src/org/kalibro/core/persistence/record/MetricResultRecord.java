@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
 import org.kalibro.dto.MetricResultDto;
@@ -41,7 +40,6 @@ public class MetricResultRecord extends MetricResultDto {
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
-	@PrivateOwned
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "metricResult", orphanRemoval = true)
 	private Collection<DescendantResultRecord> descendantResults;
 

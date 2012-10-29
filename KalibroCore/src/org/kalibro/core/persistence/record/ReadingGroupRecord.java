@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
@@ -28,7 +27,6 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@PrivateOwned
 	@OneToMany(mappedBy = "group", orphanRemoval = true)
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<ReadingRecord> readings;

@@ -8,7 +8,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrivateOwned;
 import org.junit.Test;
 import org.kalibro.core.Identifier;
 import org.kalibro.dto.ConcreteDtoTest;
@@ -53,7 +52,6 @@ public abstract class RecordTest extends ConcreteDtoTest {
 
 	protected OneToManyMatcher assertOneToMany(String field) {
 		assertFieldType(field, Collection.class);
-		annotation(field, PrivateOwned.class);
 		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans();
 	}
 

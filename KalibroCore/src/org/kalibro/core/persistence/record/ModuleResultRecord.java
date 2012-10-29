@@ -7,7 +7,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kalibro.Granularity;
 import org.kalibro.MetricResult;
 import org.kalibro.Module;
@@ -54,12 +53,10 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private ModuleResultRecord parent;
 
-	@PrivateOwned
 	@OneToMany(mappedBy = "parent", orphanRemoval = true)
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<ModuleResultRecord> children;
 
-	@PrivateOwned
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleResult", orphanRemoval = true)
 	private Collection<MetricResultRecord> metricResults;
 

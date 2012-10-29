@@ -4,7 +4,6 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrivateOwned;
 import org.kalibro.Project;
 import org.kalibro.dto.ProjectDto;
 
@@ -28,7 +27,6 @@ public class ProjectRecord extends ProjectDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@PrivateOwned
 	@OneToMany(mappedBy = "project", orphanRemoval = true)
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Collection<RepositoryRecord> repositories;
