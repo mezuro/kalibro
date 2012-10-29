@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.dto.ThrowableDto;
 
 /**
@@ -28,10 +29,12 @@ public class ThrowableRecord extends ThrowableDto {
 	@Column(name = "\"detail_message\"")
 	private String detailMessage;
 
+	@CascadeOnDelete
 	@OrderColumn(name = "\"index\"", nullable = false)
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
 	private List<StackTraceElementRecord> stackTrace;
 
+	@CascadeOnDelete
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"cause\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord cause;

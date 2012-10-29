@@ -16,6 +16,11 @@ import org.kalibro.dto.ReadingDto;
 @Table(name = "\"READING\"")
 public class ReadingRecord extends ReadingDto {
 
+	@SuppressWarnings("unused" /* JPA */)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
+	private ReadingGroupRecord group;
+
 	@Id
 	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
@@ -29,11 +34,6 @@ public class ReadingRecord extends ReadingDto {
 
 	@Column(name = "\"color\"", nullable = false)
 	private Integer color;
-
-	@SuppressWarnings("unused" /* JPA */)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
-	private ReadingGroupRecord group;
 
 	public ReadingRecord() {
 		super();

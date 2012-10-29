@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Configuration;
 import org.kalibro.dto.ConfigurationDto;
 
@@ -27,8 +28,9 @@ public class ConfigurationRecord extends ConfigurationDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
+	@CascadeOnDelete
 	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	private Collection<MetricConfigurationRecord> metricConfigurations;
 
 	public ConfigurationRecord() {

@@ -14,8 +14,8 @@ import org.kalibro.dto.StackTraceElementDto;
 public class StackTraceElementRecord extends StackTraceElementDto {
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"throwable\"", referencedColumnName = "\"id\"")
 	@SuppressWarnings("unused" /* used by JPA */)
+	@JoinColumn(name = "\"throwable\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord throwable;
 
 	@Id

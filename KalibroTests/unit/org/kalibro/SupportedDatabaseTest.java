@@ -15,12 +15,14 @@ public class SupportedDatabaseTest extends EnumerationTest<SupportedDatabase> {
 
 	@Override
 	protected String expectedText(SupportedDatabase value) {
-		return (value == APACHE_DERBY) ? "Apache Derby" : super.expectedText(value);
+		return array("Apache Derby", "Mysql", "PostgreSQL", "SQLite")[value.ordinal()];
 	}
 
 	@Test
 	public void checkJdbcDrivers() {
 		assertEquals(org.apache.derby.jdbc.EmbeddedDriver.class.getName(), APACHE_DERBY.getDriverClassName());
 		assertEquals(com.mysql.jdbc.Driver.class.getName(), MYSQL.getDriverClassName());
+		assertEquals(org.sqlite.JDBC.class.getName(), SQLITE.getDriverClassName());
+		assertEquals(org.postgresql.Driver.class.getName(), POSTGRESQL.getDriverClassName());
 	}
 }

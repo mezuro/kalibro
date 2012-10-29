@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.junit.Test;
 import org.kalibro.core.Identifier;
 import org.kalibro.dto.ConcreteDtoTest;
@@ -52,6 +53,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 
 	protected OneToManyMatcher assertOneToMany(String field) {
 		assertFieldType(field, Collection.class);
+		annotation(field, CascadeOnDelete.class);
 		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans();
 	}
 
@@ -62,6 +64,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 
 	protected OneToManyMatcher assertOrderedOneToMany(String field) {
 		assertOrdered(field);
+		annotation(field, CascadeOnDelete.class);
 		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans().cascades();
 	}
 
@@ -79,6 +82,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 
 	protected void shouldHaveError(String field) {
 		assertFieldType(field, ThrowableRecord.class);
+		annotation(field, CascadeOnDelete.class);
 		new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).cascades().isEager().isOptional();
 	}
 
