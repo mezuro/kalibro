@@ -25,6 +25,6 @@ public class DatabaseSettingsTest extends UnitTest {
 
 	@Test
 	public void shouldPrintDatabaseTypePossibilities() {
-		assertTrue(settings.toString().contains(" # Possibilities: APACHE_DERBY, MYSQL\n"));
+		assertTrue(settings.toString().contains(" # Possibilities: APACHE_DERBY, MYSQL, SQLITE\n"));
 	}
 }

@@ -13,6 +13,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mysql Connector Java 5.1.13"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Rhino"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SQLiteJDBC v056"/>
 	
 	<classpathentry kind="output" path="bin"/>
 </classpath>
