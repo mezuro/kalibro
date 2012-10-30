@@ -5,70 +5,50 @@ import static org.junit.Assert.assertSame;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.persistence.TypedQuery;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.Granularity;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.core.persistence.record.ModuleResultRecord;
-import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({ModuleResult.class, ModuleResultDatabaseDao.class})
-public class ModuleResultDatabaseDaoTest extends UnitTest {
+public class ModuleResultDatabaseDaoTest extends
+	DatabaseDaoTestCase<ModuleResult, ModuleResultRecord, ModuleResultDatabaseDao> {
 
 	private static final Long ID = new Random().nextLong();
 
-	private ModuleResult moduleResult;
-	private ModuleResultRecord record;
-	private TypedQuery<ModuleResultRecord> query;
-
-	private ModuleResultDatabaseDao dao;
-
-	@Before
-	public void setUp() {
-		moduleResult = mock(ModuleResult.class);
-		record = mock(ModuleResultRecord.class);
-		query = mock(TypedQuery.class);
-		when(query.getSingleResult()).thenReturn(record);
-		when(query.getResultList()).thenReturn(list(record));
-		when(record.convert()).thenReturn(moduleResult);
-		dao = spy(new ModuleResultDatabaseDao());
-	}
-
 	@Test
 	public void shouldGetResultsRootOfProcessing() {
-		prepareQuery("moduleResult.processing.id = :processingId AND moduleResult.parent = null");
-		assertSame(moduleResult, dao.resultsRootOf(ID));
+		assertSame(entity, dao.resultsRootOf(ID));
+
+		verify(dao).createRecordQuery("moduleResult.processing.id = :processingId AND moduleResult.parent = null");
 		verify(query).setParameter("processingId", ID);
 	}
 
 	@Test
 	public void shouldGetParent() {
-		prepareQuery("ModuleResult child JOIN child.parent moduleResult", "child.id = :childId");
-		assertSame(moduleResult, dao.parentOf(ID));
+		assertSame(entity, dao.parentOf(ID));
+
+		verify(dao).createRecordQuery("ModuleResult child JOIN child.parent moduleResult", "child.id = :childId");
 		verify(query).setParameter("childId", ID);
 	}
 
 	@Test
 	public void shouldGetChildren() {
-		prepareQuery("ModuleResult parent ON parent.children moduleResult", "parent.id = :parentId");
-		assertDeepEquals(set(moduleResult), dao.childrenOf(ID));
+		assertDeepEquals(set(entity), dao.childrenOf(ID));
+
+		verify(dao).createRecordQuery("ModuleResult parent ON parent.children moduleResult", "parent.id = :parentId");
 		verify(query).setParameter("parentId", ID);
 	}
 
 	@Test
 	public void shouldSave() throws Exception {
-		whenNew(ModuleResultRecord.class).withArguments(moduleResult, ID).thenReturn(record);
-		doReturn(null).when(dao).save(record);
-		dao.save(moduleResult, ID);
+		dao.save(entity, ID);
+
+		verifyNew(ModuleResultRecord.class).withArguments(entity, ID);
 		verify(dao).save(record);
 	}
 
@@ -85,18 +65,14 @@ public class ModuleResultDatabaseDaoTest extends UnitTest {
 			.withParameterTypes(Module.class, ModuleResultRecord.class, Long.class)
 			.withArguments(any(Module.class), any(ModuleResultRecord.class), eq(ID)).thenReturn(record);
 		doReturn(null).when(dao).save(record);
-		when(moduleResult.getModule()).thenReturn(preparedModule);
+		when(entity.getModule()).thenReturn(preparedModule);
 
-		assertSame(moduleResult, dao.prepareResultFor(module, ID));
+		assertSame(entity, dao.prepareResultFor(module, ID));
 		verifyCallsInOrder(preparedModule);
 	}
 
 	private void prepareQuery(String where) {
 		doReturn(query).when(dao).createRecordQuery(where);
-	}
-
-	private void prepareQuery(String from, String where) {
-		doReturn(query).when(dao).createRecordQuery(from, where);
 	}
 
 	private void verifyCallsInOrder(Module preparedModule) {
