@@ -9,7 +9,7 @@ public abstract class RemoteFileIntegrationTest extends RepositoryIntegrationTes
 	protected void load() {
 		assertThat(whenLoading()).throwsException()
 			.withMessage("Error while executing command: " + loader.loadCommands(address(), false).get(0));
-		((RemoteFileLoader) loader).localLoader().load(localAddress(), helloWorldDirectory());
+		((RemoteFileLoader) loader).localLoader().load(localAddress(), projectsDirectory());
 	}
 
 	private VoidTask whenLoading() {
@@ -17,7 +17,7 @@ public abstract class RemoteFileIntegrationTest extends RepositoryIntegrationTes
 
 			@Override
 			protected void perform() {
-				loader.load(address(), helloWorldDirectory());
+				loader.load(address(), projectsDirectory());
 			}
 		};
 	}

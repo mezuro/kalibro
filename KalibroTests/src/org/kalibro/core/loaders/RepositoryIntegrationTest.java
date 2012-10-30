@@ -18,10 +18,6 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 		return new File(dotKalibro(), "projects");
 	}
 
-	protected static File helloWorldDirectory() {
-		return new File(projectsDirectory(), "HelloWorld-1.0");
-	}
-
 	protected RepositoryLoader loader;
 
 	@Before
@@ -49,7 +45,7 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 
 	private File loadAndCheck() {
 		load();
-		Iterator<File> files = FileUtils.iterateFiles(helloWorldDirectory(), new String[]{"c"}, true);
+		Iterator<File> files = FileUtils.iterateFiles(projectsDirectory(), new String[]{"c"}, true);
 		File loaded = files.next();
 		assertEquals("HelloWorld.c", loaded.getName());
 		assertFalse(files.hasNext());
@@ -57,7 +53,7 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 	}
 
 	protected void load() {
-		loader.load(address(), helloWorldDirectory());
+		loader.load(address(), projectsDirectory());
 	}
 
 	protected abstract String address();
