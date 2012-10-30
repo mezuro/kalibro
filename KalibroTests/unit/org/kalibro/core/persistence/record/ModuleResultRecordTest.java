@@ -33,4 +33,9 @@ public class ModuleResultRecordTest extends RecordTest {
 		ModuleResult orphan = new ModuleResult(null, new Module(Granularity.SOFTWARE));
 		assertNull(Whitebox.getInternalState(new ModuleResultRecord(orphan), "parent"));
 	}
+
+	@Test
+	public void shouldTurnNullGradeIntoNan() {
+		assertDoubleEquals(Double.NaN, new ModuleResultRecord().grade());
+	}
 }

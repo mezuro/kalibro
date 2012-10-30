@@ -111,6 +111,6 @@ public class ModuleResultRecord extends ModuleResultDto {
 
 	@Override
 	public Double grade() {
-		return Double.longBitsToDouble(grade);
+		return grade == null ? Double.NaN : Double.longBitsToDouble(grade);
 	}
 }
