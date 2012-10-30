@@ -85,6 +85,16 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		});
 	}
 
+	@Theory
+	public void shouldCascadeSaveButNotDeleteToReadingGroups(SupportedDatabase databaseType) {
+		resetDatabase(databaseType);
+		assertTrue(ReadingGroup.all().isEmpty());
+		configuration.save();
+		assertFalse(ReadingGroup.all().isEmpty());
+		configuration.delete();
+		assertFalse(ReadingGroup.all().isEmpty());
+	}
+
 	@Test
 	public void shouldImportAndExportAsYaml() throws Exception {
 		configuration = loadFixture("sc", Configuration.class);
