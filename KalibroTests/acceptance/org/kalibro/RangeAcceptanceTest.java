@@ -28,7 +28,7 @@ public class RangeAcceptanceTest extends AcceptanceTest {
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
 		resetDatabase(databaseType);
-		configuration.save();
+		range.save();
 
 		assertDeepEquals(range, saved());
 

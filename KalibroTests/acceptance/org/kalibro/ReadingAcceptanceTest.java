@@ -22,7 +22,7 @@ public class ReadingAcceptanceTest extends AcceptanceTest {
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
 		resetDatabase(databaseType);
-		group.save();
+		reading.save();
 		assertDeepEquals(reading, saved());
 
 		reading.setLabel("ReadingAcceptanceTest label");

@@ -27,14 +27,16 @@ public abstract class AcceptanceTest extends IntegrationTest {
 
 	private static void prepareSettings(SupportedDatabase databaseType) {
 		KalibroSettings settings = new KalibroSettings();
-		DatabaseSettings databaseSettigs = loadFixture(databaseType.name(), DatabaseSettings.class);
-		settings.getServerSettings().setDatabaseSettings(databaseSettigs);
+		DatabaseSettings databaseSettings = loadFixture(databaseType.name(), DatabaseSettings.class);
+		settings.getServerSettings().setDatabaseSettings(databaseSettings);
 		settings.save();
 	}
 
 	@AfterClass
-	public static void deleteSettings() {
-		new File(System.getProperty("user.dir") + "/derby.log").delete();
+	public static void deleteGeneratedFiles() {
+		File directory = new File(System.getProperty("user.dir"));
+		new File(directory, "derby.log").delete();
+		new File(directory, "kalibro.sqlite").delete();
 		new File(dotKalibro(), "kalibro.settings").delete();
 	}
 

@@ -26,15 +26,15 @@ import org.powermock.reflect.Whitebox;
 public class DatabaseDaoFactoryTest extends UnitTest {
 
 	private DatabaseSettings settings;
-	private EntityManager entityManager;
 	private RecordManager recordManager;
+	private EntityManagerFactory entityManagerFactory;
 
 	private DatabaseDaoFactory factory;
 
 	@Before
 	public void setUp() throws Exception {
-		Whitebox.setInternalState(DatabaseDaoFactory.class, "entityManager", (EntityManager) null);
 		Whitebox.setInternalState(DatabaseDaoFactory.class, "currentSettings", (DatabaseSettings) null);
+		Whitebox.setInternalState(DatabaseDaoFactory.class, "entityManagerFactory", (EntityManagerFactory) null);
 		mockDatabaseSettings();
 		mockPersistence();
 		factory = new DatabaseDaoFactory();
@@ -47,9 +47,10 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 	}
 
 	private void mockPersistence() throws Exception {
-		EntityManagerFactory entityManagerFactory = mock(EntityManagerFactory.class);
-		entityManager = mock(EntityManager.class);
 		recordManager = mock(RecordManager.class);
+		entityManagerFactory = mock(EntityManagerFactory.class);
+		EntityManager entityManager = mock(EntityManager.class);
+
 		mockStatic(Persistence.class);
 		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(entityManagerFactory);
 		when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
@@ -83,13 +84,13 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 
 	@Test
 	public void shouldClosePreviousEntityManagerIfOpen() {
-		when(entityManager.isOpen()).thenReturn(true);
+		when(entityManagerFactory.isOpen()).thenReturn(true);
 
 		DatabaseSettings newSettings = new DatabaseSettings();
 		newSettings.setPassword("x");
 		new DatabaseDaoFactory(newSettings);
 
-		verify(entityManager).close();
+		verify(entityManagerFactory).close();
 	}
 
 	@Test

@@ -23,7 +23,7 @@ public class MetricConfigurationAcceptanceTest extends AcceptanceTest {
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
 		resetDatabase(databaseType);
-		configuration.save();
+		metricConfiguration.save();
 
 		assertDeepEquals(metricConfiguration, saved());
 

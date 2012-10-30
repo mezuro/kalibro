@@ -5,7 +5,7 @@ import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
 import org.kalibro.DatabaseSettings;
@@ -20,11 +20,29 @@ import org.kalibro.dao.DaoFactory;
  */
 public class DatabaseDaoFactory extends DaoFactory {
 
-	private static EntityManager entityManager;
 	private static DatabaseSettings currentSettings;
+	private static EntityManagerFactory entityManagerFactory;
 
-	static RecordManager createRecordManager() {
-		return new RecordManager(entityManager);
+	static synchronized RecordManager createRecordManager() {
+		return new RecordManager(entityManagerFactory.createEntityManager());
+	}
+
+	private static synchronized void updateSettings(DatabaseSettings settings) {
+		currentSettings = settings;
+		Map<String, String> properties = new HashMap<String, String>();
+		properties.put(DDL_GENERATION, Environment.ddlGeneration());
+		properties.put(JDBC_DRIVER, settings.getDatabaseType().getDriverClassName());
+		properties.put(JDBC_URL, settings.getJdbcUrl());
+		properties.put(JDBC_USER, settings.getUsername());
+		properties.put(JDBC_PASSWORD, settings.getPassword());
+		properties.put(LOGGING_LOGGER, PersistenceLogger.class.getName());
+		updateEntityManagerFactory(properties);
+	}
+
+	private static void updateEntityManagerFactory(Map<String, String> properties) {
+		if (entityManagerFactory != null && entityManagerFactory.isOpen())
+			entityManagerFactory.close();
+		entityManagerFactory = Persistence.createEntityManagerFactory("Kalibro", properties);
 	}
 
 	public DatabaseDaoFactory() {
@@ -34,24 +52,6 @@ public class DatabaseDaoFactory extends DaoFactory {
 	public DatabaseDaoFactory(DatabaseSettings settings) {
 		if (!settings.deepEquals(currentSettings))
 			updateSettings(settings);
-	}
-
-	private void updateSettings(DatabaseSettings settings) {
-		currentSettings = settings;
-		Map<String, String> properties = new HashMap<String, String>();
-		properties.put(DDL_GENERATION, Environment.ddlGeneration());
-		properties.put(JDBC_DRIVER, settings.getDatabaseType().getDriverClassName());
-		properties.put(JDBC_URL, settings.getJdbcUrl());
-		properties.put(JDBC_USER, settings.getUsername());
-		properties.put(JDBC_PASSWORD, settings.getPassword());
-		properties.put(LOGGING_LOGGER, PersistenceLogger.class.getName());
-		updateEntityManager(properties);
-	}
-
-	private void updateEntityManager(Map<String, String> properties) {
-		if (entityManager != null && entityManager.isOpen())
-			entityManager.close();
-		entityManager = Persistence.createEntityManagerFactory("Kalibro", properties).createEntityManager();
 	}
 
 	@Override

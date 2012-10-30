@@ -4,53 +4,32 @@ import static org.junit.Assert.*;
 
 import java.util.Random;
 
-import javax.persistence.TypedQuery;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.ReadingGroup;
 import org.kalibro.core.persistence.record.ReadingGroupRecord;
-import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
 @PrepareForTest(ReadingGroupDatabaseDao.class)
-public class ReadingGroupDatabaseDaoTest extends UnitTest {
+public class ReadingGroupDatabaseDaoTest extends
+	DatabaseDaoTestCase<ReadingGroup, ReadingGroupRecord, ReadingGroupDatabaseDao> {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
-	private ReadingGroup group;
-	private ReadingGroupRecord record;
-
-	private ReadingGroupDatabaseDao dao;
-
-	@Before
-	public void setUp() throws Exception {
-		group = mock(ReadingGroup.class);
-		record = mock(ReadingGroupRecord.class);
-		whenNew(ReadingGroupRecord.class).withArguments(group).thenReturn(record);
-		when(record.id()).thenReturn(ID);
-		when(record.convert()).thenReturn(group);
-		dao = spy(new ReadingGroupDatabaseDao());
-	}
-
 	@Test
 	public void shouldGetReadingGroupOfMetricConfiguration() {
-		String from = "MetricConfiguration metricConfiguration JOIN metricConfiguration.readingGroup readingGroup";
-		TypedQuery<ReadingGroupRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery(from, "metricConfiguration.id = :id");
-		when(query.getSingleResult()).thenReturn(record);
+		assertSame(entity, dao.readingGroupOf(ID));
 
-		assertSame(group, dao.readingGroupOf(ID));
+		String from = "MetricConfiguration metricConfiguration JOIN metricConfiguration.readingGroup readingGroup";
+		verify(dao).createRecordQuery(from, "metricConfiguration.id = :id");
 		verify(query).setParameter("id", ID);
 	}
 
 	@Test
-	public void shouldSave() {
-		doReturn(record).when(dao).save(record);
-		assertEquals(ID, dao.save(group));
+	public void shouldSave() throws Exception {
+		when(record.id()).thenReturn(ID);
+		assertEquals(ID, dao.save(entity));
+
+		verifyNew(ReadingGroupRecord.class).withArguments(entity);
 		verify(dao).save(record);
 	}
 }
