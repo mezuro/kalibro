@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -13,6 +13,15 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 public class ProjectDatabaseDaoTest extends DatabaseDaoTestCase<Project, ProjectRecord, ProjectDatabaseDao> {
 
 	private static final Long ID = new Random().nextLong();
+
+	@Test
+	public void shouldGetProjectOfRepository() {
+		assertSame(entity, dao.projectOf(ID));
+
+		String from = "Repository repository JOIN repository.project project";
+		verify(dao).createRecordQuery(from, "repository.id = :repositoryId");
+		verify(query).setParameter("repositoryId", ID);
+	}
 
 	@Test
 	public void shouldSave() throws Exception {

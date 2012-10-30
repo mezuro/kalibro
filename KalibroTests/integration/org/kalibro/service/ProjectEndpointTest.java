@@ -42,6 +42,12 @@ public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, Proje
 	}
 
 	@Test
+	public void shouldGetProjectOfRepository() {
+		when(dao.projectOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.projectOf(ID));
+	}
+
+	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(sortedSet(entity));
 		assertDeepDtoList(list(entity), port.allProjects());
