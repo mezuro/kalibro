@@ -4,8 +4,11 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
@@ -17,9 +20,9 @@ import org.kalibro.dto.RepositoryDto;
 @Table(name = "\"REPOSITORY\"")
 public class RepositoryRecord extends RepositoryDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"project\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private ProjectRecord project;
 
 	@Id
@@ -45,9 +48,9 @@ public class RepositoryRecord extends RepositoryDto {
 	@Column(name = "\"process_period\"")
 	private Integer processPeriod;
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private ConfigurationRecord configuration;
 
 	@Column
@@ -62,16 +65,12 @@ public class RepositoryRecord extends RepositoryDto {
 	}
 
 	public RepositoryRecord(Repository repository) {
-		this(repository, (Long) null);
+		this(repository, null);
 	}
 
 	public RepositoryRecord(Repository repository, Long projectId) {
-		this(repository, new ProjectRecord(projectId));
-	}
-
-	public RepositoryRecord(Repository repository, ProjectRecord projectRecord) {
 		this(repository.getId());
-		project = projectRecord;
+		project = new ProjectRecord(projectId);
 		name = repository.getName();
 		type = repository.getType().name();
 		address = repository.getAddress();
@@ -120,5 +119,10 @@ public class RepositoryRecord extends RepositoryDto {
 	@Override
 	public Collection<String> mailsToNotify() {
 		return mailsToNotify;
+	}
+
+	@Override
+	public Configuration configuration() {
+		return DaoLazyLoader.createProxy(ConfigurationDao.class, "configurationOf", id);
 	}
 }

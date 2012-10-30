@@ -69,9 +69,12 @@ public class Project extends AbstractEntity<Project> {
 	}
 
 	public SortedSet<Repository> getRepositories() {
-		for (Repository each : repositories)
+		TreeSet<Repository> myRepositories = new TreeSet<Repository>();
+		for (Repository each : repositories) {
 			each.setProject(this);
-		return new TreeSet<Repository>(repositories);
+			myRepositories.add(each);
+		}
+		return myRepositories;
 	}
 
 	public void setRepositories(SortedSet<Repository> repositories) {
@@ -86,14 +89,21 @@ public class Project extends AbstractEntity<Project> {
 	}
 
 	public void removeRepository(Repository repository) {
+		repositories = getRepositories();
 		repositories.remove(repository);
 		repository.setProject(null);
+	}
+
+	void assertSaved() {
+		if (!hasId())
+			save();
 	}
 
 	public void save() {
 		throwExceptionIf(name.trim().isEmpty(), "Project requires name.");
 		id = dao().save(this);
-		repositories = DaoFactory.getRepositoryDao().repositoriesOf(id);
+		for (Repository repository : repositories)
+			repository.save();
 	}
 
 	public void delete() {
@@ -103,9 +113,9 @@ public class Project extends AbstractEntity<Project> {
 	}
 
 	private void deleted() {
+		id = null;
 		for (Repository repository : repositories)
 			repository.deleted();
-		id = null;
 	}
 
 	@Override

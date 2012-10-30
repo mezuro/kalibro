@@ -9,8 +9,7 @@ import javax.jws.WebService;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.dto.DataTransferObject;
-import org.kalibro.service.xml.MetricConfigurationXmlRequest;
-import org.kalibro.service.xml.MetricConfigurationXmlResponse;
+import org.kalibro.service.xml.MetricConfigurationXml;
 
 /**
  * Implementation of {@link MetricConfigurationEndpoint}.
@@ -32,16 +31,15 @@ public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpo
 
 	@Override
 	@WebResult(name = "metricConfiguration")
-	public List<MetricConfigurationXmlResponse> metricConfigurationsOf(
+	public List<MetricConfigurationXml> metricConfigurationsOf(
 		@WebParam(name = "configurationId") Long configurationId) {
-		return DataTransferObject.createDtos(
-			dao.metricConfigurationsOf(configurationId), MetricConfigurationXmlResponse.class);
+		return DataTransferObject.createDtos(dao.metricConfigurationsOf(configurationId), MetricConfigurationXml.class);
 	}
 
 	@Override
 	@WebResult(name = "metricConfigurationId")
 	public Long saveMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration,
+		@WebParam(name = "metricConfiguration") MetricConfigurationXml metricConfiguration,
 		@WebParam(name = "configurationId") Long configurationId) {
 		return dao.save(metricConfiguration.convert(), configurationId);
 	}

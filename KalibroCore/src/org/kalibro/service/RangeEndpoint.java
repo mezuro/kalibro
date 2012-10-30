@@ -8,8 +8,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.RangeDao;
-import org.kalibro.service.xml.RangeXmlRequest;
-import org.kalibro.service.xml.RangeXmlResponse;
+import org.kalibro.service.xml.RangeXml;
 
 /**
  * End point to make {@link RangeDao} interface available as Web service.
@@ -21,12 +20,12 @@ public interface RangeEndpoint {
 
 	@WebMethod
 	@WebResult(name = "range")
-	List<RangeXmlResponse> rangesOf(@WebParam(name = "metricConfigurationId") Long metricConfigurationId);
+	List<RangeXml> rangesOf(@WebParam(name = "metricConfigurationId") Long metricConfigurationId);
 
 	@WebMethod
 	@WebResult(name = "rangeId")
 	Long saveRange(
-		@WebParam(name = "range") RangeXmlRequest range,
+		@WebParam(name = "range") RangeXml range,
 		@WebParam(name = "metricConfigurationId") Long metricConfigurationId);
 
 	@WebMethod

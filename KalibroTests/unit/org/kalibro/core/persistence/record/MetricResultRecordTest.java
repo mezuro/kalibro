@@ -24,8 +24,8 @@ public class MetricResultRecordTest extends RecordTest {
 		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isRequired();
 		shouldHaveId();
 		assertColumn("value", Long.class).isRequired();
-		assertOneToOne("error", ThrowableRecord.class).isOptional();
-		assertOneToMany("descendantResults").isMappedBy("metricResult");
+		shouldHaveError("error");
+		assertOneToMany("descendantResults").cascades().isMappedBy("metricResult");
 	}
 
 	@Test

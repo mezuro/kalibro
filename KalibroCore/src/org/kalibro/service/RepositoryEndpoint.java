@@ -9,8 +9,7 @@ import javax.jws.WebService;
 
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.RepositoryDao;
-import org.kalibro.service.xml.RepositoryXmlRequest;
-import org.kalibro.service.xml.RepositoryXmlResponse;
+import org.kalibro.service.xml.RepositoryXml;
 
 /**
  * End point to make {@link RepositoryDao} interface available as Web service.
@@ -26,16 +25,16 @@ public interface RepositoryEndpoint {
 
 	@WebMethod
 	@WebResult(name = "repository")
-	RepositoryXmlResponse repositoryOf(@WebParam(name = "processingId") Long processingId);
+	RepositoryXml repositoryOf(@WebParam(name = "processingId") Long processingId);
 
 	@WebMethod
 	@WebResult(name = "repository")
-	List<RepositoryXmlResponse> repositoriesOf(@WebParam(name = "projectId") Long projectId);
+	List<RepositoryXml> repositoriesOf(@WebParam(name = "projectId") Long projectId);
 
 	@WebMethod
 	@WebResult(name = "repositoryId")
 	Long saveRepository(
-		@WebParam(name = "repository") RepositoryXmlRequest repository,
+		@WebParam(name = "repository") RepositoryXml repository,
 		@WebParam(name = "projectId") Long projectId);
 
 	@WebMethod

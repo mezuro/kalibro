@@ -1,11 +1,11 @@
 package org.kalibro.service.xml;
 
-public class ProjectXmlResponseTest extends XmlTest {
+public class ProjectXmlTest extends XmlTest {
 
 	@Override
 	public void verifyElements() {
 		assertElement("id", Long.class);
-		assertElement("name", String.class);
+		assertElement("name", String.class, true);
 		assertElement("description", String.class);
 	}
 }

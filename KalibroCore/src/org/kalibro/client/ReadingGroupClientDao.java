@@ -6,7 +6,7 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ReadingGroupEndpoint;
-import org.kalibro.service.xml.ReadingGroupXmlRequest;
+import org.kalibro.service.xml.ReadingGroupXml;
 
 /**
  * {@link ReadingGroupEndpoint} client implementation of {@link ReadingGroupDao}.
@@ -41,7 +41,7 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 
 	@Override
 	public Long save(ReadingGroup group) {
-		return port.saveReadingGroup(new ReadingGroupXmlRequest(group));
+		return port.saveReadingGroup(new ReadingGroupXml(group));
 	}
 
 	@Override

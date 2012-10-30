@@ -9,6 +9,7 @@ import java.lang.reflect.Member;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.UtilityClassTest;
+import org.mockito.verification.VerificationMode;
 
 public class MemberFilterFactoryTest extends UtilityClassTest {
 
@@ -39,6 +40,17 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 
 		filter = is(SYNCHRONIZED);
 		assertFalse(filter.accept(setUp));
+		assertFalse(filter.accept(never));
+	}
+
+	@Test
+	public void shouldCreateTypeMemberFilter() {
+		filter = hasType(VerificationMode.class);
+		assertFalse(filter.accept(setUp));
+		assertTrue(filter.accept(never));
+
+		filter = hasType(void.class);
+		assertTrue(filter.accept(setUp));
 		assertFalse(filter.accept(never));
 	}
 

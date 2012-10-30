@@ -12,21 +12,21 @@ import org.kalibro.*;
 import org.kalibro.dto.MetricDto;
 
 /**
- * XML element for {@link Metric} responses.
+ * XML element for {@link Metric}.
  * 
  * @author Carlos Morais
  */
 @XmlRootElement(name = "metric")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class MetricXmlResponse extends MetricDto {
+public class MetricXml extends MetricDto {
 
-	@XmlElement
+	@XmlElement(required = true)
 	private boolean compound;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private String name;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private Granularity scope;
 
 	@XmlElement
@@ -38,11 +38,11 @@ public class MetricXmlResponse extends MetricDto {
 	@XmlElement(name = "language")
 	private Set<Language> languages;
 
-	public MetricXmlResponse() {
+	public MetricXml() {
 		super();
 	}
 
-	public MetricXmlResponse(Metric metric) {
+	public MetricXml(Metric metric) {
 		compound = metric.isCompound();
 		name = metric.getName();
 		scope = metric.getScope();

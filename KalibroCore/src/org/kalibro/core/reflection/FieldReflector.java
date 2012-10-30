@@ -19,13 +19,19 @@ import org.kalibro.KalibroError;
  */
 public class FieldReflector {
 
+	protected static final MemberFilter DEFAULT_IGNORE_FILTER = or(is(STATIC), nameMatches(".*\\$.*"));
+
 	private Object object;
 	private Map<String, Field> fields;
 	private MemberFilter ignoreFieldFilter;
 
-	public FieldReflector(Object object, MemberFilter... ignoreFieldFilters) {
+	public FieldReflector(Object object) {
+		this(object, DEFAULT_IGNORE_FILTER);
+	}
+
+	public FieldReflector(Object object, MemberFilter ignoreFieldFilter) {
 		this.object = object;
-		this.ignoreFieldFilter = or(is(STATIC), nameMatches(".*\\$.*"), or(ignoreFieldFilters));
+		this.ignoreFieldFilter = ignoreFieldFilter;
 		initializeFields();
 	}
 

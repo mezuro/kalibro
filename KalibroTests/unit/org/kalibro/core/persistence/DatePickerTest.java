@@ -8,7 +8,7 @@ import org.kalibro.tests.EnumerationTest;
 
 public class DatePickerTest extends EnumerationTest<DatePicker> {
 
-	private static final String BASIC_CLAUSE = "WHERE processing.repository.id = :repositoryId";
+	private static final String BASIC_CLAUSE = "processing.repository.id = :repositoryId";
 
 	@Override
 	protected Class<DatePicker> enumerationClass() {
@@ -28,9 +28,9 @@ public class DatePickerTest extends EnumerationTest<DatePicker> {
 
 	@Test
 	public void checkExistenteClause() {
-		assertEquals(BASIC_CLAUSE, ANY.existenceClause());
-		assertEquals(BASIC_CLAUSE + " AND processing.date > :date", AFTER.existenceClause());
-		assertEquals(BASIC_CLAUSE + " AND processing.date < :date", BEFORE.existenceClause());
+		assertEquals("WHERE " + BASIC_CLAUSE, ANY.existenceClause());
+		assertEquals("WHERE " + BASIC_CLAUSE + " AND processing.date > :date", AFTER.existenceClause());
+		assertEquals("WHERE " + BASIC_CLAUSE + " AND processing.date < :date", BEFORE.existenceClause());
 	}
 
 	@Test

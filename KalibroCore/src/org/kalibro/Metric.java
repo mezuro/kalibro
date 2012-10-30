@@ -17,9 +17,13 @@ public abstract class Metric extends AbstractEntity<Metric> {
 	private final boolean compound;
 
 	@IdentityField
+	@Print(order = 1)
 	private String name;
 
+	@Print(order = 2)
 	private Granularity scope;
+
+	@Print(order = 3)
 	private String description;
 
 	protected Metric(boolean compound, String name, Granularity scope) {

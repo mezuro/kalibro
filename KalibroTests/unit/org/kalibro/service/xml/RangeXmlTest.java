@@ -2,6 +2,8 @@ package org.kalibro.service.xml;
 
 import static org.junit.Assert.assertNull;
 
+import java.util.Random;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Range;
@@ -14,15 +16,17 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoLazyLoader.class)
-public class RangeXmlRequestTest extends XmlTest {
+public class RangeXmlTest extends XmlTest {
+
+	private static final Long READING_ID = new Random().nextLong();
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		Whitebox.setInternalState(dto, "readingId", 42L);
+		Whitebox.setInternalState(dto, "readingId", READING_ID);
 		Reading reading = Whitebox.getInternalState(entity, "reading");
 		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(ReadingDao.class, "get", 42L)).thenReturn(reading);
+		when(DaoLazyLoader.createProxy(ReadingDao.class, "get", READING_ID)).thenReturn(reading);
 	}
 
 	@Override
@@ -36,8 +40,6 @@ public class RangeXmlRequestTest extends XmlTest {
 
 	@Test
 	public void checkNullReading() {
-		assertNull(new RangeXmlRequest(new Range()).reading());
-		verifyStatic(never());
-		DaoLazyLoader.createProxy(any(Class.class), anyString(), any());
+		assertNull(new RangeXml(new Range()).reading());
 	}
 }

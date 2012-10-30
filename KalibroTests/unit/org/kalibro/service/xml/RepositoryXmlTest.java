@@ -7,15 +7,16 @@ import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dto.DaoLazyLoader;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoLazyLoader.class)
-public class RepositoryXmlRequestTest extends XmlTest {
+public class RepositoryXmlTest extends XmlTest {
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		Configuration configuration = loadFixture("sc", Configuration.class);
+		Configuration configuration = Whitebox.getInternalState(entity, "configuration");
 		mockStatic(DaoLazyLoader.class);
 		when(DaoLazyLoader.createProxy(eq(ConfigurationDao.class), eq("get"), any())).thenReturn(configuration);
 	}

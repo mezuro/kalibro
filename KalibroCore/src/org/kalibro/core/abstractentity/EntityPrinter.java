@@ -14,11 +14,13 @@ class EntityPrinter extends Printer<AbstractEntity<?>> {
 
 	private EntityReflector reflector;
 
-	@Override boolean canPrint(Object object) {
+	@Override
+	boolean canPrint(Object object) {
 		return object instanceof AbstractEntity<?>;
 	}
 
-	@Override void doPrint(AbstractEntity<?> object, String comment) {
+	@Override
+	void doPrint(AbstractEntity<?> object, String comment) {
 		for (int id = 1; id <= PRINTED.size(); id++)
 			if (PRINTED.get(id - 1) == object) {
 				printString(" *id" + id);

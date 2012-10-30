@@ -34,7 +34,7 @@ public class BaseToolXml extends BaseToolDto {
 	private String collectorClassName;
 
 	@XmlElement(name = "supportedMetric")
-	private Collection<MetricXmlResponse> supportedMetrics;
+	private Collection<MetricXml> supportedMetrics;
 
 	public BaseToolXml() {
 		super();
@@ -44,7 +44,7 @@ public class BaseToolXml extends BaseToolDto {
 		name = baseTool.getName();
 		description = baseTool.getDescription();
 		collectorClassName = baseTool.getCollectorClassName();
-		supportedMetrics = createDtos(new ArrayList<Metric>(baseTool.getSupportedMetrics()), MetricXmlResponse.class);
+		supportedMetrics = createDtos(new ArrayList<Metric>(baseTool.getSupportedMetrics()), MetricXml.class);
 	}
 
 	@Override
@@ -66,7 +66,7 @@ public class BaseToolXml extends BaseToolDto {
 	public Set<NativeMetric> supportedMetrics() {
 		HashSet<NativeMetric> converted = new HashSet<NativeMetric>();
 		if (supportedMetrics != null)
-			for (MetricXmlResponse supportedMetric : supportedMetrics)
+			for (MetricXml supportedMetric : supportedMetrics)
 				converted.add((NativeMetric) supportedMetric.convert());
 		return converted;
 	}

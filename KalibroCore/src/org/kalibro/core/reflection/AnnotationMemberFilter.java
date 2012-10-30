@@ -12,7 +12,7 @@ final class AnnotationMemberFilter extends MemberFilterAdapter {
 
 	private Class<? extends Annotation> annotationClass;
 
-	protected AnnotationMemberFilter(Class<? extends Annotation> annotationClass) {
+	AnnotationMemberFilter(Class<? extends Annotation> annotationClass) {
 		this.annotationClass = annotationClass;
 	}
 

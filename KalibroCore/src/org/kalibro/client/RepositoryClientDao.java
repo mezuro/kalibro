@@ -8,7 +8,7 @@ import org.kalibro.RepositoryType;
 import org.kalibro.dao.RepositoryDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.RepositoryEndpoint;
-import org.kalibro.service.xml.RepositoryXmlRequest;
+import org.kalibro.service.xml.RepositoryXml;
 
 /**
  * {@link RepositoryEndpoint} client implementation of {@link RepositoryDao}.
@@ -38,7 +38,7 @@ class RepositoryClientDao extends EndpointClient<RepositoryEndpoint> implements 
 
 	@Override
 	public Long save(Repository repository, Long projectId) {
-		return port.saveRepository(new RepositoryXmlRequest(repository), projectId);
+		return port.saveRepository(new RepositoryXml(repository), projectId);
 	}
 
 	@Override

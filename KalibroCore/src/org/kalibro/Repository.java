@@ -18,7 +18,6 @@ import org.kalibro.dao.RepositoryDao;
 @SortingFields("name")
 public class Repository extends AbstractEntity<Repository> {
 
-	@IdentityField
 	private Long id;
 
 	@IdentityField
@@ -152,9 +151,9 @@ public class Repository extends AbstractEntity<Repository> {
 		throwExceptionIf(name.trim().isEmpty(), "Repository requires name.");
 		throwExceptionIf(address.trim().isEmpty(), "Repository requires address.");
 		throwExceptionIf(project == null, "Repository is not in any project.");
-		throwExceptionIf(!project.hasId(), "Project is not saved. Save project instead.");
 		throwExceptionIf(configuration == null, "A configuration should be associated with the repository.");
-		throwExceptionIf(!configuration.hasId(), "The configuration associated with the repository is not saved.");
+		project.assertSaved();
+		configuration.assertSaved();
 		id = dao().save(this, project.getId());
 	}
 
@@ -182,5 +181,10 @@ public class Repository extends AbstractEntity<Repository> {
 
 	private RepositoryDao dao() {
 		return DaoFactory.getRepositoryDao();
+	}
+
+	@Override
+	public String toString() {
+		return getCompleteName();
 	}
 }

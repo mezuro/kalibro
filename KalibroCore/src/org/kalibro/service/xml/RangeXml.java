@@ -12,13 +12,13 @@ import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RangeDto;
 
 /**
- * XML element for {@link Range} requests.
+ * XML element for {@link Range}.
  * 
  * @author Carlos Morais
  */
 @XmlRootElement(name = "range")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RangeXmlRequest extends RangeDto {
+public class RangeXml extends RangeDto {
 
 	@XmlElement
 	private Long id;
@@ -35,15 +35,15 @@ public class RangeXmlRequest extends RangeDto {
 	@XmlElement
 	private String comments;
 
-	public RangeXmlRequest() {
+	public RangeXml() {
 		super();
 	}
 
-	public RangeXmlRequest(Range range) {
+	public RangeXml(Range range) {
 		id = range.getId();
 		beginning = range.getBeginning();
 		end = range.getEnd();
-		readingId = (range.getReading() == null) ? null : range.getReading().getId();
+		readingId = range.hasReading() ? range.getReading().getId() : null;
 		comments = range.getComments();
 	}
 

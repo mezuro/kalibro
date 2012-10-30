@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.kalibro.Project;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.xml.ProjectXmlRequest;
+import org.kalibro.service.xml.ProjectXml;
 import org.powermock.reflect.Whitebox;
 
 public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, ProjectEndpoint> {
@@ -50,7 +50,7 @@ public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, Proje
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, port.saveProject(new ProjectXmlRequest(entity)));
+		assertEquals(ID, port.saveProject(new ProjectXml(entity)));
 	}
 
 	@Test

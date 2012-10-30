@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.junit.Test;
 import org.kalibro.core.Identifier;
 import org.kalibro.dto.ConcreteDtoTest;
@@ -50,23 +51,10 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		return new ColumnMatcher(annotation(field, Column.class)).named(columnName(field));
 	}
 
-	protected OneToOneMatcher assertOneToOne(String field, Class<?> type) {
-		assertFieldType(field, type);
-		return new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).cascades().isLazy();
-	}
-
 	protected OneToManyMatcher assertOneToMany(String field) {
-		return assertOneToMany(field, true);
-	}
-
-	protected OneToManyMatcher assertOneToMany(String field, boolean shouldCascade) {
 		assertFieldType(field, Collection.class);
-		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades(shouldCascade).isLazy();
-	}
-
-	protected OneToManyMatcher assertOrderedOneToMany(String field) {
-		assertOrdered(field);
-		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades(true).isLazy();
+		annotation(field, CascadeOnDelete.class);
+		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans();
 	}
 
 	protected void assertOrderedElementCollection(String field) {
@@ -74,9 +62,10 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		annotation(field, ElementCollection.class);
 	}
 
-	protected ManyToOneMatcher assertManyToOne(String field, Class<?> type) {
-		assertFieldType(field, type);
-		return new ManyToOneMatcher(annotation(field, ManyToOne.class), joinColumn(field)).doesNotCascade().isLazy();
+	protected OneToManyMatcher assertOrderedOneToMany(String field) {
+		assertOrdered(field);
+		annotation(field, CascadeOnDelete.class);
+		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans().cascades();
 	}
 
 	private void assertOrdered(String field) {
@@ -86,9 +75,15 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		assertFalse("@OrderColumn should NOT be nullable.", orderColumn.nullable());
 	}
 
-	private void assertFieldType(String field, Class<?> type) {
-		assertTrue("Field not present: " + field, dtoReflector.listFields().contains(field));
-		assertEquals("Wrong type for field " + field + ".", type, dtoReflector.getFieldType(field));
+	protected ManyToOneMatcher assertManyToOne(String field, Class<?> type) {
+		assertFieldType(field, type);
+		return new ManyToOneMatcher(annotation(field, ManyToOne.class), joinColumn(field)).doesNotCascade().isLazy();
+	}
+
+	protected void shouldHaveError(String field) {
+		assertFieldType(field, ThrowableRecord.class);
+		annotation(field, CascadeOnDelete.class);
+		new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).cascades().isEager().isOptional();
 	}
 
 	private JoinColumn joinColumn(String field) {
@@ -97,6 +92,11 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		assertEquals("@JoinColumn " + joinColumn.name() + " references wrong column.",
 			"\"id\"", joinColumn.referencedColumnName());
 		return joinColumn;
+	}
+
+	private void assertFieldType(String field, Class<?> type) {
+		assertTrue("Field not present: " + field, dtoReflector.listFields().contains(field));
+		assertEquals("Wrong type for field " + field + ".", type, dtoReflector.getFieldType(field));
 	}
 
 	private <T extends Annotation> T annotation(String field, Class<T> annotationClass) {

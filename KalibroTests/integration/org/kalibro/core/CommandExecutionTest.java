@@ -83,7 +83,7 @@ public class CommandExecutionTest extends IntegrationTest {
 	}
 
 	private void waitLogging() throws InterruptedException {
-		Thread.sleep(100);
+		Thread.sleep(200);
 	}
 
 	private String getLog(String name, String extension) throws IOException {

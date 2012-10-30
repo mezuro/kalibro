@@ -15,13 +15,13 @@ import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
- * XML element for {@link Repository} requests.
+ * XML element for {@link Repository}.
  * 
  * @author Carlos Morais
  */
 @XmlRootElement(name = "repository")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RepositoryXmlRequest extends RepositoryDto {
+public class RepositoryXml extends RepositoryDto {
 
 	@XmlElement
 	private Long id;
@@ -50,11 +50,11 @@ public class RepositoryXmlRequest extends RepositoryDto {
 	@XmlElement
 	private Collection<String> mailsToNotify;
 
-	public RepositoryXmlRequest() {
+	public RepositoryXml() {
 		super();
 	}
 
-	public RepositoryXmlRequest(Repository repository) {
+	public RepositoryXml(Repository repository) {
 		id = repository.getId();
 		name = repository.getName();
 		description = repository.getDescription();
