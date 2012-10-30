@@ -20,8 +20,10 @@ public class ModuleResultXml extends ModuleResultDto {
 
 	@XmlElement
 	private Long id;
+
 	@XmlElement
 	private ModuleXml module;
+
 	@XmlElement
 	private Double grade;
 

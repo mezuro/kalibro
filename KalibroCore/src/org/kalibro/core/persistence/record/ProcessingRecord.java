@@ -72,7 +72,7 @@ public class ProcessingRecord extends ProcessingDto {
 		for (ProcessState passedState : ProcessState.values()) {
 			Long time = processing.getStateTime(passedState);
 			if (time != null)
-				processTimes.add(new ProcessTimeRecord(passedState, time));
+				processTimes.add(new ProcessTimeRecord(passedState, time, this));
 		}
 	}
 
