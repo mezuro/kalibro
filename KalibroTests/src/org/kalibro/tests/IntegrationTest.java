@@ -25,6 +25,10 @@ public abstract class IntegrationTest extends UnitTest {
 		return new File(samplesDirectory(), "repositories");
 	}
 
+	protected static File projectsDirectory() {
+		return new File(dotKalibro(), "projects");
+	}
+
 	@Override
 	protected Timeout testTimeout() {
 		return new Timeout(8000);
