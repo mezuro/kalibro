@@ -1,12 +1,11 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Project;
-import org.kalibro.Repository;
 import org.kalibro.dto.ProjectDto;
 
 /**
@@ -29,7 +28,9 @@ public class ProjectRecord extends ProjectDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "project", orphanRemoval = true)
+	@CascadeOnDelete
+	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "project", orphanRemoval = true)
 	private Collection<RepositoryRecord> repositories;
 
 	public ProjectRecord() {
@@ -44,13 +45,6 @@ public class ProjectRecord extends ProjectDto {
 		this(project.getId());
 		name = project.getName();
 		description = project.getDescription();
-		setRepositories(project.getRepositories());
-	}
-
-	private void setRepositories(Collection<Repository> repositories) {
-		this.repositories = new ArrayList<RepositoryRecord>();
-		for (Repository repository : repositories)
-			this.repositories.add(new RepositoryRecord(repository, this));
 	}
 
 	@Override

@@ -16,12 +16,12 @@ import org.kalibro.dto.DataTransferObject;
  */
 abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
-	private RecordManager recordManager;
 	private Class<RECORD> recordClass;
+	private RecordManager recordManager;
 
-	DatabaseDao(RecordManager recordManager, Class<RECORD> recordClass) {
-		this.recordManager = recordManager;
+	DatabaseDao(Class<RECORD> recordClass) {
 		this.recordClass = recordClass;
+		this.recordManager = DatabaseDaoFactory.createRecordManager();
 	}
 
 	public boolean exists(Long recordId) {
@@ -40,21 +40,17 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	public SortedSet<ENTITY> all() {
-		return DataTransferObject.toSortedSet(createRecordQuery("").getResultList());
+		return DataTransferObject.toSortedSet(createRecordQuery(null).getResultList());
 	}
 
-	protected <T> T save(T record) {
-		return recordManager.save(record);
+	protected TypedQuery<RECORD> createRecordQuery(String where) {
+		return createRecordQuery(entityName() + " " + alias(), where);
 	}
 
-	public void delete(Long recordId) {
-		Query query = recordManager.createQuery("DELETE FROM " + entityName() + " WHERE id = :id");
-		query.setParameter("id", recordId);
-		recordManager.executeUpdate(query);
-	}
-
-	protected TypedQuery<RECORD> createRecordQuery(String clauses) {
-		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias() + " " + clauses;
+	protected TypedQuery<RECORD> createRecordQuery(String from, String where) {
+		String queryString = "SELECT " + alias() + " FROM " + from;
+		if (where != null)
+			queryString += " WHERE " + where;
 		return createQuery(queryString, recordClass);
 	}
 
@@ -64,6 +60,14 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	private String alias() {
 		return Identifier.fromVariable(entityName()).asVariable();
+	}
+
+	protected <T> T save(T record) {
+		return recordManager.save(record);
+	}
+
+	public void delete(Long recordId) {
+		recordManager.removeById(recordId, recordClass);
 	}
 
 	private String entityName() {

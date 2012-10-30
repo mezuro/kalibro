@@ -17,9 +17,9 @@ import org.kalibro.dto.RangeDto;
 @Table(name = "\"RANGE_SNAPSHOT\"")
 public class RangeSnapshotRecord extends RangeDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration_snapshot\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private MetricConfigurationSnapshotRecord configurationSnapshot;
 
 	@Id

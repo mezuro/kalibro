@@ -12,7 +12,7 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(ModuleResultClientDao.class)
 public class ModuleResultClientDaoTest extends
-	ClientTest<ModuleResult, ModuleResultXml, ModuleResultXml, ModuleResultEndpoint, ModuleResultClientDao> {
+	ClientTest<ModuleResult, ModuleResultXml, ModuleResultEndpoint, ModuleResultClientDao> {
 
 	private static final Long ID = new Random().nextLong();
 
@@ -23,19 +23,19 @@ public class ModuleResultClientDaoTest extends
 
 	@Test
 	public void shouldGetResultsRoot() {
-		when(port.resultsRootOf(ID)).thenReturn(response);
+		when(port.resultsRootOf(ID)).thenReturn(xml);
 		assertSame(entity, client.resultsRootOf(ID));
 	}
 
 	@Test
 	public void shouldGetParent() {
-		when(port.parentOf(ID)).thenReturn(response);
+		when(port.parentOf(ID)).thenReturn(xml);
 		assertSame(entity, client.parentOf(ID));
 	}
 
 	@Test
 	public void shouldGetChildren() {
-		when(port.childrenOf(ID)).thenReturn(list(response));
+		when(port.childrenOf(ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.childrenOf(ID));
 	}
 }

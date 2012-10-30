@@ -14,8 +14,8 @@ import org.kalibro.ProcessState;
 public class ProcessTimeRecord {
 
 	@ManyToOne(optional = false)
-	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
 	@SuppressWarnings("unused" /* used by JPA */)
+	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
 	private ProcessingRecord processing;
 
 	@Id

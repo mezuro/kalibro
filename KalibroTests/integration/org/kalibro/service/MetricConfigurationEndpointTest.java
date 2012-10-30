@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.service.xml.MetricConfigurationXmlRequest;
+import org.kalibro.service.xml.MetricConfigurationXml;
 import org.powermock.reflect.Whitebox;
 
 public class MetricConfigurationEndpointTest extends
@@ -22,6 +22,7 @@ public class MetricConfigurationEndpointTest extends
 	protected MetricConfiguration loadFixture() {
 		MetricConfiguration metricConfiguration = loadFixture("lcom4", MetricConfiguration.class);
 		Whitebox.setInternalState(metricConfiguration, "id", ID);
+		Whitebox.setInternalState(metricConfiguration.getReadingGroup(), "id", ID);
 		return metricConfiguration;
 	}
 
@@ -39,7 +40,7 @@ public class MetricConfigurationEndpointTest extends
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity, CONFIGURATION_ID)).thenReturn(ID);
-		assertEquals(ID, port.saveMetricConfiguration(new MetricConfigurationXmlRequest(entity), CONFIGURATION_ID));
+		assertEquals(ID, port.saveMetricConfiguration(new MetricConfigurationXml(entity), CONFIGURATION_ID));
 	}
 
 	@Test

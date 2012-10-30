@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.kalibro.Configuration;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.service.xml.ConfigurationXmlRequest;
+import org.kalibro.service.xml.ConfigurationXml;
 import org.powermock.reflect.Whitebox;
 
 public class ConfigurationEndpointTest extends EndpointTest<Configuration, ConfigurationDao, ConfigurationEndpoint> {
@@ -56,7 +56,7 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, port.saveConfiguration(new ConfigurationXmlRequest(entity)));
+		assertEquals(ID, port.saveConfiguration(new ConfigurationXml(entity)));
 	}
 
 	@Test

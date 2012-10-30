@@ -25,7 +25,7 @@ enum DatePicker {
 	}
 
 	String existenceClause() {
-		return clause("processing");
+		return "WHERE " + clause("processing");
 	}
 
 	String processingClause() {
@@ -33,7 +33,7 @@ enum DatePicker {
 	}
 
 	String processingClause(String extraCondition) {
-		String dateCondition = "= (SELECT " + selector + "(p.date) FROM Processing p " + clause("p");
+		String dateCondition = "= (SELECT " + selector + "(p.date) FROM Processing p WHERE " + clause("p");
 		dateCondition += extraCondition.equals("") ? ")" : " AND p." + extraCondition + ")";
 		return clause("processing", dateCondition);
 	}
@@ -45,6 +45,6 @@ enum DatePicker {
 
 	private String clause(String alias, String dateCondition) {
 		String dateClause = dateCondition.equals("") ? "" : " AND " + alias + ".date " + dateCondition;
-		return "WHERE " + alias + ".repository.id = :repositoryId" + dateClause;
+		return alias + ".repository.id = :repositoryId" + dateClause;
 	}
 }

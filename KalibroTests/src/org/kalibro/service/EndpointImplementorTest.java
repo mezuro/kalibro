@@ -13,17 +13,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DaoFactory.class, DataTransferObject.class})
-public abstract class EndpointImplementorTest<// @formatter:off
-	ENTITY,
-	REQUEST extends DataTransferObject<ENTITY>,
-	RESPONSE extends DataTransferObject<ENTITY>,
-	DAO,
-	IMPLEMENTOR>// @formatter:on
+public abstract class EndpointImplementorTest<ENTITY, XML extends DataTransferObject<ENTITY>, DAO, IMPLEMENTOR>
 	extends UnitTest {
 
+	protected XML xml;
 	protected ENTITY entity;
-	protected REQUEST request;
-	protected RESPONSE response;
 
 	protected DAO dao;
 	protected IMPLEMENTOR implementor;
@@ -36,13 +30,12 @@ public abstract class EndpointImplementorTest<// @formatter:off
 	}
 
 	private void mockEntity() throws Exception {
+		xml = mock(xmlClass());
 		entity = mock(entityClass());
-		request = mock(requestClass());
-		response = mock(responseClass());
 		mockStatic(DataTransferObject.class);
-		when(request.convert()).thenReturn(entity);
-		whenNew(responseClass()).withArguments(entity).thenReturn(response);
-		when(DataTransferObject.createDtos(sortedSet(entity), responseClass())).thenReturn(list(response));
+		when(xml.convert()).thenReturn(entity);
+		whenNew(xmlClass()).withArguments(entity).thenReturn(xml);
+		when(DataTransferObject.createDtos(sortedSet(entity), xmlClass())).thenReturn(list(xml));
 	}
 
 	private void mockDao() throws Exception {
@@ -59,20 +52,8 @@ public abstract class EndpointImplementorTest<// @formatter:off
 		throw new KalibroError("DaoFactory method not found for class: " + daoClass());
 	}
 
-	private Class<REQUEST> requestClass() throws ClassNotFoundException {
-		return xmlClass("Request");
-	}
-
-	private Class<RESPONSE> responseClass() throws ClassNotFoundException {
-		return xmlClass("Response");
-	}
-
-	private <T> Class<T> xmlClass(String side) throws ClassNotFoundException {
-		try {
-			return (Class<T>) Class.forName("org.kalibro.service.xml." + entityName() + "Xml");
-		} catch (ClassNotFoundException exception) {
-			return (Class<T>) Class.forName("org.kalibro.service.xml." + entityName() + "Xml" + side);
-		}
+	private Class<XML> xmlClass() throws ClassNotFoundException {
+		return (Class<XML>) Class.forName("org.kalibro.service.xml." + entityName() + "Xml");
 	}
 
 	private Class<DAO> daoClass() throws ClassNotFoundException {

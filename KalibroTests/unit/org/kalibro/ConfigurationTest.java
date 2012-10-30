@@ -9,17 +9,18 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.core.processing.ScriptValidator;
 import org.kalibro.dao.ConfigurationDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AbstractEntity.class, DaoFactory.class})
+@PrepareForTest({AbstractEntity.class, DaoFactory.class, ScriptValidator.class})
 public class ConfigurationTest extends UnitTest {
 
 	private ConfigurationDao dao;
@@ -30,13 +31,18 @@ public class ConfigurationTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		dao = mock(ConfigurationDao.class);
-		mockStatic(DaoFactory.class);
-		when(DaoFactory.getConfigurationDao()).thenReturn(dao);
+		mockStatic(ScriptValidator.class);
+		mockDao();
 		sc = loadFixture("sc", CompoundMetric.class);
 		cbo = loadFixture("cbo", NativeMetric.class);
 		lcom4 = loadFixture("lcom4", NativeMetric.class);
 		configuration = loadFixture("sc", Configuration.class);
+	}
+
+	private void mockDao() {
+		dao = mock(ConfigurationDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getConfigurationDao()).thenReturn(dao);
 	}
 
 	@Test
@@ -44,9 +50,7 @@ public class ConfigurationTest extends UnitTest {
 		File file = mock(File.class);
 		mockStatic(AbstractEntity.class);
 		when(AbstractEntity.class, "importFrom", file, Configuration.class).thenReturn(configuration);
-
 		assertSame(configuration, Configuration.importFrom(file));
-		verifyPrivate(AbstractEntity.class).invoke("importFrom", file, Configuration.class);
 	}
 
 	@Test
@@ -98,24 +102,39 @@ public class ConfigurationTest extends UnitTest {
 	@Test
 	public void shouldAddMetricConfigurationIfItDoesNotConflictWithExistingOnes() {
 		configuration.addMetricConfiguration(new MetricConfiguration());
-		assertThat(new VoidTask() {
+		assertAdd(new MetricConfiguration(new CompoundMetric("sc"))).throwsException()
+			.withMessage("Metric with code 'sc' already exists in the configuration.");
+		assertAdd(new MetricConfiguration(sc)).throwsException()
+			.withMessage("Metric already exists in the configuration: Structural Complexity");
+	}
+
+	private TaskMatcher assertAdd(final MetricConfiguration metricConfiguration) {
+		return assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() throws Throwable {
-				configuration.addMetricConfiguration(new MetricConfiguration(new CompoundMetric("sc")));
+				configuration.addMetricConfiguration(metricConfiguration);
 			}
-		}).throwsException().withMessage("Metric with code 'sc' already exists in the configuration.");
+		});
 	}
 
 	@Test
 	public void shouldRemoveMetricConfiguration() {
 		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
-		SortedSet<MetricConfiguration> metricConfigurations = spy(sortedSet(metricConfiguration));
+		SortedSet<MetricConfiguration> metricConfigurations = sortedSet(metricConfiguration);
 		configuration.setMetricConfigurations(metricConfigurations);
 
 		configuration.removeMetricConfiguration(metricConfiguration);
-		verify(metricConfigurations).remove(metricConfiguration);
+		assertTrue(configuration.getMetricConfigurations().isEmpty());
 		verify(metricConfiguration).setConfiguration(null);
+	}
+
+	@Test
+	public void shouldGetConfigurationForMetric() {
+		assertDeepEquals(cbo, configuration.getConfigurationFor(cbo).getMetric());
+		assertDeepEquals(lcom4, configuration.getConfigurationFor(lcom4).getMetric());
+		assertDeepEquals(sc, configuration.getConfigurationFor(sc).getMetric());
+		assertNull(configuration.getConfigurationFor(new CompoundMetric()));
 	}
 
 	@Test
@@ -130,99 +149,68 @@ public class ConfigurationTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldAnswerIfContainsMetric() {
-		assertTrue(configuration.containsMetric(cbo));
-		assertTrue(configuration.containsMetric(lcom4));
-		assertTrue(configuration.containsMetric(sc));
-		assertFalse(configuration.containsMetric(new CompoundMetric()));
-	}
+	public void shouldAssertSaved() {
+		prepareSave(42L);
 
-	@Test
-	public void shouldGetConfigurationForMetric() {
-		assertDeepEquals(cbo, configuration.getConfigurationFor(cbo).getMetric());
-		assertDeepEquals(lcom4, configuration.getConfigurationFor(lcom4).getMetric());
-		assertDeepEquals(sc, configuration.getConfigurationFor(sc).getMetric());
-		assertThat(getConfigurationFor(new CompoundMetric())).throwsException()
-			.withMessage("No configuration found for metric: New metric");
-	}
+		configuration.assertSaved();
+		verify(dao).save(configuration);
 
-	private VoidTask getConfigurationFor(final Metric metric) {
-		return new VoidTask() {
-
-			@Override
-			protected void perform() {
-				configuration.getConfigurationFor(metric);
-			}
-		};
-	}
-
-	@Test
-	public void shouldValidateScripts() {
-		sc = (CompoundMetric) configuration.getConfigurationFor(sc).getMetric();
-		configuration.validateScripts();
-
-		sc.setScript("return null;");
-		assertThat(validateScripts()).throwsException().withMessage("Error evaluating Javascript for: sc");
-	}
-
-	private VoidTask validateScripts() {
-		return new VoidTask() {
-
-			@Override
-			protected void perform() throws Exception {
-				configuration.validateScripts();
-			}
-		};
+		configuration.assertSaved();
+		verifyNoMoreInteractions(dao);
 	}
 
 	@Test
 	public void shouldRequiredNameToSave() {
 		configuration.setName(" ");
-		assertThat(save()).throwsException().withMessage("Configuration requires name.");
-	}
-
-	private VoidTask save() {
-		return new VoidTask() {
+		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
 				configuration.save();
 			}
-		};
+		}).throwsException().withMessage("Configuration requires name.");
 	}
 
 	@Test
-	public void shouldUpdateIdAndMetricConfigurationsOnSave() {
+	public void shouldValidateScriptsBeforeSave() {
+		prepareSave(42L);
+		configuration.save();
+		verifyStatic();
+		ScriptValidator.validate(configuration);
+	}
+
+	@Test
+	public void shouldUpdateIdAndSaveMetricConfigurationsOnSave() {
 		Long id = mock(Long.class);
-		MetricConfiguration metricConfiguration = mockMetricConfiguration(id);
-		when(dao.save(configuration)).thenReturn(id);
+		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
+		prepareSave(id, metricConfiguration);
 
 		assertFalse(configuration.hasId());
 		configuration.save();
 		assertSame(id, configuration.getId());
-		assertDeepEquals(set(metricConfiguration), configuration.getMetricConfigurations());
+		verify(metricConfiguration).save();
 	}
 
-	private MetricConfiguration mockMetricConfiguration(Long id) {
-		MetricConfiguration metricConfiguration = mock(MetricConfiguration.class);
-		MetricConfigurationDao metricConfigurationDao = mock(MetricConfigurationDao.class);
-		when(DaoFactory.getMetricConfigurationDao()).thenReturn(metricConfigurationDao);
-		when(metricConfigurationDao.metricConfigurationsOf(id)).thenReturn(sortedSet(metricConfiguration));
-		return metricConfiguration;
+	private void prepareSave(Long id, MetricConfiguration... metricConfigurations) {
+		configuration.setMetricConfigurations(sortedSet(metricConfigurations));
+		when(dao.save(configuration)).thenReturn(id);
 	}
 
 	@Test
-	public void shouldDeleteIfHasId() {
-		assertFalse(configuration.hasId());
+	public void shouldIgnoreDeleteIfIsNotSaved() {
 		configuration.delete();
 		verify(dao, never()).delete(any(Long.class));
+	}
 
-		Whitebox.setInternalState(configuration, "id", 42L);
+	@Test
+	public void shouldDeleteIfSaved() {
+		Long id = mock(Long.class);
+		Whitebox.setInternalState(configuration, "id", id);
+
 		assertTrue(configuration.hasId());
-
 		configuration.delete();
-		verify(dao).delete(42L);
 		assertFalse(configuration.hasId());
+		verify(dao).delete(id);
 	}
 
 	@Test

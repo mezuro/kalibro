@@ -14,6 +14,10 @@ public final class MemberFilterFactory {
 		return new ModifierMemberFilter(modifier);
 	}
 
+	public static MemberFilter hasType(Class<?> type) {
+		return new TypeMemberFilter(type);
+	}
+
 	public static MemberFilter hasAnnotation(Class<? extends Annotation> annotationClass) {
 		return new AnnotationMemberFilter(annotationClass);
 	}

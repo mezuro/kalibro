@@ -12,7 +12,7 @@ final class NameMemberFilter implements MemberFilter {
 
 	private Pattern pattern;
 
-	protected NameMemberFilter(String regularExpression) {
+	NameMemberFilter(String regularExpression) {
 		pattern = Pattern.compile(regularExpression);
 	}
 

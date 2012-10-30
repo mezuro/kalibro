@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dto.MetricConfigurationDto;
@@ -18,9 +19,9 @@ import org.kalibro.dto.MetricConfigurationDto;
 @Table(name = "\"METRIC_CONFIGURATION_SNAPSHOT\"")
 public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private ProcessingRecord processing;
 
 	@Id
@@ -52,6 +53,7 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	@Column(name = "\"metric_origin\"", nullable = false)
 	private String metricOrigin;
 
+	@CascadeOnDelete
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationSnapshot", orphanRemoval = true)
 	private Collection<RangeSnapshotRecord> ranges;
 
@@ -130,5 +132,10 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	@Override
 	public String baseToolName() {
 		return metricOrigin;
+	}
+
+	@Override
+	public ReadingGroup readingGroup() {
+		return null;
 	}
 }

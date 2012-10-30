@@ -1,12 +1,11 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Configuration;
-import org.kalibro.MetricConfiguration;
 import org.kalibro.dto.ConfigurationDto;
 
 /**
@@ -29,7 +28,9 @@ public class ConfigurationRecord extends ConfigurationDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configuration", orphanRemoval = true)
+	@CascadeOnDelete
+	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	private Collection<MetricConfigurationRecord> metricConfigurations;
 
 	public ConfigurationRecord() {
@@ -44,13 +45,6 @@ public class ConfigurationRecord extends ConfigurationDto {
 		this(configuration.getId());
 		name = configuration.getName();
 		description = configuration.getDescription();
-		setMetricConfigurations(configuration.getMetricConfigurations());
-	}
-
-	private void setMetricConfigurations(Collection<MetricConfiguration> metricConfigurations) {
-		this.metricConfigurations = new ArrayList<MetricConfigurationRecord>();
-		for (MetricConfiguration metricConfiguration : metricConfigurations)
-			this.metricConfigurations.add(new MetricConfigurationRecord(metricConfiguration, this));
 	}
 
 	@Override

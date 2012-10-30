@@ -16,14 +16,15 @@ import org.kalibro.dto.DataTransferObject;
 public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements
 	ConfigurationDao {
 
-	ConfigurationDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ConfigurationRecord.class);
+	ConfigurationDatabaseDao() {
+		super(ConfigurationRecord.class);
 	}
 
 	@Override
-	public Configuration configurationOf(Long projectId) {
-		TypedQuery<ConfigurationRecord> query = createRecordQuery("JOIN Project project WHERE project.id = :projectId");
-		query.setParameter("projectId", projectId);
+	public Configuration configurationOf(Long repositoryId) {
+		String from = "Repository repository JOIN repository.configuration configuration";
+		TypedQuery<ConfigurationRecord> query = createRecordQuery(from, "repository.id = :repositoryId");
+		query.setParameter("repositoryId", repositoryId);
 		return query.getSingleResult().convert();
 	}
 

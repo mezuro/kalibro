@@ -3,6 +3,9 @@ package org.kalibro.core.persistence.record;
 import javax.persistence.*;
 
 import org.kalibro.Range;
+import org.kalibro.Reading;
+import org.kalibro.dao.ReadingDao;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RangeDto;
 
 /**
@@ -14,9 +17,9 @@ import org.kalibro.dto.RangeDto;
 @Table(name = "\"RANGE\"")
 public class RangeRecord extends RangeDto {
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private MetricConfigurationRecord configuration;
 
 	@Id
@@ -30,28 +33,23 @@ public class RangeRecord extends RangeDto {
 	@Column(name = "\"end\"", nullable = false)
 	private Long end;
 
-	@Column(name = "\"comments\"")
-	private String comments;
-
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "\"reading\"", referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private ReadingRecord reading;
+
+	@Column(name = "\"comments\"")
+	private String comments;
 
 	public RangeRecord() {
 		super();
 	}
 
 	public RangeRecord(Range range) {
-		this(range, (Long) null);
+		this(range, null);
 	}
 
 	public RangeRecord(Range range, Long configurationId) {
-		this(range, new MetricConfigurationRecord(configurationId));
-	}
-
-	public RangeRecord(Range range, MetricConfigurationRecord configurationRecord) {
-		configuration = configurationRecord;
+		configuration = new MetricConfigurationRecord(configurationId);
 		id = range.getId();
 		beginning = Double.doubleToLongBits(range.getBeginning());
 		end = Double.doubleToLongBits(range.getEnd());
@@ -77,5 +75,10 @@ public class RangeRecord extends RangeDto {
 	@Override
 	public String comments() {
 		return comments;
+	}
+
+	@Override
+	public Reading reading() {
+		return reading == null ? null : (Reading) DaoLazyLoader.createProxy(ReadingDao.class, "readingOf", id);
 	}
 }

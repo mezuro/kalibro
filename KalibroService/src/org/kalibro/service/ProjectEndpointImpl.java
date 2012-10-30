@@ -9,8 +9,7 @@ import javax.jws.WebService;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProjectDao;
 import org.kalibro.dto.DataTransferObject;
-import org.kalibro.service.xml.ProjectXmlRequest;
-import org.kalibro.service.xml.ProjectXmlResponse;
+import org.kalibro.service.xml.ProjectXml;
 
 /**
  * Implementation of {@link ProjectEndpoint}.
@@ -38,19 +37,19 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 
 	@Override
 	@WebResult(name = "project")
-	public ProjectXmlResponse getProject(@WebParam(name = "projectId") Long projectId) {
-		return new ProjectXmlResponse(dao.get(projectId));
+	public ProjectXml getProject(@WebParam(name = "projectId") Long projectId) {
+		return new ProjectXml(dao.get(projectId));
 	}
 
 	@Override
 	@WebResult(name = "project")
-	public List<ProjectXmlResponse> allProjects() {
-		return DataTransferObject.createDtos(dao.all(), ProjectXmlResponse.class);
+	public List<ProjectXml> allProjects() {
+		return DataTransferObject.createDtos(dao.all(), ProjectXml.class);
 	}
 
 	@Override
 	@WebResult(name = "projectId")
-	public Long saveProject(@WebParam(name = "project") ProjectXmlRequest project) {
+	public Long saveProject(@WebParam(name = "project") ProjectXml project) {
 		return dao.save(project.convert());
 	}
 

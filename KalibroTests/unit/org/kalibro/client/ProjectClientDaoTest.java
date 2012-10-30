@@ -7,13 +7,11 @@ import java.util.Random;
 import org.junit.Test;
 import org.kalibro.Project;
 import org.kalibro.service.ProjectEndpoint;
-import org.kalibro.service.xml.ProjectXmlRequest;
-import org.kalibro.service.xml.ProjectXmlResponse;
+import org.kalibro.service.xml.ProjectXml;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
 @PrepareOnlyThisForTest(ProjectClientDao.class)
-public class ProjectClientDaoTest extends ClientTest<// @formatter:off
-	Project, ProjectXmlRequest, ProjectXmlResponse,	ProjectEndpoint, ProjectClientDao> {// @formatter:on
+public class ProjectClientDaoTest extends ClientTest<Project, ProjectXml, ProjectEndpoint, ProjectClientDao> {
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
@@ -31,19 +29,19 @@ public class ProjectClientDaoTest extends ClientTest<// @formatter:off
 
 	@Test
 	public void shouldGetById() {
-		when(port.getProject(ID)).thenReturn(response);
+		when(port.getProject(ID)).thenReturn(xml);
 		assertSame(entity, client.get(ID));
 	}
 
 	@Test
 	public void shouldGetAll() {
-		when(port.allProjects()).thenReturn(list(response));
+		when(port.allProjects()).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.all());
 	}
 
 	@Test
 	public void shouldSave() {
-		when(port.saveProject(request)).thenReturn(ID);
+		when(port.saveProject(xml)).thenReturn(ID);
 		assertEquals(ID, client.save(entity));
 	}
 

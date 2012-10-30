@@ -11,7 +11,7 @@ import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.RepositoryDao;
-import org.kalibro.service.xml.RepositoryXmlRequest;
+import org.kalibro.service.xml.RepositoryXml;
 import org.powermock.reflect.Whitebox;
 
 public class RepositoryEndpointTest extends EndpointTest<Repository, RepositoryDao, RepositoryEndpoint> {
@@ -57,7 +57,7 @@ public class RepositoryEndpointTest extends EndpointTest<Repository, RepositoryD
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity, PROJECT_ID)).thenReturn(ID);
-		assertEquals(ID, port.saveRepository(new RepositoryXmlRequest(entity), PROJECT_ID));
+		assertEquals(ID, port.saveRepository(new RepositoryXml(entity), PROJECT_ID));
 	}
 
 	@Test

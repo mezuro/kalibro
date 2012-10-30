@@ -9,7 +9,7 @@ import org.junit.Test;
 import org.kalibro.ReadingGroup;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ReadingGroupDao;
-import org.kalibro.service.xml.ReadingGroupXmlRequest;
+import org.kalibro.service.xml.ReadingGroupXml;
 import org.powermock.reflect.Whitebox;
 
 public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, ReadingGroupDao, ReadingGroupEndpoint> {
@@ -56,7 +56,7 @@ public class ReadingGroupEndpointTest extends EndpointTest<ReadingGroup, Reading
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity)).thenReturn(ID);
-		assertEquals(ID, port.saveReadingGroup(new ReadingGroupXmlRequest(entity)));
+		assertEquals(ID, port.saveReadingGroup(new ReadingGroupXml(entity)));
 	}
 
 	@Test

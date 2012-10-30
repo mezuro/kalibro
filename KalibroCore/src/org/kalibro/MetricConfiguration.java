@@ -21,14 +21,25 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	private Long id;
 
 	@IdentityField
+	@Print(order = 1)
 	private String code;
 
+	@Print(order = 2)
 	private Metric metric;
+
+	@Print(order = 3)
 	private BaseTool baseTool;
 
+	@Print(order = 4)
 	private Double weight;
+
+	@Print(order = 5)
 	private Statistic aggregationForm;
+
+	@Print(order = 6)
 	private ReadingGroup readingGroup;
+
+	@Print(order = 7)
 	private Set<Range> ranges;
 
 	@Ignore
@@ -52,7 +63,6 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		setCode(Identifier.fromText(metric.getName()).asVariable());
 		setWeight(1.0);
 		setAggregationForm(Statistic.AVERAGE);
-		setReadingGroup(null);
 		setRanges(new TreeSet<Range>());
 	}
 
@@ -110,6 +120,10 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		this.aggregationForm = aggregationForm;
 	}
 
+	public boolean hasReadingGroup() {
+		return readingGroup != null;
+	}
+
 	public ReadingGroup getReadingGroup() {
 		return readingGroup;
 	}
@@ -119,9 +133,12 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	}
 
 	public SortedSet<Range> getRanges() {
-		for (Range range : ranges)
+		TreeSet<Range> myRanges = new TreeSet<Range>();
+		for (Range range : ranges) {
 			range.setConfiguration(this);
-		return new TreeSet<Range>(ranges);
+			myRanges.add(range);
+		}
+		return myRanges;
 	}
 
 	public void setRanges(SortedSet<Range> ranges) {
@@ -143,6 +160,7 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	}
 
 	public void removeRange(Range range) {
+		ranges = getRanges();
 		ranges.remove(range);
 		range.setConfiguration(null);
 	}
@@ -151,13 +169,20 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 		this.configuration = configuration;
 	}
 
+	void assertSaved() {
+		if (!hasId())
+			save();
+	}
+
 	public void save() {
 		throwExceptionIf(code.trim().isEmpty(), "Metric configuration requires code.");
 		throwExceptionIf(configuration == null, "Metric is not in any configuration.");
-		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
+		configuration.assertSaved();
+		if (hasReadingGroup())
+			readingGroup.assertSaved();
 		id = dao().save(this, configuration.getId());
-		readingGroup = DaoFactory.getReadingGroupDao().readingGroupOf(id);
-		ranges = DaoFactory.getRangeDao().rangesOf(id);
+		for (Range range : getRanges())
+			range.save();
 	}
 
 	public void delete() {
@@ -169,9 +194,9 @@ public class MetricConfiguration extends AbstractEntity<MetricConfiguration> {
 	}
 
 	void deleted() {
+		id = null;
 		for (Range range : ranges)
 			range.deleted();
-		id = null;
 	}
 
 	private MetricConfigurationDao dao() {

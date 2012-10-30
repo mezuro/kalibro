@@ -31,7 +31,7 @@ public class MetricConfigurationSnapshotXml extends MetricConfigurationDto {
 	private Statistic aggregationForm;
 
 	@XmlElement
-	private MetricXmlResponse metric;
+	private MetricXml metric;
 
 	@XmlElement
 	private String baseToolName;
@@ -47,7 +47,7 @@ public class MetricConfigurationSnapshotXml extends MetricConfigurationDto {
 		code = metricConfiguration.getCode();
 		weight = metricConfiguration.getWeight();
 		aggregationForm = metricConfiguration.getAggregationForm();
-		metric = new MetricXmlResponse(metricConfiguration.getMetric());
+		metric = new MetricXml(metricConfiguration.getMetric());
 		baseToolName = metric.compound() ? null : metricConfiguration.getBaseTool().getName();
 		ranges = createDtos(metricConfiguration.getRanges(), RangeSnapshotXml.class);
 	}
