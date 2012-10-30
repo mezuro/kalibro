@@ -29,7 +29,7 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 	@Theory
 	public void testCrud(SupportedDatabase databaseType) {
 		resetDatabase(databaseType);
-		project.save();
+		repository.save();
 		assertDeepEquals(repository, saved());
 
 		repository.setName("RepositoryAcceptanceTest name");

@@ -105,7 +105,7 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public MetricConfiguration getConfigurationFor(Metric metric) {
-		for (MetricConfiguration each : metricConfigurations)
+		for (MetricConfiguration each : getMetricConfigurations())
 			if (each.getMetric().equals(metric))
 				return each;
 		return null;

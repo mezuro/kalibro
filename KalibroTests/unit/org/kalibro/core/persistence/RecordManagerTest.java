@@ -76,4 +76,11 @@ public class RecordManagerTest extends UnitTest {
 		Whitebox.invokeMethod(order.verify(entityManager), method, MERGED);
 		order.verify(transaction).commit();
 	}
+
+	@Test
+	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
+		when(entityManager.isOpen()).thenReturn(true);
+		recordManager.finalize();
+		verify(entityManager).close();
+	}
 }
