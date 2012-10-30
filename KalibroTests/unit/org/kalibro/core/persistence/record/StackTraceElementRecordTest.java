@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence.record;
 
+import org.junit.Test;
+
 public class StackTraceElementRecordTest extends RecordTest {
 
 	@Override
@@ -10,5 +12,12 @@ public class StackTraceElementRecordTest extends RecordTest {
 		assertColumn("methodName", String.class).isRequired();
 		assertColumn("fileName", String.class).isRequired();
 		assertColumn("lineNumber", Integer.class).isRequired();
+	}
+
+	@Test
+	public void shouldAddElementToStackTrace() {
+		StackTraceElement[] stackTrace = new StackTraceElement[1];
+		((StackTraceElementRecord) dto).addTo(stackTrace);
+		assertDeepEquals(entity, stackTrace[0]);
 	}
 }
