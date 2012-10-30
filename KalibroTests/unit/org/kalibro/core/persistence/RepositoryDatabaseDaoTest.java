@@ -6,40 +6,19 @@ import static org.kalibro.RepositoryType.LOCAL_DIRECTORY;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
-import javax.persistence.TypedQuery;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.persistence.record.RepositoryRecord;
 import org.kalibro.core.processing.ProcessTask;
-import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
 @PrepareForTest({RepositoryDatabaseDao.class, RepositoryType.class})
-public class RepositoryDatabaseDaoTest extends UnitTest {
+public class RepositoryDatabaseDaoTest extends
+	DatabaseDaoTestCase<Repository, RepositoryRecord, RepositoryDatabaseDao> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long PROJECT_ID = new Random().nextLong();
-
-	private Repository repository;
-	private RepositoryRecord record;
-
-	private RepositoryDatabaseDao dao;
-
-	@Before
-	public void setUp() throws Exception {
-		repository = mock(Repository.class);
-		record = mock(RepositoryRecord.class);
-		whenNew(RepositoryRecord.class).withArguments(repository, PROJECT_ID).thenReturn(record);
-		when(record.convert()).thenReturn(repository);
-		when(record.id()).thenReturn(ID);
-		dao = spy(new RepositoryDatabaseDao(null));
-	}
 
 	@Test
 	public void shouldGetSupportedRepositoryTypes() {
@@ -53,28 +32,27 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetRepositoryOfProcessing() {
-		TypedQuery<RepositoryRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("JOIN Processing processing WHERE processing.id = :processingId");
-		when(query.getSingleResult()).thenReturn(record);
+		assertSame(entity, dao.repositoryOf(ID));
 
-		assertSame(repository, dao.repositoryOf(ID));
+		String from = "Processing processing JOIN processing.repository repository";
+		verify(dao).createRecordQuery(from, "processing.id = :processingId");
 		verify(query).setParameter("processingId", ID);
 	}
 
 	@Test
 	public void shouldGetRepositoriesOfProject() {
-		TypedQuery<RepositoryRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("WHERE repository.project.id = :projectId");
-		when(query.getResultList()).thenReturn(list(record));
+		assertDeepEquals(set(entity), dao.repositoriesOf(PROJECT_ID));
 
-		assertDeepEquals(set(repository), dao.repositoriesOf(PROJECT_ID));
+		verify(dao).createRecordQuery("repository.project.id = :projectId");
 		verify(query).setParameter("projectId", PROJECT_ID);
 	}
 
 	@Test
-	public void shouldSave() {
-		doReturn(record).when(dao).save(record);
-		assertEquals(ID, dao.save(repository, PROJECT_ID));
+	public void shouldSave() throws Exception {
+		when(record.id()).thenReturn(ID);
+		assertEquals(ID, dao.save(entity, PROJECT_ID));
+
+		verifyNew(RepositoryRecord.class).withArguments(entity, PROJECT_ID);
 		verify(dao).save(record);
 	}
 
@@ -102,9 +80,8 @@ public class RepositoryDatabaseDaoTest extends UnitTest {
 
 	private ProcessTask mockProcessTask(Integer period) throws Exception {
 		ProcessTask task = mock(ProcessTask.class);
-		doReturn(repository).when(dao).get(ID);
-		whenNew(ProcessTask.class).withArguments(repository).thenReturn(task);
-		when(repository.getProcessPeriod()).thenReturn(period);
+		whenNew(ProcessTask.class).withArguments(entity).thenReturn(task);
+		when(entity.getProcessPeriod()).thenReturn(period);
 		return task;
 	}
 }

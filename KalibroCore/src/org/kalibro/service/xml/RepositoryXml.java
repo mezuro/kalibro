@@ -5,23 +5,26 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
- * XML element for {@link Repository} responses.
+ * XML element for {@link Repository}.
  * 
  * @author Carlos Morais
  */
 @XmlRootElement(name = "repository")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RepositoryXmlResponse extends RepositoryDto {
+public class RepositoryXml extends RepositoryDto {
 
 	@XmlElement
 	private Long id;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private String name;
 
 	@XmlElement
@@ -33,17 +36,20 @@ public class RepositoryXmlResponse extends RepositoryDto {
 	@XmlElement
 	private Integer processPeriod;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private RepositoryType type;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private String address;
 
-	public RepositoryXmlResponse() {
+	@XmlElement(required = true)
+	private Long configurationId;
+
+	public RepositoryXml() {
 		super();
 	}
 
-	public RepositoryXmlResponse(Repository repository) {
+	public RepositoryXml(Repository repository) {
 		id = repository.getId();
 		name = repository.getName();
 		description = repository.getDescription();
@@ -51,6 +57,7 @@ public class RepositoryXmlResponse extends RepositoryDto {
 		processPeriod = repository.getProcessPeriod();
 		type = repository.getType();
 		address = repository.getAddress();
+		configurationId = repository.getConfiguration().getId();
 	}
 
 	@Override
@@ -86,5 +93,10 @@ public class RepositoryXmlResponse extends RepositoryDto {
 	@Override
 	public String address() {
 		return address;
+	}
+
+	@Override
+	public Configuration configuration() {
+		return DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configurationId);
 	}
 }

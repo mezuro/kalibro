@@ -64,7 +64,7 @@ public class BaseToolTest extends UnitTest {
 
 	@Test
 	public void shouldHaveDefaultConstructorForFrameworks() {
-		assertDeepEquals(new BaseTool(), new BaseTool(null, null, null, null));
+		assertDeepEquals(new BaseTool(null, null, null, null), new BaseTool());
 	}
 
 	@Test

@@ -5,7 +5,6 @@ import java.util.SortedSet;
 import org.kalibro.*;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.RangeDao;
-import org.kalibro.dao.ReadingGroupDao;
 
 /**
  * Data transfer object for {@link MetricConfiguration}.
@@ -51,9 +50,7 @@ public abstract class MetricConfigurationDto extends DataTransferObject<MetricCo
 
 	public abstract Statistic aggregationForm();
 
-	public ReadingGroup readingGroup() {
-		return DaoLazyLoader.createProxy(ReadingGroupDao.class, "readingGroupOf", id());
-	}
+	public abstract ReadingGroup readingGroup();
 
 	public SortedSet<Range> ranges() {
 		return DaoLazyLoader.createProxy(RangeDao.class, "rangesOf", id());

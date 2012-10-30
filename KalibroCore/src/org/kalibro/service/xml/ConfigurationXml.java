@@ -1,26 +1,21 @@
 package org.kalibro.service.xml;
 
-import java.util.Collection;
-import java.util.SortedSet;
-import java.util.TreeSet;
-
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Configuration;
-import org.kalibro.MetricConfiguration;
 import org.kalibro.dto.ConfigurationDto;
 
 /**
- * XML element for {@link Configuration} requests.
+ * XML element for {@link Configuration}.
  * 
  * @author Carlos Morais
  */
 @XmlRootElement(name = "configuration")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ConfigurationXmlRequest extends ConfigurationDto {
+public class ConfigurationXml extends ConfigurationDto {
 
 	@XmlElement
 	private Long id;
@@ -31,18 +26,14 @@ public class ConfigurationXmlRequest extends ConfigurationDto {
 	@XmlElement
 	private String description;
 
-	@XmlElement(name = "metricConfiguration")
-	private Collection<MetricConfigurationXmlRequest> metricConfigurations;
-
-	public ConfigurationXmlRequest() {
+	public ConfigurationXml() {
 		super();
 	}
 
-	public ConfigurationXmlRequest(Configuration configuration) {
+	public ConfigurationXml(Configuration configuration) {
 		id = configuration.getId();
 		name = configuration.getName();
 		description = configuration.getDescription();
-		metricConfigurations = createDtos(configuration.getMetricConfigurations(), MetricConfigurationXmlRequest.class);
 	}
 
 	@Override
@@ -58,10 +49,5 @@ public class ConfigurationXmlRequest extends ConfigurationDto {
 	@Override
 	public String description() {
 		return description;
-	}
-
-	@Override
-	public SortedSet<MetricConfiguration> metricConfigurations() {
-		return metricConfigurations == null ? new TreeSet<MetricConfiguration>() : toSortedSet(metricConfigurations);
 	}
 }

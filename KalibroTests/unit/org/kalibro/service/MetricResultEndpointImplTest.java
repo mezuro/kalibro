@@ -15,7 +15,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest({DaoLazyLoader.class, MetricResultEndpointImpl.class})
 public class MetricResultEndpointImplTest extends
-	EndpointImplementorTest<MetricResult, MetricResultXml, MetricResultXml, MetricResultDao, MetricResultEndpointImpl> {
+	EndpointImplementorTest<MetricResult, MetricResultXml, MetricResultDao, MetricResultEndpointImpl> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final String METRIC_NAME = "MetricResultEndpointImplTest metric name";
@@ -35,7 +35,7 @@ public class MetricResultEndpointImplTest extends
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
 		when(dao.metricResultsOf(ID)).thenReturn(sortedSet(entity));
-		assertDeepEquals(list(response), implementor.metricResultsOf(ID));
+		assertDeepEquals(list(xml), implementor.metricResultsOf(ID));
 	}
 
 	@Test

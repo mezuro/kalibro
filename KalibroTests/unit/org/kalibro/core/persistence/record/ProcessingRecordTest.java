@@ -14,8 +14,8 @@ public class ProcessingRecordTest extends RecordTest {
 		shouldHaveId();
 		assertColumn("date", Long.class).isRequired();
 		assertColumn("state", String.class).isRequired();
-		assertOneToOne("error", ThrowableRecord.class).isOptional();
-		assertOneToMany("processTimes").isMappedBy("processing");
+		shouldHaveError("error");
+		assertOneToMany("processTimes").cascades().isMappedBy("processing");
 	}
 
 	@Test

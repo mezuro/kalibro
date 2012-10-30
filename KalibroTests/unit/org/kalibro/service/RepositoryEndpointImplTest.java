@@ -9,13 +9,12 @@ import org.junit.Test;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.dao.RepositoryDao;
-import org.kalibro.service.xml.RepositoryXmlRequest;
-import org.kalibro.service.xml.RepositoryXmlResponse;
+import org.kalibro.service.xml.RepositoryXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest({RepositoryEndpointImpl.class, RepositoryType.class})
-public class RepositoryEndpointImplTest extends EndpointImplementorTest<// @formatter:off
-	Repository, RepositoryXmlRequest, RepositoryXmlResponse, RepositoryDao, RepositoryEndpointImpl> {// @formatter:on
+public class RepositoryEndpointImplTest extends
+	EndpointImplementorTest<Repository, RepositoryXml, RepositoryDao, RepositoryEndpointImpl> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long PROJECT_ID = new Random().nextLong();
@@ -34,19 +33,19 @@ public class RepositoryEndpointImplTest extends EndpointImplementorTest<// @form
 	@Test
 	public void shouldGetRepositoryOfProcessing() {
 		when(dao.repositoryOf(ID)).thenReturn(entity);
-		assertSame(response, implementor.repositoryOf(ID));
+		assertSame(xml, implementor.repositoryOf(ID));
 	}
 
 	@Test
 	public void shouldGetRepositoriesOfProject() {
 		when(dao.repositoriesOf(PROJECT_ID)).thenReturn(sortedSet(entity));
-		assertDeepEquals(list(response), implementor.repositoriesOf(PROJECT_ID));
+		assertDeepEquals(list(xml), implementor.repositoriesOf(PROJECT_ID));
 	}
 
 	@Test
 	public void shouldSave() {
 		when(dao.save(entity, PROJECT_ID)).thenReturn(ID);
-		assertEquals(ID, implementor.saveRepository(request, PROJECT_ID));
+		assertEquals(ID, implementor.saveRepository(xml, PROJECT_ID));
 	}
 
 	@Test

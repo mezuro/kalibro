@@ -6,52 +6,37 @@ import java.util.Random;
 
 import javax.persistence.TypedQuery;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
 import org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord;
-import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ConfigurationDatabaseDao.class)
-public class ConfigurationDatabaseDaoTest extends UnitTest {
+public class ConfigurationDatabaseDaoTest extends
+	DatabaseDaoTestCase<Configuration, ConfigurationRecord, ConfigurationDatabaseDao> {
 
 	private static final Long ID = new Random().nextLong();
 
-	private Configuration configuration;
-	private ConfigurationRecord record;
+	@Test
+	public void shouldGetConfigurationOfRepository() {
+		assertSame(entity, dao.configurationOf(ID));
 
-	private ConfigurationDatabaseDao dao;
+		String from = "Repository repository JOIN repository.configuration configuration";
+		verify(dao).createRecordQuery(from, "repository.id = :repositoryId");
+		verify(query).setParameter("repositoryId", ID);
+	}
 
-	@Before
-	public void setUp() throws Exception {
-		configuration = mock(Configuration.class);
-		record = mock(ConfigurationRecord.class);
-		whenNew(ConfigurationRecord.class).withArguments(configuration).thenReturn(record);
-		when(record.convert()).thenReturn(configuration);
+	@Test
+	public void shouldSave() throws Exception {
 		when(record.id()).thenReturn(ID);
-		dao = spy(new ConfigurationDatabaseDao(null));
-	}
+		assertEquals(ID, dao.save(entity));
 
-	@Test
-	public void shouldGetConfigurationOfProject() {
-		TypedQuery<ConfigurationRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("JOIN Project project WHERE project.id = :projectId");
-		when(query.getSingleResult()).thenReturn(record);
-
-		assertSame(configuration, dao.configurationOf(ID));
-		verify(query).setParameter("projectId", ID);
-	}
-
-	@Test
-	public void shouldSave() {
-		doReturn(record).when(dao).save(record);
-		assertEquals(ID, dao.save(configuration));
+		verifyNew(ConfigurationRecord.class).withArguments(entity);
 		verify(dao).save(record);
 	}
 
@@ -59,14 +44,14 @@ public class ConfigurationDatabaseDaoTest extends UnitTest {
 	public void shouldGetSnapshotForProcessing() {
 		MetricConfiguration snapshot = mock(MetricConfiguration.class);
 		MetricConfigurationSnapshotRecord snapshotRecord = mock(MetricConfigurationSnapshotRecord.class);
-		TypedQuery<MetricConfigurationSnapshotRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createQuery(
+		TypedQuery<MetricConfigurationSnapshotRecord> snapshotQuery = mock(TypedQuery.class);
+		doReturn(snapshotQuery).when(dao).createQuery(
 			"SELECT snapshot FROM MetricConfigurationSnapshot snapshot WHERE snapshot.processing.id = :processingId",
 			MetricConfigurationSnapshotRecord.class);
-		when(query.getResultList()).thenReturn(list(snapshotRecord));
+		when(snapshotQuery.getResultList()).thenReturn(list(snapshotRecord));
 		when(snapshotRecord.convert()).thenReturn(snapshot);
 
 		assertDeepEquals(set(snapshot), dao.snapshotFor(ID).getMetricConfigurations());
-		verify(query).setParameter("processingId", ID);
+		verify(snapshotQuery).setParameter("processingId", ID);
 	}
 }

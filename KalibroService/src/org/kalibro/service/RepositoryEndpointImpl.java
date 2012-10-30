@@ -11,8 +11,7 @@ import org.kalibro.RepositoryType;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RepositoryDao;
 import org.kalibro.dto.DataTransferObject;
-import org.kalibro.service.xml.RepositoryXmlRequest;
-import org.kalibro.service.xml.RepositoryXmlResponse;
+import org.kalibro.service.xml.RepositoryXml;
 
 /**
  * Implementation of {@link RepositoryEndpoint}.
@@ -44,20 +43,20 @@ public class RepositoryEndpointImpl implements RepositoryEndpoint {
 
 	@Override
 	@WebResult(name = "repository")
-	public RepositoryXmlResponse repositoryOf(@WebParam(name = "processingId") Long processingId) {
-		return new RepositoryXmlResponse(dao.repositoryOf(processingId));
+	public RepositoryXml repositoryOf(@WebParam(name = "processingId") Long processingId) {
+		return new RepositoryXml(dao.repositoryOf(processingId));
 	}
 
 	@Override
 	@WebResult(name = "repository")
-	public List<RepositoryXmlResponse> repositoriesOf(@WebParam(name = "projectId") Long projectId) {
-		return DataTransferObject.createDtos(dao.repositoriesOf(projectId), RepositoryXmlResponse.class);
+	public List<RepositoryXml> repositoriesOf(@WebParam(name = "projectId") Long projectId) {
+		return DataTransferObject.createDtos(dao.repositoriesOf(projectId), RepositoryXml.class);
 	}
 
 	@Override
 	@WebResult(name = "repositoryId")
 	public Long saveRepository(
-		@WebParam(name = "repository") RepositoryXmlRequest repository,
+		@WebParam(name = "repository") RepositoryXml repository,
 		@WebParam(name = "projectId") Long projectId) {
 		return dao.save(repository.convert(), projectId);
 	}

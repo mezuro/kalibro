@@ -16,13 +16,13 @@ import org.kalibro.dto.DataTransferObject;
  */
 class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> implements RangeDao {
 
-	RangeDatabaseDao(RecordManager recordManager) {
-		super(recordManager, RangeRecord.class);
+	RangeDatabaseDao() {
+		super(RangeRecord.class);
 	}
 
 	@Override
 	public SortedSet<Range> rangesOf(Long metricConfigurationId) {
-		TypedQuery<RangeRecord> query = createRecordQuery("WHERE range.configuration.id = :configurationId");
+		TypedQuery<RangeRecord> query = createRecordQuery("range.configuration.id = :configurationId");
 		query.setParameter("configurationId", metricConfigurationId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}

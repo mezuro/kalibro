@@ -16,10 +16,16 @@ public class Range extends AbstractEntity<Range> {
 	private Long id;
 
 	@IdentityField
+	@Print(order = 1)
 	private Double beginning;
 
+	@Print(order = 2)
 	private Double end;
+
+	@Print(order = 3)
 	private Reading reading;
+
+	@Print(order = 4)
 	private String comments;
 
 	@Ignore
@@ -114,7 +120,9 @@ public class Range extends AbstractEntity<Range> {
 
 	public void save() {
 		throwExceptionIf(configuration == null, "Range is not in any configuration.");
-		throwExceptionIf(!configuration.hasId(), "Configuration is not saved. Save configuration instead");
+		configuration.assertSaved();
+		if (hasReading())
+			reading.assertSaved();
 		id = dao().save(this, configuration.getId());
 	}
 

@@ -8,8 +8,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.xml.ProjectXmlRequest;
-import org.kalibro.service.xml.ProjectXmlResponse;
+import org.kalibro.service.xml.ProjectXml;
 
 /**
  * End point to make {@link ProjectDao} interface available as Web service.
@@ -25,15 +24,15 @@ public interface ProjectEndpoint {
 
 	@WebMethod
 	@WebResult(name = "project")
-	ProjectXmlResponse getProject(@WebParam(name = "projectId") Long projectId);
+	ProjectXml getProject(@WebParam(name = "projectId") Long projectId);
 
 	@WebMethod
 	@WebResult(name = "project")
-	List<ProjectXmlResponse> allProjects();
+	List<ProjectXml> allProjects();
 
 	@WebMethod
 	@WebResult(name = "projectId")
-	Long saveProject(@WebParam(name = "project") ProjectXmlRequest project);
+	Long saveProject(@WebParam(name = "project") ProjectXml project);
 
 	@WebMethod
 	void deleteProject(@WebParam(name = "projectId") Long projectId);

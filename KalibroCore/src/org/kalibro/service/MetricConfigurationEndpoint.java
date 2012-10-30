@@ -8,8 +8,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.service.xml.MetricConfigurationXmlRequest;
-import org.kalibro.service.xml.MetricConfigurationXmlResponse;
+import org.kalibro.service.xml.MetricConfigurationXml;
 
 /**
  * End point to make {@link MetricConfigurationDao} interface available as Web service.
@@ -21,13 +20,13 @@ public interface MetricConfigurationEndpoint {
 
 	@WebMethod
 	@WebResult(name = "metricConfiguration")
-	List<MetricConfigurationXmlResponse> metricConfigurationsOf(
+	List<MetricConfigurationXml> metricConfigurationsOf(
 		@WebParam(name = "configurationId") Long configurationId);
 
 	@WebMethod
 	@WebResult(name = "metricConfigurationId")
 	Long saveMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXmlRequest metricConfiguration,
+		@WebParam(name = "metricConfiguration") MetricConfigurationXml metricConfiguration,
 		@WebParam(name = "configurationId") Long configurationId);
 
 	@WebMethod

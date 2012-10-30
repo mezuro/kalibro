@@ -47,7 +47,7 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	private Set<Reading> readings;
 
 	public ReadingGroup() {
-		this("");
+		this("New group");
 	}
 
 	public ReadingGroup(String name) {
@@ -81,9 +81,12 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	public SortedSet<Reading> getReadings() {
-		for (Reading reading : readings)
+		TreeSet<Reading> myReadings = new TreeSet<Reading>();
+		for (Reading reading : readings) {
 			reading.setGroup(this);
-		return new TreeSet<Reading>(readings);
+			myReadings.add(reading);
+		}
+		return myReadings;
 	}
 
 	public void setReadings(SortedSet<Reading> readings) {
@@ -97,15 +100,22 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 		readings.add(reading);
 	}
 
-	void removeReading(Reading reading) {
+	public void removeReading(Reading reading) {
+		readings = getReadings();
 		readings.remove(reading);
 		reading.setGroup(null);
+	}
+
+	void assertSaved() {
+		if (!hasId())
+			save();
 	}
 
 	public void save() {
 		throwExceptionIf(name.trim().isEmpty(), "Reading group requires name.");
 		id = dao().save(this);
-		readings = DaoFactory.getReadingDao().readingsOf(id);
+		for (Reading reading : getReadings())
+			reading.save();
 	}
 
 	public void delete() {
@@ -115,9 +125,9 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	private void deleted() {
+		id = null;
 		for (Reading reading : readings)
 			reading.deleted();
-		id = null;
 	}
 
 	@Override

@@ -79,9 +79,12 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public SortedSet<MetricConfiguration> getMetricConfigurations() {
-		for (MetricConfiguration each : metricConfigurations)
+		TreeSet<MetricConfiguration> myConfigurations = new TreeSet<MetricConfiguration>();
+		for (MetricConfiguration each : metricConfigurations) {
 			each.setConfiguration(this);
-		return new TreeSet<MetricConfiguration>(metricConfigurations);
+			myConfigurations.add(each);
+		}
+		return myConfigurations;
 	}
 
 	public void setMetricConfigurations(SortedSet<MetricConfiguration> metricConfigurations) {
@@ -96,12 +99,16 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	public void removeMetricConfiguration(MetricConfiguration metricConfiguration) {
+		metricConfigurations = getMetricConfigurations();
 		metricConfigurations.remove(metricConfiguration);
 		metricConfiguration.setConfiguration(null);
 	}
 
-	public void validateScripts() {
-		ScriptValidator.validate(this);
+	public MetricConfiguration getConfigurationFor(Metric metric) {
+		for (MetricConfiguration each : getMetricConfigurations())
+			if (each.getMetric().equals(metric))
+				return each;
+		return null;
 	}
 
 	public SortedSet<CompoundMetric> getCompoundMetrics() {
@@ -128,27 +135,17 @@ public class Configuration extends AbstractEntity<Configuration> {
 		nativeMetrics.get(origin).add((NativeMetric) nativeConfiguration.getMetric());
 	}
 
-	public boolean containsMetric(Metric metric) {
-		return findConfigurationFor(metric) != null;
-	}
-
-	public MetricConfiguration getConfigurationFor(Metric metric) {
-		MetricConfiguration metricConfiguration = findConfigurationFor(metric);
-		throwExceptionIf(metricConfiguration == null, "No configuration found for metric: " + metric);
-		return metricConfiguration;
-	}
-
-	private MetricConfiguration findConfigurationFor(Metric metric) {
-		for (MetricConfiguration metricConfiguration : metricConfigurations)
-			if (metricConfiguration.getMetric().equals(metric))
-				return metricConfiguration;
-		return null;
+	void assertSaved() {
+		if (!hasId())
+			save();
 	}
 
 	public void save() {
 		throwExceptionIf(name.trim().isEmpty(), "Configuration requires name.");
+		ScriptValidator.validate(this);
 		id = dao().save(this);
-		metricConfigurations = DaoFactory.getMetricConfigurationDao().metricConfigurationsOf(id);
+		for (MetricConfiguration each : metricConfigurations)
+			each.save();
 	}
 
 	public void delete() {
@@ -158,9 +155,9 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	private void deleted() {
-		for (MetricConfiguration metricConfiguration : metricConfigurations)
-			metricConfiguration.deleted();
 		id = null;
+		for (MetricConfiguration each : metricConfigurations)
+			each.deleted();
 	}
 
 	@Override

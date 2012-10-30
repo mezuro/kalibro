@@ -20,30 +20,30 @@ import org.kalibro.dto.DataTransferObject;
  */
 public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleResultRecord> implements ModuleResultDao {
 
-	ModuleResultDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ModuleResultRecord.class);
+	ModuleResultDatabaseDao() {
+		super(ModuleResultRecord.class);
 	}
 
 	@Override
 	public ModuleResult resultsRootOf(Long processingId) {
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(
-			"WHERE moduleResult.processing.id = :processingId AND moduleResult.parent = null");
+		String where = "moduleResult.processing.id = :processingId AND moduleResult.parent = null";
+		TypedQuery<ModuleResultRecord> query = createRecordQuery(where);
 		query.setParameter("processingId", processingId);
 		return query.getSingleResult().convert();
 	}
 
 	@Override
 	public ModuleResult parentOf(Long moduleResultId) {
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(
-			"JOIN ModuleResult child ON child.parent = moduleResult WHERE child.id = :childId");
+		String from = "ModuleResult child JOIN child.parent moduleResult";
+		TypedQuery<ModuleResultRecord> query = createRecordQuery(from, "child.id = :childId");
 		query.setParameter("childId", moduleResultId);
 		return query.getSingleResult().convert();
 	}
 
 	@Override
 	public SortedSet<ModuleResult> childrenOf(Long moduleResultId) {
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(
-			"JOIN ModuleResult parent ON moduleResult.parent = parent WHERE parent.id = :parentId");
+		String from = "ModuleResult parent ON parent.children moduleResult";
+		TypedQuery<ModuleResultRecord> query = createRecordQuery(from, "parent.id = :parentId");
 		query.setParameter("parentId", moduleResultId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
@@ -60,7 +60,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 
 	private ModuleResultRecord findResultFor(Module module, Long processingId) {
 		List<String> moduleName = Arrays.asList(module.getName());
-		if (!exists(moduleNameClause(), "processingId", processingId, "moduleName", moduleName))
+		if (!exists("WHERE " + moduleCondition(), "processingId", processingId, "moduleName", moduleName))
 			save(new ModuleResultRecord(module, findParentOf(module, processingId), processingId));
 		return getResultFor(moduleName, processingId);
 	}
@@ -72,13 +72,13 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	}
 
 	private ModuleResultRecord getResultFor(List<String> moduleName, Long processingId) {
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(moduleNameClause());
+		TypedQuery<ModuleResultRecord> query = createRecordQuery(moduleCondition());
 		query.setParameter("processingId", processingId);
 		query.setParameter("moduleName", moduleName);
 		return query.getSingleResult();
 	}
 
-	private String moduleNameClause() {
-		return "WHERE moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
+	private String moduleCondition() {
+		return "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
 	}
 }

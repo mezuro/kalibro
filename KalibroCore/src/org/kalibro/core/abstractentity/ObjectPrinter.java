@@ -7,11 +7,13 @@ package org.kalibro.core.abstractentity;
  */
 class ObjectPrinter extends Printer<Object> {
 
-	@Override boolean canPrint(Object object) {
+	@Override
+	boolean canPrint(Object object) {
 		return true;
 	}
 
-	@Override void doPrint(Object object, String comment) {
+	@Override
+	void doPrint(Object object, String comment) {
 		printString(" " + object);
 		printComment(comment);
 	}

@@ -1,6 +1,7 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
+import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 import java.util.Iterator;
@@ -13,8 +14,8 @@ import org.kalibro.tests.IntegrationTest;
 
 public abstract class RepositoryIntegrationTest extends IntegrationTest {
 
-	protected static File repositoriesDirectory() {
-		return new File(samplesDirectory(), "repositories");
+	protected static File projectsDirectory() {
+		return new File(dotKalibro(), "projects");
 	}
 
 	protected RepositoryLoader loader;
@@ -44,7 +45,7 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 
 	private File loadAndCheck() {
 		load();
-		Iterator<File> files = FileUtils.iterateFiles(helloWorldDirectory(), new String[]{"c"}, true);
+		Iterator<File> files = FileUtils.iterateFiles(projectsDirectory(), new String[]{"c"}, true);
 		File loaded = files.next();
 		assertEquals("HelloWorld.c", loaded.getName());
 		assertFalse(files.hasNext());
@@ -52,7 +53,7 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 	}
 
 	protected void load() {
-		loader.load(address(), helloWorldDirectory());
+		loader.load(address(), projectsDirectory());
 	}
 
 	protected abstract String address();

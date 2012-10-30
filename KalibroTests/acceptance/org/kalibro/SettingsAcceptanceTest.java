@@ -27,29 +27,6 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void checkDefaultSettings() {
-		assertFalse(settings.clientSide());
-		checkClientSettings();
-		checkServerSettings();
-	}
-
-	private void checkClientSettings() {
-		ClientSettings clientSettings = settings.getClientSettings();
-		assertEquals("http://localhost:8080/KalibroService/", clientSettings.getServiceAddress());
-	}
-
-	private void checkServerSettings() {
-		ServerSettings serverSettings = settings.getServerSettings();
-		assertEquals(new File(dotKalibro(), "projects"), serverSettings.getLoadDirectory());
-
-		DatabaseSettings databaseSettings = serverSettings.getDatabaseSettings();
-		assertEquals(SupportedDatabase.MYSQL, databaseSettings.getDatabaseType());
-		assertEquals("jdbc:mysql://localhost:3306/kalibro", databaseSettings.getJdbcUrl());
-		assertEquals("kalibro", databaseSettings.getUsername());
-		assertEquals("kalibro", databaseSettings.getPassword());
-	}
-
-	@Test
 	public void shouldSaveLoadAndConfirmExistence() {
 		assertFalse(KalibroSettings.exists());
 

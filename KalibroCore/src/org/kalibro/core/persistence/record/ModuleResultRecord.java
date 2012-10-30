@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Granularity;
 import org.kalibro.MetricResult;
 import org.kalibro.Module;
@@ -28,9 +29,9 @@ public class ModuleResultRecord extends ModuleResultDto {
 		return new ModuleResultRecord(moduleResult.getParent().getId());
 	}
 
+	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
-	@SuppressWarnings("unused" /* used by JPA */)
 	private ProcessingRecord processing;
 
 	@Id
@@ -38,8 +39,8 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@OrderColumn(name = "\"index\"", nullable = false)
 	@ElementCollection(fetch = FetchType.EAGER)
+	@OrderColumn(name = "\"index\"", nullable = false)
 	private List<String> moduleName;
 
 	@Column(name = "\"module_granularity\"", nullable = false)
@@ -49,14 +50,16 @@ public class ModuleResultRecord extends ModuleResultDto {
 	private Long grade;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"parent\"", referencedColumnName = "\"id\"")
 	@SuppressWarnings("unused" /* used by JPA */)
+	@JoinColumn(name = "\"parent\"", referencedColumnName = "\"id\"")
 	private ModuleResultRecord parent;
 
-	@OneToMany(mappedBy = "parent")
+	@CascadeOnDelete
 	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "parent", orphanRemoval = true)
 	private Collection<ModuleResultRecord> children;
 
+	@CascadeOnDelete
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleResult", orphanRemoval = true)
 	private Collection<MetricResultRecord> metricResults;
 

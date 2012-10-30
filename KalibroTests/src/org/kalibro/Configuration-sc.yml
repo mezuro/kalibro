@@ -3,87 +3,87 @@ name: "SC configuration"
 description: "Sample configuration with natives cbo, lcom4 and compound sc."
 metricConfigurations:
   - &id2 !!org.kalibro.MetricConfiguration
-    aggregationForm: AVERAGE
-    baseTool: null
     code: "sc"
     metric: &id3 !!org.kalibro.CompoundMetric
-      description: ""
       name: "Structural Complexity"
       scope: CLASS
+      description: ""
       script: "return cbo * lcom4"
-    ranges: []
-    readingGroup: null
+    baseTool: null
     weight: 1.0
-  - &id4 !!org.kalibro.MetricConfiguration
     aggregationForm: AVERAGE
-    baseTool: &id5 !!org.kalibro.BaseTool
+    readingGroup: null
+    ranges: []
+  - &id4 !!org.kalibro.MetricConfiguration
+    code: "cbo"
+    metric: &id5 !!org.kalibro.NativeMetric
+      name: "Coupling Between Objects"
+      scope: CLASS
+      description: ""
+      languages:
+        - C
+        - CPP
+        - JAVA
+    baseTool: &id6 !!org.kalibro.BaseTool
       collectorClassName: "inexistent.Class"
-      description: "Base tool for testing"
       name: "Inexistent"
+      description: "Base tool for testing"
       supportedMetrics:
-        - &id6 !!org.kalibro.NativeMetric
-          description: ""
-          languages:
-            - C
-            - CPP
-            - JAVA
-          name: "Coupling Between Objects"
-          scope: CLASS
+        - *id5
         - &id7 !!org.kalibro.NativeMetric
-          description: ""
-          languages:
-            - C
-            - CPP
-            - JAVA
           name: "Lack of Cohesion of Methods"
           scope: CLASS
-        - &id8 !!org.kalibro.NativeMetric
           description: ""
           languages:
             - C
             - CPP
             - JAVA
+        - &id8 !!org.kalibro.NativeMetric
           name: "Total Coupling Factor"
           scope: SOFTWARE
-    code: "cbo"
-    metric: *id6
-    ranges: []
-    readingGroup: null
+          description: ""
+          languages:
+            - C
+            - CPP
+            - JAVA
     weight: 1.0
-  - &id9 !!org.kalibro.MetricConfiguration
     aggregationForm: AVERAGE
-    baseTool: *id5
+    readingGroup: null
+    ranges: []
+  - &id9 !!org.kalibro.MetricConfiguration
     code: "lcom4"
     metric: *id7
-    ranges:
-      - &id10 !!org.kalibro.Range
-        beginning: 0.0
-        comments: ""
-        end: 1.0
-        reading: &id11 !!org.kalibro.Reading
-          color: 0x00ff00
-          grade: 10.0
-          label: "Good"
-      - &id12 !!org.kalibro.Range
-        beginning: 1.0
-        comments: ""
-        end: .inf
-        reading: &id13 !!org.kalibro.Reading
-          color: 0xff0000
-          grade: 0.0
-          label: "Bad"
-    readingGroup: &id14 !!org.kalibro.ReadingGroup
+    baseTool: *id6
+    weight: 1.0
+    aggregationForm: AVERAGE
+    readingGroup: &id10 !!org.kalibro.ReadingGroup
       name: "Extremes"
       description: "All or nothing group."
       readings:
-        - *id13
-        - *id11
-    weight: 1.0
+        - &id11 !!org.kalibro.Reading
+          label: "Bad"
+          grade: 0.0
+          color: 0xff0000
+        - &id12 !!org.kalibro.Reading
+          label: "Good"
+          grade: 10.0
+          color: 0x00ff00
+    ranges:
+      - &id13 !!org.kalibro.Range
+        beginning: 0.0
+        end: 1.0
+        reading: *id12
+        comments: ""
+      - &id14 !!org.kalibro.Range
+        beginning: 1.0
+        end: .inf
+        reading: *id11
+        comments: ""
   - &id15 !!org.kalibro.MetricConfiguration
-    aggregationForm: AVERAGE
-    baseTool: *id5
     code: "total_cof"
     metric: *id8
-    ranges: []
-    readingGroup: null
+    baseTool: *id6
     weight: 1.0
+    aggregationForm: AVERAGE
+    readingGroup: null
+    ranges: []

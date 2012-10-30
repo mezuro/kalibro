@@ -21,7 +21,7 @@ public class MetricConfigurationSnapshotXmlTest extends XmlTest {
 		assertElement("code", String.class);
 		assertElement("weight", Double.class);
 		assertElement("aggregationForm", Statistic.class);
-		assertElement("metric", MetricXmlResponse.class);
+		assertElement("metric", MetricXml.class);
 		assertElement("baseToolName", String.class);
 		assertCollection("range");
 	}
