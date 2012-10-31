@@ -20,8 +20,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({KalibroSettings.class, LoadSourceTask.class, ProcessSubtask.class})
-public class LoadSourceTaskTest extends UnitTest {
+@PrepareOnlyThisForTest({KalibroSettings.class, LoadingTask.class, ProcessSubtask.class})
+public class LoadingTaskTest extends UnitTest {
 
 	private static final Long PROJECT_ID = 6L;
 	private static final String PROJECT_NAME = "  my project()";
@@ -35,14 +35,14 @@ public class LoadSourceTaskTest extends UnitTest {
 	private Repository repository;
 	private RepositoryLoader loader;
 
-	private LoadSourceTask loadTask;
+	private LoadingTask loadTask;
 
 	@Before
 	public void setUp() throws Exception {
 		mockLoadDirectory();
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(mock(DatabaseDaoFactory.class));
 		loader = mock(RepositoryLoader.class);
-		loadTask = spy(new LoadSourceTask(mockProcessing()));
+		loadTask = spy(new LoadingTask(mockProcessing()));
 		doReturn(loader).when(loadTask, "createLoader");
 		mockNames();
 	}
@@ -119,10 +119,5 @@ public class LoadSourceTaskTest extends UnitTest {
 		when(repository.getType()).thenReturn(RepositoryType.GIT);
 		doCallRealMethod().when(loadTask, "createLoader");
 		assertClassEquals(GitLoader.class, Whitebox.invokeMethod(loadTask, "createLoader"));
-	}
-
-	@Test
-	public void taskStateShouldBeLoading() {
-		assertEquals(ProcessState.LOADING, loadTask.getTaskState());
 	}
 }

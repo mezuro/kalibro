@@ -9,7 +9,6 @@ import org.kalibro.Repository;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
-import org.kalibro.core.persistence.ProcessingDatabaseDao;
 
 /**
  * Performs a {@link Processing} for a {@link Repository} according to its {@link Configuration}.
@@ -18,19 +17,19 @@ import org.kalibro.core.persistence.ProcessingDatabaseDao;
  */
 public class ProcessTask extends VoidTask {
 
+	DatabaseDaoFactory daoFactory;
 	Processing processing;
-	ProcessingDatabaseDao processingDao;
 
 	public ProcessTask(Repository repository) {
-		processingDao = new DatabaseDaoFactory().createProcessingDao();
-		processing = processingDao.createProcessingFor(repository);
+		daoFactory = new DatabaseDaoFactory();
+		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
 	}
 
 	@Override
 	protected void perform() {
-		File codeDirectory = new LoadSourceTask(processing).execute();
+		File codeDirectory = new LoadingTask(processing).execute();
 		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
-		new CollectMetricsTask(processing, codeDirectory, resultProducer).executeInBackground();
-		new AnalyzeResultsTask(processing, resultProducer).execute();
+		new CollectingTask(processing, codeDirectory, resultProducer).executeInBackground();
+		new AnalyzingTask(processing, resultProducer).execute();
 	}
 }

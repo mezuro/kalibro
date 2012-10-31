@@ -40,8 +40,8 @@ public class ProcessTaskTest extends UnitTest {
 	public void shouldExecuteChainedSubtasks() throws Exception {
 		File codeDirectory = mockLoading();
 		Producer<NativeModuleResult> resultProducer = mockProducer();
-		CollectMetricsTask collectTask = mockCollecting(codeDirectory, resultProducer);
-		AnalyzeResultsTask analysisTask = mockAnalysis(resultProducer);
+		CollectingTask collectTask = mockCollecting(codeDirectory, resultProducer);
+		AnalyzingTask analysisTask = mockAnalysis(resultProducer);
 		processTask.perform();
 		InOrder order = Mockito.inOrder(collectTask, analysisTask);
 		order.verify(collectTask).executeInBackground();
@@ -50,8 +50,8 @@ public class ProcessTaskTest extends UnitTest {
 
 	private File mockLoading() throws Exception {
 		File codeDirectory = mock(File.class);
-		LoadSourceTask loadTask = mock(LoadSourceTask.class);
-		whenNew(LoadSourceTask.class).withArguments(processing).thenReturn(loadTask);
+		LoadingTask loadTask = mock(LoadingTask.class);
+		whenNew(LoadingTask.class).withArguments(processing).thenReturn(loadTask);
 		when(loadTask.execute()).thenReturn(codeDirectory);
 		return codeDirectory;
 	}
@@ -62,15 +62,15 @@ public class ProcessTaskTest extends UnitTest {
 		return resultProducer;
 	}
 
-	private CollectMetricsTask mockCollecting(File directory, Producer<NativeModuleResult> producer) throws Exception {
-		CollectMetricsTask collectTask = mock(CollectMetricsTask.class);
-		whenNew(CollectMetricsTask.class).withArguments(processing, directory, producer).thenReturn(collectTask);
+	private CollectingTask mockCollecting(File directory, Producer<NativeModuleResult> producer) throws Exception {
+		CollectingTask collectTask = mock(CollectingTask.class);
+		whenNew(CollectingTask.class).withArguments(processing, directory, producer).thenReturn(collectTask);
 		return collectTask;
 	}
 
-	private AnalyzeResultsTask mockAnalysis(Producer<NativeModuleResult> producer) throws Exception {
-		AnalyzeResultsTask analysisTask = mock(AnalyzeResultsTask.class);
-		whenNew(AnalyzeResultsTask.class).withArguments(processing, producer).thenReturn(analysisTask);
+	private AnalyzingTask mockAnalysis(Producer<NativeModuleResult> producer) throws Exception {
+		AnalyzingTask analysisTask = mock(AnalyzingTask.class);
+		whenNew(AnalyzingTask.class).withArguments(processing, producer).thenReturn(analysisTask);
 		return analysisTask;
 	}
 }

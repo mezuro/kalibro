@@ -41,7 +41,9 @@ abstract class ProcessSubtask<T> extends Task<T> implements TaskListener<T> {
 			processing.setError(report.getError());
 	}
 
-	abstract ProcessState getTaskState();
+	private ProcessState getTaskState() {
+		return ProcessState.valueOf(getClass().getSimpleName().replace("Task", "").toUpperCase());
+	}
 
 	@Override
 	public String toString() {

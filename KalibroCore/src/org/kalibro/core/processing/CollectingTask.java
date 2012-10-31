@@ -12,12 +12,12 @@ import org.kalibro.core.concurrent.Producer;
  * 
  * @author Carlos Morais
  */
-class CollectMetricsTask extends ProcessSubtask<Void> {
+class CollectingTask extends ProcessSubtask<Void> {
 
 	private File codeDirectory;
 	private Producer<NativeModuleResult> resultProducer;
 
-	CollectMetricsTask(Processing processing, File codeDirectory, Producer<NativeModuleResult> resultProducer) {
+	CollectingTask(Processing processing, File codeDirectory, Producer<NativeModuleResult> resultProducer) {
 		super(processing);
 		this.codeDirectory = codeDirectory;
 		this.resultProducer = resultProducer;
@@ -30,10 +30,5 @@ class CollectMetricsTask extends ProcessSubtask<Void> {
 		for (BaseTool baseTool : wantedMetrics.keySet())
 			baseTool.collectMetrics(codeDirectory, wantedMetrics.get(baseTool), resultProducer.createWriter());
 		return null;
-	}
-
-	@Override
-	ProcessState getTaskState() {
-		return ProcessState.COLLECTING;
 	}
 }

@@ -1,7 +1,5 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,20 +17,20 @@ import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({CollectMetricsTask.class, ProcessSubtask.class})
-public class CollectMetricsTaskTest extends UnitTest {
+@PrepareOnlyThisForTest({CollectingTask.class, ProcessSubtask.class})
+public class CollectingTaskTest extends UnitTest {
 
 	private File codeDirectory;
 	private Configuration configuration;
 	private Writer<NativeModuleResult> resultWriter;
 
-	private CollectMetricsTask collectTask;
+	private CollectingTask collectTask;
 
 	@Before
 	public void setUp() throws Exception {
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(mock(DatabaseDaoFactory.class));
 		codeDirectory = mock(File.class);
-		collectTask = new CollectMetricsTask(mockProcessing(), codeDirectory, mockProducer());
+		collectTask = new CollectingTask(mockProcessing(), codeDirectory, mockProducer());
 	}
 
 	private Processing mockProcessing() {
@@ -61,10 +59,5 @@ public class CollectMetricsTaskTest extends UnitTest {
 
 		collectTask.compute();
 		verify(baseTool).collectMetrics(codeDirectory, wantedMetrics, resultWriter);
-	}
-
-	@Test
-	public void taskStateShouldBeCollecting() {
-		assertEquals(ProcessState.COLLECTING, collectTask.getTaskState());
 	}
 }

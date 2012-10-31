@@ -14,13 +14,13 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
  * 
  * @author Carlos Morais
  */
-class AnalyzeResultsTask extends ProcessSubtask<Void> {
+class AnalyzingTask extends ProcessSubtask<Void> {
 
 	private Configuration configurationSnapshot;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private Producer<NativeModuleResult> resultProducer;
 
-	AnalyzeResultsTask(Processing processing, Producer<NativeModuleResult> resultProducer) {
+	AnalyzingTask(Processing processing, Producer<NativeModuleResult> resultProducer) {
 		super(processing);
 		this.resultProducer = resultProducer;
 		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
@@ -31,11 +31,11 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 	@Override
 	protected Void compute() {
 		for (NativeModuleResult nativeModuleResult : resultProducer)
-			analyze(nativeModuleResult);
+			analyzing(nativeModuleResult);
 		return null;
 	}
 
-	private void analyze(NativeModuleResult nativeResult) {
+	private void analyzing(NativeModuleResult nativeResult) {
 		Module module = prepareModule(nativeResult.getModule());
 		ModuleResult moduleResult = moduleResultDao.prepareResultFor(module, processing.getId());
 		addMetricResults(moduleResult, nativeResult.getMetricResults());
@@ -81,10 +81,5 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 		moduleResultDao.save(moduleResult, processing.getId());
 		if (moduleResult.hasParent())
 			configureAndSave(moduleResult.getParent());
-	}
-
-	@Override
-	ProcessState getTaskState() {
-		return ProcessState.ANALYZING;
 	}
 }

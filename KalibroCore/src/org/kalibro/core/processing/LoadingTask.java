@@ -14,11 +14,11 @@ import org.kalibro.core.loaders.RepositoryLoader;
  * 
  * @author Carlos Morais
  */
-class LoadSourceTask extends ProcessSubtask<File> {
+class LoadingTask extends ProcessSubtask<File> {
 
 	private Repository repository;
 
-	LoadSourceTask(Processing processing) {
+	LoadingTask(Processing processing) {
 		super(processing);
 		repository = processing.getRepository();
 	}
@@ -64,10 +64,5 @@ class LoadSourceTask extends ProcessSubtask<File> {
 		RepositoryType repositoryType = repository.getType();
 		String loaderName = Identifier.fromConstant(repositoryType.name()).asClassName() + "Loader";
 		return (RepositoryLoader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
-	}
-
-	@Override
-	ProcessState getTaskState() {
-		return ProcessState.LOADING;
 	}
 }

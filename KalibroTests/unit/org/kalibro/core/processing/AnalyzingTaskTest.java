@@ -19,25 +19,25 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AnalyzeResultsTask.class, ModuleResultConfigurer.class})
-public class AnalyzeResultsTaskTest extends UnitTest {
+@PrepareForTest({AnalyzingTask.class, ModuleResultConfigurer.class})
+public class AnalyzingTaskTest extends UnitTest {
 
 	private static final Long PROCESSING_ID = new Random().nextLong();
-	private static final String REPOSITORY_NAME = "AnalyzeResultsTaskTest repository name";
+	private static final String REPOSITORY_NAME = "AnalyzingTaskTest repository name";
 
 	private Configuration configurationSnapshot;
 	private ModuleResultDatabaseDao moduleResultDao;
 
 	private ModuleResult softwareResult, classResult;
 
-	private AnalyzeResultsTask analyzeTask;
+	private AnalyzingTask analyzeTask;
 
 	@Before
 	public void setUp() throws Exception {
 		mockDatabaseDao();
 		stubModuleResultPreparation();
 		mockStatic(ModuleResultConfigurer.class);
-		analyzeTask = new AnalyzeResultsTask(mockProcessing(), stubProducer());
+		analyzeTask = new AnalyzingTask(mockProcessing(), stubProducer());
 	}
 
 	private void mockDatabaseDao() throws Exception {
@@ -128,10 +128,5 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 		analyzeTask.compute();
 		verify(moduleResultDao, times(2)).save(softwareResult, PROCESSING_ID);
 		verify(moduleResultDao).save(classResult, PROCESSING_ID);
-	}
-
-	@Test
-	public void taskStateShouldBeAnalyzing() {
-		assertEquals(ProcessState.ANALYZING, analyzeTask.getTaskState());
 	}
 }

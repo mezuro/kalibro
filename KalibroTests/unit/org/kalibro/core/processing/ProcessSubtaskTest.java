@@ -1,7 +1,6 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.ProcessState.LOADING;
 
 import java.util.Random;
 
@@ -27,7 +26,7 @@ public class ProcessSubtaskTest extends UnitTest {
 	private static final Long EXECUTION_TIME = new Random().nextLong();
 	private static final String RESULT = "ProcessSubtaskTest result";
 
-	private static final ProcessState TASK_STATE = LOADING;
+	private static final ProcessState TASK_STATE = ProcessState.READY;
 
 	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
@@ -41,8 +40,8 @@ public class ProcessSubtaskTest extends UnitTest {
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
 		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
-		when(processing.getState()).thenReturn(TASK_STATE);
-		subtask = new FakeSubtask(processing);
+		when(processing.getState()).thenReturn(ProcessState.LOADING);
+		subtask = new ReadyTask(processing);
 	}
 
 	@Test
@@ -85,20 +84,15 @@ public class ProcessSubtaskTest extends UnitTest {
 		assertEquals(stateMessage, "" + subtask);
 	}
 
-	private final class FakeSubtask extends ProcessSubtask<String> {
+	private final class ReadyTask extends ProcessSubtask<String> {
 
-		private FakeSubtask(Processing processing) {
+		private ReadyTask(Processing processing) {
 			super(processing);
 		}
 
 		@Override
 		protected String compute() {
 			return RESULT;
-		}
-
-		@Override
-		ProcessState getTaskState() {
-			return TASK_STATE;
 		}
 	}
 }
