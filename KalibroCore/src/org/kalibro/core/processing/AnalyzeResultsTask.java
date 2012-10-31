@@ -31,14 +31,42 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 	@Override
 	protected Void compute() {
 		for (NativeModuleResult nativeModuleResult : resultProducer)
-			new Analyzer(nativeModuleResult);
+			analyze(nativeModuleResult);
 		return null;
+	}
+
+	private void analyze(NativeModuleResult nativeResult) {
+		Module module = prepareModule(nativeResult.getModule());
+		ModuleResult moduleResult = moduleResultDao.prepareResultFor(module, processing.getId());
+		addMetricResults(moduleResult, nativeResult.getMetricResults());
+		configureAndSave(moduleResult);
 	}
 
 	private Module prepareModule(Module module) {
 		if (module.getGranularity() == SOFTWARE)
 			return new Module(SOFTWARE, processing.getRepository().getName());
 		return module;
+	}
+
+	private void addMetricResults(ModuleResult moduleResult, Collection<NativeMetricResult> metricResults) {
+		for (NativeMetricResult metricResult : metricResults)
+			addMetricResult(moduleResult, metricResult);
+	}
+
+	private void addMetricResult(ModuleResult moduleResult, NativeMetricResult nativeMetricResult) {
+		Metric metric = nativeMetricResult.getMetric();
+		Double value = nativeMetricResult.getValue();
+		MetricConfiguration snapshot = configurationSnapshot.getConfigurationFor(metric);
+		moduleResult.addMetricResult(new MetricResult(snapshot, value));
+		addValueToAncestry(moduleResult, snapshot, value);
+	}
+
+	private void addValueToAncestry(ModuleResult moduleResult, MetricConfiguration snapshot, Double value) {
+		ModuleResult ancestor = moduleResult;
+		while (ancestor.hasParent()) {
+			ancestor = moduleResult.getParent();
+			addDescendantResult(ancestor, snapshot, value);
+		}
 	}
 
 	private void addDescendantResult(ModuleResult moduleResult, MetricConfiguration snapshot, Double descendantResult) {
@@ -58,38 +86,5 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 	@Override
 	ProcessState getTaskState() {
 		return ProcessState.ANALYZING;
-	}
-
-	private final class Analyzer {
-
-		private ModuleResult moduleResult;
-
-		private Analyzer(NativeModuleResult nativeResult) {
-			Module module = prepareModule(nativeResult.getModule());
-			moduleResult = moduleResultDao.prepareResultFor(module, processing.getId());
-			addMetricResults(nativeResult.getMetricResults());
-			configureAndSave(moduleResult);
-		}
-
-		private void addMetricResults(Collection<NativeMetricResult> metricResults) {
-			for (NativeMetricResult metricResult : metricResults)
-				addMetricResult(metricResult);
-		}
-
-		private void addMetricResult(NativeMetricResult nativeMetricResult) {
-			Metric metric = nativeMetricResult.getMetric();
-			Double value = nativeMetricResult.getValue();
-			MetricConfiguration snapshot = configurationSnapshot.getConfigurationFor(metric);
-			moduleResult.addMetricResult(new MetricResult(snapshot, value));
-			addValueToAncestry(snapshot, value);
-		}
-
-		private void addValueToAncestry(MetricConfiguration snapshot, Double value) {
-			ModuleResult ancestor = moduleResult;
-			while (ancestor.hasParent()) {
-				ancestor = moduleResult.getParent();
-				addDescendantResult(ancestor, snapshot, value);
-			}
-		}
 	}
 }
