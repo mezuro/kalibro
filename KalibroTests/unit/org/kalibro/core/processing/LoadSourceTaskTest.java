@@ -122,6 +122,11 @@ public class LoadSourceTaskTest extends UnitTest {
 	}
 
 	@Test
+	public void taskStateShouldBeLoading() {
+		assertEquals(ProcessState.LOADING, loadTask.getTaskState());
+	}
+
+	@Test
 	public void nextStateShouldBeCollecting() {
 		assertEquals(ProcessState.COLLECTING, loadTask.getNextState());
 	}

@@ -131,6 +131,11 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	}
 
 	@Test
+	public void taskStateShouldBeAnalyzing() {
+		assertEquals(ProcessState.ANALYZING, analyzeTask.getTaskState());
+	}
+
+	@Test
 	public void nextStateShouldBeReady() {
 		assertEquals(ProcessState.READY, analyzeTask.getNextState());
 	}

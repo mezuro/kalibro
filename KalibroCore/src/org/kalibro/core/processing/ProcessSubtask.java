@@ -26,13 +26,22 @@ abstract class ProcessSubtask<T> extends Task<T> implements TaskListener<T> {
 
 	@Override
 	public void taskFinished(TaskReport<T> report) {
-		processing.setStateTime(processing.getState(), report.getExecutionTime());
+		synchronized (processing) {
+			processing.setStateTime(getTaskState(), report.getExecutionTime());
+			if (processing.getState().isTemporary())
+				updateState(report);
+			processingDao.save(processing);
+		}
+	}
+
+	private void updateState(TaskReport<?> report) {
 		if (report.isTaskDone())
 			processing.setState(getNextState());
 		else
 			processing.setError(report.getError());
-		processingDao.save(processing);
 	}
+
+	abstract ProcessState getTaskState();
 
 	abstract ProcessState getNextState();
 

@@ -54,7 +54,7 @@ public class ProcessSubtaskTest extends UnitTest {
 	@Test
 	public void shouldUpdateProcessingAfterExecution() {
 		subtask.taskFinished(report(null));
-		InOrder order = Mockito.inOrder(processing, processing, processingDao);
+		InOrder order = Mockito.inOrder(processing, processingDao);
 		order.verify(processing).setStateTime(CURRENT_STATE, EXECUTION_TIME);
 		order.verify(processing).setState(NEXT_STATE);
 		order.verify(processingDao).save(processing);
@@ -64,7 +64,7 @@ public class ProcessSubtaskTest extends UnitTest {
 	public void shouldUpdateProcessingOnError() {
 		Throwable error = mock(Throwable.class);
 		subtask.taskFinished(report(error));
-		InOrder order = Mockito.inOrder(processing, processing, processingDao);
+		InOrder order = Mockito.inOrder(processing, processingDao);
 		order.verify(processing).setStateTime(eq(CURRENT_STATE), anyLong());
 		order.verify(processing).setError(error);
 		order.verify(processingDao).save(processing);
@@ -95,6 +95,11 @@ public class ProcessSubtaskTest extends UnitTest {
 		@Override
 		protected String compute() {
 			return RESULT;
+		}
+
+		@Override
+		ProcessState getTaskState() {
+			return CURRENT_STATE;
 		}
 
 		@Override

@@ -67,6 +67,11 @@ class LoadSourceTask extends ProcessSubtask<File> {
 	}
 
 	@Override
+	ProcessState getTaskState() {
+		return ProcessState.LOADING;
+	}
+
+	@Override
 	ProcessState getNextState() {
 		return ProcessState.COLLECTING;
 	}

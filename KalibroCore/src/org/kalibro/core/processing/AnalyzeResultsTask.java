@@ -56,6 +56,11 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 	}
 
 	@Override
+	ProcessState getTaskState() {
+		return ProcessState.ANALYZING;
+	}
+
+	@Override
 	ProcessState getNextState() {
 		return ProcessState.READY;
 	}
