@@ -9,7 +9,7 @@ import org.junit.experimental.theories.Theory;
 import org.junit.rules.Timeout;
 import org.kalibro.tests.AcceptanceTest;
 
-public class ProcessingAcceptanceTest extends AcceptanceTest {
+public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 
 	private static final long SLEEP = 10000;
 
