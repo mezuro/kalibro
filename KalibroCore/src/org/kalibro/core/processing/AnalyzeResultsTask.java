@@ -60,11 +60,6 @@ class AnalyzeResultsTask extends ProcessSubtask<Void> {
 		return ProcessState.ANALYZING;
 	}
 
-	@Override
-	ProcessState getNextState() {
-		return ProcessState.READY;
-	}
-
 	private final class Analyzer {
 
 		private ModuleResult moduleResult;

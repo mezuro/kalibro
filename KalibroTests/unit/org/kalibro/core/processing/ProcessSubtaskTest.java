@@ -1,7 +1,7 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.assertEquals;
-import static org.kalibro.ProcessState.*;
+import static org.kalibro.ProcessState.LOADING;
 
 import java.util.Random;
 
@@ -27,8 +27,7 @@ public class ProcessSubtaskTest extends UnitTest {
 	private static final Long EXECUTION_TIME = new Random().nextLong();
 	private static final String RESULT = "ProcessSubtaskTest result";
 
-	private static final ProcessState CURRENT_STATE = LOADING;
-	private static final ProcessState NEXT_STATE = COLLECTING;
+	private static final ProcessState TASK_STATE = LOADING;
 
 	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
@@ -42,7 +41,7 @@ public class ProcessSubtaskTest extends UnitTest {
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
 		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
-		when(processing.getState()).thenReturn(CURRENT_STATE);
+		when(processing.getState()).thenReturn(TASK_STATE);
 		subtask = new FakeSubtask(processing);
 	}
 
@@ -55,8 +54,8 @@ public class ProcessSubtaskTest extends UnitTest {
 	public void shouldUpdateProcessingAfterExecution() {
 		subtask.taskFinished(report(null));
 		InOrder order = Mockito.inOrder(processing, processingDao);
-		order.verify(processing).setStateTime(CURRENT_STATE, EXECUTION_TIME);
-		order.verify(processing).setState(NEXT_STATE);
+		order.verify(processing).setStateTime(TASK_STATE, EXECUTION_TIME);
+		order.verify(processing).setState(TASK_STATE.nextState());
 		order.verify(processingDao).save(processing);
 	}
 
@@ -65,7 +64,7 @@ public class ProcessSubtaskTest extends UnitTest {
 		Throwable error = mock(Throwable.class);
 		subtask.taskFinished(report(error));
 		InOrder order = Mockito.inOrder(processing, processingDao);
-		order.verify(processing).setStateTime(eq(CURRENT_STATE), anyLong());
+		order.verify(processing).setStateTime(eq(TASK_STATE), anyLong());
 		order.verify(processing).setError(error);
 		order.verify(processingDao).save(processing);
 	}
@@ -99,12 +98,7 @@ public class ProcessSubtaskTest extends UnitTest {
 
 		@Override
 		ProcessState getTaskState() {
-			return CURRENT_STATE;
-		}
-
-		@Override
-		ProcessState getNextState() {
-			return NEXT_STATE;
+			return TASK_STATE;
 		}
 	}
 }

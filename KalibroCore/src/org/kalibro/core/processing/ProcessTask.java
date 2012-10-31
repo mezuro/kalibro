@@ -9,6 +9,7 @@ import org.kalibro.Repository;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.core.persistence.ProcessingDatabaseDao;
 
 /**
  * Performs a {@link Processing} for a {@link Repository} according to its {@link Configuration}.
@@ -18,9 +19,11 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
 public class ProcessTask extends VoidTask {
 
 	Processing processing;
+	ProcessingDatabaseDao processingDao;
 
 	public ProcessTask(Repository repository) {
-		processing = new DatabaseDaoFactory().createProcessingDao().createProcessingFor(repository);
+		processingDao = new DatabaseDaoFactory().createProcessingDao();
+		processing = processingDao.createProcessingFor(repository);
 	}
 
 	@Override

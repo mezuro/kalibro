@@ -36,9 +36,4 @@ class CollectMetricsTask extends ProcessSubtask<Void> {
 	ProcessState getTaskState() {
 		return ProcessState.COLLECTING;
 	}
-
-	@Override
-	ProcessState getNextState() {
-		return ProcessState.ANALYZING;
-	}
 }

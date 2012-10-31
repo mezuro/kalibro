@@ -36,14 +36,12 @@ abstract class ProcessSubtask<T> extends Task<T> implements TaskListener<T> {
 
 	private void updateState(TaskReport<?> report) {
 		if (report.isTaskDone())
-			processing.setState(getNextState());
+			processing.setState(getTaskState().nextState());
 		else
 			processing.setError(report.getError());
 	}
 
 	abstract ProcessState getTaskState();
-
-	abstract ProcessState getNextState();
 
 	@Override
 	public String toString() {

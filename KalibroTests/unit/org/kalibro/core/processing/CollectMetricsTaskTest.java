@@ -67,9 +67,4 @@ public class CollectMetricsTaskTest extends UnitTest {
 	public void taskStateShouldBeCollecting() {
 		assertEquals(ProcessState.COLLECTING, collectTask.getTaskState());
 	}
-
-	@Test
-	public void nextStateShouldBeAnalyzing() {
-		assertEquals(ProcessState.ANALYZING, collectTask.getNextState());
-	}
 }
