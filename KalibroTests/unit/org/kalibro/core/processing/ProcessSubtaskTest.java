@@ -1,20 +1,19 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
-import java.util.Random;
+import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.ProcessState;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.Processing;
-import org.kalibro.core.concurrent.TaskReport;
+import org.kalibro.Project;
+import org.kalibro.Repository;
+import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
-import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -23,76 +22,71 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest(ProcessSubtask.class)
 public class ProcessSubtaskTest extends UnitTest {
 
-	private static final Long EXECUTION_TIME = new Random().nextLong();
-	private static final String RESULT = "ProcessSubtaskTest result";
-
-	private static final ProcessState TASK_STATE = ProcessState.READY;
+	private static final String STATE_MESSAGE = "ProcessSubtaskTest state message";
 
 	private Processing processing;
-	private ProcessingDatabaseDao processingDao;
+	private ProcessTask mainTask;
 
-	private ProcessSubtask<String> subtask;
+	private ProcessSubtask subtask;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		processing = mock(Processing.class);
-		processingDao = mock(ProcessingDatabaseDao.class);
+		mainTask = mock(ProcessTask.class);
+		mainTask.processing = processing;
+		subtask = new ReadyTask();
+		assertSame(subtask, subtask.prepare(mainTask));
+	}
+
+	@Test
+	public void shouldAddMainTaskAsListener() {
+		assertDeepEquals(set(mainTask), Whitebox.getInternalState(subtask, "listeners"));
+	}
+
+	@Test
+	public void shouldGetCodeDirectoryFromMainTask() {
+		File codeDirectory = mock(File.class);
+		mainTask.codeDirectory = codeDirectory;
+		assertSame(codeDirectory, subtask.codeDirectory());
+	}
+
+	@Test
+	public void shouldSetCodeDirectoryOnMainTask() {
+		File codeDirectory = mock(File.class);
+		subtask.setCodeDirectory(codeDirectory);
+		assertSame(codeDirectory, mainTask.codeDirectory);
+	}
+
+	@Test
+	public void shouldGetProcessingRepositoryAndProjectFromMainTask() {
+		assertSame(processing, subtask.processing());
+
+		Repository repository = mock(Repository.class);
+		when(processing.getRepository()).thenReturn(repository);
+		assertSame(repository, subtask.repository());
+
+		Project project = mock(Project.class);
+		when(repository.getProject()).thenReturn(project);
+		assertSame(project, subtask.project());
+	}
+
+	@Test
+	public void shouldGetDaoFactoryFromMainTask() {
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
-		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
-		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
-		when(processing.getState()).thenReturn(ProcessState.LOADING);
-		subtask = new ReadyTask(processing);
+		mainTask.daoFactory = daoFactory;
+		assertSame(daoFactory, subtask.daoFactory());
 	}
 
 	@Test
-	public void shouldListenToItself() {
-		assertDeepEquals(set(subtask), Whitebox.getInternalState(subtask, "listeners"));
-	}
-
-	@Test
-	public void shouldUpdateProcessingAfterExecution() {
-		subtask.taskFinished(report(null));
-		InOrder order = Mockito.inOrder(processing, processingDao);
-		order.verify(processing).setStateTime(TASK_STATE, EXECUTION_TIME);
-		order.verify(processing).setState(TASK_STATE.nextState());
-		order.verify(processingDao).save(processing);
-	}
-
-	@Test
-	public void shouldUpdateProcessingOnError() {
-		Throwable error = mock(Throwable.class);
-		subtask.taskFinished(report(error));
-		InOrder order = Mockito.inOrder(processing, processingDao);
-		order.verify(processing).setStateTime(eq(TASK_STATE), anyLong());
-		order.verify(processing).setError(error);
-		order.verify(processingDao).save(processing);
-	}
-
-	private TaskReport<String> report(Throwable error) {
-		TaskReport<String> report = mock(TaskReport.class);
-		when(report.getExecutionTime()).thenReturn(EXECUTION_TIME);
-		when(report.getResult()).thenReturn(RESULT);
-		when(report.isTaskDone()).thenReturn(error == null);
-		when(report.getError()).thenReturn(error);
-		return report;
+	public void shouldGetResultProducerFromMainTask() {
+		Producer<NativeModuleResult> resultProducer = mock(Producer.class);
+		mainTask.resultProducer = resultProducer;
+		assertSame(resultProducer, subtask.resultProducer());
 	}
 
 	@Test
 	public void toStringShouldBeStateMessage() {
-		String stateMessage = "ProcessSubtaskTest state message";
-		when(processing.getStateMessage()).thenReturn(stateMessage);
-		assertEquals(stateMessage, "" + subtask);
-	}
-
-	private final class ReadyTask extends ProcessSubtask<String> {
-
-		private ReadyTask(Processing processing) {
-			super(processing);
-		}
-
-		@Override
-		protected String compute() {
-			return RESULT;
-		}
+		when(processing.getStateMessage()).thenReturn(STATE_MESSAGE);
+		assertEquals(STATE_MESSAGE, "" + subtask);
 	}
 }

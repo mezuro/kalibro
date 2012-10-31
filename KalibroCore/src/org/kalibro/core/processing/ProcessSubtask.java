@@ -1,52 +1,60 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.ProcessState;
+import java.io.File;
+
+import org.kalibro.NativeModuleResult;
 import org.kalibro.Processing;
-import org.kalibro.core.concurrent.Task;
-import org.kalibro.core.concurrent.TaskListener;
-import org.kalibro.core.concurrent.TaskReport;
+import org.kalibro.Project;
+import org.kalibro.Repository;
+import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
-import org.kalibro.core.persistence.ProcessingDatabaseDao;
 
 /**
  * Subtask of the whole {@link Processing}.
  * 
  * @author Carlos Morais
  */
-abstract class ProcessSubtask<T> extends Task<T> implements TaskListener<T> {
+abstract class ProcessSubtask extends VoidTask {
 
-	Processing processing;
-	ProcessingDatabaseDao processingDao;
+	private ProcessTask mainTask;
 
-	ProcessSubtask(Processing processing) {
-		this.processing = processing;
-		this.processingDao = new DatabaseDaoFactory().createProcessingDao();
-		addListener(this);
+	ProcessSubtask prepare(ProcessTask task) {
+		mainTask = task;
+		addListener(mainTask);
+		return this;
 	}
 
-	@Override
-	public void taskFinished(TaskReport<T> report) {
-		synchronized (processing) {
-			processing.setStateTime(getTaskState(), report.getExecutionTime());
-			if (processing.getState().isTemporary())
-				updateState(report);
-			processingDao.save(processing);
-		}
+	File codeDirectory() {
+		return mainTask.codeDirectory;
 	}
 
-	private void updateState(TaskReport<?> report) {
-		if (report.isTaskDone())
-			processing.setState(getTaskState().nextState());
-		else
-			processing.setError(report.getError());
+	void setCodeDirectory(File codeDirectory) {
+		mainTask.codeDirectory = codeDirectory;
 	}
 
-	private ProcessState getTaskState() {
-		return ProcessState.valueOf(getClass().getSimpleName().replace("Task", "").toUpperCase());
+	Project project() {
+		return repository().getProject();
+	}
+
+	Repository repository() {
+		return processing().getRepository();
+	}
+
+	Processing processing() {
+		return mainTask.processing;
+	}
+
+	DatabaseDaoFactory daoFactory() {
+		return mainTask.daoFactory;
+	}
+
+	Producer<NativeModuleResult> resultProducer() {
+		return mainTask.resultProducer;
 	}
 
 	@Override
 	public String toString() {
-		return processing.getStateMessage();
+		return mainTask.processing.getStateMessage();
 	}
 }

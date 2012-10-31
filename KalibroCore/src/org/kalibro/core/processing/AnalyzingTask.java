@@ -5,8 +5,6 @@ import static org.kalibro.Granularity.SOFTWARE;
 import java.util.Collection;
 
 import org.kalibro.*;
-import org.kalibro.core.concurrent.Producer;
-import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
 /**
@@ -14,37 +12,29 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
  * 
  * @author Carlos Morais
  */
-class AnalyzingTask extends ProcessSubtask<Void> {
+class AnalyzingTask extends ProcessSubtask {
 
 	private Configuration configurationSnapshot;
 	private ModuleResultDatabaseDao moduleResultDao;
-	private Producer<NativeModuleResult> resultProducer;
-
-	AnalyzingTask(Processing processing, Producer<NativeModuleResult> resultProducer) {
-		super(processing);
-		this.resultProducer = resultProducer;
-		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
-		moduleResultDao = daoFactory.createModuleResultDao();
-		configurationSnapshot = daoFactory.createConfigurationDao().snapshotFor(processing.getId());
-	}
 
 	@Override
-	protected Void compute() {
-		for (NativeModuleResult nativeModuleResult : resultProducer)
+	protected void perform() {
+		moduleResultDao = daoFactory().createModuleResultDao();
+		configurationSnapshot = daoFactory().createConfigurationDao().snapshotFor(processing().getId());
+		for (NativeModuleResult nativeModuleResult : resultProducer())
 			analyzing(nativeModuleResult);
-		return null;
 	}
 
 	private void analyzing(NativeModuleResult nativeResult) {
 		Module module = prepareModule(nativeResult.getModule());
-		ModuleResult moduleResult = moduleResultDao.prepareResultFor(module, processing.getId());
+		ModuleResult moduleResult = moduleResultDao.prepareResultFor(module, processing().getId());
 		addMetricResults(moduleResult, nativeResult.getMetricResults());
 		configureAndSave(moduleResult);
 	}
 
 	private Module prepareModule(Module module) {
 		if (module.getGranularity() == SOFTWARE)
-			return new Module(SOFTWARE, processing.getRepository().getName());
+			return new Module(SOFTWARE, repository().getName());
 		return module;
 	}
 
@@ -78,7 +68,7 @@ class AnalyzingTask extends ProcessSubtask<Void> {
 
 	private void configureAndSave(ModuleResult moduleResult) {
 		ModuleResultConfigurer.configure(moduleResult, configurationSnapshot);
-		moduleResultDao.save(moduleResult, processing.getId());
+		moduleResultDao.save(moduleResult, processing().getId());
 		if (moduleResult.hasParent())
 			configureAndSave(moduleResult.getParent());
 	}

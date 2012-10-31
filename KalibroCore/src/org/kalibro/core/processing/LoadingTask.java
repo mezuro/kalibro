@@ -5,7 +5,9 @@ import java.io.FileFilter;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.kalibro.*;
+import org.kalibro.KalibroSettings;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
 import org.kalibro.core.loaders.RepositoryLoader;
 
@@ -14,27 +16,19 @@ import org.kalibro.core.loaders.RepositoryLoader;
  * 
  * @author Carlos Morais
  */
-class LoadingTask extends ProcessSubtask<File> {
-
-	private Repository repository;
-
-	LoadingTask(Processing processing) {
-		super(processing);
-		repository = processing.getRepository();
-	}
+class LoadingTask extends ProcessSubtask {
 
 	@Override
-	protected File compute() throws Exception {
-		File codeDirectory = prepareCodeDirectory();
-		createLoader().load(repository.getAddress(), codeDirectory);
-		return codeDirectory;
+	protected void perform() throws Exception {
+		prepareCodeDirectory();
+		createLoader().load(repository().getAddress(), codeDirectory());
 	}
 
-	private File prepareCodeDirectory() {
-		Project project = repository.getProject();
+	private void prepareCodeDirectory() {
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
-		File projectDirectory = prepareDirectory(loadDirectory, project.getId(), project.getName());
-		return prepareDirectory(projectDirectory, repository.getId(), repository.getName());
+		File projectDirectory = prepareDirectory(loadDirectory, project().getId(), project().getName());
+		File repositoryDirectory = prepareDirectory(projectDirectory, repository().getId(), repository().getName());
+		setCodeDirectory(repositoryDirectory);
 	}
 
 	private File prepareDirectory(File parent, Long id, String name) {
@@ -61,7 +55,7 @@ class LoadingTask extends ProcessSubtask<File> {
 	}
 
 	private RepositoryLoader createLoader() throws Exception {
-		RepositoryType repositoryType = repository.getType();
+		RepositoryType repositoryType = repository().getType();
 		String loaderName = Identifier.fromConstant(repositoryType.name()).asClassName() + "Loader";
 		return (RepositoryLoader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
 	}

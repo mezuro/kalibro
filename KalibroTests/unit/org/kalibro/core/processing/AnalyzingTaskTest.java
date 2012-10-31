@@ -30,25 +30,36 @@ public class AnalyzingTaskTest extends UnitTest {
 
 	private ModuleResult softwareResult, classResult;
 
-	private AnalyzingTask analyzeTask;
+	private AnalyzingTask analyzingTask;
 
 	@Before
-	public void setUp() throws Exception {
-		mockDatabaseDao();
+	public void setUp() {
+		analyzingTask = spy(new AnalyzingTask());
+		mockDaos();
+		mockEntities();
 		stubModuleResultPreparation();
+		stubResultProducer();
 		mockStatic(ModuleResultConfigurer.class);
-		analyzeTask = new AnalyzingTask(mockProcessing(), stubProducer());
 	}
 
-	private void mockDatabaseDao() throws Exception {
+	private void mockDaos() {
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		configurationSnapshot = loadFixture("sc", Configuration.class);
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
-		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
+		doReturn(daoFactory).when(analyzingTask).daoFactory();
 		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
 		when(configurationDao.snapshotFor(PROCESSING_ID)).thenReturn(configurationSnapshot);
+	}
+
+	private void mockEntities() {
+		Processing processing = mock(Processing.class);
+		Repository repository = mock(Repository.class);
+		doReturn(processing).when(analyzingTask).processing();
+		doReturn(repository).when(analyzingTask).repository();
+		when(processing.getId()).thenReturn(PROCESSING_ID);
+		when(repository.getName()).thenReturn(REPOSITORY_NAME);
 	}
 
 	private void stubModuleResultPreparation() {
@@ -61,22 +72,13 @@ public class AnalyzingTaskTest extends UnitTest {
 		when(moduleResultDao.prepareResultFor(classModule, PROCESSING_ID)).thenReturn(classResult);
 	}
 
-	private Processing mockProcessing() {
-		Processing processing = mock(Processing.class);
-		Repository repository = mock(Repository.class);
-		when(processing.getId()).thenReturn(PROCESSING_ID);
-		when(processing.getRepository()).thenReturn(repository);
-		when(repository.getName()).thenReturn(REPOSITORY_NAME);
-		return processing;
-	}
-
-	private Producer<NativeModuleResult> stubProducer() {
+	private void stubResultProducer() {
 		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
 		Writer<NativeModuleResult> writer = resultProducer.createWriter();
 		writer.write(newResult(new Module(CLASS, "HelloWorld"), "cbo", 0.0, "lcom4", 1.0));
 		writer.write(newResult(new Module(SOFTWARE, "null"), "total_cof", 1.0));
 		writer.close();
-		return resultProducer;
+		doReturn(resultProducer).when(analyzingTask).resultProducer();
 	}
 
 	private NativeModuleResult newResult(Module module, Object... results) {
@@ -93,7 +95,7 @@ public class AnalyzingTaskTest extends UnitTest {
 	public void shouldAddMetricResults() {
 		NativeMetric lcom4 = loadFixture("lcom4", NativeMetric.class);
 		assertFalse(classResult.hasResultFor(lcom4));
-		analyzeTask.compute();
+		analyzingTask.perform();
 
 		assertTrue(softwareResult.hasResultFor(lcom4));
 		MetricResult lcom4Result = classResult.getResultFor(lcom4);
@@ -105,7 +107,7 @@ public class AnalyzingTaskTest extends UnitTest {
 	public void shouldAddDescendantResults() {
 		NativeMetric cbo = loadFixture("cbo", NativeMetric.class);
 		assertFalse(softwareResult.hasResultFor(cbo));
-		analyzeTask.compute();
+		analyzingTask.perform();
 
 		assertTrue(softwareResult.hasResultFor(cbo));
 		MetricResult cboResult = softwareResult.getResultFor(cbo);
@@ -116,7 +118,7 @@ public class AnalyzingTaskTest extends UnitTest {
 
 	@Test
 	public void shouldConfigureResults() {
-		analyzeTask.compute();
+		analyzingTask.perform();
 		verifyStatic(times(2));
 		ModuleResultConfigurer.configure(softwareResult, configurationSnapshot);
 		verifyStatic();
@@ -125,7 +127,7 @@ public class AnalyzingTaskTest extends UnitTest {
 
 	@Test
 	public void shouldSaveResults() {
-		analyzeTask.compute();
+		analyzingTask.perform();
 		verify(moduleResultDao, times(2)).save(softwareResult, PROCESSING_ID);
 		verify(moduleResultDao).save(classResult, PROCESSING_ID);
 	}
