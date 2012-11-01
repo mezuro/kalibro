@@ -55,6 +55,6 @@ public abstract class AcceptanceTest extends IntegrationTest {
 
 	@Override
 	protected Timeout testTimeout() {
-		return new Timeout(25000);
+		return new Timeout(50000);
 	}
 }
