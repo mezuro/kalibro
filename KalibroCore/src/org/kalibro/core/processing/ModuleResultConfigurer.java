@@ -43,9 +43,11 @@ final class ModuleResultConfigurer {
 	private void includeScriptFor(MetricConfiguration metricConfiguration) {
 		String code = metricConfiguration.getCode();
 		Metric metric = metricConfiguration.getMetric();
+		if (!isScopeCompatible(metric))
+			return;
 		if (metric.isCompound())
 			scriptEvaluator.addFunction(code, ((CompoundMetric) metric).getScript());
-		else
+		else if (moduleResult.hasResultFor(metric))
 			scriptEvaluator.addVariable(code, moduleResult.getResultFor(metric).getValue());
 	}
 

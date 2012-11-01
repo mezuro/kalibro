@@ -29,6 +29,7 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 
 	@Override
 	protected Timeout testTimeout() {
+		// TODO remove it
 		return new Timeout(0);
 	}
 
