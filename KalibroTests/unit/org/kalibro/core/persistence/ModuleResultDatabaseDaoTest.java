@@ -2,7 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.assertSame;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.Test;
@@ -41,7 +40,7 @@ public class ModuleResultDatabaseDaoTest extends
 		Module module = new Module(Granularity.PACKAGE, "org");
 		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
 		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", list("org"));
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", new ArrayList<String>());
+		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", list("ROOT"));
 		prepareQuery(where);
 
 		Module preparedModule = mock(Module.class);
@@ -63,7 +62,7 @@ public class ModuleResultDatabaseDaoTest extends
 		InOrder order = Mockito.inOrder(dao, query, dao, query, preparedModule);
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("moduleName", new ArrayList<String>());
+		order.verify(query).setParameter("moduleName", list("ROOT"));
 		order.verify(query).getSingleResult();
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
