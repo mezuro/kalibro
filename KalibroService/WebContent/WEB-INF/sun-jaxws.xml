@@ -13,5 +13,5 @@
 	<endpoint name="ProjectEndpoint"             url-pattern="/ProjectEndpoint/"             implementation="org.kalibro.service.ProjectEndpointImpl"/>
 	<endpoint name="ProjectResultEndpoint"       url-pattern="/ProjectResultEndpoint/"       implementation="org.kalibro.service.ProcessingEndpointImpl"/>
 	<endpoint name="ReadingEndpoint"             url-pattern="/ReadingEndpoint/"             implementation="org.kalibro.service.ReadingEndpointImpl"/>
-	<endpoint name="ReadingGroupEndpoint"        url-pattern="/ReadingGroupEndpoint/"        implementation="org.kalibro.service.ReadingEndpointImpl"/>
+	<endpoint name="ReadingGroupEndpoint"        url-pattern="/ReadingGroupEndpoint/"        implementation="org.kalibro.service.ReadingGroupEndpointImpl"/>
 </endpoints>
