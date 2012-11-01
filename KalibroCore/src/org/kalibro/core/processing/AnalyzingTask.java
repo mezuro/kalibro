@@ -71,5 +71,7 @@ class AnalyzingTask extends ProcessSubtask {
 		moduleResultDao.save(moduleResult, processing().getId());
 		if (moduleResult.hasParent())
 			configureAndSave(moduleResult.getParent());
+		else
+			processing().setResultsRoot(moduleResult);
 	}
 }

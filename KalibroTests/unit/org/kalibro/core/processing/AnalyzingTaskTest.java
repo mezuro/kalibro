@@ -25,6 +25,7 @@ public class AnalyzingTaskTest extends UnitTest {
 	private static final Long PROCESSING_ID = new Random().nextLong();
 	private static final String REPOSITORY_NAME = "AnalyzingTaskTest repository name";
 
+	private Processing processing;
 	private Configuration configurationSnapshot;
 	private ModuleResultDatabaseDao moduleResultDao;
 
@@ -54,7 +55,7 @@ public class AnalyzingTaskTest extends UnitTest {
 	}
 
 	private void mockEntities() {
-		Processing processing = mock(Processing.class);
+		processing = mock(Processing.class);
 		Repository repository = mock(Repository.class);
 		doReturn(processing).when(analyzingTask).processing();
 		doReturn(repository).when(analyzingTask).repository();
@@ -130,5 +131,11 @@ public class AnalyzingTaskTest extends UnitTest {
 		analyzingTask.perform();
 		verify(moduleResultDao, times(2)).save(softwareResult, PROCESSING_ID);
 		verify(moduleResultDao).save(classResult, PROCESSING_ID);
+	}
+
+	@Test
+	public void shouldSetRootOnProcessing() {
+		analyzingTask.perform();
+		verify(processing, times(2)).setResultsRoot(softwareResult);
 	}
 }

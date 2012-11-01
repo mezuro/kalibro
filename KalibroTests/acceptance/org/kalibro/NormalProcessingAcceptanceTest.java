@@ -22,7 +22,7 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 	public void setUp() {
 		configuration = loadFixture("sc-analizo", Configuration.class);
 		String address = repositoriesDirectory().getAbsolutePath() + "/HelloWorldDirectory/";
-		repository = new Repository("Directory repository", RepositoryType.LOCAL_DIRECTORY, address);
+		repository = new Repository("HelloWorldDirectory", RepositoryType.LOCAL_DIRECTORY, address);
 		repository.setConfiguration(configuration);
 		new Project("Hello World").addRepository(repository);
 	}
@@ -58,7 +58,7 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 
 		Metric totalCof = metric("total_cof", false);
 		ModuleResult root = processing.getResultsRoot();
-		assertDeepEquals(new Module(SOFTWARE, "null"), root.getModule());
+		assertDeepEquals(new Module(SOFTWARE, "HelloWorldDirectory"), root.getModule());
 		assertDoubleEquals(1.0, root.getResultFor(totalCof).getValue());
 
 		Metric sc = metric("sc", true);

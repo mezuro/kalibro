@@ -3,9 +3,9 @@ package org.kalibro.core.persistence.record;
 import static org.junit.Assert.*;
 
 import org.junit.Test;
+import org.kalibro.ModuleResult;
 import org.kalibro.Processing;
 import org.kalibro.Repository;
-import org.powermock.reflect.Whitebox;
 
 public class ProcessingRecordTest extends RecordTest {
 
@@ -28,8 +28,11 @@ public class ProcessingRecordTest extends RecordTest {
 
 	@Test
 	public void shouldRetrieveResultsRootId() {
-		Whitebox.setInternalState(dto, "resultsRoot", new ModuleResultRecord(42L));
-		assertEquals(42L, ((ProcessingRecord) dto).resultsRootId().longValue());
+		ModuleResult resultsRoot = mock(ModuleResult.class);
+		when(resultsRoot.getId()).thenReturn(42L);
+		Processing processing = (Processing) entity;
+		processing.setResultsRoot(resultsRoot);
+		assertEquals(42L, new ProcessingRecord(processing).resultsRootId().longValue());
 	}
 
 	@Test

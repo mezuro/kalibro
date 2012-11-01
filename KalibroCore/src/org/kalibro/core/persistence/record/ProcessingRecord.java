@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.kalibro.ModuleResult;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.dto.ProcessingDto;
@@ -62,6 +63,7 @@ public class ProcessingRecord extends ProcessingDto {
 		date = processing.getDate().getTime();
 		setState(processing);
 		setProcessTimes(processing);
+		setResultsRoot(processing.getResultsRoot());
 	}
 
 	private void setState(Processing processing) {
@@ -79,6 +81,10 @@ public class ProcessingRecord extends ProcessingDto {
 			if (time != null)
 				processTimes.add(new ProcessTimeRecord(passedState, time, this));
 		}
+	}
+
+	private void setResultsRoot(ModuleResult resultsRoot) {
+		this.resultsRoot = resultsRoot == null ? null : new ModuleResultRecord(resultsRoot.getId());
 	}
 
 	@Override
