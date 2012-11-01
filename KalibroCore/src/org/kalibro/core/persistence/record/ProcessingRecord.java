@@ -43,6 +43,11 @@ public class ProcessingRecord extends ProcessingDto {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "processing", orphanRemoval = true)
 	private Collection<ProcessTimeRecord> processTimes;
 
+	@OneToOne
+	@CascadeOnDelete
+	@JoinColumn(name = "\"results_root\"", referencedColumnName = "\"id\"")
+	private ModuleResultRecord resultsRoot;
+
 	public ProcessingRecord() {
 		super();
 	}
@@ -102,5 +107,10 @@ public class ProcessingRecord extends ProcessingDto {
 		for (ProcessTimeRecord processTime : processTimes)
 			map.put(processTime.state(), processTime.time());
 		return map;
+	}
+
+	@Override
+	public Long resultsRootId() {
+		return resultsRoot == null ? null : resultsRoot.id();
 	}
 }

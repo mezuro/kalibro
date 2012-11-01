@@ -1,30 +1,25 @@
 package org.kalibro.core.persistence.record;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.BaseTool;
 import org.kalibro.CompoundMetric;
 import org.kalibro.MetricConfiguration;
-import org.kalibro.ReadingGroup;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ReadingGroupDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DaoFactory.class, DaoLazyLoader.class})
+@PrepareForTest(DaoFactory.class)
 public class MetricConfigurationRecordTest extends RecordTest {
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
 		mockBaseTool();
-		mockReadingGroup();
 	}
 
 	private void mockBaseTool() {
@@ -32,13 +27,6 @@ public class MetricConfigurationRecordTest extends RecordTest {
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
 		when(baseToolDao.get("Inexistent")).thenReturn(loadFixture("inexistent", BaseTool.class));
-	}
-
-	private void mockReadingGroup() {
-		Long id = Whitebox.getInternalState(entity, "id");
-		ReadingGroup readingGroup = Whitebox.getInternalState(entity, "readingGroup");
-		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(ReadingGroupDao.class, "readingGroupOf", id)).thenReturn(readingGroup);
 	}
 
 	@Override
@@ -64,7 +52,14 @@ public class MetricConfigurationRecordTest extends RecordTest {
 	}
 
 	@Test
+	public void shouldRetrieveReadingGroupId() {
+		MetricConfiguration range = (MetricConfiguration) entity;
+		MetricConfigurationRecord record = (MetricConfigurationRecord) dto;
+		assertEquals(range.getReadingGroup().getId(), record.readingGroupId());
+	}
+
+	@Test
 	public void checkNullReadingGroup() {
-		assertNull(new MetricConfigurationRecord(new MetricConfiguration()).readingGroup());
+		assertNull(new MetricConfigurationRecord(new MetricConfiguration()).readingGroupId());
 	}
 }

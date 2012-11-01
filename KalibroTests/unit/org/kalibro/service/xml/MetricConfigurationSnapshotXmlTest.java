@@ -38,7 +38,7 @@ public class MetricConfigurationSnapshotXmlTest extends XmlTest {
 		metricConfiguration.setReadingGroup(loadFixture("scholar", ReadingGroup.class));
 		MetricConfigurationSnapshotXml snapshot = new MetricConfigurationSnapshotXml(metricConfiguration);
 		assertNull(snapshot.id());
-		assertNull(snapshot.readingGroup());
+		assertNull(snapshot.readingGroupId());
 	}
 
 	@Test

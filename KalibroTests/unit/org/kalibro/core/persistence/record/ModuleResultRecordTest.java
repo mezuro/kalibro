@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.kalibro.Granularity;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
-import org.powermock.reflect.Whitebox;
 
 public class ModuleResultRecordTest extends RecordTest {
 
@@ -46,13 +45,19 @@ public class ModuleResultRecordTest extends RecordTest {
 	}
 
 	@Test
-	public void shouldConstructWithoutParent() {
-		ModuleResult orphan = new ModuleResult(null, new Module(Granularity.SOFTWARE));
-		assertNull(Whitebox.getInternalState(new ModuleResultRecord(orphan), "parent"));
+	public void shouldTurnNullGradeIntoNan() {
+		assertDoubleEquals(Double.NaN, new ModuleResultRecord().grade());
 	}
 
 	@Test
-	public void shouldTurnNullGradeIntoNan() {
-		assertDoubleEquals(Double.NaN, new ModuleResultRecord().grade());
+	public void shouldRetrieveParentId() {
+		ModuleResult moduleResult = (ModuleResult) entity;
+		ModuleResultRecord record = (ModuleResultRecord) dto;
+		assertEquals(moduleResult.getParent().getId(), record.parentId());
+	}
+
+	@Test
+	public void checkNullParent() {
+		assertNull(new ModuleResultRecord(new ModuleResult(null, new Module(Granularity.SOFTWARE))).parentId());
 	}
 }

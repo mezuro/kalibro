@@ -135,7 +135,7 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	}
 
 	@Override
-	public ReadingGroup readingGroup() {
+	public Long readingGroupId() {
 		return null;
 	}
 }

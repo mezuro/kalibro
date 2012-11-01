@@ -90,6 +90,11 @@ public class RangeSnapshotRecord extends RangeDto {
 
 	@Override
 	public Reading reading() {
-		return label == null ? null : new Reading(label, Double.longBitsToDouble(grade), new Color(color));
+		return new Reading(label, Double.longBitsToDouble(grade), new Color(color));
+	}
+
+	@Override
+	public Long readingId() {
+		return label == null ? null : 0L;
 	}
 }

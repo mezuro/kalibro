@@ -24,7 +24,7 @@ public abstract class ProcessingDto extends DataTransferObject<Processing> {
 		processing.setDate(date());
 		convertState(processing);
 		convertStateTimes(processing);
-		processing.setResultsRoot(resultsRoot());
+		processing.setResultsRoot(resultsRootId() == null ? null : resultsRoot());
 		return processing;
 	}
 
@@ -55,6 +55,8 @@ public abstract class ProcessingDto extends DataTransferObject<Processing> {
 	public abstract Map<ProcessState, Long> stateTimes();
 
 	public ModuleResult resultsRoot() {
-		return DaoLazyLoader.createProxy(ModuleResultDao.class, "resultsRootOf", id());
+		return DaoLazyLoader.createProxy(ModuleResultDao.class, "get", resultsRootId());
 	}
+
+	public abstract Long resultsRootId();
 }

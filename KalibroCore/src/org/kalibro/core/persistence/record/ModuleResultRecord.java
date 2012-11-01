@@ -50,7 +50,6 @@ public class ModuleResultRecord extends ModuleResultDto {
 	private Long grade;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@SuppressWarnings("unused" /* used by JPA */)
 	@JoinColumn(name = "\"parent\"", referencedColumnName = "\"id\"")
 	private ModuleResultRecord parent;
 
@@ -112,5 +111,10 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Override
 	public Double grade() {
 		return grade == null ? Double.NaN : Double.longBitsToDouble(grade);
+	}
+
+	@Override
+	public Long parentId() {
+		return parent == null ? null : parent.id();
 	}
 }
