@@ -1,7 +1,6 @@
 package org.kalibro.core.persistence;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.SortedSet;
 
 import javax.persistence.TypedQuery;
@@ -43,10 +42,10 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	}
 
 	private ModuleResultRecord findResultFor(Module module, Long processingId) {
-		List<String> moduleName = Arrays.asList(module.getName());
-		if (!exists("WHERE " + moduleCondition(), "processingId", processingId, "moduleName", moduleName))
+		if (!exists("WHERE " + moduleCondition(module),
+			"processingId", processingId, "module", moduleParameter(module)))
 			save(new ModuleResultRecord(module, findParentOf(module, processingId), processingId));
-		return getResultFor(moduleName, processingId);
+		return getResultFor(module, processingId);
 	}
 
 	private ModuleResultRecord findParentOf(Module module, Long processingId) {
@@ -55,14 +54,23 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		return findResultFor(module.inferParent(), processingId);
 	}
 
-	private ModuleResultRecord getResultFor(List<String> moduleName, Long processingId) {
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(moduleCondition());
+	private ModuleResultRecord getResultFor(Module module, Long processingId) {
+		TypedQuery<ModuleResultRecord> query = createRecordQuery(moduleCondition(module));
 		query.setParameter("processingId", processingId);
-		query.setParameter("moduleName", moduleName);
+		query.setParameter("module", moduleParameter(module));
 		return query.getSingleResult();
 	}
 
-	private String moduleCondition() {
-		return "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
+	private String moduleCondition(Module module) {
+		String processingCondition = "moduleResult.processing.id = :processingId AND ";
+		if (module.getGranularity() == Granularity.SOFTWARE)
+			return processingCondition + "moduleResult.moduleGranularity = :module";
+		return processingCondition + "moduleResult.moduleName = :module";
+	}
+
+	private Object moduleParameter(Module module) {
+		if (module.getGranularity() == Granularity.SOFTWARE)
+			return Granularity.SOFTWARE.name();
+		return Arrays.asList(module.getName());
 	}
 }

@@ -38,10 +38,12 @@ public class ModuleResultDatabaseDaoTest extends
 	@Test
 	public void shouldPrepareResultForModule() throws Exception {
 		Module module = new Module(Granularity.PACKAGE, "org");
-		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", list("org"));
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", list("ROOT"));
+		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :module";
+		String where2 = "moduleResult.processing.id = :processingId AND moduleResult.moduleGranularity = :module";
+		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "module", list("org"));
+		doReturn(false).when(dao).exists("WHERE " + where2, "processingId", ID, "module", "SOFTWARE");
 		prepareQuery(where);
+		prepareQuery(where2);
 
 		Module preparedModule = mock(Module.class);
 		whenNew(ModuleResultRecord.class)
@@ -62,11 +64,11 @@ public class ModuleResultDatabaseDaoTest extends
 		InOrder order = Mockito.inOrder(dao, query, dao, query, preparedModule);
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("moduleName", list("ROOT"));
+		order.verify(query).setParameter("module", "SOFTWARE");
 		order.verify(query).getSingleResult();
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("moduleName", list("org"));
+		order.verify(query).setParameter("module", list("org"));
 		order.verify(query).getSingleResult();
 		order.verify(preparedModule).setGranularity(Granularity.PACKAGE);
 	}

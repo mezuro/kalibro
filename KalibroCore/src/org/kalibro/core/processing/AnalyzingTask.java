@@ -59,12 +59,22 @@ class AnalyzingTask extends ProcessSubtask {
 
 	private void configureAndSave(ModuleResult moduleResult) {
 		ModuleResultConfigurer.configure(moduleResult, configurationSnapshot);
+		save(moduleResult);
 		if (moduleResult.hasParent())
 			configureAndSave(moduleResult.getParent());
-		else {
-			moduleResult.getModule().getName()[0] = repository().getName();
-			processing().setResultsRoot(moduleResult);
+		else
+			changeRootName(moduleResult);
+	}
+
+	private void changeRootName(ModuleResult resultsRoot) {
+		if (!resultsRoot.getModule().getName()[0].equals(repository().getName())) {
+			resultsRoot.getModule().getName()[0] = repository().getName();
+			save(resultsRoot);
 		}
+		processing().setResultsRoot(resultsRoot);
+	}
+
+	private void save(ModuleResult moduleResult) {
 		moduleResultDao.save(moduleResult, processing().getId());
 	}
 }

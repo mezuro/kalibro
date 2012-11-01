@@ -130,7 +130,7 @@ public class AnalyzingTaskTest extends UnitTest {
 	@Test
 	public void shouldSaveResults() {
 		analyzingTask.perform();
-		verify(moduleResultDao, times(2)).save(softwareResult, PROCESSING_ID);
+		verify(moduleResultDao, times(3)).save(softwareResult, PROCESSING_ID);
 		verify(moduleResultDao).save(classResult, PROCESSING_ID);
 	}
 
