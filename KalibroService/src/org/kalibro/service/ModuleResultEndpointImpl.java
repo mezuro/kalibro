@@ -31,14 +31,8 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 
 	@Override
 	@WebResult(name = "moduleResult")
-	public ModuleResultXml resultsRootOf(@WebParam(name = "processingId") Long processingId) {
-		return new ModuleResultXml(dao.resultsRootOf(processingId));
-	}
-
-	@Override
-	@WebResult(name = "moduleResult")
-	public ModuleResultXml parentOf(@WebParam(name = "moduleResultId") Long moduleResultId) {
-		return new ModuleResultXml(dao.parentOf(moduleResultId));
+	public ModuleResultXml getModuleResult(@WebParam(name = "moduleResultId") Long moduleResultId) {
+		return new ModuleResultXml(dao.get(moduleResultId));
 	}
 
 	@Override

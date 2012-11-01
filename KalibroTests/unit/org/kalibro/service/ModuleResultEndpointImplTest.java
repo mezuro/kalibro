@@ -22,15 +22,9 @@ public class ModuleResultEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetResultsRoot() {
-		when(dao.resultsRootOf(ID)).thenReturn(entity);
-		assertSame(xml, implementor.resultsRootOf(ID));
-	}
-
-	@Test
-	public void shouldGetParent() {
-		when(dao.parentOf(ID)).thenReturn(entity);
-		assertSame(xml, implementor.parentOf(ID));
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertSame(xml, implementor.getModuleResult(ID));
 	}
 
 	@Test

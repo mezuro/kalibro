@@ -25,22 +25,6 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	}
 
 	@Override
-	public ModuleResult resultsRootOf(Long processingId) {
-		String where = "moduleResult.processing.id = :processingId AND moduleResult.parent = null";
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(where);
-		query.setParameter("processingId", processingId);
-		return query.getSingleResult().convert();
-	}
-
-	@Override
-	public ModuleResult parentOf(Long moduleResultId) {
-		String from = "ModuleResult child JOIN child.parent moduleResult";
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(from, "child.id = :childId");
-		query.setParameter("childId", moduleResultId);
-		return query.getSingleResult().convert();
-	}
-
-	@Override
 	public SortedSet<ModuleResult> childrenOf(Long moduleResultId) {
 		String from = "ModuleResult parent ON parent.children moduleResult";
 		TypedQuery<ModuleResultRecord> query = createRecordQuery(from, "parent.id = :parentId");

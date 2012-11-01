@@ -21,22 +21,6 @@ public class ModuleResultDatabaseDaoTest extends
 	private static final Long ID = new Random().nextLong();
 
 	@Test
-	public void shouldGetResultsRootOfProcessing() {
-		assertSame(entity, dao.resultsRootOf(ID));
-
-		verify(dao).createRecordQuery("moduleResult.processing.id = :processingId AND moduleResult.parent = null");
-		verify(query).setParameter("processingId", ID);
-	}
-
-	@Test
-	public void shouldGetParent() {
-		assertSame(entity, dao.parentOf(ID));
-
-		verify(dao).createRecordQuery("ModuleResult child JOIN child.parent moduleResult", "child.id = :childId");
-		verify(query).setParameter("childId", ID);
-	}
-
-	@Test
 	public void shouldGetChildren() {
 		assertDeepEquals(set(entity), dao.childrenOf(ID));
 

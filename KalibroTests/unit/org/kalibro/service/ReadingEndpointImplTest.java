@@ -29,12 +29,6 @@ public class ReadingEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetReadingOfRange() {
-		when(dao.readingOf(ID)).thenReturn(entity);
-		assertSame(xml, implementor.readingOf(ID));
-	}
-
-	@Test
 	public void shouldGetReadingsOfGroup() {
 		when(dao.readingsOf(GROUP_ID)).thenReturn(sortedSet(entity));
 		assertDeepEquals(list(xml), implementor.readingsOf(GROUP_ID));
