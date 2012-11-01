@@ -1,7 +1,5 @@
 package org.kalibro.core.processing;
 
-import static org.kalibro.Granularity.SOFTWARE;
-
 import java.util.Collection;
 
 import org.kalibro.*;
@@ -26,16 +24,9 @@ class AnalyzingTask extends ProcessSubtask {
 	}
 
 	private void analyzing(NativeModuleResult nativeResult) {
-		Module module = prepareModule(nativeResult.getModule());
-		ModuleResult moduleResult = moduleResultDao.prepareResultFor(module, processing().getId());
+		ModuleResult moduleResult = moduleResultDao.prepareResultFor(nativeResult.getModule(), processing().getId());
 		addMetricResults(moduleResult, nativeResult.getMetricResults());
 		configureAndSave(moduleResult);
-	}
-
-	private Module prepareModule(Module module) {
-		if (module.getGranularity() == SOFTWARE)
-			return new Module(SOFTWARE, repository().getName());
-		return module;
 	}
 
 	private void addMetricResults(ModuleResult moduleResult, Collection<NativeMetricResult> metricResults) {
@@ -68,10 +59,12 @@ class AnalyzingTask extends ProcessSubtask {
 
 	private void configureAndSave(ModuleResult moduleResult) {
 		ModuleResultConfigurer.configure(moduleResult, configurationSnapshot);
-		moduleResultDao.save(moduleResult, processing().getId());
 		if (moduleResult.hasParent())
 			configureAndSave(moduleResult.getParent());
-		else
+		else {
+			moduleResult.getModule().getName()[0] = repository().getName();
 			processing().setResultsRoot(moduleResult);
+		}
+		moduleResultDao.save(moduleResult, processing().getId());
 	}
 }

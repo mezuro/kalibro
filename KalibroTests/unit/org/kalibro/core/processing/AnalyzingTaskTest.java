@@ -29,6 +29,7 @@ public class AnalyzingTaskTest extends UnitTest {
 	private Configuration configurationSnapshot;
 	private ModuleResultDatabaseDao moduleResultDao;
 
+	private Module softwareModule, classModule;
 	private ModuleResult softwareResult, classResult;
 
 	private AnalyzingTask analyzingTask;
@@ -64,20 +65,20 @@ public class AnalyzingTaskTest extends UnitTest {
 	}
 
 	private void stubModuleResultPreparation() {
-		Module softwareModule = new Module(SOFTWARE, REPOSITORY_NAME);
-		Module classModule = new Module(CLASS, "HelloWorld");
-		assertEquals(new Module(CLASS, "HelloWorld"), classModule);
+		softwareModule = new Module(SOFTWARE, "null");
 		softwareResult = new ModuleResult(null, softwareModule);
-		classResult = new ModuleResult(softwareResult, classModule);
 		when(moduleResultDao.prepareResultFor(softwareModule, PROCESSING_ID)).thenReturn(softwareResult);
+
+		classModule = new Module(CLASS, "HelloWorld");
+		classResult = new ModuleResult(softwareResult, classModule);
 		when(moduleResultDao.prepareResultFor(classModule, PROCESSING_ID)).thenReturn(classResult);
 	}
 
 	private void stubResultProducer() {
 		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
 		Writer<NativeModuleResult> writer = resultProducer.createWriter();
-		writer.write(newResult(new Module(CLASS, "HelloWorld"), "cbo", 0.0, "lcom4", 1.0));
-		writer.write(newResult(new Module(SOFTWARE, "null"), "total_cof", 1.0));
+		writer.write(newResult(classModule, "cbo", 0.0, "lcom4", 1.0));
+		writer.write(newResult(softwareModule, "total_cof", 1.0));
 		writer.close();
 		doReturn(resultProducer).when(analyzingTask).resultProducer();
 	}
@@ -136,6 +137,7 @@ public class AnalyzingTaskTest extends UnitTest {
 	@Test
 	public void shouldSetRootOnProcessing() {
 		analyzingTask.perform();
+		assertArrayEquals(array(REPOSITORY_NAME), softwareModule.getName());
 		verify(processing, times(2)).setResultsRoot(softwareResult);
 	}
 }
