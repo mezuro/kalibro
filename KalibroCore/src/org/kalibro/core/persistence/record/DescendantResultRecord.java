@@ -36,8 +36,8 @@ public class DescendantResultRecord extends DataTransferObject<Double> {
 		this(value, null);
 	}
 
-	public DescendantResultRecord(Double value, MetricResultRecord metricResultRecord) {
-		metricResult = metricResultRecord;
+	public DescendantResultRecord(Double value, MetricResultRecord metricResult) {
+		this.metricResult = metricResult;
 		this.value = Double.doubleToLongBits(value);
 	}
 
