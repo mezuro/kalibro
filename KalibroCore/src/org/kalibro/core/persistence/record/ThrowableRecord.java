@@ -23,30 +23,35 @@ public class ThrowableRecord extends ThrowableDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Long id;
 
-	@Column(name = "\"throwable_class\"", nullable = false)
-	private String throwableClass;
+	@Column(name = "\"target_string\"", nullable = false)
+	private String targetString;
 
-	@Column(name = "\"detail_message\"")
-	private String detailMessage;
-
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
-	private Collection<StackTraceElementRecord> stackTrace;
+	@Column(name = "\"message\"")
+	private String message;
 
 	@CascadeOnDelete
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"cause\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord cause;
 
+	@CascadeOnDelete
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
+	private Collection<StackTraceElementRecord> stackTrace;
+
 	public ThrowableRecord() {
 		super();
 	}
 
 	public ThrowableRecord(Throwable throwable) {
-		throwableClass = throwable.getClass().getName();
-		detailMessage = throwable.getMessage();
-		setStackTrace(throwable.getStackTrace());
+		targetString = throwable.toString();
+		message = throwable.getMessage();
 		setCause(throwable.getCause());
+		setStackTrace(throwable.getStackTrace());
+	}
+
+	private void setCause(Throwable cause) {
+		if (cause != null)
+			this.cause = new ThrowableRecord(cause);
 	}
 
 	private void setStackTrace(StackTraceElement[] stackTrace) {
@@ -55,19 +60,19 @@ public class ThrowableRecord extends ThrowableDto {
 			this.stackTrace.add(new StackTraceElementRecord(stackTrace[i], this, i));
 	}
 
-	private void setCause(Throwable cause) {
-		if (cause != null)
-			this.cause = new ThrowableRecord(cause);
+	@Override
+	public String targetString() {
+		return targetString;
 	}
 
 	@Override
-	public String throwableClass() {
-		return throwableClass;
+	public String message() {
+		return message;
 	}
 
 	@Override
-	public String detailMessage() {
-		return detailMessage;
+	public Throwable cause() {
+		return cause == null ? null : cause.convert();
 	}
 
 	@Override
@@ -76,10 +81,5 @@ public class ThrowableRecord extends ThrowableDto {
 		for (StackTraceElementRecord element : stackTrace)
 			element.addTo(converted);
 		return converted;
-	}
-
-	@Override
-	public Throwable cause() {
-		return cause == null ? null : cause.convert();
 	}
 }

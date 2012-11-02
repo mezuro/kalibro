@@ -5,9 +5,9 @@ public class ThrowableRecordTest extends RecordTest {
 	@Override
 	protected void verifyColumns() {
 		shouldHaveId();
-		assertColumn("throwableClass", String.class).isRequired();
-		assertColumn("detailMessage", String.class).isNullable();
-		assertOneToMany("stackTrace").cascades().isMappedBy("throwable");
+		assertColumn("targetString", String.class).isRequired();
+		assertColumn("message", String.class).isNullable();
 		shouldHaveError("cause");
+		assertOneToMany("stackTrace").cascades().isMappedBy("throwable");
 	}
 }
