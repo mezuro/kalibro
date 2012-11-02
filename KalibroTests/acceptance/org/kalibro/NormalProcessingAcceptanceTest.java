@@ -6,68 +6,64 @@ import static org.kalibro.ProcessState.*;
 
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
-import org.junit.rules.Timeout;
 import org.kalibro.tests.AcceptanceTest;
 
 public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 
-	private static final long SLEEP = 10000;
+	private static final Long SLEEP = 10000L;
+	private static final String REPOSITORY_NAME = "HelloWorldDirectory";
 
-	private Repository repository;
+	private Metric totalCof, cbo, lcom4, sc;
 	private Configuration configuration;
 
+	private Repository repository;
 	private Processing processing;
 
 	@Before
 	public void setUp() {
-		configuration = loadFixture("sc-analizo", Configuration.class);
+		loadConfigurationFixtures();
 		String address = repositoriesDirectory().getAbsolutePath() + "/HelloWorldDirectory/";
-		repository = new Repository("HelloWorldDirectory", RepositoryType.LOCAL_DIRECTORY, address);
+		repository = new Repository(REPOSITORY_NAME, RepositoryType.LOCAL_DIRECTORY, address);
 		repository.setConfiguration(configuration);
 		new Project("Hello World").addRepository(repository);
 	}
 
-	@Override
-	protected Timeout testTimeout() {
-		// TODO remove it
-		return new Timeout(0);
+	private void loadConfigurationFixtures() {
+		totalCof = loadFixture("total_cof", NativeMetric.class);
+		cbo = loadFixture("cbo", NativeMetric.class);
+		lcom4 = loadFixture("lcom4", NativeMetric.class);
+		sc = loadFixture("sc", CompoundMetric.class);
+		configuration = loadFixture("sc-analizo", Configuration.class);
 	}
 
 	@Theory
-	public void shouldProcessRepository(SupportedDatabase databaseType) throws InterruptedException {
+	public void shouldProcessNormally(SupportedDatabase databaseType) throws InterruptedException {
 		resetDatabase(databaseType);
 		assertFalse(Processing.hasProcessing(repository));
 
 		long processingTime = System.currentTimeMillis();
 		repository.process();
+		verifyProcessOngoing();
+
+		Thread.sleep(SLEEP);
+
+		verifyProcessDone(processingTime);
+		verifyResults();
+	}
+
+	private void verifyProcessOngoing() {
 		assertTrue(Processing.hasProcessing(repository));
 		assertFalse(Processing.hasReadyProcessing(repository));
 		assertTrue(Processing.lastProcessingState(repository).isTemporary());
-		Thread.sleep(SLEEP);
-
-		processing = Processing.lastProcessing(repository);
-		assertEquals(processingTime, processing.getDate().getTime(), 500);
-		verifyNormalResults();
 	}
 
-	private void verifyNormalResults() {
+	private void verifyProcessDone(long processingTime) {
+		processing = Processing.lastProcessing(repository);
+		assertEquals(processingTime, processing.getDate().getTime(), 500);
 		assertEquals(READY, processing.getState());
 		verifyStateTime(LOADING);
 		verifyStateTime(COLLECTING);
 		verifyStateTime(ANALYZING);
-
-		Metric totalCof = metric("total_cof", false);
-		ModuleResult root = processing.getResultsRoot();
-		assertDeepEquals(new Module(SOFTWARE, "HelloWorldDirectory"), root.getModule());
-		assertDoubleEquals(1.0, root.getResultFor(totalCof).getValue());
-
-		Metric sc = metric("sc", true);
-		Metric lcom4 = metric("lcom4", false);
-		ModuleResult child = root.getChildren().first();
-		assertDeepEquals(new Module(CLASS, "HelloWorld"), child.getModule());
-		assertDoubleEquals(0.0, child.getResultFor(sc).getValue());
-		assertDoubleEquals(1.0, child.getResultFor(lcom4).getValue());
-		assertDoubleEquals(10.0, child.getResultFor(lcom4).getGrade());
 	}
 
 	private void verifyStateTime(ProcessState state) {
@@ -75,7 +71,43 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 		assertTrue("Time for " + state + ": " + stateTime, 0 < stateTime && stateTime < SLEEP);
 	}
 
-	private Metric metric(String name, boolean compound) {
-		return loadFixture(name, compound ? CompoundMetric.class : NativeMetric.class);
+	private void verifyResults() {
+		ModuleResult root = processing.getResultsRoot();
+		assertFalse(root.hasParent());
+		verifySoftwareResult(root);
+
+		assertEquals(1, root.getChildren().size());
+		ModuleResult child = root.getChildren().first();
+		assertSame(root, child.getParent());
+		verifyClassResult(child);
+	}
+
+	private void verifySoftwareResult(ModuleResult root) {
+		assertDeepEquals(new Module(SOFTWARE, REPOSITORY_NAME), root.getModule());
+		assertDoubleEquals(10.0, root.getGrade());
+
+		assertDoubleEquals(1.0, root.getResultFor(totalCof).getValue());
+		assertDoubleEquals(0.0, root.getResultFor(cbo).getValue());
+		assertDoubleEquals(1.0, root.getResultFor(lcom4).getValue());
+		assertDoubleEquals(0.0, root.getResultFor(sc).getValue());
+
+		assertFalse(root.getResultFor(totalCof).hasRange());
+		assertFalse(root.getResultFor(cbo).hasRange());
+		assertTrue(root.getResultFor(lcom4).hasRange());
+		assertFalse(root.getResultFor(sc).hasRange());
+	}
+
+	private void verifyClassResult(ModuleResult child) {
+		assertDeepEquals(new Module(CLASS, "HelloWorld"), child.getModule());
+		assertDoubleEquals(10.0, child.getGrade());
+
+		assertFalse(child.hasResultFor(totalCof));
+		assertDoubleEquals(0.0, child.getResultFor(cbo).getValue());
+		assertDoubleEquals(1.0, child.getResultFor(lcom4).getValue());
+		assertDoubleEquals(0.0, child.getResultFor(sc).getValue());
+
+		assertFalse(child.getResultFor(cbo).hasRange());
+		assertTrue(child.getResultFor(lcom4).hasRange());
+		assertFalse(child.getResultFor(sc).hasRange());
 	}
 }

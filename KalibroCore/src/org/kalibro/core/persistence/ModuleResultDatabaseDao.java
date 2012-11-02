@@ -25,7 +25,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 
 	@Override
 	public SortedSet<ModuleResult> childrenOf(Long moduleResultId) {
-		String from = "ModuleResult parent ON parent.children moduleResult";
+		String from = "ModuleResult parent JOIN parent.children moduleResult";
 		TypedQuery<ModuleResultRecord> query = createRecordQuery(from, "parent.id = :parentId");
 		query.setParameter("parentId", moduleResultId);
 		return DataTransferObject.toSortedSet(query.getResultList());

@@ -23,7 +23,7 @@ public class ModuleResultDatabaseDaoTest extends
 	public void shouldGetChildren() {
 		assertDeepEquals(set(entity), dao.childrenOf(ID));
 
-		verify(dao).createRecordQuery("ModuleResult parent ON parent.children moduleResult", "parent.id = :parentId");
+		verify(dao).createRecordQuery("ModuleResult parent JOIN parent.children moduleResult", "parent.id = :parentId");
 		verify(query).setParameter("parentId", ID);
 	}
 

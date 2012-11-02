@@ -111,7 +111,7 @@ public class TaskExecutorTest extends UtilityClassTest {
 
 	@Test
 	public void shouldExecutePeriodically() throws InterruptedException {
-		long period = 50;
+		long period = 100;
 		CounterTask task = new CounterTask();
 		task.executePeriodically(period, MILLISECONDS);
 
