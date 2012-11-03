@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.experimental.theories.Theory;
 import org.kalibro.tests.AcceptanceTest;
 
-public class NormalProcessingAcceptanceTest extends AcceptanceTest {
+public class ProcessingAcceptanceTest extends AcceptanceTest {
 
 	private static final Long SLEEP = 10000L;
 	private static final String REPOSITORY_NAME = "HelloWorldDirectory";
@@ -105,5 +105,41 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 		assertFalse(moduleResult.getResultFor(cbo).hasRange());
 		assertTrue(moduleResult.getResultFor(lcom4).hasRange());
 		assertFalse(moduleResult.getResultFor(sc).hasRange());
+	}
+
+	@Theory
+	public void shouldRetrieveErrorLoading(SupportedDatabase databaseType) throws Exception {
+		resetDatabase(databaseType);
+		repository.setAddress("/invalid/address/");
+		repository.process();
+		Thread.sleep(SLEEP / 4);
+
+		processing = Processing.lastProcessing(repository);
+		assertEquals(ERROR, processing.getState());
+		assertEquals(LOADING, processing.getStateWhenErrorOcurred());
+		assertNull(processing.getStateTime(COLLECTING));
+		assertNull(processing.getStateTime(ANALYZING));
+		assertNull(processing.getResultsRoot());
+		assertEquals("Error while executing command: cp -ru /invalid/address/ .", processing.getError().getMessage());
+	}
+
+	@Theory
+	public void shouldRetrieveErrorCalculatingCompoundMetric(SupportedDatabase databaseType) throws Exception {
+		resetDatabase(databaseType);
+		configuration.getCompoundMetrics().first().setScript("return cbo == 0 ? null : cbo;");
+		repository.process();
+		Thread.sleep(SLEEP);
+
+		processing = Processing.lastProcessing(repository);
+		assertEquals(READY, processing.getState());
+
+		ModuleResult root = processing.getResultsRoot();
+		verifyScError(root);
+		verifyScError(root.getChildren().first());
+	}
+
+	private void verifyScError(ModuleResult moduleResult) {
+		assertTrue(moduleResult.getResultFor(sc).hasError());
+		assertEquals("Error evaluating Javascript for: sc", moduleResult.getResultFor(sc).getError().getMessage());
 	}
 }
