@@ -37,7 +37,7 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void shouldProcessNormally(SupportedDatabase databaseType) throws InterruptedException {
+	public void shouldProcessNormally(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		assertFalse(Processing.hasProcessing(repository));
 
