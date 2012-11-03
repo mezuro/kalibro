@@ -23,13 +23,13 @@ public class DatabaseDaoFactory extends DaoFactory {
 	private static DatabaseSettings currentSettings;
 	private static EntityManagerFactory entityManagerFactory;
 
-	static synchronized RecordManager createRecordManager() {
+	static RecordManager createRecordManager() {
+		if (entityManagerFactory == null || !entityManagerFactory.isOpen())
+			updateSettings(currentSettings);
 		return new RecordManager(entityManagerFactory.createEntityManager());
 	}
 
-	private static synchronized void updateSettings(DatabaseSettings settings) {
-		if (settings.deepEquals(currentSettings))
-			return;
+	private static void updateSettings(DatabaseSettings settings) {
 		currentSettings = settings;
 		Map<String, String> properties = new HashMap<String, String>();
 		properties.put(DDL_GENERATION, Environment.ddlGeneration());
@@ -48,7 +48,8 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	public DatabaseDaoFactory(DatabaseSettings settings) {
-		updateSettings(settings);
+		if (!settings.deepEquals(currentSettings))
+			updateSettings(settings);
 	}
 
 	@Override

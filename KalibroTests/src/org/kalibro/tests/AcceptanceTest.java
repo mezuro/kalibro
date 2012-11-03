@@ -1,5 +1,6 @@
 package org.kalibro.tests;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
@@ -9,7 +10,6 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
-import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.kalibro.*;
 
@@ -53,7 +53,7 @@ public abstract class AcceptanceTest extends IntegrationTest {
 	}
 
 	@Override
-	protected Timeout testTimeout() {
-		return new Timeout(60000);
+	protected TestTimeout testTimeout() {
+		return new TestTimeout(2, MINUTES);
 	}
 }
