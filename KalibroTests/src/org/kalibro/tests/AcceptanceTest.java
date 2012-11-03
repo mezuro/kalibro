@@ -7,7 +7,7 @@ import java.io.File;
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
@@ -16,10 +16,9 @@ import org.kalibro.*;
 @RunWith(Theories.class)
 public abstract class AcceptanceTest extends IntegrationTest {
 
-	@DataPoint
-	public static SupportedDatabase supportedDatabase() {
-		// TODO turn back to all databases
-		return SupportedDatabase.APACHE_DERBY;
+	@DataPoints
+	public static SupportedDatabase[] supportedDatabases() {
+		return SupportedDatabase.values();
 	}
 
 	@BeforeClass
@@ -55,6 +54,6 @@ public abstract class AcceptanceTest extends IntegrationTest {
 
 	@Override
 	protected Timeout testTimeout() {
-		return new Timeout(50000);
+		return new Timeout(60000);
 	}
 }

@@ -88,6 +88,7 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 
 		DatabaseSettings newSettings = new DatabaseSettings();
 		newSettings.setPassword("x");
+		new DatabaseDaoFactory(settings);
 		new DatabaseDaoFactory(newSettings);
 
 		verify(entityManagerFactory).close();
