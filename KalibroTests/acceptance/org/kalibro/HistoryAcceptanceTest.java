@@ -60,9 +60,9 @@ public class HistoryAcceptanceTest extends AcceptanceTest {
 		ModuleResult root = third.getResultsRoot();
 		SortedMap<Date, MetricResult> history = root.historyOf(metric);
 		assertDeepEquals(set(first.getDate(), second.getDate(), third.getDate()), history.keySet());
-		assertDeepEquals(root.getResultFor(metric), history.get(first.getDate()));
-		assertDeepEquals(root.getResultFor(metric), history.get(second.getDate()));
-		assertDeepEquals(root.getResultFor(metric), history.get(third.getDate()));
+		assertDoubleEquals(0.0, history.get(first.getDate()).getAggregatedValue());
+		assertDoubleEquals(0.0, history.get(second.getDate()).getAggregatedValue());
+		assertDoubleEquals(0.0, history.get(third.getDate()).getAggregatedValue());
 	}
 
 	private void prepareProcessings(SupportedDatabase databaseType) throws Exception {
