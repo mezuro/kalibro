@@ -48,7 +48,7 @@ final class ModuleResultConfigurer {
 		if (metric.isCompound())
 			scriptEvaluator.addFunction(code, ((CompoundMetric) metric).getScript());
 		else if (moduleResult.hasResultFor(metric))
-			scriptEvaluator.addVariable(code, moduleResult.getResultFor(metric).getValue());
+			scriptEvaluator.addVariable(code, moduleResult.getResultFor(metric).getAggregatedValue());
 	}
 
 	private boolean isScopeCompatible(Metric metric) {

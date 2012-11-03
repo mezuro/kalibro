@@ -2,6 +2,8 @@ package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.SortedSet;
+import java.util.TreeSet;
 
 import javax.persistence.*;
 
@@ -137,5 +139,13 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	@Override
 	public Long readingGroupId() {
 		return null;
+	}
+
+	@Override
+	public SortedSet<Range> ranges() {
+		SortedSet<Range> converted = new TreeSet<Range>();
+		for (RangeSnapshotRecord range : ranges)
+			converted.add(range.convert());
+		return converted;
 	}
 }

@@ -53,8 +53,8 @@ public class RangeSnapshotRecord extends RangeDto {
 		this(range, null);
 	}
 
-	public RangeSnapshotRecord(Range range, MetricConfigurationSnapshotRecord configurationSnapshotRecord) {
-		configurationSnapshot = configurationSnapshotRecord;
+	public RangeSnapshotRecord(Range range, MetricConfigurationSnapshotRecord configurationSnapshot) {
+		this.configurationSnapshot = configurationSnapshot;
 		beginning = Double.doubleToLongBits(range.getBeginning());
 		end = Double.doubleToLongBits(range.getEnd());
 		comments = range.getComments();

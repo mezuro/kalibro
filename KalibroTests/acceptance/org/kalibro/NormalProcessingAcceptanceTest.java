@@ -77,9 +77,7 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 		verifySoftwareResult(root);
 
 		assertEquals(1, root.getChildren().size());
-		ModuleResult child = root.getChildren().first();
-		assertSame(root, child.getParent());
-		verifyClassResult(child);
+		verifyClassResult(root.getChildren().first());
 	}
 
 	private void verifySoftwareResult(ModuleResult root) {
@@ -87,14 +85,8 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 		assertDoubleEquals(10.0, root.getGrade());
 
 		assertDoubleEquals(1.0, root.getResultFor(totalCof).getValue());
-		assertDoubleEquals(0.0, root.getResultFor(cbo).getValue());
-		assertDoubleEquals(1.0, root.getResultFor(lcom4).getValue());
-		assertDoubleEquals(0.0, root.getResultFor(sc).getValue());
-
 		assertFalse(root.getResultFor(totalCof).hasRange());
-		assertFalse(root.getResultFor(cbo).hasRange());
-		assertTrue(root.getResultFor(lcom4).hasRange());
-		assertFalse(root.getResultFor(sc).hasRange());
+		verifyClassMetricResults(root);
 	}
 
 	private void verifyClassResult(ModuleResult child) {
@@ -102,12 +94,16 @@ public class NormalProcessingAcceptanceTest extends AcceptanceTest {
 		assertDoubleEquals(10.0, child.getGrade());
 
 		assertFalse(child.hasResultFor(totalCof));
-		assertDoubleEquals(0.0, child.getResultFor(cbo).getValue());
-		assertDoubleEquals(1.0, child.getResultFor(lcom4).getValue());
-		assertDoubleEquals(0.0, child.getResultFor(sc).getValue());
+		verifyClassMetricResults(child);
+	}
 
-		assertFalse(child.getResultFor(cbo).hasRange());
-		assertTrue(child.getResultFor(lcom4).hasRange());
-		assertFalse(child.getResultFor(sc).hasRange());
+	private void verifyClassMetricResults(ModuleResult moduleResult) {
+		assertDoubleEquals(0.0, moduleResult.getResultFor(cbo).getAggregatedValue());
+		assertDoubleEquals(1.0, moduleResult.getResultFor(lcom4).getAggregatedValue());
+		assertDoubleEquals(0.0, moduleResult.getResultFor(sc).getAggregatedValue());
+
+		assertFalse(moduleResult.getResultFor(cbo).hasRange());
+		assertTrue(moduleResult.getResultFor(lcom4).hasRange());
+		assertFalse(moduleResult.getResultFor(sc).hasRange());
 	}
 }
