@@ -2,13 +2,16 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+import java.util.SortedMap;
+
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
 import org.kalibro.tests.AcceptanceTest;
 
 public class HistoryAcceptanceTest extends AcceptanceTest {
 
-	private static final Long SLEEP = 2000L;
+	private static final Long SLEEP = 15000L;
 
 	private CompoundMetric metric;
 	private Configuration configuration;
@@ -18,10 +21,8 @@ public class HistoryAcceptanceTest extends AcceptanceTest {
 
 	@Before
 	public void setUp() {
-		metric = new CompoundMetric();
-		metric.setScript("return 1;");
-		configuration = new Configuration();
-		configuration.addMetricConfiguration(new MetricConfiguration(metric));
+		configuration = loadFixture("sc-analizo", Configuration.class);
+		metric = configuration.getCompoundMetrics().first();
 
 		String address = repositoriesDirectory().getAbsolutePath() + "/HelloWorldDirectory/";
 		repository = new Repository("Repository name", RepositoryType.LOCAL_DIRECTORY, address);
@@ -41,14 +42,27 @@ public class HistoryAcceptanceTest extends AcceptanceTest {
 		assertTrue(Processing.hasProcessingBefore(second.getDate(), repository));
 		assertTrue(Processing.hasProcessingBefore(third.getDate(), repository));
 
-		assertDeepEquals(first, Processing.firstProcessing(repository));
-		assertDeepEquals(third, Processing.lastProcessing(repository));
+		assertEquals(first, Processing.firstProcessing(repository));
+		assertEquals(third, Processing.lastProcessing(repository));
 
-		assertDeepEquals(second, Processing.firstProcessingAfter(first.getDate(), repository));
-		assertDeepEquals(third, Processing.firstProcessingAfter(second.getDate(), repository));
+		assertEquals(second, Processing.firstProcessingAfter(first.getDate(), repository));
+		assertEquals(third, Processing.firstProcessingAfter(second.getDate(), repository));
 
-		assertDeepEquals(second, Processing.lastProcessingBefore(third.getDate(), repository));
-		assertDeepEquals(first, Processing.lastProcessingBefore(second.getDate(), repository));
+		assertEquals(second, Processing.lastProcessingBefore(third.getDate(), repository));
+		assertEquals(first, Processing.lastProcessingBefore(second.getDate(), repository));
+	}
+
+	@Theory
+	public void shouldRetrieveMetricHistory(SupportedDatabase databaseType) throws Exception {
+		prepareProcessings(databaseType);
+		assertEquals(ProcessState.READY, third.getState());
+
+		ModuleResult root = third.getResultsRoot();
+		SortedMap<Date, MetricResult> history = root.historyOf(metric);
+		assertDeepEquals(set(first.getDate(), second.getDate(), third.getDate()), history.keySet());
+		assertDeepEquals(root.getResultFor(metric), history.get(first.getDate()));
+		assertDeepEquals(root.getResultFor(metric), history.get(second.getDate()));
+		assertDeepEquals(root.getResultFor(metric), history.get(third.getDate()));
 	}
 
 	private void prepareProcessings(SupportedDatabase databaseType) throws Exception {
