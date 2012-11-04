@@ -3,6 +3,7 @@ package org.kalibro.desktop.swingextension.menu;
 import static org.junit.Assert.*;
 
 import java.awt.Component;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -10,47 +11,43 @@ import org.kalibro.tests.UnitTest;
 
 public class AbstractMenuTest extends UnitTest {
 
-	private AbstractMenu menu;
+	private static final String NAME = "AbstractMenuTest name";
+	private static final String TEXT = "AbstractMenuTest text";
+	private static final char MNEMONIC = (char) new Random().nextInt();
+	private static final Component INNER_COMPONENT = mock(Component.class);
 
-	private boolean itemsCreated, menuBuilded;
+	private boolean menuBuilded;
+	private Component[] itemsCreated;
+
+	private AbstractMenu menu;
 
 	@Before
 	public void setUp() {
-		itemsCreated = false;
-		menuBuilded = false;
 		menu = new MenuStub();
 	}
 
 	@Test
-	public void shouldNameTextAndMnemonic() {
-		assertEquals("menu", menu.getName());
-		assertEquals("Menu", menu.getText());
-		assertEquals('M', menu.getMnemonic());
+	public void shouldSetNameTextAndMnemonic() {
+		assertEquals(NAME, menu.getName());
+		assertEquals(TEXT, menu.getText());
+		assertEquals(MNEMONIC, menu.getMnemonic());
 	}
 
 	@Test
 	public void shouldCreateItemsAndBuildMenu() {
-		assertTrue(itemsCreated);
+		assertArrayEquals(array(INNER_COMPONENT), itemsCreated);
 		assertTrue(menuBuilded);
-	}
-
-	@Test
-	public void shouldListenToItself() {
-		assertSame(menu, menu.getMenuListeners()[0]);
-		menu.menuSelected(null);
-		menu.menuDeselected(null);
-		menu.menuCanceled(null);
 	}
 
 	private class MenuStub extends AbstractMenu {
 
 		public MenuStub() {
-			super("menu", "Menu", 'M');
+			super(NAME, TEXT, MNEMONIC, INNER_COMPONENT);
 		}
 
 		@Override
 		protected void createItems(Component... innerComponents) {
-			itemsCreated = true;
+			itemsCreated = innerComponents;
 		}
 
 		@Override
