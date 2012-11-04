@@ -4,7 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.ComponentFinder;
+import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
 public class MaybeEditableFieldTest extends UnitTest {

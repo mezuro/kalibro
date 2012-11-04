@@ -5,8 +5,8 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.ClientSettings;
-import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.StringField;
+import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
 public class ClientSettingsPanelTest extends UnitTest {

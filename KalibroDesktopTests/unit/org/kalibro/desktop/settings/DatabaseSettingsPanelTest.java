@@ -6,10 +6,10 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.SupportedDatabase;
-import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.PasswordField;
 import org.kalibro.desktop.swingextension.field.StringField;
+import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
 public class DatabaseSettingsPanelTest extends UnitTest {

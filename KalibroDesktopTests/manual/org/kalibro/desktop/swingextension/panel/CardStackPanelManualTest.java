@@ -6,9 +6,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JPanel;
 
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.field.StringField;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class CardStackPanelManualTest extends JPanel implements ActionListener {
 

@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.ServerSettings;
 import org.kalibro.core.Environment;
-import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.DirectoryField;
+import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
 public class ServerSettingsPanelTest extends UnitTest {

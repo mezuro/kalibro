@@ -10,7 +10,7 @@ import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServerSettings;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.desktop.KalibroDesktopAcceptanceTest;
+import org.kalibro.desktop.tests.KalibroDesktopAcceptanceTest;
 
 /**
  * When opening for the first time, the dialog for editing the settings should open showing the default settings.<br/>

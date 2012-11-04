@@ -5,7 +5,7 @@ import static org.kalibro.tests.UnitTest.loadFixture;
 import org.kalibro.CompoundMetric;
 import org.kalibro.Metric;
 import org.kalibro.NativeMetric;
-import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class MetricPanelManualTest {
 

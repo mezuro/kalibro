@@ -4,7 +4,7 @@ import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 
 import org.kalibro.KalibroSettings;
-import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class KalibroSettingsPanelManualTest extends ComponentWrapperDialog {
 

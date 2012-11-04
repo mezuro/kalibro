@@ -6,8 +6,8 @@ import java.awt.Dimension;
 
 import javax.swing.JPanel;
 
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Label;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class TabbedPanelManualTest extends TabbedPanel implements TabbedPanelListener {
 

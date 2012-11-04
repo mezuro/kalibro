@@ -2,7 +2,7 @@ package org.kalibro.desktop.swingextension.dialog;
 
 import javax.swing.JPanel;
 
-import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class MessageDialogManualTest extends ComponentWrapperDialog {
 

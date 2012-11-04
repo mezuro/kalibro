@@ -1,8 +1,8 @@
 package org.kalibro.desktop.configuration;
 
 import org.kalibro.NativeMetric;
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.ListListener;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class ChooseNativeMetricPanelManualTest extends ChooseNativeMetricPanel implements
 	ListListener<NativeMetric> {

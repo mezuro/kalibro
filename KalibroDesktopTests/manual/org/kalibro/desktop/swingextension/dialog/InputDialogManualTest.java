@@ -6,7 +6,7 @@ import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
-import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class InputDialogManualTest extends JLabel {
 

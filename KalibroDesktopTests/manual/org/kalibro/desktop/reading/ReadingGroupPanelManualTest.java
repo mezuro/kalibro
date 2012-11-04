@@ -2,8 +2,8 @@ package org.kalibro.desktop.reading;
 
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.list.TablePanelListener;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 import org.kalibro.tests.UnitTest;
 
 public final class ReadingGroupPanelManualTest implements TablePanelListener<Reading> {

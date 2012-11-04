@@ -9,8 +9,8 @@ import java.awt.GridLayout;
 import javax.swing.JPanel;
 
 import org.kalibro.Range;
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.renderer.TableRenderer;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class TableManualTest extends JPanel implements ListListener<Range> {
 

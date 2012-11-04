@@ -1,4 +1,4 @@
-package org.kalibro.desktop;
+package org.kalibro.desktop.tests;
 
 import java.awt.Component;
 import java.awt.Container;

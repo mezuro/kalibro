@@ -10,8 +10,8 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
 public class NumberFieldTest extends UnitTest {

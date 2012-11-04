@@ -6,8 +6,8 @@ import java.awt.event.ActionListener;
 import javax.swing.JPanel;
 
 import org.kalibro.Granularity;
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class MaybeEditableFieldManualTest extends JPanel implements ActionListener {
 

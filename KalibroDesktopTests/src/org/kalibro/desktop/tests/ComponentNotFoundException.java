@@ -1,4 +1,4 @@
-package org.kalibro.desktop;
+package org.kalibro.desktop.tests;
 
 class ComponentNotFoundException extends RuntimeException {
 

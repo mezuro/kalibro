@@ -12,8 +12,8 @@ import javax.swing.JPanel;
 
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class ListManualTest extends JPanel implements ActionListener, ListListener<MetricConfiguration> {
 

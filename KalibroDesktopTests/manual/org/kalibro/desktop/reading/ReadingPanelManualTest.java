@@ -1,7 +1,7 @@
 package org.kalibro.desktop.reading;
 
 import org.kalibro.Reading;
-import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 import org.kalibro.tests.UnitTest;
 
 public final class ReadingPanelManualTest extends ReadingPanel {

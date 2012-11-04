@@ -1,4 +1,4 @@
-package org.kalibro.desktop;
+package org.kalibro.desktop.tests;
 
 import java.io.File;
 
@@ -10,6 +10,8 @@ import org.junit.After;
 import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.desktop.KalibroDesktop;
+import org.kalibro.desktop.KalibroFrame;
 import org.kalibro.tests.AcceptanceTest;
 
 public class KalibroDesktopAcceptanceTest extends AcceptanceTest {

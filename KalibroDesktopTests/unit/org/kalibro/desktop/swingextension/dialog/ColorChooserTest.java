@@ -12,7 +12,7 @@ import javax.swing.JDialog;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.AnswerAdapter;
+import org.kalibro.desktop.tests.AnswerAdapter;
 import org.kalibro.tests.UnitTest;
 import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;

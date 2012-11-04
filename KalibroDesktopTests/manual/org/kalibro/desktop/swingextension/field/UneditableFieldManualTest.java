@@ -4,8 +4,8 @@ import javax.swing.JPanel;
 import javax.swing.event.CaretEvent;
 import javax.swing.event.CaretListener;
 
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class UneditableFieldManualTest extends JPanel implements CaretListener {
 

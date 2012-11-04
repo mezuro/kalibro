@@ -2,8 +2,8 @@ package org.kalibro.desktop.swingextension.field;
 
 import javax.swing.JPanel;
 
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 abstract class NumberFieldManualTest<T extends Number> extends JPanel {
 

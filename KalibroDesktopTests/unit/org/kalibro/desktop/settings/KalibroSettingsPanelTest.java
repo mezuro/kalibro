@@ -6,8 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServiceSide;
-import org.kalibro.desktop.ComponentFinder;
 import org.kalibro.desktop.swingextension.field.BooleanField;
+import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
 public class KalibroSettingsPanelTest extends UnitTest {

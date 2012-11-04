@@ -3,7 +3,7 @@ package org.kalibro.desktop.configuration;
 import static org.kalibro.tests.UnitTest.loadFixture;
 
 import org.kalibro.Range;
-import org.kalibro.desktop.ComponentWrapperDialog;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class RangePanelManualTest extends RangePanel {
 

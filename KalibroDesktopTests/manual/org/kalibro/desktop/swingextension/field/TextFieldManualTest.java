@@ -6,9 +6,9 @@ import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
 import org.apache.commons.io.IOUtils;
-import org.kalibro.desktop.ComponentWrapperDialog;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
+import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class TextFieldManualTest extends JPanel {
 
