@@ -7,12 +7,12 @@ import org.kalibro.KalibroSettings;
 import org.kalibro.desktop.settings.SettingsController;
 import org.kalibro.desktop.tests.AnswerAdapter;
 import org.kalibro.tests.UtilityClassTest;
-import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({KalibroSettings.class, KalibroDesktop.class, SettingsController.class})
+@PrepareForTest({KalibroDesktop.class, KalibroSettings.class, SettingsController.class})
 public class KalibroDesktopTest extends UtilityClassTest {
 
 	private KalibroFrame kalibroFrame;
@@ -31,49 +31,48 @@ public class KalibroDesktopTest extends UtilityClassTest {
 	}
 
 	@Test
-	public void shouldNotOpenFrameIfSettingsFileDoesNotExistAndUserCancelsSettingsEdition() throws Exception {
-		prepareScenario(false, false);
-		KalibroDesktop.main(null);
-
-		verifyStatic();
-		SettingsController.editSettings();
-		Mockito.verify(kalibroFrame, never()).setVisible(true);
-	}
-
-	@Test
-	public void shouldOpenFrameIfSettingsFileDoesNotExistButUserConfirmsSettingsEdition() throws Exception {
-		prepareScenario(false, true);
-		KalibroDesktop.main(null);
-
-		verifyStatic();
-		SettingsController.editSettings();
-		Mockito.verify(kalibroFrame).setVisible(true);
-	}
-
-	@Test
-	public void shouldOpenFrameWithoutEditSettingsIfFileAlreadyExists() throws Exception {
-		prepareScenario(true, false);
+	public void shouldOpenFrameIfSettingsAlreadyExist() {
+		when(KalibroSettings.exists()).thenReturn(true);
 		KalibroDesktop.main(null);
 
 		verifyStatic(never());
 		SettingsController.editSettings();
-		Mockito.verify(kalibroFrame).setVisible(true);
+		verify(kalibroFrame).setVisible(true);
 	}
 
-	private void prepareScenario(boolean settingsFileExists, boolean userConfirmSettings) throws Exception {
-		EditSettingsAnswer answer = new EditSettingsAnswer();
-		answer.userConfirms = userConfirmSettings;
-		when(KalibroSettings.exists()).thenReturn(settingsFileExists);
-		doAnswer(answer).when(SettingsController.class, "editSettings");
+	@Test
+	public void shouldEditSettingsIfTheyDoNotExist() {
+		when(KalibroSettings.exists()).thenReturn(false);
+		KalibroDesktop.main(null);
+
+		verifyStatic();
+		SettingsController.editSettings();
 	}
 
-	private final class EditSettingsAnswer extends AnswerAdapter {
+	@Test
+	public void shouldNotOpenFrameIfUserDoesNotCreateSettings() throws Exception {
+		when(KalibroSettings.exists()).thenReturn(false);
+		KalibroDesktop.main(null);
 
-		private boolean userConfirms;
+		verifyNew(KalibroFrame.class, never()).withNoArguments();
+	}
 
-		@Override
-		public void answer() {
-			when(KalibroSettings.exists()).thenReturn(userConfirms);
-		}
+	@Test
+	public void shouldOpenFrameIfUserCreatedSettings() throws Exception {
+		when(KalibroSettings.exists()).thenReturn(false);
+		doAnswer(userCreatesSettings()).when(SettingsController.class, "editSettings");
+		KalibroDesktop.main(null);
+
+		verify(kalibroFrame).setVisible(true);
+	}
+
+	private Answer<?> userCreatesSettings() {
+		return new AnswerAdapter() {
+
+			@Override
+			public void answer() {
+				when(KalibroSettings.exists()).thenReturn(true);
+			}
+		};
 	}
 }
