@@ -1,9 +1,9 @@
-package org.kalibro.desktop.tests;
+package org.kalibro.tests;
 
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 
-public abstract class AnswerAdapter implements Answer<Void> {
+public abstract class VoidAnswer implements Answer<Void> {
 
 	@Override
 	public Void answer(InvocationOnMock invocation) throws Throwable {
