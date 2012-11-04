@@ -38,6 +38,7 @@ final class ModuleResultConfigurer {
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics())
 			if (isScopeCompatible(compoundMetric))
 				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric));
+		scriptEvaluator.close();
 	}
 
 	private void includeScriptFor(MetricConfiguration metricConfiguration) {
