@@ -27,15 +27,15 @@ abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 		setMetricResults(new TreeSet<METRIC_RESULT>());
 	}
 
-	public final Module getModule() {
+	public Module getModule() {
 		return module;
 	}
 
-	public final boolean hasResultFor(Metric metric) {
+	public boolean hasResultFor(Metric metric) {
 		return findResultFor(metric) != null;
 	}
 
-	public final METRIC_RESULT getResultFor(Metric metric) {
+	public METRIC_RESULT getResultFor(Metric metric) {
 		METRIC_RESULT metricResult = findResultFor(metric);
 		throwExceptionIf(metricResult == null, "No result found for metric: " + metric);
 		return metricResult;
@@ -48,15 +48,15 @@ abstract class AbstractModuleResult<METRIC_RESULT extends AbstractMetricResult>
 		return null;
 	}
 
-	public final SortedSet<METRIC_RESULT> getMetricResults() {
+	public SortedSet<METRIC_RESULT> getMetricResults() {
 		return new TreeSet<METRIC_RESULT>(metricResults);
 	}
 
-	public final void setMetricResults(SortedSet<METRIC_RESULT> metricResults) {
+	public void setMetricResults(SortedSet<METRIC_RESULT> metricResults) {
 		this.metricResults = metricResults;
 	}
 
-	public final void addMetricResult(METRIC_RESULT metricResult) {
+	public void addMetricResult(METRIC_RESULT metricResult) {
 		if (metricResults.contains(metricResult))
 			metricResults.remove(metricResult);
 		metricResults.add(metricResult);

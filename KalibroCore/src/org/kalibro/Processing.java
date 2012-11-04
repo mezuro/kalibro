@@ -7,6 +7,8 @@ import java.util.Map;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProcessingDao;
 
 /**
  * Processing is automatically loading, analyzing and evaluating source code from a {@link Repository}. The processing
@@ -16,6 +18,60 @@ import org.kalibro.core.abstractentity.SortingFields;
  */
 @SortingFields({"repository", "date"})
 public class Processing extends AbstractEntity<Processing> {
+
+	public static boolean hasProcessing(Repository repository) {
+		repository.assertSaved();
+		return dao().hasProcessing(repository.getId());
+	}
+
+	public static boolean hasReadyProcessing(Repository repository) {
+		repository.assertSaved();
+		return dao().hasReadyProcessing(repository.getId());
+	}
+
+	public static boolean hasProcessingAfter(Date date, Repository repository) {
+		repository.assertSaved();
+		return dao().hasProcessingAfter(date, repository.getId());
+	}
+
+	public static boolean hasProcessingBefore(Date date, Repository repository) {
+		repository.assertSaved();
+		return dao().hasProcessingBefore(date, repository.getId());
+	}
+
+	public static ProcessState lastProcessingState(Repository repository) {
+		repository.assertSaved();
+		return dao().lastProcessingState(repository.getId());
+	}
+
+	public static Processing lastReadyProcessing(Repository repository) {
+		repository.assertSaved();
+		return dao().lastReadyProcessing(repository.getId());
+	}
+
+	public static Processing firstProcessing(Repository repository) {
+		repository.assertSaved();
+		return dao().firstProcessing(repository.getId());
+	}
+
+	public static Processing lastProcessing(Repository repository) {
+		repository.assertSaved();
+		return dao().lastProcessing(repository.getId());
+	}
+
+	public static Processing firstProcessingAfter(Date date, Repository repository) {
+		repository.assertSaved();
+		return dao().firstProcessingAfter(date, repository.getId());
+	}
+
+	public static Processing lastProcessingBefore(Date date, Repository repository) {
+		repository.assertSaved();
+		return dao().lastProcessingBefore(date, repository.getId());
+	}
+
+	private static ProcessingDao dao() {
+		return DaoFactory.getProcessingDao();
+	}
 
 	private Long id;
 

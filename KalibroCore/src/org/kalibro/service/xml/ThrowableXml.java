@@ -19,11 +19,11 @@ import org.kalibro.dto.ThrowableDto;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ThrowableXml extends ThrowableDto {
 
-	@XmlElement
-	private String throwableClass;
+	@XmlElement(required = true)
+	private String targetString;
 
 	@XmlElement
-	private String detailMessage;
+	private String message;
 
 	@XmlElement
 	private ThrowableXml cause;
@@ -36,8 +36,8 @@ public class ThrowableXml extends ThrowableDto {
 	}
 
 	public ThrowableXml(Throwable throwable) {
-		throwableClass = throwable.getClass().getName();
-		detailMessage = throwable.getMessage();
+		targetString = throwable.toString();
+		message = throwable.getMessage();
 		stackTrace = createDtos(Arrays.asList(throwable.getStackTrace()), StackTraceElementXml.class);
 		setCause(throwable.getCause());
 	}
@@ -48,13 +48,13 @@ public class ThrowableXml extends ThrowableDto {
 	}
 
 	@Override
-	public String throwableClass() {
-		return throwableClass;
+	public String targetString() {
+		return targetString;
 	}
 
 	@Override
-	public String detailMessage() {
-		return detailMessage;
+	public String message() {
+		return message;
 	}
 
 	@Override

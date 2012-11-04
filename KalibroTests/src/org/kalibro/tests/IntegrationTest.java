@@ -1,12 +1,12 @@
 package org.kalibro.tests;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static org.kalibro.core.Environment.*;
 
 import java.io.File;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
-import org.junit.rules.Timeout;
 import org.yaml.snakeyaml.Yaml;
 import org.yaml.snakeyaml.introspector.BeanAccess;
 
@@ -25,9 +25,13 @@ public abstract class IntegrationTest extends UnitTest {
 		return new File(samplesDirectory(), "repositories");
 	}
 
+	protected static File projectsDirectory() {
+		return new File(dotKalibro(), "projects");
+	}
+
 	@Override
-	protected Timeout testTimeout() {
-		return new Timeout(8000);
+	protected TestTimeout testTimeout() {
+		return new TestTimeout(10, SECONDS);
 	}
 
 	protected <T> T loadYaml(String name, Class<T> type) {

@@ -7,10 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Metric;
 import org.kalibro.MetricConfiguration;
-import org.kalibro.ReadingGroup;
 import org.kalibro.Statistic;
-import org.kalibro.dao.ReadingGroupDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.MetricConfigurationDto;
 
 /**
@@ -89,8 +86,7 @@ public class MetricConfigurationXml extends MetricConfigurationDto {
 	}
 
 	@Override
-	public ReadingGroup readingGroup() {
-		return readingGroupId == null ? null :
-			(ReadingGroup) DaoLazyLoader.createProxy(ReadingGroupDao.class, "get", readingGroupId);
+	public Long readingGroupId() {
+		return readingGroupId;
 	}
 }

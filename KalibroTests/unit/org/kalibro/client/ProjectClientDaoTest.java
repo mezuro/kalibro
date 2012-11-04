@@ -34,6 +34,12 @@ public class ProjectClientDaoTest extends ClientTest<Project, ProjectXml, Projec
 	}
 
 	@Test
+	public void shouldGetProjectOfRepository() {
+		when(port.projectOf(ID)).thenReturn(xml);
+		assertSame(entity, client.projectOf(ID));
+	}
+
+	@Test
 	public void shouldGetAll() {
 		when(port.allProjects()).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.all());

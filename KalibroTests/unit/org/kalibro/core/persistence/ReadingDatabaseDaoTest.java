@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
@@ -14,15 +14,6 @@ public class ReadingDatabaseDaoTest extends DatabaseDaoTestCase<Reading, Reading
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long GROUP_ID = new Random().nextLong();
-
-	@Test
-	public void shouldGetReadingOfRange() {
-		assertSame(entity, dao.readingOf(ID));
-
-		String from = "Range range JOIN range.reading reading";
-		verify(dao).createRecordQuery(from, "range.id = :rangeId");
-		verify(query).setParameter("rangeId", ID);
-	}
 
 	@Test
 	public void shouldGetReadingsOfGroup() {

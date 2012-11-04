@@ -53,8 +53,8 @@ public class RangeSnapshotRecord extends RangeDto {
 		this(range, null);
 	}
 
-	public RangeSnapshotRecord(Range range, MetricConfigurationSnapshotRecord configurationSnapshotRecord) {
-		configurationSnapshot = configurationSnapshotRecord;
+	public RangeSnapshotRecord(Range range, MetricConfigurationSnapshotRecord configurationSnapshot) {
+		this.configurationSnapshot = configurationSnapshot;
 		beginning = Double.doubleToLongBits(range.getBeginning());
 		end = Double.doubleToLongBits(range.getEnd());
 		comments = range.getComments();
@@ -90,6 +90,11 @@ public class RangeSnapshotRecord extends RangeDto {
 
 	@Override
 	public Reading reading() {
-		return label == null ? null : new Reading(label, Double.longBitsToDouble(grade), new Color(color));
+		return new Reading(label, Double.longBitsToDouble(grade), new Color(color));
+	}
+
+	@Override
+	public Long readingId() {
+		return label == null ? null : 0L;
 	}
 }

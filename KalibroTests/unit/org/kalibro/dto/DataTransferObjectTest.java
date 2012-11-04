@@ -10,8 +10,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.kalibro.Reading;
+import org.kalibro.ReadingGroup;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.UnitTest;
+import org.powermock.reflect.Whitebox;
 
 public class DataTransferObjectTest extends UnitTest {
 
@@ -52,17 +54,21 @@ public class DataTransferObjectTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSetEntityId() {
+	public void shouldSetEntityPrivateFields() {
 		final Long id = mock(Long.class);
-		assertSame(id, new DataTransferObject<Reading>() {
+		final ReadingGroup group = mock(ReadingGroup.class);
+		Reading converted = new DataTransferObject<Reading>() {
 
 			@Override
 			public Reading convert() {
 				Reading reading = new Reading();
 				setId(reading, id);
+				set(reading, "group", group);
 				return reading;
 			}
-		}.convert().getId());
+		}.convert();
+		assertSame(id, converted.getId());
+		assertSame(group, Whitebox.getInternalState(converted, "group"));
 	}
 
 	private class ErrorDto extends DataTransferObject<Color> {

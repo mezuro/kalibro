@@ -27,12 +27,6 @@ public class ReadingEndpointTest extends EndpointTest<Reading, ReadingDao, Readi
 	}
 
 	@Test
-	public void shouldGetReadingOfRange() {
-		when(dao.readingOf(ID)).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.readingOf(ID));
-	}
-
-	@Test
 	public void shouldGetReadingsOfGroup() {
 		when(dao.readingsOf(GROUP_ID)).thenReturn(sortedSet(entity));
 		assertDeepDtoList(list(entity), port.readingsOf(GROUP_ID));

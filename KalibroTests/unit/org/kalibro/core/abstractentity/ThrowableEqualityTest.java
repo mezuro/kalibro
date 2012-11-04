@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.KalibroException;
 import org.kalibro.tests.UnitTest;
 
 public class ThrowableEqualityTest extends UnitTest {
@@ -50,5 +51,11 @@ public class ThrowableEqualityTest extends UnitTest {
 	@Test
 	public void allFourShouldBeDeepEqual() {
 		assertTrue(equality.equals(new Exception(), new Exception()));
+	}
+
+	@Test
+	public void targetShouldBeDeepEqualKalibroExceptionWrapper() {
+		Exception target = new Exception();
+		assertTrue(equality.equals(target, new KalibroException(target)));
 	}
 }

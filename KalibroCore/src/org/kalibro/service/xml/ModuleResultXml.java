@@ -18,12 +18,17 @@ import org.kalibro.dto.ModuleResultDto;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ModuleResultXml extends ModuleResultDto {
 
-	@XmlElement
+	@XmlElement(required = true)
 	private Long id;
-	@XmlElement
+
+	@XmlElement(required = true)
 	private ModuleXml module;
+
 	@XmlElement
 	private Double grade;
+
+	@XmlElement
+	private Long parentId;
 
 	public ModuleResultXml() {
 		super();
@@ -33,6 +38,7 @@ public class ModuleResultXml extends ModuleResultDto {
 		id = moduleResult.getId();
 		module = new ModuleXml(moduleResult.getModule());
 		grade = moduleResult.getGrade();
+		parentId = moduleResult.hasParent() ? moduleResult.getParent().getId() : null;
 	}
 
 	@Override
@@ -48,5 +54,10 @@ public class ModuleResultXml extends ModuleResultDto {
 	@Override
 	public Double grade() {
 		return grade;
+	}
+
+	@Override
+	public Long parentId() {
+		return parentId;
 	}
 }

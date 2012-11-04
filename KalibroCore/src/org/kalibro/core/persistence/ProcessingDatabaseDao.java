@@ -55,10 +55,7 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRec
 
 	@Override
 	public ProcessState lastProcessingState(Long repositoryId) {
-		String queryString = "SELECT processing.state FROM Processing processing WHERE " + LAST.processingClause();
-		TypedQuery<String> query = createQuery(queryString, String.class);
-		query.setParameter("repositoryId", repositoryId);
-		return ProcessState.valueOf(query.getSingleResult());
+		return lastProcessing(repositoryId).getState();
 	}
 
 	@Override

@@ -4,7 +4,6 @@ import static org.junit.Assert.*;
 
 import java.lang.annotation.Annotation;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -57,36 +56,22 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans();
 	}
 
-	protected void assertOrderedElementCollection(String field) {
-		assertOrdered(field);
-		annotation(field, ElementCollection.class);
-	}
-
-	protected OneToManyMatcher assertOrderedOneToMany(String field) {
-		assertOrdered(field);
-		annotation(field, CascadeOnDelete.class);
-		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans().cascades();
-	}
-
-	private void assertOrdered(String field) {
-		assertFieldType(field, List.class);
-		OrderColumn orderColumn = annotation(field, OrderColumn.class);
-		assertEquals("Wrong @OrderColumn name.", "\"index\"", orderColumn.name());
-		assertFalse("@OrderColumn should NOT be nullable.", orderColumn.nullable());
-	}
-
 	protected ManyToOneMatcher assertManyToOne(String field, Class<?> type) {
 		assertFieldType(field, type);
 		return new ManyToOneMatcher(annotation(field, ManyToOne.class), joinColumn(field)).doesNotCascade().isLazy();
 	}
 
 	protected void shouldHaveError(String field) {
-		assertFieldType(field, ThrowableRecord.class);
-		annotation(field, CascadeOnDelete.class);
-		new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).cascades().isEager().isOptional();
+		assertOneToOne(field, ThrowableRecord.class).cascades();
 	}
 
-	private JoinColumn joinColumn(String field) {
+	protected OneToOneMatcher assertOneToOne(String field, Class<?> type) {
+		assertFieldType(field, type);
+		annotation(field, CascadeOnDelete.class);
+		return new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).isOptional().isEager();
+	}
+
+	protected JoinColumn joinColumn(String field) {
 		JoinColumn joinColumn = annotation(field, JoinColumn.class);
 		assertEquals("Wrong @JoinColumn name.", columnName(field), joinColumn.name());
 		assertEquals("@JoinColumn " + joinColumn.name() + " references wrong column.",
@@ -94,12 +79,12 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		return joinColumn;
 	}
 
-	private void assertFieldType(String field, Class<?> type) {
+	protected void assertFieldType(String field, Class<?> type) {
 		assertTrue("Field not present: " + field, dtoReflector.listFields().contains(field));
 		assertEquals("Wrong type for field " + field + ".", type, dtoReflector.getFieldType(field));
 	}
 
-	private <T extends Annotation> T annotation(String field, Class<T> annotationClass) {
+	protected <T extends Annotation> T annotation(String field, Class<T> annotationClass) {
 		T annotation = dtoReflector.getFieldAnnotation(field, annotationClass);
 		assertNotNull("@" + annotationClass.getSimpleName() + " not present for field: " + field, annotation);
 		return annotation;

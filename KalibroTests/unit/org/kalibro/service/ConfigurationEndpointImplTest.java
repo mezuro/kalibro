@@ -35,7 +35,7 @@ public class ConfigurationEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetConfigurationOfProject() {
+	public void shouldGetConfigurationOfRepository() {
 		when(dao.configurationOf(ID)).thenReturn(entity);
 		assertSame(xml, implementor.configurationOf(ID));
 	}

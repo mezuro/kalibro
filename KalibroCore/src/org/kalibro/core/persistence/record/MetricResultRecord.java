@@ -66,7 +66,7 @@ public class MetricResultRecord extends MetricResultDto {
 	private void setDescendantResults(List<Double> descendantResults) {
 		this.descendantResults = new ArrayList<DescendantResultRecord>();
 		for (Double descendantResult : descendantResults)
-			this.descendantResults.add(new DescendantResultRecord(descendantResult));
+			this.descendantResults.add(new DescendantResultRecord(descendantResult, this));
 	}
 
 	@Override

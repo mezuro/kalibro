@@ -35,12 +35,6 @@ public class ReadingGroupEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetReadingGroupOfMetricConfiguration() {
-		when(dao.readingGroupOf(ID)).thenReturn(entity);
-		assertSame(xml, implementor.readingGroupOf(ID));
-	}
-
-	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(sortedSet(entity));
 		assertDeepEquals(list(xml), implementor.allReadingGroups());
