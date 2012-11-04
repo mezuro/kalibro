@@ -2,7 +2,7 @@ package org.kalibro.core.abstractentity;
 
 /**
  * Calculates hash codes for entities, using fields annotated with {@link IdentityField}.<br/>
- * Based on recommendations presented by Joshua Bloch at <i>Effective Java</i>.
+ * Based on recommendations presented by Joshua Bloch at <i>Effective Java</i>, Item 8.
  * 
  * @author Carlos Morais
  */
