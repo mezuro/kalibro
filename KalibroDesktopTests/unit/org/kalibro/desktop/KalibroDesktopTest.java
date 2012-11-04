@@ -5,8 +5,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.KalibroSettings;
 import org.kalibro.desktop.settings.SettingsController;
-import org.kalibro.desktop.tests.AnswerAdapter;
 import org.kalibro.tests.UtilityClassTest;
+import org.kalibro.tests.VoidAnswer;
 import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -67,10 +67,10 @@ public class KalibroDesktopTest extends UtilityClassTest {
 	}
 
 	private Answer<?> userCreatesSettings() {
-		return new AnswerAdapter() {
+		return new VoidAnswer() {
 
 			@Override
-			public void answer() {
+			public void answer() throws Throwable {
 				when(KalibroSettings.exists()).thenReturn(true);
 			}
 		};
