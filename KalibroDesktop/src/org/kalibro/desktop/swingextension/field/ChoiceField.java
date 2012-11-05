@@ -6,7 +6,7 @@ import java.util.Vector;
 
 import javax.swing.JComboBox;
 
-public class ChoiceField<T> extends JComboBox implements Field<T> {
+public class ChoiceField<T> extends JComboBox<T> implements Field<T> {
 
 	public ChoiceField(String name, T... values) {
 		this(name, Arrays.asList(values));
