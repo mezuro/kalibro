@@ -12,8 +12,8 @@ import javax.swing.JDialog;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.tests.VoidAnswer;
 import org.kalibro.tests.UnitTest;
+import org.kalibro.tests.VoidAnswer;
 import org.mockito.stubbing.Answer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -22,8 +22,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({ColorChooser.class, JColorChooser.class})
 public class ColorChooserTest extends UnitTest {
 
-	private static final Color DEFAULT_COLOR = new Color(new Random(System.currentTimeMillis()).nextInt());
-	private static final Color SELECTED_COLOR = DEFAULT_COLOR.brighter();
+	private static final Color DEFAULT_COLOR = new Color(new Random().nextInt());
+	private static final Color SELECTED_COLOR = new Color(new Random().nextInt());
 
 	private Component parent;
 	private JDialog chooserDialog;
