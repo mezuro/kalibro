@@ -10,11 +10,15 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.desktop.swingextension.field.FieldSize;
 import org.kalibro.tests.UnitTest;
 import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
 public class ButtonTest extends UnitTest {
+
+	private static final String NAME = "ButtonTest name";
+	private static final String TEXT = "ButtonTest text";
 
 	private ActionListener listener;
 
@@ -23,7 +27,13 @@ public class ButtonTest extends UnitTest {
 	@Before
 	public void setUp() {
 		listener = PowerMockito.mock(ActionListener.class);
-		button = new Button("", "My button", listener);
+		button = new Button(NAME, TEXT, listener);
+	}
+
+	@Test
+	public void shouldSetNameAndText() {
+		assertEquals(NAME, button.getName());
+		assertEquals(TEXT, button.getText());
 	}
 
 	@Test
@@ -39,6 +49,11 @@ public class ButtonTest extends UnitTest {
 	@Test
 	public void shouldHaveCenterVerticalAlignment() {
 		assertEquals(SwingConstants.CENTER, button.getVerticalAlignment());
+	}
+
+	@Test
+	public void shouldHaveFieldSize() {
+		assertEquals(new FieldSize(button), button.getSize());
 	}
 
 	@Test
