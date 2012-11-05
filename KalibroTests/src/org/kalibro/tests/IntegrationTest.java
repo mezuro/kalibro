@@ -15,6 +15,7 @@ public abstract class IntegrationTest extends UnitTest {
 	@AfterClass
 	public static void cleanLogs() {
 		FileUtils.deleteQuietly(logsDirectory());
+		FileUtils.deleteQuietly(projectsDirectory());
 	}
 
 	protected static File samplesDirectory() {

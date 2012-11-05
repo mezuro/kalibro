@@ -17,11 +17,6 @@ public class ReadingEndpointImplTest extends
 	private static final Long ID = new Random().nextLong();
 	private static final Long GROUP_ID = new Random().nextLong();
 
-	@Override
-	protected Class<Reading> entityClass() {
-		return Reading.class;
-	}
-
 	@Test
 	public void shouldGetById() {
 		when(dao.get(ID)).thenReturn(entity);
@@ -30,7 +25,7 @@ public class ReadingEndpointImplTest extends
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		when(dao.readingsOf(GROUP_ID)).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).readingsOf(GROUP_ID);
 		assertDeepEquals(list(xml), implementor.readingsOf(GROUP_ID));
 	}
 

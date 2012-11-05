@@ -20,11 +20,6 @@ public class MetricResultEndpointImplTest extends
 	private static final Long ID = new Random().nextLong();
 	private static final String METRIC_NAME = "MetricResultEndpointImplTest metric name";
 
-	@Override
-	protected Class<MetricResult> entityClass() {
-		return MetricResult.class;
-	}
-
 	@Test
 	public void shouldGetDescendantResultsOfMetricResult() {
 		List<Double> descendantResults = mock(List.class);
@@ -34,7 +29,7 @@ public class MetricResultEndpointImplTest extends
 
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
-		when(dao.metricResultsOf(ID)).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).metricResultsOf(ID);
 		assertDeepEquals(list(xml), implementor.metricResultsOf(ID));
 	}
 

@@ -16,11 +16,6 @@ public class ModuleResultEndpointImplTest extends
 
 	private static final Long ID = new Random().nextLong();
 
-	@Override
-	protected Class<ModuleResult> entityClass() {
-		return ModuleResult.class;
-	}
-
 	@Test
 	public void shouldGetById() {
 		when(dao.get(ID)).thenReturn(entity);
@@ -29,7 +24,7 @@ public class ModuleResultEndpointImplTest extends
 
 	@Test
 	public void shouldGetChildren() {
-		when(dao.childrenOf(ID)).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).childrenOf(ID);
 		assertDeepEquals(list(xml), implementor.childrenOf(ID));
 	}
 }
