@@ -41,7 +41,7 @@ public class AbstractDialogTest extends UnitTest {
 
 	@Test
 	public void shouldHaveKalibroIcon() {
-		assertDeepEquals(dialog.getIconImages(), new Icon(Icon.KALIBRO).getImage());
+		assertDeepEquals(list(new Icon(Icon.KALIBRO).getImage()), dialog.getIconImages());
 	}
 
 	@Test
@@ -99,7 +99,7 @@ public class AbstractDialogTest extends UnitTest {
 		/**
 		 * Overriding to mock show.
 		 * 
-		 * @deprecated Ble
+		 * @deprecated Overriding to mock show.
 		 */
 		@Override
 		@Deprecated
