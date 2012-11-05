@@ -11,12 +11,17 @@ import org.kalibro.tests.UnitTest;
 
 public class TextFieldTest extends UnitTest {
 
+	private static final int LINES = 3;
+	private static final int COLUMNS = 10;
+
+	private static final String NAME = "TextFieldTest name";
+
 	private TextField field;
 	private JTextPane textPane;
 
 	@Before
 	public void setUp() {
-		field = new TextField("", 3, 10);
+		field = new TextField(NAME, LINES, COLUMNS);
 		textPane = (JTextPane) field.getViewport().getComponent(0);
 	}
 
@@ -27,7 +32,7 @@ public class TextFieldTest extends UnitTest {
 
 	@Test
 	public void shouldHaveTitledBorderWhenCreatedWithTitle() {
-		field = new TextField("", 3, 10, "My title");
+		field = new TextField(NAME, LINES, COLUMNS, "My title");
 		assertEquals("My title", ((TitledBorder) field.getBorder()).getTitle());
 	}
 

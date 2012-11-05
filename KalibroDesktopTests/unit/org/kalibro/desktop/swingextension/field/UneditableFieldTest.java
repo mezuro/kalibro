@@ -12,11 +12,18 @@ import org.kalibro.tests.UnitTest;
 
 public class UneditableFieldTest extends UnitTest {
 
+	private static final String NAME = "UneditableFieldTest name";
+
 	private UneditableField<String> field;
 
 	@Before
 	public void setUp() {
-		field = new UneditableField<String>("");
+		field = new UneditableField<String>(NAME);
+	}
+
+	@Test
+	public void shouldSetName() {
+		assertEquals(NAME, field.getName());
 	}
 
 	@Test
