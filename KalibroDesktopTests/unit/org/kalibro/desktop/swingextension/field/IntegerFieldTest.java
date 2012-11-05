@@ -10,13 +10,13 @@ import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
-public class LongFieldTest extends UnitTest {
+public class IntegerFieldTest extends UnitTest {
 
-	private LongField field;
+	private IntegerField field;
 
 	@Before
 	public void setUp() {
-		field = new LongField("field");
+		field = new IntegerField("field");
 	}
 
 	@Test
@@ -35,10 +35,10 @@ public class LongFieldTest extends UnitTest {
 
 	@Test
 	public void shouldSetSpecialNumberWhenButtonIsClicked() {
-		field = new LongField("field", Long.MIN_VALUE);
+		field = new IntegerField("field", Integer.MIN_VALUE);
 		assertNull(field.get());
 
 		new ComponentFinder(field).find("field", Button.class).doClick();
-		assertEquals(Long.MIN_VALUE, field.get().longValue());
+		assertEquals(Integer.MIN_VALUE, field.get().intValue());
 	}
 }

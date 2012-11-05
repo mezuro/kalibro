@@ -2,13 +2,13 @@ package org.kalibro.desktop.swingextension.field;
 
 import java.text.DecimalFormat;
 
-public class LongField extends NumberField<Long> {
+public class IntegerField extends NumberField<Integer> {
 
-	public LongField(String name) {
+	public IntegerField(String name) {
 		super(name);
 	}
 
-	public LongField(String name, Long specialNumber) {
+	public IntegerField(String name, Integer specialNumber) {
 		super(name, specialNumber);
 	}
 
@@ -20,8 +20,8 @@ public class LongField extends NumberField<Long> {
 	}
 
 	@Override
-	public Long parseValue(Number value) {
-		return value.longValue();
+	public Integer parseValue(Number value) {
+		return value.intValue();
 	}
 
 	@Override
