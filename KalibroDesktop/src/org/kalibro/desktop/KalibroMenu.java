@@ -7,6 +7,7 @@ import java.awt.event.ActionListener;
 import org.kalibro.desktop.settings.SettingsController;
 import org.kalibro.desktop.swingextension.menu.AbstractMenu;
 import org.kalibro.desktop.swingextension.menu.MenuItem;
+import org.kalibro.desktop.swingextension.menu.ReflectionMenuItem;
 
 class KalibroMenu extends AbstractMenu implements ActionListener {
 
@@ -18,7 +19,7 @@ class KalibroMenu extends AbstractMenu implements ActionListener {
 
 	@Override
 	protected void createItems(Component... innerComponents) {
-		settingsItem = new MenuItem("settings", "Settings", 'S', this);
+		settingsItem = new ReflectionMenuItem("settings", "Settings", 'S', SettingsController.class, "editSettings");
 		exitItem = new MenuItem("exit", "Exit", 'x', this);
 	}
 
@@ -31,10 +32,6 @@ class KalibroMenu extends AbstractMenu implements ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == settingsItem)
-			SettingsController.editSettings();
-		else if (source == exitItem)
-			System.exit(0);
+		System.exit(0);
 	}
 }
