@@ -10,20 +10,28 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.desktop.swingextension.field.FieldSize;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
 import org.powermock.api.mockito.PowerMockito;
 
 public class RadioButtonTest extends UnitTest {
 
-	private ActionListener listener;
+	private static final String NAME = "RadioButtonTest name";
+	private static final String TEXT = "RadioButtonTest text";
 
+	private ActionListener listener;
 	private RadioButton button;
 
 	@Before
 	public void setUp() {
 		listener = PowerMockito.mock(ActionListener.class);
-		button = new RadioButton("", "My button", listener);
+		button = new RadioButton(NAME, TEXT, listener);
+	}
+
+	@Test
+	public void shouldSetNameAndText() {
+		assertEquals(NAME, button.getName());
+		assertEquals(TEXT, button.getText());
 	}
 
 	@Test
@@ -42,8 +50,13 @@ public class RadioButtonTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotifyListener() {
+	public void shouldHaveFieldSize() {
+		assertEquals(new FieldSize(button), button.getSize());
+	}
+
+	@Test
+	public void shouldNotifyListeners() {
 		button.doClick();
-		Mockito.verify(listener).actionPerformed(any(ActionEvent.class));
+		verify(listener).actionPerformed(any(ActionEvent.class));
 	}
 }
