@@ -29,7 +29,7 @@ public class ProcessingEndpointTest extends EndpointTest<Processing, ProcessingD
 
 	@Override
 	protected List<String> fieldsThatShouldBeProxy() {
-		return list("repository", "resultsRoot");
+		return list("repository");
 	}
 
 	@Test

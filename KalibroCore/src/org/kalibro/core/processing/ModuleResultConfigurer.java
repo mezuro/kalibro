@@ -38,15 +38,18 @@ final class ModuleResultConfigurer {
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics())
 			if (isScopeCompatible(compoundMetric))
 				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric));
+		scriptEvaluator.close();
 	}
 
 	private void includeScriptFor(MetricConfiguration metricConfiguration) {
 		String code = metricConfiguration.getCode();
 		Metric metric = metricConfiguration.getMetric();
+		if (!isScopeCompatible(metric))
+			return;
 		if (metric.isCompound())
 			scriptEvaluator.addFunction(code, ((CompoundMetric) metric).getScript());
-		else
-			scriptEvaluator.addVariable(code, moduleResult.getResultFor(metric).getValue());
+		else if (moduleResult.hasResultFor(metric))
+			scriptEvaluator.addVariable(code, moduleResult.getResultFor(metric).getAggregatedValue());
 	}
 
 	private boolean isScopeCompatible(Metric metric) {

@@ -2,7 +2,6 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.assertSame;
 
-import java.util.ArrayList;
 import java.util.Random;
 
 import org.junit.Test;
@@ -21,26 +20,10 @@ public class ModuleResultDatabaseDaoTest extends
 	private static final Long ID = new Random().nextLong();
 
 	@Test
-	public void shouldGetResultsRootOfProcessing() {
-		assertSame(entity, dao.resultsRootOf(ID));
-
-		verify(dao).createRecordQuery("moduleResult.processing.id = :processingId AND moduleResult.parent = null");
-		verify(query).setParameter("processingId", ID);
-	}
-
-	@Test
-	public void shouldGetParent() {
-		assertSame(entity, dao.parentOf(ID));
-
-		verify(dao).createRecordQuery("ModuleResult child JOIN child.parent moduleResult", "child.id = :childId");
-		verify(query).setParameter("childId", ID);
-	}
-
-	@Test
 	public void shouldGetChildren() {
 		assertDeepEquals(set(entity), dao.childrenOf(ID));
 
-		verify(dao).createRecordQuery("ModuleResult parent ON parent.children moduleResult", "parent.id = :parentId");
+		verify(dao).createRecordQuery("ModuleResult parent JOIN parent.children moduleResult", "parent.id = :parentId");
 		verify(query).setParameter("parentId", ID);
 	}
 
@@ -55,10 +38,12 @@ public class ModuleResultDatabaseDaoTest extends
 	@Test
 	public void shouldPrepareResultForModule() throws Exception {
 		Module module = new Module(Granularity.PACKAGE, "org");
-		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :moduleName";
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", list("org"));
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "moduleName", new ArrayList<String>());
+		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :module";
+		String where2 = "moduleResult.processing.id = :processingId AND moduleResult.moduleGranularity = :module";
+		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "module", list("org"));
+		doReturn(false).when(dao).exists("WHERE " + where2, "processingId", ID, "module", "SOFTWARE");
 		prepareQuery(where);
+		prepareQuery(where2);
 
 		Module preparedModule = mock(Module.class);
 		whenNew(ModuleResultRecord.class)
@@ -79,11 +64,11 @@ public class ModuleResultDatabaseDaoTest extends
 		InOrder order = Mockito.inOrder(dao, query, dao, query, preparedModule);
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("moduleName", new ArrayList<String>());
+		order.verify(query).setParameter("module", "SOFTWARE");
 		order.verify(query).getSingleResult();
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("moduleName", list("org"));
+		order.verify(query).setParameter("module", list("org"));
 		order.verify(query).getSingleResult();
 		order.verify(preparedModule).setGranularity(Granularity.PACKAGE);
 	}

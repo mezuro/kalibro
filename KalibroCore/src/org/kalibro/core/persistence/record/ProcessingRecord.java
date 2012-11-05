@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.*;
 
 import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.kalibro.ModuleResult;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.dto.ProcessingDto;
@@ -43,6 +44,11 @@ public class ProcessingRecord extends ProcessingDto {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "processing", orphanRemoval = true)
 	private Collection<ProcessTimeRecord> processTimes;
 
+	@OneToOne
+	@CascadeOnDelete
+	@JoinColumn(name = "\"results_root\"", referencedColumnName = "\"id\"")
+	private ModuleResultRecord resultsRoot;
+
 	public ProcessingRecord() {
 		super();
 	}
@@ -57,6 +63,7 @@ public class ProcessingRecord extends ProcessingDto {
 		date = processing.getDate().getTime();
 		setState(processing);
 		setProcessTimes(processing);
+		setResultsRoot(processing.getResultsRoot());
 	}
 
 	private void setState(Processing processing) {
@@ -72,8 +79,12 @@ public class ProcessingRecord extends ProcessingDto {
 		for (ProcessState passedState : ProcessState.values()) {
 			Long time = processing.getStateTime(passedState);
 			if (time != null)
-				processTimes.add(new ProcessTimeRecord(passedState, time));
+				processTimes.add(new ProcessTimeRecord(passedState, time, this));
 		}
+	}
+
+	private void setResultsRoot(ModuleResult resultsRoot) {
+		this.resultsRoot = resultsRoot == null ? null : new ModuleResultRecord(resultsRoot.getId());
 	}
 
 	@Override
@@ -102,5 +113,10 @@ public class ProcessingRecord extends ProcessingDto {
 		for (ProcessTimeRecord processTime : processTimes)
 			map.put(processTime.state(), processTime.time());
 		return map;
+	}
+
+	@Override
+	public Long resultsRootId() {
+		return resultsRoot == null ? null : resultsRoot.id();
 	}
 }

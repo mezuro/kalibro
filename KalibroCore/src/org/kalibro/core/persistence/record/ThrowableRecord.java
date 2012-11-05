@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import javax.persistence.*;
 
@@ -23,37 +23,30 @@ public class ThrowableRecord extends ThrowableDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Long id;
 
-	@Column(name = "\"throwable_class\"", nullable = false)
-	private String throwableClass;
+	@Column(name = "\"target_string\"", nullable = false)
+	private String targetString;
 
-	@Column(name = "\"detail_message\"")
-	private String detailMessage;
-
-	@CascadeOnDelete
-	@OrderColumn(name = "\"index\"", nullable = false)
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
-	private List<StackTraceElementRecord> stackTrace;
+	@Column(name = "\"message\"")
+	private String message;
 
 	@CascadeOnDelete
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"cause\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord cause;
 
+	@CascadeOnDelete
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
+	private Collection<StackTraceElementRecord> stackTrace;
+
 	public ThrowableRecord() {
 		super();
 	}
 
 	public ThrowableRecord(Throwable throwable) {
-		throwableClass = throwable.getClass().getName();
-		detailMessage = throwable.getMessage();
-		setStackTrace(throwable.getStackTrace());
+		targetString = throwable.toString();
+		message = throwable.getMessage();
 		setCause(throwable.getCause());
-	}
-
-	private void setStackTrace(StackTraceElement[] stackTrace) {
-		this.stackTrace = new ArrayList<StackTraceElementRecord>(stackTrace.length);
-		for (StackTraceElement element : stackTrace)
-			this.stackTrace.add(new StackTraceElementRecord(element, this));
+		setStackTrace(throwable.getStackTrace());
 	}
 
 	private void setCause(Throwable cause) {
@@ -61,26 +54,32 @@ public class ThrowableRecord extends ThrowableDto {
 			this.cause = new ThrowableRecord(cause);
 	}
 
-	@Override
-	public String throwableClass() {
-		return throwableClass;
+	private void setStackTrace(StackTraceElement[] stackTrace) {
+		this.stackTrace = new ArrayList<StackTraceElementRecord>(stackTrace.length);
+		for (int i = 0; i < stackTrace.length; i++)
+			this.stackTrace.add(new StackTraceElementRecord(stackTrace[i], this, i));
 	}
 
 	@Override
-	public String detailMessage() {
-		return detailMessage;
+	public String targetString() {
+		return targetString;
 	}
 
 	@Override
-	public StackTraceElement[] stackTrace() {
-		StackTraceElement[] converted = new StackTraceElement[stackTrace.size()];
-		for (int i = 0; i < converted.length; i++)
-			converted[i] = stackTrace.get(i).convert();
-		return converted;
+	public String message() {
+		return message;
 	}
 
 	@Override
 	public Throwable cause() {
 		return cause == null ? null : cause.convert();
+	}
+
+	@Override
+	public StackTraceElement[] stackTrace() {
+		StackTraceElement[] converted = new StackTraceElement[stackTrace.size()];
+		for (StackTraceElementRecord element : stackTrace)
+			element.addTo(converted);
+		return converted;
 	}
 }

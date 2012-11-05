@@ -9,7 +9,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.*;
+import org.kalibro.Metric;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
+import org.kalibro.Statistic;
 import org.kalibro.dto.MetricConfigurationDto;
 
 /**
@@ -83,7 +86,7 @@ public class MetricConfigurationSnapshotXml extends MetricConfigurationDto {
 	}
 
 	@Override
-	public ReadingGroup readingGroup() {
+	public Long readingGroupId() {
 		return null;
 	}
 

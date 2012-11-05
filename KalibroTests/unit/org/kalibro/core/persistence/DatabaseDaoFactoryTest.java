@@ -53,6 +53,7 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 
 		mockStatic(Persistence.class);
 		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(entityManagerFactory);
+		when(entityManagerFactory.isOpen()).thenReturn(true);
 		when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
 		when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
 		whenNew(RecordManager.class).withArguments(entityManager).thenReturn(recordManager);
@@ -84,13 +85,21 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 
 	@Test
 	public void shouldClosePreviousEntityManagerIfOpen() {
-		when(entityManagerFactory.isOpen()).thenReturn(true);
-
 		DatabaseSettings newSettings = new DatabaseSettings();
 		newSettings.setPassword("x");
+		new DatabaseDaoFactory(settings);
 		new DatabaseDaoFactory(newSettings);
 
-		verify(entityManagerFactory).close();
+		verify(entityManagerFactory, times(1)).close();
+	}
+
+	@Test
+	public void shouldEnsureOpenEntityManagerFactoryBeforeCreatingRecordManager() {
+		when(entityManagerFactory.isOpen()).thenReturn(false);
+		DatabaseDaoFactory.createRecordManager();
+
+		verifyStatic(times(2));
+		Persistence.createEntityManagerFactory(anyString(), any(Map.class));
 	}
 
 	@Test

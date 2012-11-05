@@ -1,10 +1,9 @@
 package org.kalibro;
 
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.util.*;
 
 import org.kalibro.core.abstractentity.Ignore;
+import org.kalibro.dao.DaoFactory;
 
 /**
  * Result of processing a {@link Module}. Represents a node in the source tree with the results associated.
@@ -54,9 +53,12 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	}
 
 	public SortedSet<ModuleResult> getChildren() {
-		for (ModuleResult child : children)
+		TreeSet<ModuleResult> myChildren = new TreeSet<ModuleResult>();
+		for (ModuleResult child : children) {
 			child.parent = this;
-		return new TreeSet<ModuleResult>(children);
+			myChildren.add(child);
+		}
+		return myChildren;
 	}
 
 	public void setChildren(SortedSet<ModuleResult> children) {
@@ -66,6 +68,10 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	public void addChild(ModuleResult child) {
 		child.parent = this;
 		children.add(child);
+	}
+
+	public SortedMap<Date, MetricResult> historyOf(Metric metric) {
+		return DaoFactory.getMetricResultDao().historyOf(metric.getName(), id);
 	}
 
 	@Override

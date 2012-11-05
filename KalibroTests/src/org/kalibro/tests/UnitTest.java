@@ -1,8 +1,11 @@
 package org.kalibro.tests;
 
+import static java.util.concurrent.TimeUnit.SECONDS;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.IOUtils;
 import org.junit.Rule;
@@ -23,8 +26,8 @@ public abstract class UnitTest extends SpecialAssertions {
 	@Rule
 	public MethodRule testTimeout = testTimeout();
 
-	protected Timeout testTimeout() {
-		return new Timeout(2000);
+	protected TestTimeout testTimeout() {
+		return new TestTimeout(2, SECONDS);
 	}
 
 	protected String loadResource(String name) throws IOException {
@@ -37,5 +40,12 @@ public abstract class UnitTest extends SpecialAssertions {
 
 	protected File getFile(String name) throws Exception {
 		return new File(getClass().getResource(name).toURI());
+	}
+
+	class TestTimeout extends Timeout {
+
+		TestTimeout(long duration, TimeUnit timeUnit) {
+			super(new Long(timeUnit.toMillis(duration)).intValue());
+		}
 	}
 }

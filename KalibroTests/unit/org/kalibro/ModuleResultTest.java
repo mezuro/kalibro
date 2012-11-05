@@ -2,12 +2,21 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
+import java.util.Date;
+import java.util.SortedMap;
 import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.MetricResultDao;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
 public class ModuleResultTest extends UnitTest {
 
 	private Module module;
@@ -56,6 +65,19 @@ public class ModuleResultTest extends UnitTest {
 		result.addChild(child);
 		assertDeepEquals(set(child), result.getChildren());
 		assertSame(result, child.getParent());
+	}
+
+	@Test
+	public void shouldGetHistoryOfMetric() {
+		Metric metric = new CompoundMetric();
+		MetricResultDao dao = mock(MetricResultDao.class);
+		SortedMap<Date, MetricResult> history = mock(SortedMap.class);
+
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getMetricResultDao()).thenReturn(dao);
+		when(dao.historyOf(metric.getName(), result.getId())).thenReturn(history);
+
+		assertSame(history, result.historyOf(metric));
 	}
 
 	@Test

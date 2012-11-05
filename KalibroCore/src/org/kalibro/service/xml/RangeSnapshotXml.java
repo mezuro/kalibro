@@ -73,12 +73,17 @@ public class RangeSnapshotXml extends RangeDto {
 	}
 
 	@Override
-	public Reading reading() {
-		return label == null ? null : new Reading(label, grade, new Color(Integer.parseInt(color, 16)));
+	public String comments() {
+		return comments;
 	}
 
 	@Override
-	public String comments() {
-		return comments;
+	public Reading reading() {
+		return new Reading(label, grade, new Color(Integer.parseInt(color, 16)));
+	}
+
+	@Override
+	public Long readingId() {
+		return label == null ? null : 0L;
 	}
 }

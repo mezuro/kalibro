@@ -1,7 +1,10 @@
 package org.kalibro.core.persistence.record;
 
+import java.util.Collection;
+
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
@@ -50,6 +53,11 @@ public class RepositoryRecord extends RepositoryDto {
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	private ConfigurationRecord configuration;
+
+	@CascadeOnDelete
+	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "repository", orphanRemoval = true)
+	private Collection<ProcessingRecord> processings;
 
 	public RepositoryRecord() {
 		super();

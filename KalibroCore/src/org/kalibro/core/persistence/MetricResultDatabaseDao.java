@@ -5,6 +5,7 @@ import java.util.*;
 import javax.persistence.TypedQuery;
 
 import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.core.persistence.record.DescendantResultRecord;
 import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.kalibro.dao.MetricResultDao;
@@ -38,13 +39,13 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
-		TypedQuery<Object[]> query = createQuery("SELECT p.date, mer FROM MetricResult mer " +
-			"JOIN ModuleResult mor JOIN MetricConfigurationSnapshot mcs JOIN Processing p " +
-			"WHERE mcs.metricName = :metricName AND mor.moduleName = " +
-			"(SELECT moduleName FROM ModuleResult WHERE id = :moduleResultId)",
-			Object[].class);
+		ModuleResult moduleResult = new ModuleResultDatabaseDao().get(moduleResultId);
+		List<String> moduleName = Arrays.asList(moduleResult.getModule().getName());
+		TypedQuery<Object[]> query = createQuery("SELECT proc.date, meResult FROM MetricResult meResult " +
+			"JOIN meResult.moduleResult moResult JOIN meResult.configuration meConf JOIN meConf.processing proc " +
+			"WHERE meConf.metricName = :metricName AND moResult.moduleName = :moduleName", Object[].class);
 		query.setParameter("metricName", metricName);
-		query.setParameter("moduleResultId", moduleResultId);
+		query.setParameter("moduleName", moduleName);
 		List<Object[]> results = query.getResultList();
 
 		SortedMap<Date, MetricResult> history = new TreeMap<Date, MetricResult>();

@@ -51,6 +51,10 @@ public abstract class DataTransferObject<ENTITY> {
 	public abstract ENTITY convert();
 
 	protected void setId(Object entity, Long id) {
-		new FieldReflector(entity).set("id", id);
+		set(entity, "id", id);
+	}
+
+	protected void set(Object entity, String field, Object value) {
+		new FieldReflector(entity).set(field, value);
 	}
 }

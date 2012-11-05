@@ -28,7 +28,7 @@ public class ProcessTimeRecordTest extends UnitTest {
 		ProcessState[] states = ProcessState.values();
 		ProcessState state = states[new Random().nextInt(states.length)];
 		Long time = mock(Long.class);
-		ProcessTimeRecord record = new ProcessTimeRecord(state, time);
+		ProcessTimeRecord record = new ProcessTimeRecord(state, time, null);
 		assertSame(state, record.state());
 		assertSame(time, record.time());
 	}

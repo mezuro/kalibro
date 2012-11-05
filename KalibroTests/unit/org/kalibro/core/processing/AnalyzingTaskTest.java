@@ -19,64 +19,68 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AnalyzeResultsTask.class, ModuleResultConfigurer.class})
-public class AnalyzeResultsTaskTest extends UnitTest {
+@PrepareForTest({AnalyzingTask.class, ModuleResultConfigurer.class})
+public class AnalyzingTaskTest extends UnitTest {
 
 	private static final Long PROCESSING_ID = new Random().nextLong();
-	private static final String REPOSITORY_NAME = "AnalyzeResultsTaskTest repository name";
+	private static final String REPOSITORY_NAME = "AnalyzingTaskTest repository name";
 
+	private Processing processing;
 	private Configuration configurationSnapshot;
 	private ModuleResultDatabaseDao moduleResultDao;
 
+	private Module softwareModule, classModule;
 	private ModuleResult softwareResult, classResult;
 
-	private AnalyzeResultsTask analyzeTask;
+	private AnalyzingTask analyzingTask;
 
 	@Before
-	public void setUp() throws Exception {
-		mockDatabaseDao();
+	public void setUp() {
+		analyzingTask = spy(new AnalyzingTask());
+		mockDaos();
+		mockEntities();
 		stubModuleResultPreparation();
+		stubResultProducer();
 		mockStatic(ModuleResultConfigurer.class);
-		analyzeTask = new AnalyzeResultsTask(mockProcessing(), stubProducer());
 	}
 
-	private void mockDatabaseDao() throws Exception {
+	private void mockDaos() {
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		configurationSnapshot = loadFixture("sc", Configuration.class);
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
-		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
+		doReturn(daoFactory).when(analyzingTask).daoFactory();
 		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
 		when(configurationDao.snapshotFor(PROCESSING_ID)).thenReturn(configurationSnapshot);
 	}
 
+	private void mockEntities() {
+		processing = mock(Processing.class);
+		Repository repository = mock(Repository.class);
+		doReturn(processing).when(analyzingTask).processing();
+		doReturn(repository).when(analyzingTask).repository();
+		when(processing.getId()).thenReturn(PROCESSING_ID);
+		when(repository.getName()).thenReturn(REPOSITORY_NAME);
+	}
+
 	private void stubModuleResultPreparation() {
-		Module softwareModule = new Module(SOFTWARE, REPOSITORY_NAME);
-		Module classModule = new Module(CLASS, "HelloWorld");
-		assertEquals(new Module(CLASS, "HelloWorld"), classModule);
+		softwareModule = new Module(SOFTWARE, "null");
 		softwareResult = new ModuleResult(null, softwareModule);
-		classResult = new ModuleResult(softwareResult, classModule);
 		when(moduleResultDao.prepareResultFor(softwareModule, PROCESSING_ID)).thenReturn(softwareResult);
+
+		classModule = new Module(CLASS, "HelloWorld");
+		classResult = new ModuleResult(softwareResult, classModule);
 		when(moduleResultDao.prepareResultFor(classModule, PROCESSING_ID)).thenReturn(classResult);
 	}
 
-	private Processing mockProcessing() {
-		Processing processing = mock(Processing.class);
-		Repository repository = mock(Repository.class);
-		when(processing.getId()).thenReturn(PROCESSING_ID);
-		when(processing.getRepository()).thenReturn(repository);
-		when(repository.getName()).thenReturn(REPOSITORY_NAME);
-		return processing;
-	}
-
-	private Producer<NativeModuleResult> stubProducer() {
+	private void stubResultProducer() {
 		Producer<NativeModuleResult> resultProducer = new Producer<NativeModuleResult>();
 		Writer<NativeModuleResult> writer = resultProducer.createWriter();
-		writer.write(newResult(new Module(CLASS, "HelloWorld"), "cbo", 0.0, "lcom4", 1.0));
-		writer.write(newResult(new Module(SOFTWARE, "null"), "total_cof", 1.0));
+		writer.write(newResult(classModule, "cbo", 0.0, "lcom4", 1.0));
+		writer.write(newResult(softwareModule, "total_cof", 1.0));
 		writer.close();
-		return resultProducer;
+		doReturn(resultProducer).when(analyzingTask).resultProducer();
 	}
 
 	private NativeModuleResult newResult(Module module, Object... results) {
@@ -93,7 +97,7 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	public void shouldAddMetricResults() {
 		NativeMetric lcom4 = loadFixture("lcom4", NativeMetric.class);
 		assertFalse(classResult.hasResultFor(lcom4));
-		analyzeTask.compute();
+		analyzingTask.perform();
 
 		assertTrue(softwareResult.hasResultFor(lcom4));
 		MetricResult lcom4Result = classResult.getResultFor(lcom4);
@@ -105,7 +109,7 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 	public void shouldAddDescendantResults() {
 		NativeMetric cbo = loadFixture("cbo", NativeMetric.class);
 		assertFalse(softwareResult.hasResultFor(cbo));
-		analyzeTask.compute();
+		analyzingTask.perform();
 
 		assertTrue(softwareResult.hasResultFor(cbo));
 		MetricResult cboResult = softwareResult.getResultFor(cbo);
@@ -116,7 +120,7 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 
 	@Test
 	public void shouldConfigureResults() {
-		analyzeTask.compute();
+		analyzingTask.perform();
 		verifyStatic(times(2));
 		ModuleResultConfigurer.configure(softwareResult, configurationSnapshot);
 		verifyStatic();
@@ -125,13 +129,15 @@ public class AnalyzeResultsTaskTest extends UnitTest {
 
 	@Test
 	public void shouldSaveResults() {
-		analyzeTask.compute();
-		verify(moduleResultDao, times(2)).save(softwareResult, PROCESSING_ID);
+		analyzingTask.perform();
+		verify(moduleResultDao, times(3)).save(softwareResult, PROCESSING_ID);
 		verify(moduleResultDao).save(classResult, PROCESSING_ID);
 	}
 
 	@Test
-	public void nextStateShouldBeReady() {
-		assertEquals(ProcessState.READY, analyzeTask.getNextState());
+	public void shouldSetRootOnProcessing() {
+		analyzingTask.perform();
+		assertArrayEquals(array(REPOSITORY_NAME), softwareModule.getName());
+		verify(processing, times(2)).setResultsRoot(softwareResult);
 	}
 }
