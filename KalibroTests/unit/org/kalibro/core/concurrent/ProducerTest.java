@@ -8,8 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
+import org.kalibro.tests.VoidAnswer;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
@@ -17,6 +16,9 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Producer.class)
 public class ProducerTest extends UnitTest {
+
+	private static final InterruptedException INTERRUPTION = new InterruptedException();
+	private static final String INTERRUPTION_MESSAGE = "Producer interrupted while yielding.";
 
 	private Object product;
 	private LinkedBlockingQueue<Object> queue;
@@ -66,56 +68,62 @@ public class ProducerTest extends UnitTest {
 		when(queue.isEmpty()).thenReturn(true);
 		assertFalse(producer.canYield());
 
-		Writer<Object> writer = producer.createWriter();
-		producer.close(writer);
+		producer.close(producer.createWriter());
 		assertFalse(producer.canYield());
 	}
 
 	@Test
 	public void canYieldShouldWaitWritersToCloseWhenQueueIsEmpty() throws InterruptedException {
-		final Writer<Object> writer = producer.createWriter();
+		Writer<Object> writer = producer.createWriter();
 		when(queue.isEmpty()).thenReturn(true);
-		doAnswer(new Answer<Void>() {
+		doAnswer(close(writer)).when(producer).wait();
 
-			@Override
-			public Void answer(InvocationOnMock invocation) throws Throwable {
-				producer.close(writer);
-				return null;
-			}
-		}).when(producer).wait();
 		assertFalse(producer.canYield());
 		verify(producer).wait();
+	}
+
+	private VoidAnswer close(final Writer<Object> writer) {
+		return new VoidAnswer() {
+
+			@Override
+			public void answer() throws Throwable {
+				producer.close(writer);
+			}
+		};
 	}
 
 	@Test
 	public void canYieldShouldWaitWritersToWriteWhenQueueIsEmpty() throws InterruptedException {
 		producer.createWriter();
 		when(queue.isEmpty()).thenReturn(true);
-		doAnswer(new Answer<Void>() {
+		doAnswer(addSomethingToQueue()).when(producer).wait();
 
-			@Override
-			public Void answer(InvocationOnMock invocation) throws Throwable {
-				when(queue.isEmpty()).thenReturn(false);
-				return null;
-			}
-		}).when(producer).wait();
 		assertTrue(producer.canYield());
 		verify(producer).wait();
+	}
+
+	private VoidAnswer addSomethingToQueue() {
+		return new VoidAnswer() {
+
+			@Override
+			public void answer() throws Throwable {
+				when(queue.isEmpty()).thenReturn(false);
+			}
+		};
 	}
 
 	@Test
 	public void shouldThrowExceptionIfCanYieldIsInterrupted() throws InterruptedException {
 		producer.createWriter();
 		when(queue.isEmpty()).thenReturn(true);
-		InterruptedException interruption = new InterruptedException();
-		doThrow(interruption).when(producer).wait();
-		assertThat(new VoidTask() {
+		doThrow(INTERRUPTION).when(producer).wait();
+		verifyInterruption(new VoidTask() {
 
 			@Override
 			protected void perform() throws Throwable {
 				producer.canYield();
 			}
-		}).throwsException().withMessage("Producer interrupted while yielding.").withCause(interruption);
+		});
 	}
 
 	@Test
@@ -126,30 +134,37 @@ public class ProducerTest extends UnitTest {
 
 	@Test
 	public void shouldThrowExceptionIfYieldIsInterrupted() throws InterruptedException {
-		InterruptedException interruption = new InterruptedException();
-		when(queue.take()).thenThrow(interruption);
-		assertThat(new VoidTask() {
+		when(queue.take()).thenThrow(INTERRUPTION);
+		verifyInterruption(new VoidTask() {
 
 			@Override
 			protected void perform() throws Throwable {
 				producer.yield();
 			}
-		}).throwsException().withMessage("Producer interrupted while yielding.").withCause(interruption);
+		});
+	}
+
+	private void verifyInterruption(VoidTask task) {
+		assertThat(task).throwsException().withMessage(INTERRUPTION_MESSAGE).withCause(INTERRUPTION);
 	}
 
 	@Test
 	public void shouldIterateOnlyAfterStart() throws Exception {
-		doAnswer(new Answer<Void>() {
-
-			@Override
-			public Void answer(InvocationOnMock invocation) throws Throwable {
-				Whitebox.setInternalState(producer, "started", true);
-				return null;
-			}
-		}).when(producer).wait();
+		doAnswer(startProducer()).when(producer).wait();
 		ProducerIterator<Object> iterator = mock(ProducerIterator.class);
 		whenNew(ProducerIterator.class).withArguments(producer).thenReturn(iterator);
+
 		assertSame(iterator, producer.iterator());
 		verify(producer).wait();
+	}
+
+	private VoidAnswer startProducer() {
+		return new VoidAnswer() {
+
+			@Override
+			public void answer() throws Throwable {
+				Whitebox.setInternalState(producer, "started", true);
+			}
+		};
 	}
 }

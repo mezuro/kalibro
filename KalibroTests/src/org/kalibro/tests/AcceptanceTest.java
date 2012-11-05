@@ -1,14 +1,15 @@
 package org.kalibro.tests;
 
+import static java.util.concurrent.TimeUnit.MINUTES;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
-import org.junit.rules.Timeout;
 import org.junit.runner.RunWith;
 import org.kalibro.*;
 
@@ -38,6 +39,7 @@ public abstract class AcceptanceTest extends IntegrationTest {
 		new File(directory, "derby.log").delete();
 		new File(directory, "kalibro.sqlite").delete();
 		new File(dotKalibro(), "kalibro.settings").delete();
+		FileUtils.deleteQuietly(projectsDirectory());
 	}
 
 	protected void resetDatabase(SupportedDatabase databaseType) {
@@ -51,7 +53,7 @@ public abstract class AcceptanceTest extends IntegrationTest {
 	}
 
 	@Override
-	protected Timeout testTimeout() {
-		return new Timeout(25000);
+	protected TestTimeout testTimeout() {
+		return new TestTimeout(2, MINUTES);
 	}
 }

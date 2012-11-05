@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kalibro.ModuleResult;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.dto.ProcessingDto;
@@ -20,13 +21,13 @@ import org.kalibro.dto.ProcessingDto;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProcessingXml extends ProcessingDto {
 
-	@XmlElement
+	@XmlElement(required = true)
 	private Long id;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private Date date;
 
-	@XmlElement
+	@XmlElement(required = true)
 	private ProcessState state;
 
 	@XmlElement
@@ -34,6 +35,9 @@ public class ProcessingXml extends ProcessingDto {
 
 	@XmlElement(name = "processTime")
 	private Collection<ProcessTimeXml> processTimes;
+
+	@XmlElement
+	private Long resultsRootId;
 
 	public ProcessingXml() {
 		super();
@@ -44,6 +48,7 @@ public class ProcessingXml extends ProcessingDto {
 		date = processing.getDate();
 		setState(processing);
 		setStateTimes(processing);
+		setResultsRoot(processing.getResultsRoot());
 	}
 
 	private void setState(Processing processing) {
@@ -61,6 +66,10 @@ public class ProcessingXml extends ProcessingDto {
 			if (time != null)
 				processTimes.add(new ProcessTimeXml(processState, time));
 		}
+	}
+
+	private void setResultsRoot(ModuleResult resultsRoot) {
+		resultsRootId = resultsRoot == null ? null : resultsRoot.getId();
 	}
 
 	@Override
@@ -90,5 +99,10 @@ public class ProcessingXml extends ProcessingDto {
 			for (ProcessTimeXml stateTime : processTimes)
 				map.put(stateTime.state(), stateTime.time());
 		return map;
+	}
+
+	@Override
+	public Long resultsRootId() {
+		return resultsRootId;
 	}
 }

@@ -2,6 +2,7 @@ package org.kalibro.core.processing;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.CompoundMetric;
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
@@ -10,7 +11,11 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.ThrowableMatcher;
 import org.kalibro.tests.UtilityClassTest;
 import org.mozilla.javascript.EcmaError;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ScriptValidator.class)
 public class ScriptValidatorTest extends UtilityClassTest {
 
 	private Configuration configuration;
@@ -55,6 +60,15 @@ public class ScriptValidatorTest extends UtilityClassTest {
 				assertValid();
 			}
 		}).throwsException().withMessage(message);
+	}
+
+	@Test
+	public void shouldCloseScriptEvaluator() throws Exception {
+		JavascriptEvaluator evaluator = spy(new JavascriptEvaluator());
+		whenNew(JavascriptEvaluator.class).withNoArguments().thenReturn(evaluator);
+
+		assertValid();
+		verify(evaluator).close();
 	}
 
 	private void assertValid() {

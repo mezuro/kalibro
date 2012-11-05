@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence;
 
+import javax.persistence.TypedQuery;
+
 import org.kalibro.Project;
 import org.kalibro.core.persistence.record.ProjectRecord;
 import org.kalibro.dao.ProjectDao;
@@ -13,6 +15,14 @@ class ProjectDatabaseDao extends DatabaseDao<Project, ProjectRecord> implements 
 
 	ProjectDatabaseDao() {
 		super(ProjectRecord.class);
+	}
+
+	@Override
+	public Project projectOf(Long repositoryId) {
+		String from = "Repository repository JOIN repository.project project";
+		TypedQuery<ProjectRecord> query = createRecordQuery(from, "repository.id = :repositoryId");
+		query.setParameter("repositoryId", repositoryId);
+		return query.getSingleResult().convert();
 	}
 
 	@Override

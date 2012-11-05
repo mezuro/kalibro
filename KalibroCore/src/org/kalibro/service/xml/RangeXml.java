@@ -6,9 +6,6 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Range;
-import org.kalibro.Reading;
-import org.kalibro.dao.ReadingDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RangeDto;
 
 /**
@@ -68,7 +65,7 @@ public class RangeXml extends RangeDto {
 	}
 
 	@Override
-	public Reading reading() {
-		return (readingId == null) ? null : (Reading) DaoLazyLoader.createProxy(ReadingDao.class, "get", readingId);
+	public Long readingId() {
+		return readingId;
 	}
 }

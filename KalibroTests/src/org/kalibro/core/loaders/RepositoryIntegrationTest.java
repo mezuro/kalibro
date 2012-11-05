@@ -1,7 +1,6 @@
 package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 import java.util.Iterator;
@@ -13,10 +12,6 @@ import org.junit.Test;
 import org.kalibro.tests.IntegrationTest;
 
 public abstract class RepositoryIntegrationTest extends IntegrationTest {
-
-	protected static File projectsDirectory() {
-		return new File(dotKalibro(), "projects");
-	}
 
 	protected RepositoryLoader loader;
 

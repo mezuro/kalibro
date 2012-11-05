@@ -111,6 +111,15 @@ public class RepositoryTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldAssertSaved() {
+		repository.assertSaved();
+		verify(dao).save(repository, PROJECT_ID);
+
+		repository.assertSaved();
+		verifyNoMoreInteractions(dao);
+	}
+
+	@Test
 	public void shouldRequireNameAddressProjectAndConfigurationToSave() {
 		repository.setName(" ");
 		assertSaveThrowsExceptionWithMessage("Repository requires name.");

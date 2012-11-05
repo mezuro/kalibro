@@ -1,31 +1,20 @@
 package org.kalibro.dto;
 
-import org.junit.Test;
-import org.kalibro.core.concurrent.VoidTask;
+import java.lang.reflect.InvocationTargetException;
 
 public class ThrowableDtoTest extends AbstractDtoTest<Throwable> {
 
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		doReturn(Throwable.class.getName()).when(dto, "throwableClass");
+		doReturn(entity.toString()).when(dto, "targetString");
+		doReturn(entity.getMessage()).when(dto, "message");
+		doReturn(entity.getCause()).when(dto, "cause");
 		doReturn(entity.getStackTrace()).when(dto, "stackTrace");
 	}
 
 	@Override
 	protected Throwable loadFixture() {
-		return new Throwable("ThrowableDtoTest message", new NullPointerException());
-	}
-
-	@Test
-	public void shouldThrowErrorIfCannotConvert() throws Exception {
-		doReturn("inexistent.Class").when(dto, "throwableClass");
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() throws Throwable {
-				dto.convert();
-			}
-		}).throwsError().withMessage("Could not convert Throwable.").withCause(ClassNotFoundException.class);
+		return new Throwable("target", new InvocationTargetException(new NullPointerException(), "cause"));
 	}
 }

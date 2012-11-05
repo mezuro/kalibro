@@ -147,6 +147,11 @@ public class Repository extends AbstractEntity<Repository> {
 		this.project = project;
 	}
 
+	void assertSaved() {
+		if (!hasId())
+			save();
+	}
+
 	public void save() {
 		throwExceptionIf(name.trim().isEmpty(), "Repository requires name.");
 		throwExceptionIf(address.trim().isEmpty(), "Repository requires address.");

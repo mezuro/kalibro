@@ -3,8 +3,10 @@ package org.kalibro.dto;
 import java.util.Collection;
 
 import org.kalibro.Configuration;
+import org.kalibro.Project;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
+import org.kalibro.dao.ProjectDao;
 
 /**
  * Data transfer object for {@link Repository}.
@@ -22,6 +24,7 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 		repository.setProcessPeriod(processPeriod());
 		repository.setConfiguration(configuration());
 		repository.setMailsToNotify(mailsToNotify());
+		set(repository, "project", project());
 		return repository;
 	}
 
@@ -42,4 +45,8 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 	public abstract Collection<String> mailsToNotify();
 
 	public abstract Configuration configuration();
+
+	public Project project() {
+		return DaoLazyLoader.createProxy(ProjectDao.class, "projectOf", id());
+	}
 }

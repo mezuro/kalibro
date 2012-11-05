@@ -7,9 +7,14 @@ import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.kalibro.*;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ModuleResultConfigurer.class)
 public class ModuleResultConfigurerTest extends UnitTest {
 
 	private static final double CBO = new Random().nextDouble();
@@ -89,6 +94,15 @@ public class ModuleResultConfigurerTest extends UnitTest {
 		Range range = new Range(CBO, CBO + 1.0);
 		range.setReading(new Reading("name", grade, Color.WHITE));
 		return range;
+	}
+
+	@Test
+	public void shouldCloseScriptEvaluator() throws Exception {
+		JavascriptEvaluator evaluator = spy(new JavascriptEvaluator());
+		whenNew(JavascriptEvaluator.class).withNoArguments().thenReturn(evaluator);
+
+		configure();
+		verify(evaluator).close();
 	}
 
 	private void configure() {

@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.kalibro.Range;
@@ -25,7 +25,12 @@ public class RangeSnapshotRecordTest extends RecordTest {
 	}
 
 	@Test
+	public void shouldReturnAnIdIfHasReading() {
+		assertEquals(0L, ((RangeSnapshotRecord) dto).readingId().longValue());
+	}
+
+	@Test
 	public void shouldConstructWithoutReading() {
-		assertNull(new RangeSnapshotRecord(new Range()).reading());
+		assertNull(new RangeSnapshotRecord(new Range()).readingId());
 	}
 }

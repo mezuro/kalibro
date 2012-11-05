@@ -28,10 +28,6 @@ public interface ReadingGroupEndpoint {
 
 	@WebMethod
 	@WebResult(name = "readingGroup")
-	ReadingGroupXml readingGroupOf(@WebParam(name = "metricConfigurationId") Long metricConfigurationId);
-
-	@WebMethod
-	@WebResult(name = "readingGroup")
 	List<ReadingGroupXml> allReadingGroups();
 
 	@WebMethod

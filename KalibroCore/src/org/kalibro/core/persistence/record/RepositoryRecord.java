@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
@@ -55,6 +56,11 @@ public class RepositoryRecord extends RepositoryDto {
 
 	@Column
 	private Collection<String> mailsToNotify;
+
+	@CascadeOnDelete
+	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "repository", orphanRemoval = true)
+	private Collection<ProcessingRecord> processings;
 
 	public RepositoryRecord() {
 		super();

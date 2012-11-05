@@ -7,8 +7,6 @@ import javax.persistence.*;
 import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ReadingGroupDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.MetricConfigurationDto;
 
 /**
@@ -136,8 +134,7 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	}
 
 	@Override
-	public ReadingGroup readingGroup() {
-		return readingGroup == null ? null :
-			(ReadingGroup) DaoLazyLoader.createProxy(ReadingGroupDao.class, "readingGroupOf", id);
+	public Long readingGroupId() {
+		return readingGroup == null ? null : readingGroup.id();
 	}
 }

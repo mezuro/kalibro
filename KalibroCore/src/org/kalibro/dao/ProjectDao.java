@@ -15,6 +15,8 @@ public interface ProjectDao {
 
 	Project get(Long projectId);
 
+	Project projectOf(Long repositoryId);
+
 	SortedSet<Project> all();
 
 	Long save(Project project);

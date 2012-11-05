@@ -25,11 +25,6 @@ class ReadingClientDao extends EndpointClient<ReadingEndpoint> implements Readin
 	}
 
 	@Override
-	public Reading readingOf(Long rangeId) {
-		return port.readingOf(rangeId).convert();
-	}
-
-	@Override
 	public SortedSet<Reading> readingsOf(Long groupId) {
 		return DataTransferObject.toSortedSet(port.readingsOf(groupId));
 	}

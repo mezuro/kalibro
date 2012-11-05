@@ -24,6 +24,9 @@ public class StackTraceElementRecord extends StackTraceElementDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Long id;
 
+	@Column(name = "\"index\"", nullable = false)
+	private Integer index;
+
 	@Column(name = "\"declaring_class\"", nullable = false)
 	private String declaringClass;
 
@@ -41,11 +44,12 @@ public class StackTraceElementRecord extends StackTraceElementDto {
 	}
 
 	public StackTraceElementRecord(StackTraceElement element) {
-		this(element, null);
+		this(element, null, 0);
 	}
 
-	public StackTraceElementRecord(StackTraceElement element, ThrowableRecord throwableRecord) {
-		throwable = throwableRecord;
+	public StackTraceElementRecord(StackTraceElement element, ThrowableRecord throwable, int index) {
+		this.throwable = throwable;
+		this.index = index;
 		declaringClass = element.getClassName();
 		methodName = element.getMethodName();
 		fileName = element.getFileName();
@@ -70,5 +74,9 @@ public class StackTraceElementRecord extends StackTraceElementDto {
 	@Override
 	public int lineNumber() {
 		return lineNumber;
+	}
+
+	void addTo(StackTraceElement[] stackTrace) {
+		stackTrace[index] = convert();
 	}
 }

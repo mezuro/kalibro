@@ -6,6 +6,7 @@ import org.junit.Test;
 import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
+import org.kalibro.dao.ProjectDao;
 
 public class RepositoryDtoTest extends AbstractDtoTest<Repository> {
 
@@ -14,6 +15,11 @@ public class RepositoryDtoTest extends AbstractDtoTest<Repository> {
 		Repository repository = new Repository("RepositoryDtoTest", RepositoryType.GIT, "RepositoryDtoTest address");
 		repository.setConfiguration(loadFixture("sc", Configuration.class));
 		return repository;
+	}
+
+	@Override
+	protected void registerLazyLoadExpectations() throws Exception {
+		whenLazy(ProjectDao.class, "projectOf", entity.getId()).thenReturn(null);
 	}
 
 	@Test

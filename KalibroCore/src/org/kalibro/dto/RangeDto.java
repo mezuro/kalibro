@@ -2,6 +2,7 @@ package org.kalibro.dto;
 
 import org.kalibro.Range;
 import org.kalibro.Reading;
+import org.kalibro.dao.ReadingDao;
 
 /**
  * Data transfer object for {@link Range}.
@@ -14,7 +15,7 @@ public abstract class RangeDto extends DataTransferObject<Range> {
 	public Range convert() {
 		Range range = new Range(beginning(), end());
 		setId(range, id());
-		range.setReading(reading());
+		range.setReading(readingId() == null ? null : reading());
 		range.setComments(comments() == null ? "" : comments());
 		return range;
 	}
@@ -25,7 +26,11 @@ public abstract class RangeDto extends DataTransferObject<Range> {
 
 	public abstract Double end();
 
-	public abstract Reading reading();
+	public Reading reading() {
+		return DaoLazyLoader.createProxy(ReadingDao.class, "get", readingId());
+	}
+
+	public abstract Long readingId();
 
 	public abstract String comments();
 }

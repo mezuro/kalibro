@@ -28,12 +28,6 @@ public class ReadingClientDaoTest extends ClientTest<Reading, ReadingXml, Readin
 	}
 
 	@Test
-	public void shouldGetReadingOfRange() {
-		when(port.readingOf(ID)).thenReturn(xml);
-		assertSame(entity, client.readingOf(ID));
-	}
-
-	@Test
 	public void shouldGetReadingsOfGroup() {
 		when(port.readingsOf(GROUP_ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.readingsOf(GROUP_ID));

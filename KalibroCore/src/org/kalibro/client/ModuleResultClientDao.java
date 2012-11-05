@@ -19,13 +19,8 @@ class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> impleme
 	}
 
 	@Override
-	public ModuleResult resultsRootOf(Long processingId) {
-		return port.resultsRootOf(processingId).convert();
-	}
-
-	@Override
-	public ModuleResult parentOf(Long moduleResultId) {
-		return port.parentOf(moduleResultId).convert();
+	public ModuleResult get(Long moduleResultId) {
+		return port.getModuleResult(moduleResultId).convert();
 	}
 
 	@Override

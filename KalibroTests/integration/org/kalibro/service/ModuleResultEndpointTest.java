@@ -25,19 +25,13 @@ public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleR
 
 	@Override
 	protected List<String> fieldsThatShouldBeProxy() {
-		return list("metricResults", "parent", "children");
+		return list("metricResults", "children");
 	}
 
 	@Test
-	public void shouldGetResultsRootOfProcessing() {
-		when(dao.resultsRootOf(ID)).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.resultsRootOf(ID));
-	}
-
-	@Test
-	public void shouldGetParent() {
-		when(dao.parentOf(ID)).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.parentOf(ID));
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getModuleResult(ID));
 	}
 
 	@Test

@@ -20,11 +20,7 @@ public interface ModuleResultEndpoint {
 
 	@WebMethod
 	@WebResult(name = "moduleResult")
-	ModuleResultXml resultsRootOf(@WebParam(name = "processingId") Long processingId);
-
-	@WebMethod
-	@WebResult(name = "moduleResult")
-	ModuleResultXml parentOf(@WebParam(name = "moduleResultId") Long moduleResultId);
+	ModuleResultXml getModuleResult(@WebParam(name = "moduleResultId") Long moduleResultId);
 
 	@WebMethod
 	@WebResult(name = "moduleResult")

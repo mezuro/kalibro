@@ -6,19 +6,19 @@ DEPENDENCIES
   - Analizo - http://analizo.org/
   - Java (OpenJDK) - http://openjdk.java.net/
   - Apache Tomcat - http://tomcat.apache.org/
-  - MySQL - http://www.mysql.com/
+  - Database server: Mysql, PostgreSQL or SQLite
   
 Need to install if you want to use:
 ===================================
-	SUPPORTED SOURCE CODE MANAGEMENT
-  	- Bazaar
-  	- CVS
- 	 	- Git
-	  - Mercurial
- 	 	- Subversion
-	 SUPPORTED COMPRESSED FILES
-  	- Tar 
-  	- Zip
+  SUPPORTED SOURCE CODE MANAGEMENT
+    - Bazaar
+    - CVS
+    - Git
+    - Mercurial
+    - Subversion
+  SUPPORTED COMPRESSED FILES
+    - Tar
+    - Zip
 
 Linux Distributions step by step
 ================================

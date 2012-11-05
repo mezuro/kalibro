@@ -31,4 +31,13 @@ public class ProcessStateTest extends EnumerationTest<ProcessState> {
 		assertEquals("Processing of HelloWorld-1.0 done", READY.getMessage(projectName));
 		assertEquals("Error while processing HelloWorld-1.0", ERROR.getMessage(projectName));
 	}
+
+	@Test
+	public void shouldGetNextState() {
+		assertEquals(COLLECTING, LOADING.nextState());
+		assertEquals(ANALYZING, COLLECTING.nextState());
+		assertEquals(READY, ANALYZING.nextState());
+		assertEquals(ERROR, READY.nextState());
+		assertEquals(LOADING, ERROR.nextState());
+	}
 }

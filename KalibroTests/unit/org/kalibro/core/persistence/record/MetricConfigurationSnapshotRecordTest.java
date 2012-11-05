@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -12,7 +12,6 @@ import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
@@ -21,11 +20,6 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		mockBaseTool();
-		Whitebox.setInternalState(entity, "readingGroup", (ReadingGroup) null);
-	}
-
-	private void mockBaseTool() {
 		BaseToolDao baseToolDao = mock(BaseToolDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
@@ -62,5 +56,13 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 	public void shouldHaveIdConstructor() {
 		Long id = mock(Long.class);
 		assertSame(id, new MetricConfigurationSnapshotRecord(id).id());
+	}
+
+	@Test
+	public void shouldNotPreserveReadingGroup() {
+		MetricConfiguration metricConfiguration = new MetricConfiguration();
+		metricConfiguration.setReadingGroup(loadFixture("scholar", ReadingGroup.class));
+		MetricConfigurationSnapshotRecord snapshot = new MetricConfigurationSnapshotRecord(metricConfiguration);
+		assertNull(snapshot.readingGroupId());
 	}
 }

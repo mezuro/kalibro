@@ -3,9 +3,6 @@ package org.kalibro.core.persistence.record;
 import javax.persistence.*;
 
 import org.kalibro.Range;
-import org.kalibro.Reading;
-import org.kalibro.dao.ReadingDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RangeDto;
 
 /**
@@ -78,7 +75,7 @@ public class RangeRecord extends RangeDto {
 	}
 
 	@Override
-	public Reading reading() {
-		return reading == null ? null : (Reading) DaoLazyLoader.createProxy(ReadingDao.class, "readingOf", id);
+	public Long readingId() {
+		return reading == null ? null : reading.id();
 	}
 }
