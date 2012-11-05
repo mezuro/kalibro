@@ -14,11 +14,6 @@ public class BaseToolEndpointImplTest extends
 
 	private static final String NAME = "BaseToolEndpointImplTest name";
 
-	@Override
-	protected Class<BaseTool> entityClass() {
-		return BaseTool.class;
-	}
-
 	@Test
 	public void shouldGetAllNames() {
 		when(dao.allNames()).thenReturn(sortedSet(NAME));

@@ -16,11 +16,6 @@ public class ConfigurationEndpointImplTest extends
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
-	@Override
-	protected Class<Configuration> entityClass() {
-		return Configuration.class;
-	}
-
 	@Test
 	public void shouldConfirmExistence() {
 		when(dao.exists(ID)).thenReturn(true);
@@ -42,7 +37,7 @@ public class ConfigurationEndpointImplTest extends
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).all();
 		assertDeepEquals(list(xml), implementor.allConfigurations());
 	}
 
