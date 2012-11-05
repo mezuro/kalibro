@@ -12,11 +12,20 @@ import org.kalibro.tests.UnitTest;
 
 public class StringFieldTest extends UnitTest {
 
+	private static final int COLUMNS = 5;
+	private static final String NAME = "StringFieldTest name";
+
 	private StringField field;
 
 	@Before
 	public void setUp() {
-		field = new StringField("", 5);
+		field = new StringField(NAME, COLUMNS);
+	}
+
+	@Test
+	public void shouldSetNameAndColumns() {
+		assertEquals(NAME, field.getName());
+		assertEquals(COLUMNS, field.getColumns());
 	}
 
 	@Test
@@ -27,6 +36,11 @@ public class StringFieldTest extends UnitTest {
 	@Test
 	public void shouldHaveLeftHorizontalAlignment() {
 		assertEquals(SwingConstants.LEFT, field.getHorizontalAlignment());
+	}
+
+	@Test
+	public void shouldHaveFieldSize() {
+		assertEquals(new FieldSize(field), field.getSize());
 	}
 
 	@Test

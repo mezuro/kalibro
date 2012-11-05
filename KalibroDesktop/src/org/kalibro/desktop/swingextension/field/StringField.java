@@ -14,17 +14,12 @@ public class StringField extends JTextField implements Field<String> {
 	}
 
 	@Override
-	public String getText() {
-		return super.getText().trim();
-	}
-
-	@Override
 	public String get() {
-		return getText();
+		return getText().trim();
 	}
 
 	@Override
 	public void set(String value) {
-		setText(value);
+		setText(value.trim());
 	}
 }
