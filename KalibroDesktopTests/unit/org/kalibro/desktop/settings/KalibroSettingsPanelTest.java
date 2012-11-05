@@ -2,6 +2,10 @@ package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
+
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.KalibroSettings;
@@ -20,8 +24,14 @@ public class KalibroSettingsPanelTest extends UnitTest {
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings();
+		settings.getServerSettings().getLoadDirectory().mkdirs();
 		panel = new KalibroSettingsPanel();
 		finder = new ComponentFinder(panel);
+	}
+
+	@After
+	public void tearDown() throws IOException {
+		FileUtils.cleanDirectory(settings.getServerSettings().getLoadDirectory());
 	}
 
 	@Test
