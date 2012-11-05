@@ -8,15 +8,23 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.desktop.swingextension.field.FieldSize;
 import org.kalibro.tests.UnitTest;
 
 public class LabelTest extends UnitTest {
+
+	private static final String TEXT = "LabelTest text";
 
 	private Label label;
 
 	@Before
 	public void setUp() {
-		label = new Label("My label");
+		label = new Label(TEXT);
+	}
+
+	@Test
+	public void shouldSetText() {
+		assertEquals(TEXT, label.getText());
 	}
 
 	@Test
@@ -32,5 +40,10 @@ public class LabelTest extends UnitTest {
 	@Test
 	public void shouldHaveCenterVerticalAlignment() {
 		assertEquals(SwingConstants.CENTER, label.getVerticalAlignment());
+	}
+
+	@Test
+	public void shouldHaveFieldSize() {
+		assertEquals(new FieldSize(label), label.getSize());
 	}
 }
