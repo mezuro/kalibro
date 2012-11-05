@@ -10,29 +10,30 @@ import org.kalibro.KalibroException;
 public class ReflectionMenuItem extends MenuItem implements ActionListener {
 
 	private Method method;
-	private Object controller;
+	private Object target;
 
-	public ReflectionMenuItem(String name, String text, int mnemonic, Object controller, String methodName) {
+	public ReflectionMenuItem(String name, String text, int mnemonic, Object target, String methodName) {
 		super(name, text, mnemonic);
-		this.controller = controller;
+		this.target = target;
 		initializeMethod(methodName);
 		addActionListener(this);
 	}
 
 	private void initializeMethod(String methodName) {
 		try {
-			method = controller.getClass().getMethod(methodName);
-		} catch (NoSuchMethodException exception) {
-			throw new KalibroError("ReflectionMenuItem did not found method on controller", exception);
+			Class<?> type = (target instanceof Class) ? (Class<?>) target : target.getClass();
+			method = type.getMethod(methodName);
+		} catch (Exception exception) {
+			throw new KalibroError("ReflectionMenuItem did not found method on target.", exception);
 		}
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
 		try {
-			method.invoke(controller);
+			method.invoke(target);
 		} catch (Exception exception) {
-			throw new KalibroException("Error invoking controller method.", exception);
+			throw new KalibroException("Error invoking target method.", exception);
 		}
 	}
 }
