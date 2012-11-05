@@ -8,17 +8,34 @@ import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.experimental.theories.DataPoints;
+import org.junit.experimental.theories.Theories;
+import org.junit.experimental.theories.Theory;
+import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
 
+@RunWith(Theories.class)
 public class BooleanFieldTest extends UnitTest {
 
-	private static final Boolean[] VALUES = new Boolean[]{true, false};
+	private static final String NAME = "BooleanFieldTest name";
+	private static final String TEXT = "BooleanFieldTest text";
+
+	@DataPoints
+	public static final Boolean[] values() {
+		return array(true, false);
+	}
 
 	private BooleanField field;
 
 	@Before
 	public void setUp() {
-		field = new BooleanField("", "My boolean field");
+		field = new BooleanField(NAME, TEXT);
+	}
+
+	@Test
+	public void shouldSetNameAndText() {
+		assertEquals(NAME, field.getName());
+		assertEquals(TEXT, field.getText());
 	}
 
 	@Test
@@ -37,18 +54,19 @@ public class BooleanFieldTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGet() {
-		for (Boolean value : VALUES) {
-			field.setSelected(value);
-			assertEquals(value, field.get());
-		}
+	public void shouldHaveFieldSize() {
+		assertEquals(new FieldSize(field), field.getSize());
 	}
 
-	@Test
-	public void shouldSet() {
-		for (Boolean value : VALUES) {
-			field.set(value);
-			assertEquals(value, field.isSelected());
-		}
+	@Theory
+	public void shouldGet(boolean value) {
+		field.setSelected(value);
+		assertEquals(value, field.get());
+	}
+
+	@Theory
+	public void shouldSet(Boolean value) {
+		field.set(value);
+		assertEquals(value, field.isSelected());
 	}
 }
