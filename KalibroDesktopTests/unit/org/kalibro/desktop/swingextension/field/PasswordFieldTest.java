@@ -12,14 +12,21 @@ import org.kalibro.tests.UnitTest;
 
 public class PasswordFieldTest extends UnitTest {
 
+	private static final int COLUMNS = 5;
+	private static final String NAME = "PasswordFieldTest name";
 	private static final String PASSWORD = "  PasswordFieldTest password  ";
 
 	private PasswordField field;
 
 	@Before
 	public void setUp() {
-		field = new PasswordField("", 5);
-		field.set(PASSWORD);
+		field = new PasswordField(NAME, COLUMNS);
+	}
+
+	@Test
+	public void shouldSetNameAndColumns() {
+		assertEquals(NAME, field.getName());
+		assertEquals(COLUMNS, field.getColumns());
 	}
 
 	@Test
@@ -33,7 +40,14 @@ public class PasswordFieldTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldHaveFieldSize() {
+		assertEquals(new FieldSize(field), field.getSize());
+	}
+
+	@Test
 	public void shouldNotTrimText() {
+		assertDifferent(PASSWORD, PASSWORD.trim());
+		field.set(PASSWORD);
 		assertEquals(PASSWORD, field.get());
 	}
 }
