@@ -2,11 +2,15 @@ package org.kalibro.core.persistence.record;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
+import javax.persistence.ElementCollection;
+import javax.persistence.OrderColumn;
+
 import org.junit.Test;
 import org.kalibro.Granularity;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
-import org.powermock.reflect.Whitebox;
 
 public class ModuleResultRecordTest extends RecordTest {
 
@@ -22,6 +26,18 @@ public class ModuleResultRecordTest extends RecordTest {
 		assertOneToMany("metricResults").cascades().isMappedBy("moduleResult");
 	}
 
+	private void assertOrderedElementCollection(String field) {
+		assertOrdered(field);
+		annotation(field, ElementCollection.class);
+	}
+
+	private void assertOrdered(String field) {
+		assertFieldType(field, List.class);
+		OrderColumn orderColumn = annotation(field, OrderColumn.class);
+		assertEquals("Wrong @OrderColumn name.", "\"index\"", orderColumn.name());
+		assertFalse("@OrderColumn should NOT be nullable.", orderColumn.nullable());
+	}
+
 	@Test
 	public void shouldConstructWithId() {
 		Long id = mock(Long.class);
@@ -29,8 +45,19 @@ public class ModuleResultRecordTest extends RecordTest {
 	}
 
 	@Test
-	public void shouldConstructWithoutParent() {
-		ModuleResult orphan = new ModuleResult(null, new Module(Granularity.SOFTWARE));
-		assertNull(Whitebox.getInternalState(new ModuleResultRecord(orphan), "parent"));
+	public void shouldTurnNullGradeIntoNan() {
+		assertDoubleEquals(Double.NaN, new ModuleResultRecord().grade());
+	}
+
+	@Test
+	public void shouldRetrieveParentId() {
+		ModuleResult moduleResult = (ModuleResult) entity;
+		ModuleResultRecord record = (ModuleResultRecord) dto;
+		assertEquals(moduleResult.getParent().getId(), record.parentId());
+	}
+
+	@Test
+	public void checkNullParent() {
+		assertNull(new ModuleResultRecord(new ModuleResult(null, new Module(Granularity.SOFTWARE))).parentId());
 	}
 }

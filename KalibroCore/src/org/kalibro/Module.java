@@ -59,7 +59,7 @@ public class Module extends AbstractEntity<Module> {
 		if (granularity == Granularity.SOFTWARE)
 			return null;
 		if (name.length <= 1)
-			return new Module(Granularity.SOFTWARE);
+			return new Module(Granularity.SOFTWARE, "ROOT");
 		return new Module(granularity.inferParentGranularity(), Arrays.copyOf(name, name.length - 1));
 	}
 

@@ -30,6 +30,10 @@ public enum ProcessState {
 		return name().endsWith("ING");
 	}
 
+	public ProcessState nextState() {
+		return values()[(ordinal() + 1) % values().length];
+	}
+
 	public String getMessage(String name) {
 		return messageTemplate.replace("$name", name);
 	}

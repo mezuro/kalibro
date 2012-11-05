@@ -1,5 +1,10 @@
 package org.kalibro.dto;
 
+import static org.junit.Assert.assertFalse;
+
+import java.util.Random;
+
+import org.junit.Test;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dao.MetricResultDao;
@@ -18,9 +23,17 @@ public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 	}
 
 	@Override
-	protected void registerLazyLoadExpectations() {
-		whenLazy(ModuleResultDao.class, "parentOf", entity.getId()).thenReturn(entity.getParent());
+	protected void registerLazyLoadExpectations() throws Exception {
+		Long parentId = new Random().nextLong();
+		doReturn(parentId).when(dto, "parentId");
+		whenLazy(ModuleResultDao.class, "get", parentId).thenReturn(entity.getParent());
 		whenLazy(ModuleResultDao.class, "childrenOf", entity.getId()).thenReturn(entity.getChildren());
 		whenLazy(MetricResultDao.class, "metricResultsOf", entity.getId()).thenReturn(entity.getMetricResults());
+	}
+
+	@Test
+	public void parentShouldBeNullForNullParentId() throws Exception {
+		when(dto, "parentId").thenReturn(null);
+		assertFalse(dto.convert().hasParent());
 	}
 }

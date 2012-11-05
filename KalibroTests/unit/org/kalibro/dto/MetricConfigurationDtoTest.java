@@ -1,10 +1,15 @@
 package org.kalibro.dto;
 
+import static org.junit.Assert.assertNull;
+
+import java.util.Random;
+
 import org.junit.Test;
 import org.kalibro.CompoundMetric;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.RangeDao;
+import org.kalibro.dao.ReadingGroupDao;
 
 public class MetricConfigurationDtoTest extends AbstractDtoTest<MetricConfiguration> {
 
@@ -24,6 +29,10 @@ public class MetricConfigurationDtoTest extends AbstractDtoTest<MetricConfigurat
 			whenLazy(BaseToolDao.class, "get", "Inexistent").thenReturn(entity.getBaseTool());
 		}
 		whenLazy(RangeDao.class, "rangesOf", entity.getId()).thenReturn(entity.getRanges());
+
+		Long readingGroupId = new Random().nextLong();
+		doReturn(readingGroupId).when(dto, "readingGroupId");
+		whenLazy(ReadingGroupDao.class, "get", readingGroupId).thenReturn(entity.getReadingGroup());
 	}
 
 	@Test
@@ -31,5 +40,11 @@ public class MetricConfigurationDtoTest extends AbstractDtoTest<MetricConfigurat
 		compound = true;
 		setUp();
 		shouldConvert();
+	}
+
+	@Test
+	public void readingGroupShouldBeNullForNullReadingGroupId() throws Exception {
+		when(dto, "readingGroupId").thenReturn(null);
+		assertNull(dto.convert().getReadingGroup());
 	}
 }

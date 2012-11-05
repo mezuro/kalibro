@@ -24,10 +24,6 @@ public interface ReadingEndpoint {
 
 	@WebMethod
 	@WebResult(name = "reading")
-	ReadingXml readingOf(@WebParam(name = "rangeId") Long rangeId);
-
-	@WebMethod
-	@WebResult(name = "reading")
 	List<ReadingXml> readingsOf(@WebParam(name = "groupId") Long groupId);
 
 	@WebMethod

@@ -72,7 +72,7 @@ public class ModuleTest extends UnitTest {
 	public void shouldInferParent() {
 		assertDeepEquals(kalibro, module.inferParent());
 		assertDeepEquals(org, kalibro.inferParent());
-		assertDeepEquals(new Module(SOFTWARE), org.inferParent());
+		assertDeepEquals(new Module(SOFTWARE, "ROOT"), org.inferParent());
 
 		assertNull(new Module(SOFTWARE, "any", "name").inferParent());
 	}

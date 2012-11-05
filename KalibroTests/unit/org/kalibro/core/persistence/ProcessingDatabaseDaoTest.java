@@ -5,13 +5,10 @@ import static org.junit.Assert.*;
 import java.util.Date;
 import java.util.Random;
 
-import javax.persistence.TypedQuery;
-
 import org.junit.Test;
 import org.kalibro.*;
 import org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord;
 import org.kalibro.core.persistence.record.ProcessingRecord;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest(ProcessingDatabaseDao.class)
@@ -63,15 +60,12 @@ public class ProcessingDatabaseDaoTest extends
 
 	@Test
 	public void shouldGetLastProcessingState() {
-		ProcessState state = ProcessState.ANALYZING;
-		TypedQuery<String> stateQuery = PowerMockito.mock(TypedQuery.class);
-		doReturn(stateQuery).when(dao).createQuery(
-			"SELECT processing.state FROM Processing processing " + CLAUSE + " AND processing.date = " +
-				"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId)", String.class);
-		when(stateQuery.getSingleResult()).thenReturn(state.name());
+		when(entity.getState()).thenReturn(ProcessState.COLLECTING);
+		assertEquals(ProcessState.COLLECTING, dao.lastProcessingState(ID));
 
-		assertSame(state, dao.lastProcessingState(ID));
-		verify(stateQuery).setParameter("repositoryId", ID);
+		verify(dao).createRecordQuery(WHERE + " AND processing.date = " +
+			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId)");
+		verify(query).setParameter("repositoryId", ID);
 	}
 
 	@Test

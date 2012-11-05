@@ -7,12 +7,15 @@ import java.util.*;
 import javax.persistence.TypedQuery;
 
 import org.junit.Test;
+import org.kalibro.Granularity;
 import org.kalibro.MetricResult;
+import org.kalibro.Module;
+import org.kalibro.ModuleResult;
 import org.kalibro.core.persistence.record.DescendantResultRecord;
 import org.kalibro.core.persistence.record.MetricResultRecord;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
-@PrepareForTest(MetricResultDatabaseDao.class)
+@PrepareForTest({MetricResultDatabaseDao.class, ModuleResult.class})
 public class MetricResultDatabaseDaoTest extends
 	DatabaseDaoTestCase<MetricResult, MetricResultRecord, MetricResultDatabaseDao> {
 
@@ -43,13 +46,12 @@ public class MetricResultDatabaseDaoTest extends
 	}
 
 	@Test
-	public void shouldGetMetricResultHistory() {
+	public void shouldGetMetricResultHistory() throws Exception {
+		mockModuleResult("org");
 		TypedQuery<Object[]> historyQuery = mock(TypedQuery.class);
-		doReturn(historyQuery).when(dao).createQuery("SELECT p.date, mer FROM MetricResult mer " +
-			"JOIN ModuleResult mor JOIN MetricConfigurationSnapshot mcs JOIN Processing p " +
-			"WHERE mcs.metricName = :metricName AND mor.moduleName = " +
-			"(SELECT moduleName FROM ModuleResult WHERE id = :moduleResultId)",
-			Object[].class);
+		doReturn(historyQuery).when(dao).createQuery("SELECT proc.date, meResult FROM MetricResult meResult " +
+			"JOIN meResult.moduleResult moResult JOIN meResult.configuration meConf JOIN meConf.processing proc " +
+			"WHERE meConf.metricName = :metricName AND moResult.moduleName = :moduleName", Object[].class);
 		List<Object[]> results = new ArrayList<Object[]>();
 		results.add(new Object[]{TIME, record});
 		when(historyQuery.getResultList()).thenReturn(results);
@@ -58,6 +60,15 @@ public class MetricResultDatabaseDaoTest extends
 		assertEquals(1, history.size());
 		assertDeepEquals(entity, history.get(DATE));
 		verify(historyQuery).setParameter("metricName", METRIC_NAME);
-		verify(historyQuery).setParameter("moduleResultId", ID);
+		verify(historyQuery).setParameter("moduleName", list("org"));
+	}
+
+	private void mockModuleResult(String moduleName) throws Exception {
+		Module module = new Module(Granularity.PACKAGE, moduleName);
+		ModuleResult moduleResult = mock(ModuleResult.class);
+		ModuleResultDatabaseDao moduleResultDao = mock(ModuleResultDatabaseDao.class);
+		whenNew(ModuleResultDatabaseDao.class).withNoArguments().thenReturn(moduleResultDao);
+		when(moduleResultDao.get(ID)).thenReturn(moduleResult);
+		when(moduleResult.getModule()).thenReturn(module);
 	}
 }

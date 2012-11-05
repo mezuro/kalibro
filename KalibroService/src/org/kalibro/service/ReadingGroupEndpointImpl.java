@@ -43,13 +43,6 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 
 	@Override
 	@WebResult(name = "readingGroup")
-	public ReadingGroupXml readingGroupOf(
-		@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
-		return new ReadingGroupXml(dao.readingGroupOf(metricConfigurationId));
-	}
-
-	@Override
-	@WebResult(name = "readingGroup")
 	public List<ReadingGroupXml> allReadingGroups() {
 		return DataTransferObject.createDtos(dao.all(), ReadingGroupXml.class);
 	}

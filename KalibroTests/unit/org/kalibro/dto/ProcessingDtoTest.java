@@ -1,5 +1,10 @@
 package org.kalibro.dto;
 
+import static org.junit.Assert.assertNull;
+
+import java.util.Random;
+
+import org.junit.Test;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.Repository;
@@ -18,8 +23,17 @@ public class ProcessingDtoTest extends AbstractDtoTest<Processing> {
 	}
 
 	@Override
-	protected void registerLazyLoadExpectations() {
+	protected void registerLazyLoadExpectations() throws Exception {
 		whenLazy(RepositoryDao.class, "repositoryOf", entity.getId()).thenReturn(entity.getRepository());
-		whenLazy(ModuleResultDao.class, "resultsRootOf", entity.getId()).thenReturn(entity.getResultsRoot());
+
+		Long resultsRootId = new Random().nextLong();
+		doReturn(resultsRootId).when(dto, "resultsRootId");
+		whenLazy(ModuleResultDao.class, "get", resultsRootId).thenReturn(entity.getResultsRoot());
+	}
+
+	@Test
+	public void resultsRootShouldBeNullForNullResultsRootId() throws Exception {
+		when(dto, "resultsRootId").thenReturn(null);
+		assertNull(dto.convert().getResultsRoot());
 	}
 }

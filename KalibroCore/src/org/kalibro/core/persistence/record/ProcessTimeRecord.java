@@ -34,7 +34,8 @@ public class ProcessTimeRecord {
 		super();
 	}
 
-	public ProcessTimeRecord(ProcessState state, Long time) {
+	public ProcessTimeRecord(ProcessState state, Long time, ProcessingRecord processing) {
+		this.processing = processing;
 		this.state = state;
 		this.time = time;
 	}

@@ -1,7 +1,5 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
@@ -13,42 +11,45 @@ import org.junit.runner.RunWith;
 import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.Writer;
-import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({CollectMetricsTask.class, ProcessSubtask.class})
-public class CollectMetricsTaskTest extends UnitTest {
+@PrepareOnlyThisForTest(CollectingTask.class)
+public class CollectingTaskTest extends UnitTest {
 
 	private File codeDirectory;
 	private Configuration configuration;
 	private Writer<NativeModuleResult> resultWriter;
 
-	private CollectMetricsTask collectTask;
+	private CollectingTask collectingTask;
 
 	@Before
-	public void setUp() throws Exception {
-		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(mock(DatabaseDaoFactory.class));
-		codeDirectory = mock(File.class);
-		collectTask = new CollectMetricsTask(mockProcessing(), codeDirectory, mockProducer());
+	public void setUp() {
+		collectingTask = spy(new CollectingTask());
+		mockCodeDirectory();
+		mockConfiguration();
+		mockResultWriter();
 	}
 
-	private Processing mockProcessing() {
+	private void mockCodeDirectory() {
+		codeDirectory = mock(File.class);
+		doReturn(codeDirectory).when(collectingTask).codeDirectory();
+	}
+
+	private void mockConfiguration() {
 		configuration = mock(Configuration.class);
 		Repository repository = mock(Repository.class);
-		Processing processing = mock(Processing.class);
-		when(processing.getRepository()).thenReturn(repository);
+		doReturn(repository).when(collectingTask).repository();
 		when(repository.getConfiguration()).thenReturn(configuration);
-		return processing;
 	}
 
-	private Producer<NativeModuleResult> mockProducer() {
+	private void mockResultWriter() {
 		resultWriter = mock(Writer.class);
-		Producer<NativeModuleResult> producer = mock(Producer.class);
-		when(producer.createWriter()).thenReturn(resultWriter);
-		return producer;
+		Producer<NativeModuleResult> resultProducer = mock(Producer.class);
+		doReturn(resultProducer).when(collectingTask).resultProducer();
+		when(resultProducer.createWriter()).thenReturn(resultWriter);
 	}
 
 	@Test
@@ -59,12 +60,7 @@ public class CollectMetricsTaskTest extends UnitTest {
 		wantedMetricsMap.put(baseTool, wantedMetrics);
 		when(configuration.getNativeMetrics()).thenReturn(wantedMetricsMap);
 
-		collectTask.compute();
+		collectingTask.perform();
 		verify(baseTool).collectMetrics(codeDirectory, wantedMetrics, resultWriter);
-	}
-
-	@Test
-	public void nextStateShouldBeAnalyzing() {
-		assertEquals(ProcessState.ANALYZING, collectTask.getNextState());
 	}
 }

@@ -32,5 +32,6 @@ public class RepositoryRecordTest extends RecordTest {
 		assertColumn("license", String.class).isNullable();
 		assertColumn("processPeriod", Integer.class).isNullable();
 		assertManyToOne("configuration", ConfigurationRecord.class).isRequired();
+		assertOneToMany("processings").doesNotCascade().isMappedBy("repository");
 	}
 }

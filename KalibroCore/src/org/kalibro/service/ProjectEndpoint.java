@@ -28,6 +28,10 @@ public interface ProjectEndpoint {
 
 	@WebMethod
 	@WebResult(name = "project")
+	ProjectXml projectOf(@WebParam(name = "repositoryId") Long repositoryId);
+
+	@WebMethod
+	@WebResult(name = "project")
 	List<ProjectXml> allProjects();
 
 	@WebMethod

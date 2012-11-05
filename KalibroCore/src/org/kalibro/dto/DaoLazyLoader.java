@@ -50,6 +50,7 @@ public final class DaoLazyLoader implements MethodInterceptor {
 			return null;
 		if (target == null)
 			load();
+		method.setAccessible(true);
 		return method.invoke(target, arguments);
 	}
 

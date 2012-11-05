@@ -17,7 +17,8 @@ public abstract class ModuleResultDto extends DataTransferObject<ModuleResult> {
 
 	@Override
 	public ModuleResult convert() {
-		ModuleResult moduleResult = new ModuleResult(parent(), module());
+		ModuleResult parent = parentId() == null ? null : parent();
+		ModuleResult moduleResult = new ModuleResult(parent, module());
 		setId(moduleResult, id());
 		moduleResult.setGrade(grade());
 		moduleResult.setChildren(children());
@@ -32,8 +33,10 @@ public abstract class ModuleResultDto extends DataTransferObject<ModuleResult> {
 	public abstract Double grade();
 
 	public ModuleResult parent() {
-		return DaoLazyLoader.createProxy(ModuleResultDao.class, "parentOf", id());
+		return DaoLazyLoader.createProxy(ModuleResultDao.class, "get", parentId());
 	}
+
+	public abstract Long parentId();
 
 	public SortedSet<ModuleResult> children() {
 		return DaoLazyLoader.createProxy(ModuleResultDao.class, "childrenOf", id());

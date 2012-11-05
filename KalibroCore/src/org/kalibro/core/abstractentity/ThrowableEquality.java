@@ -14,7 +14,7 @@ class ThrowableEquality extends Equality<Throwable> {
 
 	@Override
 	protected boolean equals(Throwable throwable, Throwable other) {
-		return throwable.getClass() == other.getClass()
+		return areEqual(throwable.toString(), other.toString())
 			&& areEqual(throwable.getMessage(), other.getMessage())
 			&& areDeepEqual(throwable.getStackTrace(), other.getStackTrace())
 			&& areDeepEqual(throwable.getCause(), other.getCause());

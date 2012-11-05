@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.kalibro.Range;
@@ -18,7 +18,12 @@ public class RangeSnapshotXmlTest extends XmlTest {
 	}
 
 	@Test
-	public void checkNullReading() {
-		assertNull(new RangeSnapshotXml(new Range()).reading());
+	public void shouldReturnAnIdIfHasReading() {
+		assertEquals(0L, ((RangeSnapshotXml) dto).readingId().longValue());
+	}
+
+	@Test
+	public void shouldConstructWithoutReading() {
+		assertNull(new RangeSnapshotXml(new Range()).readingId());
 	}
 }

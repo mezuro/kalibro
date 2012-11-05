@@ -13,8 +13,6 @@ public interface ReadingDao {
 
 	Reading get(Long readingId);
 
-	Reading readingOf(Long rangeId);
-
 	SortedSet<Reading> readingsOf(Long groupId);
 
 	Long save(Reading reading, Long groupId);

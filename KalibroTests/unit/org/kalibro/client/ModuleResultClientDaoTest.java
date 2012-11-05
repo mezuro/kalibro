@@ -22,15 +22,9 @@ public class ModuleResultClientDaoTest extends
 	}
 
 	@Test
-	public void shouldGetResultsRoot() {
-		when(port.resultsRootOf(ID)).thenReturn(xml);
-		assertSame(entity, client.resultsRootOf(ID));
-	}
-
-	@Test
-	public void shouldGetParent() {
-		when(port.parentOf(ID)).thenReturn(xml);
-		assertSame(entity, client.parentOf(ID));
+	public void shouldGetById() {
+		when(port.getModuleResult(ID)).thenReturn(xml);
+		assertSame(entity, client.get(ID));
 	}
 
 	@Test

@@ -11,9 +11,7 @@ import org.kalibro.ModuleResult;
  */
 public interface ModuleResultDao {
 
-	ModuleResult resultsRootOf(Long processingId);
-
-	ModuleResult parentOf(Long moduleResultId);
+	ModuleResult get(Long moduleResultId);
 
 	SortedSet<ModuleResult> childrenOf(Long moduleResultId);
 }

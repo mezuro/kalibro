@@ -15,8 +15,6 @@ public interface ReadingGroupDao {
 
 	ReadingGroup get(Long groupId);
 
-	ReadingGroup readingGroupOf(Long metricConfigurationId);
-
 	SortedSet<ReadingGroup> all();
 
 	Long save(ReadingGroup group);
