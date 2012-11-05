@@ -11,8 +11,8 @@ public class ColorField extends Button implements ActionListener, Field<Color> {
 
 	private ColorChooser chooser;
 
-	public ColorField(String name) {
-		super(name, "Choose color");
+	public ColorField() {
+		super("color", "Choose color");
 		addActionListener(this);
 		setBackground(Color.WHITE);
 		chooser = new ColorChooser(this);

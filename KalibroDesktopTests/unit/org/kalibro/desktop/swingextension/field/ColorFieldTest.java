@@ -10,8 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.desktop.swingextension.dialog.ColorChooser;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -21,25 +19,27 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareOnlyThisForTest(ColorField.class)
 public class ColorFieldTest extends UnitTest {
 
-	private static final Color COLOR = new Color(new Random(System.currentTimeMillis()).nextInt());
+	private static final Color COLOR = new Color(new Random().nextInt());
+	private static final Color CHOSEN = new Color(new Random().nextInt());
 
-	private ColorField field;
 	private ColorChooser chooser;
+	private ColorField field;
 
 	@Before
 	public void setUp() throws Exception {
 		mockChooser();
-		field = new ColorField("");
+		field = new ColorField();
 	}
 
 	private void mockChooser() throws Exception {
-		chooser = PowerMockito.mock(ColorChooser.class);
-		PowerMockito.whenNew(ColorChooser.class).withArguments(any(ColorField.class)).thenReturn(chooser);
-		PowerMockito.when(chooser.chooseColor(COLOR)).thenReturn(COLOR.brighter());
+		chooser = mock(ColorChooser.class);
+		whenNew(ColorChooser.class).withArguments(any(ColorField.class)).thenReturn(chooser);
+		when(chooser.chooseColor(COLOR)).thenReturn(CHOSEN);
 	}
 
 	@Test
-	public void checkTitle() {
+	public void shouldSetNameAndText() {
+		assertEquals("color", field.getName());
 		assertEquals("Choose color", field.getText());
 	}
 
@@ -71,13 +71,13 @@ public class ColorFieldTest extends UnitTest {
 	public void shouldShowColorDialogWithCurrentValueSelected() {
 		field.set(COLOR);
 		field.doClick();
-		Mockito.verify(chooser).chooseColor(COLOR);
+		verify(chooser).chooseColor(COLOR);
 	}
 
 	@Test
 	public void shouldSetColorWhenColorDialogCloses() {
 		field.set(COLOR);
 		field.doClick();
-		assertEquals(COLOR.brighter(), field.get());
+		assertEquals(CHOSEN, field.get());
 	}
 }

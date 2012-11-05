@@ -29,7 +29,7 @@ public class RangePanel extends EditPanel<Range> {
 		endField = new DoubleField("end", Double.POSITIVE_INFINITY);
 		labelField = new StringField("label", 20);
 		gradeField = new DoubleField("grade");
-		colorField = new ColorField("color");
+		colorField = new ColorField();
 		commentsField = new TextField("comments", 4, 20);
 	}
 

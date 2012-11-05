@@ -27,7 +27,7 @@ class ReadingPanel extends EditPanel<Reading> {
 	protected void createComponents(Component... innerComponents) {
 		labelField = new StringField("label", 20);
 		gradeField = new DoubleField("grade");
-		colorField = new ColorField("color");
+		colorField = new ColorField();
 	}
 
 	@Override

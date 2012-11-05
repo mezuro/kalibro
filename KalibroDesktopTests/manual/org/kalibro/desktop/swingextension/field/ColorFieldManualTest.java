@@ -14,6 +14,6 @@ public final class ColorFieldManualTest extends JPanel {
 
 	private ColorFieldManualTest() {
 		super(new GridLayout());
-		add(new ColorField(""));
+		add(new ColorField());
 	}
 }
