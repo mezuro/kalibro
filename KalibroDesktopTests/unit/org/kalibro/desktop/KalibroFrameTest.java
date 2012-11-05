@@ -33,12 +33,12 @@ public class KalibroFrameTest extends UnitTest {
 	}
 
 	@Test
-	public void checkName() {
+	public void shouldHaveName() {
 		assertEquals("kalibroFrame", frame.getName());
 	}
 
 	@Test
-	public void checkMinimumSize() {
+	public void shouldHaveMinimumSize() {
 		assertEquals(new Dimension(900, 700), frame.getMinimumSize());
 	}
 
@@ -48,9 +48,11 @@ public class KalibroFrameTest extends UnitTest {
 	}
 
 	@Test
-	public void checkMenu() {
+	public void shouldHaveMenuBar() {
 		JMenuBar menuBar = frame.getJMenuBar();
+		assertNotNull(menuBar);
 		assertEquals(1, menuBar.getMenuCount());
+
 		assertTrue(menuBar.getMenu(0) instanceof KalibroMenu);
 	}
 }

@@ -2,7 +2,6 @@ package org.kalibro.desktop;
 
 import java.awt.Dimension;
 
-import javax.swing.JDesktopPane;
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
@@ -11,21 +10,13 @@ import org.kalibro.desktop.swingextension.icon.Icon;
 
 public class KalibroFrame extends JFrame {
 
-	private JDesktopPane desktopPane;
-
 	public KalibroFrame() {
 		super("Kalibro");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setIconImage(new Icon(Icon.KALIBRO).getImage());
 		setName("kalibroFrame");
-		createDesktopPane();
 		createMenuBar();
 		setSize();
-	}
-
-	private void createDesktopPane() {
-		desktopPane = new JDesktopPane();
-		setContentPane(desktopPane);
 	}
 
 	private void createMenuBar() {
