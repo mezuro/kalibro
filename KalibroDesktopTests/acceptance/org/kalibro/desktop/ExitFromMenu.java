@@ -2,7 +2,7 @@ package org.kalibro.desktop;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.desktop.tests.KalibroDesktopAcceptanceTest;
+import org.kalibro.desktop.tests.DesktopAcceptanceTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -15,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({"com.*", "javax.*", "org.xml.*"})
 @PrepareOnlyThisForTest(KalibroMenu.class)
-public class ExitFromMenu extends KalibroDesktopAcceptanceTest {
+public class ExitFromMenu extends DesktopAcceptanceTest {
 
 	@Test
 	public void shouldExitFromMenu() {

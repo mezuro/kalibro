@@ -14,7 +14,9 @@ import org.kalibro.desktop.KalibroDesktop;
 import org.kalibro.desktop.KalibroFrame;
 import org.kalibro.tests.AcceptanceTest;
 
-public class KalibroDesktopAcceptanceTest extends AcceptanceTest {
+public class DesktopAcceptanceTest extends AcceptanceTest {
+
+	private static final int FIXTURE_WAIT = 1500;
 
 	protected WindowFixture<?> fixture;
 
@@ -32,7 +34,7 @@ public class KalibroDesktopAcceptanceTest extends AcceptanceTest {
 				KalibroDesktop.main(null);
 			}
 		}.executeInBackground();
-		Thread.sleep(1500);
+		Thread.sleep(FIXTURE_WAIT);
 		fixture = new DialogFixture(BasicRobot.robotWithCurrentAwtHierarchy(), "settings");
 	}
 

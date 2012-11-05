@@ -5,7 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 import org.kalibro.KalibroSettings;
-import org.kalibro.desktop.tests.KalibroDesktopAcceptanceTest;
+import org.kalibro.desktop.tests.DesktopAcceptanceTest;
 
 /**
  * On the first execution, if the user edit the settings and confirms, the settings file should be written and the
@@ -13,7 +13,7 @@ import org.kalibro.desktop.tests.KalibroDesktopAcceptanceTest;
  * 
  * @author Carlos Morais
  */
-public class FirstEditSettings extends KalibroDesktopAcceptanceTest {
+public class FirstEditSettings extends DesktopAcceptanceTest {
 
 	@Test
 	public void firstEditSettings() throws Exception {

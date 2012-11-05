@@ -10,7 +10,7 @@ import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServerSettings;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.desktop.tests.KalibroDesktopAcceptanceTest;
+import org.kalibro.desktop.tests.DesktopAcceptanceTest;
 
 /**
  * When opening for the first time, the dialog for editing the settings should open showing the default settings.<br/>
@@ -18,7 +18,7 @@ import org.kalibro.desktop.tests.KalibroDesktopAcceptanceTest;
  * 
  * @author Carlos Morais
  */
-public class CancelFirstEditSettings extends KalibroDesktopAcceptanceTest {
+public class CancelFirstEditSettings extends DesktopAcceptanceTest {
 
 	@Test
 	public void cancelFirstEditSettings() throws Exception {
