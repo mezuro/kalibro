@@ -20,10 +20,13 @@ import org.kalibro.desktop.tests.DesktopAcceptanceTest;
  */
 public class CancelFirstEditSettings extends DesktopAcceptanceTest {
 
-	@Test
-	public void cancelFirstEditSettings() throws Exception {
-		startFromMain();
+	@Override
+	protected boolean fromMain() {
+		return true;
+	}
 
+	@Test
+	public void cancelFirstEditSettings() {
 		fixture.checkBox("client").requireNotSelected();
 		verifyDefaultServerSettings();
 

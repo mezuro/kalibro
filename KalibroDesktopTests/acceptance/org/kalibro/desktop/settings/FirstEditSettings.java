@@ -15,10 +15,13 @@ import org.kalibro.desktop.tests.DesktopAcceptanceTest;
  */
 public class FirstEditSettings extends DesktopAcceptanceTest {
 
-	@Test
-	public void firstEditSettings() throws Exception {
-		startFromMain();
+	@Override
+	protected boolean fromMain() {
+		return true;
+	}
 
+	@Test
+	public void firstEditSettings() {
 		fixture.checkBox("client").requireNotSelected();
 
 		fixture.checkBox("client").check();
