@@ -17,7 +17,7 @@ public class TreeRenderer extends Renderer implements TreeCellRenderer {
 		String text = getText(value);
 		Icon icon = getTreeIcon(isLeaf, isExpanded);
 		JLabel label = createLabel(text, icon, tree.getBackground());
-		changeBackgroundIfSelected(label, isSelected);
+		setSelectionBackground(label, isSelected);
 		return label;
 	}
 

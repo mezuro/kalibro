@@ -15,7 +15,7 @@ public abstract class TableRenderer extends Renderer implements TableCellRendere
 		TableModel<?> model = (TableModel<?>) table.getModel();
 		Object context = model.getObjectAt(table.convertRowIndexToModel(row));
 		Component component = render(value, context);
-		changeBackgroundIfSelected(component, isSelected);
+		setSelectionBackground(component, isSelected);
 		return component;
 	}
 

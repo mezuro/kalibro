@@ -12,42 +12,38 @@ import org.kalibro.tests.UnitTest;
 
 public class RendererTest extends UnitTest {
 
-	private Color color;
+	private static final Color DEFAULT_SELECTION_BACKGROUND = new JTable().getSelectionBackground();
+
 	private Component component;
 
 	private Renderer renderer;
 
 	@Before
-	public void setUp() {
-		color = new Color(new Random(System.currentTimeMillis()).nextInt());
+	public void setUp() throws Exception {
 		component = mock(Component.class);
-		when(component.getBackground()).thenReturn(color);
-		renderer = new MyRenderer();
+		renderer = mockAbstract(Renderer.class);
 	}
 
 	@Test
 	public void shouldNotChangeBackgroundIfNotSelected() {
-		renderer.changeBackgroundIfSelected(component, false);
+		renderer.setSelectionBackground(component, false);
 		verify(component, never()).setBackground(any(Color.class));
 	}
 
 	@Test
-	public void shouldChangeBackgroundIfSelected() {
-		renderer.changeBackgroundIfSelected(component, true);
-		verify(component).setBackground(color.darker());
+	public void shouldChangeWhiteToDefaultSelectionBackground() {
+		when(component.getBackground()).thenReturn(Color.WHITE);
+
+		renderer.setSelectionBackground(component, true);
+		verify(component).setBackground(DEFAULT_SELECTION_BACKGROUND);
 	}
 
 	@Test
-	public void shouldChangeWhiteBackground() {
-		when(component.getBackground()).thenReturn(Color.WHITE);
-		renderer.changeBackgroundIfSelected(component, true);
-		verify(component).setBackground(new JTable().getSelectionBackground());
-	}
+	public void shouldDarkenOtherColor() {
+		Color color = new Color(new Random().nextInt());
+		when(component.getBackground()).thenReturn(color);
 
-	private class MyRenderer extends Renderer {
-
-		protected MyRenderer() {
-			super();
-		}
+		renderer.setSelectionBackground(component, true);
+		verify(component).setBackground(color.darker());
 	}
 }

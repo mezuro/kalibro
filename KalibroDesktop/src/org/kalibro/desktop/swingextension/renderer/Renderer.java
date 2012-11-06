@@ -7,12 +7,14 @@ import javax.swing.JTable;
 
 public abstract class Renderer {
 
-	protected void changeBackgroundIfSelected(Component component, boolean isSelected) {
-		if (! isSelected)
-			return;
-		Color background = component.getBackground();
-		Color defaultSelectionBackground = new JTable().getSelectionBackground();
-		Color newBackground = (background == Color.WHITE) ? defaultSelectionBackground : background.darker();
-		component.setBackground(newBackground);
+	private static final Color DEFAULT_SELECTION_BACKGROUND = new JTable().getSelectionBackground();
+
+	protected void setSelectionBackground(Component component, boolean isSelected) {
+		if (isSelected)
+			component.setBackground(selectionBackgroundFor(component.getBackground()));
+	}
+
+	private Color selectionBackgroundFor(Color background) {
+		return (background == Color.WHITE) ? DEFAULT_SELECTION_BACKGROUND : background.darker();
 	}
 }

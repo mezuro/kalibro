@@ -52,7 +52,7 @@ public class TableRendererTest extends UnitTest {
 
 	@Test
 	public void shouldChangeBackgroundIfSelected() {
-		Mockito.verify(renderer).changeBackgroundIfSelected(component, isSelected);
+		Mockito.verify(renderer).setSelectionBackground(component, isSelected);
 	}
 
 	@Test
