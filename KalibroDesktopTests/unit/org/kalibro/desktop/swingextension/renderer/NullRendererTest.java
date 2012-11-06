@@ -27,9 +27,11 @@ public class NullRendererTest extends UnitTest {
 	@Test
 	public void shouldRenderOnlyNull() {
 		assertFalse(renderer.canRender(true));
-		assertFalse(renderer.canRender(Color.MAGENTA));
 		assertFalse(renderer.canRender(42.0));
-		assertFalse(renderer.canRender("42"));
+		assertFalse(renderer.canRender("String"));
+		assertFalse(renderer.canRender(list((Object) null)));
+
+		assertFalse(renderer.canRender(new Object()));
 	}
 
 	@Test

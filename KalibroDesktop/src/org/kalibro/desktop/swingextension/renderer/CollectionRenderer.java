@@ -4,15 +4,15 @@ import java.util.Collection;
 
 import javax.swing.JLabel;
 
-public class CollectionRenderer extends StandardRenderer {
+class CollectionRenderer extends StandardRenderer {
 
 	@Override
-	public boolean canRender(Object value) {
+	boolean canRender(Object value) {
 		return value instanceof Collection<?>;
 	}
 
 	@Override
-	public JLabel render(Object value) {
+	JLabel render(Object value) {
 		String string = stringFor((Collection<?>) value);
 		return new StringRenderer().render(string);
 	}

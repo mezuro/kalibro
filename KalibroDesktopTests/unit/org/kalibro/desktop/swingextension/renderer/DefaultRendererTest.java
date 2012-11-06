@@ -25,12 +25,13 @@ public class DefaultRendererTest extends UnitTest {
 
 	@Test
 	public void shouldRenderStringByDefault() {
-		JLabel component = (JLabel) render(new Range(1.0, 2.0));
-		assertEquals("[1.0, 2.0[", component.getText());
+		Range range = new Range(1.0, 2.0);
+		JLabel component = (JLabel) render(range);
+		assertEquals(range.toString(), component.getText());
 	}
 
 	@Test
-	public void shouldHandleAnything() {
+	public void shouldRenderAnything() {
 		assertClassEquals(BooleanField.class, render(true));
 		assertClassEquals(Label.class, render(42.0));
 		assertClassEquals(JPanel.class, render(null));

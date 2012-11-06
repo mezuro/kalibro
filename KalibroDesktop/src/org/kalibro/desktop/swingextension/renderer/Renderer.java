@@ -5,7 +5,7 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 
-public abstract class Renderer {
+abstract class Renderer {
 
 	private static final Color DEFAULT_SELECTION_BACKGROUND = new JTable().getSelectionBackground();
 

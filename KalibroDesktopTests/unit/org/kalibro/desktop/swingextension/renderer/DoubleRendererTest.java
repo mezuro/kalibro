@@ -5,11 +5,11 @@ import static org.junit.Assert.*;
 import java.awt.Color;
 import java.awt.Font;
 
+import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.DoubleField;
 import org.kalibro.tests.UnitTest;
 
@@ -23,49 +23,37 @@ public class DoubleRendererTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRenderDouble() {
+	public void shouldRenderDoubles() {
 		assertTrue(renderer.canRender(42.0));
+		assertTrue(renderer.canRender(-0.0));
+		assertTrue(renderer.canRender(Double.NaN));
+		assertTrue(renderer.canRender(Double.NEGATIVE_INFINITY));
+		assertTrue(renderer.canRender(Double.POSITIVE_INFINITY));
 	}
 
 	@Test
-	public void shouldNotRenderAnythingButDouble() {
+	public void shouldRenderOnlyDoubles() {
 		assertFalse(renderer.canRender(true));
-		assertFalse(renderer.canRender(Color.MAGENTA));
 		assertFalse(renderer.canRender(null));
-		assertFalse(renderer.canRender("42"));
+		assertFalse(renderer.canRender("String"));
+		assertFalse(renderer.canRender(list(42.0)));
+
+		assertFalse(renderer.canRender(new Object()));
 	}
 
 	@Test
-	public void renderedLabelShouldBeOpaque() {
-		assertTrue(render().isOpaque());
-	}
-
-	@Test
-	public void renderedLabelShouldHaveWhiteBackground() {
-		assertEquals(Color.WHITE, render().getBackground());
-	}
-
-	@Test
-	public void renderedLabelShouldHavePlainFont() {
-		assertEquals(Font.PLAIN, render().getFont().getStyle());
-	}
-
-	@Test
-	public void renderedLabelShouldHaveLeftAlignment() {
-		assertEquals(SwingConstants.RIGHT, render().getHorizontalAlignment());
-	}
-
-	@Test
-	public void shouldSetValue() {
+	public void shouldRenderOpaqueWhiteLabel() {
 		Double value = 42.0;
-		assertEquals(new DoubleField("").getDecimalFormat().format(value), render(value).getText());
+		JLabel rendered = renderer.render(value);
+		assertEquals(format(value), rendered.getText());
+		assertTrue(rendered.isOpaque());
+		assertEquals(Color.WHITE, rendered.getBackground());
+
+		assertEquals(Font.PLAIN, rendered.getFont().getStyle());
+		assertEquals(SwingConstants.RIGHT, rendered.getHorizontalAlignment());
 	}
 
-	private Label render() {
-		return render(42.0);
-	}
-
-	private Label render(Double value) {
-		return renderer.render(value);
+	private String format(Double value) {
+		return new DoubleField("").getDecimalFormat().format(value);
 	}
 }

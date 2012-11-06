@@ -6,15 +6,15 @@ import java.awt.Font;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class StringRenderer extends StandardRenderer {
+class StringRenderer extends StandardRenderer {
 
 	@Override
-	public boolean canRender(Object value) {
+	boolean canRender(Object value) {
 		return value instanceof String;
 	}
 
 	@Override
-	public JLabel render(Object value) {
+	JLabel render(Object value) {
 		JLabel label = new JLabel((String) value);
 		label.setFont(label.getFont().deriveFont(Font.PLAIN));
 		label.setHorizontalAlignment(SwingConstants.LEFT);

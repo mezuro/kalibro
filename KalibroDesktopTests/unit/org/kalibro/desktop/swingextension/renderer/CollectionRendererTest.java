@@ -2,8 +2,6 @@ package org.kalibro.desktop.swingextension.renderer;
 
 import static org.junit.Assert.*;
 
-import java.awt.Color;
-import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Before;
@@ -20,22 +18,27 @@ public class CollectionRendererTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRenderCollection() {
-		assertTrue(renderer.canRender(list("42")));
+	public void shouldRenderCollections() {
+		assertTrue(renderer.canRender(set(true, false)));
+		assertTrue(renderer.canRender(list(42.0)));
+		assertTrue(renderer.canRender(list((Object) null)));
+		assertTrue(renderer.canRender(sortedSet("String")));
 	}
 
 	@Test
-	public void shouldNotRenderAnythingButCollection() {
+	public void shouldRenderOnlyCollections() {
 		assertFalse(renderer.canRender(true));
-		assertFalse(renderer.canRender(Color.MAGENTA));
 		assertFalse(renderer.canRender(42.0));
 		assertFalse(renderer.canRender(null));
+		assertFalse(renderer.canRender("String"));
+
+		assertFalse(renderer.canRender(new Object()));
 	}
 
 	@Test
-	public void shouldRenderListString() {
-		assertEquals("My, list", render(list("My", "list")));
-		assertEquals("", render(new ArrayList<String>()));
+	public void shouldRenderStringList() {
+		assertEquals("", render(list()));
+		assertEquals("first, second, third", render(list("first", "second", "third")));
 	}
 
 	private String render(Collection<?> value) {

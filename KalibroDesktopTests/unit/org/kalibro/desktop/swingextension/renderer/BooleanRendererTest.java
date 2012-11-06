@@ -21,47 +21,32 @@ public class BooleanRendererTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRenderBoolean() {
+	public void shouldRenderBooleans() {
 		assertTrue(renderer.canRender(true));
 		assertTrue(renderer.canRender(false));
 	}
 
 	@Test
-	public void shouldNotRenderAnythingButBoolean() {
-		assertFalse(renderer.canRender(Color.MAGENTA));
+	public void shouldRenderOnlyBooleans() {
 		assertFalse(renderer.canRender(42.0));
 		assertFalse(renderer.canRender(null));
-		assertFalse(renderer.canRender("42"));
+		assertFalse(renderer.canRender("String"));
+		assertFalse(renderer.canRender(list(true, false)));
+
+		assertFalse(renderer.canRender(new Object()));
 	}
 
 	@Test
-	public void shouldRenderPlainBooleanField() {
-		assertTrue(render(true).getText().isEmpty());
-	}
+	public void shouldRenderPlainWhiteBooleanField() {
+		assertFalse(renderer.render(false).get());
 
-	@Test
-	public void shouldRenderWithWhiteBackground() {
-		assertEquals(Color.WHITE, render(true).getBackground());
-	}
+		BooleanField rendered = renderer.render(true);
+		assertTrue(rendered.get());
+		assertTrue(rendered.isOpaque());
+		assertEquals(Color.WHITE, rendered.getBackground());
 
-	@Test
-	public void shouldRenderTrueWithSelectedField() {
-		assertTrue(render(true).isSelected());
-	}
-
-	@Test
-	public void shouldRenderFalseWithUnselectedField() {
-		assertFalse(render(false).isSelected());
-	}
-
-	@Test
-	public void shouldBeCentralized() {
-		BooleanField component = render(false);
-		assertEquals(SwingConstants.CENTER, component.getVerticalAlignment());
-		assertEquals(SwingConstants.CENTER, component.getHorizontalAlignment());
-	}
-
-	private BooleanField render(boolean value) {
-		return renderer.render(value);
+		assertTrue(rendered.getText().isEmpty());
+		assertEquals(SwingConstants.CENTER, rendered.getVerticalAlignment());
+		assertEquals(SwingConstants.CENTER, rendered.getHorizontalAlignment());
 	}
 }

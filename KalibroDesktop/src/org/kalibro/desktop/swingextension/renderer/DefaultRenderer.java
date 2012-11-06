@@ -4,7 +4,7 @@ import java.awt.Component;
 
 public class DefaultRenderer extends StandardRenderer {
 
-	private StandardRenderer[] knownRenderers = new StandardRenderer[]{
+	private static final StandardRenderer[] KNOWN_RENDERERS = new StandardRenderer[]{
 		new BooleanRenderer(),
 		new CollectionRenderer(),
 		new DoubleRenderer(),
@@ -13,13 +13,13 @@ public class DefaultRenderer extends StandardRenderer {
 	};
 
 	@Override
-	protected boolean canRender(Object value) {
+	boolean canRender(Object value) {
 		return true;
 	}
 
 	@Override
-	protected Component render(Object value) {
-		for (StandardRenderer renderer : knownRenderers)
+	Component render(Object value) {
+		for (StandardRenderer renderer : KNOWN_RENDERERS)
 			if (renderer.canRender(value))
 				return renderer.render(value);
 		return new StringRenderer().render(value.toString());
