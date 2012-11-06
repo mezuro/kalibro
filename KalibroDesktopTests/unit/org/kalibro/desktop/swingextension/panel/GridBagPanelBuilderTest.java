@@ -27,7 +27,7 @@ public class GridBagPanelBuilderTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		random = new Random(System.currentTimeMillis());
+		random = new Random();
 		builder = new GridBagPanelBuilder();
 		panel = builder.getPanel();
 		layout = (GridBagLayout) panel.getLayout();

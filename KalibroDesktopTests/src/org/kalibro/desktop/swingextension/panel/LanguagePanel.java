@@ -6,11 +6,11 @@ import java.awt.GridLayout;
 import org.kalibro.Language;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 
-class LanguagePanelStub extends EditPanel<Language> {
+class LanguagePanel extends EditPanel<Language> {
 
 	private ChoiceField<Language> field;
 
-	protected LanguagePanelStub() {
+	LanguagePanel() {
 		super("language");
 	}
 

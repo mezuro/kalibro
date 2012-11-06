@@ -14,7 +14,7 @@ public final class ConfirmPanelManualTest extends ConfirmPanel<Language> impleme
 	}
 
 	private ConfirmPanelManualTest() {
-		super(new LanguagePanelStub());
+		super(new LanguagePanel());
 		addCancelListener(this);
 		addOkListener(this);
 	}

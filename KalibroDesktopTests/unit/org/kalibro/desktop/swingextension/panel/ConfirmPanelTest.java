@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.panel;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,8 +11,7 @@ import org.kalibro.Language;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
+import org.mockito.ArgumentCaptor;
 
 public class ConfirmPanelTest extends UnitTest {
 
@@ -23,21 +22,21 @@ public class ConfirmPanelTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		listener = PowerMockito.mock(ActionListener.class);
-		confirmPanel = new ConfirmPanel<Language>(new LanguagePanelStub());
+		listener = mock(ActionListener.class);
+		confirmPanel = new ConfirmPanel<Language>(new LanguagePanel());
 		finder = new ComponentFinder(confirmPanel);
 	}
 
 	@Test
 	public void shouldGet() {
-		finder.find("language", LanguagePanelStub.class).set(Language.CPP);
+		finder.find("language", LanguagePanel.class).set(Language.CPP);
 		assertEquals(Language.CPP, confirmPanel.get());
 	}
 
 	@Test
 	public void shouldSet() {
 		confirmPanel.set(Language.JAVA);
-		assertEquals(Language.JAVA, finder.find("language", LanguagePanelStub.class).get());
+		assertEquals(Language.JAVA, finder.find("language", LanguagePanel.class).get());
 	}
 
 	@Test
@@ -53,7 +52,11 @@ public class ConfirmPanelTest extends UnitTest {
 	}
 
 	private void clickAndVerify(String buttonName) {
-		finder.find(buttonName, Button.class).doClick();
-		Mockito.verify(listener).actionPerformed(any(ActionEvent.class));
+		Button button = finder.find(buttonName, Button.class);
+		button.doClick();
+
+		ArgumentCaptor<ActionEvent> captor = ArgumentCaptor.forClass(ActionEvent.class);
+		verify(listener).actionPerformed(captor.capture());
+		assertSame(button, captor.getValue().getSource());
 	}
 }

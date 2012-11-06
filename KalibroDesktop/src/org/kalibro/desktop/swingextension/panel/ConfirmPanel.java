@@ -29,10 +29,10 @@ public class ConfirmPanel<T> extends EditPanel<T> {
 	protected void buildPanel() {
 		setLayout(new BorderLayout());
 		add(panel, BorderLayout.CENTER);
-		add(createButtonsPanel(), BorderLayout.SOUTH);
+		add(buildButtonsPanel(), BorderLayout.SOUTH);
 	}
 
-	private JPanel createButtonsPanel() {
+	private JPanel buildButtonsPanel() {
 		JPanel buttonsPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
 		buttonsPanel.add(cancelButton);
 		buttonsPanel.add(okButton);
