@@ -17,6 +17,7 @@ import org.kalibro.tests.UnitTest;
 public class TreeRendererTest extends UnitTest {
 
 	private JTree tree;
+
 	private TreeRenderer renderer;
 
 	@Before
@@ -33,8 +34,8 @@ public class TreeRendererTest extends UnitTest {
 	}
 
 	@Test
-	public void defaultBackgroundShouldBeTreeBackground() {
-		Color background = new Color(new Random(System.currentTimeMillis()).nextInt());
+	public void shouldGetDefaultBackgroundFromTree() {
+		Color background = new Color(new Random().nextInt());
 		tree.setBackground(background);
 		assertEquals(background, renderValue("").getBackground());
 	}
