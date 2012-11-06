@@ -10,41 +10,40 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Range;
+import org.kalibro.Reading;
+import org.kalibro.ReadingGroup;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
 
 public class TablePanelTest extends UnitTest {
 
-	private Table<Range> table;
-	private TablePanelListener<Range> listener;
+	private Table<Reading> table;
+	private TablePanelListener<Reading> listener;
 
 	private ComponentFinder finder;
-	private TablePanel<Range> panel;
+	private TablePanel<Reading> panel;
 
 	@Before
 	public void setUp() {
 		createTable();
-		listener = PowerMockito.mock(TablePanelListener.class);
-		panel = new TablePanel<Range>(table);
+		listener = mock(TablePanelListener.class);
+		panel = new TablePanel<Reading>(table);
 		panel.addTablePanelListener(listener);
 		finder = new ComponentFinder(panel);
 	}
 
 	private void createTable() {
-		TableModel<Range> model = new ReflectionTableModel<Range>(Range.class);
+		TableModel<Reading> model = new ReflectionTableModel<Reading>(Reading.class);
 		model.addColumn(new ReflectionColumn("label", 15));
-		table = new Table<Range>("ranges", model, 5);
-		table.setData(list(loadFixture("lcom4-bad", Range.class)));
-		table = PowerMockito.spy(table);
+		table = new Table<Reading>("readings", model, 5);
+		table.setData(loadFixture("scholar", ReadingGroup.class).getReadings());
+		table = spy(table);
 	}
 
 	@Test
 	public void testShow() {
-		panel.set(new ArrayList<Range>());
+		panel.set(new ArrayList<Reading>());
 		assertTrue(table().getData().isEmpty());
 	}
 
@@ -53,8 +52,8 @@ public class TablePanelTest extends UnitTest {
 		assertSame(table().getData(), panel.get());
 	}
 
-	private Table<Range> table() {
-		return finder.find("ranges", Table.class);
+	private Table<Reading> table() {
+		return finder.find("readings", Table.class);
 	}
 
 	@Test
@@ -77,22 +76,22 @@ public class TablePanelTest extends UnitTest {
 	@Test
 	public void testAddButton() {
 		button("add").doClick();
-		Mockito.verify(listener).add();
+		verify(listener).add();
 	}
 
 	@Test
 	public void testEditButton() {
 		selectFirstLine();
 		button("edit").doClick();
-		Mockito.verify(listener).edit(table.getSelected());
+		verify(listener).edit(table.getSelected());
 	}
 
 	@Test
 	public void testRemoveButton() {
 		selectFirstLine();
-		Range selected = table.getSelected();
+		Reading selected = table.getSelected();
 		button("remove").doClick();
-		Mockito.verify(table).remove(selected);
+		verify(table).remove(selected);
 	}
 
 	private Button button(String name) {
@@ -102,7 +101,7 @@ public class TablePanelTest extends UnitTest {
 	@Test
 	public void testDoubleClick() {
 		doubleClickFirstRow();
-		Mockito.verify(listener).edit(table.getSelected());
+		verify(listener).edit(table.getSelected());
 	}
 
 	private void doubleClickFirstRow() {
@@ -117,6 +116,6 @@ public class TablePanelTest extends UnitTest {
 	}
 
 	private JTable innerTable() {
-		return finder.find("ranges", JTable.class);
+		return finder.find("readings", JTable.class);
 	}
 }

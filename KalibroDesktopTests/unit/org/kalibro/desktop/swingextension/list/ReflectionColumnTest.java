@@ -8,7 +8,6 @@ import javax.swing.JPanel;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Range;
 import org.kalibro.Reading;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
@@ -38,13 +37,13 @@ public class ReflectionColumnTest extends UnitTest {
 
 	@Test
 	public void checkColumnClass() {
-		assertEquals(int.class, column.getColumnClass(Range.class));
+		assertEquals(int.class, column.getColumnClass(Reading.class));
 	}
 
 	@Test
 	public void checkValue() {
-		Range redRange = loadFixture("lcom4-bad", Range.class);
-		assertEquals(255, column.getValue(redRange));
+		Reading reading = loadFixture("excellent", Reading.class);
+		assertEquals(0, column.getValue(reading));
 	}
 
 	@Test
@@ -61,10 +60,10 @@ public class ReflectionColumnTest extends UnitTest {
 
 	@Test
 	public void shouldReturnNullInCaseOfInvokationError() {
-		assertNull(column.getValue(new Range() {
+		assertNull(column.getValue(new Reading() {
 
 			@Override
-			public Reading getReading() {
+			public Color getColor() {
 				throw new RuntimeException();
 			}
 		}));

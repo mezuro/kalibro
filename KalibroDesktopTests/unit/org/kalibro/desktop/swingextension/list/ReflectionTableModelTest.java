@@ -6,21 +6,22 @@ import java.awt.Color;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.Range;
+import org.kalibro.Reading;
+import org.kalibro.ReadingGroup;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.UnitTest;
 
 public class ReflectionTableModelTest extends UnitTest {
 
-	private ReflectionTableModel<Range> model;
+	private ReflectionTableModel<Reading> model;
 
 	@Before
 	public void setUp() {
-		model = new ReflectionTableModel<Range>(Range.class);
-		model.addColumn(new ReflectionColumn("beginning", 0));
+		model = new ReflectionTableModel<Reading>(Reading.class);
 		model.addColumn(new ReflectionColumn("label", 0));
+		model.addColumn(new ReflectionColumn("grade", 0));
 		model.addColumn(new ReflectionColumn("color", 0));
-		model.setData(list(loadFixture("lcom4-bad", Range.class)));
+		model.setData(loadFixture("scholar", ReadingGroup.class).getReadings());
 	}
 
 	@Test
@@ -41,15 +42,15 @@ public class ReflectionTableModelTest extends UnitTest {
 
 	@Test
 	public void shouldGetColumnClasses() {
-		assertEquals(Double.class, model.getColumnClass(0));
-		assertEquals(String.class, model.getColumnClass(1));
+		assertEquals(String.class, model.getColumnClass(0));
+		assertEquals(Double.class, model.getColumnClass(1));
 		assertEquals(Color.class, model.getColumnClass(2));
 	}
 
 	@Test
 	public void shouldGetValues() {
-		assertDoubleEquals(0.0, (Double) model.getValueAt(0, 0));
-		assertEquals("Good", model.getValueAt(1, 1));
-		assertEquals(Color.YELLOW, model.getValueAt(2, 2));
+		assertEquals("Terrible", model.getValueAt(0, 0));
+		assertDoubleEquals(5.0, (Double) model.getValueAt(4, 1));
+		assertEquals(Color.GREEN, model.getValueAt(8, 2));
 	}
 }

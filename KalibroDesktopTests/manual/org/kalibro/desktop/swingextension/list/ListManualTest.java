@@ -10,23 +10,23 @@ import java.util.Collection;
 import javax.swing.JList;
 import javax.swing.JPanel;
 
-import org.kalibro.Configuration;
-import org.kalibro.MetricConfiguration;
+import org.kalibro.Reading;
+import org.kalibro.ReadingGroup;
 import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
-public final class ListManualTest extends JPanel implements ActionListener, ListListener<MetricConfiguration> {
+public final class ListManualTest extends JPanel implements ActionListener, ListListener<Reading> {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("List<MetricConfiguration>", new ListManualTest()).setVisible(true);
+		new ComponentWrapperDialog("List<Range>", new ListManualTest()).setVisible(true);
 	}
 
-	private List<MetricConfiguration> list;
+	private List<Reading> list;
 
 	private ListManualTest() {
 		super(new BorderLayout());
-		Collection<MetricConfiguration> data = loadFixture("sc", Configuration.class).getMetricConfigurations();
-		list = new List<MetricConfiguration>("", data, 8);
+		Collection<Reading> data = loadFixture("scholar", ReadingGroup.class).getReadings();
+		list = new List<Reading>("", data, 8);
 		list.addListListener(this);
 		Button button = new Button("", "Clear selection", this);
 
@@ -35,13 +35,13 @@ public final class ListManualTest extends JPanel implements ActionListener, List
 	}
 
 	@Override
-	public void doubleClicked(MetricConfiguration range) {
-		System.out.println("Double clicked " + range);
+	public void doubleClicked(Reading reading) {
+		System.out.println("Double clicked " + reading);
 	}
 
 	@Override
-	public void selected(MetricConfiguration range) {
-		System.out.println("Selected " + range);
+	public void selected(Reading reading) {
+		System.out.println("Selected " + reading);
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public final class ListManualTest extends JPanel implements ActionListener, List
 
 	@Override
 	public void actionPerformed(ActionEvent event) {
-		JList jList = (JList) list.getViewport().getView();
+		JList<Reading> jList = (JList<Reading>) list.getViewport().getView();
 		jList.clearSelection();
 	}
 }

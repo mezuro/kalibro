@@ -11,10 +11,10 @@ import javax.swing.ListSelectionModel;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.Range;
+import org.kalibro.Reading;
+import org.kalibro.ReadingGroup;
 import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -24,16 +24,16 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareOnlyThisForTest(List.class)
 public class ListTest extends UnitTest {
 
-	private SortedSet<Range> ranges;
+	private SortedSet<Reading> readings;
+	private JList<Reading> innerList;
 
-	private List<Range> list;
-	private JList innerList;
+	private List<Reading> list;
 
 	@Before
 	public void setUp() {
-		ranges = sortedSet(loadFixture("lcom4-bad", Range.class));
-		list = new List<Range>("ranges", ranges, 5);
-		innerList = new ComponentFinder(list).find("ranges", JList.class);
+		readings = loadFixture("scholar", ReadingGroup.class).getReadings();
+		list = new List<Reading>("readings", readings, 5);
+		innerList = new ComponentFinder(list).find("readings", JList.class);
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class ListTest extends UnitTest {
 	public void checkSelectedObject() {
 		innerList.getSelectionModel().setSelectionInterval(0, 0);
 		assertTrue(list.hasSelection());
-		assertSame(ranges.first(), list.getSelected());
+		assertSame(readings.first(), list.getSelected());
 	}
 
 	@Test
@@ -63,9 +63,9 @@ public class ListTest extends UnitTest {
 
 	@Test
 	public void shouldAddListListener() throws Exception {
-		ListListener<Range> listener = PowerMockito.mock(ListListener.class);
-		ListComponentAdapter<Range> adapter = PowerMockito.mock(ListComponentAdapter.class);
-		PowerMockito.whenNew(ListComponentAdapter.class).withArguments(listener, list).thenReturn(adapter);
+		ListListener<Reading> listener = mock(ListListener.class);
+		ListComponentAdapter<Reading> adapter = mock(ListComponentAdapter.class);
+		whenNew(ListComponentAdapter.class).withArguments(listener, list).thenReturn(adapter);
 
 		list.addListListener(listener);
 		assertTrue(list(innerList.getMouseListeners()).contains(adapter));
