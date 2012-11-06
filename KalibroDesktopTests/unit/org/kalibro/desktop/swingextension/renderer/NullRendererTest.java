@@ -25,7 +25,7 @@ public class NullRendererTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotRenderAnythingButNull() {
+	public void shouldRenderOnlyNull() {
 		assertFalse(renderer.canRender(true));
 		assertFalse(renderer.canRender(Color.MAGENTA));
 		assertFalse(renderer.canRender(42.0));
@@ -33,16 +33,9 @@ public class NullRendererTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRenderPlainPanel() {
-		assertEquals(0, render().getComponentCount());
-	}
-
-	@Test
-	public void shouldRenderWithWhiteBackground() {
-		assertEquals(Color.WHITE, render().getBackground());
-	}
-
-	private JPanel render() {
-		return renderer.render(null);
+	public void shouldRenderPlainWhitePanel() {
+		JPanel rendered = renderer.render(null);
+		assertEquals(0, rendered.getComponentCount());
+		assertEquals(Color.WHITE, rendered.getBackground());
 	}
 }
