@@ -8,7 +8,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
-import javax.swing.JInternalFrame;
 import javax.swing.JPanel;
 
 public class Icon extends ImageIcon {
@@ -21,12 +20,6 @@ public class Icon extends ImageIcon {
 
 	private Icon(Image image) {
 		super(image);
-	}
-
-	public void replaceIconOf(JInternalFrame frame) {
-		int width = frame.getFrameIcon().getIconWidth();
-		int height = frame.getFrameIcon().getIconHeight();
-		frame.setFrameIcon(scaleForSize(width, height));
 	}
 
 	public Icon scaleForSize(int width, int height) {
