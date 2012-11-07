@@ -1,29 +1,25 @@
 package br.jabuti;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedHashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.Granularity;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
+import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.concurrent.Writer;
+import org.kalibro.tests.UnitTest;
 
-public class JabutiOutputParserTest {
-	
+public class JabutiOutputParserTest extends UnitTest {
+
 	private JabutiOutputParser outputParser;
 	private HashSet<NativeMetric> metrics;
 	private NativeMetric allNodesEI;
@@ -34,52 +30,55 @@ public class JabutiOutputParserTest {
 	private NativeMetric allUsesED;
 	private NativeMetric allPotEI;
 	private NativeMetric allPotED;
-	
+
 	@Before
 	public void setUp() throws IOException {
-		
+
 		metrics = new LinkedHashSet<NativeMetric>();
 		allNodesEI = new NativeMetric("All Nodes Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesEI);
-		allNodesED = new NativeMetric("All Nodes Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
+		allNodesED = new NativeMetric("All Nodes Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allNodesED);
 		allEdgesEI = new NativeMetric("All Edges Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesEI);
-		allEdgesED = new NativeMetric("All Edges Exception Dependent",   Granularity.SOFTWARE, Language.JAVA);
+		allEdgesED = new NativeMetric("All Edges Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allEdgesED);
-		allUsesEI = new NativeMetric("All Uses Exception Independent",  Granularity.SOFTWARE, Language.JAVA);
+		allUsesEI = new NativeMetric("All Uses Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesEI);
-		allUsesED = new NativeMetric("All Uses Exception Dependent",    Granularity.SOFTWARE, Language.JAVA);
+		allUsesED = new NativeMetric("All Uses Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allUsesED);
-		allPotEI = new NativeMetric("All Pot Exception Independent",   Granularity.SOFTWARE, Language.JAVA);
+		allPotEI = new NativeMetric("All Pot Exception Independent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotEI);
-		allPotED = new NativeMetric("All Pot Exception Dependent",     Granularity.SOFTWARE, Language.JAVA);
+		allPotED = new NativeMetric("All Pot Exception Dependent", Granularity.SOFTWARE, Language.JAVA);
 		metrics.add(allPotED);
-		
+
 		InputStream metricListOutput = getClass().getResourceAsStream("Jabuti-Output-MetricList.txt");
 		outputParser = new JabutiOutputParser(metricListOutput);
 	}
-	
+
 	@Test
-	public void checkSupportedMetrics() throws IOException {
+	public void checkSupportedMetrics() {
 		assertArrayEquals(metrics.toArray(), outputParser.getSupportedMetrics().toArray());
 	}
 
 	@Test
 	public void checkParserResults() throws IOException {
+		Producer<NativeModuleResult> producer = new Producer<NativeModuleResult>();
+		Writer<NativeModuleResult> resultWriter = producer.createWriter();
+
 		InputStream vendingOutput = getClass().getResourceAsStream("Jabuti-Output-Vending.txt");
-		Set<NativeModuleResult> results = outputParser.parseResults(vendingOutput, metrics);
-		assertNotNull(results);
-		assertFalse(results.isEmpty());
+		outputParser.parseResults(vendingOutput, metrics, resultWriter);
+		Iterator<NativeModuleResult> results = producer.iterator();
+		assertTrue(results.hasNext());
 
 		Map<Integer, Map<Integer, Double>> resultFile = this.outputJabutiMap();
 		// Test Run Global
-		for (int j =0; j < 3; j++) {
-			NativeModuleResult result = results.toArray(new NativeModuleResult[0])[j];
+		for (int j = 0; j < 3; j++) {
+			NativeModuleResult result = results.next();
 			assertEquals(metrics.size(), result.getMetricResults().size());
 			Map<Integer, Double> valueMap = resultFile.get(j);
-			
-			for (int y =0; y < 8; y++) {
+
+			for (int y = 0; y < 8; y++) {
 				switch (y) {
 					case 0:
 						assertEquals(valueMap.get(y), result.getResultFor(allNodesEI).getValue());
@@ -119,19 +118,19 @@ public class JabutiOutputParserTest {
 		Map<Integer, Double> value = null;
 		int x = 0;
 		int y = 0;
-		while((line = buffer.readLine()) != null) {
+		while ((line = buffer.readLine()) != null) {
 			if ("---".equals(line)) {
-				x++; 
+				x++;
 				y = 0;
 				buffer.readLine();
 				value = new HashMap<Integer, Double>();
 				continue;
 			}
 			value.put(y, new Double(line.split(":")[1].replace("\t", "").trim()));
-			map.put(x-1, value);
+			map.put(x - 1, value);
 			y++;
 		}
-		
+
 		return map;
 	}
 }

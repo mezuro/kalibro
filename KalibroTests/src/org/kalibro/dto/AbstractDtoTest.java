@@ -1,96 +1,83 @@
 package org.kalibro.dto;
 
-import static org.mockito.Matchers.*;
-
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
+import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.mockito.ArgumentMatcher;
-import org.mockito.internal.matchers.VarargMatcher;
+import org.kalibro.core.reflection.FieldReflector;
+import org.kalibro.tests.UnitTest;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoLazyLoader.class)
-public abstract class AbstractDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends TestCase {
+public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
-	protected DTO dto;
 	protected ENTITY entity;
+	protected DataTransferObject<ENTITY> dto;
+
+	private List<LazyLoadExpectation> lazyLoadExpectations;
 
 	@Before
 	public void setUp() throws Exception {
 		entity = loadFixture();
-		dto = createDtoStub();
-		mockStatic(DaoLazyLoader.class);
-		for (LazyLoadExpectation e : lazyLoadExpectations())
-			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.stub);
+		createDto();
+		mockLazyLoading();
 	}
 
 	protected abstract ENTITY loadFixture();
 
-	private DTO createDtoStub() throws Exception {
-		Class<?> entityClass = entity.getClass();
-		Class<?> stubClass = Class.forName("org.kalibro.dto." + entityClass.getSimpleName() + "DtoStub");
-		return (DTO) stubClass.getDeclaredConstructor(entityClass).newInstance(entity);
+	private void createDto() throws Exception {
+		Class<?> dtoClass = Class.forName(getClass().getName().replace("Test", ""));
+		dto = (DataTransferObject<ENTITY>) mock(dtoClass, Mockito.CALLS_REAL_METHODS);
+		FieldReflector reflector = new FieldReflector(entity);
+		for (Method method : dtoClass.getDeclaredMethods())
+			if (Modifier.isAbstract(method.getModifiers()) && reflector.listFields().contains(method.getName()))
+				doReturn(reflector.get(method.getName())).when(dto, method).withNoArguments();
+	}
+
+	private void mockLazyLoading() throws Exception {
+		lazyLoadExpectations = new ArrayList<LazyLoadExpectation>();
+		registerLazyLoadExpectations();
+		mockStatic(DaoLazyLoader.class);
+		for (LazyLoadExpectation e : lazyLoadExpectations)
+			when(DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e))).thenReturn(e.returnValue);
+	}
+
+	@SuppressWarnings("unused" /* to be overriden */)
+	protected void registerLazyLoadExpectations() throws Exception {
+		return;
+	}
+
+	protected LazyLoadExpectation whenLazy(Class<?> daoClass, String methodName, Object... parameters) {
+		LazyLoadExpectation expectation = new LazyLoadExpectation(daoClass, methodName, parameters);
+		lazyLoadExpectations.add(expectation);
+		return expectation;
+	}
+
+	@Test
+	public void shouldHavePublicDefaultConstructor() throws Exception {
+		Constructor<?> constructor = dto.getClass().getConstructor();
+		Modifier.isPublic(constructor.getModifiers());
+		constructor.newInstance();
 	}
 
 	@Test
 	public void shouldConvert() {
 		assertDeepEquals(entity, dto.convert());
-		for (LazyLoadExpectation e : lazyLoadExpectations()) {
+		for (LazyLoadExpectation e : lazyLoadExpectations) {
 			verifyStatic();
 			DaoLazyLoader.createProxy(eq(e.daoClass), eq(e.methodName), parameters(e));
 		}
 	}
 
-	protected List<LazyLoadExpectation> lazyLoadExpectations() {
-		return new ArrayList<LazyLoadExpectation>();
-	}
-
 	private Object parameters(LazyLoadExpectation expectation) {
 		return argThat(new ParametersMatcher(expectation));
-	}
-
-	protected LazyLoadExpectation expectLazy(Object stub, Class<?> daoClass, String methodName, Object... parameters) {
-		return new LazyLoadExpectation(stub, daoClass, methodName, parameters);
-	}
-
-	protected class LazyLoadExpectation {
-
-		private Object stub;
-		private Class<?> daoClass;
-		private String methodName;
-		private Object[] parameters;
-
-		protected LazyLoadExpectation(Object stub, Class<?> daoClass, String methodName, Object... parameters) {
-			this.stub = stub;
-			this.daoClass = daoClass;
-			this.methodName = methodName;
-			this.parameters = parameters;
-		}
-	}
-
-	private class ParametersMatcher extends ArgumentMatcher<Object[]> implements VarargMatcher {
-
-		private LazyLoadExpectation expectation;
-
-		ParametersMatcher(LazyLoadExpectation expectation) {
-			this.expectation = expectation;
-		}
-
-		@Override
-		public boolean matches(Object parameters) {
-			try {
-				Assert.assertArrayEquals(expectation.parameters, (Object[]) parameters);
-				return true;
-			} catch (AssertionError error) {
-				return false;
-			}
-		}
 	}
 }

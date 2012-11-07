@@ -1,65 +1,64 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
-import org.kalibro.dto.DataTransferObject;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.kalibro.Configuration;
+import org.kalibro.dto.ConfigurationDto;
 
+/**
+ * Java Persistence API entity for {@link Configuration}.
+ * 
+ * @author Carlos Morais
+ */
 @Entity(name = "Configuration")
-public class ConfigurationRecord extends DataTransferObject<Configuration> {
+@Table(name = "\"CONFIGURATION\"")
+public class ConfigurationRecord extends ConfigurationDto {
 
 	@Id
 	@GeneratedValue
-	@Column(name = "id")
+	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@Column(name = "name", nullable = false, unique = true)
+	@Column(name = "\"name\"", nullable = false, unique = true)
 	private String name;
 
-	@Column
+	@Column(name = "\"description\"")
 	private String description;
 
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "configuration", orphanRemoval = true)
+	@CascadeOnDelete
+	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	private Collection<MetricConfigurationRecord> metricConfigurations;
 
 	public ConfigurationRecord() {
 		super();
 	}
 
-	public ConfigurationRecord(Configuration configuration) {
-		id = configuration.getId();
-		name = configuration.getName();
-		description = configuration.getDescription();
-		initializeMetrics(configuration);
+	public ConfigurationRecord(Long id) {
+		this.id = id;
 	}
 
-	private void initializeMetrics(Configuration configuration) {
-		metricConfigurations = new ArrayList<MetricConfigurationRecord>();
-		for (MetricConfiguration metricConfiguration : configuration.getMetricConfigurations())
-			metricConfigurations.add(new MetricConfigurationRecord(metricConfiguration, this));
+	public ConfigurationRecord(Configuration configuration) {
+		this(configuration.getId());
+		name = configuration.getName();
+		description = configuration.getDescription();
 	}
 
 	@Override
-	public Configuration convert() {
-		Configuration configuration = new Configuration();
-		configuration.setId(id);
-		configuration.setName(name);
-		configuration.setDescription(description);
-		convertMetrics(configuration);
-		return configuration;
+	public Long id() {
+		return id;
 	}
 
-	private void convertMetrics(Configuration configuration) {
-		if (metricConfigurations != null)
-			for (MetricConfigurationRecord metricConfiguration : metricConfigurations)
-				configuration.addMetricConfiguration(metricConfiguration.convert());
-	}
-
-	protected String getName() {
+	@Override
+	public String name() {
 		return name;
+	}
+
+	@Override
+	public String description() {
+		return description;
 	}
 }

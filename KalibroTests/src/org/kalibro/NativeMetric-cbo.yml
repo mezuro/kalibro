@@ -1,0 +1,7 @@
+ &id1 !!org.kalibro.NativeMetric
+name: "Coupling Between Objects"
+scope: CLASS
+languages:
+  - C
+  - CPP
+  - JAVA

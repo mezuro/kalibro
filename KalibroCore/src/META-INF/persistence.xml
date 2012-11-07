@@ -3,26 +3,23 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence
 						http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+
 	<persistence-unit name="Kalibro" transaction-type="RESOURCE_LOCAL">
-		<class>org.kalibro.core.persistence.record.BaseToolRecord</class>
-		<class>org.kalibro.core.persistence.record.CompoundMetricRecord</class>
 		<class>org.kalibro.core.persistence.record.ConfigurationRecord</class>
+		<class>org.kalibro.core.persistence.record.DescendantResultRecord</class>
 		<class>org.kalibro.core.persistence.record.MetricConfigurationRecord</class>
+		<class>org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord</class>
 		<class>org.kalibro.core.persistence.record.MetricResultRecord</class>
-		<class>org.kalibro.core.persistence.record.ModuleRecord</class>
-		<class>org.kalibro.core.persistence.record.NativeMetricRecord</class>
+		<class>org.kalibro.core.persistence.record.ModuleResultRecord</class>
+		<class>org.kalibro.core.persistence.record.ProcessingRecord</class>
+		<class>org.kalibro.core.persistence.record.ProcessTimeRecord</class>
 		<class>org.kalibro.core.persistence.record.ProjectRecord</class>
-		<class>org.kalibro.core.persistence.record.ProjectResultRecord</class>
 		<class>org.kalibro.core.persistence.record.RangeRecord</class>
+		<class>org.kalibro.core.persistence.record.RangeSnapshotRecord</class>
 		<class>org.kalibro.core.persistence.record.ReadingGroupRecord</class>
 		<class>org.kalibro.core.persistence.record.ReadingRecord</class>
 		<class>org.kalibro.core.persistence.record.RepositoryRecord</class>
-	</persistence-unit>
-	
-	<persistence-unit name="cvsanaly" transaction-type="RESOURCE_LOCAL">
-		<class>org.cvsanaly.entities.MetricResult</class>
-		<class>org.cvsanaly.entities.Commit</class>
-		<class>org.cvsanaly.entities.RepositoryFile</class>
-		<class>org.cvsanaly.entities.FileLink</class>
+		<class>org.kalibro.core.persistence.record.StackTraceElementRecord</class>
+		<class>org.kalibro.core.persistence.record.ThrowableRecord</class>
 	</persistence-unit>
 </persistence>

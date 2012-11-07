@@ -1,52 +1,67 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertTrue;
-import static org.kalibro.core.model.ProjectFixtures.newHelloWorld;
+import static org.junit.Assert.*;
 
-import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.KalibroException;
-import org.kalibro.core.model.Project;
-import org.kalibro.dao.ProjectDaoFake;
-import org.kalibro.service.entities.RawProjectXml;
+import org.kalibro.Project;
+import org.kalibro.client.EndpointTest;
+import org.kalibro.dao.ProjectDao;
+import org.kalibro.service.xml.ProjectXml;
+import org.powermock.reflect.Whitebox;
 
-public class ProjectEndpointTest extends EndpointTest {
+public class ProjectEndpointTest extends EndpointTest<Project, ProjectDao, ProjectEndpoint> {
 
-	private Project sample;
-	private ProjectEndpoint port;
+	private static final Long ID = Math.abs(new Random().nextLong());
 
-	@Before
-	public void setUp() throws MalformedURLException {
-		sample = newHelloWorld();
-		sample.setError(new KalibroException("ProjectEndpointTest", new Exception()));
-		ProjectDaoFake daoFake = new ProjectDaoFake();
-		daoFake.save(sample);
-		port = publishAndGetPort(new ProjectEndpointImpl(daoFake), ProjectEndpoint.class);
+	@Override
+	protected Project loadFixture() {
+		Project project = new Project("ProjectEndpoint test name");
+		Whitebox.setInternalState(project, "id", ID);
+		return project;
+	}
+
+	@Override
+	protected List<String> fieldsThatShouldBeProxy() {
+		return list("repositories");
 	}
 
 	@Test
-	public void shouldListProjectNames() {
-		assertDeepList(port.getProjectNames(), sample.getName());
+	public void shouldConfirmExistence() {
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(port.projectExists(-1L));
+		assertTrue(port.projectExists(ID));
 	}
 
 	@Test
-	public void shouldGetProjectByName() {
-		assertDeepEquals(sample, port.getProject(sample.getName()).convert());
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.getProject(ID));
 	}
 
 	@Test
-	public void shouldRemoveProjectByName() {
-		port.removeProject(sample.getName());
-		assertTrue(port.getProjectNames().isEmpty());
+	public void shouldGetProjectOfRepository() {
+		when(dao.projectOf(ID)).thenReturn(entity);
+		assertDeepDtoEquals(entity, port.projectOf(ID));
 	}
 
 	@Test
-	public void shouldSaveProject() {
-		Project newProject = newHelloWorld();
-		newProject.setName("ProjectEndpointTest project");
-		port.saveProject(new RawProjectXml(newProject));
-		assertDeepList(port.getProjectNames(), sample.getName(), newProject.getName());
+	public void shouldGetAll() {
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.allProjects());
+	}
+
+	@Test
+	public void shouldSave() {
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, port.saveProject(new ProjectXml(entity)));
+	}
+
+	@Test
+	public void shouldDelete() {
+		port.deleteProject(ID);
+		verify(dao).delete(ID);
 	}
 }

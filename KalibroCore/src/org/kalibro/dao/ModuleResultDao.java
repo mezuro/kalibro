@@ -1,13 +1,17 @@
 package org.kalibro.dao;
 
-import java.util.Date;
-import java.util.List;
+import java.util.SortedSet;
 
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 
+/**
+ * Data access object for {@link ModuleResult}.
+ * 
+ * @author Carlos Morais
+ */
 public interface ModuleResultDao {
 
-	ModuleResult getModuleResult(String projectName, String moduleName, Date date);
+	ModuleResult get(Long moduleResultId);
 
-	List<ModuleResult> getResultHistory(String projectName, String moduleName);
+	SortedSet<ModuleResult> childrenOf(Long moduleResultId);
 }

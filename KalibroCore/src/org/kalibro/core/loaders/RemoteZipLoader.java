@@ -1,9 +1,14 @@
 package org.kalibro.core.loaders;
 
+/**
+ * Loader for remote zip files.
+ * 
+ * @author Carlos Morais
+ */
 public class RemoteZipLoader extends RemoteFileLoader {
 
 	@Override
-	protected ProjectLoader createLocalLoader() {
+	protected RepositoryLoader localLoader() {
 		return new LocalZipLoader();
 	}
 }

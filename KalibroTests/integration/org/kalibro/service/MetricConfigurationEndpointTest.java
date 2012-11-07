@@ -1,64 +1,51 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.*;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.junit.Assert.assertEquals;
 
-import java.net.MalformedURLException;
+import java.util.List;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.core.model.MetricConfiguration;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.MetricConfigurationDao;
-import org.kalibro.dao.MetricConfigurationDaoFake;
-import org.kalibro.service.entities.MetricConfigurationXml;
+import org.kalibro.service.xml.MetricConfigurationXml;
+import org.powermock.reflect.Whitebox;
 
-public class MetricConfigurationEndpointTest extends EndpointTest {
+public class MetricConfigurationEndpointTest extends
+	EndpointTest<MetricConfiguration, MetricConfigurationDao, MetricConfigurationEndpoint> {
 
-	private static final String CONFIGURATION_NAME = "MetricConfigurationEndpointTest";
+	private static final Long ID = new Random().nextLong();
+	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
-	private MetricConfigurationDao daoFake;
-	private MetricConfigurationEndpoint port;
+	@Override
+	protected MetricConfiguration loadFixture() {
+		MetricConfiguration metricConfiguration = loadFixture("lcom4", MetricConfiguration.class);
+		Whitebox.setInternalState(metricConfiguration, "id", ID);
+		Whitebox.setInternalState(metricConfiguration.getReadingGroup(), "id", ID);
+		return metricConfiguration;
+	}
 
-	@Before
-	public void setUp() throws MalformedURLException {
-		daoFake = new MetricConfigurationDaoFake();
-		daoFake.save(metricConfiguration("cbo"), CONFIGURATION_NAME);
-		daoFake.save(metricConfiguration("loc"), CONFIGURATION_NAME);
-		port = publishAndGetPort(new MetricConfigurationEndpointImpl(daoFake), MetricConfigurationEndpoint.class);
+	@Override
+	protected List<String> fieldsThatShouldBeProxy() {
+		return list("baseTool", "readingGroup", "ranges");
 	}
 
 	@Test
-	public void shouldGetMetricConfigurationByName() {
-		verifyGetMetricConfiguration("cbo");
-		verifyGetMetricConfiguration("loc");
-	}
-
-	private void verifyGetMetricConfiguration(String code) {
-		String metricName = metricConfiguration(code).getMetric().getName();
-		MetricConfiguration expected = daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName);
-		MetricConfiguration actual = port.getMetricConfiguration(CONFIGURATION_NAME, metricName).convert();
-		assertDeepEquals(expected, actual);
+	public void shouldGetMetricConfigurationsOfConfiguration() {
+		when(dao.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 
 	@Test
-	public void shouldRemoveConfigurationByName() {
-		verifyRemoveMetricConfiguration("cbo");
-		verifyRemoveMetricConfiguration("loc");
-	}
-
-	private void verifyRemoveMetricConfiguration(String code) {
-		String metricName = metricConfiguration(code).getMetric().getName();
-		assertNotNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
-		port.removeMetricConfiguration(CONFIGURATION_NAME, metricName);
-		assertNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
+	public void shouldSave() {
+		when(dao.save(entity, CONFIGURATION_ID)).thenReturn(ID);
+		assertEquals(ID, port.saveMetricConfiguration(new MetricConfigurationXml(entity), CONFIGURATION_ID));
 	}
 
 	@Test
-	public void shouldSaveConfiguration() {
-		MetricConfiguration newConfiguration = metricConfiguration("acc");
-		String metricName = newConfiguration.getMetric().getName();
-		assertNull(daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
-		port.saveMetricConfiguration(new MetricConfigurationXml(newConfiguration), CONFIGURATION_NAME);
-		assertDeepEquals(newConfiguration, daoFake.getMetricConfiguration(CONFIGURATION_NAME, metricName));
+	public void shouldDelete() {
+		port.deleteMetricConfiguration(ID);
+		verify(dao).delete(ID);
 	}
 }

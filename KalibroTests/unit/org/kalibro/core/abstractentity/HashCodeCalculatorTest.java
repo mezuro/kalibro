@@ -1,11 +1,13 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.assertEquals;
+import static org.kalibro.Granularity.CLASS;
 import static org.kalibro.core.abstractentity.HashCodeCalculator.hash;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.UtilityClassTest;
+import org.kalibro.Module;
+import org.kalibro.tests.UtilityClassTest;
 
 public class HashCodeCalculatorTest extends UtilityClassTest {
 
@@ -43,5 +45,10 @@ public class HashCodeCalculatorTest extends UtilityClassTest {
 		Person fulano = new Person(null, "Fulano", "M");
 		Person cicrana = new Person(null, "Cicrana", "F");
 		assertEquals(hash(fulano), hash(cicrana));
+	}
+
+	@Test
+	public void hashCodesShouldBeEqualForEqualArrays() {
+		assertEquals(hash(new Module(CLASS, "hash", "code")), hash(new Module(CLASS, "hash", "code")));
 	}
 }

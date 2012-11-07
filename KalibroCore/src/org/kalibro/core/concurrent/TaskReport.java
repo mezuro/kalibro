@@ -7,7 +7,7 @@ package org.kalibro.core.concurrent;
  * 
  * @author Carlos Morais
  */
-public final class TaskReport<T> {
+public class TaskReport<T> {
 
 	private Task<T> task;
 	private long executionTime;

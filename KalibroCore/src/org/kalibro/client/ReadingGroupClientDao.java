@@ -1,12 +1,12 @@
 package org.kalibro.client;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingGroupDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ReadingGroupEndpoint;
-import org.kalibro.service.xml.ReadingGroupXmlRequest;
+import org.kalibro.service.xml.ReadingGroupXml;
 
 /**
  * {@link ReadingGroupEndpoint} client implementation of {@link ReadingGroupDao}.
@@ -15,7 +15,7 @@ import org.kalibro.service.xml.ReadingGroupXmlRequest;
  */
 class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> implements ReadingGroupDao {
 
-	public ReadingGroupClientDao(String serviceAddress) {
+	ReadingGroupClientDao(String serviceAddress) {
 		super(serviceAddress, ReadingGroupEndpoint.class);
 	}
 
@@ -30,13 +30,13 @@ class ReadingGroupClientDao extends EndpointClient<ReadingGroupEndpoint> impleme
 	}
 
 	@Override
-	public List<ReadingGroup> all() {
-		return DataTransferObject.convert(port.allReadingGroups());
+	public SortedSet<ReadingGroup> all() {
+		return DataTransferObject.toSortedSet(port.allReadingGroups());
 	}
 
 	@Override
 	public Long save(ReadingGroup group) {
-		return port.saveReadingGroup(new ReadingGroupXmlRequest(group));
+		return port.saveReadingGroup(new ReadingGroupXml(group));
 	}
 
 	@Override

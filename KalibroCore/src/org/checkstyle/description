@@ -1,0 +1,4 @@
+Checkstyle is a tool for checking Java source code for adherence to a set of rules (see http://checkstyle.sourceforge.net).
+Many checks were configured to work as metrics.
+Such as Checkstyle checks, the metrics are file based.
+For example, "Number of Methods" for Sample.java is the sum of the number of methods in each class declared at Sample.java.   

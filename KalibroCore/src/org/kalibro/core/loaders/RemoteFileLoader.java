@@ -4,41 +4,34 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.kalibro.core.model.Repository;
-
-abstract class RemoteFileLoader extends ProjectLoader {
-
-	private ProjectLoader localLoader = createLocalLoader();
-
-	protected abstract ProjectLoader createLocalLoader();
+/**
+ * Abstract loader for remote compressed files.
+ * 
+ * @author Carlos Morais
+ */
+abstract class RemoteFileLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
-		List<String> validationCommands = new ArrayList<String>();
-		validationCommands.add("wget --version");
-		validationCommands.addAll(localLoader.getValidationCommands());
-		return validationCommands;
+	public List<String> validationCommands() {
+		return mergeCommands("wget --version", localLoader().validationCommands(), "rm --version");
 	}
 
 	@Override
-	public boolean supportsAuthentication() {
-		return true;
-	}
-
-	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	public List<String> loadCommands(String address, boolean update) {
 		String temporaryFilePath = "." + File.separator + "." + hashCode();
-		List<String> loadCommands = new ArrayList<String>();
-		loadCommands.add(getDownloadCommand(repository, temporaryFilePath));
-		loadCommands.addAll(localLoader.getLoadCommands(new Repository(null, temporaryFilePath), update));
-		return loadCommands;
+		return mergeCommands(
+			"wget " + address + " -O " + temporaryFilePath,
+			localLoader().loadCommands(temporaryFilePath, update),
+			"rm -f " + temporaryFilePath);
 	}
 
-	private String getDownloadCommand(Repository repository, String temporaryFilePath) {
-		String downloadCommand = "wget -N ";
-		if (repository.hasAuthentication())
-			downloadCommand += "--user=" + repository.getUsername() + " --password=" + repository.getPassword() + " ";
-		downloadCommand += repository.getAddress() + " -O " + temporaryFilePath;
-		return downloadCommand;
+	private List<String> mergeCommands(String firstCommand, List<String> commands, String lastCommand) {
+		List<String> merged = new ArrayList<String>();
+		merged.add(firstCommand);
+		merged.addAll(commands);
+		merged.add(lastCommand);
+		return merged;
 	}
+
+	protected abstract RepositoryLoader localLoader();
 }

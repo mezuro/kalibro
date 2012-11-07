@@ -2,33 +2,31 @@ package org.kalibro.core.concurrent;
 
 import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.AnswerAdapter;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(TaskExecutor.class)
-public class TaskTest extends TestCase implements TaskListener<Void> {
+@PrepareForTest({Task.class, TaskExecutor.class})
+public class TaskTest extends UnitTest {
 
-	private boolean waiting;
-	private VoidTask task;
-	private TaskReport<?> report;
+	private static final String ANSWER = "42";
+
+	@SuppressWarnings("rawtypes")
+	private Future future;
+	private RetrieveResultTask<String> task;
 
 	@Before
 	public void setUp() {
+		future = mock(Future.class);
 		mockStatic(TaskExecutor.class);
-		when(TaskExecutor.execute(task)).thenAnswer(new SetReport());
-		when(TaskExecutor.execute(same(task), anyLong(), any(TimeUnit.class))).thenAnswer(new SetReport());
-		task = new DoNothingTask();
+		task = new RetrieveResultTask<String>(ANSWER);
 	}
 
 	@Test
@@ -39,17 +37,15 @@ public class TaskTest extends TestCase implements TaskListener<Void> {
 	}
 
 	@Test
-	public void shouldExecuteAndWaitWithoutTimeout() {
-		task.execute();
-		verifyStatic();
-		TaskExecutor.execute(task);
+	public void shouldExecute() {
+		when(TaskExecutor.execute(task)).thenReturn(ANSWER);
+		assertEquals(ANSWER, task.execute());
 	}
 
 	@Test
-	public void shouldExecuteAndWaitWithTimeout() {
-		task.execute(42, DAYS);
-		verifyStatic();
-		TaskExecutor.execute(task, 42, DAYS);
+	public void shouldExecuteWithTimeout() {
+		when(TaskExecutor.execute(task, 42, DAYS)).thenReturn(ANSWER);
+		assertEquals(ANSWER, task.execute(42, DAYS));
 	}
 
 	@Test
@@ -60,66 +56,58 @@ public class TaskTest extends TestCase implements TaskListener<Void> {
 	}
 
 	@Test
-	public void shouldCancelPeriodicExecution() {
-		Future future = mock(Future.class);
-		when(TaskExecutor.executePeriodically(task, 42, MINUTES)).thenReturn(future);
+	public void shouldCancelBackgroundExecution() {
+		when(TaskExecutor.executeInBackground(task)).thenReturn(future);
+		task.executeInBackground();
+		task.cancelExecution();
+		verify(future).cancel(true);
+	}
 
+	@Test
+	public void shouldCancelPeriodicExecution() {
+		when(TaskExecutor.executePeriodically(task, 42, MINUTES)).thenReturn(future);
 		task.executePeriodically(42, MINUTES);
 		task.cancelExecution();
-		verify(future).cancel(false);
+		verify(future).cancel(true);
 	}
 
 	@Test
-	public void shouldNotifyListenerOfTaskDone() throws InterruptedException {
-		runAndGetReport();
+	public void shouldComputeReportForTaskDone() {
+		assertNull(task.getReport());
+		task.run();
+
+		TaskReport<String> report = task.getReport();
+		assertSame(task, report.getTask());
 		assertTrue(report.isTaskDone());
-		assertNull(report.getError());
+		assertEquals(ANSWER, report.getResult());
 	}
 
 	@Test
-	public void shouldNotifyListenerOfTaskHalted() throws InterruptedException {
-		task = new ThrowErrorTask();
-		runAndGetReport();
+	public void shouldComputeReportForTaskNotDone() {
+		Throwable error = new Throwable();
+		ThrowErrorTask errorTask = new ThrowErrorTask(error);
+		assertNull(errorTask.getReport());
+		errorTask.run();
+
+		TaskReport<?> report = errorTask.getReport();
+		assertSame(errorTask, report.getTask());
 		assertFalse(report.isTaskDone());
-		assertNotNull(report.getError());
+		assertSame(error, report.getError());
 	}
 
 	@Test
-	public void shouldRetrieveReport() throws InterruptedException {
-		runAndGetReport();
-		assertSame(report, task.getReport());
+	public void shouldNotifyListenersInBackground() throws Exception {
+		TaskListener<String> listener = mock(TaskListener.class);
+		TaskListenerNotifier<String> notifier = mock(TaskListenerNotifier.class);
+		whenNew(TaskListenerNotifier.class).withArguments(any(TaskReport.class), same(listener)).thenReturn(notifier);
+
+		task.addListener(listener);
+		task.run();
+		verify(notifier).executeInBackground();
 	}
 
 	@Test
 	public void shouldHaveDefaultDescription() {
-		assertEquals("running task: org.kalibro.core.concurrent.DoNothingTask", "" + task);
-	}
-
-	private synchronized void runAndGetReport() throws InterruptedException {
-		report = null;
-		task.addListener(this);
-		new Thread(task).start();
-		waitReport();
-	}
-
-	private synchronized void waitReport() throws InterruptedException {
-		waiting = true;
-		while (waiting)
-			wait();
-	}
-
-	@Override
-	public synchronized void taskFinished(TaskReport<Void> taskReport) {
-		report = taskReport;
-		waiting = false;
-		notify();
-	}
-
-	private class SetReport extends AnswerAdapter {
-
-		@Override
-		protected void answer() throws Throwable {
-			task.setReport(new TaskReport<Void>(task, 0, (Void) null));
-		}
+		assertEquals("running task: org.kalibro.core.concurrent.DoNothingTask", "" + new DoNothingTask());
 	}
 }

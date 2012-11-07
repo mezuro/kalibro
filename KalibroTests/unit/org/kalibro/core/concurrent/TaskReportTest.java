@@ -6,9 +6,9 @@ import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 
-public class TaskReportTest extends TestCase {
+public class TaskReportTest extends UnitTest {
 
 	private static final long EXECUTION_TIME = new Random().nextLong();
 

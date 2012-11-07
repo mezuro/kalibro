@@ -4,17 +4,19 @@ import static org.junit.Assert.*;
 import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({AbstractEntity.class, KalibroSettings.class})
-public class KalibroSettingsTest extends TestCase {
+public class KalibroSettingsTest extends UnitTest {
 
 	private File settingsFile;
 
@@ -24,7 +26,6 @@ public class KalibroSettingsTest extends TestCase {
 	public void setUp() throws Exception {
 		settingsFile = mock(File.class);
 		whenNew(File.class).withArguments(dotKalibro(), "kalibro.settings").thenReturn(settingsFile);
-		mockStatic(AbstractEntity.class);
 		settings = spy(new KalibroSettings());
 	}
 
@@ -39,6 +40,7 @@ public class KalibroSettingsTest extends TestCase {
 
 	@Test
 	public void shouldLoadFromSettingsFile() throws Exception {
+		mockStatic(AbstractEntity.class);
 		when(AbstractEntity.class, "importFrom", settingsFile, KalibroSettings.class).thenReturn(settings);
 		assertSame(settings, KalibroSettings.load());
 	}
@@ -62,5 +64,12 @@ public class KalibroSettingsTest extends TestCase {
 		doNothing().when(settings).exportTo(settingsFile);
 		settings.save();
 		verify(settings).exportTo(settingsFile);
+	}
+
+	@Test
+	public void printingShouldBeHumanReadable() throws IOException {
+		String expected = loadResource("KalibroSettings-default.yml");
+		expected = expected.replace("~/.kalibro", dotKalibro().getPath());
+		assertEquals(expected, new KalibroSettings().toString());
 	}
 }

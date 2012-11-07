@@ -1,55 +1,76 @@
 package org.kalibro.core.persistence;
 
-import java.util.Date;
-import java.util.List;
+import java.util.Arrays;
+import java.util.SortedSet;
 
 import javax.persistence.TypedQuery;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.MetricResult;
-import org.kalibro.core.model.ModuleResult;
-import org.kalibro.core.model.ProjectResult;
-import org.kalibro.core.persistence.record.MetricResultRecord;
+import org.kalibro.Granularity;
+import org.kalibro.Module;
+import org.kalibro.ModuleResult;
+import org.kalibro.core.persistence.record.ModuleResultRecord;
 import org.kalibro.dao.ModuleResultDao;
+import org.kalibro.dto.DataTransferObject;
 
-public class ModuleResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements ModuleResultDao {
+/**
+ * Database access implementation for {@link ModuleResultDao}.
+ * 
+ * @author Carlos Morais
+ */
+public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleResultRecord> implements ModuleResultDao {
 
-	private static final String QUERY = "SELECT result FROM MetricResult result " +
-		"WHERE result.module.projectResult.project.name = :projectName AND result.module.name = :moduleName";
-
-	protected ModuleResultDatabaseDao(RecordManager recordManager) {
-		super(recordManager, MetricResultRecord.class);
-	}
-
-	public void save(ModuleResult moduleResult, ProjectResult projectResult) {
-		recordManager.saveAll(MetricResultRecord.createRecords(moduleResult, projectResult));
+	ModuleResultDatabaseDao() {
+		super(ModuleResultRecord.class);
 	}
 
 	@Override
-	public ModuleResult getModuleResult(String projectName, String moduleName, Date date) {
-		TypedQuery<MetricResultRecord> query =
-			createRecordQuery(QUERY + " AND result.module.projectResult.date = :date");
-		query.setParameter("projectName", projectName);
-		query.setParameter("moduleName", moduleName);
-		query.setParameter("date", date.getTime());
-		ModuleResult moduleResult = MetricResultRecord.convertIntoModuleResults(query.getResultList()).get(0);
-		moduleResult.setConfiguration(getConfigurationFor(projectName));
+	public SortedSet<ModuleResult> childrenOf(Long moduleResultId) {
+		String from = "ModuleResult parent JOIN parent.children moduleResult";
+		TypedQuery<ModuleResultRecord> query = createRecordQuery(from, "parent.id = :parentId");
+		query.setParameter("parentId", moduleResultId);
+		return DataTransferObject.toSortedSet(query.getResultList());
+	}
+
+	public void save(ModuleResult moduleResult, Long processingId) {
+		save(new ModuleResultRecord(moduleResult, processingId));
+	}
+
+	public ModuleResult prepareResultFor(Module module, Long processingId) {
+		ModuleResult moduleResult = findResultFor(module, processingId).convert();
+		moduleResult.getModule().setGranularity(module.getGranularity());
 		return moduleResult;
 	}
 
-	@Override
-	public List<ModuleResult> getResultHistory(String projectName, String moduleName) {
-		TypedQuery<MetricResultRecord> query = createRecordQuery(QUERY + " ORDER BY result.module.projectResult.date");
-		query.setParameter("projectName", projectName);
-		query.setParameter("moduleName", moduleName);
-		List<ModuleResult> resultHistory = MetricResultRecord.convertIntoModuleResults(query.getResultList());
-		Configuration configuration = getConfigurationFor(projectName);
-		for (ModuleResult moduleResult : resultHistory)
-			moduleResult.setConfiguration(configuration);
-		return resultHistory;
+	private ModuleResultRecord findResultFor(Module module, Long processingId) {
+		if (!exists("WHERE " + moduleCondition(module),
+			"processingId", processingId, "module", moduleParameter(module)))
+			save(new ModuleResultRecord(module, findParentOf(module, processingId), processingId));
+		return getResultFor(module, processingId);
 	}
 
-	private Configuration getConfigurationFor(String projectName) {
-		return new ConfigurationDatabaseDao(recordManager).getConfigurationFor(projectName);
+	private ModuleResultRecord findParentOf(Module module, Long processingId) {
+		if (module.getGranularity() == Granularity.SOFTWARE)
+			return null;
+		return findResultFor(module.inferParent(), processingId);
+	}
+
+	private ModuleResultRecord getResultFor(Module module, Long processingId) {
+		TypedQuery<ModuleResultRecord> query = createRecordQuery(moduleCondition(module));
+		query.setParameter("processingId", processingId);
+		query.setParameter("module", moduleParameter(module));
+		return query.getSingleResult();
+	}
+
+	private String moduleCondition(Module module) {
+		String processingCondition = "moduleResult.processing.id = :processingId AND ";
+		if (module.getGranularity() == Granularity.SOFTWARE)
+			return processingCondition + "moduleResult.moduleGranularity = :module";
+		return processingCondition + "moduleResult.moduleName = :module";
+	}
+
+	private Object moduleParameter(Module module) {
+		if (module.getGranularity() == Granularity.SOFTWARE)
+			return Granularity.SOFTWARE.name();
+		return Arrays.asList(module.getName());
 	}
 }

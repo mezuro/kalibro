@@ -1,88 +1,78 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertSame;
-import static org.kalibro.core.model.BaseToolFixtures.analizoStub;
-import static org.mockito.Matchers.any;
+import static org.kalibro.MetricCollectorStub.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintStream;
 
-import org.analizo.AnalizoMetricCollector;
-import org.analizo.AnalizoStub;
-import org.checkstyle.CheckstyleMetricCollector;
+import org.apache.commons.io.IOUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.MetricCollector;
-import org.kalibro.core.model.BaseTool;
-import org.kalibro.core.persistence.record.BaseToolRecord;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
+import org.kalibro.BaseTool;
+import org.kalibro.KalibroException;
+import org.kalibro.core.Environment;
+import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.ThrowableMatcher;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(BaseToolDatabaseDao.class)
-public class BaseToolDatabaseDaoTest extends TestCase {
-
-	private static final List<String> BASE_TOOL_NAMES = Arrays.asList("Analizo", "Checkstyle");
-
-	private BaseTool baseTool;
-	private RecordManager recordManager;
+@PrepareForTest({BaseToolDatabaseDao.class, IOUtils.class})
+public class BaseToolDatabaseDaoTest extends UnitTest {
 
 	private BaseToolDatabaseDao dao;
 
 	@Before
-	public void setUp() {
-		baseTool = analizoStub();
-		recordManager = mock(RecordManager.class);
-		dao = spy(new BaseToolDatabaseDao(recordManager));
+	public void setUp() throws IOException {
+		mockStatic(IOUtils.class);
+		when(IOUtils.readLines(any(InputStream.class))).thenReturn(list(CLASS_NAME));
+		dao = new BaseToolDatabaseDao();
 	}
 
 	@Test
-	public void shouldSaveKnownBaseTools() throws Exception {
-		doReturn(null).when(dao, "save", any(MetricCollector.class));
-		dao.saveBaseTools();
-		verifyPrivate(dao).invoke("save", AnalizoMetricCollector.class);
-		verifyPrivate(dao).invoke("save", CheckstyleMetricCollector.class);
+	public void shouldGetAllNames() {
+		assertDeepEquals(set(NAME), dao.allNames());
 	}
 
 	@Test
-	public void shouldSaveBaseToolByClass() throws Exception {
-		doReturn(new ArrayList<String>()).when(dao).getAllNames();
-		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
-
-		ArgumentCaptor<BaseToolRecord> captor = ArgumentCaptor.forClass(BaseToolRecord.class);
-		Mockito.verify(recordManager).save(captor.capture());
-		assertDeepEquals(baseTool, captor.getValue().convert());
+	public void shouldGetByName() {
+		assertDeepEquals(new BaseTool(CLASS_NAME), dao.get(NAME));
 	}
 
 	@Test
-	public void shouldNotSaveIfCannotInstantiateBaseTool() throws Exception {
-		doReturn(new ArrayList<String>()).when(dao).getAllNames();
-		Whitebox.invokeMethod(dao, "save", MetricCollector.class);
-		Mockito.verify(recordManager, never()).save(any());
+	public void shouldThrowExceptionIfCannotReadCollectorClasses() throws IOException {
+		IOException error = new IOException();
+		when(IOUtils.readLines(any(InputStream.class))).thenThrow(error);
+		assertCreateDaoThrowsException().withCause(error).withMessage("Error creating collectors.");
+	}
+
+	private ThrowableMatcher assertCreateDaoThrowsException() {
+		return assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				new BaseToolDatabaseDao();
+			}
+		}).throwsException();
 	}
 
 	@Test
-	public void shouldNotSaveIfBaseToolAlreadyExists() throws Exception {
-		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
-		Whitebox.invokeMethod(dao, "save", AnalizoStub.class);
-		Mockito.verify(recordManager, never()).save(any());
-	}
+	public void shouldLogErrorCreatingParticularCollector() throws Exception {
+		File file = mock(File.class);
+		PrintStream printStream = mock(PrintStream.class);
+		KalibroException exception = mock(KalibroException.class);
 
-	@Test
-	public void shouldListAllBaseToolNames() {
-		doReturn(BASE_TOOL_NAMES).when(dao).getAllNames();
-		assertDeepEquals(BASE_TOOL_NAMES, dao.getBaseToolNames());
-	}
+		when(IOUtils.readLines(any(InputStream.class))).thenReturn(list("inexistent.Class"));
+		whenNew(File.class).withArguments(Environment.logsDirectory(), "collectors.log").thenReturn(file);
+		whenNew(PrintStream.class).withArguments(file).thenReturn(printStream);
+		whenNew(KalibroException.class).withArguments(
+			eq("Could not load collector of class: inexistent.Class"), any(Exception.class)).thenReturn(exception);
 
-	@Test
-	public void shouldGetBaseToolByName() {
-		doReturn(baseTool).when(dao).getByName("Analizo");
-		assertSame(baseTool, dao.getBaseTool("Analizo"));
+		new BaseToolDatabaseDao();
+		verify(exception).printStackTrace(printStream);
 	}
 }

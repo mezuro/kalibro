@@ -4,9 +4,18 @@ import static org.junit.Assert.*;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.junit.runner.RunWith;
+import org.kalibro.BaseTool;
+import org.kalibro.dao.BaseToolDao;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dto.DaoLazyLoader;
+import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-public class EntityReflectorTest extends TestCase {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoFactory.class)
+public class EntityReflectorTest extends UnitTest {
 
 	private Person person;
 	private Programmer programmer;
@@ -20,27 +29,40 @@ public class EntityReflectorTest extends TestCase {
 	}
 
 	@Test
+	public void shouldUnwrapLazyLoaderProxies() {
+		BaseTool entity = loadFixture("inexistent", BaseTool.class);
+		BaseToolDao dao = mock(BaseToolDao.class);
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getBaseToolDao()).thenReturn(dao);
+		when(dao.get("")).thenReturn(entity);
+
+		BaseTool proxy = DaoLazyLoader.createProxy(BaseToolDao.class, "get", "");
+		assertNotSame(entity, proxy);
+		assertSame(entity, new EntityReflector(proxy).getObject());
+	}
+
+	@Test
 	public void shouldListIdentityFields() {
-		assertDeepList(reflector(person).listIdentityFields(), "identityNumber");
-		assertDeepList(reflector(programmer).listIdentityFields(), "identityNumber");
+		assertDeepEquals(list("identityNumber"), reflector(person).listIdentityFields());
+		assertDeepEquals(list("identityNumber"), reflector(programmer).listIdentityFields());
 	}
 
 	@Test
 	public void withoutSpecifyingAllFieldsShouldBeIdentityFields() {
-		assertDeepList(reflector(noIdentityEntity).listIdentityFields(), "field1", "field2");
+		assertDeepEquals(list("field1", "field2"), reflector(noIdentityEntity).listIdentityFields());
 	}
 
 	@Test
 	public void shouldListSortingFields() {
 		assertTrue(reflector(noIdentityEntity).listSortingFields().isEmpty());
-		assertDeepList(reflector(person).listSortingFields(), "name");
-		assertDeepList(reflector(programmer).listSortingFields(), "name");
+		assertDeepEquals(list("name"), reflector(person).listSortingFields());
+		assertDeepEquals(list("name"), reflector(programmer).listSortingFields());
 	}
 
 	@Test
 	public void shouldListSortedPrintFields() {
-		assertDeepList(reflector(person).listPrintFields(), "name", "identityNumber", "relatives", "sex");
-		assertDeepList(reflector(new NoIdentityEntity()).listPrintFields(), "field1");
+		assertDeepEquals(list("name", "identityNumber", "relatives", "sex"), reflector(person).listPrintFields());
+		assertDeepEquals(list("field1"), reflector(new NoIdentityEntity()).listPrintFields());
 	}
 
 	@Test

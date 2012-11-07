@@ -1,7 +1,6 @@
 package org.kalibro.client;
 
-import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
+import static org.junit.Assert.assertSame;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -12,67 +11,71 @@ import javax.xml.ws.Service;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
-import org.mockito.ArgumentCaptor;
+import org.kalibro.tests.UnitTest;
+import org.mockito.ArgumentMatcher;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Service.class)
-public class EndpointClientTest extends TestCase {
+public class EndpointClientTest extends UnitTest {
 
 	private Service service;
+	private TestEndpoint port;
 
 	@Before
 	public void setUp() {
 		service = mock(Service.class);
+		port = mock(TestEndpoint.class);
 		mockStatic(Service.class);
-		when(Service.create(any(URL.class), any(QName.class))).thenReturn(service);
+		when(Service.create(wsdlLocation(), qName("TestEndpointService"))).thenReturn(service);
+		when(service.getPort(qName("TestEndpointPort"), eq(TestEndpoint.class))).thenReturn(port);
 	}
 
 	@Test
 	public void shouldThrowExceptionOnMalformedUrl() {
-		assertThat(new VoidTask() {
+		assertThat(createClientWithMalformedUrl()).throwsException().withCause(MalformedURLException.class)
+			.withMessage("Invalid service address: mal formed URL");
+	}
+
+	private VoidTask createClientWithMalformedUrl() {
+		return new VoidTask() {
 
 			@Override
 			protected void perform() {
 				new TestEndpointClient("mal formed URL");
 			}
-		}).throwsException().withMessage("Invalid service address: mal formed URL")
-			.withCause(MalformedURLException.class);
+		};
 	}
 
 	@Test
 	public void shoudCreateEndpointPort() {
-		TestEndpoint port = mock(TestEndpoint.class);
-		when(service.getPort(any(QName.class), eq(TestEndpoint.class))).thenReturn(port);
-
 		TestEndpointClient client = new TestEndpointClient("http://localhost:8080/KalibroService/");
 		assertSame(port, client.port);
-
-		verifyCreatedService("http://localhost:8080/KalibroService/TestEndpoint/?wsdl", "TestEndpointService");
-		verifyCreatedPort("TestEndpointPort");
 	}
 
-	private void verifyCreatedService(String wsdlLocation, String qName) {
-		ArgumentCaptor<URL> urlCaptor = ArgumentCaptor.forClass(URL.class);
-		ArgumentCaptor<QName> qNameCaptor = ArgumentCaptor.forClass(QName.class);
-		verifyStatic();
-		Service.create(urlCaptor.capture(), qNameCaptor.capture());
-		assertEquals(wsdlLocation, urlCaptor.getValue().toExternalForm());
-		assertQName(qName, qNameCaptor.getValue());
+	private URL wsdlLocation() {
+		return argThat(new ArgumentMatcher<URL>() {
+
+			@Override
+			public boolean matches(Object argument) {
+				String url = ((URL) argument).toExternalForm();
+				return url.equals("http://localhost:8080/KalibroService/TestEndpoint/?wsdl");
+			}
+		});
 	}
 
-	private void verifyCreatedPort(String qName) {
-		ArgumentCaptor<QName> qNameCaptor = ArgumentCaptor.forClass(QName.class);
-		verify(service).getPort(qNameCaptor.capture(), eq(TestEndpoint.class));
-		assertQName(qName, qNameCaptor.getValue());
-	}
+	private QName qName(final String localPart) {
+		return argThat(new ArgumentMatcher<QName>() {
 
-	private void assertQName(String localPart, QName qName) {
-		assertEquals("http://service.kalibro.org/", qName.getNamespaceURI());
-		assertEquals(localPart, qName.getLocalPart());
+			@Override
+			public boolean matches(Object argument) {
+				QName qName = (QName) argument;
+				return qName.getNamespaceURI().equals("http://service.kalibro.org/")
+					&& qName.getLocalPart().equals(localPart);
+			}
+		});
 	}
 
 	private final class TestEndpointClient extends EndpointClient<TestEndpoint> {

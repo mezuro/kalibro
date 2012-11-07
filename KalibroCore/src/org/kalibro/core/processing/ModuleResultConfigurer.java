@@ -1,50 +1,55 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.core.model.*;
+import org.kalibro.*;
 
-public class ModuleResultConfigurer {
+/**
+ * Uses a {@link Configuration} to add compound metrics and calculate the grade of a {@link ModuleResult}.
+ * 
+ * @author Carlos Morais
+ */
+final class ModuleResultConfigurer {
 
-	private ModuleResult moduleResult;
-	private Configuration configuration;
-
-	private Double gradeSum, weightSum;
-	private ScriptEvaluator compoundEvaluator;
-
-	public ModuleResultConfigurer(ModuleResult moduleResult, Configuration configuration) {
-		this.moduleResult = moduleResult;
-		this.configuration = configuration;
-	}
-
-	public void configure() {
-		clearConfiguration();
-		configureNativeResults();
-		computeCompoundMetrics();
+	static void configure(ModuleResult moduleResult, Configuration configuration) {
+		new ModuleResultConfigurer(moduleResult, configuration).addCompoundMetrics();
+		double gradeSum = 0.0;
+		double weightSum = 0.0;
+		for (MetricResult metricResult : moduleResult.getMetricResults())
+			if (metricResult.hasGrade()) {
+				Double weight = metricResult.getWeight();
+				gradeSum += metricResult.getGrade() * weight;
+				weightSum += weight;
+			}
 		moduleResult.setGrade(gradeSum / weightSum);
 	}
 
-	private void clearConfiguration() {
-		gradeSum = 0.0;
-		weightSum = 0.0;
-		compoundEvaluator = JavascriptEvaluator.create();
-		moduleResult.removeCompoundMetrics();
+	private ModuleResult moduleResult;
+	private Configuration configuration;
+	private JavascriptEvaluator scriptEvaluator;
+
+	private ModuleResultConfigurer(ModuleResult moduleResult, Configuration configuration) {
+		this.moduleResult = moduleResult;
+		this.configuration = configuration;
+		this.scriptEvaluator = new JavascriptEvaluator();
 	}
 
-	private void configureNativeResults() {
-		for (MetricResult metricResult : moduleResult.getMetricResults()) {
-			String metricName = metricResult.getMetric().getName();
-			if (configuration.containsMetric(metricName)) {
-				MetricConfiguration metricConfiguration = configuration.getConfigurationFor(metricName);
-				metricResult.setConfiguration(metricConfiguration);
-				include(metricConfiguration);
-				computeGrade(metricResult);
-			}
-		}
-	}
-
-	private void computeCompoundMetrics() {
+	private void addCompoundMetrics() {
+		for (MetricConfiguration metricConfiguration : configuration.getMetricConfigurations())
+			includeScriptFor(metricConfiguration);
 		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics())
 			if (isScopeCompatible(compoundMetric))
-				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric.getName()));
+				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric));
+		scriptEvaluator.close();
+	}
+
+	private void includeScriptFor(MetricConfiguration metricConfiguration) {
+		String code = metricConfiguration.getCode();
+		Metric metric = metricConfiguration.getMetric();
+		if (!isScopeCompatible(metric))
+			return;
+		if (metric.isCompound())
+			scriptEvaluator.addFunction(code, ((CompoundMetric) metric).getScript());
+		else if (moduleResult.hasResultFor(metric))
+			scriptEvaluator.addVariable(code, moduleResult.getResultFor(metric).getAggregatedValue());
 	}
 
 	private boolean isScopeCompatible(Metric metric) {
@@ -55,34 +60,12 @@ public class ModuleResultConfigurer {
 		try {
 			doComputeCompoundMetric(metricConfiguration);
 		} catch (Exception exception) {
-			CompoundMetric metric = (CompoundMetric) metricConfiguration.getMetric();
-			moduleResult.addCompoundMetricWithError(metric, exception);
+			moduleResult.addMetricResult(new MetricResult(metricConfiguration, exception));
 		}
 	}
 
 	private void doComputeCompoundMetric(MetricConfiguration metricConfiguration) {
-		include(metricConfiguration);
-		Double calculatedResult = compoundEvaluator.evaluate(metricConfiguration.getCode());
-		MetricResult metricResult = new MetricResult(metricConfiguration.getMetric(), calculatedResult);
-		metricResult.setConfiguration(metricConfiguration);
-		computeGrade(metricResult);
-		moduleResult.addMetricResult(metricResult);
-	}
-
-	private void include(MetricConfiguration metricConfiguration) {
-		String code = metricConfiguration.getCode();
-		Metric metric = metricConfiguration.getMetric();
-		if (metric.isCompound())
-			compoundEvaluator.addFunction(code, ((CompoundMetric) metric).getScript());
-		else
-			compoundEvaluator.addVariable(code, moduleResult.getResultFor(metric).getValue());
-	}
-
-	private void computeGrade(MetricResult metricResult) {
-		if (metricResult.hasRange()) {
-			Double weight = configuration.getConfigurationFor(metricResult.getMetric().getName()).getWeight();
-			gradeSum += metricResult.getGrade() * weight;
-			weightSum += weight;
-		}
+		Double calculatedResult = scriptEvaluator.evaluate(metricConfiguration.getCode());
+		moduleResult.addMetricResult(new MetricResult(metricConfiguration, calculatedResult));
 	}
 }

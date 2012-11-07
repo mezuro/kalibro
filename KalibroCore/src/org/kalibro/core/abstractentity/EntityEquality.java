@@ -9,7 +9,12 @@ import java.util.List;
  */
 class EntityEquality extends Equality<AbstractEntity<?>> {
 
+	private boolean deep;
 	protected EntityReflector reflector, otherReflector;
+
+	public EntityEquality(boolean deep) {
+		this.deep = deep;
+	}
 
 	@Override
 	protected boolean canEvaluate(Object value) {
@@ -23,7 +28,9 @@ class EntityEquality extends Equality<AbstractEntity<?>> {
 		return sameType() && sameFieldValues();
 	}
 
-	protected boolean sameType() {
+	private boolean sameType() {
+		if (deep)
+			return reflector.getObjectClass() == otherReflector.getObjectClass();
 		return reflector.listIdentityFields().equals(otherReflector.listIdentityFields());
 	}
 
@@ -34,15 +41,13 @@ class EntityEquality extends Equality<AbstractEntity<?>> {
 		return true;
 	}
 
-	protected List<String> equalityFields() {
+	private List<String> equalityFields() {
+		if (deep)
+			return reflector.listFields();
 		return reflector.listIdentityFields();
 	}
 
 	private boolean sameFieldValue(String field) {
-		return sameValue(reflector.get(field), otherReflector.get(field));
-	}
-
-	protected boolean sameValue(Object value, Object otherValue) {
-		return areEqual(value, otherValue);
+		return areEqual(reflector.get(field), otherReflector.get(field), deep);
 	}
 }

@@ -1,4 +1,4 @@
----
+ &id1 !!org.kalibro.core.abstractentity.Person
 name: "Isis Nascimento" # name comes first
 identityNumber: "IN"
 relatives: {}

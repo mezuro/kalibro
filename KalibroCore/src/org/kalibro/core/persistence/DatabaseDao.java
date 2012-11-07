@@ -1,84 +1,73 @@
 package org.kalibro.core.persistence;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import javax.persistence.Entity;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.kalibro.core.Identifier;
 import org.kalibro.dto.DataTransferObject;
-import org.kalibro.util.Identifier;
 
 /**
- * Abstract database access implementation for data access objects.
+ * Template for database access objects.
  * 
  * @author Carlos Morais
  */
 abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	private Class<RECORD> recordClass;
+	private RecordManager recordManager;
 
-	@Deprecated
-	protected RecordManager recordManager;
-
-	protected DatabaseDao(RecordManager recordManager, Class<RECORD> recordClass) {
+	DatabaseDao(Class<RECORD> recordClass) {
 		this.recordClass = recordClass;
-		this.recordManager = recordManager;
+		this.recordManager = DatabaseDaoFactory.createRecordManager();
 	}
 
-	protected boolean existsWithId(Long recordId) {
-		Query query = recordManager.createQuery("SELECT 1 FROM " + entityName() + " WHERE id = :id");
-		query.setParameter("id", recordId);
+	public boolean exists(Long recordId) {
+		return exists("WHERE " + alias() + ".id = :id", "id", recordId);
+	}
+
+	protected boolean exists(String clauses, Object... parameters) {
+		Query query = recordManager.createQuery("SELECT 1 FROM " + entityName() + " " + alias() + " " + clauses);
+		for (int i = 0; i < parameters.length; i += 2)
+			query.setParameter(parameters[i].toString(), parameters[i + 1]);
 		return !query.getResultList().isEmpty();
 	}
 
-	protected ENTITY getById(Long recordId) {
+	public ENTITY get(Long recordId) {
 		return recordManager.getById(recordId, recordClass).convert();
 	}
 
-	protected List<ENTITY> allOrderedByName() {
-		TypedQuery<RECORD> query = createRecordQuery("ORDER BY lower(" + alias() + ".name)");
-		return DataTransferObject.convert(query.getResultList());
+	public SortedSet<ENTITY> all() {
+		return DataTransferObject.toSortedSet(createRecordQuery(null).getResultList());
 	}
 
-	protected RECORD save(RECORD record) {
-		return recordManager.save(record);
+	protected TypedQuery<RECORD> createRecordQuery(String where) {
+		return createRecordQuery(entityName() + " " + alias(), where);
 	}
 
-	protected void deleteById(Long recordId) {
-		Query query = recordManager.createQuery("DELETE FROM " + entityName() + " WHERE id = :id");
-		query.setParameter("id", recordId);
-		recordManager.executeUpdate(query);
+	protected TypedQuery<RECORD> createRecordQuery(String from, String where) {
+		String queryString = "SELECT " + alias() + " FROM " + from;
+		if (where != null)
+			queryString += " WHERE " + where;
+		return createQuery(queryString, recordClass);
 	}
 
-	@Deprecated
-	protected List<String> getAllNames() {
-		String queryText = "SELECT x.name FROM " + entityName() + " x ORDER BY lower(x.name)";
-		return recordManager.createQuery(queryText, String.class).getResultList();
-	}
-
-	@Deprecated
-	protected boolean hasEntity(String name) {
-		String queryText = "SELECT 1 FROM " + entityName() + " x WHERE x.name = :name";
-		TypedQuery<String> query = recordManager.createQuery(queryText, String.class);
-		query.setParameter("name", name);
-		return !query.getResultList().isEmpty();
-	}
-
-	@Deprecated
-	protected ENTITY getByName(String name) {
-		TypedQuery<RECORD> query = createRecordQuery("WHERE " + alias() + ".name = :name");
-		query.setParameter("name", name);
-		return query.getSingleResult().convert();
-	}
-
-	protected TypedQuery<RECORD> createRecordQuery(String clauses) {
-		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias() + " " + clauses;
-		return recordManager.createQuery(queryString, recordClass);
+	protected <T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
+		return recordManager.createQuery(queryString, resultClass);
 	}
 
 	private String alias() {
 		return Identifier.fromVariable(entityName()).asVariable();
+	}
+
+	protected <T> T save(T record) {
+		return recordManager.save(record);
+	}
+
+	public void delete(Long recordId) {
+		recordManager.removeById(recordId, recordClass);
 	}
 
 	private String entityName() {

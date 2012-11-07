@@ -1,32 +1,37 @@
 package org.kalibro.core.persistence.record;
 
-import static org.kalibro.core.model.RepositoryFixtures.helloWorldRepository;
+import org.junit.runner.RunWith;
+import org.kalibro.Configuration;
+import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dto.DaoLazyLoader;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
-import org.kalibro.DtoTestCase;
-import org.kalibro.core.model.Repository;
-import org.kalibro.core.model.enums.RepositoryType;
-
-public class RepositoryRecordTest extends DtoTestCase<Repository, RepositoryRecord> {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(DaoLazyLoader.class)
+public class RepositoryRecordTest extends RecordTest {
 
 	@Override
-	protected RepositoryRecord newDtoUsingDefaultConstructor() {
-		return new RepositoryRecord();
+	public void setUp() throws Exception {
+		super.setUp();
+		Long id = Whitebox.getInternalState(entity, "id");
+		Configuration configuration = Whitebox.getInternalState(entity, "configuration");
+		mockStatic(DaoLazyLoader.class);
+		when(DaoLazyLoader.createProxy(ConfigurationDao.class, "configurationOf", id)).thenReturn(configuration);
 	}
 
 	@Override
-	protected Collection<Repository> entitiesForTestingConversion() {
-		List<Repository> helloWorldRepositories = new ArrayList<Repository>();
-		for (RepositoryType repositoryType : RepositoryType.values())
-			helloWorldRepositories.add(helloWorldRepository(repositoryType));
-		return helloWorldRepositories;
-	}
-
-	@Override
-	protected RepositoryRecord createDto(Repository repository) {
-		return new RepositoryRecord(repository, null);
+	protected void verifyColumns() {
+		assertManyToOne("project", ProjectRecord.class).isRequired();
+		shouldHaveId();
+		assertColumn("name", String.class).isRequired();
+		assertColumn("type", String.class).isRequired();
+		assertColumn("address", String.class).isRequired();
+		assertColumn("description", String.class).isNullable();
+		assertColumn("license", String.class).isNullable();
+		assertColumn("processPeriod", Integer.class).isNullable();
+		assertManyToOne("configuration", ConfigurationRecord.class).isRequired();
+		assertOneToMany("processings").doesNotCascade().isMappedBy("repository");
 	}
 }

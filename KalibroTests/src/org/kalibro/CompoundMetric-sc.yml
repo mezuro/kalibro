@@ -1,0 +1,4 @@
+ &id1 !!org.kalibro.CompoundMetric
+name: "Structural Complexity"
+scope: CLASS
+script: "return cbo * lcom4"

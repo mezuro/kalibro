@@ -1,12 +1,12 @@
 package org.kalibro.dto;
 
-import java.util.Arrays;
-import java.util.List;
+import static org.junit.Assert.assertEquals;
 
+import org.junit.Test;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingDao;
 
-public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup, ReadingGroupDto> {
+public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup> {
 
 	@Override
 	protected ReadingGroup loadFixture() {
@@ -14,7 +14,13 @@ public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup, ReadingGr
 	}
 
 	@Override
-	protected List<LazyLoadExpectation> lazyLoadExpectations() {
-		return Arrays.asList(expectLazy(entity.getReadings(), ReadingDao.class, "readingsOf", entity.getId()));
+	protected void registerLazyLoadExpectations() {
+		whenLazy(ReadingDao.class, "readingsOf", entity.getId()).thenReturn(entity.getReadings());
+	}
+
+	@Test
+	public void shouldConvertNullDescriptionIntoEmptyString() throws Exception {
+		when(dto, "description").thenReturn(null);
+		assertEquals("", dto.convert().getDescription());
 	}
 }

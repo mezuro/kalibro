@@ -1,110 +1,111 @@
 package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricFixtures.*;
-import static org.kalibro.core.model.ModuleResultFixtures.newHelloWorldClassResult;
+
+import java.awt.Color;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Granularity;
+import org.junit.runner.RunWith;
+import org.kalibro.*;
+import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
-public class ModuleResultConfigurerTest extends TestCase {
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(ModuleResultConfigurer.class)
+public class ModuleResultConfigurerTest extends UnitTest {
+
+	private static final double CBO = new Random().nextDouble();
+	private static final double LCOM4 = new Random().nextDouble();
+	private static final double SC = CBO * LCOM4;
 
 	private ModuleResult result;
-	private CompoundMetric sc, invalid;
+	private NativeMetric cbo, lcom4;
+	private CompoundMetric sc, other;
 	private Configuration configuration;
-
-	private ModuleResultConfigurer configurer;
 
 	@Before
 	public void setUp() {
-		result = newHelloWorldClassResult();
-		result.removeResultFor(analizoMetric("sc"));
-		configuration = newConfiguration("cbo", "lcom4");
-		configuration.addMetricConfiguration(createScConfiguration());
-		configurer = new ModuleResultConfigurer(result, configuration);
-	}
+		cbo = loadFixture("cbo", NativeMetric.class);
+		lcom4 = loadFixture("lcom4", NativeMetric.class);
+		sc = loadFixture("sc", CompoundMetric.class);
+		other = new CompoundMetric("Other");
+		configuration = loadFixture("sc", Configuration.class);
+		configuration.addMetricConfiguration(new MetricConfiguration(other));
+		result = new ModuleResult(null, new Module(Granularity.CLASS, "ClassX"));
+		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(lcom4), LCOM4));
+		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(cbo), CBO));
 
-	private MetricConfiguration createScConfiguration() {
-		sc = newSc();
-		MetricConfiguration scConfiguration = new MetricConfiguration(sc);
-		scConfiguration.addRange(new Range());
-		return scConfiguration;
-	}
-
-	@Test
-	public void shouldConfigureNativeMetricResults() {
-		configurer.configure();
-		assertTrue(result.getResultFor(analizoMetric("cbo")).hasRange());
+		NativeMetric totalCof = loadFixture("total_cof", NativeMetric.class);
+		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(totalCof), 42.0));
 	}
 
 	@Test
-	public void shouldConfigureCompoundMetricResult() {
-		configurer.configure();
-		assertTrue(result.getResultFor(sc).hasRange());
-	}
-
-	@Test
-	public void checkGrade() {
-		configuration.removeMetric(sc.getName());
-
-		NativeMetric cbo = analizoMetric("cbo");
-		MetricResult cboResult = result.getResultFor(cbo);
-		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo.getName());
-
-		for (Double weight : new Double[]{0.0, 1.0, 2.0, 3.0, 4.0}) {
-			cboConfiguration.setWeight(weight);
-			configurer.configure();
-			Double numerator = 20.0 + cboResult.getGrade() * weight;
-			Double denominator = 2.0 + weight;
-			assertDoubleEquals(numerator / denominator, result.getGrade());
-		}
-	}
-
-	@Test
-	public void shouldRemoveCompoundMetricsWhichAreNotInConfiguration() {
-		CompoundMetric metric = new CompoundMetric();
-		result.addMetricResult(new MetricResult(metric, 42.0));
-		configurer.configure();
-		assertFalse(result.hasResultFor(metric));
-	}
-
-	@Test
-	public void shouldComputeCompoundResult() {
-		configurer.configure();
-		Double cbo = result.getResultFor(analizoMetric("cbo")).getValue();
-		Double lcom4 = result.getResultFor(analizoMetric("lcom4")).getValue();
-		assertDoubleEquals(cbo * lcom4, result.getResultFor(sc).getValue());
+	public void shouldComputeCompoundResults() {
+		assertFalse(result.hasResultFor(sc));
+		configure();
+		assertDoubleEquals(SC, result.getResultFor(sc).getValue());
 	}
 
 	@Test
 	public void shouldIncludeOnlyCompoundMetricsWithCompatibleScope() {
-		changeScScope();
-		configurer.configure();
-		assertFalse(result.hasResultFor(sc));
-	}
-
-	private void changeScScope() {
-		configuration.removeMetric(sc.getName());
+		sc = (CompoundMetric) configuration.getConfigurationFor(sc).getMetric();
 		sc.setScope(Granularity.PACKAGE);
-		configuration.addMetricConfiguration(new MetricConfiguration(sc));
+		configure();
+		assertFalse(result.hasResultFor(sc));
 	}
 
 	@Test
 	public void shouldAddCompoundMetricsWithError() {
-		addCompoundMetricWithError();
-		configurer.configure();
-		assertDeepSet(result.getCompoundMetricsWithError(), invalid);
-		assertClassEquals(NullPointerException.class, result.getErrorFor(invalid));
+		other.setScript("return null;");
+		configure();
+		MetricResult otherResult = result.getResultFor(other);
+		assertTrue(otherResult.hasError());
+
+		Throwable error = otherResult.getError();
+		assertClassEquals(KalibroException.class, error);
+		assertEquals("Error evaluating Javascript for: other", error.getMessage());
+		assertClassEquals(NullPointerException.class, error.getCause());
 	}
 
-	private void addCompoundMetricWithError() {
-		invalid = new CompoundMetric();
-		invalid.setName("Invalid");
-		invalid.setScript("return cbo > 0 ? 1.0 : null;");
-		configuration.addMetricConfiguration(new MetricConfiguration(invalid));
+	@Test
+	public void shouldCalculateCompoundUsingOtherCompound() {
+		other.setScript("return 2 * sc();");
+		configure();
+		assertDoubleEquals(2 * SC, result.getResultFor(other).getValue());
+	}
+
+	@Test
+	public void shouldCalculateGrade() {
+		assertDoubleEquals(Double.NaN, result.getGrade());
+		configure();
+		assertDoubleEquals(10.0, result.getGrade());
+
+		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
+		cboConfiguration.addRange(rangeThatGradesCboWith(7.0));
+		cboConfiguration.setWeight(2.0);
+		configure();
+		assertDoubleEquals(8.0, result.getGrade());
+	}
+
+	private Range rangeThatGradesCboWith(Double grade) {
+		Range range = new Range(CBO, CBO + 1.0);
+		range.setReading(new Reading("name", grade, Color.WHITE));
+		return range;
+	}
+
+	@Test
+	public void shouldCloseScriptEvaluator() throws Exception {
+		JavascriptEvaluator evaluator = spy(new JavascriptEvaluator());
+		whenNew(JavascriptEvaluator.class).withNoArguments().thenReturn(evaluator);
+
+		configure();
+		verify(evaluator).close();
+	}
+
+	private void configure() {
+		ModuleResultConfigurer.configure(result, configuration);
 	}
 }

@@ -1,11 +1,9 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.core.model.enums.RepositoryType;
-
-public class RemoteTarballTest extends RemoteFileLoaderIntegrationTest {
+public class RemoteTarballTest extends RemoteFileIntegrationTest {
 
 	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.REMOTE_TARBALL;
+	protected String address() {
+		return "http:/invalid.address/HelloWorld.tar.gz";
 	}
 }

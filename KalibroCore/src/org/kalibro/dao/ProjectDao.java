@@ -1,30 +1,25 @@
 package org.kalibro.dao;
 
-import java.util.List;
-import java.util.Set;
+import java.util.SortedSet;
 
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
+import org.kalibro.Project;
 
+/**
+ * Data access object for {@link Project}.
+ * 
+ * @author Carlos Morais
+ */
 public interface ProjectDao {
 
-	void save(Project project);
+	boolean exists(Long projectId);
 
-	List<String> getProjectNames();
+	Project get(Long projectId);
 
-	boolean hasProject(String projectName);
+	Project projectOf(Long repositoryId);
 
-	Project getProject(String projectName);
+	SortedSet<Project> all();
 
-	void removeProject(String projectName);
+	Long save(Project project);
 
-	Set<RepositoryType> getSupportedRepositoryTypes();
-
-	void processProject(String projectName);
-
-	void processPeriodically(String projectName, Integer periodInDays);
-
-	Integer getProcessPeriod(String projectName);
-
-	void cancelPeriodicProcess(String projectName);
+	void delete(Long projectId);
 }

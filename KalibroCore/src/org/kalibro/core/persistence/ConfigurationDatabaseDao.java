@@ -1,51 +1,45 @@
 package org.kalibro.core.persistence;
 
-import java.util.List;
+import javax.persistence.TypedQuery;
 
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.Project;
+import org.kalibro.Configuration;
 import org.kalibro.core.persistence.record.ConfigurationRecord;
+import org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord;
 import org.kalibro.dao.ConfigurationDao;
+import org.kalibro.dto.DataTransferObject;
 
-class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements ConfigurationDao {
+/**
+ * Database access implementation for {@link ConfigurationDao}.
+ * 
+ * @author Carlos Morais
+ */
+public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, ConfigurationRecord> implements
+	ConfigurationDao {
 
-	protected ConfigurationDatabaseDao(RecordManager recordManager) {
-		super(recordManager, ConfigurationRecord.class);
+	ConfigurationDatabaseDao() {
+		super(ConfigurationRecord.class);
 	}
 
 	@Override
-	public void save(Configuration configuration) {
-		ConfigurationRecord record = new ConfigurationRecord(configuration);
-		record = recordManager.save(record);
-		configuration.setId(record.convert().getId());
+	public Configuration configurationOf(Long repositoryId) {
+		String from = "Repository repository JOIN repository.configuration configuration";
+		TypedQuery<ConfigurationRecord> query = createRecordQuery(from, "repository.id = :repositoryId");
+		query.setParameter("repositoryId", repositoryId);
+		return query.getSingleResult().convert();
 	}
 
 	@Override
-	public List<String> getConfigurationNames() {
-		return getAllNames();
+	public Long save(Configuration configuration) {
+		return save(new ConfigurationRecord(configuration)).id();
 	}
 
-	@Override
-	public boolean hasConfiguration(String configurationName) {
-		return hasEntity(configurationName);
-	}
-
-	@Override
-	public Configuration getConfiguration(String configurationName) {
-		return getByName(configurationName);
-	}
-
-	@Override
-	public Configuration getConfigurationFor(String projectName) {
-		Project project = new ProjectDatabaseDao(recordManager).getProject(projectName);
-		return getByName(project.getConfigurationName());
-	}
-
-	@Override
-	public void removeConfiguration(String configurationName) {
-		ConfigurationRecord record = new ConfigurationRecord(getByName(configurationName));
-		recordManager.beginTransaction();
-		recordManager.remove(record);
-		recordManager.commitTransaction();
+	public Configuration snapshotFor(Long processingId) {
+		Configuration configuration = new Configuration();
+		TypedQuery<MetricConfigurationSnapshotRecord> query = createQuery(
+			"SELECT snapshot FROM MetricConfigurationSnapshot snapshot WHERE snapshot.processing.id = :processingId",
+			MetricConfigurationSnapshotRecord.class);
+		query.setParameter("processingId", processingId);
+		configuration.setMetricConfigurations(DataTransferObject.toSortedSet(query.getResultList()));
+		return configuration;
 	}
 }

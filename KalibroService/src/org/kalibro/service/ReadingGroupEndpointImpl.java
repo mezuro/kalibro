@@ -1,17 +1,15 @@
 package org.kalibro.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
-import org.kalibro.ReadingGroup;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ReadingGroupDao;
-import org.kalibro.service.xml.ReadingGroupXmlRequest;
-import org.kalibro.service.xml.ReadingGroupXmlResponse;
+import org.kalibro.dto.DataTransferObject;
+import org.kalibro.service.xml.ReadingGroupXml;
 
 /**
  * Implementation of {@link ReadingGroupEndpoint}.
@@ -27,7 +25,7 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 		this(DaoFactory.getReadingGroupDao());
 	}
 
-	protected ReadingGroupEndpointImpl(ReadingGroupDao readingGroupDao) {
+	public ReadingGroupEndpointImpl(ReadingGroupDao readingGroupDao) {
 		dao = readingGroupDao;
 	}
 
@@ -39,22 +37,19 @@ public class ReadingGroupEndpointImpl implements ReadingGroupEndpoint {
 
 	@Override
 	@WebResult(name = "readingGroup")
-	public ReadingGroupXmlResponse getReadingGroup(@WebParam(name = "groupId") Long groupId) {
-		return new ReadingGroupXmlResponse(dao.get(groupId));
+	public ReadingGroupXml getReadingGroup(@WebParam(name = "groupId") Long groupId) {
+		return new ReadingGroupXml(dao.get(groupId));
 	}
 
 	@Override
 	@WebResult(name = "readingGroup")
-	public List<ReadingGroupXmlResponse> allReadingGroups() {
-		List<ReadingGroupXmlResponse> groups = new ArrayList<ReadingGroupXmlResponse>();
-		for (ReadingGroup group : dao.all())
-			groups.add(new ReadingGroupXmlResponse(group));
-		return groups;
+	public List<ReadingGroupXml> allReadingGroups() {
+		return DataTransferObject.createDtos(dao.all(), ReadingGroupXml.class);
 	}
 
 	@Override
 	@WebResult(name = "readingGroupId")
-	public Long saveReadingGroup(@WebParam(name = "readingGroup") ReadingGroupXmlRequest group) {
+	public Long saveReadingGroup(@WebParam(name = "readingGroup") ReadingGroupXml group) {
 		return dao.save(group.convert());
 	}
 

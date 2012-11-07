@@ -1,0 +1,255 @@
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average Anonymous Classes Length"
+description: >
+  Average length of the anonymous inner classes.
+  
+  If an anonymous inner class becomes very long it is hard to understand and to see the flow of the method where the
+  class is defined. Therefore long anonymous inner classes should usually be refactored into a named inner class.
+  
+  Default maximum: 20.
+moduleName: "AnonInnerLength"
+attributeName: "max"
+messageKey: "maxLen.anonInner"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average Cyclomatic Complexity Per Method"
+description: >
+  The complexity is measured by the number of 'if', 'while', 'do', 'for', '?:', 'catch', 'switch', 'case' statements,
+  and operators '&&' and '||' in the body of a constructor, method, static initializer, or instance initializer. It is
+  a measure of the minimum number of possible paths through the source and therefore the number of required tests.
+  
+  Generally 1-4 is considered good, 5-7 ok, 8-10 consider re-factoring, and 11+ re-factor now!
+moduleName: "CyclomaticComplexity"
+attributeName: "max"
+messageKey: "cyclomaticComplexity"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average 'for' Depth"
+description: "Average nested depth of all 'for' blocks.\nDefault maximum: 1."
+moduleName: "NestedForDepth"
+attributeName: "max"
+messageKey: "nested.for.depth"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average 'if' Depth"
+description: "Average nested depth of all 'if-else' blocks.\nDefault maximum: 1."
+moduleName: "NestedIfDepth"
+attributeName: "max"
+messageKey: "nested.if.depth"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average 'try' Depth"
+description: "Average nested depth of all 'try' blocks.\nDefault maximum: 1."
+moduleName: "NestedTryDepth"
+attributeName: "max"
+messageKey: "nested.try.depth"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average Method Length"
+description: >
+  Average length of methods and constructors. Includes empty lines and single line comments of the form '//'.
+  
+  If a method becomes very long it is hard to understand. Therefore long methods should usually be refactored into
+  several individual methods that focus on a specific task.
+  
+  Default maximum: 150.
+moduleName: "MethodLength"
+attributeName: "max"
+messageKey: "maxLen.method"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average NPath Complexity"
+description: >
+  The NPath metric computes the number of possible execution paths through a function. It takes into account the
+  nesting of conditional statements and multi-part boolean expressions (e.g., A && B, C || D, etc.).
+  
+  Nejmeh says that his group had an informal NPath limit of 200 on individual routines; functions that exceeded this
+  value were candidates for further decomposition - or at least a closer look.
+  
+  Default maximum: 200. 
+moduleName: "NPathComplexity"
+attributeName: "max"
+messageKey: "npathComplexity"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average Return Count"
+description: >
+  Average number of 'return' statements per method. Ignores equals().
+  
+  Too many return points can be indication that code is attempting to do too much or may be difficult to understand.
+  
+  Default maximum: 2.
+moduleName: "ReturnCount"
+attributeName: "max"
+messageKey: "return.count"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Average Throws Count"
+description: >
+  Average number of 'throws' statements per method.
+  
+  Exceptions form part of a methods interface. Declaring a method to throw too many differently rooted exceptions
+  makes exception handling onerous and leads to poor programming practices such as catch (Exception). Developers
+  should put exceptions into a hierarchy such that in the simplest case, only one type of exception needs to be
+  checked by a caller, but allows any sub-classes to be caught specifically if necessary.
+  
+  Default maximum: 1.
+moduleName: "ThrowsCount"
+attributeName: "max"
+messageKey: "throws.count"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Data Abstraction Coupling"
+description: >
+  This metric measures the number of instantiations of other classes within the given class. This type of coupling is
+  not caused by inheritance or the object oriented paradigm. Generally speaking, any abstract data type with other
+  abstract data types as members has data abstraction coupling; therefore, if a class has a local variable that is an
+  instantiation (object) of another class, there is data abstraction coupling. The higher the DAC, the more complex
+  the data structure (classes) of the system.
+  
+  Default maximum: 7.
+moduleName: "ClassDataAbstractionCoupling"
+attributeName: "max"
+messageKey: "classDataAbstractionCoupling"
+aggregationType: SUM
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Empty Statement Count"
+description: "Counts empty statements (standalone ;)."
+moduleName: "EmptyStatement"
+messageKey: "empty.statement"
+aggregationType: COUNT
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Executable Statements"
+description: "Number of executable statements. Default maximum: 30 per method."
+moduleName: "ExecutableStatementCount"
+attributeName: "max"
+messageKey: "executableStatementCount"
+aggregationType: SUM
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Fan Out"
+description: >
+  The number of other classes a given class relies on. Also the square of this has been shown to indicate the amount of
+  maintenance required in functional programs (on a file basis) at least.
+  
+  Default maximum: 20.
+moduleName: "ClassFanOutComplexity"
+attributeName: "max"
+messageKey: "classFanOutComplexity"
+aggregationType: SUM
+---
+!!org.checkstyle.CheckstyleMetric
+name: "File Length"
+description: >
+  If a source file becomes very long it is hard to understand. Therefore long classes should usually be re-factored into
+  several individual classes that focus on a specific task.
+  
+  Default maximum: 2000.
+moduleName: "FileLength"
+attributeName: "max"
+messageKey: "maxLen.file"
+treeWalker: false
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Inline Conditional Count"
+description: >
+  Detects inline conditionals. An example inline conditional is this:
+  
+  String b = (a==null || a.length<1) ? null : a.substring(1);
+  
+  Some developers find inline conditionals hard to read, so their company's coding standards forbids them. 
+moduleName: "AvoidInlineConditionals"
+messageKey: "inline.conditional.avoid"
+aggregationType: COUNT
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Java NCSS"
+description: >
+  Determines complexity of files by counting the Non Commenting Source Statements (NCSS). Adheres to the specification
+  for the JavaNCSS-Tool written by Chr. Clemens Lee.
+  
+  Roughly said the NCSS metric is calculated by counting the source lines which are not comments, (nearly) equivalent
+  to counting the semicolons and opening curly braces.
+  
+  Too large classes are hard to read and costly to maintain. A large NCSS number often means that a class has too many
+  responsibilities and/or functionalities which should be decomposed into smaller units. 
+  
+  Default maximum: 1500.
+moduleName: "JavaNCSS"
+attributeName: "fileMaximum"
+messageKey: "ncss.file"
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Magic Number Count"
+description: >
+  A magic number is a numeric literal that is not defined as a constant. By default, -1, 0, 1, and 2 are not considered
+  to be magic numbers.
+moduleName: "MagicNumber"
+messageKey: "magic.number"
+aggregationType: COUNT
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Number of Methods"
+description: "Default maximum: 100. "
+moduleName: "MethodCount"
+attributeName: "maxTotal"
+messageKey: "too.many.methods"
+aggregationType: SUM
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Number of Outer Types"
+description: >
+  Number of types declared at the outer (or root) level in a file.
+  
+  It is considered good practice to only define one outer type per file.
+moduleName: "OuterTypeNumber"
+attributeName: "max"
+messageKey: "maxOuterTypes"
+aggregationType: SUM
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Simplifiable Boolean Expressions"
+description: >
+  Detects overly complicated boolean expressions. Finds code like 'if (b == true)', 'b || true', '!false', etc.
+  
+  Complex boolean logic makes code hard to understand and maintain.
+moduleName: "SimplifyBooleanExpression"
+messageKey: "simplify.expression"
+aggregationType: COUNT
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Simplifiable Boolean Returns"
+description: >
+  Detects overly complicated boolean return statements. For example the following code
+  
+  if (valid()) return false; else return true;
+  
+  could be written as
+  
+  return !valid();
+moduleName: "SimplifyBooleanReturn"
+messageKey: "simplify.boolreturn"
+aggregationType: COUNT
+---
+!!org.checkstyle.CheckstyleMetric
+name: "To-do Comment Count"
+description: "Detects 'TODO:' comments using regular expression matcher on Java comments."
+moduleName: "TodoComment"
+messageKey: "todo.match"
+aggregationType: COUNT
+---
+!!org.checkstyle.CheckstyleMetric
+name: "Trailing Comment Count"
+description: >
+  Steve McConnel in "Code Complete" suggests that endline comments are a bad practice. An end line comment would be one
+  that is on the same line as actual code. For example:
+  
+  a = b + c; // Some insightful comment
+  
+  His comments are even more important in the age of automated re-factorings.
+moduleName: "TrailingComment"
+messageKey: "trailing.comments"
+aggregationType: COUNT

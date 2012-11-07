@@ -1,31 +1,21 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.enums.RepositoryType;
-
-public class CvsLoaderTest extends ProjectLoaderTestCase {
-
-	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.CVS;
-	}
+public class CvsLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
-		return Arrays.asList("cvs --version");
+		return list("cvs --version");
 	}
 
 	@Override
-	protected boolean shouldSupportAuthentication() {
-		return false;
+	protected List<String> expectedLoadCommands() {
+		return list("cvs -z3 -d " + ADDRESS + " checkout -d . -P .");
 	}
 
 	@Override
-	protected List<String> expectedLoadCommands(boolean update) {
-		if (update)
-			return Arrays.asList("cvs update");
-		return Arrays.asList("cvs -z3 -d " + repository.getAddress() + " checkout -d . -P .");
+	protected List<String> expectedUpdateCommands() {
+		return list("cvs update");
 	}
 }

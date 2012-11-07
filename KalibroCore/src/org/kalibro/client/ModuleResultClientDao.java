@@ -1,31 +1,30 @@
 package org.kalibro.client;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.SortedSet;
 
-import org.kalibro.core.model.ModuleResult;
+import org.kalibro.ModuleResult;
 import org.kalibro.dao.ModuleResultDao;
+import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.ModuleResultEndpoint;
-import org.kalibro.service.entities.ModuleResultXml;
 
+/**
+ * {@link ModuleResultEndpoint} client implementation of {@link ModuleResultDao}.
+ * 
+ * @author Carlos Morais
+ */
 class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> implements ModuleResultDao {
 
-	protected ModuleResultClientDao(String serviceAddress) {
+	ModuleResultClientDao(String serviceAddress) {
 		super(serviceAddress, ModuleResultEndpoint.class);
 	}
 
 	@Override
-	public ModuleResult getModuleResult(String projectName, String moduleName, Date date) {
-		return port.getModuleResult(projectName, moduleName, date).convert();
+	public ModuleResult get(Long moduleResultId) {
+		return port.getModuleResult(moduleResultId).convert();
 	}
 
 	@Override
-	public List<ModuleResult> getResultHistory(String projectName, String moduleName) {
-		List<ModuleResult> history = new ArrayList<ModuleResult>();
-		List<ModuleResultXml> historyXml = port.getResultHistory(projectName, moduleName);
-		for (ModuleResultXml moduleResultXml : historyXml)
-			history.add(moduleResultXml.convert());
-		return history;
+	public SortedSet<ModuleResult> childrenOf(Long moduleResultId) {
+		return DataTransferObject.toSortedSet(port.childrenOf(moduleResultId));
 	}
 }

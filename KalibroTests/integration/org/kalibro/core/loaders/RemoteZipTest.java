@@ -1,11 +1,9 @@
 package org.kalibro.core.loaders;
 
-import org.kalibro.core.model.enums.RepositoryType;
-
-public class RemoteZipTest extends RemoteFileLoaderIntegrationTest {
+public class RemoteZipTest extends RemoteFileIntegrationTest {
 
 	@Override
-	protected RepositoryType getRepositoryType() {
-		return RepositoryType.REMOTE_ZIP;
+	protected String address() {
+		return "http://invalid.address/HelloWorld.zip";
 	}
 }

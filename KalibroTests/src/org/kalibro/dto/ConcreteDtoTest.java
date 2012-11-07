@@ -1,51 +1,61 @@
 package org.kalibro.dto;
 
-import static org.junit.Assert.assertEquals;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
-import org.kalibro.util.reflection.FieldReflector;
+import org.kalibro.core.reflection.FieldReflector;
+import org.kalibro.tests.UnitTest;
+import org.powermock.reflect.Whitebox;
 
-public abstract class ConcreteDtoTest<ENTITY, DTO extends DataTransferObject<ENTITY>> extends TestCase {
+public abstract class ConcreteDtoTest extends UnitTest {
 
-	protected DTO dto;
-	protected ENTITY entity;
+	protected Object dto, entity;
+	protected FieldReflector dtoReflector, entityReflector;
 
 	@Before
-	public void createFixtureAndDto() throws Exception {
+	public void setUp() throws Exception {
 		entity = loadFixture();
-		dto = dtoClass().getDeclaredConstructor(entity.getClass()).newInstance(entity);
+		dto = dtoClass().getDeclaredConstructor(entityClass()).newInstance(entity);
+		dtoReflector = new FieldReflector(dto);
+		entityReflector = new FieldReflector(entity);
 	}
 
-	protected abstract ENTITY loadFixture();
+	protected Object loadFixture() throws Exception {
+		Object abstractDtoTest = Class.forName(dtoClass().getSuperclass().getName() + "Test").newInstance();
+		return Whitebox.invokeMethod(abstractDtoTest, "loadFixture");
+	}
 
 	@Test
 	public void shouldHavePublicDefaultConstructor() throws Exception {
-		Constructor<DTO> constructor = dtoClass().getConstructor();
+		Constructor<?> constructor = dtoClass().getConstructor();
 		Modifier.isPublic(constructor.getModifiers());
-		assertEquals(0, constructor.getParameterTypes().length);
 		constructor.newInstance();
 	}
 
 	@Test
 	public void shouldRetrieveEntityFieldsAsTheyWere() throws Exception {
-		FieldReflector reflector = new FieldReflector(entity);
 		for (Method method : dtoClass().getDeclaredMethods())
-			verifyField(reflector, method);
+			verifyField(method);
 	}
 
-	private void verifyField(FieldReflector reflector, Method method) throws Exception {
+	protected Class<?> dtoClass() throws ClassNotFoundException {
+		return Class.forName(getClass().getName().replace("Test", ""));
+	}
+
+	private void verifyField(Method method) throws Exception {
 		String methodName = method.getName();
-		if (reflector.listFields().contains(methodName)) {
-			method.setAccessible(true);
-			assertEquals(reflector.get(methodName), method.invoke(dto));
-		}
+		if (entityReflector.listFields().contains(methodName))
+			assertDeepEquals(methodName, entityReflector.get(methodName), method.invoke(dto));
 	}
 
-	protected abstract Class<DTO> dtoClass();
+	protected String entityName() {
+		return entityClass().getSimpleName();
+	}
+
+	protected Class<?> entityClass() {
+		return entity.getClass();
+	}
 }

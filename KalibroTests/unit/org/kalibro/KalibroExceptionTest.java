@@ -2,12 +2,16 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
-import org.junit.Test;
+import java.lang.reflect.InvocationTargetException;
 
-public class KalibroExceptionTest extends TestCase {
+import org.junit.Test;
+import org.kalibro.tests.UnitTest;
+
+public class KalibroExceptionTest extends UnitTest {
 
 	private static final String MESSAGE = "KalibroExceptionTest message";
-	private static final Throwable CAUSE = new Exception();
+	private static final Throwable CAUSE = new InvocationTargetException(new NullPointerException(), MESSAGE);
+	private static final Throwable TARGET = CAUSE;
 
 	private KalibroException exception;
 
@@ -17,16 +21,30 @@ public class KalibroExceptionTest extends TestCase {
 	}
 
 	@Test
-	public void shouldContructWithMessage() {
+	public void checkMessageConstruction() {
 		exception = new KalibroException(MESSAGE);
 		assertSame(MESSAGE, exception.getMessage());
 		assertNull(exception.getCause());
 	}
 
 	@Test
-	public void shouldConstructWithMessageAndCause() {
+	public void shouldMessageAndCauseConstruction() {
 		exception = new KalibroException(MESSAGE, CAUSE);
 		assertSame(MESSAGE, exception.getMessage());
 		assertSame(CAUSE, exception.getCause());
+	}
+
+	@Test
+	public void checkTargetConstruction() {
+		exception = new KalibroException(TARGET);
+		assertSame(TARGET.getCause(), exception.getCause());
+		assertSame(TARGET.getMessage(), exception.getMessage());
+		assertDeepEquals(TARGET.getStackTrace(), exception.getStackTrace());
+	}
+
+	@Test
+	public void toStringShouldBeEqualTargetToString() {
+		assertEquals("org.kalibro.KalibroException", new KalibroException((String) null).toString());
+		assertEquals(TARGET.toString(), new KalibroException(TARGET).toString());
 	}
 }

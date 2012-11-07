@@ -1,65 +1,81 @@
 package org.kalibro.core.persistence.record;
 
-import java.awt.Color;
-
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.Range;
-import org.kalibro.dto.DataTransferObject;
+import org.kalibro.Range;
+import org.kalibro.dto.RangeDto;
 
-@Entity(name = "\"Range\"")
-@PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName"), @Column(name = "beginning")})
-public class RangeRecord extends DataTransferObject<Range> {
+/**
+ * Java Persistence API entity for {@link Range}.
+ * 
+ * @author Carlos Morais
+ */
+@Entity(name = "Range")
+@Table(name = "\"RANGE\"")
+public class RangeRecord extends RangeDto {
 
-	@ManyToOne(optional = false)
-	@JoinColumns({
-		@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "configuration"),
-		@JoinColumn(name = "metricName", nullable = false, referencedColumnName = "metricName")})
 	@SuppressWarnings("unused" /* used by JPA */)
-	private MetricConfigurationRecord metricConfiguration;
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
+	private MetricConfigurationRecord configuration;
 
-	@Column(name = "beginning", nullable = false)
+	@Id
+	@GeneratedValue
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
+
+	@Column(name = "\"beginning\"", nullable = false)
 	private Long beginning;
 
 	@Column(name = "\"end\"", nullable = false)
 	private Long end;
 
-	@Column(nullable = false)
-	private String label;
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "\"reading\"", referencedColumnName = "\"id\"")
+	private ReadingRecord reading;
 
-	@Column(nullable = false)
-	private Long grade;
-
-	@Column(nullable = false)
-	private Integer color;
-
-	@Column(nullable = false)
+	@Column(name = "\"comments\"")
 	private String comments;
 
 	public RangeRecord() {
 		super();
 	}
 
-	public RangeRecord(Range range, MetricConfigurationRecord metricConfiguration) {
-		this.metricConfiguration = metricConfiguration;
+	public RangeRecord(Range range) {
+		this(range, null);
+	}
+
+	public RangeRecord(Range range, Long configurationId) {
+		configuration = new MetricConfigurationRecord(configurationId);
+		id = range.getId();
 		beginning = Double.doubleToLongBits(range.getBeginning());
 		end = Double.doubleToLongBits(range.getEnd());
-		label = range.getLabel();
-		grade = Double.doubleToLongBits(range.getGrade());
-		color = range.getColor().getRGB();
 		comments = range.getComments();
+		reading = range.hasReading() ? new ReadingRecord(range.getReading().getId()) : null;
 	}
 
 	@Override
-	public Range convert() {
-		Range range = new Range();
-		range.setBeginning(Double.longBitsToDouble(beginning));
-		range.setEnd(Double.longBitsToDouble(end));
-		range.setLabel(label);
-		range.setGrade(Double.longBitsToDouble(grade));
-		range.setColor(new Color(color, true));
-		range.setComments(comments);
-		return range;
+	public Long id() {
+		return id;
+	}
+
+	@Override
+	public Double beginning() {
+		return Double.longBitsToDouble(beginning);
+	}
+
+	@Override
+	public Double end() {
+		return Double.longBitsToDouble(end);
+	}
+
+	@Override
+	public String comments() {
+		return comments;
+	}
+
+	@Override
+	public Long readingId() {
+		return reading == null ? null : reading.id();
 	}
 }

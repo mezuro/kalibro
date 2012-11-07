@@ -1,28 +1,30 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class ArrayEqualityTest extends TestCase {
+public class ArrayEqualityTest extends UnitTest {
+
+	private static final boolean DEEP = new Random().nextBoolean();
 
 	private ArrayEquality equality;
 
 	@Before
 	public void setUp() {
-		equality = new ArrayEquality();
+		equality = new ArrayEquality(DEEP);
 		mockStatic(Equality.class);
-		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
+		when(Equality.areEqual(any(), any(), eq(DEEP))).thenAnswer(new EqualArgumentsAnswer());
 	}
 
 	@Test
@@ -51,10 +53,10 @@ public class ArrayEqualityTest extends TestCase {
 	}
 
 	@Test
-	public void elementsShouldBeDeepEqual() {
+	public void elementsShouldBeDeepEqualIfDeep() {
 		assertTrue(equality.equals(newArray("1", "2", "3"), newArray("1", "2", "3")));
 		verifyStatic();
-		Equality.areDeepEqual("1", "1");
+		Equality.areEqual("1", "1", DEEP);
 	}
 
 	private String[] newArray(String... elements) {

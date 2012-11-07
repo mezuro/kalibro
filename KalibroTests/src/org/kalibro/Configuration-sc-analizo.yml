@@ -1,0 +1,61 @@
+!!org.kalibro.Configuration
+name: "SC configuration"
+description: "Sample configuration with natives cbo, lcom4 and compound sc."
+metricConfigurations:
+  - !!org.kalibro.MetricConfiguration
+    code: "sc"
+    metric: !!org.kalibro.CompoundMetric
+      name: "Structural Complexity"
+      scope: CLASS
+      script: "return cbo * lcom4"
+  - !!org.kalibro.MetricConfiguration
+    code: "cbo"
+    metric: !!org.kalibro.NativeMetric
+      name: "Coupling Between Objects"
+      scope: CLASS
+      languages:
+        - C
+        - CPP
+        - JAVA
+    baseTool: &analizo !!org.kalibro.BaseTool ["org.analizo.AnalizoMetricCollector"]
+  - !!org.kalibro.MetricConfiguration
+    code: "lcom4"
+    metric: !!org.kalibro.NativeMetric
+      name: "Lack of Cohesion of Methods"
+      scope: CLASS
+      languages:
+        - C
+        - CPP
+        - JAVA
+    baseTool: *analizo
+    readingGroup: !!org.kalibro.ReadingGroup
+      name: "Extremes"
+      description: "All or nothing group."
+      readings:
+        - &bad !!org.kalibro.Reading
+          label: "Bad"
+          grade: 0.0
+          color: 0xff0000
+        - &good !!org.kalibro.Reading
+          label: "Good"
+          grade: 10.0
+          color: 0x00ff00
+    ranges:
+      - !!org.kalibro.Range
+        beginning: 0.0
+        end: 2.0
+        reading: *good
+      - !!org.kalibro.Range
+        beginning: 2.0
+        end: .inf
+        reading: *bad
+  - !!org.kalibro.MetricConfiguration
+    code: "total_cof"
+    metric: !!org.kalibro.NativeMetric
+      name: "Total Coupling Factor"
+      scope: SOFTWARE
+      languages:
+        - C
+        - CPP
+        - JAVA
+    baseTool: *analizo

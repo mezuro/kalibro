@@ -1,96 +1,140 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.PrimaryKey;
-import org.kalibro.core.model.*;
-import org.kalibro.core.model.enums.Statistic;
-import org.kalibro.dto.DataTransferObject;
+import org.eclipse.persistence.annotations.CascadeOnDelete;
+import org.kalibro.*;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dto.MetricConfigurationDto;
 
+/**
+ * Java Persistence API entity for {@link MetricConfiguration}.
+ * 
+ * @author Carlos Morais
+ */
 @Entity(name = "MetricConfiguration")
-@PrimaryKey(columns = {@Column(name = "configuration"), @Column(name = "metricName")})
-public class MetricConfigurationRecord extends DataTransferObject<MetricConfiguration> {
+@Table(name = "\"METRIC_CONFIGURATION\"")
+public class MetricConfigurationRecord extends MetricConfigurationDto {
 
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "configuration", nullable = false, referencedColumnName = "id")
 	@SuppressWarnings("unused" /* used by JPA */)
+	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	private ConfigurationRecord configuration;
 
-	@Column(name = "metricName", nullable = false)
-	@SuppressWarnings("unused" /* used by JPA */)
-	private String metricName;
+	@Id
+	@GeneratedValue
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
 
-	@ManyToOne
-	@JoinColumns({
-		@JoinColumn(insertable = false, name = "metricName", referencedColumnName = "name", updatable = false),
-		@JoinColumn(name = "metricOrigin", referencedColumnName = "origin")})
-	private NativeMetricRecord nativeMetric;
-
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "metricConfiguration", orphanRemoval = true)
-	@JoinColumns({
-		@JoinColumn(insertable = false, name = "metricName", referencedColumnName = "name", updatable = false),
-		@JoinColumn(name = "configuration", referencedColumnName = "configuration")})
-	private CompoundMetricRecord compoundMetric;
-
-	@Column(nullable = false)
+	@Column(name = "\"code\"", nullable = false)
 	private String code;
 
-	@Column(nullable = false)
+	@Column(name = "\"weight\"", nullable = false)
 	private Long weight;
 
-	@Column(nullable = false)
+	@Column(name = "\"aggregation_form\"", nullable = false)
 	private String aggregationForm;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "metricConfiguration", orphanRemoval = true)
+	@Column(name = "\"compound\"", nullable = false)
+	private Boolean compound;
+
+	@Column(name = "\"metric_name\"", nullable = false)
+	private String metricName;
+
+	@Column(name = "\"metric_scope\"", nullable = false)
+	private String metricScope;
+
+	@Column(name = "\"metric_description\"")
+	private String metricDescription;
+
+	@Column(name = "\"metric_origin\"", nullable = false)
+	private String metricOrigin;
+
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "\"reading_group\"", referencedColumnName = "\"id\"")
+	private ReadingGroupRecord readingGroup;
+
+	@CascadeOnDelete
+	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	private Collection<RangeRecord> ranges;
 
 	public MetricConfigurationRecord() {
 		super();
 	}
 
-	public MetricConfigurationRecord(MetricConfiguration metricConfiguration, ConfigurationRecord configuration) {
-		this.configuration = configuration;
-		initializeMetric(metricConfiguration);
-		code = metricConfiguration.getCode();
-		weight = Double.doubleToLongBits(metricConfiguration.getWeight());
-		aggregationForm = metricConfiguration.getAggregationForm().name();
-		initializeRanges(metricConfiguration);
+	public MetricConfigurationRecord(Long id) {
+		this.id = id;
 	}
 
-	private void initializeMetric(MetricConfiguration metricConfiguration) {
-		Metric metric = metricConfiguration.getMetric();
+	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
+		this(metricConfiguration, null);
+	}
+
+	public MetricConfigurationRecord(MetricConfiguration entity, Long configurationId) {
+		this(entity.getId());
+		configuration = new ConfigurationRecord(configurationId);
+		code = entity.getCode();
+		weight = Double.doubleToLongBits(entity.getWeight());
+		aggregationForm = entity.getAggregationForm().name();
+		readingGroup = entity.hasReadingGroup() ? new ReadingGroupRecord(entity.getReadingGroup().getId()) : null;
+		setMetric(entity.getMetric(), entity.getBaseTool());
+	}
+
+	private void setMetric(Metric metric, BaseTool baseTool) {
+		compound = metric.isCompound();
 		metricName = metric.getName();
-		if (metric.isCompound())
-			compoundMetric = new CompoundMetricRecord((CompoundMetric) metric, this);
-		else
-			nativeMetric = new NativeMetricRecord((NativeMetric) metric);
-	}
-
-	private void initializeRanges(MetricConfiguration metricConfiguration) {
-		ranges = new ArrayList<RangeRecord>();
-		for (Range range : metricConfiguration.getRanges())
-			ranges.add(new RangeRecord(range, this));
+		metricScope = metric.getScope().name();
+		metricDescription = metric.getDescription();
+		metricOrigin = compound ? ((CompoundMetric) metric).getScript() : baseTool.getName();
 	}
 
 	@Override
-	public MetricConfiguration convert() {
-		MetricConfiguration metricConfiguration = new MetricConfiguration(convertMetric());
-		metricConfiguration.setCode(code);
-		metricConfiguration.setWeight(Double.longBitsToDouble(weight));
-		metricConfiguration.setAggregationForm(Statistic.valueOf(aggregationForm));
-		convertRanges(metricConfiguration);
-		return metricConfiguration;
+	public Long id() {
+		return id;
 	}
 
-	private Metric convertMetric() {
-		return (nativeMetric == null) ? compoundMetric.convert() : nativeMetric.convert();
+	@Override
+	public String code() {
+		return code;
 	}
 
-	private void convertRanges(MetricConfiguration metricConfiguration) {
-		for (RangeRecord range : ranges)
-			metricConfiguration.addRange(range.convert());
+	@Override
+	public Double weight() {
+		return Double.longBitsToDouble(weight);
+	}
+
+	@Override
+	public Statistic aggregationForm() {
+		return Statistic.valueOf(aggregationForm);
+	}
+
+	@Override
+	public Metric metric() {
+		return compound ? compoundMetric() : nativeMetric();
+	}
+
+	private CompoundMetric compoundMetric() {
+		CompoundMetric metric = new CompoundMetric(metricName);
+		metric.setScope(Granularity.valueOf(metricScope));
+		metric.setDescription(metricDescription);
+		metric.setScript(metricOrigin);
+		return metric;
+	}
+
+	private NativeMetric nativeMetric() {
+		return DaoFactory.getBaseToolDao().get(baseToolName()).getSupportedMetric(metricName);
+	}
+
+	@Override
+	public String baseToolName() {
+		return metricOrigin;
+	}
+
+	@Override
+	public Long readingGroupId() {
+		return readingGroup == null ? null : readingGroup.id();
 	}
 }

@@ -1,38 +1,45 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class EqualityTest extends TestCase {
+public class EqualityTest extends UnitTest {
 
 	@Test
 	public void shouldUseNormalCasesOnNormalEquals() throws Exception {
-		spyEvaluate();
+		spyAreEqual(false);
 		Equality.areEqual(null, null);
-		verifyPrivate(Equality.class).invoke("evaluate", eq(null), eq(null), isA(EntityEquality.class));
+		verifyPrivate(Equality.class).invoke("areEqual", null, null, false);
 	}
 
 	@Test
 	public void shouldUseDeepCasesOnDeepEquals() throws Exception {
-		spyEvaluate();
+		spyAreEqual(true);
 		Equality.areDeepEqual(null, null);
-		verifyPrivate(Equality.class).invoke("evaluate", eq(null), eq(null), isA(ArrayEquality.class),
-			isA(DeepEntityEquality.class), isA(ListEquality.class), isA(MapEquality.class), isA(SetEquality.class),
-			isA(StackTraceEquality.class), isA(ThrowableEquality.class));
+		verifyPrivate(Equality.class).invoke("areEqual", null, null, true);
 	}
 
-	private void spyEvaluate() throws Exception {
+	private void spyAreEqual(boolean deep) throws Exception {
 		spy(Equality.class);
-		doReturn(true).when(Equality.class, "evaluate", any(), any(), anyVararg());
+		doReturn(true).when(Equality.class, "areEqual", null, null, deep);
+	}
+
+	@Test
+	public void shouldUseSpecialCases() throws Exception {
+		spy(Equality.class);
+		doReturn(true).when(Equality.class, "evaluate", same(null), same(null), anyVararg());
+		Equality.areEqual(null, null);
+		verifyPrivate(Equality.class).invoke("evaluate", same(null), same(null), isA(ArrayEquality.class),
+			isA(EntityEquality.class), isA(ListEquality.class), isA(MapEquality.class), isA(SetEquality.class),
+			isA(StackTraceEquality.class), isA(ThrowableEquality.class));
 	}
 
 	@Test
@@ -58,7 +65,7 @@ public class EqualityTest extends TestCase {
 		assertTrue(evaluate("Equality", "Evaluator", firstCharEvaluator));
 		assertFalse(evaluate("Evaluator", "Test", firstCharEvaluator));
 		assertFalse(evaluate("Test", 42, firstCharEvaluator));
-		assertTrue(evaluate(42, 42, firstCharEvaluator));
+		assertTrue(evaluate(12, 42, firstCharEvaluator, new LastDigitEvaluator()));
 	}
 
 	private boolean evaluate(Object value, Object other, Equality<?>... specialCases) throws Exception {
@@ -75,6 +82,19 @@ public class EqualityTest extends TestCase {
 		@Override
 		protected boolean equals(String value, String other) {
 			return value.charAt(0) == other.charAt(0);
+		}
+	}
+
+	private class LastDigitEvaluator extends Equality<Integer> {
+
+		@Override
+		protected boolean canEvaluate(Object value) {
+			return value instanceof Integer;
+		}
+
+		@Override
+		protected boolean equals(Integer value, Integer other) {
+			return (value % 10) == (other % 10);
 		}
 	}
 }

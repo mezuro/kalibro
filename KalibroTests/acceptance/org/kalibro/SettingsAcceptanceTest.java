@@ -11,39 +11,19 @@ import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.AcceptanceTest;
 import org.yaml.snakeyaml.constructor.ConstructorException;
 
 public class SettingsAcceptanceTest extends AcceptanceTest {
 
+	private File settingsFile;
 	private KalibroSettings settings;
 
 	@Before
 	public void setUp() {
 		settings = new KalibroSettings();
+		settingsFile = new File(dotKalibro(), "kalibro.settings");
 		settingsFile.delete();
-	}
-
-	@Test
-	public void checkDefaultSettings() {
-		assertFalse(settings.clientSide());
-		checkClientSettings();
-		checkServerSettings();
-	}
-
-	private void checkClientSettings() {
-		ClientSettings clientSettings = settings.getClientSettings();
-		assertEquals("http://localhost:8080/KalibroService/", clientSettings.getServiceAddress());
-	}
-
-	private void checkServerSettings() {
-		ServerSettings serverSettings = settings.getServerSettings();
-		assertEquals(new File(dotKalibro(), "repositories"), serverSettings.getLoadDirectory());
-
-		DatabaseSettings databaseSettings = serverSettings.getDatabaseSettings();
-		assertEquals(SupportedDatabase.MYSQL, databaseSettings.getDatabaseType());
-		assertEquals("jdbc:mysql://localhost:3306/kalibro", databaseSettings.getJdbcUrl());
-		assertEquals("kalibro", databaseSettings.getUsername());
-		assertEquals("kalibro", databaseSettings.getPassword());
 	}
 
 	@Test
@@ -64,18 +44,12 @@ public class SettingsAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Test
-	public void shouldThrowExceptionWhenLoadingInexistentSettings() {
+	public void shouldThrowExceptionWhenCannotLoadSettings() throws IOException {
 		shouldLoadWithError(FileNotFoundException.class);
-	}
 
-	@Test
-	public void shouldThrowExceptionWhenLoadingFromCorruptedSettingsFile() throws IOException {
 		FileUtils.writeStringToFile(settingsFile, "something weird");
 		shouldLoadWithError(ConstructorException.class);
-	}
 
-	@Test
-	public void shouldThrowExceptionWhenLoadingFromNotReadableSettingsFile() {
 		settings.save();
 		settingsFile.setReadable(false);
 		shouldLoadWithError(FileNotFoundException.class);

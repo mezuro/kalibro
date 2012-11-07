@@ -1,114 +1,60 @@
 package org.kalibro.service;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.model.ProjectFixtures.helloWorld;
-import static org.kalibro.core.model.enums.RepositoryType.*;
 
-import java.util.*;
+import java.util.Random;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.model.Project;
-import org.kalibro.core.model.enums.RepositoryType;
-import org.kalibro.dao.DaoFactory;
+import org.kalibro.Project;
 import org.kalibro.dao.ProjectDao;
-import org.kalibro.service.entities.RawProjectXml;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
+import org.kalibro.service.xml.ProjectXml;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoFactory.class)
-public class ProjectEndpointImplTest extends TestCase {
+@PrepareForTest(ProjectEndpointImpl.class)
+public class ProjectEndpointImplTest extends
+	EndpointImplementorTest<Project, ProjectXml, ProjectDao, ProjectEndpointImpl> {
 
-	private static final String PROJECT_NAME = "ProjectEndpointImplTest project";
+	private static final Long ID = Math.abs(new Random().nextLong());
 
-	private ProjectDao dao;
-	private Project project;
-	private ProjectEndpointImpl endpoint;
-
-	@Before
-	public void setUp() {
-		mockDao();
-		project = helloWorld();
-		endpoint = new ProjectEndpointImpl();
-	}
-
-	private void mockDao() {
-		dao = mock(ProjectDao.class);
-		mockStatic(DaoFactory.class);
-		when(DaoFactory.getProjectDao()).thenReturn(dao);
+	@Override
+	protected Class<Project> entityClass() {
+		return Project.class;
 	}
 
 	@Test
-	public void testSaveProject() {
-		endpoint.saveProject(new RawProjectXml(project));
-		Mockito.verify(dao).save(project);
+	public void shouldConfirmExistence() {
+		when(dao.exists(ID)).thenReturn(true);
+		assertFalse(implementor.projectExists(-1L));
+		assertTrue(implementor.projectExists(ID));
 	}
 
 	@Test
-	public void testGetProjectNames() {
-		List<String> names = new ArrayList<String>();
-		when(dao.getProjectNames()).thenReturn(names);
-		assertSame(names, endpoint.getProjectNames());
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertSame(xml, implementor.getProject(ID));
 	}
 
 	@Test
-	public void testConfirmProject() {
-		when(dao.hasProject("42")).thenReturn(true);
-		assertTrue(endpoint.hasProject("42"));
-
-		when(dao.hasProject("42")).thenReturn(false);
-		assertFalse(endpoint.hasProject("42"));
+	public void shouldGetProjectOfRepository() {
+		when(dao.projectOf(ID)).thenReturn(entity);
+		assertSame(xml, implementor.projectOf(ID));
 	}
 
 	@Test
-	public void testGetProject() {
-		when(dao.getProject("42")).thenReturn(project);
-		assertDeepEquals(project, endpoint.getProject("42").convert());
+	public void shouldGetAll() {
+		when(dao.all()).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(xml), implementor.allProjects());
 	}
 
 	@Test
-	public void testRemoveProject() {
-		endpoint.removeProject("42");
-		Mockito.verify(dao).removeProject("42");
+	public void shouldSave() {
+		when(dao.save(entity)).thenReturn(ID);
+		assertEquals(ID, implementor.saveProject(xml));
 	}
 
 	@Test
-	public void testSupportedRepositoryTypes() {
-		Set<RepositoryType> repositoryTypes = new HashSet<RepositoryType>();
-		repositoryTypes.addAll(Arrays.asList(LOCAL_ZIP, GIT, SUBVERSION));
-		PowerMockito.when(dao.getSupportedRepositoryTypes()).thenReturn(repositoryTypes);
-		assertDeepSet(endpoint.getSupportedRepositoryTypes(), GIT, SUBVERSION);
-	}
-
-	@Test
-	public void testProcessProject() {
-		endpoint.processProject(PROJECT_NAME);
-		PowerMockito.verifyStatic();
-		dao.processProject(PROJECT_NAME);
-	}
-
-	@Test
-	public void testProcessPeriodically() {
-		endpoint.processPeriodically(PROJECT_NAME, 42);
-		PowerMockito.verifyStatic();
-		dao.processPeriodically(PROJECT_NAME, 42);
-	}
-
-	@Test
-	public void testProcessPeriod() {
-		PowerMockito.when(dao.getProcessPeriod(PROJECT_NAME)).thenReturn(42);
-		assertEquals(42, endpoint.getProcessPeriod(PROJECT_NAME).intValue());
-	}
-
-	@Test
-	public void testCancelPeriodicProcess() {
-		endpoint.cancelPeriodicProcess(PROJECT_NAME);
-		PowerMockito.verifyStatic();
-		dao.cancelPeriodicProcess(PROJECT_NAME);
+	public void shouldDelete() {
+		implementor.deleteProject(ID);
+		verify(dao).delete(ID);
 	}
 }

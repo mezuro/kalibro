@@ -1,40 +1,61 @@
 package org.kalibro.dto;
 
-import net.sf.cglib.proxy.Enhancer;
-import net.sf.cglib.proxy.LazyLoader;
+import java.lang.reflect.Method;
 
+import net.sf.cglib.proxy.Enhancer;
+import net.sf.cglib.proxy.MethodInterceptor;
+import net.sf.cglib.proxy.MethodProxy;
+
+import org.kalibro.core.reflection.MethodReflector;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.util.reflection.MethodReflector;
 
 /**
  * Creates lazy load proxies that call {@link DaoFactory} methods to load the target.
  * 
  * @author Carlos Morais
  */
-final class DaoLazyLoader implements LazyLoader {
+public final class DaoLazyLoader implements MethodInterceptor {
 
-	static Object createProxy(Class<?> daoClass, String methodName, Object... arguments) {
+	public static <T> T createProxy(Class<?> daoClass, String methodName, Object... arguments) {
 		DaoLazyLoader loader = new DaoLazyLoader(daoClass, methodName, arguments);
-		return Enhancer.create(loader.getTargetClass(), loader);
+		T proxy = (T) Enhancer.create(loader.getTargetClass(), loader);
+		loader.start();
+		return proxy;
 	}
+
+	private boolean started;
+	private Object target;
 
 	private MethodReflector reflector;
 	private String methodName;
-	private Object[] arguments;
+	private Object[] loadArguments;
 
-	private DaoLazyLoader(Class<?> daoClass, String methodName, Object[] arguments) {
+	private DaoLazyLoader(Class<?> daoClass, String methodName, Object[] loadArguments) {
 		this.methodName = methodName;
-		this.arguments = arguments;
+		this.loadArguments = loadArguments;
 		reflector = new MethodReflector(daoClass);
 	}
 
 	private Class<?> getTargetClass() {
-		return reflector.getReturnType(methodName, arguments);
+		return reflector.getReturnType(methodName, loadArguments);
+	}
+
+	private void start() {
+		started = true;
 	}
 
 	@Override
-	public Object loadObject() {
+	public Object intercept(Object object, Method method, Object[] arguments, MethodProxy proxy) throws Throwable {
+		if (!started)
+			return null;
+		if (target == null)
+			load();
+		method.setAccessible(true);
+		return method.invoke(target, arguments);
+	}
+
+	private void load() {
 		Object dao = new MethodReflector(DaoFactory.class).invoke("get" + reflector.getClassName());
-		return reflector.invoke(dao, methodName, arguments);
+		target = reflector.invoke(dao, methodName, loadArguments);
 	}
 }

@@ -1,7 +1,5 @@
 package org.kalibro.core.persistence;
 
-import java.util.Collection;
-
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -19,67 +17,44 @@ class RecordManager {
 		this.entityManager = entityManager;
 	}
 
-	protected <T> T getById(Long id, Class<T> recordClass) {
-		return entityManager.find(recordClass, id);
-	}
-
-	protected Query createQuery(String queryString) {
+	Query createQuery(String queryString) {
 		return entityManager.createQuery(queryString);
 	}
 
-	protected <T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
+	<T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
 		return entityManager.createQuery(queryString, resultClass);
 	}
 
-	protected void executeUpdate(Query updateQuery) {
-		beginTransaction();
-		updateQuery.executeUpdate();
-		commitTransaction();
+	<T> T getById(Long id, Class<T> recordClass) {
+		return entityManager.find(recordClass, id);
 	}
 
-	protected <T> T save(T record) {
+	<T> T save(T record) {
 		beginTransaction();
-		T merged = persist(record);
-		commitTransaction();
-		return merged;
-	}
-
-	protected void saveAll(Collection<?> records) {
-		beginTransaction();
-		for (Object record : records)
-			persist(record);
-		commitTransaction();
-	}
-
-	private <T> T persist(T record) {
 		T merged = entityManager.merge(record);
 		entityManager.persist(merged);
+		commitTransaction();
 		return merged;
 	}
 
-	@Deprecated
-	protected void remove(Object record) {
-		entityManager.remove(entityManager.merge(record));
+	void removeById(Long id, Class<?> recordClass) {
+		beginTransaction();
+		entityManager.remove(getById(id, recordClass));
+		commitTransaction();
 	}
 
-	@Deprecated
-	protected void beginTransaction() {
+	private void beginTransaction() {
 		entityManager.getTransaction().begin();
 	}
 
-	@Deprecated
-	protected void commitTransaction() {
+	private void commitTransaction() {
 		entityManager.getTransaction().commit();
-	}
-
-	@Deprecated
-	protected void evictFromCache(Class<?> classToEvict) {
-		entityManager.getEntityManagerFactory().getCache().evict(classToEvict);
 	}
 
 	@Override
 	protected void finalize() throws Throwable {
-		entityManager.close();
 		super.finalize();
+		if (entityManager.isOpen())
+			entityManager.close();
 	}
 }

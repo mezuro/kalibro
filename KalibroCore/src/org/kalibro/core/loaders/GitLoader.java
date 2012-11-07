@@ -3,24 +3,22 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
-import org.kalibro.core.model.Repository;
-
-public class GitLoader extends ProjectLoader {
+/**
+ * Loader for Git repositories.
+ * 
+ * @author Carlos Morais
+ */
+public class GitLoader extends RepositoryLoader {
 
 	@Override
-	public List<String> getValidationCommands() {
+	public List<String> validationCommands() {
 		return Arrays.asList("git --version");
 	}
 
 	@Override
-	public boolean supportsAuthentication() {
-		return false;
-	}
-
-	@Override
-	public List<String> getLoadCommands(Repository repository, boolean update) {
+	protected List<String> loadCommands(String address, boolean update) {
 		if (update)
 			return Arrays.asList("git pull origin master");
-		return Arrays.asList("git clone " + repository.getAddress() + " .");
+		return Arrays.asList("git clone " + address + " .");
 	}
 }

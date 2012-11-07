@@ -14,6 +14,6 @@ public class KalibroImpl implements Kalibro {
 	@Override
 	@WebResult(name = "version")
 	public String version() {
-		return "0.6";
+		return "1.0";
 	}
 }

@@ -1,0 +1,27 @@
+---
+cbo_average: 0
+cbo_kurtosis: 0
+cbo_maximum: 0
+cbo_median: 0
+cbo_mininum: 0
+cbo_mode: ~
+cbo_skewness: 0
+cbo_standard_deviation: 0
+cbo_sum: 0
+cbo_variance: 0
+lcom4_average: 1
+lcom4_kurtosis: 0
+lcom4_maximum: 1
+lcom4_median: 1
+lcom4_mininum: 1
+lcom4_mode: ~
+lcom4_skewness: 0
+lcom4_standard_deviation: 0
+lcom4_sum: 1
+lcom4_variance: 0
+total_cof: 1
+total_loc: 4
+---
+_module: org::HelloWorld
+cbo: 0
+lcom4: 1

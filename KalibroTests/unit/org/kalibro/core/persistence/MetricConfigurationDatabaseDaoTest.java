@@ -1,91 +1,35 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertFalse;
-import static org.kalibro.core.model.ConfigurationFixtures.newConfiguration;
-import static org.kalibro.core.model.MetricConfigurationFixtures.*;
+import static org.junit.Assert.assertEquals;
 
-import org.junit.Before;
+import java.util.Random;
+
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.model.Configuration;
-import org.kalibro.core.model.MetricConfiguration;
-import org.mockito.Mockito;
-import org.powermock.api.mockito.PowerMockito;
+import org.kalibro.MetricConfiguration;
+import org.kalibro.core.persistence.record.MetricConfigurationRecord;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
 @PrepareForTest(MetricConfigurationDatabaseDao.class)
-public class MetricConfigurationDatabaseDaoTest extends TestCase {
+public class MetricConfigurationDatabaseDaoTest extends
+	DatabaseDaoTestCase<MetricConfiguration, MetricConfigurationRecord, MetricConfigurationDatabaseDao> {
 
-	private Configuration configuration;
-	private MetricConfiguration cboConfiguration, locConfiguration;
+	private static final Long ID = new Random().nextLong();
+	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
-	private RecordManager recordManager;
-	private ConfigurationDatabaseDao configurationDao;
+	@Test
+	public void shouldGetMetricConfigurationsOfConfiguration() {
+		assertDeepEquals(set(entity), dao.metricConfigurationsOf(CONFIGURATION_ID));
 
-	private MetricConfigurationDatabaseDao dao;
-
-	@Before
-	public void setUp() throws Exception {
-		configuration = newConfiguration("cbo");
-		cboConfiguration = metricConfiguration("cbo");
-		locConfiguration = metricConfiguration("loc");
-		recordManager = PowerMockito.mock(RecordManager.class);
-		configurationDao = PowerMockito.mock(ConfigurationDatabaseDao.class);
-		PowerMockito.when(configurationDao.getConfiguration(configuration.getName())).thenReturn(configuration);
-		PowerMockito.whenNew(ConfigurationDatabaseDao.class).withArguments(recordManager).
-			thenReturn(configurationDao);
-		dao = PowerMockito.spy(new MetricConfigurationDatabaseDao(recordManager));
+		verify(dao).createRecordQuery("metricConfiguration.configuration.id = :configurationId");
+		verify(query).setParameter("configurationId", CONFIGURATION_ID);
 	}
 
 	@Test
-	public void shouldAddMetricConfiguration() {
-		dao.save(locConfiguration, configuration.getName());
+	public void shouldSave() throws Exception {
+		when(record.id()).thenReturn(ID);
+		assertEquals(ID, dao.save(entity, CONFIGURATION_ID));
 
-		String locName = locConfiguration.getMetric().getName();
-		assertDeepEquals(locConfiguration, configuration.getConfigurationFor(locName));
-		Mockito.verify(configurationDao).save(configuration);
-	}
-
-	@Test
-	public void shouldReplaceMetricConfiguration() {
-		cboConfiguration = newMetricConfiguration("cbo");
-		cboConfiguration.setWeight(42.0);
-		dao.save(cboConfiguration, configuration.getName());
-
-		String cboName = cboConfiguration.getMetric().getName();
-		assertDeepEquals(cboConfiguration, configuration.getConfigurationFor(cboName));
-		Mockito.verify(configurationDao).save(configuration);
-	}
-
-	@Test
-	public void shouldGetMetricConfiguration() {
-		String configurationName = configuration.getName();
-		String metricName = cboConfiguration.getMetric().getName();
-		assertDeepEquals(cboConfiguration, dao.getMetricConfiguration(configurationName, metricName));
-	}
-
-	@Test
-	public void shouldRemoveMetricConfiguration() {
-		String cboName = cboConfiguration.getMetric().getName();
-		dao.removeMetricConfiguration(configuration.getName(), cboName);
-
-		assertFalse(configuration.containsMetric(cboName));
-		Mockito.verify(configurationDao).save(configuration);
-	}
-
-	@Test
-	public void shouldThrowExceptionForMetricConfigurationNotFound() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				String metricName = locConfiguration.getMetric().getName();
-				dao.getMetricConfiguration(configuration.getName(), metricName);
-			}
-		}).throwsException().withMessage("No configuration found for metric: Lines of Code");
+		verifyNew(MetricConfigurationRecord.class).withArguments(entity, CONFIGURATION_ID);
+		verify(dao).save(record);
 	}
 }

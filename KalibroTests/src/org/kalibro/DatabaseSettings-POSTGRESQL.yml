@@ -1,0 +1,5 @@
+ &id1 !!org.kalibro.DatabaseSettings
+databaseType: POSTGRESQL
+jdbcUrl: "jdbc:postgresql://localhost:5432/kalibro_test"
+username: "kalibro"
+password: "kalibro"

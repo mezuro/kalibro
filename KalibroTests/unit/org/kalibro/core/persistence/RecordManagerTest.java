@@ -2,7 +2,7 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
-import java.util.Arrays;
+import java.util.Random;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
@@ -11,14 +11,15 @@ import javax.persistence.TypedQuery;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
+import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
-import org.mockito.verification.VerificationMode;
 import org.powermock.reflect.Whitebox;
 
-public class RecordManagerTest extends TestCase {
+public class RecordManagerTest extends UnitTest {
 
+	private static final Long ID = new Random().nextLong();
+	private static final String QUERY = "RecordManagerTest query";
 	private static final String MERGED = "RecordManagerTest merged";
 	private static final String UNMERGED = "RecordManagerTest unmerged";
 
@@ -37,58 +38,48 @@ public class RecordManagerTest extends TestCase {
 	}
 
 	@Test
-	public void shouldGetById() {
-		when(entityManager.find(Integer.class, 28L)).thenReturn(42);
-		assertEquals(42, recordManager.getById(28L, Integer.class).intValue());
-	}
-
-	@Test
 	public void shouldCreateQuery() {
 		Query query = mock(Query.class);
-		when(entityManager.createQuery("42")).thenReturn(query);
-		assertSame(query, recordManager.createQuery("42"));
+		when(entityManager.createQuery(QUERY)).thenReturn(query);
+		assertSame(query, recordManager.createQuery(QUERY));
 	}
 
 	@Test
 	public void shouldCreateTypedQuery() {
 		TypedQuery<String> query = mock(TypedQuery.class);
-		when(entityManager.createQuery("42", String.class)).thenReturn(query);
-		assertSame(query, recordManager.createQuery("42", String.class));
+		when(entityManager.createQuery(QUERY, String.class)).thenReturn(query);
+		assertSame(query, recordManager.createQuery(QUERY, String.class));
 	}
 
 	@Test
-	public void shouldExecuteUpdateQuery() throws Exception {
-		Query updateQuery = mock(Query.class);
-		recordManager.executeUpdate(updateQuery);
-		verifyWithinTransaction(updateQuery, "executeUpdate");
+	public void shouldGetById() {
+		when(entityManager.find(String.class, ID)).thenReturn(MERGED);
+		assertSame(MERGED, recordManager.getById(ID, String.class));
 	}
 
 	@Test
 	public void shouldMergeAndSave() throws Exception {
 		assertEquals(MERGED, recordManager.save(UNMERGED));
-		verifyWithinTransaction(entityManager, "persist", MERGED);
+		verifyWithinTransaction("persist");
 	}
 
 	@Test
-	public void shouldMergeAndSaveCollection() throws Exception {
-		recordManager.saveAll(Arrays.asList(UNMERGED, UNMERGED, UNMERGED));
-		verifyWithinTransaction(entityManager, times(3), "persist", MERGED);
+	public void shouldRemoveById() throws Exception {
+		when(entityManager.find(String.class, ID)).thenReturn(MERGED);
+		recordManager.removeById(ID, String.class);
+		verifyWithinTransaction("remove");
 	}
 
-	private void verifyWithinTransaction(Object mock, String method, Object... arguments) throws Exception {
-		verifyWithinTransaction(mock, once(), method, arguments);
-	}
-
-	private void verifyWithinTransaction(Object mock, VerificationMode mode, String method, Object... arguments)
-		throws Exception {
-		InOrder order = Mockito.inOrder(transaction, mock, transaction);
+	private void verifyWithinTransaction(String method) throws Exception {
+		InOrder order = Mockito.inOrder(transaction, entityManager, transaction);
 		order.verify(transaction).begin();
-		Whitebox.invokeMethod(order.verify(mock, mode), method, arguments);
+		Whitebox.invokeMethod(order.verify(entityManager), method, MERGED);
 		order.verify(transaction).commit();
 	}
 
 	@Test
 	public void shouldCloseEntityManagerOnFinalize() throws Throwable {
+		when(entityManager.isOpen()).thenReturn(true);
 		recordManager.finalize();
 		verify(entityManager).close();
 	}

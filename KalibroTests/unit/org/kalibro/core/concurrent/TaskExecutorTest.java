@@ -8,7 +8,7 @@ import java.util.concurrent.TimeoutException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.UtilityClassTest;
+import org.kalibro.tests.UtilityClassTest;
 
 public class TaskExecutorTest extends UtilityClassTest {
 
@@ -111,7 +111,7 @@ public class TaskExecutorTest extends UtilityClassTest {
 
 	@Test
 	public void shouldExecutePeriodically() throws InterruptedException {
-		long period = 50;
+		long period = 100;
 		CounterTask task = new CounterTask();
 		task.executePeriodically(period, MILLISECONDS);
 

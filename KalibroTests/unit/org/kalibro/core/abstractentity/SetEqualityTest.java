@@ -1,36 +1,37 @@
 package org.kalibro.core.abstractentity;
 
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.any;
 
 import java.util.*;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.TestCase;
-import org.kalibro.core.Environment;
+import org.kalibro.Language;
+import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Equality.class)
-public class SetEqualityTest extends TestCase {
+public class SetEqualityTest extends UnitTest {
+
+	private static final boolean DEEP = new Random().nextBoolean();
 
 	private SetEquality equality;
 
 	@Before
 	public void setUp() {
-		equality = new SetEquality();
+		equality = new SetEquality(DEEP);
 		mockStatic(Equality.class);
-		when(Equality.areDeepEqual(any(), any())).thenAnswer(new EqualArgumentsAnswer());
+		when(Equality.areEqual(any(), any(), eq(DEEP))).thenAnswer(new EqualArgumentsAnswer());
 	}
 
 	@Test
 	public void shouldEvaluateAnyTypeOfSet() {
 		assertTrue(equality.canEvaluate(new HashSet<Object>()));
 		assertTrue(equality.canEvaluate(new TreeSet<String>()));
-		assertTrue(equality.canEvaluate(EnumSet.allOf(Environment.class)));
+		assertTrue(equality.canEvaluate(EnumSet.allOf(Language.class)));
 
 		assertFalse(equality.canEvaluate(null));
 		assertFalse(equality.canEvaluate(this));
@@ -39,30 +40,26 @@ public class SetEqualityTest extends TestCase {
 
 	@Test
 	public void setsShouldHaveSameSize() {
-		assertFalse(equality.equals(newSet(1, 2), newSet(1, 2, 3)));
-		assertFalse(equality.equals(newSet(1, 2, 3), newSet(1, 2)));
+		assertFalse(equality.equals(set(1, 2), set(1, 2, 3)));
+		assertFalse(equality.equals(set(1, 2, 3), set(1, 2)));
 	}
 
 	@Test
 	public void elementsShouldBeEqual() {
-		assertFalse(equality.equals(newSet(6, 28), newSet(2, 42)));
-		assertTrue(equality.equals(newSet(6, 28), newSet(6, 28)));
+		assertFalse(equality.equals(set(6, 28), set(2, 42)));
+		assertTrue(equality.equals(set(6, 28), set(6, 28)));
 	}
 
 	@Test
 	public void elementsNeedNotToBeInTheSameOrder() {
-		assertTrue(equality.equals(newSet(1, 2), newSet(2, 1)));
-		assertTrue(equality.equals(newSet(1, 2, 3), newSet(2, 3, 1)));
+		assertTrue(equality.equals(set(1, 2), set(2, 1)));
+		assertTrue(equality.equals(set(1, 2, 3), set(2, 3, 1)));
 	}
 
 	@Test
-	public void elementsShouldBeDeepEqual() {
-		assertTrue(equality.equals(newSet(1, 2, 3), newSet(1, 2, 3)));
+	public void elementsShouldBeDeepEqualIfDeep() {
+		assertTrue(equality.equals(set(1, 2, 3), set(1, 2, 3)));
 		verifyStatic();
-		Equality.areDeepEqual(1, 1);
-	}
-
-	private Set<Integer> newSet(Integer... elements) {
-		return new HashSet<Integer>(Arrays.asList(elements));
+		Equality.areEqual(1, 1, DEEP);
 	}
 }

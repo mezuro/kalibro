@@ -6,10 +6,10 @@ import java.lang.reflect.InvocationTargetException;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.TestCase;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.tests.UnitTest;
 
-public class EntityComparatorTest extends TestCase {
+public class EntityComparatorTest extends UnitTest {
 
 	private static final String ASSERT_MESSAGE = "Order not satisfied: carlos, paulo";
 	private static final String ERROR_MESSAGE = "Error comparing fields: org.kalibro.core.abstractentity.";
@@ -31,16 +31,26 @@ public class EntityComparatorTest extends TestCase {
 	public void compareShouldBeZeroWhenEntitiesAreEqual() {
 		assertEquals(0, comparator.compare(carlos, carlos));
 		assertEquals(0, comparator.compare(carlos, carlosPerson));
+		assertEquals(0, comparator.compare(array("1", "2"), array("1", "2")));
 	}
 
 	@Test
 	public void compareShouldBeLessThanZeroWhenComparingToGreater() {
 		assertTrue(ASSERT_MESSAGE, comparator.compare(carlos, paulo) < 0);
+		assertTrue(comparator.compare(array("1"), array("2")) < 0);
+		assertTrue(comparator.compare(array("1"), array("1", "2")) < 0);
 	}
 
 	@Test
 	public void compareShouldBeGreaterThanZeroWhenComparingToSmaller() {
 		assertTrue(ASSERT_MESSAGE, comparator.compare(paulo, carlos) > 0);
+		assertTrue(comparator.compare(array("1", "2"), array("1")) > 0);
+	}
+
+	private ArrayPerson array(String... array) {
+		ArrayPerson arrayPerson = new ArrayPerson();
+		arrayPerson.array = array;
+		return arrayPerson;
 	}
 
 	@Test
@@ -71,6 +81,13 @@ public class EntityComparatorTest extends TestCase {
 	private class WeirdPerson extends Person {
 
 		@SuppressWarnings("unused")
-		private Object field = new String[0];
+		private Object field = new Object();
+	}
+
+	@SortingFields("array")
+	private class ArrayPerson extends Person {
+
+		@SuppressWarnings("unused")
+		private String[] array;
 	}
 }

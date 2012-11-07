@@ -1,23 +1,12 @@
 package br.jabuti;
 
-import static org.kalibro.core.model.enums.Granularity.CLASS;
-
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 import org.apache.commons.io.IOUtils;
-import org.kalibro.core.model.Module;
-import org.kalibro.core.model.NativeMetric;
-import org.kalibro.core.model.NativeMetricResult;
-import org.kalibro.core.model.NativeModuleResult;
-import org.kalibro.core.model.enums.Granularity;
-import org.kalibro.core.model.enums.Language;
+import org.kalibro.*;
+import org.kalibro.core.concurrent.Writer;
 import org.yaml.snakeyaml.Yaml;
 
 public class JabutiOutputParser {
@@ -41,11 +30,11 @@ public class JabutiOutputParser {
 		return supportedMetrics.values();
 	}
 
-	public Set<NativeModuleResult> parseResults(InputStream jabutiOutput, Set<NativeMetric> metrics) {
-		Set<NativeModuleResult> results = new LinkedHashSet<NativeModuleResult>();
+	public void parseResults(InputStream jabutiOutput, Set<NativeMetric> metrics,
+		Writer<NativeModuleResult> resultWriter) {
 		for (Object resultMap : new Yaml().loadAll(jabutiOutput))
-			results.add(parseResult((Map<?, ?>) resultMap, metrics));
-		return results;
+			resultWriter.write(parseResult((Map<?, ?>) resultMap, metrics));
+		resultWriter.close();
 	}
 
 	private void parseSupportedMetric(String line) {
@@ -54,12 +43,11 @@ public class JabutiOutputParser {
 		String name = line.substring(hyphenIndex + 3).trim();
 		Granularity scope = Granularity.SOFTWARE;
 		NativeMetric metric = new NativeMetric(name, scope, Language.JAVA);
-		metric.setOrigin("Jabuti");
 		supportedMetrics.put(code, metric);
 	}
 
 	private NativeModuleResult parseResult(Map<?, ?> resultMap,
-			Set<NativeMetric> wantedMetrics) {
+		Set<NativeMetric> wantedMetrics) {
 		NativeModuleResult moduleResult = createModuleResult(resultMap);
 		for (Object metricCode : resultMap.keySet()) {
 			NativeMetric metric = supportedMetrics.get(metricCode);
@@ -71,7 +59,7 @@ public class JabutiOutputParser {
 
 	private NativeModuleResult createModuleResult(Map<?, ?> resultMap) {
 		String moduleName = "" + resultMap.get("_module");
-		Granularity granularity = moduleName.equals("null") ? Granularity.SOFTWARE : CLASS;
+		Granularity granularity = moduleName.equals("null") ? Granularity.SOFTWARE : Granularity.CLASS;
 		Module module = new Module(granularity, moduleName.split(":+"));
 		return new NativeModuleResult(module);
 	}
@@ -82,5 +70,4 @@ public class JabutiOutputParser {
 			value = Double.parseDouble("" + result);
 		moduleResult.addMetricResult(new NativeMetricResult(metric, value));
 	}
-
 }

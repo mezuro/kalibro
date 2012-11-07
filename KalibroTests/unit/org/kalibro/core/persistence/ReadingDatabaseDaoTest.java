@@ -2,61 +2,33 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Arrays;
+import java.util.Random;
 
-import javax.persistence.TypedQuery;
-
-import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.kalibro.Reading;
-import org.kalibro.TestCase;
 import org.kalibro.core.persistence.record.ReadingRecord;
 import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
 
-@RunWith(PowerMockRunner.class)
 @PrepareForTest(ReadingDatabaseDao.class)
-public class ReadingDatabaseDaoTest extends TestCase {
+public class ReadingDatabaseDaoTest extends DatabaseDaoTestCase<Reading, ReadingRecord, ReadingDatabaseDao> {
 
-	private Reading reading;
-	private ReadingRecord record;
-
-	private ReadingDatabaseDao dao;
-
-	@Before
-	public void setUp() {
-		reading = mock(Reading.class);
-		record = mock(ReadingRecord.class);
-		when(record.convert()).thenReturn(reading);
-		dao = spy(new ReadingDatabaseDao(null));
-	}
+	private static final Long ID = new Random().nextLong();
+	private static final Long GROUP_ID = new Random().nextLong();
 
 	@Test
 	public void shouldGetReadingsOfGroup() {
-		TypedQuery<ReadingRecord> query = mock(TypedQuery.class);
-		doReturn(query).when(dao).createRecordQuery("WHERE reading.group.id = :groupId ORDER BY reading.grade");
-		when(query.getResultList()).thenReturn(Arrays.asList(record));
+		assertDeepEquals(set(entity), dao.readingsOf(GROUP_ID));
 
-		assertDeepList(dao.readingsOf(42L), reading);
-		verify(query).setParameter("groupId", 42L);
+		verify(dao).createRecordQuery("reading.group.id = :groupId");
+		verify(query).setParameter("groupId", GROUP_ID);
 	}
 
 	@Test
 	public void shouldSave() throws Exception {
-		when(reading.getGroupId()).thenReturn(28L);
-		whenNew(ReadingRecord.class).withArguments(reading, 28L).thenReturn(record);
-		doReturn(record).when(dao).save(record);
-		when(record.id()).thenReturn(42L);
+		when(record.id()).thenReturn(ID);
+		assertEquals(ID, dao.save(entity, GROUP_ID));
 
-		assertEquals(42L, dao.save(reading).longValue());
+		verifyNew(ReadingRecord.class).withArguments(entity, GROUP_ID);
 		verify(dao).save(record);
-	}
-
-	@Test
-	public void shouldDelete() {
-		doNothing().when(dao).deleteById(42L);
-		dao.delete(42L);
-		verify(dao).deleteById(42L);
 	}
 }

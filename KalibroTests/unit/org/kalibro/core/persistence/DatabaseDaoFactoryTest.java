@@ -2,10 +2,10 @@ package org.kalibro.core.persistence;
 
 import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import static org.junit.Assert.*;
-import static org.mockito.Matchers.*;
 
 import java.util.Map;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
@@ -13,67 +13,114 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
-import org.kalibro.TestCase;
+import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
+import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({DatabaseDaoFactory.class, Persistence.class})
-public class DatabaseDaoFactoryTest extends TestCase {
+@PrepareForTest({DatabaseDaoFactory.class, KalibroSettings.class, Persistence.class})
+public class DatabaseDaoFactoryTest extends UnitTest {
 
-	private EntityManagerFactory managerFactory;
-	private BaseToolDatabaseDao baseToolDao;
 	private DatabaseSettings settings;
+	private RecordManager recordManager;
+	private EntityManagerFactory entityManagerFactory;
 
-	private DatabaseDaoFactory daoFactory;
+	private DatabaseDaoFactory factory;
 
 	@Before
 	public void setUp() throws Exception {
+		Whitebox.setInternalState(DatabaseDaoFactory.class, "currentSettings", (DatabaseSettings) null);
+		Whitebox.setInternalState(DatabaseDaoFactory.class, "entityManagerFactory", (EntityManagerFactory) null);
+		mockDatabaseSettings();
 		mockPersistence();
-		baseToolDao = mock(BaseToolDatabaseDao.class);
-		whenNew(BaseToolDatabaseDao.class).withArguments(any()).thenReturn(baseToolDao);
-		settings = new DatabaseSettings();
-		daoFactory = new DatabaseDaoFactory(settings);
+		factory = new DatabaseDaoFactory();
 	}
 
-	private void mockPersistence() {
-		managerFactory = mock(EntityManagerFactory.class);
+	private void mockDatabaseSettings() {
+		settings = new DatabaseSettings();
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(new KalibroSettings());
+	}
+
+	private void mockPersistence() throws Exception {
+		recordManager = mock(RecordManager.class);
+		entityManagerFactory = mock(EntityManagerFactory.class);
+		EntityManager entityManager = mock(EntityManager.class);
+
 		mockStatic(Persistence.class);
-		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(managerFactory);
+		when(Persistence.createEntityManagerFactory(eq("Kalibro"), any(Map.class))).thenReturn(entityManagerFactory);
+		when(entityManagerFactory.isOpen()).thenReturn(true);
+		when(entityManagerFactory.createEntityManager()).thenReturn(entityManager);
+		when(entityManager.getEntityManagerFactory()).thenReturn(entityManagerFactory);
+		whenNew(RecordManager.class).withArguments(entityManager).thenReturn(recordManager);
+	}
+
+	@Test
+	public void shouldCreateRecordManager() {
+		assertSame(recordManager, DatabaseDaoFactory.createRecordManager());
 	}
 
 	@Test
 	public void shouldSetPersistencePropertiesAccordingToDatabaseSettings() {
-		@SuppressWarnings("rawtypes")
-		ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
-		verifyStatic();
-		Persistence.createEntityManagerFactory(eq("Kalibro"), captor.capture());
-		Map<String, String> properties = captor.getValue();
-
+		Map<String, String> properties = capturePersistenceProperties();
 		assertEquals(Environment.ddlGeneration(), properties.get(DDL_GENERATION));
 		assertEquals(settings.getDatabaseType().getDriverClassName(), properties.get(JDBC_DRIVER));
 		assertEquals(settings.getJdbcUrl(), properties.get(JDBC_URL));
 		assertEquals(settings.getUsername(), properties.get(JDBC_USER));
 		assertEquals(settings.getPassword(), properties.get(JDBC_PASSWORD));
+		assertEquals(PersistenceLogger.class.getName(), properties.get(LOGGING_LOGGER));
+	}
+
+	@SuppressWarnings("rawtypes")
+	private Map<String, String> capturePersistenceProperties() {
+		ArgumentCaptor<Map> captor = ArgumentCaptor.forClass(Map.class);
+		verifyStatic();
+		Persistence.createEntityManagerFactory(eq("Kalibro"), captor.capture());
+		return captor.getValue();
 	}
 
 	@Test
-	public void shouldCreateDatabaseDaos() {
-		assertSame(baseToolDao, daoFactory.createBaseToolDao());
-		assertClassEquals(ConfigurationDatabaseDao.class, daoFactory.createConfigurationDao());
-		assertClassEquals(MetricConfigurationDatabaseDao.class, daoFactory.createMetricConfigurationDao());
-		assertClassEquals(ModuleResultDatabaseDao.class, daoFactory.createModuleResultDao());
-		assertClassEquals(ProjectDatabaseDao.class, daoFactory.createProjectDao());
-		assertClassEquals(ProjectResultDatabaseDao.class, daoFactory.createProjectResultDao());
-		assertClassEquals(ReadingDatabaseDao.class, daoFactory.createReadingDao());
-		assertClassEquals(ReadingGroupDatabaseDao.class, daoFactory.createReadingGroupDao());
+	public void shouldClosePreviousEntityManagerIfOpen() {
+		DatabaseSettings newSettings = new DatabaseSettings();
+		newSettings.setPassword("x");
+		new DatabaseDaoFactory(settings);
+		new DatabaseDaoFactory(newSettings);
+
+		verify(entityManagerFactory, times(1)).close();
 	}
 
 	@Test
-	public void shouldSaveBaseTools() {
-		Mockito.verify(baseToolDao).saveBaseTools();
+	public void shouldEnsureOpenEntityManagerFactoryBeforeCreatingRecordManager() {
+		when(entityManagerFactory.isOpen()).thenReturn(false);
+		DatabaseDaoFactory.createRecordManager();
+
+		verifyStatic(times(2));
+		Persistence.createEntityManagerFactory(anyString(), any(Map.class));
+	}
+
+	@Test
+	public void shouldCreateDaos() throws Exception {
+		shouldCreate(BaseToolDatabaseDao.class);
+		shouldCreate(ConfigurationDatabaseDao.class);
+		shouldCreate(MetricConfigurationDatabaseDao.class);
+		shouldCreate(MetricResultDatabaseDao.class);
+		shouldCreate(ModuleResultDatabaseDao.class);
+		shouldCreate(ProcessingDatabaseDao.class);
+		shouldCreate(ProjectDatabaseDao.class);
+		shouldCreate(RangeDatabaseDao.class);
+		shouldCreate(ReadingDatabaseDao.class);
+		shouldCreate(ReadingGroupDatabaseDao.class);
+		shouldCreate(RepositoryDatabaseDao.class);
+	}
+
+	private <T> void shouldCreate(Class<T> daoClass) throws Exception {
+		T dao = mock(daoClass);
+		whenNew(daoClass).withNoArguments().thenReturn(dao);
+		String methodName = "create" + daoClass.getSimpleName().replace("Database", "");
+		assertSame("Unexpected return of " + methodName, dao, Whitebox.invokeMethod(factory, methodName));
 	}
 }
