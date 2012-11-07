@@ -1,6 +1,7 @@
 package br.jabuti;
 
 import static org.junit.Assert.*;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 import java.io.*;
 import java.util.*;
@@ -69,8 +70,8 @@ public class JabutiTest extends IntegrationTest {
 	}
 
 	@Override
-	protected Timeout testTimeout() {
-		return new Timeout(90000);
+	protected TestTimeout testTimeout() {
+		return new TestTimeout(20, SECONDS);
 	}
 
 	@Test
