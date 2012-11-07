@@ -32,11 +32,6 @@ public class EnvironmentTest extends UtilityClassTest {
 		return Whitebox.invokeMethod(Environment.class, "testing");
 	}
 
-	@Override
-	protected Class<Environment> utilityClass() {
-		return Environment.class;
-	}
-
 	@Test
 	public void shouldGetDotKalibroDirectory() throws Exception {
 		assertEquals(TESTS, dotKalibro());

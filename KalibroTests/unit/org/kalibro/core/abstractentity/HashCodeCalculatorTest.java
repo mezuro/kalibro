@@ -24,11 +24,6 @@ public class HashCodeCalculatorTest extends UtilityClassTest {
 		programmerPaulo = loadFixture("paulo", Programmer.class);
 	}
 
-	@Override
-	protected Class<?> utilityClass() {
-		return HashCodeCalculator.class;
-	}
-
 	@Test
 	public void hashCodesShouldBeDistributed() {
 		assertDifferent(hash(carlos), hash(cristina), hash(isis), hash(paulo));
