@@ -26,11 +26,6 @@ public class TaskExecutorTest extends UtilityClassTest {
 		answerTask = new RetrieveResultTask<String>(ANSWER);
 	}
 
-	@Override
-	protected Class<?> utilityClass() {
-		return TaskExecutor.class;
-	}
-
 	@Test
 	public void shouldGetReportForTaskDone() throws InterruptedException {
 		TaskReport<?> report = executeAndGetReport(answerTask);

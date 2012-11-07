@@ -29,11 +29,6 @@ public class ScriptValidatorTest extends UtilityClassTest {
 		assertValid();
 	}
 
-	@Override
-	protected Class<?> utilityClass() {
-		return ScriptValidator.class;
-	}
-
 	@Test
 	public void shouldValidateNativeCode() {
 		cbo.setCode("42");
