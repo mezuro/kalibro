@@ -7,7 +7,6 @@ import java.text.DecimalFormat;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.text.NumberFormatter;
 
 import org.kalibro.desktop.swingextension.Button;
@@ -15,7 +14,7 @@ import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-abstract class NumberField<T extends Number> extends EditPanel<T> implements ActionListener {
+public abstract class NumberField<T extends Number> extends EditPanel<T> implements ActionListener {
 
 	private T specialNumber;
 	private JFormattedTextField valueField;
@@ -27,7 +26,7 @@ abstract class NumberField<T extends Number> extends EditPanel<T> implements Act
 	}
 
 	public NumberField(String name, T specialNumber) {
-		super(name);
+		this(name);
 		this.specialNumber = specialNumber;
 		addSpecialNumberButton();
 	}
@@ -36,7 +35,8 @@ abstract class NumberField<T extends Number> extends EditPanel<T> implements Act
 	protected void createComponents(Component... innerComponents) {
 		valueField = new JFormattedTextField(new NumberFormatter(getDecimalFormat()));
 		valueField.setName(getName());
-		valueField.setSize(new FieldSize(valueField));
+		FieldSize fieldSize = new FieldSize(valueField);
+		valueField.setSize(fieldSize);
 		valueField.setHorizontalAlignment(SwingConstants.RIGHT);
 		valueField.setColumns(getColumns());
 	}
@@ -64,19 +64,11 @@ abstract class NumberField<T extends Number> extends EditPanel<T> implements Act
 		return (value == null) ? null : parseValue(value);
 	}
 
+	protected abstract T parseValue(Number value);
+
 	@Override
 	public void set(T value) {
 		valueField.setValue(value);
-	}
-
-	protected abstract T parseValue(Number value);
-
-	public Border getTextBorder() {
-		return valueField.getBorder();
-	}
-
-	public void setTextBorder(Border border) {
-		valueField.setBorder(border);
 	}
 
 	@Override

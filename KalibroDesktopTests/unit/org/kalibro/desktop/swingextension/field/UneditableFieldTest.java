@@ -3,6 +3,7 @@ package org.kalibro.desktop.swingextension.field;
 import static org.junit.Assert.*;
 
 import java.awt.Font;
+import java.util.Random;
 
 import javax.swing.SwingConstants;
 
@@ -13,12 +14,13 @@ import org.kalibro.tests.UnitTest;
 public class UneditableFieldTest extends UnitTest {
 
 	private static final String NAME = "UneditableFieldTest name";
+	private static final Integer VALUE = new Random().nextInt();
 
-	private UneditableField<String> field;
+	private UneditableField<Integer> field;
 
 	@Before
 	public void setUp() {
-		field = new UneditableField<String>(NAME);
+		field = new UneditableField<Integer>(NAME);
 	}
 
 	@Test
@@ -43,8 +45,8 @@ public class UneditableFieldTest extends UnitTest {
 
 	@Test
 	public void shouldShowValue() {
-		field.set("My string");
-		assertEquals("My string", field.getText());
+		field.set(VALUE);
+		assertEquals(VALUE.toString(), field.getText());
 
 		field.set(null);
 		assertEquals("", field.getText());
@@ -52,19 +54,19 @@ public class UneditableFieldTest extends UnitTest {
 
 	@Test
 	public void shouldRetrieveValue() {
-		field.set("My string");
-		assertEquals("My string", field.get());
+		field.set(VALUE);
+		assertEquals(VALUE, field.get());
 	}
 
 	@Test
 	public void shouldChangeWidthWhenSettingValue() {
 		int emptyWidth = (int) field.getSize().getWidth();
 
-		field.set("123456789");
+		field.set(123456789);
 		int nineWidth = (int) field.getSize().getWidth();
 		assertTrue(nineWidth > emptyWidth);
 
-		field.set("1234");
+		field.set(1234);
 		int fourWidth = (int) field.getSize().getWidth();
 		assertTrue(fourWidth < nineWidth);
 	}

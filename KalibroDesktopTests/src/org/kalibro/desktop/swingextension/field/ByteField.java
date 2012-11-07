@@ -4,11 +4,11 @@ import java.text.DecimalFormat;
 
 class ByteField extends NumberField<Byte> {
 
-	protected ByteField(String name) {
+	ByteField(String name) {
 		super(name);
 	}
 
-	protected ByteField(String name, Byte specialNumber) {
+	ByteField(String name, Byte specialNumber) {
 		super(name, specialNumber);
 	}
 

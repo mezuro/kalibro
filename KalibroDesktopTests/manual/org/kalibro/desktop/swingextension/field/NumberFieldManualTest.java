@@ -7,20 +7,18 @@ import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 abstract class NumberFieldManualTest<T extends Number> extends JPanel {
 
-	protected NumberFieldManualTest() {
+	NumberFieldManualTest() {
 		super();
 		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
-		builder.addSimpleLine(normalField());
-		builder.addSimpleLine(specialNumberField());
+		builder.addSimpleLine(createField());
+		builder.addSimpleLine(createField());
 	}
 
-	public void execute() {
+	void execute() {
 		new ComponentWrapperDialog(title(), this).setVisible(true);
 	}
 
-	protected abstract String title();
+	abstract String title();
 
-	protected abstract NumberField<T> normalField();
-
-	protected abstract NumberField<T> specialNumberField();
+	abstract NumberField<T> createField();
 }

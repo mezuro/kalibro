@@ -7,17 +7,12 @@ public final class IntegerFieldManualTest extends NumberFieldManualTest<Integer>
 	}
 
 	@Override
-	protected String title() {
+	String title() {
 		return "IntegerField";
 	}
 
 	@Override
-	protected NumberField<Integer> normalField() {
+	NumberField<Integer> createField() {
 		return new IntegerField("");
-	}
-
-	@Override
-	protected NumberField<Integer> specialNumberField() {
-		return new IntegerField("", Integer.MAX_VALUE);
 	}
 }

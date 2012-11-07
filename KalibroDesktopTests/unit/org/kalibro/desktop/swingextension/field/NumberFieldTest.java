@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.awt.Font;
 import java.text.ParseException;
+import java.util.Random;
 
 import javax.swing.JFormattedTextField;
 import javax.swing.SwingConstants;
@@ -16,13 +17,22 @@ import org.kalibro.tests.UnitTest;
 
 public class NumberFieldTest extends UnitTest {
 
-	private NumberField<Byte> field;
+	private static final Byte VALUE = (byte) new Random().nextInt();
+	private static final String NAME = "NumberFieldTest name";
+
 	private JFormattedTextField innerField;
+
+	private NumberField<Byte> field;
 
 	@Before
 	public void setUp() {
-		field = new ByteField("byte");
-		innerField = new ComponentFinder(field).find("byte", JFormattedTextField.class);
+		field = new ByteField(NAME);
+		innerField = new ComponentFinder(field).find(NAME, JFormattedTextField.class);
+	}
+
+	@Test
+	public void shouldSetName() {
+		assertEquals(NAME, field.getName());
 	}
 
 	@Test
@@ -36,32 +46,44 @@ public class NumberFieldTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldHaveFieldSize() {
+		assertEquals(new FieldSize(field), field.getSize());
+		assertEquals(new FieldSize(field), innerField.getPreferredSize());
+	}
+
+	@Test
 	public void deafultValueShouldBeNull() {
 		assertNull(field.get());
 	}
 
 	@Test
-	public void shouldSetAndGet() {
-		field.set(new Byte("42"));
-		assertEquals(new Byte("42"), field.get());
+	public void shouldGet() {
+		innerField.setValue(VALUE);
+		assertEquals(VALUE, field.get());
+	}
+
+	@Test
+	public void shouldSet() {
+		field.set(VALUE);
+		assertEquals(field.getDecimalFormat().format(VALUE), innerField.getText());
 	}
 
 	@Test
 	public void shouldAcceptValidNumber() {
-		validateTextChange("42", true);
-		assertEquals(new Byte("42"), field.get());
+		validateTextChange(VALUE.toString(), true);
+		assertEquals(VALUE, field.get());
 	}
 
 	@Test
 	public void shouldNotAcceptChangingBackToNull() {
-		validateTextChange("42", true);
+		validateTextChange(VALUE.toString(), true);
 		validateTextChange("", false);
-		assertEquals(new Byte("42"), field.get());
+		assertEquals(VALUE, field.get());
 	}
 
 	@Test
 	public void shouldNotAcceptInvalidNumber() {
-		validateTextChange("quarenta e dois", false);
+		validateTextChange("invalid number", false);
 	}
 
 	private void validateTextChange(String text, boolean shouldAccept) {
@@ -80,22 +102,11 @@ public class NumberFieldTest extends UnitTest {
 	}
 
 	@Test
-	public void specialNumberButtonShouldExistWhenSpecialNumberSet() {
-		field = new ByteField("", Byte.MAX_VALUE);
-		assertEquals(3, field.getComponentCount());
-	}
+	public void buttonClickShouldSetSpecialNumber() {
+		field = new ByteField(NAME, Byte.MAX_VALUE);
+		Button button = new ComponentFinder(field).find(NAME, Button.class);
 
-	@Test
-	public void buttonShouldSetSpecialNumber() {
-		field = new ByteField("", Byte.MIN_VALUE);
-		new ComponentFinder(field).find("", Button.class).doClick();
-		assertEquals(Byte.MIN_VALUE, field.get().byteValue());
-	}
-
-	@Test
-	public void shouldSetBorderOnInnerField() {
-		field.setTextBorder(null);
-		assertNull(field.getTextBorder());
-		assertNull(innerField.getBorder());
+		button.doClick();
+		assertEquals(Byte.MAX_VALUE, field.get().byteValue());
 	}
 }

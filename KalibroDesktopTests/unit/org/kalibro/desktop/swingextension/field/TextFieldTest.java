@@ -13,8 +13,9 @@ public class TextFieldTest extends UnitTest {
 
 	private static final int LINES = 3;
 	private static final int COLUMNS = 10;
-
 	private static final String NAME = "TextFieldTest name";
+	private static final String TITLE = "TextFieldTest title";
+	private static final String TEXT = "\n TextFieldTest text \n";
 
 	private TextField field;
 	private JTextPane textPane;
@@ -26,14 +27,14 @@ public class TextFieldTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotHaveBorderByDefault() {
-		assertNull(field.getBorder());
+	public void shouldNotHaveTitleByDefault() {
+		assertFalse(field.getBorder() instanceof TitledBorder);
 	}
 
 	@Test
-	public void shouldHaveTitledBorderWhenCreatedWithTitle() {
-		field = new TextField(NAME, LINES, COLUMNS, "My title");
-		assertEquals("My title", ((TitledBorder) field.getBorder()).getTitle());
+	public void shouldAddTitle() {
+		field.titled(TITLE);
+		assertEquals(TITLE, ((TitledBorder) field.getBorder()).getTitle());
 	}
 
 	@Test
@@ -43,14 +44,15 @@ public class TextFieldTest extends UnitTest {
 
 	@Test
 	public void shoudNotBeEditableWhenShowingHtml() {
-		field.setShowHtml(true);
+		field.showingHtml();
 		assertFalse(textPane.isEditable());
 	}
 
 	@Test
 	public void shouldTrimText() {
-		field.set("\n  my text  \n");
-		assertEquals("my text", field.get());
+		assertDifferent(TEXT, TEXT.trim());
+		field.set(TEXT);
+		assertEquals(TEXT.trim(), field.get());
 	}
 
 	@Test

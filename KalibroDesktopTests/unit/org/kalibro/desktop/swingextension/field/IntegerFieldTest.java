@@ -1,22 +1,30 @@
 package org.kalibro.desktop.swingextension.field;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import javax.swing.JFormattedTextField;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 
 public class IntegerFieldTest extends UnitTest {
 
+	private static final String NAME = "IntegerFieldTest name";
+
+	private JFormattedTextField valueField;
 	private IntegerField field;
 
 	@Before
 	public void setUp() {
-		field = new IntegerField("field");
+		field = new IntegerField(NAME);
+		valueField = new ComponentFinder(field).find(NAME, JFormattedTextField.class);
+	}
+
+	@Test
+	public void shouldSetName() {
+		assertEquals(NAME, field.getName());
 	}
 
 	@Test
@@ -25,20 +33,14 @@ public class IntegerFieldTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotShowFractionDigits() {
-		JFormattedTextField valueField = new ComponentFinder(field).find("field", JFormattedTextField.class);
-		valueField.setValue(3.1415);
-		assertEquals("3", valueField.getText());
-		valueField.setValue(2.7182);
-		assertEquals("3", valueField.getText());
+	public void shouldRoundNonIntegerNumbers() {
+		shouldRoundTextTo3(Math.PI);
+		shouldRoundTextTo3(Math.E);
 	}
 
-	@Test
-	public void shouldSetSpecialNumberWhenButtonIsClicked() {
-		field = new IntegerField("field", Integer.MIN_VALUE);
-		assertNull(field.get());
-
-		new ComponentFinder(field).find("field", Button.class).doClick();
-		assertEquals(Integer.MIN_VALUE, field.get().intValue());
+	private void shouldRoundTextTo3(Number value) {
+		valueField.setValue(value);
+		assertEquals(value.intValue(), field.get().intValue());
+		assertEquals("3", valueField.getText());
 	}
 }

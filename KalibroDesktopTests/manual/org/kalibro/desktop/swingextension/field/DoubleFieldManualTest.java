@@ -6,18 +6,16 @@ public final class DoubleFieldManualTest extends NumberFieldManualTest<Double> {
 		new DoubleFieldManualTest().execute();
 	}
 
+	private boolean negative;
+
 	@Override
-	protected String title() {
+	String title() {
 		return "DoubleField";
 	}
 
 	@Override
-	protected NumberField<Double> normalField() {
-		return new DoubleField("");
-	}
-
-	@Override
-	protected NumberField<Double> specialNumberField() {
-		return new DoubleField("", Double.POSITIVE_INFINITY);
+	NumberField<Double> createField() {
+		negative = !negative;
+		return new DoubleField("", negative ? Double.NEGATIVE_INFINITY : Double.POSITIVE_INFINITY);
 	}
 }

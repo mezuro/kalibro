@@ -25,7 +25,7 @@ public class ChooseNativeMetricPanel extends AbstractPanel<NativeMetric> {
 	protected void createComponents(Component... innerComponents) {
 		createBaseToolList();
 		createMetricTable();
-		descriptionField = new TextField("description", 2, 20, null, true);
+		descriptionField = new TextField("description", 2, 20).showingHtml();
 	}
 
 	private void createBaseToolList() {

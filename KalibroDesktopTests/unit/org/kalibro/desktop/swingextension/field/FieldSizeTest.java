@@ -22,7 +22,7 @@ public class FieldSizeTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		Random random = new Random(System.currentTimeMillis());
+		Random random = new Random();
 		font = new Font("Arial", Font.BOLD, random.nextInt());
 		componentSize = new Dimension(random.nextInt(), random.nextInt());
 		component = mock(JComponent.class);

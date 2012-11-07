@@ -8,10 +8,6 @@ public class IntegerField extends NumberField<Integer> {
 		super(name);
 	}
 
-	public IntegerField(String name, Integer specialNumber) {
-		super(name, specialNumber);
-	}
-
 	@Override
 	public DecimalFormat getDecimalFormat() {
 		DecimalFormat format = new DecimalFormat();
@@ -20,7 +16,7 @@ public class IntegerField extends NumberField<Integer> {
 	}
 
 	@Override
-	public Integer parseValue(Number value) {
+	protected Integer parseValue(Number value) {
 		return value.intValue();
 	}
 

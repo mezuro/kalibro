@@ -35,13 +35,9 @@ public class MaybeEditableField<T> extends JPanel implements Field<T> {
 	}
 
 	public void setEditable(boolean editable) {
+		uneditableField.set(editableField.get());
 		removeAll();
-		if (editable)
-			add(editableComponent());
-		else {
-			uneditableField.set(editableField.get());
-			add(uneditableField);
-		}
+		add(editable ? editableComponent() : uneditableField);
 		repaint();
 	}
 

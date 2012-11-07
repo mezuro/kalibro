@@ -28,14 +28,14 @@ public final class TextFieldManualTest extends JPanel {
 		builder.add(label(), 4);
 		builder.newLine();
 		builder.add(new Label("Plain text, no title:"));
-		builder.add(getNoTitlePlain(), 1, 2);
+		builder.add(textField(), 1, 2);
 		builder.add(new Label("Html text, no title:"));
-		builder.add(getNoTitleHtml(), 1, 2);
+		builder.add(textField().showingHtml(), 1, 2);
 		builder.newLine();
 		builder.add(new Label("Plain text, titled:"));
-		builder.add(getTitledPlain(), 1, 2);
+		builder.add(textField().titled("Title"), 1, 2);
 		builder.add(new Label("Html text, titled:"));
-		builder.add(getTitledHtml(), 1, 2);
+		builder.add(textField().titled("Title").showingHtml(), 1, 2);
 	}
 
 	private Label label() {
@@ -44,24 +44,8 @@ public final class TextFieldManualTest extends JPanel {
 		return label;
 	}
 
-	private TextField getNoTitlePlain() {
-		return newTextField("", LINES, COLUMNS, "", false);
-	}
-
-	private TextField getNoTitleHtml() {
-		return newTextField("", LINES, COLUMNS, null, true);
-	}
-
-	private TextField getTitledPlain() {
-		return newTextField("", LINES, COLUMNS, "Title", false);
-	}
-
-	private TextField getTitledHtml() {
-		return newTextField("", LINES, COLUMNS, "Title", true);
-	}
-
-	private TextField newTextField(String name, int lines, int columns, String title, boolean showHtml) {
-		TextField textField = new TextField(name, lines, columns, title, showHtml);
+	private TextField textField() {
+		TextField textField = new TextField("", LINES, COLUMNS);
 		textField.set(text);
 		return textField;
 	}

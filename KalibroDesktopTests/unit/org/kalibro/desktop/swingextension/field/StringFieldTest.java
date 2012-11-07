@@ -14,6 +14,7 @@ public class StringFieldTest extends UnitTest {
 
 	private static final int COLUMNS = 5;
 	private static final String NAME = "StringFieldTest name";
+	private static final String TEXT = "\n StringFieldTest text \n";
 
 	private StringField field;
 
@@ -45,7 +46,8 @@ public class StringFieldTest extends UnitTest {
 
 	@Test
 	public void shouldTrimText() {
-		field.set("  my text  ");
-		assertEquals("my text", field.get());
+		assertDifferent(TEXT, TEXT.trim());
+		field.set(TEXT);
+		assertEquals(TEXT.trim(), field.get());
 	}
 }

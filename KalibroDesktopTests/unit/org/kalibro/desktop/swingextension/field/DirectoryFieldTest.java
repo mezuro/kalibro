@@ -25,6 +25,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareOnlyThisForTest(DirectoryField.class)
 public class DirectoryFieldTest extends UnitTest {
 
+	private static final String NAME = "DirectoryFieldTest name";
+
 	private FileChooser chooser;
 	private ErrorDialog errorDialog;
 
@@ -35,7 +37,7 @@ public class DirectoryFieldTest extends UnitTest {
 	public void setUp() throws Exception {
 		mockFileChooser();
 		mockErrorDialog();
-		field = new DirectoryField("");
+		field = new DirectoryField(NAME);
 		finder = new ComponentFinder(field);
 	}
 
@@ -47,6 +49,11 @@ public class DirectoryFieldTest extends UnitTest {
 	private void mockErrorDialog() throws Exception {
 		errorDialog = mock(ErrorDialog.class);
 		whenNew(ErrorDialog.class).withArguments(any(DirectoryField.class)).thenReturn(errorDialog);
+	}
+
+	@Test
+	public void shouldSetName() {
+		assertEquals(NAME, field.getName());
 	}
 
 	@Test

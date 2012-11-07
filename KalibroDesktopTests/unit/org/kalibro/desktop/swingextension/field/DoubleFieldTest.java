@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.text.DecimalFormatSymbols;
 
@@ -14,13 +14,20 @@ import org.kalibro.tests.UnitTest;
 
 public class DoubleFieldTest extends UnitTest {
 
-	private DoubleField field;
+	private static final String NAME = "DoubleFieldTest name";
+
 	private JFormattedTextField valueField;
+	private DoubleField field;
 
 	@Before
 	public void setUp() {
-		field = new DoubleField("field");
-		valueField = new ComponentFinder(field).find("field", JFormattedTextField.class);
+		field = new DoubleField(NAME);
+		valueField = new ComponentFinder(field).find(NAME, JFormattedTextField.class);
+	}
+
+	@Test
+	public void shouldSetName() {
+		assertEquals(NAME, field.getName());
 	}
 
 	@Test
@@ -38,9 +45,12 @@ public class DoubleFieldTest extends UnitTest {
 
 	@Test
 	public void shouldHaveAtMost2FractionDigits() {
-		field.set(3.1415);
+		field.set(Math.PI);
+		assertDoubleEquals(Math.PI, field.get());
 		assertEquals(format("3.14"), valueField.getText());
-		field.set(2.7182);
+
+		field.set(Math.E);
+		assertDoubleEquals(Math.E, field.get());
 		assertEquals(format("2.72"), valueField.getText());
 	}
 
@@ -49,11 +59,11 @@ public class DoubleFieldTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSetSpecialNumberWhenButtonIsClicked() {
-		field = new DoubleField("field", Double.POSITIVE_INFINITY);
-		assertNull(field.get());
+	public void shouldConstructWithSpecialNumber() {
+		field = new DoubleField(NAME, Double.POSITIVE_INFINITY);
+		Button button = new ComponentFinder(field).find(NAME, Button.class);
 
-		new ComponentFinder(field).find("field", Button.class).doClick();
+		button.doClick();
 		assertDoubleEquals(Double.POSITIVE_INFINITY, field.get());
 	}
 }

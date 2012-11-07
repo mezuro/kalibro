@@ -7,29 +7,29 @@ import javax.swing.SwingConstants;
 
 public class UneditableField<T> extends JLabel implements Field<T> {
 
-	private T theValue;
+	private T fieldValue;
 
 	public UneditableField(String name) {
 		super("", SwingConstants.LEFT);
-		setName(name);
 		setFont(getFont().deriveFont(Font.PLAIN));
+		setName(name);
 		adjustSize();
 	}
 
 	@Override
 	public T get() {
-		return theValue;
+		return fieldValue;
 	}
 
 	@Override
 	public void set(T value) {
-		theValue = value;
+		fieldValue = value;
 		setText((value == null) ? "" : value.toString());
 		adjustSize();
 	}
 
 	private void adjustSize() {
-		setPreferredSize(new JLabel("" + theValue).getPreferredSize());
+		setPreferredSize(new JLabel("" + fieldValue).getPreferredSize());
 		setSize(new FieldSize(this));
 	}
 }
