@@ -6,8 +6,6 @@ import javax.swing.JDialog;
 
 public abstract class AbstractDialog extends JDialog {
 
-	private static boolean suppressShow;
-
 	public AbstractDialog(Window owner, String title, Component... innerComponents) {
 		super(owner, title);
 		setModal(true);
@@ -29,17 +27,9 @@ public abstract class AbstractDialog extends JDialog {
 		setSize(getPreferredSize());
 	}
 
-	protected void centralize() {
-		Toolkit toolkit = Toolkit.getDefaultToolkit();
-		Dimension screenSize = toolkit.getScreenSize();
-		setLocation(screenSize.width / 2 - getSize().width / 2, screenSize.height / 2 - getSize().height / 2);
-	}
-
-	@Override
-	public void setVisible(boolean visible) {
-		if (suppressShow)
-			suppressShow = false;
-		else
-			super.setVisible(visible);
+	private void centralize() {
+		Dimension dialogSize = getSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+		setLocation((screenSize.width - dialogSize.width) / 2, (screenSize.height - dialogSize.height) / 2);
 	}
 }

@@ -19,7 +19,7 @@ public final class ChoiceDialogManualTest extends JLabel {
 
 	private ChoiceDialogManualTest() {
 		super("Click");
-		choiceDialog = new ChoiceDialog<Language>("Choose language", this);
+		choiceDialog = new ChoiceDialog<Language>(this, "Choose language");
 		setPreferredSize(new Dimension(400, 30));
 		addMouseListener(new ClickAction());
 	}

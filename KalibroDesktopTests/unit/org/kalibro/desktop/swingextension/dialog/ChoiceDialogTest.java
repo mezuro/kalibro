@@ -11,7 +11,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Language;
 import org.kalibro.tests.UnitTest;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -29,33 +28,33 @@ public class ChoiceDialogTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		PowerMockito.mockStatic(JOptionPane.class);
-		parent = PowerMockito.mock(Component.class);
-		dialog = new ChoiceDialog<Language>(TITLE, parent);
+		mockStatic(JOptionPane.class);
+		parent = mock(Component.class);
+		dialog = new ChoiceDialog<Language>(parent, TITLE);
 	}
 
 	@Test
 	public void shouldReturnFalseIfNotConfirmed() throws Exception {
-		mockJOptionPane(null);
+		userWillChoose(null);
 		assertFalse(dialog.choose(MESSAGE, OPTIONS));
 	}
 
 	@Test
 	public void shouldChooseFromArray() throws Exception {
-		mockJOptionPane(Language.C);
+		userWillChoose(Language.C);
 		assertTrue(dialog.choose(MESSAGE, OPTIONS));
 		assertEquals(Language.C, dialog.getChoice());
 	}
 
 	@Test
 	public void shouldChooseFromCollection() throws Exception {
-		mockJOptionPane(Language.JAVA);
+		userWillChoose(Language.JAVA);
 		assertTrue(dialog.choose(MESSAGE, list(OPTIONS)));
 		assertEquals(Language.JAVA, dialog.getChoice());
 	}
 
-	private void mockJOptionPane(Language choice) throws Exception {
-		PowerMockito.doReturn(choice).when(JOptionPane.class, "showInputDialog",
+	private void userWillChoose(Language choice) throws Exception {
+		doReturn(choice).when(JOptionPane.class, "showInputDialog",
 			parent, MESSAGE, TITLE, JOptionPane.PLAIN_MESSAGE, null, OPTIONS, OPTIONS[0]);
 	}
 }

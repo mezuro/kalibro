@@ -1,24 +1,23 @@
 package org.kalibro.desktop.swingextension.dialog;
 
-import org.kalibro.desktop.swingextension.field.PalindromeField;
+import org.kalibro.Language;
 
-public final class EditDialogManualTest extends EditDialog<String> implements EditDialogListener<String> {
+public final class EditDialogManualTest extends LanguageDialog implements EditDialogListener<Language> {
 
 	public static void main(String[] args) {
 		new EditDialogManualTest().setVisible(true);
 	}
 
 	private EditDialogManualTest() {
-		super(null, "EditDialog", new PalindromeField());
+		super(null);
 		addListener(this);
 	}
 
 	@Override
-	public boolean dialogConfirm(String value) {
-		System.out.println(value);
-		boolean exceeded = value.length() > 15;
-		if (exceeded)
-			new ErrorDialog(this).show(new Exception("Maximum length is 15"));
-		return !exceeded;
+	public boolean dialogConfirm(Language language) {
+		System.out.println(language);
+		if (language == Language.PYTHON)
+			throw new RuntimeException("Cannot accept Python");
+		return language.name().startsWith("C");
 	}
 }

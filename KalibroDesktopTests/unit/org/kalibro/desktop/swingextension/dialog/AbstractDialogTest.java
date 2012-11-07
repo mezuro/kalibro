@@ -2,40 +2,34 @@ package org.kalibro.desktop.swingextension.dialog;
 
 import static org.junit.Assert.*;
 
-import java.awt.Component;
-import java.awt.Container;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.Window;
 
 import javax.swing.JDialog;
-import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.kalibro.desktop.swingextension.panel.ConfirmPanel;
 import org.kalibro.tests.UnitTest;
-import org.powermock.reflect.Whitebox;
 
 public class AbstractDialogTest extends UnitTest {
 
-	private static final String TITLE = "AbstractDialogTest";
-	private static final JPanel PANEL = new JPanel();
-
 	private Window owner;
-	private DialogMock dialog;
-	private boolean createdComponents, showed;
+	private AbstractDialog dialog;
 
 	@Before
 	public void setUp() {
 		owner = new JDialog();
-		createdComponents = false;
-		showed = false;
-		dialog = new DialogMock();
+		dialog = new LanguageDialog(owner);
 	}
 
 	@Test
 	public void shouldSetOwnerAndTitle() {
-		assertSame(TITLE, dialog.getTitle());
 		assertSame(owner, dialog.getOwner());
+		assertEquals("Languages", dialog.getTitle());
 	}
 
 	@Test
@@ -49,62 +43,24 @@ public class AbstractDialogTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldCreateComponents() {
-		assertTrue(createdComponents);
+	public void shouldCreateComponentsAndBuildPanel() {
+		assertClassEquals(ConfirmPanel.class, dialog.getContentPane());
 	}
 
 	@Test
-	public void shouldSetBuiltPanelAsContentPane() {
-		assertSame(PANEL, dialog.getContentPane());
-	}
-
-	@Test
-	public void minimumSizeShouldBeSet() {
+	public void shouldAdjustSize() {
 		assertTrue(dialog.isMinimumSizeSet());
-		assertEquals(dialog.getMinimumSize(), dialog.getSize());
+		assertEquals(dialog.getPreferredSize(), dialog.getMinimumSize());
+		assertEquals(dialog.getPreferredSize(), dialog.getSize());
 	}
 
 	@Test
-	public void shouldSetVisibleWhenNotTesting() {
-		assertFalse(showed);
-		dialog.setVisible(true);
-		assertTrue(showed);
-	}
+	public void shouldCentralize() {
+		Point location = dialog.getLocation();
+		Dimension dialogSize = dialog.getSize();
+		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 
-	@Test
-	public void shouldNotSetVisibleWhenTesting() {
-		Whitebox.setInternalState(AbstractDialog.class, "suppressShow", true);
-		dialog.setVisible(true);
-		assertFalse(showed);
-		assertFalse(Whitebox.getInternalState(AbstractDialog.class, boolean.class));
-	}
-
-	class DialogMock extends AbstractDialog {
-
-		public DialogMock() {
-			super(owner, TITLE);
-		}
-
-		@Override
-		protected void createComponents(Component... innerComponents) {
-			createdComponents = true;
-		}
-
-		@Override
-		protected Container buildPanel() {
-			return PANEL;
-		}
-
-		/**
-		 * Overriding to mock show.
-		 * 
-		 * @deprecated Overriding to mock show.
-		 */
-		@Override
-		@Deprecated
-		@SuppressWarnings("deprecation")
-		public void show() {
-			showed = true;
-		}
+		assertEquals((screenSize.width - dialogSize.width) / 2, location.x);
+		assertEquals((screenSize.height - dialogSize.height) / 2, location.y);
 	}
 }

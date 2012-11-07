@@ -7,12 +7,12 @@ import javax.swing.JOptionPane;
 
 public class ChoiceDialog<T> {
 
-	private String title;
 	private Component parent;
+	private String title;
 
 	private T choice;
 
-	public ChoiceDialog(String title, Component parent) {
+	public ChoiceDialog(Component parent, String title) {
 		this.title = title;
 		this.parent = parent;
 	}
