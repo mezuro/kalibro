@@ -4,7 +4,7 @@ import java.awt.*;
 
 import javax.swing.JDialog;
 
-import org.kalibro.desktop.swingextension.icon.Icon;
+import org.kalibro.desktop.swingextension.Icon;
 
 public abstract class AbstractDialog extends JDialog {
 

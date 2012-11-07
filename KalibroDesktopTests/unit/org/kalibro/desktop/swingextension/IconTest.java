@@ -1,4 +1,4 @@
-package org.kalibro.desktop.swingextension.icon;
+package org.kalibro.desktop.swingextension;
 
 import static org.junit.Assert.assertEquals;
 

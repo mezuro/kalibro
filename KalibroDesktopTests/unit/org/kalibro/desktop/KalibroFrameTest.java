@@ -10,7 +10,7 @@ import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.swingextension.icon.Icon;
+import org.kalibro.desktop.swingextension.Icon;
 import org.kalibro.tests.UnitTest;
 
 public class KalibroFrameTest extends UnitTest {
