@@ -2,6 +2,7 @@ package org.kalibro.desktop.swingextension;
 
 import static org.junit.Assert.assertEquals;
 
+import java.net.URL;
 import java.util.Random;
 
 import org.junit.Test;
@@ -19,16 +20,20 @@ public class IconTest extends UnitTest {
 
 			@Override
 			protected void perform() {
-				new Icon("inexistent.gif");
+				new Icon(url("inexistent.gif"));
 			}
 		}).doThrow(NullPointerException.class);
 	}
 
 	@Test
 	public void shouldScaleForSize() {
-		Icon icon = new Icon(Icon.KALIBRO);
+		Icon icon = new Icon(url("waiting.gif"));
 		icon = icon.scaleForSize(WIDTH, HEIGHT);
 		assertEquals(WIDTH, icon.getIconWidth());
 		assertEquals(HEIGHT, icon.getIconHeight());
+	}
+
+	private URL url(String resourceName) {
+		return getClass().getResource(resourceName);
 	}
 }

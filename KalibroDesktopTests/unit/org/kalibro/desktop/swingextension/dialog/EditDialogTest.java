@@ -33,7 +33,7 @@ public class EditDialogTest extends UnitTest {
 		listener = PowerMockito.mock(EditDialogListener.class);
 		editPanel = new PalindromeField();
 
-		editDialog = new EditDialog<String>("", editPanel);
+		editDialog = new EditDialog<String>(null, "", editPanel);
 		editDialog.addListener(listener);
 		finder = new ComponentFinder(editDialog);
 		mockErrorDialog();

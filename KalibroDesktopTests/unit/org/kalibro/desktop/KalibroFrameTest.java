@@ -1,6 +1,7 @@
 package org.kalibro.desktop;
 
 import static org.junit.Assert.*;
+import static org.kalibro.desktop.KalibroIcons.*;
 
 import java.awt.Dimension;
 import java.awt.Frame;
@@ -10,7 +11,6 @@ import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.swingextension.Icon;
 import org.kalibro.tests.UnitTest;
 
 public class KalibroFrameTest extends UnitTest {
@@ -29,7 +29,7 @@ public class KalibroFrameTest extends UnitTest {
 
 	@Test
 	public void shouldHaveKalibroIcon() {
-		assertEquals(new Icon(Icon.KALIBRO).getImage(), frame.getIconImage());
+		assertEquals(image(KALIBRO), frame.getIconImage());
 	}
 
 	@Test

@@ -1,19 +1,19 @@
 package org.kalibro.desktop;
 
+import static org.kalibro.desktop.KalibroIcons.*;
+
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
 import javax.swing.WindowConstants;
 
-import org.kalibro.desktop.swingextension.Icon;
-
 public class KalibroFrame extends JFrame {
 
 	public KalibroFrame() {
 		super("Kalibro");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-		setIconImage(new Icon(Icon.KALIBRO).getImage());
+		setIconImage(image(KALIBRO));
 		setName("kalibroFrame");
 		createMenuBar();
 		setSize();

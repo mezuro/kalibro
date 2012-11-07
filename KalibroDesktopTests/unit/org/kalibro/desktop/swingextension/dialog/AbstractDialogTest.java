@@ -4,13 +4,14 @@ import static org.junit.Assert.*;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Window;
 
+import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.WindowConstants;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.desktop.swingextension.Icon;
 import org.kalibro.tests.UnitTest;
 import org.powermock.reflect.Whitebox;
 
@@ -19,29 +20,27 @@ public class AbstractDialogTest extends UnitTest {
 	private static final String TITLE = "AbstractDialogTest";
 	private static final JPanel PANEL = new JPanel();
 
+	private Window owner;
 	private DialogMock dialog;
 	private boolean createdComponents, showed;
 
 	@Before
 	public void setUp() {
+		owner = new JDialog();
 		createdComponents = false;
 		showed = false;
 		dialog = new DialogMock();
 	}
 
 	@Test
-	public void shouldSetTitle() {
+	public void shouldSetOwnerAndTitle() {
 		assertSame(TITLE, dialog.getTitle());
+		assertSame(owner, dialog.getOwner());
 	}
 
 	@Test
 	public void shouldBeModal() {
 		assertTrue(dialog.isModal());
-	}
-
-	@Test
-	public void shouldHaveKalibroIcon() {
-		assertDeepEquals(list(new Icon(Icon.KALIBRO).getImage()), dialog.getIconImages());
 	}
 
 	@Test
@@ -83,7 +82,7 @@ public class AbstractDialogTest extends UnitTest {
 	class DialogMock extends AbstractDialog {
 
 		public DialogMock() {
-			super(TITLE);
+			super(owner, TITLE);
 		}
 
 		@Override

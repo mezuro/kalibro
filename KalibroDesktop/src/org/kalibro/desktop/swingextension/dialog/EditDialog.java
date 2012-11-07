@@ -2,6 +2,7 @@ package org.kalibro.desktop.swingextension.dialog;
 
 import java.awt.Component;
 import java.awt.Container;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,8 +13,8 @@ public class EditDialog<T> extends AbstractDialog implements ActionListener {
 
 	private ConfirmPanel<T> confirmPanel;
 
-	public EditDialog(String title, EditPanel<T> editPanel) {
-		super(title, editPanel);
+	public EditDialog(Window owner, String title, EditPanel<T> editPanel) {
+		super(owner, title, editPanel);
 		setName(editPanel.getName());
 		confirmPanel.addCancelListener(this);
 	}

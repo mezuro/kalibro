@@ -23,7 +23,7 @@ public class AddMetricDialog extends AbstractDialog implements ActionListener, L
 	private Button cancelButton, okButton;
 
 	public AddMetricDialog() {
-		super("Add Metric");
+		super(null, "Add Metric");
 		setResizable(false);
 	}
 

@@ -6,18 +6,15 @@ import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.net.URL;
 
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import org.kalibro.desktop.KalibroDesktop;
-
 public class Icon extends ImageIcon {
 
-	public static final String KALIBRO = "kalibro.gif";
-
-	public Icon(String resource) {
-		super(KalibroDesktop.class.getResource(resource));
+	public Icon(URL location) {
+		super(location);
 	}
 
 	private Icon(Image image) {

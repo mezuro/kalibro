@@ -4,15 +4,13 @@ import java.awt.*;
 
 import javax.swing.JDialog;
 
-import org.kalibro.desktop.swingextension.Icon;
-
 public abstract class AbstractDialog extends JDialog {
 
 	private static boolean suppressShow;
 
-	public AbstractDialog(String title, Component... innerComponents) {
-		super((Frame) null, title, true);
-		setIconImage(new Icon(Icon.KALIBRO).getImage());
+	public AbstractDialog(Window owner, String title, Component... innerComponents) {
+		super(owner, title);
+		setModal(true);
 		setDefaultCloseOperation(DISPOSE_ON_CLOSE);
 
 		createComponents(innerComponents);

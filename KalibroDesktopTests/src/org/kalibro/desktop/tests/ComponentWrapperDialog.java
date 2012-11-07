@@ -1,5 +1,7 @@
 package org.kalibro.desktop.tests;
 
+import static org.kalibro.desktop.KalibroIcons.*;
+
 import java.awt.Component;
 import java.awt.Container;
 
@@ -10,7 +12,8 @@ public class ComponentWrapperDialog extends AbstractDialog {
 	private Container contentPane;
 
 	public ComponentWrapperDialog(String title, Container contentPane) {
-		super(title, contentPane);
+		super(null, title, contentPane);
+		setIconImage(image(KALIBRO));
 	}
 
 	@Override
