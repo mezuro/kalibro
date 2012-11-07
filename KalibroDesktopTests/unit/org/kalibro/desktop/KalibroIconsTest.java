@@ -8,11 +8,6 @@ import org.kalibro.tests.UtilityClassTest;
 
 public class KalibroIconsTest extends UtilityClassTest {
 
-	@Override
-	protected Class<KalibroIcons> utilityClass() {
-		return KalibroIcons.class;
-	}
-
 	@Test
 	public void shouldGetIconAndImages() {
 		verifyIcon(KALIBRO);

@@ -25,11 +25,6 @@ public class KalibroDesktopTest extends UtilityClassTest {
 		whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
 	}
 
-	@Override
-	protected Class<?> utilityClass() {
-		return KalibroDesktop.class;
-	}
-
 	@Test
 	public void shouldOpenFrameIfSettingsAlreadyExist() {
 		when(KalibroSettings.exists()).thenReturn(true);
