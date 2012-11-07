@@ -12,13 +12,16 @@ public class RemoteFileLoaderTest extends UnitTest {
 	private static final String LOCAL_VALIDATION_COMMAND = "LOCAL_VALIDATION_COMMAND";
 
 	private RepositoryLoader localLoader;
-	private RemoteFileLoader remoteLoader;
 	private String temporaryFilePath;
 
+	private RemoteFileLoader remoteLoader;
+
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		localLoader = mock(RepositoryLoader.class);
-		remoteLoader = new FakeRemoteLoader();
+		remoteLoader = mockAbstract(RemoteFileLoader.class);
+		doReturn(localLoader).when(remoteLoader).localLoader();
+
 		temporaryFilePath = "./." + remoteLoader.hashCode();
 		when(localLoader.validationCommands()).thenReturn(list(LOCAL_VALIDATION_COMMAND));
 		when(localLoader.loadCommands(temporaryFilePath, false)).thenReturn(list(LOCAL_LOAD_COMMAND));
@@ -43,13 +46,5 @@ public class RemoteFileLoaderTest extends UnitTest {
 			localCommand,
 			"rm -f " + temporaryFilePath),
 			remoteLoader.loadCommands(ADDRESS, update));
-	}
-
-	private class FakeRemoteLoader extends RemoteFileLoader {
-
-		@Override
-		protected RepositoryLoader localLoader() {
-			return localLoader;
-		}
 	}
 }

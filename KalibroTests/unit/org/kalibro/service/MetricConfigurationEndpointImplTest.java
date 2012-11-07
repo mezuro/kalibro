@@ -17,14 +17,9 @@ public class MetricConfigurationEndpointImplTest extends EndpointImplementorTest
 	private static final Long ID = new Random().nextLong();
 	private static final Long CONFIGURATION_ID = new Random().nextLong();
 
-	@Override
-	protected Class<MetricConfiguration> entityClass() {
-		return MetricConfiguration.class;
-	}
-
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {
-		when(dao.metricConfigurationsOf(CONFIGURATION_ID)).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).metricConfigurationsOf(CONFIGURATION_ID);
 		assertDeepEquals(list(xml), implementor.metricConfigurationsOf(CONFIGURATION_ID));
 	}
 

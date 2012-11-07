@@ -52,6 +52,10 @@ public abstract class EndpointImplementorTest<ENTITY, XML extends DataTransferOb
 		throw new KalibroError("DaoFactory method not found for class: " + daoClass());
 	}
 
+	private Class<ENTITY> entityClass() throws ClassNotFoundException {
+		return (Class<ENTITY>) Class.forName("org.kalibro." + entityName());
+	}
+
 	private Class<XML> xmlClass() throws ClassNotFoundException {
 		return (Class<XML>) Class.forName("org.kalibro.service.xml." + entityName() + "Xml");
 	}
@@ -65,8 +69,6 @@ public abstract class EndpointImplementorTest<ENTITY, XML extends DataTransferOb
 	}
 
 	private String entityName() {
-		return entityClass().getSimpleName();
+		return getClass().getSimpleName().replace("EndpointImplTest", "");
 	}
-
-	protected abstract Class<ENTITY> entityClass();
 }

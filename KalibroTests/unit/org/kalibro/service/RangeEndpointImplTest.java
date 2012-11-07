@@ -16,14 +16,9 @@ public class RangeEndpointImplTest extends EndpointImplementorTest<Range, RangeX
 	private static final Long ID = new Random().nextLong();
 	private static final Long METRIC_CONFIGURATION_ID = new Random().nextLong();
 
-	@Override
-	protected Class<Range> entityClass() {
-		return Range.class;
-	}
-
 	@Test
 	public void shouldGetRangesOfGroup() {
-		when(dao.rangesOf(METRIC_CONFIGURATION_ID)).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).rangesOf(METRIC_CONFIGURATION_ID);
 		assertDeepEquals(list(xml), implementor.rangesOf(METRIC_CONFIGURATION_ID));
 	}
 

@@ -19,11 +19,6 @@ public class ProcessingEndpointImplTest extends
 	private static final Long REPOSITORY_ID = Math.abs(new Random().nextLong());
 	private static final Date DATE = new Date(new Random().nextLong());
 
-	@Override
-	protected Class<Processing> entityClass() {
-		return Processing.class;
-	}
-
 	@Test
 	public void shouldAnswerIfHasProcessing() {
 		when(dao.hasProcessing(REPOSITORY_ID)).thenReturn(true);

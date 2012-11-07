@@ -6,7 +6,6 @@ import java.io.File;
 import java.util.Iterator;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.IntegrationTest;
@@ -19,11 +18,6 @@ public abstract class RepositoryIntegrationTest extends IntegrationTest {
 	public void setUp() throws Exception {
 		Class<?> loaderClass = Class.forName(getClass().getName().replace("Test", "Loader"));
 		loader = (RepositoryLoader) loaderClass.getConstructor().newInstance();
-	}
-
-	@After
-	public void tearDown() {
-		FileUtils.deleteQuietly(projectsDirectory());
 	}
 
 	@Test
