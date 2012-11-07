@@ -1,15 +1,27 @@
 package br.jabuti;
 
-import static org.junit.Assert.*;
 import static java.util.concurrent.TimeUnit.SECONDS;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-import java.io.*;
-import java.util.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.rules.Timeout;
-import org.kalibro.*;
+import org.kalibro.Granularity;
+import org.kalibro.KalibroException;
+import org.kalibro.Language;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.Writer;
 import org.kalibro.tests.IntegrationTest;
@@ -64,7 +76,7 @@ public class JabutiTest extends IntegrationTest {
 
 	@Test
 	public void checkBaseTool() {
-		assertEquals("", jabuti.name());
+		assertEquals("Jabuti", jabuti.name());
 		assertEquals("", jabuti.description());
 		assertDeepEquals(metrics, jabuti.supportedMetrics());
 	}
@@ -94,7 +106,7 @@ public class JabutiTest extends IntegrationTest {
 		Writer<NativeModuleResult> resultWriter = producer.createWriter();
 		jabuti.collectMetrics(project, metrics, resultWriter);
 		Iterator<NativeModuleResult> results = producer.iterator();
-		assertFalse(results.hasNext());
+		assertTrue(results.hasNext());
 
 		Map<Integer, Map<Integer, Double>> resultFile = this.outputJabutiMap();
 		// Test Run Global
