@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -16,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(JOptionPane.class)
 public class ErrorDialogTest extends UnitTest {
 
-	private static final String ERROR_MESSAGE = "ErrorDialogTest";
+	private static final String ERROR_MESSAGE = "ErrorDialogTest message";
 	private static final Exception ERROR = new Exception(ERROR_MESSAGE);
 
 	private Component parent;
@@ -24,8 +23,8 @@ public class ErrorDialogTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		PowerMockito.mockStatic(JOptionPane.class);
-		parent = PowerMockito.mock(Component.class);
+		mockStatic(JOptionPane.class);
+		parent = mock(Component.class);
 		dialog = new ErrorDialog(parent);
 	}
 
@@ -42,7 +41,7 @@ public class ErrorDialogTest extends UnitTest {
 	}
 
 	private void verifyErrorMessageDialog() {
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		JOptionPane.showMessageDialog(parent, ERROR_MESSAGE, "Error", JOptionPane.ERROR_MESSAGE);
 	}
 }
