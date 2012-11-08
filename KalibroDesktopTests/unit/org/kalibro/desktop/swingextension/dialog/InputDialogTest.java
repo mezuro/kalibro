@@ -10,7 +10,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -18,6 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(JOptionPane.class)
 public class InputDialogTest extends UnitTest {
 
+	private static final String INPUT = "InputDialogTest input";
 	private static final String TITLE = "InputDialogTest title";
 	private static final String MESSAGE = "InputDialogTest message";
 
@@ -26,32 +26,31 @@ public class InputDialogTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		PowerMockito.mockStatic(JOptionPane.class);
-		parent = PowerMockito.mock(Component.class);
-		dialog = new InputDialog(TITLE, parent);
+		mockStatic(JOptionPane.class);
+		parent = mock(Component.class);
+		dialog = new InputDialog(parent, TITLE);
 	}
 
 	@Test
 	public void shouldReturnFalseIfNotConfirmed() throws Exception {
-		mockJOptionPane(null);
+		userTypes(null);
 		assertFalse(dialog.userTyped(MESSAGE));
 	}
 
 	@Test
 	public void shouldReturnFalseOnEmptyInput() throws Exception {
-		mockJOptionPane("   ");
+		userTypes("   ");
 		assertFalse(dialog.userTyped(MESSAGE));
 	}
 
 	@Test
 	public void shouldGetUserInput() throws Exception {
-		mockJOptionPane("the input");
+		userTypes(INPUT);
 		assertTrue(dialog.userTyped(MESSAGE));
-		assertEquals("the input", dialog.getInput());
+		assertEquals(INPUT, dialog.getInput());
 	}
 
-	private void mockJOptionPane(String input) throws Exception {
-		PowerMockito.doReturn(input).when(JOptionPane.class, "showInputDialog",
-			parent, MESSAGE, TITLE, JOptionPane.PLAIN_MESSAGE);
+	private void userTypes(String input) throws Exception {
+		doReturn(input).when(JOptionPane.class, "showInputDialog", parent, MESSAGE, TITLE, JOptionPane.PLAIN_MESSAGE);
 	}
 }

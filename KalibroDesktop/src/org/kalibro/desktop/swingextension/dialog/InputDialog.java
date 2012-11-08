@@ -6,19 +6,19 @@ import javax.swing.JOptionPane;
 
 public class InputDialog {
 
-	private String title;
 	private Component parent;
+	private String title;
 
 	private String input;
 
-	public InputDialog(String title, Component parent) {
-		this.title = title;
+	public InputDialog(Component parent, String title) {
 		this.parent = parent;
+		this.title = title;
 	}
 
 	public boolean userTyped(String message) {
 		input = JOptionPane.showInputDialog(parent, message, title, JOptionPane.PLAIN_MESSAGE);
-		return ! (input == null || input.trim().isEmpty());
+		return !(input == null || input.trim().isEmpty());
 	}
 
 	public String getInput() {
