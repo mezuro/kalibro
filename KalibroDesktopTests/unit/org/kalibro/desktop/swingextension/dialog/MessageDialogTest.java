@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.tests.UnitTest;
-import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -24,16 +23,16 @@ public class MessageDialogTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		PowerMockito.mockStatic(JOptionPane.class);
-		parent = PowerMockito.mock(Component.class);
-		dialog = new MessageDialog(TITLE, parent);
+		mockStatic(JOptionPane.class);
+		parent = mock(Component.class);
+		dialog = new MessageDialog(parent, TITLE);
 	}
 
 	@Test
 	public void shouldShowMessage() {
 		dialog.show(MESSAGE);
 
-		PowerMockito.verifyStatic();
+		verifyStatic();
 		JOptionPane.showMessageDialog(parent, MESSAGE, TITLE, JOptionPane.PLAIN_MESSAGE);
 	}
 }

@@ -6,12 +6,12 @@ import javax.swing.JOptionPane;
 
 public class MessageDialog {
 
-	private String title;
 	private Component parent;
+	private String title;
 
-	public MessageDialog(String title, Component parent) {
-		this.title = title;
+	public MessageDialog(Component parent, String title) {
 		this.parent = parent;
+		this.title = title;
 	}
 
 	public void show(String message) {

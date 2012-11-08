@@ -1,17 +1,12 @@
 package org.kalibro.desktop.swingextension.dialog;
 
-import javax.swing.JPanel;
-
-import org.kalibro.desktop.tests.ComponentWrapperDialog;
-
-public final class MessageDialogManualTest extends ComponentWrapperDialog {
+public final class MessageDialogManualTest {
 
 	public static void main(String[] args) {
-		new MessageDialog("MessageDialog", new MessageDialogManualTest()).show("MessageDialogManualTest");
-		System.exit(0);
+		new MessageDialog(null, "MessageDialog").show("MessageDialogManualTest message");
 	}
 
 	private MessageDialogManualTest() {
-		super("", new JPanel());
+		return;
 	}
 }
