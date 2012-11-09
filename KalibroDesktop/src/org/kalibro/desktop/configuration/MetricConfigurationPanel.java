@@ -12,9 +12,9 @@ import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.ChoiceField;
 import org.kalibro.desktop.swingextension.field.DoubleField;
 import org.kalibro.desktop.swingextension.field.StringField;
-import org.kalibro.desktop.swingextension.list.*;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
+import org.kalibro.desktop.swingextension.table.*;
 
 public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 
@@ -88,7 +88,7 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 		rangesPanel.set(configuration.getRanges());
 	}
 
-	public void addRangesListener(TablePanelListener<Range> listener) {
+	public void addRangesListener(TablePanelController<Range> listener) {
 		rangesPanel.addTablePanelListener(listener);
 	}
 }

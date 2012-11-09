@@ -10,9 +10,9 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
-import org.kalibro.desktop.swingextension.list.*;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
+import org.kalibro.desktop.swingextension.table.*;
 
 public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
 
@@ -67,7 +67,7 @@ public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
 		model = group;
 	}
 
-	public void addReadingsListener(TablePanelListener<Reading> listener) {
+	public void addReadingsListener(TablePanelController<Reading> listener) {
 		readingsPanel.addTablePanelListener(listener);
 	}
 }

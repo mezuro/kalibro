@@ -5,7 +5,7 @@ import static org.kalibro.tests.UnitTest.loadFixture;
 import org.kalibro.CompoundMetric;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.Range;
-import org.kalibro.desktop.swingextension.list.TablePanelListener;
+import org.kalibro.desktop.swingextension.table.TablePanelListener;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class MetricConfigurationPanelManualTest implements TablePanelListener<Range> {

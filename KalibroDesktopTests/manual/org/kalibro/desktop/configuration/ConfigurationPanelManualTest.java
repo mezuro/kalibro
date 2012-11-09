@@ -2,7 +2,7 @@ package org.kalibro.desktop.configuration;
 
 import org.kalibro.Configuration;
 import org.kalibro.MetricConfiguration;
-import org.kalibro.desktop.swingextension.list.TablePanelListener;
+import org.kalibro.desktop.swingextension.table.TablePanelListener;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
 import org.kalibro.tests.UnitTest;
 

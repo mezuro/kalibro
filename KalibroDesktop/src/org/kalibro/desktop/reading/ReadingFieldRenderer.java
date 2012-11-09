@@ -3,7 +3,7 @@ package org.kalibro.desktop.reading;
 import java.awt.Component;
 
 import org.kalibro.Reading;
-import org.kalibro.desktop.swingextension.renderer.DefaultRenderer;
+import org.kalibro.desktop.swingextension.table.DefaultRenderer;
 
 class ReadingFieldRenderer extends DefaultRenderer {
 
