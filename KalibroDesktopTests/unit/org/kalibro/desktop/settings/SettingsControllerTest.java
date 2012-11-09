@@ -36,7 +36,7 @@ public class SettingsControllerTest extends UnitTest {
 		dialog = mock(EditDialog.class);
 		panel = mock(KalibroSettingsPanel.class);
 		whenNew(KalibroSettingsPanel.class).withNoArguments().thenReturn(panel);
-		whenNew(EditDialog.class).withArguments("Kalibro Settings", panel).thenReturn(dialog);
+		whenNew(EditDialog.class).withArguments(null, "Kalibro Settings", panel).thenReturn(dialog);
 	}
 
 	private void mockSettings() {
