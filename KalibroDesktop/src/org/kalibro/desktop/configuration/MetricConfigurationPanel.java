@@ -14,9 +14,12 @@ import org.kalibro.desktop.swingextension.field.DoubleField;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
-import org.kalibro.desktop.swingextension.table.*;
+import org.kalibro.desktop.swingextension.table.Table;
+import org.kalibro.desktop.swingextension.table.TablePanel;
+import org.kalibro.desktop.swingextension.table.TablePanelController;
 
-public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
+public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> implements
+	TablePanelController<Range> {
 
 	private MetricPanel metricPanel;
 	private StringField codeField;
@@ -39,13 +42,13 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 	}
 
 	private void createRangesPanel() {
-		ReflectionTableModel<Range> model = new ReflectionTableModel<Range>(Range.class);
-		model.addColumn(new ReflectionColumn("beginning", 8));
-		model.addColumn(new ReflectionColumn("end", 8));
-		model.addColumn(new ReflectionColumn("label", 20, new RangeFieldRenderer()));
-		model.addColumn(new ReflectionColumn("grade", 8, new RangeFieldRenderer()));
-		Table<Range> rangesTable = new Table<Range>("ranges", model, 5);
-		rangesPanel = new TablePanel<Range>(rangesTable);
+		Table<Range> table = new Table<Range>("ranges", 5, Range.class);
+		table.addColumn("beginning").withWidth(8);
+		table.addColumn("end").withWidth(8);
+		table.addColumn("reading", "label").titled("Label").withWidth(20).renderedBy(new RangeFieldRenderer());
+		table.addColumn("reading", "grade").titled("grade").withWidth(8).renderedBy(new RangeFieldRenderer());
+		table.pack();
+		rangesPanel = new TablePanel<Range>(this, table);
 		rangesPanel.setBorder(new TitledBorder("Ranges"));
 	}
 
@@ -88,7 +91,21 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 		rangesPanel.set(configuration.getRanges());
 	}
 
-	public void addRangesListener(TablePanelController<Range> listener) {
-		rangesPanel.addTablePanelListener(listener);
+	@Override
+	public Range add() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Range edit(Range element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove(Range element) {
+		// TODO Auto-generated method stub
+
 	}
 }

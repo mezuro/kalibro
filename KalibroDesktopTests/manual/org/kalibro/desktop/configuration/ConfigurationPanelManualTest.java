@@ -1,13 +1,10 @@
 package org.kalibro.desktop.configuration;
 
 import org.kalibro.Configuration;
-import org.kalibro.MetricConfiguration;
-import org.kalibro.desktop.swingextension.table.TablePanelListener;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
 import org.kalibro.tests.UnitTest;
 
-public final class ConfigurationPanelManualTest extends ConfigurationPanel implements
-	TablePanelListener<MetricConfiguration> {
+public final class ConfigurationPanelManualTest extends ConfigurationPanel {
 
 	public static void main(String[] args) {
 		new ComponentWrapperDialog("ConfigurationPanel", new ConfigurationPanelManualTest()).setVisible(true);
@@ -16,16 +13,5 @@ public final class ConfigurationPanelManualTest extends ConfigurationPanel imple
 	private ConfigurationPanelManualTest() {
 		super();
 		set(UnitTest.loadFixture("sc", Configuration.class));
-		addMetricConfigurationsListener(this);
-	}
-
-	@Override
-	public void add() {
-		System.out.println("Add metric configuration");
-	}
-
-	@Override
-	public void edit(MetricConfiguration metricConfiguration) {
-		System.out.println("Edit " + metricConfiguration.getMetric());
 	}
 }

@@ -13,9 +13,11 @@ import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.field.UneditableField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
-import org.kalibro.desktop.swingextension.table.*;
+import org.kalibro.desktop.swingextension.table.Table;
+import org.kalibro.desktop.swingextension.table.TablePanel;
+import org.kalibro.desktop.swingextension.table.TablePanelController;
 
-public class ConfigurationPanel extends EditPanel<Configuration> {
+public class ConfigurationPanel extends EditPanel<Configuration> implements TablePanelController<MetricConfiguration> {
 
 	private UneditableField<String> nameField;
 	private TextField descriptionField;
@@ -33,15 +35,15 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 	}
 
 	private void createMetricsPanel() {
-		ReflectionTableModel<MetricConfiguration> model;
-		model = new ReflectionTableModel<MetricConfiguration>(MetricConfiguration.class);
-		model.addColumn(new ReflectionColumn("code", 6));
-		model.addColumn(new ReflectionColumn("weight", 5));
-		model.addColumn(new ReflectionColumn("metric.compound", 7));
-		model.addColumn(new ReflectionColumn("metric.scope", 7));
-		model.addColumn(new ReflectionColumn("metric", 25));
-		Table<MetricConfiguration> metricsTable = new Table<MetricConfiguration>("metricConfigurations", model, 15);
-		metricConfigurationsPanel = new TablePanel<MetricConfiguration>(metricsTable);
+		Table<MetricConfiguration> table =
+			new Table<MetricConfiguration>("metricConfigurations", 15, MetricConfiguration.class);
+		table.addColumn("code").withWidth(6);
+		table.addColumn("weight").withWidth(5);
+		table.addColumn("metric", "name").withWidth(25);
+		table.addColumn("metric", "compound").titled("Compound").withWidth(7);
+		table.addColumn("metric", "scope").titled("Scope").withWidth(7);
+		table.pack();
+		metricConfigurationsPanel = new TablePanel<MetricConfiguration>(this, table);
 		metricConfigurationsPanel.setBorder(new TitledBorder("Metric configurations"));
 	}
 
@@ -76,7 +78,21 @@ public class ConfigurationPanel extends EditPanel<Configuration> {
 		metricConfigurationsPanel.set(configuration.getMetricConfigurations());
 	}
 
-	public void addMetricConfigurationsListener(TablePanelController<MetricConfiguration> listener) {
-		metricConfigurationsPanel.addTablePanelListener(listener);
+	@Override
+	public MetricConfiguration add() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public MetricConfiguration edit(MetricConfiguration element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove(MetricConfiguration element) {
+		// TODO Auto-generated method stub
+
 	}
 }

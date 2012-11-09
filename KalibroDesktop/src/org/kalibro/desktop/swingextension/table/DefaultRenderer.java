@@ -2,7 +2,7 @@ package org.kalibro.desktop.swingextension.table;
 
 import java.awt.Component;
 
-class DefaultRenderer extends StandardRenderer {
+public class DefaultRenderer extends StandardRenderer {
 
 	private static final StandardRenderer[] KNOWN_RENDERERS = new StandardRenderer[]{
 		new BooleanRenderer(),

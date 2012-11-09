@@ -5,7 +5,7 @@ import java.awt.Component;
 import org.kalibro.Range;
 import org.kalibro.desktop.swingextension.table.DefaultRenderer;
 
-public class RangeFieldRenderer extends DefaultRenderer {
+class RangeFieldRenderer extends DefaultRenderer {
 
 	@Override
 	public Component render(Object value, Object context) {

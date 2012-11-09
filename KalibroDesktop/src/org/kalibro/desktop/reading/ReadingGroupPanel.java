@@ -12,9 +12,11 @@ import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
-import org.kalibro.desktop.swingextension.table.*;
+import org.kalibro.desktop.swingextension.table.Table;
+import org.kalibro.desktop.swingextension.table.TablePanel;
+import org.kalibro.desktop.swingextension.table.TablePanelController;
 
-public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
+public class ReadingGroupPanel extends EditPanel<ReadingGroup> implements TablePanelController<Reading> {
 
 	private StringField nameField;
 	private TextField descriptionField;
@@ -35,11 +37,11 @@ public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
 	}
 
 	private void createReadingsPanel() {
-		ReflectionTableModel<Reading> tableModel = new ReflectionTableModel<Reading>(Reading.class);
-		tableModel.addColumn(new ReflectionColumn("grade", 5, new ReadingFieldRenderer()));
-		tableModel.addColumn(new ReflectionColumn("label", 20, new ReadingFieldRenderer()));
-		Table<Reading> readingsTable = new Table<Reading>("readings", tableModel, 9);
-		readingsPanel = new TablePanel<Reading>(readingsTable);
+		Table<Reading> table = new Table<Reading>("readings", 9, Reading.class);
+		table.addColumn("grade").withWidth(5).renderedBy(new ReadingFieldRenderer());
+		table.addColumn("label").withWidth(20).renderedBy(new ReadingFieldRenderer());
+		table.pack();
+		readingsPanel = new TablePanel<Reading>(this, table);
 		readingsPanel.setBorder(new TitledBorder("Readings"));
 	}
 
@@ -67,7 +69,21 @@ public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
 		model = group;
 	}
 
-	public void addReadingsListener(TablePanelController<Reading> listener) {
-		readingsPanel.addTablePanelListener(listener);
+	@Override
+	public Reading add() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Reading edit(Reading element) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void remove(Reading element) {
+		// TODO Auto-generated method stub
+
 	}
 }
