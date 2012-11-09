@@ -20,7 +20,6 @@ public class ExitFromMenu extends DesktopAcceptanceTest {
 	@Test
 	public void shouldExitFromMenu() {
 		mockStatic(System.class);
-
 		fixture.menuItem("exit").click();
 		verifyStatic();
 		System.exit(0);

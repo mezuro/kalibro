@@ -10,7 +10,7 @@ import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServerSettings;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.desktop.tests.DesktopAcceptanceTest;
+import org.kalibro.desktop.tests.DesktopSettingsAcceptanceTest;
 
 /**
  * When opening for the first time, the dialog for editing the settings should open showing the default settings.<br/>
@@ -18,12 +18,7 @@ import org.kalibro.desktop.tests.DesktopAcceptanceTest;
  * 
  * @author Carlos Morais
  */
-public class CancelFirstEditSettings extends DesktopAcceptanceTest {
-
-	@Override
-	protected boolean fromMain() {
-		return true;
-	}
+public class CancelFirstEditSettings extends DesktopSettingsAcceptanceTest {
 
 	@Test
 	public void cancelFirstEditSettings() {
@@ -35,6 +30,7 @@ public class CancelFirstEditSettings extends DesktopAcceptanceTest {
 		verifyDefaultClientSettings();
 
 		fixture.checkBox("client").uncheck();
+		fixture.textBox("path").click();
 		fixture.textBox("path").deleteText();
 		fixture.textBox("username").click();
 		verifyErrorMessageForInexistentDirectory();
