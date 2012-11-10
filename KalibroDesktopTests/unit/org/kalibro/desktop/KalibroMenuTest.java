@@ -12,18 +12,17 @@ import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore("javax.*")
-@PrepareOnlyThisForTest({KalibroMenu.class, SettingsController.class})
+@PrepareOnlyThisForTest(KalibroMenu.class)
 public class KalibroMenuTest extends UnitTest {
 
 	private KalibroMenu menu;
 
 	@Before
 	public void seUp() {
-		mockStatic(System.class);
-		mockStatic(SettingsController.class);
 		menu = new KalibroMenu();
 	}
 
@@ -49,18 +48,18 @@ public class KalibroMenuTest extends UnitTest {
 
 	@Test
 	public void shouldEditSettings() {
-		settings().doClick();
-
-		verifyStatic();
-		SettingsController.editSettings();
+		assertAction(settings(), SettingsController.class, "editSettings");
 	}
 
 	@Test
 	public void shouldCloseSystem() {
-		exit().doClick();
+		assertAction(exit(), System.class, "exit", 0);
+	}
 
-		verifyStatic();
-		System.exit(0);
+	private void assertAction(JMenuItem menuItem, Object target, String methodName, Object... arguments) {
+		assertEquals(target, Whitebox.getInternalState(menuItem, "target"));
+		assertEquals(methodName, Whitebox.getInternalState(menuItem, "methodName"));
+		assertArrayEquals(arguments, Whitebox.getInternalState(menuItem, Object[].class));
 	}
 
 	private JMenuItem settings() {
