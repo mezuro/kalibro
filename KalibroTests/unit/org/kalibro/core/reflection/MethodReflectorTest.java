@@ -6,6 +6,7 @@ import java.io.FileNotFoundException;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.Timeout;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.UnitTest;
 
@@ -42,6 +43,11 @@ public class MethodReflectorTest extends UnitTest {
 		double a = Math.random();
 		double b = Math.random();
 		assertEquals(max(a, b), reflector.invoke("max", a, b));
+	}
+
+	@Test
+	public void shouldFindSuperclassMethod() {
+		assertEquals(Timeout.class, reflector.getReturnType("testTimeout"));
 	}
 
 	@Test
