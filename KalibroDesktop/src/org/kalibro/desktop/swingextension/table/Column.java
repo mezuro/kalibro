@@ -63,8 +63,11 @@ public class Column {
 
 	Object getValue(Object row) {
 		Object value = row;
-		for (String field : fieldPath)
+		for (String field : fieldPath) {
 			value = new FieldReflector(value).get(field);
+			if (value == null)
+				return null;
+		}
 		return value;
 	}
 

@@ -81,6 +81,12 @@ public class ColumnTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldGetNullValueIfSomeFieldIsNull() {
+		Range range = new Range();
+		assertNull(column.getValue(range));
+	}
+
+	@Test
 	public void shouldUpdateTableColumnWidth() {
 		column.update(tableColumn);
 		verify(tableColumn).setPreferredWidth(column.getWidth());
