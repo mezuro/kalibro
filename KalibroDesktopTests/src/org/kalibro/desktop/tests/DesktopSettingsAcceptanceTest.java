@@ -42,6 +42,6 @@ public abstract class DesktopSettingsAcceptanceTest extends DesktopAcceptanceTes
 				KalibroDesktop.main(null);
 			}
 		}.executeInBackground();
-		Thread.sleep(1500);
+		Thread.sleep(1000);
 	}
 }

@@ -2,14 +2,12 @@ package org.kalibro.desktop.settings;
 
 import static org.junit.Assert.assertFalse;
 
-import org.fest.swing.exception.ComponentLookupException;
-import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 import org.kalibro.ClientSettings;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ServerSettings;
-import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.desktop.KalibroFrame;
 import org.kalibro.desktop.tests.DesktopSettingsAcceptanceTest;
 
 /**
@@ -37,7 +35,7 @@ public class CancelFirstEditSettings extends DesktopSettingsAcceptanceTest {
 
 		fixture.button("cancel").click();
 		assertFalse(KalibroSettings.exists());
-		verifyFrameNotOpen();
+		assertFalse(KalibroFrame.getInstance().isVisible());
 	}
 
 	private void verifyDefaultServerSettings() {
@@ -64,15 +62,5 @@ public class CancelFirstEditSettings extends DesktopSettingsAcceptanceTest {
 		fixture.optionPane().requireTitle("Error");
 		fixture.optionPane().requireMessage("\"\" is not a valid directory");
 		fixture.optionPane().button().click();
-	}
-
-	private void verifyFrameNotOpen() {
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				fixture = new FrameFixture(fixture.robot, "kalibroFrame");
-			}
-		}).doThrow(ComponentLookupException.class);
 	}
 }

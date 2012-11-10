@@ -14,7 +14,7 @@ public abstract class DesktopAcceptanceTest extends AcceptanceTest {
 	@Before
 	@SuppressWarnings("unused")
 	public void setUp() throws Exception {
-		KalibroFrame kalibroFrame = new KalibroFrame();
+		KalibroFrame kalibroFrame = KalibroFrame.getInstance();
 		fixture = new FrameFixture(kalibroFrame);
 		((FrameFixture) fixture).show(kalibroFrame.getSize());
 	}

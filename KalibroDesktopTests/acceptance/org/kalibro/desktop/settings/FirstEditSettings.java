@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 import org.fest.swing.fixture.FrameFixture;
 import org.junit.Test;
 import org.kalibro.KalibroSettings;
+import org.kalibro.desktop.KalibroFrame;
 import org.kalibro.desktop.tests.DesktopSettingsAcceptanceTest;
 
 /**
@@ -24,7 +25,7 @@ public class FirstEditSettings extends DesktopSettingsAcceptanceTest {
 		assertTrue(KalibroSettings.exists());
 
 		fixture.robot.waitForIdle();
-		fixture = new FrameFixture(fixture.robot, "kalibroFrame");
+		fixture = new FrameFixture(fixture.robot, KalibroFrame.getInstance());
 		fixture.menuItem("settings").click();
 		fixture = fixture.dialog();
 		fixture.checkBox("client").requireSelected();

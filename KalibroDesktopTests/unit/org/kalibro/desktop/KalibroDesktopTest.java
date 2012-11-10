@@ -8,21 +8,24 @@ import org.kalibro.desktop.settings.SettingsController;
 import org.kalibro.tests.UtilityClassTest;
 import org.kalibro.tests.VoidAnswer;
 import org.mockito.stubbing.Answer;
-import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({KalibroDesktop.class, KalibroSettings.class, SettingsController.class})
+@PowerMockIgnore("javax.*")
+@PrepareOnlyThisForTest({KalibroFrame.class, KalibroSettings.class, SettingsController.class})
 public class KalibroDesktopTest extends UtilityClassTest {
 
 	private KalibroFrame kalibroFrame;
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
+		kalibroFrame = mock(KalibroFrame.class);
+		mockStatic(KalibroFrame.class);
 		mockStatic(KalibroSettings.class);
 		mockStatic(SettingsController.class);
-		kalibroFrame = mock(KalibroFrame.class);
-		whenNew(KalibroFrame.class).withNoArguments().thenReturn(kalibroFrame);
+		when(KalibroFrame.getInstance()).thenReturn(kalibroFrame);
 	}
 
 	@Test
@@ -45,11 +48,12 @@ public class KalibroDesktopTest extends UtilityClassTest {
 	}
 
 	@Test
-	public void shouldNotOpenFrameIfUserDoesNotCreateSettings() throws Exception {
+	public void shouldNotOpenFrameIfUserDoesNotCreateSettings() {
 		when(KalibroSettings.exists()).thenReturn(false);
 		KalibroDesktop.main(null);
 
-		verifyNew(KalibroFrame.class, never()).withNoArguments();
+		verifyStatic(never());
+		KalibroFrame.getInstance();
 	}
 
 	@Test

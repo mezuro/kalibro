@@ -19,7 +19,7 @@ public class KalibroFrameTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		frame = new KalibroFrame();
+		frame = KalibroFrame.getInstance();
 	}
 
 	@Test

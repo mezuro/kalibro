@@ -9,7 +9,7 @@ public final class KalibroDesktop {
 		if (!KalibroSettings.exists())
 			SettingsController.editSettings();
 		if (KalibroSettings.exists())
-			new KalibroFrame().setVisible(true);
+			KalibroFrame.getInstance().setVisible(true);
 	}
 
 	private KalibroDesktop() {

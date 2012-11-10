@@ -6,16 +6,26 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 import javax.swing.JMenuBar;
+import javax.swing.JTabbedPane;
 import javax.swing.WindowConstants;
 
-public class KalibroFrame extends JFrame {
+public final class KalibroFrame extends JFrame {
 
-	public KalibroFrame() {
+	private static KalibroFrame instance = new KalibroFrame();
+
+	public static KalibroFrame getInstance() {
+		return instance;
+	}
+
+	private JTabbedPane tabbedPane;
+
+	private KalibroFrame() {
 		super("Kalibro");
 		setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 		setIconImage(image(KALIBRO));
 		setName("kalibroFrame");
 		createMenuBar();
+		createPane();
 		setSize();
 	}
 
@@ -23,6 +33,11 @@ public class KalibroFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(new KalibroMenu());
 		setJMenuBar(menuBar);
+	}
+
+	private void createPane() {
+		tabbedPane = new JTabbedPane();
+		setContentPane(tabbedPane);
 	}
 
 	private void setSize() {
