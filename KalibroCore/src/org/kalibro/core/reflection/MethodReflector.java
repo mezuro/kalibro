@@ -53,6 +53,10 @@ public class MethodReflector {
 		throw new KalibroError(errorMessage("finding", methodName));
 	}
 
+	private String errorMessage(String verb, String methodName) {
+		return "Error " + verb + " method: " + theClass.getName() + "." + methodName;
+	}
+
 	private boolean isCompatible(Method method, String methodName, Object[] arguments) {
 		return method.getName().equals(methodName) && areTypesCompatible(method.getParameterTypes(), arguments);
 	}
@@ -61,12 +65,26 @@ public class MethodReflector {
 		if (types.length != arguments.length)
 			return false;
 		for (int i = 0; i < types.length; i++)
-			if (!types[i].isAssignableFrom(arguments[i].getClass()))
+			if (!areTypesCompatible(types[i], arguments[i]))
 				return false;
 		return true;
 	}
 
-	private String errorMessage(String verb, String methodName) {
-		return "Error " + verb + " method: " + theClass.getName() + "." + methodName;
+	private boolean areTypesCompatible(Class<?> type, Object argument) {
+		try {
+			type.cast(argument);
+			return true;
+		} catch (ClassCastException exception) {
+			return isPrimitiveWrapper(type, argument);
+		}
+	}
+
+	private boolean isPrimitiveWrapper(Class<?> type, Object argument) {
+		try {
+			argument.getClass().getMethod(type.getName() + "Value");
+			return true;
+		} catch (NoSuchMethodException exception) {
+			return false;
+		}
 	}
 }

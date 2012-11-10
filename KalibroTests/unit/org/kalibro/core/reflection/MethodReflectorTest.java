@@ -11,7 +11,7 @@ import org.kalibro.tests.UnitTest;
 
 public class MethodReflectorTest extends UnitTest {
 
-	private static double max(Double a, Double b) {
+	private static double max(double a, Double b) {
 		return Math.max(a, b);
 	}
 
