@@ -1,4 +1,4 @@
-package org.kalibro.desktop.swingextension.table;
+package org.kalibro.desktop.swingextension.panel;
 
 import static org.kalibro.tests.UnitTest.loadFixture;
 
@@ -10,6 +10,8 @@ import javax.swing.JPanel;
 import org.kalibro.Range;
 import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
+import org.kalibro.desktop.swingextension.table.ColumnRenderer;
+import org.kalibro.desktop.swingextension.table.Table;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
 public final class TablePanelManualTest extends ColumnRenderer implements TablePanelController<Range> {

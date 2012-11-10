@@ -1,19 +1,18 @@
-package org.kalibro.desktop.swingextension.table;
+package org.kalibro.desktop.swingextension.panel;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.List;
 
 import javax.swing.JPanel;
 
 import org.kalibro.desktop.swingextension.Button;
-import org.kalibro.desktop.swingextension.panel.EditPanel;
+import org.kalibro.desktop.swingextension.table.Table;
+import org.kalibro.desktop.swingextension.table.TableListener;
 
-public class TablePanel<T> extends EditPanel<Collection<T>> implements ActionListener, TableListener<T> {
+public class TablePanel<T> extends EditPanel<Collection<T>> implements TableListener<T> {
 
 	private TablePanelController<T> controller;
 
@@ -31,9 +30,9 @@ public class TablePanel<T> extends EditPanel<Collection<T>> implements ActionLis
 	protected void createComponents(Component... innerComponents) {
 		table = (Table<T>) innerComponents[0];
 		table.addTableListener(this);
-		addButton = new Button("add", "Add", this);
-		editButton = new Button("edit", "Edit", this);
-		removeButton = new Button("remove", "Remove", this);
+		addButton = new Button("add", "Add", this, "add");
+		editButton = new Button("edit", "Edit", this, "edit");
+		removeButton = new Button("remove", "Remove", this, "remove");
 	}
 
 	@Override
@@ -79,33 +78,24 @@ public class TablePanel<T> extends EditPanel<Collection<T>> implements ActionLis
 
 	@Override
 	public void doubleClicked(T element) {
-		edit(element);
+		edit();
 	}
 
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		Object source = event.getSource();
-		if (source == addButton)
-			add();
-		else if (source == editButton)
-			edit(table.getSelected());
-		else if (source == removeButton)
-			remove(table.getSelected());
-	}
-
-	private void add() {
+	void add() {
 		T newElement = controller.add();
 		if (newElement != null)
 			table.add(newElement);
 	}
 
-	private void edit(T oldElement) {
+	void edit() {
+		T oldElement = table.getSelected();
 		T newElement = controller.edit(oldElement);
 		if (newElement != null)
 			table.replace(oldElement, newElement);
 	}
 
-	private void remove(T element) {
+	void remove() {
+		T element = table.getSelected();
 		controller.remove(element);
 		table.remove(element);
 	}

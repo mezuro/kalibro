@@ -1,4 +1,4 @@
-package org.kalibro.desktop.swingextension.table;
+package org.kalibro.desktop.swingextension.panel;
 
 import static org.junit.Assert.assertEquals;
 
@@ -12,6 +12,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.Reading;
 import org.kalibro.desktop.swingextension.Button;
+import org.kalibro.desktop.swingextension.table.Table;
 import org.kalibro.desktop.tests.ComponentFinder;
 import org.kalibro.tests.UnitTest;
 

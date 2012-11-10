@@ -2,6 +2,7 @@ package org.kalibro.desktop;
 
 import static org.junit.Assert.*;
 
+import javax.swing.Action;
 import javax.swing.JMenuItem;
 
 import org.junit.Before;
@@ -57,9 +58,10 @@ public class KalibroMenuTest extends UnitTest {
 	}
 
 	private void assertAction(JMenuItem menuItem, Object target, String methodName, Object... arguments) {
-		assertEquals(target, Whitebox.getInternalState(menuItem, "target"));
-		assertEquals(methodName, Whitebox.getInternalState(menuItem, "methodName"));
-		assertArrayEquals(arguments, Whitebox.getInternalState(menuItem, Object[].class));
+		Action action = menuItem.getAction();
+		assertEquals(target, Whitebox.getInternalState(action, "target"));
+		assertEquals(methodName, Whitebox.getInternalState(action, "methodName"));
+		assertArrayEquals(arguments, Whitebox.getInternalState(action, Object[].class));
 	}
 
 	private JMenuItem settings() {

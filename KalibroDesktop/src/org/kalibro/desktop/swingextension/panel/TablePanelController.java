@@ -1,4 +1,4 @@
-package org.kalibro.desktop.swingextension.table;
+package org.kalibro.desktop.swingextension.panel;
 
 public interface TablePanelController<T> {
 

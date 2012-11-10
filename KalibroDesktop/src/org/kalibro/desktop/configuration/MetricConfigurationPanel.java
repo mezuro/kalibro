@@ -14,9 +14,9 @@ import org.kalibro.desktop.swingextension.field.DoubleField;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
+import org.kalibro.desktop.swingextension.panel.TablePanel;
+import org.kalibro.desktop.swingextension.panel.TablePanelController;
 import org.kalibro.desktop.swingextension.table.Table;
-import org.kalibro.desktop.swingextension.table.TablePanel;
-import org.kalibro.desktop.swingextension.table.TablePanelController;
 
 public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> implements
 	TablePanelController<Range> {

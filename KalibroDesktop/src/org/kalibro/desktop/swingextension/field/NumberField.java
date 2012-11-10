@@ -1,8 +1,6 @@
 package org.kalibro.desktop.swingextension.field;
 
 import java.awt.Component;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
 
 import javax.swing.JFormattedTextField;
@@ -14,7 +12,7 @@ import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 
-public abstract class NumberField<T extends Number> extends EditPanel<T> implements ActionListener {
+public abstract class NumberField<T extends Number> extends EditPanel<T> {
 
 	private T specialNumber;
 	private JFormattedTextField valueField;
@@ -53,7 +51,7 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 
 	private void addSpecialNumberButton() {
 		String buttonTitle = getDecimalFormat().format(specialNumber);
-		Button specialNumberButton = new Button(getName(), buttonTitle, this);
+		Button specialNumberButton = new Button(getName(), buttonTitle, this, "set", specialNumber);
 		builder.add(new Label("  "));
 		builder.add(specialNumberButton);
 	}
@@ -69,10 +67,5 @@ public abstract class NumberField<T extends Number> extends EditPanel<T> impleme
 	@Override
 	public void set(T value) {
 		valueField.setValue(value);
-	}
-
-	@Override
-	public void actionPerformed(ActionEvent event) {
-		set(specialNumber);
 	}
 }
