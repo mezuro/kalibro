@@ -17,11 +17,10 @@ class ReadingController implements ActionListener, TablePanelListener<Reading> {
 
 	ReadingController(ReadingGroupPanel groupPanel) {
 		this.groupPanel = groupPanel;
+		setReadingGroup(new ReadingGroup());
 	}
 
 	ReadingGroup getReadingGroup() {
-		if (group == null)
-			group = new ReadingGroup();
 		return group;
 	}
 
