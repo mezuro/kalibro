@@ -7,6 +7,7 @@ import org.kalibro.Metric;
 import org.kalibro.NativeMetric;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
+@Deprecated
 public final class MetricPanelManualTest {
 
 	public static void main(String[] args) {

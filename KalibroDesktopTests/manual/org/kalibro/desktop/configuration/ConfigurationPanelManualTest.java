@@ -1,17 +1,19 @@
 package org.kalibro.desktop.configuration;
 
+import static org.kalibro.tests.UnitTest.loadFixture;
+
 import org.kalibro.Configuration;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
-import org.kalibro.tests.UnitTest;
 
-public final class ConfigurationPanelManualTest extends ConfigurationPanel {
+public final class ConfigurationPanelManualTest {
 
 	public static void main(String[] args) {
-		new ComponentWrapperDialog("ConfigurationPanel", new ConfigurationPanelManualTest()).setVisible(true);
+		new ConfigurationPanelManualTest();
 	}
 
 	private ConfigurationPanelManualTest() {
-		super();
-		set(UnitTest.loadFixture("sc", Configuration.class));
+		ConfigurationPanel panel = new ConfigurationPanel();
+		panel.set(loadFixture("sc", Configuration.class));
+		new ComponentWrapperDialog("ConfigurationPanel", panel).setVisible(true);
 	}
 }

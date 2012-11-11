@@ -10,39 +10,45 @@ import org.kalibro.ReadingGroup;
 import org.kalibro.desktop.swingextension.Label;
 import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.field.TextField;
+import org.kalibro.desktop.swingextension.panel.ConfirmPanel;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 import org.kalibro.desktop.swingextension.panel.TablePanel;
-import org.kalibro.desktop.swingextension.panel.TablePanelController;
 import org.kalibro.desktop.swingextension.table.Table;
 
-public class ReadingGroupPanel extends EditPanel<ReadingGroup> implements TablePanelController<Reading> {
+public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
 
 	private StringField nameField;
 	private TextField descriptionField;
-	private TablePanel<Reading> readingsPanel;
+	private TablePanel<Reading> readingTablePanel;
+	private ConfirmPanel<Reading> readingPanel;
 
-	private ReadingGroup model;
+	private ReadingController controller;
 
-	public ReadingGroupPanel(ReadingGroup group) {
-		super("metricConfiguration");
-		set(group);
+	public ReadingGroupPanel() {
+		super("readingGroup");
+		controller = new ReadingController(this);
+		readingTablePanel.addTablePanelListener(controller);
+		readingPanel.addOkListener(controller);
+		readingPanel.addCancelListener(controller);
 	}
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
 		nameField = new StringField("name", 25);
 		descriptionField = new TextField("description", 6, 20);
-		createReadingsPanel();
+		createReadingTablePanel();
+		readingPanel = new ConfirmPanel<Reading>(new ReadingPanel());
+		readingPanel.setBorder(new TitledBorder(""));
 	}
 
-	private void createReadingsPanel() {
+	private void createReadingTablePanel() {
 		Table<Reading> table = new Table<Reading>("readings", 9, Reading.class);
 		table.addColumn("grade").withWidth(5).renderedBy(new ReadingFieldRenderer());
 		table.addColumn("label").withWidth(20).renderedBy(new ReadingFieldRenderer());
 		table.pack();
-		readingsPanel = new TablePanel<Reading>(this, table);
-		readingsPanel.setBorder(new TitledBorder("Readings"));
+		readingTablePanel = new TablePanel<Reading>(table);
+		readingTablePanel.setBorder(new TitledBorder("Readings"));
 	}
 
 	@Override
@@ -50,40 +56,40 @@ public class ReadingGroupPanel extends EditPanel<ReadingGroup> implements TableP
 		GridBagPanelBuilder builder = new GridBagPanelBuilder(this);
 		builder.addSimpleLine(new Label("Name:"), nameField);
 		builder.addSimpleLine(new Label("Description:"), descriptionField);
-		builder.add(readingsPanel, 2);
+		builder.add(readingTablePanel, 2);
+		builder.newLine();
+		builder.add(readingPanel, 2);
+		hideReadingPanel();
 	}
 
 	@Override
 	public ReadingGroup get() {
+		ReadingGroup model = controller.getReadingGroup();
 		model.setName(nameField.get());
 		model.setDescription(descriptionField.get());
-		model.setReadings(new TreeSet<Reading>(readingsPanel.get()));
+		model.setReadings(new TreeSet<Reading>(readingTablePanel.get()));
 		return model;
 	}
 
 	@Override
-	public void set(ReadingGroup group) {
-		nameField.set(group.getName());
-		descriptionField.set(group.getDescription());
-		readingsPanel.set(group.getReadings());
-		model = group;
+	public void set(ReadingGroup readingGroup) {
+		nameField.set(readingGroup.getName());
+		descriptionField.set(readingGroup.getDescription());
+		readingTablePanel.set(readingGroup.getReadings());
+		controller.setReadingGroup(readingGroup);
 	}
 
-	@Override
-	public Reading add() {
-		// TODO Auto-generated method stub
-		return null;
+	void showReadingPanel(String title, Reading reading) {
+		((TitledBorder) readingPanel.getBorder()).setTitle(title);
+		readingPanel.set(reading);
+		readingPanel.setVisible(true);
 	}
 
-	@Override
-	public Reading edit(Reading element) {
-		// TODO Auto-generated method stub
-		return null;
+	void hideReadingPanel() {
+		readingPanel.setVisible(false);
 	}
 
-	@Override
-	public void remove(Reading element) {
-		// TODO Auto-generated method stub
-
+	Reading getReading() {
+		return readingPanel.get();
 	}
 }

@@ -18,9 +18,8 @@ class ReadingPanel extends EditPanel<Reading> {
 
 	private Reading model;
 
-	public ReadingPanel(Reading reading) {
-		super("model");
-		set(reading);
+	ReadingPanel() {
+		super("reading");
 	}
 
 	@Override
@@ -43,6 +42,8 @@ class ReadingPanel extends EditPanel<Reading> {
 
 	@Override
 	public Reading get() {
+		if (model == null)
+			model = new Reading();
 		model.setLabel(labelField.getText());
 		model.setGrade(gradeField.get());
 		model.setColor(colorField.get());

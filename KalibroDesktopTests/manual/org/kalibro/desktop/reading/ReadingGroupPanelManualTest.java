@@ -1,8 +1,9 @@
 package org.kalibro.desktop.reading;
 
+import static org.kalibro.tests.UnitTest.loadFixture;
+
 import org.kalibro.ReadingGroup;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
-import org.kalibro.tests.UnitTest;
 
 public final class ReadingGroupPanelManualTest {
 
@@ -11,8 +12,8 @@ public final class ReadingGroupPanelManualTest {
 	}
 
 	private ReadingGroupPanelManualTest() {
-		ReadingGroup group = UnitTest.loadFixture("scholar", ReadingGroup.class);
-		ReadingGroupPanel panel = new ReadingGroupPanel(group);
+		ReadingGroupPanel panel = new ReadingGroupPanel();
+		panel.set(loadFixture("scholar", ReadingGroup.class));
 		new ComponentWrapperDialog("ReadingGroupPanel", panel).setVisible(true);
 	}
 }
