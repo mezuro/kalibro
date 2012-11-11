@@ -156,7 +156,7 @@ public class TableTest extends UnitTest {
 	public void shouldAddTableListener() throws Exception {
 		TableAdapter<Reading> adapter = mock(TableAdapter.class);
 		TableListener<Reading> listener = mock(TableListener.class);
-		whenNew(TableAdapter.class).withArguments(listener, table).thenReturn(adapter);
+		whenNew(TableAdapter.class).withArguments(table, listener).thenReturn(adapter);
 
 		table.addTableListener(listener);
 		assertTrue(list(innerTable.getMouseListeners()).contains(adapter));

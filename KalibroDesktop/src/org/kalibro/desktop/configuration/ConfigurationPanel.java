@@ -14,10 +14,9 @@ import org.kalibro.desktop.swingextension.field.UneditableField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 import org.kalibro.desktop.swingextension.panel.TablePanel;
-import org.kalibro.desktop.swingextension.panel.TablePanelController;
 import org.kalibro.desktop.swingextension.table.Table;
 
-public class ConfigurationPanel extends EditPanel<Configuration> implements TablePanelController<MetricConfiguration> {
+public class ConfigurationPanel extends EditPanel<Configuration> {
 
 	private UneditableField<String> nameField;
 	private TextField descriptionField;
@@ -43,7 +42,7 @@ public class ConfigurationPanel extends EditPanel<Configuration> implements Tabl
 		table.addColumn("metric", "compound").titled("Compound").withWidth(7);
 		table.addColumn("metric", "scope").titled("Scope").withWidth(7);
 		table.pack();
-		metricConfigurationsPanel = new TablePanel<MetricConfiguration>(this, table);
+		metricConfigurationsPanel = new TablePanel<MetricConfiguration>(table);
 		metricConfigurationsPanel.setBorder(new TitledBorder("Metric configurations"));
 	}
 
@@ -76,23 +75,5 @@ public class ConfigurationPanel extends EditPanel<Configuration> implements Tabl
 		nameField.set(configuration.getName());
 		descriptionField.set(configuration.getDescription());
 		metricConfigurationsPanel.set(configuration.getMetricConfigurations());
-	}
-
-	@Override
-	public MetricConfiguration add() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public MetricConfiguration edit(MetricConfiguration element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(MetricConfiguration element) {
-		// TODO Auto-generated method stub
-
 	}
 }

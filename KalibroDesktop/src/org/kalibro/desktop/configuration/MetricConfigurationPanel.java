@@ -15,11 +15,9 @@ import org.kalibro.desktop.swingextension.field.StringField;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.desktop.swingextension.panel.GridBagPanelBuilder;
 import org.kalibro.desktop.swingextension.panel.TablePanel;
-import org.kalibro.desktop.swingextension.panel.TablePanelController;
 import org.kalibro.desktop.swingextension.table.Table;
 
-public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> implements
-	TablePanelController<Range> {
+public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> {
 
 	private MetricPanel metricPanel;
 	private StringField codeField;
@@ -48,7 +46,7 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> imp
 		table.addColumn("reading", "label").titled("Label").withWidth(20).renderedBy(new RangeFieldRenderer());
 		table.addColumn("reading", "grade").titled("grade").withWidth(8).renderedBy(new RangeFieldRenderer());
 		table.pack();
-		rangesPanel = new TablePanel<Range>(this, table);
+		rangesPanel = new TablePanel<Range>(table);
 		rangesPanel.setBorder(new TitledBorder("Ranges"));
 	}
 
@@ -89,23 +87,5 @@ public class MetricConfigurationPanel extends EditPanel<MetricConfiguration> imp
 		weightField.set(configuration.getWeight());
 		aggregationFormField.set(configuration.getAggregationForm());
 		rangesPanel.set(configuration.getRanges());
-	}
-
-	@Override
-	public Range add() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Range edit(Range element) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void remove(Range element) {
-		// TODO Auto-generated method stub
-
 	}
 }

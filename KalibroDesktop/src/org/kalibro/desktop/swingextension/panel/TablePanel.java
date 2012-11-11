@@ -3,6 +3,8 @@ package org.kalibro.desktop.swingextension.panel;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Collection;
 import java.util.List;
 
@@ -12,27 +14,25 @@ import org.kalibro.desktop.swingextension.Button;
 import org.kalibro.desktop.swingextension.table.Table;
 import org.kalibro.desktop.swingextension.table.TableListener;
 
-public class TablePanel<T> extends EditPanel<Collection<T>> implements TableListener<T> {
+public class TablePanel<T> extends EditPanel<Collection<T>> implements ActionListener, TableListener<T> {
 
-	private TablePanelController<T> controller;
+	Table<T> table;
 
-	private Table<T> table;
 	private Button addButton;
 	private Button editButton;
 	private Button removeButton;
 
-	public TablePanel(TablePanelController<T> controller, Table<T> table) {
+	public TablePanel(Table<T> table) {
 		super(table.getName(), table);
-		this.controller = controller;
 	}
 
 	@Override
 	protected void createComponents(Component... innerComponents) {
 		table = (Table<T>) innerComponents[0];
 		table.addTableListener(this);
-		addButton = new Button("add", "Add", this, "add");
-		editButton = new Button("edit", "Edit", this, "edit");
-		removeButton = new Button("remove", "Remove", this, "remove");
+		addButton = new Button("add", "Add");
+		editButton = new Button("edit", "Edit");
+		removeButton = new Button("remove", "Remove", this);
 	}
 
 	@Override
@@ -78,25 +78,18 @@ public class TablePanel<T> extends EditPanel<Collection<T>> implements TableList
 
 	@Override
 	public void doubleClicked(T element) {
-		edit();
+		editButton.doClick();
 	}
 
-	void add() {
-		T newElement = controller.add();
-		if (newElement != null)
-			table.add(newElement);
+	@Override
+	public void actionPerformed(ActionEvent event) {
+		table.remove(table.getSelected());
 	}
 
-	void edit() {
-		T oldElement = table.getSelected();
-		T newElement = controller.edit(oldElement);
-		if (newElement != null)
-			table.replace(oldElement, newElement);
-	}
-
-	void remove() {
-		T element = table.getSelected();
-		controller.remove(element);
-		table.remove(element);
+	public void addTablePanelListener(TablePanelListener<T> listener) {
+		TablePanelAdapter<T> adapter = new TablePanelAdapter<T>(this, listener);
+		addButton.addActionListener(adapter);
+		editButton.addActionListener(adapter);
+		removeButton.addActionListener(adapter);
 	}
 }

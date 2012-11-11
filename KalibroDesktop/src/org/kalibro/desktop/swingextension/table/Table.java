@@ -80,7 +80,7 @@ public class Table<T> extends JScrollPane implements Field<Collection<T>> {
 	}
 
 	public void addTableListener(TableListener<T> listener) {
-		TableAdapter<T> adapter = new TableAdapter<T>(listener, this);
+		TableAdapter<T> adapter = new TableAdapter<T>(this, listener);
 		table.addMouseListener(adapter);
 		table.getSelectionModel().addListSelectionListener(adapter);
 	}

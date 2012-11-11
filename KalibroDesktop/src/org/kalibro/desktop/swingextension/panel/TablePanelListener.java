@@ -1,10 +1,10 @@
 package org.kalibro.desktop.swingextension.panel;
 
-public interface TablePanelController<T> {
+public interface TablePanelListener<T> {
 
-	T add();
+	void add();
 
-	T edit(T element);
+	void edit(T element);
 
 	void remove(T element);
 }

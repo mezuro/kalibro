@@ -23,7 +23,7 @@ public class TableAdapterTest extends UnitTest {
 		table = mock(Table.class);
 		when(table.getSelected()).thenReturn(element);
 
-		adapter = new TableAdapter<Object>(listener, table);
+		adapter = new TableAdapter<Object>(table, listener);
 	}
 
 	@Test

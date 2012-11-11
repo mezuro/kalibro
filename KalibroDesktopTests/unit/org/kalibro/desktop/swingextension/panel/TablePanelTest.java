@@ -20,7 +20,7 @@ public class TablePanelTest extends UnitTest {
 
 	private static final String NAME = "TablePanelTest name";
 
-	private TablePanelController<Reading> controller;
+	private TablePanelListener<Reading> listener;
 	private Table<Reading> table;
 	private Reading reading;
 
@@ -29,10 +29,11 @@ public class TablePanelTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		controller = mock(TablePanelController.class);
+		listener = mock(TablePanelListener.class);
 		reading = loadFixture("excellent", Reading.class);
 		createTable();
-		panel = new TablePanel<Reading>(controller, table);
+		panel = new TablePanel<Reading>(table);
+		panel.addTablePanelListener(listener);
 		finder = new ComponentFinder(panel);
 	}
 
@@ -87,29 +88,22 @@ public class TablePanelTest extends UnitTest {
 
 	@Test
 	public void shouldAdd() {
-		Reading newReading = new Reading();
-		when(controller.add()).thenReturn(newReading);
-
 		button("add").doClick();
-		verify(table).add(newReading);
+		verify(listener).add();
 	}
 
 	@Test
 	public void shouldEdit() {
-		Reading newReading = new Reading();
-		when(controller.edit(reading)).thenReturn(newReading);
 		selectReading();
-
 		button("edit").doClick();
-		verify(table).replace(reading, newReading);
+		verify(listener).edit(reading);
 	}
 
 	@Test
 	public void shouldRemove() {
 		selectReading();
-
 		button("remove").doClick();
-		verify(controller).remove(reading);
+		verify(listener).remove(reading);
 		verify(table).remove(reading);
 	}
 
@@ -119,11 +113,8 @@ public class TablePanelTest extends UnitTest {
 
 	@Test
 	public void shouldEditOnDoubleClick() {
-		Reading newReading = new Reading();
-		when(controller.edit(reading)).thenReturn(newReading);
 		doubleClickFirstRow();
-
-		verify(table).replace(reading, newReading);
+		verify(listener).edit(reading);
 	}
 
 	private void doubleClickFirstRow() {

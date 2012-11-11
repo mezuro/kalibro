@@ -8,12 +8,12 @@ import javax.swing.event.ListSelectionListener;
 
 class TableAdapter<T> extends MouseAdapter implements ListSelectionListener {
 
-	private TableListener<T> listener;
 	private Table<T> table;
+	private TableListener<T> listener;
 
-	TableAdapter(TableListener<T> listener, Table<T> table) {
-		this.listener = listener;
+	TableAdapter(Table<T> table, TableListener<T> listener) {
 		this.table = table;
+		this.listener = listener;
 	}
 
 	@Override
