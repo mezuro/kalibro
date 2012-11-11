@@ -26,6 +26,11 @@ public class ReadingPanelTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldHaveName() {
+		assertEquals("reading", panel.getName());
+	}
+
+	@Test
 	public void shouldGet() {
 		labelField().set(reading.getLabel());
 		gradeField().set(reading.getGrade());
