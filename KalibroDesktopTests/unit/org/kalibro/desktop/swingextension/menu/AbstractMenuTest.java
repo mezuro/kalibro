@@ -23,7 +23,7 @@ public class AbstractMenuTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		menu = new MenuStub();
+		menu = new MenuMock();
 	}
 
 	@Test
@@ -39,9 +39,14 @@ public class AbstractMenuTest extends UnitTest {
 		assertTrue(menuBuilded);
 	}
 
-	private class MenuStub extends AbstractMenu {
+	@Test
+	public void shouldHaveDefaultConstructor() throws Exception {
+		menu = mockAbstract(AbstractMenu.class);
+	}
 
-		public MenuStub() {
+	private class MenuMock extends AbstractMenu {
+
+		public MenuMock() {
 			super(NAME, TEXT, MNEMONIC, INNER_COMPONENT);
 		}
 

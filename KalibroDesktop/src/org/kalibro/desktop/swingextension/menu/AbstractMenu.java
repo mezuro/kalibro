@@ -6,6 +6,10 @@ import javax.swing.JMenu;
 
 public abstract class AbstractMenu extends JMenu {
 
+	protected AbstractMenu() {
+		super();
+	}
+
 	public AbstractMenu(String name, String text, char mnemonic, Component... innerComponents) {
 		super(text);
 		setName(name);
