@@ -4,10 +4,9 @@ import static org.kalibro.desktop.KalibroIcons.*;
 
 import java.awt.Dimension;
 
-import javax.swing.JFrame;
-import javax.swing.JMenuBar;
-import javax.swing.JTabbedPane;
-import javax.swing.WindowConstants;
+import javax.swing.*;
+
+import org.kalibro.desktop.swingextension.panel.EditPanel;
 
 public final class KalibroFrame extends JFrame {
 
@@ -37,11 +36,34 @@ public final class KalibroFrame extends JFrame {
 
 	private void createPane() {
 		tabbedPane = new JTabbedPane();
+		tabbedPane.setName("tabbedPane");
 		setContentPane(tabbedPane);
 	}
 
 	private void setSize() {
 		setMinimumSize(new Dimension(900, 700));
 		setExtendedState(MAXIMIZED_BOTH);
+	}
+
+	void addTab(String title, EditPanel<?> panel) {
+		tabbedPane.add(title, new JScrollPane(panel));
+	}
+
+	String getSelectedTitle() {
+		int index = tabbedPane.getSelectedIndex();
+		return (index == -1) ? "" : tabbedPane.getTitleAt(index);
+	}
+
+	<T> EditPanel<T> getSelectedTab() {
+		JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
+		return (EditPanel<T>) scrollPane.getViewport().getView();
+	}
+
+	void setSelectedTitle(String title) {
+		tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), title);
+	}
+
+	void removeSelectedTab() {
+		tabbedPane.remove(tabbedPane.getSelectedIndex());
 	}
 }
