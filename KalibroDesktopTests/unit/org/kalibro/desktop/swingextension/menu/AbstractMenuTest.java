@@ -2,8 +2,9 @@ package org.kalibro.desktop.swingextension.menu;
 
 import static org.junit.Assert.*;
 
-import java.awt.Component;
 import java.util.Random;
+
+import javax.swing.event.MenuEvent;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -14,16 +15,24 @@ public class AbstractMenuTest extends UnitTest {
 	private static final String NAME = "AbstractMenuTest name";
 	private static final String TEXT = "AbstractMenuTest text";
 	private static final char MNEMONIC = (char) new Random().nextInt();
-	private static final Component INNER_COMPONENT = mock(Component.class);
 
-	private boolean menuBuilded;
-	private Component[] itemsCreated;
+	private boolean menuBuilded, itemsCreated;
 
 	private AbstractMenu menu;
 
 	@Before
 	public void setUp() {
+		menuBuilded = false;
+		itemsCreated = false;
+		menu = new MenuMock(NAME, TEXT, MNEMONIC);
+	}
+
+	@Test
+	public void checkDefaultConstruction() {
 		menu = new MenuMock();
+		assertEquals("", menu.getName());
+		assertEquals("", menu.getText());
+		assertEquals(' ', menu.getMnemonic());
 	}
 
 	@Test
@@ -35,24 +44,37 @@ public class AbstractMenuTest extends UnitTest {
 
 	@Test
 	public void shouldCreateItemsAndBuildMenu() {
-		assertArrayEquals(array(INNER_COMPONENT), itemsCreated);
+		assertTrue(itemsCreated);
 		assertTrue(menuBuilded);
 	}
 
 	@Test
-	public void shouldHaveDefaultConstructor() throws Exception {
-		menu = mockAbstract(AbstractMenu.class);
+	public void shouldListenToItself() {
+		assertDeepEquals(array(menu), menu.getMenuListeners());
+	}
+
+	@Test
+	public void shouldAdaptMenuListener() {
+		MenuEvent event = mock(MenuEvent.class);
+		menu.menuSelected(event);
+		menu.menuDeselected(event);
+		menu.menuCanceled(event);
+		verifyZeroInteractions(event);
 	}
 
 	private class MenuMock extends AbstractMenu {
 
 		public MenuMock() {
-			super(NAME, TEXT, MNEMONIC, INNER_COMPONENT);
+			super();
+		}
+
+		public MenuMock(String name, String text, char mnemonic) {
+			super(name, text, mnemonic);
 		}
 
 		@Override
-		protected void createItems(Component... innerComponents) {
-			itemsCreated = innerComponents;
+		protected void createItems() {
+			itemsCreated = true;
 		}
 
 		@Override

@@ -1,7 +1,5 @@
 package org.kalibro.desktop;
 
-import java.awt.Component;
-
 import org.kalibro.desktop.settings.SettingsController;
 import org.kalibro.desktop.swingextension.menu.AbstractMenu;
 import org.kalibro.desktop.swingextension.menu.MenuItem;
@@ -15,7 +13,7 @@ class KalibroMenu extends AbstractMenu {
 	}
 
 	@Override
-	protected void createItems(Component... innerComponents) {
+	protected void createItems() {
 		settingsItem = new MenuItem("settings", "Settings", 'S', SettingsController.class, "editSettings");
 		exitItem = new MenuItem("exit", "Exit", 'x', System.class, "exit", 0);
 	}
