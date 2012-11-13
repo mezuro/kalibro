@@ -101,7 +101,7 @@ public class CrudControllerTest extends UnitTest {
 
 	private ChoiceDialog<ReadingGroup> mockChooseDialog(String title, ReadingGroup choice) throws Exception {
 		ChoiceDialog<ReadingGroup> dialog = mock(ChoiceDialog.class);
-		whenNew(ChoiceDialog.class).withArguments(null, title).thenReturn(dialog);
+		whenNew(ChoiceDialog.class).withArguments(frame, title).thenReturn(dialog);
 		when(dialog.getChoice()).thenReturn(choice);
 		return dialog;
 	}

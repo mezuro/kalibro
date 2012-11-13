@@ -9,6 +9,7 @@ import org.kalibro.desktop.swingextension.panel.EditPanel;
 
 public abstract class CrudController<T> {
 
+	private KalibroFrame frame = KalibroFrame.getInstance();
 	private Identifier className = Identifier.fromClassName(entityClass().getSimpleName());
 	private MethodReflector reflector = new MethodReflector(entityClass());
 
@@ -28,7 +29,7 @@ public abstract class CrudController<T> {
 
 	private void addTabFor(T entity) {
 		String title = entity + " - " + className.asText();
-		KalibroFrame.getInstance().addTab(title, panelFor(entity));
+		frame.addTab(title, panelFor(entity));
 	}
 
 	void delete() {
@@ -39,20 +40,20 @@ public abstract class CrudController<T> {
 
 	private T choose(String title) {
 		Collection<T> all = (Collection<T>) reflector.invoke("all");
-		ChoiceDialog<T> dialog = new ChoiceDialog<T>(null, title);
+		ChoiceDialog<T> dialog = new ChoiceDialog<T>(frame, title);
 		dialog.choose("Select " + className.asText().toLowerCase() + ":", all);
 		return dialog.getChoice();
 	}
 
 	void save() {
-		EditPanel<T> panel = KalibroFrame.getInstance().getSelectedTab();
+		EditPanel<T> panel = frame.getSelectedTab();
 		T entity = panel.get();
 		reflector.invoke(entity, "save");
-		KalibroFrame.getInstance().setSelectedTitle(entity + " - " + className.asText());
+		frame.setSelectedTitle(entity + " - " + className.asText());
 	}
 
 	void close() {
-		KalibroFrame.getInstance().removeSelectedTab();
+		frame.removeSelectedTab();
 	}
 
 	protected abstract Class<T> entityClass();
