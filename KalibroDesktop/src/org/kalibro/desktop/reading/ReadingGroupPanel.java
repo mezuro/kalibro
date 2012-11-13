@@ -80,6 +80,7 @@ public class ReadingGroupPanel extends EditPanel<ReadingGroup> {
 	}
 
 	void showReadingPanel(String title, Reading reading) {
+		get();
 		((TitledBorder) readingPanel.getBorder()).setTitle(title);
 		readingPanel.set(reading);
 		readingPanel.setVisible(true);

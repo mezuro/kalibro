@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.kalibro.core.Identifier;
 import org.kalibro.core.reflection.MethodReflector;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
+import org.kalibro.desktop.swingextension.dialog.MessageDialog;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 
 public abstract class CrudController<T> {
@@ -48,7 +49,10 @@ public abstract class CrudController<T> {
 	private T choose(String title) {
 		Collection<T> all = (Collection<T>) reflector.invoke("all");
 		ChoiceDialog<T> dialog = new ChoiceDialog<T>(frame, title);
-		dialog.choose("Select " + className.asText().toLowerCase() + ":", all);
+		if (all.isEmpty())
+			new MessageDialog(frame, title).show("No " + className.asText().toLowerCase() + " found.");
+		else
+			dialog.choose("Select " + className.asText().toLowerCase() + ":", all);
 		return dialog.getChoice();
 	}
 

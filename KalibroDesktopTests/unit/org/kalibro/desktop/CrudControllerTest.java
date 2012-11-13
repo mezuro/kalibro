@@ -2,12 +2,15 @@ package org.kalibro.desktop;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Collection;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.ReadingGroup;
 import org.kalibro.core.reflection.MethodReflector;
 import org.kalibro.desktop.swingextension.dialog.ChoiceDialog;
+import org.kalibro.desktop.swingextension.dialog.MessageDialog;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
@@ -57,7 +60,7 @@ public class CrudControllerTest extends UnitTest {
 
 	@Test
 	public void shouldOpen() throws Exception {
-		ChoiceDialog<ReadingGroup> dialog = mockChooseDialog("Open", group);
+		ChoiceDialog<ReadingGroup> dialog = mockChoiceDialog("Open", group);
 		controller.open();
 
 		InOrder order = Mockito.inOrder(dialog, frame);
@@ -67,7 +70,7 @@ public class CrudControllerTest extends UnitTest {
 
 	@Test
 	public void shouldNotOpenIfUserCancels() throws Exception {
-		ChoiceDialog<ReadingGroup> dialog = mockChooseDialog("Open", null);
+		ChoiceDialog<ReadingGroup> dialog = mockChoiceDialog("Open", null);
 		controller.open();
 
 		verify(dialog).choose("Select reading group:", set(group));
@@ -76,7 +79,7 @@ public class CrudControllerTest extends UnitTest {
 
 	@Test
 	public void shouldDelete() throws Exception {
-		ChoiceDialog<ReadingGroup> dialog = mockChooseDialog("Delete", group);
+		ChoiceDialog<ReadingGroup> dialog = mockChoiceDialog("Delete", group);
 		controller.delete();
 
 		InOrder order = Mockito.inOrder(dialog, reflector);
@@ -86,17 +89,34 @@ public class CrudControllerTest extends UnitTest {
 
 	@Test
 	public void shouldNotDeleteIfUserCancels() throws Exception {
-		ChoiceDialog<ReadingGroup> dialog = mockChooseDialog("Delete", null);
+		ChoiceDialog<ReadingGroup> dialog = mockChoiceDialog("Delete", null);
 		controller.delete();
 
 		verify(dialog).choose("Select reading group:", set(group));
 		verify(reflector, never()).invoke(any(), anyString());
 	}
 
-	private ChoiceDialog<ReadingGroup> mockChooseDialog(String title, ReadingGroup choice) throws Exception {
+	@Test
+	public void shouldShowMessageIfThereIsNoEntity() throws Exception {
+		when(reflector.invoke("all")).thenReturn(set());
+		ChoiceDialog<ReadingGroup> choiceDialog = mockChoiceDialog("Delete", null);
+		MessageDialog messageDialog = mockMessageDialog("Delete");
+		controller.delete();
+
+		verify(messageDialog).show("No reading group found.");
+		verify(choiceDialog, never()).choose(anyString(), any(Collection.class));
+	}
+
+	private ChoiceDialog<ReadingGroup> mockChoiceDialog(String title, ReadingGroup choice) throws Exception {
 		ChoiceDialog<ReadingGroup> dialog = mock(ChoiceDialog.class);
 		whenNew(ChoiceDialog.class).withArguments(frame, title).thenReturn(dialog);
 		when(dialog.getChoice()).thenReturn(choice);
+		return dialog;
+	}
+
+	private MessageDialog mockMessageDialog(String title) throws Exception {
+		MessageDialog dialog = mock(MessageDialog.class);
+		whenNew(MessageDialog.class).withArguments(frame, title).thenReturn(dialog);
 		return dialog;
 	}
 
