@@ -47,25 +47,25 @@ public final class KalibroFrame extends JFrame {
 		setExtendedState(MAXIMIZED_BOTH);
 	}
 
-	void addTab(String title, EditPanel<?> panel) {
+	public void addTab(String title, EditPanel<?> panel) {
 		tabbedPane.add(title, new JScrollPane(panel));
 	}
 
-	String getSelectedTitle() {
+	public String getSelectedTitle() {
 		int index = tabbedPane.getSelectedIndex();
 		return (index == -1) ? "" : tabbedPane.getTitleAt(index);
 	}
 
-	<T> EditPanel<T> getSelectedTab() {
+	public <T> EditPanel<T> getSelectedTab() {
 		JScrollPane scrollPane = (JScrollPane) tabbedPane.getSelectedComponent();
 		return (EditPanel<T>) scrollPane.getViewport().getView();
 	}
 
-	void setSelectedTitle(String title) {
+	public void setSelectedTitle(String title) {
 		tabbedPane.setTitleAt(tabbedPane.getSelectedIndex(), title);
 	}
 
-	void removeSelectedTab() {
+	public void removeSelectedTab() {
 		tabbedPane.remove(tabbedPane.getSelectedIndex());
 	}
 }

@@ -11,16 +11,19 @@ public abstract class DesktopAcceptanceTest extends AcceptanceTest {
 
 	protected WindowFixture<?> fixture;
 
+	private KalibroFrame frame = KalibroFrame.getInstance();
+
 	@Before
 	@SuppressWarnings("unused")
 	public void setUp() throws Exception {
-		KalibroFrame kalibroFrame = KalibroFrame.getInstance();
-		fixture = new FrameFixture(kalibroFrame);
-		((FrameFixture) fixture).show(kalibroFrame.getSize());
+		fixture = new FrameFixture(frame);
+		((FrameFixture) fixture).show(frame.getSize());
 	}
 
 	@After
 	public void tearDown() {
+		while (!frame.getSelectedTitle().equals(""))
+			frame.removeSelectedTab();
 		fixture.cleanUp();
 	}
 }

@@ -32,6 +32,8 @@ public class FirstReadingGroup extends DesktopAcceptanceTest {
 		fixture.table("readings").requireContents(new String[][]{{format(-1.0), "White"}, {format(1.0), "Black"}});
 
 		clickOnReadingGroupItem("save");
+		fixture.tabbedPane().requireTabTitles("Black and White - Reading group");
+
 		clickOnReadingGroupItem("close");
 		fixture.tabbedPane().requireTabTitles();
 
@@ -75,7 +77,7 @@ public class FirstReadingGroup extends DesktopAcceptanceTest {
 		String rgb = Integer.toHexString(color.getRGB()).substring(2);
 		fixture.button("color").click();
 		fixture.dialog().tabbedPane().selectTab("RGB");
-		fixture.textBox(JTextComponentMatcher.withText("FFFFFF").andShowing()).enterText(rgb);
+		fixture.textBox(JTextComponentMatcher.withText("FFFFFF").andShowing()).setText(rgb);
 		fixture.dialog().button(JButtonMatcher.withText("OK")).click();
 	}
 
