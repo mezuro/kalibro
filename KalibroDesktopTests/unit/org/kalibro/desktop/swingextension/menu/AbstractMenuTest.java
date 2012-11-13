@@ -1,6 +1,6 @@
 package org.kalibro.desktop.swingextension.menu;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 import java.util.Random;
 
@@ -16,20 +16,15 @@ public class AbstractMenuTest extends UnitTest {
 	private static final String TEXT = "AbstractMenuTest text";
 	private static final char MNEMONIC = (char) new Random().nextInt();
 
-	private boolean menuBuilded, itemsCreated;
-
 	private AbstractMenu menu;
 
 	@Before
 	public void setUp() {
-		menuBuilded = false;
-		itemsCreated = false;
-		menu = new MenuMock(NAME, TEXT, MNEMONIC);
+		menu = new AbstractMenu() { /* stub */};
 	}
 
 	@Test
 	public void checkDefaultConstruction() {
-		menu = new MenuMock();
 		assertEquals("", menu.getName());
 		assertEquals("", menu.getText());
 		assertEquals(' ', menu.getMnemonic());
@@ -37,15 +32,10 @@ public class AbstractMenuTest extends UnitTest {
 
 	@Test
 	public void shouldSetNameTextAndMnemonic() {
+		menu = new AbstractMenu(NAME, TEXT, MNEMONIC) { /* stub */};
 		assertEquals(NAME, menu.getName());
 		assertEquals(TEXT, menu.getText());
 		assertEquals(MNEMONIC, menu.getMnemonic());
-	}
-
-	@Test
-	public void shouldCreateItemsAndBuildMenu() {
-		assertTrue(itemsCreated);
-		assertTrue(menuBuilded);
 	}
 
 	@Test
@@ -60,26 +50,5 @@ public class AbstractMenuTest extends UnitTest {
 		menu.menuDeselected(event);
 		menu.menuCanceled(event);
 		verifyZeroInteractions(event);
-	}
-
-	private class MenuMock extends AbstractMenu {
-
-		public MenuMock() {
-			super();
-		}
-
-		public MenuMock(String name, String text, char mnemonic) {
-			super(name, text, mnemonic);
-		}
-
-		@Override
-		protected void createItems() {
-			itemsCreated = true;
-		}
-
-		@Override
-		protected void buildMenu() {
-			menuBuilded = true;
-		}
 	}
 }

@@ -14,14 +14,8 @@ public abstract class AbstractMenu extends JMenu implements MenuListener {
 		super(text);
 		setName(name);
 		setMnemonic(mnemonic);
-		createItems();
-		buildMenu();
 		addMenuListener(this);
 	}
-
-	protected abstract void createItems();
-
-	protected abstract void buildMenu();
 
 	@Override
 	public void menuSelected(MenuEvent event) {

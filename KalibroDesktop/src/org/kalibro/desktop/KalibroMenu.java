@@ -8,18 +8,18 @@ class KalibroMenu extends AbstractMenu {
 
 	private MenuItem settingsItem, exitItem;
 
-	protected KalibroMenu() {
+	KalibroMenu() {
 		super("kalibro", "Kalibro", 'K');
+		createItems();
+		buildMenu();
 	}
 
-	@Override
-	protected void createItems() {
+	private void createItems() {
 		settingsItem = new MenuItem("settings", "Settings", 'S', SettingsController.class, "editSettings");
 		exitItem = new MenuItem("exit", "Exit", 'x', System.class, "exit", 0);
 	}
 
-	@Override
-	protected void buildMenu() {
+	private void buildMenu() {
 		add(settingsItem);
 		addSeparator();
 		add(exitItem);
