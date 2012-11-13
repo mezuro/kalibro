@@ -2,8 +2,13 @@ package org.kalibro.desktop.reading;
 
 import org.kalibro.ReadingGroup;
 import org.kalibro.desktop.CrudController;
+import org.kalibro.desktop.KalibroFrame;
 
 public class ReadingGroupController extends CrudController<ReadingGroup> {
+
+	public ReadingGroupController(KalibroFrame kalibroFrame) {
+		super(kalibroFrame);
+	}
 
 	@Override
 	protected Class<ReadingGroup> entityClass() {

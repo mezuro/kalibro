@@ -13,7 +13,7 @@ public class ReadingGroupControllerTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		controller = new ReadingGroupController();
+		controller = new ReadingGroupController(null);
 	}
 
 	@Test

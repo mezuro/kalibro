@@ -9,9 +9,16 @@ import org.kalibro.desktop.swingextension.panel.EditPanel;
 
 public abstract class CrudController<T> {
 
-	private KalibroFrame frame = KalibroFrame.getInstance();
-	private Identifier className = Identifier.fromClassName(entityClass().getSimpleName());
-	private MethodReflector reflector = new MethodReflector(entityClass());
+	private KalibroFrame frame;
+
+	private MethodReflector reflector;
+	private Identifier className;
+
+	protected CrudController(KalibroFrame frame) {
+		this.frame = frame;
+		reflector = new MethodReflector(entityClass());
+		className = Identifier.fromClassName(entityClass().getSimpleName());
+	}
 
 	Identifier getClassName() {
 		return className;

@@ -31,22 +31,16 @@ public class CrudControllerTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		panel = mock(EditPanel.class);
+		frame = mock(KalibroFrame.class);
 		group = loadFixture("scholar", ReadingGroup.class);
 		mockReflector();
-		mockKalibroFrame();
-		controller = new GroupController();
+		controller = new GroupController(frame);
 	}
 
 	private void mockReflector() throws Exception {
 		reflector = mock(MethodReflector.class);
 		whenNew(MethodReflector.class).withArguments(ReadingGroup.class).thenReturn(reflector);
 		when(reflector.invoke("all")).thenReturn(set(group));
-	}
-
-	private void mockKalibroFrame() {
-		frame = mock(KalibroFrame.class);
-		mockStatic(KalibroFrame.class);
-		when(KalibroFrame.getInstance()).thenReturn(frame);
 	}
 
 	@Test
@@ -130,7 +124,11 @@ public class CrudControllerTest extends UnitTest {
 		verify(frame).removeSelectedTab();
 	}
 
-	private class GroupController extends CrudController<ReadingGroup> {
+	private final class GroupController extends CrudController<ReadingGroup> {
+
+		private GroupController(KalibroFrame frame) {
+			super(frame);
+		}
 
 		@Override
 		protected Class<ReadingGroup> entityClass() {

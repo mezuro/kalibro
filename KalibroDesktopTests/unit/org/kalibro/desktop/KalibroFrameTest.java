@@ -67,7 +67,10 @@ public class KalibroFrameTest extends UnitTest {
 	public void shouldHaveMenuBar() {
 		JMenuBar menuBar = frame.getJMenuBar();
 		assertNotNull(menuBar);
+		assertEquals(2, menuBar.getMenuCount());
+
 		assertClassEquals(KalibroMenu.class, menuBar.getMenu(0));
+		assertClassEquals(CrudMenu.class, menuBar.getMenu(1));
 	}
 
 	@Test

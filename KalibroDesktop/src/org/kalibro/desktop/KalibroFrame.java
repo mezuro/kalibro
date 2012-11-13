@@ -6,6 +6,7 @@ import java.awt.Dimension;
 
 import javax.swing.*;
 
+import org.kalibro.desktop.reading.ReadingGroupController;
 import org.kalibro.desktop.swingextension.panel.EditPanel;
 
 public final class KalibroFrame extends JFrame {
@@ -31,6 +32,7 @@ public final class KalibroFrame extends JFrame {
 	private void createMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.add(new KalibroMenu());
+		menuBar.add(new CrudMenu(new ReadingGroupController(this)));
 		setJMenuBar(menuBar);
 	}
 
