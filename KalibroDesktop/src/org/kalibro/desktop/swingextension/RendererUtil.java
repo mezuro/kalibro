@@ -5,16 +5,20 @@ import java.awt.Component;
 
 import javax.swing.JTable;
 
-public abstract class Renderer {
+public final class RendererUtil {
 
 	private static final Color DEFAULT_SELECTION_BACKGROUND = new JTable().getSelectionBackground();
 
-	protected void setSelectionBackground(Component component, boolean isSelected) {
+	public static void setSelectionBackground(Component component, boolean isSelected) {
 		if (isSelected)
 			component.setBackground(selectionBackgroundFor(component.getBackground()));
 	}
 
-	private Color selectionBackgroundFor(Color background) {
+	private static Color selectionBackgroundFor(Color background) {
 		return (background == Color.WHITE) ? DEFAULT_SELECTION_BACKGROUND : background.darker();
+	}
+
+	private RendererUtil() {
+		return;
 	}
 }

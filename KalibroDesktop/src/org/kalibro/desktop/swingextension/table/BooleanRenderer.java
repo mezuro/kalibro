@@ -12,7 +12,7 @@ class BooleanRenderer extends StandardRenderer {
 	}
 
 	@Override
-	BooleanField render(Object value) {
+	public BooleanField render(Object value) {
 		BooleanField booleanField = new BooleanField("", "");
 		booleanField.setBackground(Color.WHITE);
 		booleanField.setSelected((Boolean) value);

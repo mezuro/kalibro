@@ -18,7 +18,7 @@ public class DefaultRenderer extends StandardRenderer {
 	}
 
 	@Override
-	Component render(Object value) {
+	public Component render(Object value) {
 		for (StandardRenderer renderer : KNOWN_RENDERERS)
 			if (renderer.canRender(value))
 				return renderer.render(value);

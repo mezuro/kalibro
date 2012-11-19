@@ -8,25 +8,22 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.tests.UnitTest;
+import org.kalibro.tests.UtilityClassTest;
 
-public class RendererTest extends UnitTest {
+public class RendererUtilTest extends UtilityClassTest {
 
 	private static final Color DEFAULT_SELECTION_BACKGROUND = new JTable().getSelectionBackground();
 
 	private Component component;
 
-	private Renderer renderer;
-
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		component = mock(Component.class);
-		renderer = mockAbstract(Renderer.class);
 	}
 
 	@Test
 	public void shouldNotChangeBackgroundIfNotSelected() {
-		renderer.setSelectionBackground(component, false);
+		RendererUtil.setSelectionBackground(component, false);
 		verify(component, never()).setBackground(any(Color.class));
 	}
 
@@ -34,7 +31,7 @@ public class RendererTest extends UnitTest {
 	public void shouldChangeWhiteToDefaultSelectionBackground() {
 		when(component.getBackground()).thenReturn(Color.WHITE);
 
-		renderer.setSelectionBackground(component, true);
+		RendererUtil.setSelectionBackground(component, true);
 		verify(component).setBackground(DEFAULT_SELECTION_BACKGROUND);
 	}
 
@@ -43,7 +40,7 @@ public class RendererTest extends UnitTest {
 		Color color = new Color(new Random().nextInt());
 		when(component.getBackground()).thenReturn(color);
 
-		renderer.setSelectionBackground(component, true);
+		RendererUtil.setSelectionBackground(component, true);
 		verify(component).setBackground(color.darker());
 	}
 }

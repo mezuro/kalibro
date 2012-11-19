@@ -7,9 +7,9 @@ abstract class StandardRenderer extends ColumnRenderer {
 	abstract boolean canRender(Object value);
 
 	@Override
-	protected Component render(Object value, Object row) {
+	public Component render(Object value, Object row) {
 		return render(value);
 	}
 
-	abstract Component render(Object value);
+	public abstract Component render(Object value);
 }

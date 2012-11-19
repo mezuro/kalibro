@@ -14,7 +14,7 @@ class DoubleRenderer extends StandardRenderer {
 	}
 
 	@Override
-	Label render(Object value) {
+	public Label render(Object value) {
 		String text = new DoubleField("").getDecimalFormat().format(value);
 		Label label = new Label(text);
 		label.setFont(label.getFont().deriveFont(Font.PLAIN));

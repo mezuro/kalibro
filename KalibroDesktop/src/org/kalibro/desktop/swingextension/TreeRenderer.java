@@ -9,7 +9,7 @@ import javax.swing.SwingConstants;
 import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.swing.tree.TreeCellRenderer;
 
-public class TreeRenderer extends Renderer implements TreeCellRenderer {
+public class TreeRenderer implements TreeCellRenderer {
 
 	@Override
 	public JLabel getTreeCellRendererComponent(JTree tree, Object value, boolean isSelected, boolean isExpanded,
@@ -17,7 +17,7 @@ public class TreeRenderer extends Renderer implements TreeCellRenderer {
 		String text = getText(value);
 		Icon icon = getTreeIcon(isLeaf, isExpanded);
 		JLabel label = createLabel(text, icon, tree.getBackground());
-		setSelectionBackground(label, isSelected);
+		RendererUtil.setSelectionBackground(label, isSelected);
 		return label;
 	}
 

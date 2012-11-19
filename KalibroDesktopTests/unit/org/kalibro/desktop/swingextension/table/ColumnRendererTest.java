@@ -10,8 +10,16 @@ import javax.swing.JTable;
 
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.desktop.swingextension.RendererUtil;
 import org.kalibro.tests.UnitTest;
+import org.powermock.core.classloader.annotations.PowerMockIgnore;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
 
+@RunWith(PowerMockRunner.class)
+@PowerMockIgnore("javax.*")
+@PrepareForTest(RendererUtil.class)
 public class ColumnRendererTest extends UnitTest {
 
 	private Component component, renderedComponent;
@@ -22,6 +30,7 @@ public class ColumnRendererTest extends UnitTest {
 
 	@Before
 	public void setUp() throws Exception {
+		mockStatic(RendererUtil.class);
 		value = mock(Object.class);
 		context = mock(Object.class);
 		component = mock(Component.class);
@@ -52,8 +61,9 @@ public class ColumnRendererTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSetSelectionBackground() throws Exception {
-		verifyPrivate(renderer).invoke("setSelectionBackground", component, isSelected);
+	public void shouldSetSelectionBackground() {
+		verifyStatic();
+		RendererUtil.setSelectionBackground(component, isSelected);
 	}
 
 	@Test

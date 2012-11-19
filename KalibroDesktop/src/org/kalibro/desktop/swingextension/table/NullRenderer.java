@@ -12,7 +12,7 @@ class NullRenderer extends StandardRenderer {
 	}
 
 	@Override
-	JPanel render(Object value) {
+	public JPanel render(Object value) {
 		JPanel panel = new JPanel();
 		panel.setBackground(Color.WHITE);
 		return panel;

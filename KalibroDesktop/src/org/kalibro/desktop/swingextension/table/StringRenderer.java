@@ -14,7 +14,7 @@ class StringRenderer extends StandardRenderer {
 	}
 
 	@Override
-	JLabel render(Object value) {
+	public JLabel render(Object value) {
 		JLabel label = new JLabel((String) value);
 		label.setFont(label.getFont().deriveFont(Font.PLAIN));
 		label.setHorizontalAlignment(SwingConstants.LEFT);

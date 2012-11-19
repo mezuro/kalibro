@@ -12,7 +12,7 @@ class CollectionRenderer extends StandardRenderer {
 	}
 
 	@Override
-	JLabel render(Object value) {
+	public JLabel render(Object value) {
 		String string = stringFor((Collection<?>) value);
 		return new StringRenderer().render(string);
 	}

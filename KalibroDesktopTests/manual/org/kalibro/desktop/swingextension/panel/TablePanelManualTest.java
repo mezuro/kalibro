@@ -68,7 +68,7 @@ public final class TablePanelManualTest extends TablePanel<Range> implements Tab
 	private static class ColorRenderer extends ColumnRenderer {
 
 		@Override
-		protected JPanel render(Object value, Object context) {
+		public JPanel render(Object value, Object context) {
 			JPanel panel = new JPanel();
 			panel.setBackground((Color) value);
 			return panel;
