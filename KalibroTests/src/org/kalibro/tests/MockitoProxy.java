@@ -1,5 +1,7 @@
 package org.kalibro.tests;
 
+import static org.junit.Assert.assertTrue;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Modifier;
 
@@ -22,7 +24,7 @@ public abstract class MockitoProxy extends PowerMockito {
 
 	private static <T> void shouldHavePublicDefaultConstructor(T mock) throws Exception {
 		Constructor<?> constructor = mock.getClass().getConstructor();
-		Modifier.isPublic(constructor.getModifiers());
+		assertTrue(Modifier.isPublic(constructor.getModifiers()));
 		constructor.newInstance();
 	}
 

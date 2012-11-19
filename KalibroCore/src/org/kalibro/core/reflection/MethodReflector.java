@@ -24,7 +24,7 @@ public class MethodReflector {
 	}
 
 	public Class<?> getReturnType(String methodName, Object... arguments) {
-		return findMethod(methodName, arguments).getReturnType();
+		return findMethod(theClass, methodName, arguments).getReturnType();
 	}
 
 	public Object invoke(String methodName, Object... arguments) {
@@ -33,7 +33,7 @@ public class MethodReflector {
 
 	public Object invoke(Object object, String methodName, Object... arguments) {
 		try {
-			Method method = findMethod(methodName, arguments);
+			Method method = findMethod(theClass, methodName, arguments);
 			method.setAccessible(true);
 			return method.invoke(object, arguments);
 		} catch (InvocationTargetException exception) {
@@ -46,11 +46,17 @@ public class MethodReflector {
 		}
 	}
 
-	private Method findMethod(String methodName, Object[] arguments) {
-		for (Method method : theClass.getDeclaredMethods())
+	private Method findMethod(Class<?> type, String methodName, Object[] arguments) {
+		for (Method method : type.getDeclaredMethods())
 			if (isCompatible(method, methodName, arguments))
 				return method;
-		throw new KalibroError(errorMessage("finding", methodName));
+		if (type.equals(Object.class))
+			throw new KalibroError(errorMessage("finding", methodName));
+		return findMethod(type.getSuperclass(), methodName, arguments);
+	}
+
+	private String errorMessage(String verb, String methodName) {
+		return "Error " + verb + " method: " + theClass.getName() + "." + methodName;
 	}
 
 	private boolean isCompatible(Method method, String methodName, Object[] arguments) {
@@ -61,12 +67,26 @@ public class MethodReflector {
 		if (types.length != arguments.length)
 			return false;
 		for (int i = 0; i < types.length; i++)
-			if (!types[i].isAssignableFrom(arguments[i].getClass()))
+			if (!areTypesCompatible(types[i], arguments[i]))
 				return false;
 		return true;
 	}
 
-	private String errorMessage(String verb, String methodName) {
-		return "Error " + verb + " method: " + theClass.getName() + "." + methodName;
+	private boolean areTypesCompatible(Class<?> type, Object argument) {
+		try {
+			type.cast(argument);
+			return true;
+		} catch (ClassCastException exception) {
+			return isPrimitiveWrapper(type, argument);
+		}
+	}
+
+	private boolean isPrimitiveWrapper(Class<?> type, Object argument) {
+		try {
+			argument.getClass().getMethod(type.getName() + "Value");
+			return true;
+		} catch (NoSuchMethodException exception) {
+			return false;
+		}
 	}
 }
