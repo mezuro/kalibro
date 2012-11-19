@@ -5,6 +5,7 @@ import static org.kalibro.tests.UnitTest.loadFixture;
 import org.kalibro.Configuration;
 import org.kalibro.desktop.tests.ComponentWrapperDialog;
 
+@Deprecated
 public final class ConfigurationPanelManualTest {
 
 	public static void main(String[] args) {

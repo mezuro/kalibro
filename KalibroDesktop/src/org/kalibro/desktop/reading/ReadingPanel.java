@@ -55,6 +55,6 @@ class ReadingPanel extends EditPanel<Reading> {
 		labelField.setText(reading.getLabel());
 		gradeField.set(reading.getGrade());
 		colorField.set(reading.getColor());
-		this.model = reading;
+		model = reading;
 	}
 }
