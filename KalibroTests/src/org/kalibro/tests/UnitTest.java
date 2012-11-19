@@ -42,9 +42,9 @@ public abstract class UnitTest extends SpecialAssertions {
 		return new File(getClass().getResource(name).toURI());
 	}
 
-	class TestTimeout extends Timeout {
+	protected class TestTimeout extends Timeout {
 
-		TestTimeout(long duration, TimeUnit timeUnit) {
+		public TestTimeout(long duration, TimeUnit timeUnit) {
 			super(new Long(timeUnit.toMillis(duration)).intValue());
 		}
 	}
