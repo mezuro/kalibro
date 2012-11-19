@@ -6,7 +6,9 @@ import java.util.Set;
 import org.kalibro.core.concurrent.Writer;
 
 /**
- * Interface between Kalibro and the metric collector tool.
+ * Interface between Kalibro and the metric collector tool.<br/>
+ * All implementations of this interface should have a public default constructor. The constructor should verify if the
+ * collector is working and throw an exception otherwise.
  * 
  * @author Carlos Morais
  * @author Paulo Meirelles
