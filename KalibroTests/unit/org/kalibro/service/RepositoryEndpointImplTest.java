@@ -19,11 +19,6 @@ public class RepositoryEndpointImplTest extends
 	private static final Long ID = new Random().nextLong();
 	private static final Long PROJECT_ID = new Random().nextLong();
 
-	@Override
-	protected Class<Repository> entityClass() {
-		return Repository.class;
-	}
-
 	@Test
 	public void shouldGetSupportedTypes() {
 		when(dao.supportedTypes()).thenReturn(sortedSet(LOCAL_ZIP, REMOTE_ZIP));
@@ -38,7 +33,7 @@ public class RepositoryEndpointImplTest extends
 
 	@Test
 	public void shouldGetRepositoriesOfProject() {
-		when(dao.repositoriesOf(PROJECT_ID)).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).repositoriesOf(PROJECT_ID);
 		assertDeepEquals(list(xml), implementor.repositoriesOf(PROJECT_ID));
 	}
 

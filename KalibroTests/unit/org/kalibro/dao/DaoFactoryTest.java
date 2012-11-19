@@ -3,7 +3,6 @@ package org.kalibro.dao;
 import static org.junit.Assert.assertSame;
 
 import org.junit.Before;
-import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
@@ -20,16 +19,11 @@ import org.powermock.reflect.Whitebox;
 @PrepareForTest({DaoFactory.class, KalibroSettings.class})
 public class DaoFactoryTest extends UnitTest {
 
-	@BeforeClass
-	public static void constructorCoverage() throws Exception {
-		mock(DaoFactory.class).getClass().getConstructor().newInstance();
-	}
-
 	private DaoFactory daoFactory;
 
 	@Before
 	public void setUp() throws Exception {
-		daoFactory = mock(DaoFactory.class);
+		daoFactory = mockAbstract(DaoFactory.class);
 		spy(DaoFactory.class);
 		doReturn(daoFactory).when(DaoFactory.class, "createFactory");
 	}

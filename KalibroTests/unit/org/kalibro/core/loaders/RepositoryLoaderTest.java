@@ -3,7 +3,6 @@ package org.kalibro.core.loaders;
 import static java.util.concurrent.TimeUnit.HOURS;
 
 import java.io.File;
-import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -31,7 +30,10 @@ public class RepositoryLoaderTest extends UnitTest {
 	public void setUp() throws Exception {
 		loadDirectory = mock(File.class);
 		mockCommandTask();
-		loader = new FakeLoader();
+		loader = mockAbstract(RepositoryLoader.class);
+		doReturn(list(VALIDATION_COMMAND)).when(loader).validationCommands();
+		doReturn(list(LOAD_COMMAND)).when(loader).loadCommands(ADDRESS, false);
+		doReturn(list(UPDATE_COMMAND)).when(loader).loadCommands(ADDRESS, true);
 	}
 
 	private void mockCommandTask() throws Exception {
@@ -64,18 +66,5 @@ public class RepositoryLoaderTest extends UnitTest {
 		loader.load(ADDRESS, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(UPDATE_COMMAND, loadDirectory);
 		verify(commandTask).execute(10, HOURS);
-	}
-
-	private class FakeLoader extends RepositoryLoader {
-
-		@Override
-		protected List<String> validationCommands() {
-			return list(VALIDATION_COMMAND);
-		}
-
-		@Override
-		protected List<String> loadCommands(String address, boolean update) {
-			return list(update ? UPDATE_COMMAND : LOAD_COMMAND);
-		}
 	}
 }

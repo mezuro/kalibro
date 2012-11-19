@@ -23,11 +23,6 @@ public class MemberFilterFactoryTest extends UtilityClassTest {
 		never = getClass().getMethod("never");
 	}
 
-	@Override
-	protected Class<?> utilityClass() {
-		return MemberFilterFactory.class;
-	}
-
 	@Test
 	public void shouldCreateModifierMemberFilter() {
 		filter = is(PUBLIC);

@@ -60,7 +60,7 @@ public class FieldReflector {
 	}
 
 	public Class<?> getObjectClass() {
-		return object.getClass();
+		return (object instanceof Class) ? (Class<?>) object : object.getClass();
 	}
 
 	public List<String> listFields() {

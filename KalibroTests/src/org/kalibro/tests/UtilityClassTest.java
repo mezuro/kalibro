@@ -20,5 +20,7 @@ public abstract class UtilityClassTest extends UnitTest {
 		constructor.newInstance();
 	}
 
-	protected abstract Class<?> utilityClass();
+	private Class<?> utilityClass() throws ClassNotFoundException {
+		return Class.forName(getClass().getName().replace("Test", ""));
+	}
 }
