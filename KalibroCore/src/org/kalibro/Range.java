@@ -69,6 +69,12 @@ public class Range extends AbstractEntity<Range> {
 		this.end = end;
 	}
 
+	public void set(Double newBeginning, Double newEnd) {
+		validate(newBeginning, newEnd);
+		beginning = newBeginning;
+		end = newEnd;
+	}
+
 	void assertNoIntersectionWith(Range other) {
 		assertNoIntersection(this, other);
 	}
