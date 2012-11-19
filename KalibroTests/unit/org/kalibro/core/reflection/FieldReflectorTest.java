@@ -91,4 +91,10 @@ public class FieldReflectorTest extends UnitTest {
 			}
 		}).throwsError().withMessage("Error setting field: " + INEXISTENT).withCause(NullPointerException.class);
 	}
+
+	@Test
+	public void shouldQueryClassWithoutObject() {
+		reflector = new FieldReflector(FieldReflectorTest.class);
+		assertDeepEquals(list("reflector", "testTimeout"), reflector.listFields());
+	}
 }

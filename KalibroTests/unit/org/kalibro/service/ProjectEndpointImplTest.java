@@ -16,11 +16,6 @@ public class ProjectEndpointImplTest extends
 
 	private static final Long ID = Math.abs(new Random().nextLong());
 
-	@Override
-	protected Class<Project> entityClass() {
-		return Project.class;
-	}
-
 	@Test
 	public void shouldConfirmExistence() {
 		when(dao.exists(ID)).thenReturn(true);
@@ -42,7 +37,7 @@ public class ProjectEndpointImplTest extends
 
 	@Test
 	public void shouldGetAll() {
-		when(dao.all()).thenReturn(sortedSet(entity));
+		doReturn(sortedSet(entity)).when(dao).all();
 		assertDeepEquals(list(xml), implementor.allProjects());
 	}
 

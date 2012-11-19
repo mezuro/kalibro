@@ -1,6 +1,5 @@
 package org.kalibro.dto;
 
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -11,7 +10,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.reflection.FieldReflector;
 import org.kalibro.tests.UnitTest;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -35,7 +33,7 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 
 	private void createDto() throws Exception {
 		Class<?> dtoClass = Class.forName(getClass().getName().replace("Test", ""));
-		dto = (DataTransferObject<ENTITY>) mock(dtoClass, Mockito.CALLS_REAL_METHODS);
+		dto = (DataTransferObject<ENTITY>) mockAbstract(dtoClass);
 		FieldReflector reflector = new FieldReflector(entity);
 		for (Method method : dtoClass.getDeclaredMethods())
 			if (Modifier.isAbstract(method.getModifiers()) && reflector.listFields().contains(method.getName()))
@@ -59,13 +57,6 @@ public abstract class AbstractDtoTest<ENTITY> extends UnitTest {
 		LazyLoadExpectation expectation = new LazyLoadExpectation(daoClass, methodName, parameters);
 		lazyLoadExpectations.add(expectation);
 		return expectation;
-	}
-
-	@Test
-	public void shouldHavePublicDefaultConstructor() throws Exception {
-		Constructor<?> constructor = dto.getClass().getConstructor();
-		Modifier.isPublic(constructor.getModifiers());
-		constructor.newInstance();
 	}
 
 	@Test

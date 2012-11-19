@@ -5,7 +5,6 @@ import static org.kalibro.core.Environment.dotKalibro;
 
 import java.io.File;
 
-import org.apache.commons.io.FileUtils;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.experimental.theories.DataPoints;
@@ -39,7 +38,6 @@ public abstract class AcceptanceTest extends IntegrationTest {
 		new File(directory, "derby.log").delete();
 		new File(directory, "kalibro.sqlite").delete();
 		new File(dotKalibro(), "kalibro.settings").delete();
-		FileUtils.deleteQuietly(projectsDirectory());
 	}
 
 	protected void resetDatabase(SupportedDatabase databaseType) {

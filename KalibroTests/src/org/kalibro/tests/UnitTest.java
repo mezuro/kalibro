@@ -26,7 +26,7 @@ public abstract class UnitTest extends SpecialAssertions {
 	@Rule
 	public MethodRule testTimeout = testTimeout();
 
-	protected TestTimeout testTimeout() {
+	protected Timeout testTimeout() {
 		return new TestTimeout(2, SECONDS);
 	}
 
@@ -42,9 +42,9 @@ public abstract class UnitTest extends SpecialAssertions {
 		return new File(getClass().getResource(name).toURI());
 	}
 
-	class TestTimeout extends Timeout {
+	protected class TestTimeout extends Timeout {
 
-		TestTimeout(long duration, TimeUnit timeUnit) {
+		public TestTimeout(long duration, TimeUnit timeUnit) {
 			super(new Long(timeUnit.toMillis(duration)).intValue());
 		}
 	}
