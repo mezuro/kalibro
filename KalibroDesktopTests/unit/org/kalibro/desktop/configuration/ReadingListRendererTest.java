@@ -6,13 +6,12 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.Random;
 
-import javax.swing.JList;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Reading;
 import org.kalibro.desktop.swingextension.RendererUtil;
+import org.kalibro.desktop.swingextension.field.FieldSize;
 import org.kalibro.desktop.swingextension.table.DefaultRenderer;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
@@ -24,7 +23,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({ReadingListRenderer.class, RendererUtil.class})
 public class ReadingListRendererTest extends UnitTest {
 
-	private Component component, renderedComponent;
+	private static final Random RANDOM = new Random();
+
+	private DefaultRenderer defaultRenderer;
+	private Component component;
+	private FieldSize fieldSize;
 	private Boolean isSelected;
 	private Reading reading;
 
@@ -33,39 +36,50 @@ public class ReadingListRendererTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		mockStatic(RendererUtil.class);
+		createMocks();
 		renderer = new ReadingListRenderer();
-		render();
 	}
 
-	private void render() throws Exception {
-		Random random = new Random();
-
+	private void createMocks() throws Exception {
 		reading = mock(Reading.class);
 		component = mock(Component.class);
-		isSelected = random.nextBoolean();
+		fieldSize = mock(FieldSize.class);
+		isSelected = RANDOM.nextBoolean();
+		defaultRenderer = mock(DefaultRenderer.class);
 
-		int index = random.nextInt();
-		boolean hasFocus = random.nextBoolean();
-		Color color = new Color(random.nextInt());
-		JList<Reading> list = mock(JList.class);
-
-		DefaultRenderer defaultRenderer = mock(DefaultRenderer.class);
 		whenNew(DefaultRenderer.class).withNoArguments().thenReturn(defaultRenderer);
-		when(defaultRenderer.render(reading)).thenReturn(component);
-		when(reading.getColor()).thenReturn(color);
-
-		renderedComponent = renderer.getListCellRendererComponent(list, reading, index, isSelected, hasFocus);
+		when(defaultRenderer.render(any())).thenReturn(component);
+		whenNew(FieldSize.class).withArguments(component).thenReturn(fieldSize);
+		when(reading.getColor()).thenReturn(new Color(RANDOM.nextInt()));
 	}
 
 	@Test
 	public void shouldRenderWithDefaultRenderer() {
-		assertSame(component, renderedComponent);
+		assertSame(component, render(reading));
+		verify(defaultRenderer).render(reading);
 	}
 
 	@Test
 	public void shouldSetBackground() {
+		render(reading);
 		verify(component).setBackground(reading.getColor());
 		verifyStatic();
 		RendererUtil.setSelectionBackground(component, isSelected);
+	}
+
+	@Test
+	public void shouldRenderNull() {
+		assertSame(component, render(null));
+		verify(defaultRenderer).render("<none>");
+	}
+
+	@Test
+	public void shouldRenderWithFieldSize() {
+		render(reading);
+		verify(component).setSize(fieldSize);
+	}
+
+	private Component render(Reading value) {
+		return renderer.getListCellRendererComponent(null, value, RANDOM.nextInt(), isSelected, RANDOM.nextBoolean());
 	}
 }
