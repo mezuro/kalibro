@@ -136,6 +136,13 @@ public class RangeTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldSetBeggingAndEndAtOnce() {
+		range.set(28.0, 42.0);
+		assertDoubleEquals(28.0, range.getBeginning());
+		assertDoubleEquals(42.0, range.getEnd());
+	}
+
+	@Test
 	public void shouldAssertNoIntersectionWithOtherRange() {
 		new Range(0.0, 1.0).assertNoIntersectionWith(new Range(1.0, 2.0));
 		new Range(-1.0, 0.0).assertNoIntersectionWith(new Range(0.0, 1.0));

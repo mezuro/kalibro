@@ -131,6 +131,11 @@ public class ReadingGroup extends AbstractEntity<ReadingGroup> {
 	}
 
 	@Override
+	public void exportTo(File file) {
+		super.exportTo(file);
+	}
+
+	@Override
 	public String toString() {
 		return name;
 	}
