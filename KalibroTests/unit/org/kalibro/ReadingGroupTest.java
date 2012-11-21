@@ -6,6 +6,7 @@ import java.awt.Color;
 import java.io.File;
 import java.util.SortedSet;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AbstractEntity.class, DaoFactory.class})
+@PrepareForTest({AbstractEntity.class, DaoFactory.class, FileUtils.class})
 public class ReadingGroupTest extends UnitTest {
 
 	private ReadingGroupDao dao;
@@ -40,6 +41,16 @@ public class ReadingGroupTest extends UnitTest {
 		mockStatic(AbstractEntity.class);
 		when(AbstractEntity.class, "importFrom", file, ReadingGroup.class).thenReturn(group);
 		assertSame(group, ReadingGroup.importFrom(file));
+	}
+
+	@Test
+	public void shouldExportToFile() throws Exception {
+		File file = mock(File.class);
+		mockStatic(FileUtils.class);
+
+		group.exportTo(file);
+		verifyStatic();
+		FileUtils.writeStringToFile(file, loadResource("ReadingGroup-scholar.yml"));
 	}
 
 	@Test
