@@ -36,7 +36,7 @@ public abstract class AbstractEntity<T extends Comparable<? super T>> implements
 		return Identifier.fromVariable(className).asText().toLowerCase();
 	}
 
-	public void exportTo(File file) {
+	protected void exportTo(File file) {
 		try {
 			FileUtils.writeStringToFile(file, print());
 		} catch (Exception exception) {

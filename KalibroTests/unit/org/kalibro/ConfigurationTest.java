@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.util.SortedSet;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AbstractEntity.class, DaoFactory.class, ScriptValidator.class})
+@PrepareForTest({AbstractEntity.class, DaoFactory.class, FileUtils.class, ScriptValidator.class})
 public class ConfigurationTest extends UnitTest {
 
 	private ConfigurationDao dao;
@@ -51,6 +52,16 @@ public class ConfigurationTest extends UnitTest {
 		mockStatic(AbstractEntity.class);
 		when(AbstractEntity.class, "importFrom", file, Configuration.class).thenReturn(configuration);
 		assertSame(configuration, Configuration.importFrom(file));
+	}
+
+	@Test
+	public void shouldExportToFile() throws Exception {
+		File file = mock(File.class);
+		mockStatic(FileUtils.class);
+
+		configuration.exportTo(file);
+		verifyStatic();
+		FileUtils.writeStringToFile(file, loadResource("Configuration-sc.yml"));
 	}
 
 	@Test
