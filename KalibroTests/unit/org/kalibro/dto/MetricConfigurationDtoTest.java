@@ -10,6 +10,7 @@ import org.kalibro.MetricConfiguration;
 import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.RangeDao;
 import org.kalibro.dao.ReadingGroupDao;
+import org.powermock.reflect.Whitebox;
 
 public class MetricConfigurationDtoTest extends AbstractDtoTest<MetricConfiguration> {
 
@@ -19,7 +20,9 @@ public class MetricConfigurationDtoTest extends AbstractDtoTest<MetricConfigurat
 	protected MetricConfiguration loadFixture() {
 		if (compound)
 			return new MetricConfiguration(loadFixture("sc", CompoundMetric.class));
-		return loadFixture("lcom4", MetricConfiguration.class);
+		MetricConfiguration configuration = loadFixture("lcom4", MetricConfiguration.class);
+		Whitebox.setInternalState(configuration, "id", new Random().nextLong());
+		return configuration;
 	}
 
 	@Override

@@ -12,6 +12,7 @@ import org.kalibro.dao.BaseToolDao;
 import org.kalibro.dao.DaoFactory;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
@@ -24,6 +25,7 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
 		when(baseToolDao.get("Inexistent")).thenReturn(loadFixture("inexistent", BaseTool.class));
+		Whitebox.setInternalState(entity, "id", (Long) null);
 	}
 
 	@Override
