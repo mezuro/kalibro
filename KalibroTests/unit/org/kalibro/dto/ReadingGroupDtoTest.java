@@ -2,15 +2,20 @@ package org.kalibro.dto;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Random;
+
 import org.junit.Test;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dao.ReadingDao;
+import org.powermock.reflect.Whitebox;
 
 public class ReadingGroupDtoTest extends AbstractDtoTest<ReadingGroup> {
 
 	@Override
 	protected ReadingGroup loadFixture() {
-		return loadFixture("scholar", ReadingGroup.class);
+		ReadingGroup group = loadFixture("scholar", ReadingGroup.class);
+		Whitebox.setInternalState(group, "id", new Random().nextLong());
+		return group;
 	}
 
 	@Override
