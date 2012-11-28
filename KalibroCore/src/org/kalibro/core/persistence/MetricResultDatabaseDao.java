@@ -39,14 +39,17 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
-		// FIXME module result id query
 		ModuleResult moduleResult = new ModuleResultDatabaseDao().get(moduleResultId);
 		List<String> moduleName = Arrays.asList(moduleResult.getModule().getName());
-		TypedQuery<Object[]> query = createQuery("SELECT proc.date, meResult FROM MetricResult meResult " +
-			"JOIN meResult.moduleResult moResult JOIN meResult.configuration meConf JOIN meConf.processing proc " +
-			"WHERE meConf.metricName = :metricName AND moResult.moduleName = :moduleName", Object[].class);
+		TypedQuery<Object[]> query = createQuery("SELECT processing.date, metricResult " +
+			"FROM MetricResult metricResult JOIN metricResult.moduleResult.processing processing " +
+			"WHERE metricResult.configuration.metricName = :metricName " +
+			"AND metricResult.moduleResult.moduleName = :moduleName AND processing.repository.id = " +
+			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :moduleResultId)",
+			Object[].class);
 		query.setParameter("metricName", metricName);
 		query.setParameter("moduleName", moduleName);
+		query.setParameter("moduleResultId", moduleResultId);
 		List<Object[]> results = query.getResultList();
 
 		SortedMap<Date, MetricResult> history = new TreeMap<Date, MetricResult>();
