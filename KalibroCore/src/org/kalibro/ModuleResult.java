@@ -78,4 +78,9 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	public String toString() {
 		return getModule().toString();
 	}
+
+	public SortedMap<Date, ModuleResult> history() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }
