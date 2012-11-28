@@ -1,8 +1,10 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
-import java.util.Random;
+import java.util.*;
+
+import javax.persistence.TypedQuery;
 
 import org.junit.Test;
 import org.kalibro.Granularity;
@@ -27,6 +29,26 @@ public class ModuleResultDatabaseDaoTest extends
 		verify(query).setParameter("parentId", ID);
 	}
 
+	@Test
+	public void shouldGetHistory() {
+		TypedQuery<Object[]> historyQuery = mock(TypedQuery.class);
+		doReturn(historyQuery).when(dao).createQuery("SELECT processing.date, result FROM ModuleResult result " +
+			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = "+
+			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :resultId)", Object[].class);
+		
+		long time = new Random().nextLong();
+		Date date = new Date(time);
+		List<Object[]> results = new ArrayList<Object[]>();
+		results.add(new Object[]{time, record});
+		when(historyQuery.getResultList()).thenReturn(results);
+
+		SortedMap<Date, ModuleResult> history = dao.historyOf(ID);
+		assertEquals(1, history.size());
+		assertDeepEquals(entity, history.get(date));
+		verify(historyQuery).setParameter("moduleName", entity.getModule().getName());
+		verify(historyQuery).setParameter("resultId", entity.getId());
+	}
+	
 	@Test
 	public void shouldSave() throws Exception {
 		dao.save(entity, ID);

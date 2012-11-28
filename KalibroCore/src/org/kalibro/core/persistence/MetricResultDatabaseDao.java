@@ -39,6 +39,7 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
+		// FIXME module result id query
 		ModuleResult moduleResult = new ModuleResultDatabaseDao().get(moduleResultId);
 		List<String> moduleName = Arrays.asList(moduleResult.getModule().getName());
 		TypedQuery<Object[]> query = createQuery("SELECT proc.date, meResult FROM MetricResult meResult " +

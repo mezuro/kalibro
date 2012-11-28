@@ -17,5 +17,5 @@ public interface ModuleResultDao {
 
 	SortedSet<ModuleResult> childrenOf(Long moduleResultId);
 
-	SortedMap<Date, ModuleResult> historyOf(Long id);
+	SortedMap<Date, ModuleResult> historyOf(Long moduleResultId);
 }
