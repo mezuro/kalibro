@@ -1,5 +1,7 @@
 package org.kalibro.client;
 
+import java.util.Date;
+import java.util.SortedMap;
 import java.util.SortedSet;
 
 import org.kalibro.ModuleResult;
@@ -26,5 +28,11 @@ class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> impleme
 	@Override
 	public SortedSet<ModuleResult> childrenOf(Long moduleResultId) {
 		return DataTransferObject.toSortedSet(port.childrenOf(moduleResultId));
+	}
+
+	@Override
+	public SortedMap<Date, ModuleResult> historyOf(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

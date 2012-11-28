@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.MetricResultDao;
+import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -65,6 +66,18 @@ public class ModuleResultTest extends UnitTest {
 		result.addChild(child);
 		assertDeepEquals(set(child), result.getChildren());
 		assertSame(result, child.getParent());
+	}
+	
+	@Test
+	public void shouldGetHistory() {
+		ModuleResultDao dao = mock(ModuleResultDao.class);
+		SortedMap<Date, ModuleResult> history = mock(SortedMap.class);
+
+		mockStatic(DaoFactory.class);
+		when(DaoFactory.getModuleResultDao()).thenReturn(dao);
+		when(dao.historyOf(result.getId())).thenReturn(history);
+
+		assertSame(history, result.history());
 	}
 
 	@Test

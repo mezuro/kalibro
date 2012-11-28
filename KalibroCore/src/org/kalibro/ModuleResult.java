@@ -69,6 +69,10 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		child.parent = this;
 		children.add(child);
 	}
+	
+	public SortedMap<Date, ModuleResult> history() {
+		return DaoFactory.getModuleResultDao().historyOf(id);
+	}
 
 	public SortedMap<Date, MetricResult> historyOf(Metric metric) {
 		return DaoFactory.getMetricResultDao().historyOf(metric.getName(), id);
@@ -77,10 +81,5 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 	@Override
 	public String toString() {
 		return getModule().toString();
-	}
-
-	public SortedMap<Date, ModuleResult> history() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 }

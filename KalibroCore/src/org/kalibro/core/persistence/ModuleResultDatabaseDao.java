@@ -1,6 +1,8 @@
 package org.kalibro.core.persistence;
 
 import java.util.Arrays;
+import java.util.Date;
+import java.util.SortedMap;
 import java.util.SortedSet;
 
 import javax.persistence.TypedQuery;
@@ -72,5 +74,11 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		if (module.getGranularity() == Granularity.SOFTWARE)
 			return Granularity.SOFTWARE.name();
 		return Arrays.asList(module.getName());
+	}
+
+	@Override
+	public SortedMap<Date, ModuleResult> historyOf(Long id) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
