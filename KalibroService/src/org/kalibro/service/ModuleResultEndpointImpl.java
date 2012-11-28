@@ -2,6 +2,7 @@ package org.kalibro.service;
 
 import java.util.List;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
@@ -9,6 +10,7 @@ import javax.jws.WebService;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ModuleResultDao;
 import org.kalibro.dto.DataTransferObject;
+import org.kalibro.service.xml.DateModuleResultXml;
 import org.kalibro.service.xml.ModuleResultXml;
 
 /**
@@ -39,5 +41,13 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 	@WebResult(name = "moduleResult")
 	public List<ModuleResultXml> childrenOf(@WebParam(name = "moduleResultId") Long moduleResultId) {
 		return DataTransferObject.createDtos(dao.childrenOf(moduleResultId), ModuleResultXml.class);
+	}
+
+	@Override
+	@WebMethod
+	@WebResult(name = "dateModuleResult")
+	public List<DateModuleResultXml> historyOf(@WebParam(name = "moduleResultId") Long moduleResultId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

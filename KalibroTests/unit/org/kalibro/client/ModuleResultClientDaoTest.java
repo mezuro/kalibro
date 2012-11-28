@@ -1,16 +1,19 @@
 package org.kalibro.client;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
-import java.util.Random;
+import java.util.*;
 
 import org.junit.Test;
 import org.kalibro.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;
+import org.kalibro.service.xml.DateMetricResultXml;
+import org.kalibro.service.xml.DateModuleResultXml;
 import org.kalibro.service.xml.ModuleResultXml;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
-@PrepareOnlyThisForTest(ModuleResultClientDao.class)
+@PrepareOnlyThisForTest({DateMetricResultXml.class, ModuleResultClientDao.class})
 public class ModuleResultClientDaoTest extends
 	ClientTest<ModuleResult, ModuleResultXml, ModuleResultEndpoint, ModuleResultClientDao> {
 
@@ -31,5 +34,19 @@ public class ModuleResultClientDaoTest extends
 	public void shouldGetChildren() {
 		when(port.childrenOf(ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.childrenOf(ID));
+	}
+	
+	@Test
+	public void shouldGetHistory() {
+		Date date = new Date(1);
+		List<DateModuleResultXml> history = new ArrayList<DateModuleResultXml>();
+		history.add(new DateModuleResultXml(date, entity));
+		when(xml.convert()).thenReturn(entity);
+		when(port.historyOf(ID)).thenReturn(history);
+
+		SortedMap<Date, ModuleResult> map = client.historyOf(ID);
+		assertEquals(1, map.size());
+		assertDeepEquals(set(date), map.keySet());
+		assertDeepEquals(entity, map.get(date));
 	}
 }
