@@ -161,6 +161,11 @@ public class Configuration extends AbstractEntity<Configuration> {
 	}
 
 	@Override
+	public void exportTo(File file) {
+		super.exportTo(file);
+	}
+
+	@Override
 	public String toString() {
 		return name;
 	}

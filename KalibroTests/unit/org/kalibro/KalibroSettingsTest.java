@@ -61,10 +61,10 @@ public class KalibroSettingsTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSaveSettingsToFile() {
-		doNothing().when(settings).exportTo(settingsFile);
+	public void shouldSaveSettingsToFile() throws Exception {
+		doNothing().when(settings, "exportTo", settingsFile);
 		settings.save();
-		verify(settings).exportTo(settingsFile);
+		verifyPrivate(settings).invoke("exportTo", settingsFile);
 	}
 
 	@Test
