@@ -20,6 +20,8 @@ public class ModuleResultDatabaseDaoTest extends
 	DatabaseDaoTestCase<ModuleResult, ModuleResultRecord, ModuleResultDatabaseDao> {
 
 	private static final Long ID = new Random().nextLong();
+	private static final Long TIME = new Random().nextLong();
+	private static final Date DATE = new Date(TIME);
 
 	@Test
 	public void shouldGetChildren() {
@@ -31,24 +33,32 @@ public class ModuleResultDatabaseDaoTest extends
 
 	@Test
 	public void shouldGetHistory() {
+		Module module = mockModule();
+
 		TypedQuery<Object[]> historyQuery = mock(TypedQuery.class);
 		doReturn(historyQuery).when(dao).createQuery("SELECT processing.date, result FROM ModuleResult result " +
-			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = "+
+			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = " +
 			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :resultId)", Object[].class);
-		
-		long time = new Random().nextLong();
-		Date date = new Date(time);
+
 		List<Object[]> results = new ArrayList<Object[]>();
-		results.add(new Object[]{time, record});
+		results.add(new Object[]{TIME, record});
 		when(historyQuery.getResultList()).thenReturn(results);
 
 		SortedMap<Date, ModuleResult> history = dao.historyOf(ID);
 		assertEquals(1, history.size());
-		assertDeepEquals(entity, history.get(date));
-		verify(historyQuery).setParameter("moduleName", entity.getModule().getName());
-		verify(historyQuery).setParameter("resultId", entity.getId());
+		assertDeepEquals(entity, history.get(DATE));
+		verify(historyQuery).setParameter("moduleName", list(module.getName()));
+		verify(historyQuery).setParameter("resultId", ID);
 	}
-	
+
+	private Module mockModule() {
+		dao = mock(ModuleResultDatabaseDao.class, Mockito.CALLS_REAL_METHODS);
+		Module module = new Module(Granularity.CLASS, "ModuleResultDatabaseDaoTest");
+		doReturn(entity).when(dao).get(ID);
+		when(entity.getModule()).thenReturn(module);
+		return module;
+	}
+
 	@Test
 	public void shouldSave() throws Exception {
 		dao.save(entity, ID);

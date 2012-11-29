@@ -47,7 +47,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 	@WebMethod
 	@WebResult(name = "dateModuleResult")
 	public List<DateModuleResultXml> historyOf(@WebParam(name = "moduleResultId") Long moduleResultId) {
-		// TODO Auto-generated method stub
+		// TODO Implement
 		return null;
 	}
 }

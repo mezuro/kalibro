@@ -3,6 +3,7 @@ package org.kalibro.core.persistence;
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.tests.UnitTest;
@@ -64,5 +65,11 @@ public class DatabaseDaoTestCase<E, R extends DataTransferObject<E>, DAO extends
 
 	private Class<DAO> daoClass() throws ClassNotFoundException {
 		return (Class<DAO>) Class.forName(getClass().getName().replace("Test", ""));
+	}
+
+	@Test
+	public void shouldGetRecordManager() {
+		verifyStatic();
+		DatabaseDaoFactory.createRecordManager();
 	}
 }

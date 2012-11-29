@@ -7,13 +7,11 @@ import java.util.*;
 import org.junit.Test;
 import org.kalibro.ModuleResult;
 import org.kalibro.service.ModuleResultEndpoint;
-import org.kalibro.service.xml.DateMetricResultXml;
 import org.kalibro.service.xml.DateModuleResultXml;
 import org.kalibro.service.xml.ModuleResultXml;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 
-@PrepareOnlyThisForTest({DateMetricResultXml.class, ModuleResultClientDao.class})
+@PrepareOnlyThisForTest({DateModuleResultXml.class, ModuleResultClientDao.class})
 public class ModuleResultClientDaoTest extends
 	ClientTest<ModuleResult, ModuleResultXml, ModuleResultEndpoint, ModuleResultClientDao> {
 
@@ -35,7 +33,7 @@ public class ModuleResultClientDaoTest extends
 		when(port.childrenOf(ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.childrenOf(ID));
 	}
-	
+
 	@Test
 	public void shouldGetHistory() {
 		Date date = new Date(1);

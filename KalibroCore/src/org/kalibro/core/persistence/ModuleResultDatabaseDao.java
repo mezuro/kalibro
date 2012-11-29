@@ -29,13 +29,12 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		query.setParameter("parentId", moduleResultId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
-	
+
 	@Override
 	public SortedMap<Date, ModuleResult> historyOf(Long moduleResultId) {
-		ModuleResult moduleResult = get(moduleResultId);
-		List<String> moduleName = Arrays.asList(moduleResult.getModule().getName());
+		List<String> moduleName = Arrays.asList(get(moduleResultId).getModule().getName());
 		TypedQuery<Object[]> query = createQuery("SELECT processing.date, result FROM ModuleResult result " +
-			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = "+
+			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = " +
 			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :resultId)", Object[].class);
 		query.setParameter("moduleName", moduleName);
 		query.setParameter("resultId", moduleResultId);
