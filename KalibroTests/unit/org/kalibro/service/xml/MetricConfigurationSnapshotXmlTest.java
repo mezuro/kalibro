@@ -13,6 +13,7 @@ public class MetricConfigurationSnapshotXmlTest extends XmlTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
+		Whitebox.setInternalState(entity, "id", (Long) null);
 		Whitebox.setInternalState(entity, "readingGroup", (ReadingGroup) null);
 	}
 

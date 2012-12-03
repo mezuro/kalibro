@@ -1,11 +1,15 @@
 package org.kalibro.service.xml;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Project;
+import org.kalibro.Repository;
 import org.kalibro.dto.ProjectDto;
 
 /**
@@ -49,5 +53,10 @@ public class ProjectXml extends ProjectDto {
 	@Override
 	public String description() {
 		return description;
+	}
+
+	@Override
+	public SortedSet<Repository> repositories() {
+		return id == null ? new TreeSet<Repository>() : super.repositories();
 	}
 }
