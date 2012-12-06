@@ -35,7 +35,6 @@ public class ProcessingRecord extends ProcessingDto {
 	@Column(name = "\"state\"", nullable = false)
 	private String state;
 
-	@CascadeOnDelete
 	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
