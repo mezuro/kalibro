@@ -44,7 +44,6 @@ public class ProcessingRecord extends ProcessingDto {
 	private Collection<ProcessTimeRecord> processTimes;
 
 	@OneToOne
-	@CascadeOnDelete
 	@JoinColumn(name = "\"results_root\"", referencedColumnName = "\"id\"")
 	private ModuleResultRecord resultsRoot;
 
