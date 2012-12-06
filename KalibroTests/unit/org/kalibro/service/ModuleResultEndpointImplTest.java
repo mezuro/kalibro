@@ -43,7 +43,7 @@ public class ModuleResultEndpointImplTest extends
 		map.put(date, result);
 
 		when(dao.historyOf(ID)).thenReturn(map);
-		List<DateModuleResultXml> history = implementor.historyOf(ID);
+		List<DateModuleResultXml> history = implementor.historyOfModule(ID);
 		assertEquals(1, history.size());
 		assertEquals(date, history.get(0).date());
 		assertDeepEquals(result, history.get(0).moduleResult());

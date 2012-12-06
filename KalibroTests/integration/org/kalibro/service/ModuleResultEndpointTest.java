@@ -50,7 +50,7 @@ public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleR
 		map.put(date, entity);
 
 		when(dao.historyOf(ID)).thenReturn(map);
-		List<DateModuleResultXml> history = port.historyOf(ID);
+		List<DateModuleResultXml> history = port.historyOfModule(ID);
 		assertEquals(1, history.size());
 		assertEquals(date, history.get(0).date());
 		assertDeepDtoEquals(Whitebox.getInternalState(history.get(0), ModuleResultXml.class));

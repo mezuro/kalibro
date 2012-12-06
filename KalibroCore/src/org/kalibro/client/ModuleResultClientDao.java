@@ -35,7 +35,7 @@ class ModuleResultClientDao extends EndpointClient<ModuleResultEndpoint> impleme
 	@Override
 	public SortedMap<Date, ModuleResult> historyOf(Long moduleResultId) {
 		SortedMap<Date, ModuleResult> history = new TreeMap<Date, ModuleResult>();
-		for (DateModuleResultXml dateResult : port.historyOf(moduleResultId))
+		for (DateModuleResultXml dateResult : port.historyOfModule(moduleResultId))
 			history.put(dateResult.date(), dateResult.moduleResult());
 		return history;
 	}

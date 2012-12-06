@@ -40,7 +40,7 @@ public class ModuleResultClientDaoTest extends
 		List<DateModuleResultXml> history = new ArrayList<DateModuleResultXml>();
 		history.add(new DateModuleResultXml(date, entity));
 		when(xml.convert()).thenReturn(entity);
-		when(port.historyOf(ID)).thenReturn(history);
+		when(port.historyOfModule(ID)).thenReturn(history);
 
 		SortedMap<Date, ModuleResult> map = client.historyOf(ID);
 		assertEquals(1, map.size());

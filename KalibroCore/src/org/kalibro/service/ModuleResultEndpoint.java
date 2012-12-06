@@ -29,5 +29,5 @@ public interface ModuleResultEndpoint {
 
 	@WebMethod
 	@WebResult(name = "dateModuleResult")
-	List<DateModuleResultXml> historyOf(@WebParam(name = "moduleResultId") Long moduleResultId);
+	List<DateModuleResultXml> historyOfModule(@WebParam(name = "moduleResultId") Long moduleResultId);
 }

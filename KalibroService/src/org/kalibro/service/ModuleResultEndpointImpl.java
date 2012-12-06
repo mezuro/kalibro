@@ -50,7 +50,7 @@ public class ModuleResultEndpointImpl implements ModuleResultEndpoint {
 	@Override
 	@WebMethod
 	@WebResult(name = "dateModuleResult")
-	public List<DateModuleResultXml> historyOf(@WebParam(name = "moduleResultId") Long moduleResultId) {
+	public List<DateModuleResultXml> historyOfModule(@WebParam(name = "moduleResultId") Long moduleResultId) {
 		SortedMap<Date, ModuleResult> history = dao.historyOf(moduleResultId);
 		List<DateModuleResultXml> dtos = new ArrayList<DateModuleResultXml>();
 		for (Date date : history.keySet())
