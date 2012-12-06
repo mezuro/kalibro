@@ -14,7 +14,7 @@ public class RepositoryFile {
 
 	@Column(name = "file_name")
 	private String filename;
-	
+
 	@OneToMany(mappedBy = "file")
 	private List<FileLink> fileLinks;
 

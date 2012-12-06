@@ -54,7 +54,7 @@ public class CVSAnalyDatabaseFetcherTest extends UnitTest {
 		Query mockQuery = Mockito.mock(Query.class);
 
 		PowerMockito.mockStatic(Persistence.class);
-		PowerMockito.when(Persistence.createEntityManagerFactory(eq("cvsanaly"), any(Map.class)))
+		PowerMockito.when(Persistence.createEntityManagerFactory(eq("CVSAnalY"), any(Map.class)))
 			.thenReturn(managerFactory);
 
 		Mockito.when(managerFactory.createEntityManager()).thenReturn(mockManager);

@@ -8,12 +8,10 @@ import javax.persistence.*;
 @Table(name = "metrics")
 @NamedQuery(
 	name = "getLastMetricResults",
-	query = "SELECT NEW org.cvsanaly.entities.MetricResult(metric, links) FROM MetricResult metric, " +
-			"IN(metric.file.fileLinks) links WHERE " +
-			"metric.commit.date = " +
-			"(SELECT max(metric2.commit.date) FROM MetricResult metric2 WHERE metric.file.id = metric2.file.id) AND " +
-			"(links.commit.date = " +
-			"(SELECT max(links2.commit.date) FROM FileLink links2 WHERE links2.file.id = metric.file.id))")
+	query = "SELECT NEW org.cvsanaly.entities.MetricResult(metric, links) " +
+		"FROM MetricResult metric JOIN metric.file.fileLinks links " +
+		"WHERE metric.commit.date = (SELECT max(m.commit.date) FROM MetricResult m WHERE m.file.id = metric.file.id) " +
+		"AND links.commit.date = (SELECT max(l.commit.date) FROM FileLink l WHERE l.file.id = metric.file.id)")
 public class MetricResult {
 
 	@Id
@@ -28,34 +26,40 @@ public class MetricResult {
 
 	@Column(name = "sloc")
 	private double numberOfSourceLinesOfCode;
+
 	@Column(name = "loc")
 	private double numberOfLinesOfCode;
+
 	@Column(name = "ncomment")
 	private double numberOfComments;
+
 	@Column(name = "lcomment")
 	private double numberOfCommentedLines;
+
 	@Column(name = "lblank")
 	private double numberOfBlankLines;
+
 	@Column(name = "nfunctions")
 	private double numberOfFunctions;
+
 	@Column(name = "mccabe_max")
 	private double maximumCyclomaticComplexity;
+
 	@Column(name = "mccabe_mean")
 	private double averageCyclomaticComplexity;
+
 	@Column(name = "halstead_vol")
 	private double halsteadVolume;
-	
+
 	@Transient
 	private String filePath;
-	
-	public MetricResult() {	}
-	
+
+	public MetricResult() {}
+
 	public MetricResult(MetricResult metricResult, FileLink fileLink) throws IllegalAccessException {
-		for (Field field : getClass().getDeclaredFields()) {
-			if (field.getAnnotations().length == 0)
-				continue;
-			field.set(this, field.get(metricResult));
-		}
+		for (Field field : getClass().getDeclaredFields())
+			if (field.getAnnotations().length > 0)
+				field.set(this, field.get(metricResult));
 		this.filePath = fileLink.getFilePath();
 	}
 
@@ -162,5 +166,4 @@ public class MetricResult {
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
-
 }

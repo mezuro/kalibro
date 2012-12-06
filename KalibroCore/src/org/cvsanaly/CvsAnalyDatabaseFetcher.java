@@ -22,7 +22,7 @@ public class CvsAnalyDatabaseFetcher {
 	}
 
 	public List<MetricResult> getMetricResults() {
-		EntityManagerFactory factory = Persistence.createEntityManagerFactory("cvsanaly", getPersistenceProperties());
+		EntityManagerFactory factory = Persistence.createEntityManagerFactory("CVSAnalY", getPersistenceProperties());
 		final EntityManager entityManager = factory.createEntityManager();
 
 		List<MetricResult> result = entityManager.createNamedQuery("getLastMetricResults").getResultList();
@@ -38,5 +38,4 @@ public class CvsAnalyDatabaseFetcher {
 		persistenceProperties.put(JDBC_URL, "jdbc:sqlite:" + databasePath.getAbsolutePath());
 		return persistenceProperties;
 	}
-
 }

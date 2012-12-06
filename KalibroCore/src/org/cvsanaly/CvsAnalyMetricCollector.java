@@ -37,7 +37,6 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 	public void collectMetrics(
 		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
 		File tempFile = File.createTempFile("kalibro-cvsanaly-db", ".sqlite");
-		Set<NativeModuleResult> result;
 		try {
 			CommandTask executor = new CommandTask(CVSANALY2_COMMAND_LINE + tempFile.getAbsolutePath(), codeDirectory);
 			executor.execute();
@@ -45,29 +44,23 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 			CvsAnalyDatabaseFetcher databaseFetcher = new CvsAnalyDatabaseFetcher(tempFile);
 			List<MetricResult> entities = databaseFetcher.getMetricResults();
 
-			result = convertEntityToNativeModuleResult(entities, wantedMetrics);
+			convertEntityToNativeModuleResult(entities, wantedMetrics, resultWriter);
 		} finally {
 			tempFile.delete();
 		}
-		for (NativeModuleResult each : result)
-			resultWriter.write(each);
 		resultWriter.close();
 	}
 
-	private Set<NativeModuleResult> convertEntityToNativeModuleResult(List<MetricResult> entities,
-		Set<NativeMetric> wantedMetrics) {
-
-		Set<NativeModuleResult> result = new HashSet<NativeModuleResult>();
-
+	private void convertEntityToNativeModuleResult(List<MetricResult> entities,
+		Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) {
 		for (MetricResult metric : entities) {
 			String filename = metric.getFilePath();
 			Module module = new Module(Granularity.CLASS, filename.split(Pattern.quote(File.separator)));
 			NativeModuleResult nativeModuleResult = new NativeModuleResult(module);
 			extractMetrics(metric, nativeModuleResult, wantedMetrics);
 
-			result.add(nativeModuleResult);
+			resultWriter.write(nativeModuleResult);
 		}
-		return result;
 	}
 
 	private void extractMetrics(MetricResult entity, NativeModuleResult nativeModuleResult,
