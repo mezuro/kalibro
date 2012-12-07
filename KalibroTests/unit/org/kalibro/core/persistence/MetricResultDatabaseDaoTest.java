@@ -49,9 +49,12 @@ public class MetricResultDatabaseDaoTest extends
 	public void shouldGetMetricResultHistory() throws Exception {
 		mockModuleResult("org");
 		TypedQuery<Object[]> historyQuery = mock(TypedQuery.class);
-		doReturn(historyQuery).when(dao).createQuery("SELECT proc.date, meResult FROM MetricResult meResult " +
-			"JOIN meResult.moduleResult moResult JOIN meResult.configuration meConf JOIN meConf.processing proc " +
-			"WHERE meConf.metricName = :metricName AND moResult.moduleName = :moduleName", Object[].class);
+		doReturn(historyQuery).when(dao).createQuery("SELECT processing.date, metricResult " +
+			"FROM MetricResult metricResult JOIN metricResult.moduleResult.processing processing " +
+			"WHERE metricResult.configuration.metricName = :metricName " +
+			"AND metricResult.moduleResult.moduleName = :moduleName AND processing.repository.id = " +
+			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :moduleResultId)",
+			Object[].class);
 		List<Object[]> results = new ArrayList<Object[]>();
 		results.add(new Object[]{TIME, record});
 		when(historyQuery.getResultList()).thenReturn(results);
@@ -61,6 +64,7 @@ public class MetricResultDatabaseDaoTest extends
 		assertDeepEquals(entity, history.get(DATE));
 		verify(historyQuery).setParameter("metricName", METRIC_NAME);
 		verify(historyQuery).setParameter("moduleName", list("org"));
+		verify(historyQuery).setParameter("moduleResultId", ID);
 	}
 
 	private void mockModuleResult(String moduleName) throws Exception {

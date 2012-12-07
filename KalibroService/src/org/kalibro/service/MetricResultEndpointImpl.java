@@ -48,7 +48,7 @@ public class MetricResultEndpointImpl implements MetricResultEndpoint {
 
 	@Override
 	@WebResult(name = "dateMetricResult")
-	public List<DateMetricResultXml> historyOf(
+	public List<DateMetricResultXml> historyOfMetric(
 		@WebParam(name = "metricName") String metricName,
 		@WebParam(name = "moduleResultId") Long moduleResultId) {
 		SortedMap<Date, MetricResult> history = dao.historyOf(metricName, moduleResultId);

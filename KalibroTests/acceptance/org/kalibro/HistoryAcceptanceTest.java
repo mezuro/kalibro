@@ -65,6 +65,19 @@ public class HistoryAcceptanceTest extends AcceptanceTest {
 		assertDoubleEquals(0.0, history.get(third.getDate()).getAggregatedValue());
 	}
 
+	@Theory
+	public void shouldRetrieveModuleResultHistory(SupportedDatabase databaseType) throws Exception {
+		prepareProcessings(databaseType);
+		assertEquals(ProcessState.READY, third.getState());
+
+		ModuleResult root = third.getResultsRoot();
+		SortedMap<Date, ModuleResult> history = root.history();
+		assertDeepEquals(set(first.getDate(), second.getDate(), third.getDate()), history.keySet());
+		assertDoubleEquals(10.0, history.get(first.getDate()).getGrade());
+		assertDoubleEquals(10.0, history.get(second.getDate()).getGrade());
+		assertDoubleEquals(10.0, history.get(third.getDate()).getGrade());		
+	}
+	
 	private void prepareProcessings(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.process();

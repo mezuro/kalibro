@@ -5,21 +5,27 @@
 						http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
 	<persistence-unit name="Kalibro" transaction-type="RESOURCE_LOCAL">
-		<class>org.kalibro.core.persistence.record.ConfigurationRecord</class>
-		<class>org.kalibro.core.persistence.record.DescendantResultRecord</class>
-		<class>org.kalibro.core.persistence.record.MetricConfigurationRecord</class>
-		<class>org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord</class>
-		<class>org.kalibro.core.persistence.record.MetricResultRecord</class>
-		<class>org.kalibro.core.persistence.record.ModuleResultRecord</class>
-		<class>org.kalibro.core.persistence.record.ProcessingRecord</class>
-		<class>org.kalibro.core.persistence.record.ProcessTimeRecord</class>
-		<class>org.kalibro.core.persistence.record.ProjectRecord</class>
-		<class>org.kalibro.core.persistence.record.RangeRecord</class>
-		<class>org.kalibro.core.persistence.record.RangeSnapshotRecord</class>
 		<class>org.kalibro.core.persistence.record.ReadingGroupRecord</class>
 		<class>org.kalibro.core.persistence.record.ReadingRecord</class>
+	
+		<class>org.kalibro.core.persistence.record.ConfigurationRecord</class>
+		<class>org.kalibro.core.persistence.record.MetricConfigurationRecord</class>
+		<class>org.kalibro.core.persistence.record.RangeRecord</class>
+
+		<class>org.kalibro.core.persistence.record.ProjectRecord</class>
 		<class>org.kalibro.core.persistence.record.RepositoryRecord</class>
-		<class>org.kalibro.core.persistence.record.StackTraceElementRecord</class>
+
 		<class>org.kalibro.core.persistence.record.ThrowableRecord</class>
+		<class>org.kalibro.core.persistence.record.StackTraceElementRecord</class>
+
+		<class>org.kalibro.core.persistence.record.ProcessingRecord</class>
+		<class>org.kalibro.core.persistence.record.ProcessTimeRecord</class>
+		
+		<class>org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord</class>
+		<class>org.kalibro.core.persistence.record.RangeSnapshotRecord</class>
+		
+		<class>org.kalibro.core.persistence.record.ModuleResultRecord</class>
+		<class>org.kalibro.core.persistence.record.MetricResultRecord</class>
+		<class>org.kalibro.core.persistence.record.DescendantResultRecord</class>
 	</persistence-unit>
 </persistence>

@@ -8,6 +8,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.ModuleResultDao;
+import org.kalibro.service.xml.DateModuleResultXml;
 import org.kalibro.service.xml.ModuleResultXml;
 
 /**
@@ -25,4 +26,8 @@ public interface ModuleResultEndpoint {
 	@WebMethod
 	@WebResult(name = "moduleResult")
 	List<ModuleResultXml> childrenOf(@WebParam(name = "moduleResultId") Long moduleResultId);
+
+	@WebMethod
+	@WebResult(name = "dateModuleResult")
+	List<DateModuleResultXml> historyOfModule(@WebParam(name = "moduleResultId") Long moduleResultId);
 }
