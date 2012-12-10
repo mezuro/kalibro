@@ -42,7 +42,7 @@ public class MetricResultClientDaoTest extends
 		List<DateMetricResultXml> history = new ArrayList<DateMetricResultXml>();
 		history.add(new DateMetricResultXml(date, entity));
 		when(xml.convert()).thenReturn(entity);
-		when(port.historyOf(METRIC_NAME, ID)).thenReturn(history);
+		when(port.historyOfMetric(METRIC_NAME, ID)).thenReturn(history);
 
 		SortedMap<Date, MetricResult> map = client.historyOf(METRIC_NAME, ID);
 		assertEquals(1, map.size());

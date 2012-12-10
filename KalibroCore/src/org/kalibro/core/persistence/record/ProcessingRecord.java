@@ -44,9 +44,13 @@ public class ProcessingRecord extends ProcessingDto {
 	private Collection<ProcessTimeRecord> processTimes;
 
 	@OneToOne
-	@CascadeOnDelete
 	@JoinColumn(name = "\"results_root\"", referencedColumnName = "\"id\"")
 	private ModuleResultRecord resultsRoot;
+
+	@CascadeOnDelete
+	@SuppressWarnings("unused" /* used by JPA */)
+	@OneToMany(mappedBy = "processing", orphanRemoval = true)
+	private Collection<MetricConfigurationSnapshotRecord> configurations;
 
 	public ProcessingRecord() {
 		super();
