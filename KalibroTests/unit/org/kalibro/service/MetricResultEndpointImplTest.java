@@ -43,7 +43,7 @@ public class MetricResultEndpointImplTest extends
 		map.put(date, result);
 
 		when(dao.historyOf(METRIC_NAME, ID)).thenReturn(map);
-		List<DateMetricResultXml> history = implementor.historyOf(METRIC_NAME, ID);
+		List<DateMetricResultXml> history = implementor.historyOfMetric(METRIC_NAME, ID);
 		assertEquals(1, history.size());
 		assertEquals(date, history.get(0).date());
 		assertDeepEquals(result, history.get(0).metricResult());

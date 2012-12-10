@@ -29,7 +29,7 @@ public interface MetricResultEndpoint {
 
 	@WebMethod
 	@WebResult(name = "dateMetricResult")
-	List<DateMetricResultXml> historyOf(
+	List<DateMetricResultXml> historyOfMetric(
 		@WebParam(name = "metricName") String metricName,
 		@WebParam(name = "moduleResultId") Long moduleResultId);
 }

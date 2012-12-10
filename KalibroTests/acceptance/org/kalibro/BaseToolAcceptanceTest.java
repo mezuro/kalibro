@@ -2,6 +2,7 @@ package org.kalibro;
 
 import org.analizo.AnalizoMetricCollector;
 import org.checkstyle.CheckstyleMetricCollector;
+import org.cvsanaly.CvsAnalyMetricCollector;
 import org.junit.Test;
 import org.kalibro.tests.AcceptanceTest;
 
@@ -9,13 +10,14 @@ public class BaseToolAcceptanceTest extends AcceptanceTest {
 
 	@Test
 	public void shouldGetBaseToolNames() {
-		assertDeepEquals(set("Analizo", "Checkstyle"), BaseTool.allNames());
+		assertDeepEquals(set("Analizo", "Checkstyle", "CVSAnalY"), BaseTool.allNames());
 	}
 
 	@Test
 	public void shouldGetByName() {
 		shouldGetBaseTool("Analizo", AnalizoMetricCollector.class);
 		shouldGetBaseTool("Checkstyle", CheckstyleMetricCollector.class);
+		shouldGetBaseTool("CVSAnalY", CvsAnalyMetricCollector.class);
 	}
 
 	private void shouldGetBaseTool(String baseToolName, Class<? extends MetricCollector> collectorClass) {

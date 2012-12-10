@@ -1,10 +1,14 @@
 package org.kalibro.service.xml;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kalibro.Reading;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
@@ -49,5 +53,10 @@ public class ReadingGroupXml extends ReadingGroupDto {
 	@Override
 	public String description() {
 		return description;
+	}
+
+	@Override
+	public SortedSet<Reading> readings() {
+		return id == null ? new TreeSet<Reading>() : super.readings();
 	}
 }

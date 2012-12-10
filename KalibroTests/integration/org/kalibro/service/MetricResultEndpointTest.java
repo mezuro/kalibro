@@ -54,7 +54,7 @@ public class MetricResultEndpointTest extends EndpointTest<MetricResult, MetricR
 		map.put(date, entity);
 
 		when(dao.historyOf(METRIC_NAME, ID)).thenReturn(map);
-		List<DateMetricResultXml> history = port.historyOf(METRIC_NAME, ID);
+		List<DateMetricResultXml> history = port.historyOfMetric(METRIC_NAME, ID);
 		assertEquals(1, history.size());
 		assertEquals(date, history.get(0).date());
 		assertDeepDtoEquals(Whitebox.getInternalState(history.get(0), MetricResultXml.class));
