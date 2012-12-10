@@ -12,7 +12,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DatabaseDaoFactory.class)
-public class DatabaseDaoTestCase<E, R extends DataTransferObject<E>, DAO extends DatabaseDao<E, R>> extends UnitTest {
+public abstract class DatabaseDaoTestCase<E, R extends DataTransferObject<E>, DAO extends DatabaseDao<E, R>> extends
+	UnitTest {
 
 	protected E entity;
 	protected R record;
