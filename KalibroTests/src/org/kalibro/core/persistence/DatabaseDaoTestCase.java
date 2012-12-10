@@ -3,6 +3,7 @@ package org.kalibro.core.persistence;
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.tests.UnitTest;
@@ -11,7 +12,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DatabaseDaoFactory.class)
-public class DatabaseDaoTestCase<E, R extends DataTransferObject<E>, DAO extends DatabaseDao<E, R>> extends UnitTest {
+public abstract class DatabaseDaoTestCase<E, R extends DataTransferObject<E>, DAO extends DatabaseDao<E, R>> extends
+	UnitTest {
 
 	protected E entity;
 	protected R record;
@@ -64,5 +66,11 @@ public class DatabaseDaoTestCase<E, R extends DataTransferObject<E>, DAO extends
 
 	private Class<DAO> daoClass() throws ClassNotFoundException {
 		return (Class<DAO>) Class.forName(getClass().getName().replace("Test", ""));
+	}
+
+	@Test
+	public void shouldGetRecordManager() {
+		verifyStatic();
+		DatabaseDaoFactory.createRecordManager();
 	}
 }

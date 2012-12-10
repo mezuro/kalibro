@@ -67,7 +67,6 @@ public abstract class RecordTest extends ConcreteDtoTest {
 
 	protected OneToOneMatcher assertOneToOne(String field, Class<?> type) {
 		assertFieldType(field, type);
-		annotation(field, CascadeOnDelete.class);
 		return new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).isOptional().isEager();
 	}
 

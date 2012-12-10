@@ -1,0 +1,3 @@
+!!org.cvsanaly.CvsAnalyMetric
+name: "Number of Functions"
+column: "nfunctions"
