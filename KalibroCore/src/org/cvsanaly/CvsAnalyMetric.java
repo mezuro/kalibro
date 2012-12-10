@@ -1,38 +1,56 @@
 package org.cvsanaly;
 
-import org.cvsanaly.entities.MetricResult;
+import static org.kalibro.Language.*;
+
+import java.io.InputStream;
+import java.util.HashSet;
+import java.util.Set;
+
 import org.kalibro.Granularity;
-import org.kalibro.Language;
 import org.kalibro.NativeMetric;
-import org.kalibro.core.Identifier;
-import org.kalibro.core.reflection.FieldReflector;
+import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.introspector.BeanAccess;
 
-public enum CvsAnalyMetric {
+/**
+ * A metric collected by CVSAnalY. Extends {@link NativeMetric} adding query column to retrieve metric values.
+ * 
+ * @author Carlos Morais
+ * @author Eduardo Morais
+ */
+final class CvsAnalyMetric extends NativeMetric {
 
-	NUMBER_OF_SOURCE_LINES_OF_CODE,
-	NUMBER_OF_LINES_OF_CODE,
-	NUMBER_OF_COMMENTS,
-	NUMBER_OF_COMMENTED_LINES,
-	NUMBER_OF_BLANK_LINES,
-	NUMBER_OF_FUNCTIONS,
-	MAXIMUM_CYCLOMATIC_COMPLEXITY,
-	AVERAGE_CYCLOMATIC_COMPLEXITY,
-	HALSTEAD_VOLUME;
+	private static Set<CvsAnalyMetric> metrics;
 
-	@Override
-	public String toString() {
-		return Identifier.fromConstant(name()).asText();
+	static {
+		initializeMetrics();
 	}
 
-	public double getMetricValue(MetricResult metricResult) {
-		FieldReflector fieldReflector = new FieldReflector(metricResult);
-		String fieldName = Identifier.fromConstant(name()).asVariable();
-		return (Double) fieldReflector.get(fieldName);
+	static Set<NativeMetric> supportedMetrics() {
+		return new HashSet<NativeMetric>(metrics);
 	}
 
-	protected NativeMetric getNativeMetric() {
-		NativeMetric nativeMetric = new NativeMetric(toString(), Granularity.CLASS,
-			Language.C, Language.CPP, Language.JAVA, Language.PYTHON);
-		return nativeMetric;
+	static Set<CvsAnalyMetric> selectMetrics(Set<NativeMetric> wantedMetrics) {
+		Set<CvsAnalyMetric> selectedMetrics = new HashSet<CvsAnalyMetric>(metrics);
+		selectedMetrics.retainAll(wantedMetrics);
+		return selectedMetrics;
+	}
+
+	private static void initializeMetrics() {
+		metrics = new HashSet<CvsAnalyMetric>();
+		Yaml yaml = new Yaml();
+		yaml.setBeanAccess(BeanAccess.FIELD);
+		InputStream metricsStream = CvsAnalyMetric.class.getResourceAsStream("supported-metrics.yml");
+		for (Object object : yaml.loadAll(metricsStream))
+			metrics.add((CvsAnalyMetric) object);
+	}
+
+	private String column;
+
+	private CvsAnalyMetric() {
+		super("", Granularity.CLASS, C, CPP, JAVA, PYTHON);
+	}
+
+	String getColumn() {
+		return column;
 	}
 }

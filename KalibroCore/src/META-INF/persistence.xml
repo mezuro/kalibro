@@ -22,11 +22,4 @@
 		<class>org.kalibro.core.persistence.record.StackTraceElementRecord</class>
 		<class>org.kalibro.core.persistence.record.ThrowableRecord</class>
 	</persistence-unit>
-	
-	<persistence-unit name="CVSAnalY" transaction-type="RESOURCE_LOCAL">
-		<class>org.cvsanaly.entities.Commit</class>
-		<class>org.cvsanaly.entities.FileLink</class>
-		<class>org.cvsanaly.entities.MetricResult</class>
-		<class>org.cvsanaly.entities.RepositoryFile</class>
-	</persistence-unit>
 </persistence>

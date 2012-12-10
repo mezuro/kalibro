@@ -1,0 +1,36 @@
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Average Cyclomatic Complexity"
+column: "mccabe_mean"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Blank Lines"
+column: "lblank"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Halstead Volume"
+column: "halstead_vol"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Lines of Code"
+column: "loc"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Maximum Cyclomatic Complexity"
+column: "mccabe_max"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Number of Commented Lines"
+column: "lcomment"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Number of Comments"
+column: "ncomment"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Number of Functions"
+column: "nfunctions"
+---
+!!org.cvsanaly.CvsAnalyMetric
+name: "Source Lines of Code"
+column: "sloc"
