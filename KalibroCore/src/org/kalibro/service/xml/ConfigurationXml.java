@@ -1,11 +1,15 @@
 package org.kalibro.service.xml;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Configuration;
+import org.kalibro.MetricConfiguration;
 import org.kalibro.dto.ConfigurationDto;
 
 /**
@@ -49,5 +53,10 @@ public class ConfigurationXml extends ConfigurationDto {
 	@Override
 	public String description() {
 		return description;
+	}
+
+	@Override
+	public SortedSet<MetricConfiguration> metricConfigurations() {
+		return id == null ? new TreeSet<MetricConfiguration>() : super.metricConfigurations();
 	}
 }

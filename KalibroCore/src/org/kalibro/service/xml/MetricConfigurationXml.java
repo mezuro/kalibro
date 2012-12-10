@@ -1,5 +1,8 @@
 package org.kalibro.service.xml;
 
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -7,6 +10,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.Metric;
 import org.kalibro.MetricConfiguration;
+import org.kalibro.Range;
 import org.kalibro.Statistic;
 import org.kalibro.dto.MetricConfigurationDto;
 
@@ -88,5 +92,10 @@ public class MetricConfigurationXml extends MetricConfigurationDto {
 	@Override
 	public Long readingGroupId() {
 		return readingGroupId;
+	}
+
+	@Override
+	public SortedSet<Range> ranges() {
+		return id == null ? new TreeSet<Range>() : super.ranges();
 	}
 }

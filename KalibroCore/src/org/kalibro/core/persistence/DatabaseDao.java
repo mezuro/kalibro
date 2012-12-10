@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
+import org.kalibro.KalibroException;
 import org.kalibro.core.Identifier;
 import org.kalibro.dto.DataTransferObject;
 
@@ -36,7 +37,10 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	public ENTITY get(Long recordId) {
-		return recordManager.getById(recordId, recordClass).convert();
+		RECORD record = recordManager.getById(recordId, recordClass);
+		if (record == null)
+			throw new KalibroException(entityName() + " " + recordId + " not found.");
+		return record.convert();
 	}
 
 	public SortedSet<ENTITY> all() {

@@ -1,0 +1,24 @@
+?
+  !!org.kalibro.Module [CLASS, ["aaa", "bbb", "ByeWorld.java"]]
+:
+  "Average Cyclomatic Complexity": "0"
+  "Blank Lines": "0"
+  "Halstead Volume": "0"
+  "Lines of Code": "8"
+  "Maximum Cyclomatic Complexity": "0"
+  "Number of Commented Lines": "0"
+  "Number of Comments": "0"
+  "Number of Functions": "0"
+  "Source Lines of Code": "6"
+?
+  !!org.kalibro.Module [CLASS, ["aaa", "bbb", "HelloWorld.java"]]
+:
+  "Average Cyclomatic Complexity": "0"
+  "Blank Lines": "0"
+  "Halstead Volume": "0"
+  "Lines of Code": "13"
+  "Maximum Cyclomatic Complexity": "0"
+  "Number of Commented Lines": "0"
+  "Number of Comments": "0"
+  "Number of Functions": "0"
+  "Source Lines of Code": "10"

@@ -11,6 +11,7 @@ import javax.persistence.TypedQuery;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.PersonDatabaseDao.Person;
 import org.kalibro.core.persistence.PersonDatabaseDao.PersonRecord;
 import org.kalibro.tests.UnitTest;
@@ -74,6 +75,18 @@ public class DatabaseDaoTest extends UnitTest {
 	public void shouldGetById() {
 		when(recordManager.getById(ID, PersonRecord.class)).thenReturn(record);
 		assertSame(person, dao.get(ID));
+	}
+
+	@Test
+	public void shouldThowExceptionWhenGettingWithInvalidId() {
+		when(recordManager.getById(ID, PersonRecord.class)).thenReturn(null);
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				dao.get(ID);
+			}
+		}).throwsException().withMessage("Person " + ID + " not found.");
 	}
 
 	@Test

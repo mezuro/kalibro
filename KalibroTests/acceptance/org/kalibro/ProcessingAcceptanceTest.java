@@ -142,4 +142,19 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		assertTrue(moduleResult.getResultFor(sc).hasError());
 		assertEquals("Error evaluating Javascript for: sc", moduleResult.getResultFor(sc).getError().getMessage());
 	}
+
+	@Theory
+	public void deleteRepositoryShouldCascadeToProcessings(SupportedDatabase databaseType) throws Exception {
+		resetDatabase(databaseType);
+		repository.setAddress("/invalid/address/");
+
+		assertFalse(Processing.hasProcessing(repository));
+		repository.process();
+		Thread.sleep(SLEEP / 4);
+		assertTrue(Processing.hasProcessing(repository));
+
+		repository.delete();
+		new Project().addRepository(repository);
+		assertFalse(Processing.hasProcessing(repository));
+	}
 }

@@ -32,7 +32,7 @@ class MetricResultClientDao extends EndpointClient<MetricResultEndpoint> impleme
 	@Override
 	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
 		SortedMap<Date, MetricResult> history = new TreeMap<Date, MetricResult>();
-		for (DateMetricResultXml dateResult : port.historyOf(metricName, moduleResultId))
+		for (DateMetricResultXml dateResult : port.historyOfMetric(metricName, moduleResultId))
 			history.put(dateResult.date(), dateResult.metricResult());
 		return history;
 	}
