@@ -1,14 +1,3 @@
-FROM metrics, file_links
-  JOIN scmlog as link_commit ON link_commit.id = file_links.commit_id
-  JOIN scmlog as metric_commit ON metric_commit.id = metrics.commit_id
-WHERE metrics.file_id = file_links.file_id
-  AND metric_commit.date = (
-    SELECT max(m_commit.date)
-    FROM metrics as m
-    JOIN scmlog as m_commit ON m_commit.id = m.commit_id
-    WHERE m.file_id = metrics.file_id)
-  AND link_commit.date = (
-    SELECT max(l_commit.date)
-    FROM file_links as l
-    JOIN scmlog as l_commit ON l_commit.id = l.commit_id
-    WHERE l.file_id = file_links.file_id)
+FROM metrics JOIN file_links ON file_links.file_id = metrics.file_id
+WHERE metrics.commit_id = (SELECT max(m.commit_id) FROM metrics as m WHERE m.file_id = metrics.file_id)
+  AND file_links.commit_id = (SELECT max(l.commit_id) FROM file_links as l WHERE l.file_id = file_links.file_id)
