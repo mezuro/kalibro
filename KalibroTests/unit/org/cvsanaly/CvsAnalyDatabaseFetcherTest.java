@@ -26,24 +26,18 @@ public class CvsAnalyDatabaseFetcherTest extends UnitTest {
 	private static final String PATH = "/cvs/analy/database/fetcher/test";
 	private static final Double RESULT = new Random().nextDouble();
 
-	private File databaseFile;
 	private Writer<NativeModuleResult> resultWriter;
+	private File databaseFile;
 
 	private Connection connection;
 	private Statement statement;
 	private ResultSet resultSet;
 
-	private CvsAnalyDatabaseFetcher fetcher;
-
 	@Before
 	public void setUp() throws SQLException {
-		databaseFile = mock(File.class);
 		resultWriter = mock(Writer.class);
-		mockFields();
-		fetcher = new CvsAnalyDatabaseFetcher();
-	}
+		databaseFile = mock(File.class);
 
-	private void mockFields() throws SQLException {
 		connection = mock(Connection.class);
 		statement = mock(Statement.class);
 		resultSet = mock(ResultSet.class);
@@ -119,7 +113,7 @@ public class CvsAnalyDatabaseFetcherTest extends UnitTest {
 	}
 
 	private void queryMetrics(Set<NativeMetric> wantedMetrics) throws Exception {
-		fetcher.queryMetrics(databaseFile, wantedMetrics, resultWriter);
+		new CvsAnalyDatabaseFetcher(wantedMetrics).queryMetrics(databaseFile, resultWriter);
 	}
 
 	private static class NextAnswer implements Answer<Boolean> {
