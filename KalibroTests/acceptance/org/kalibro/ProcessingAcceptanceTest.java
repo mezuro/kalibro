@@ -41,13 +41,13 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		resetDatabase(databaseType);
 		assertFalse(Processing.hasProcessing(repository));
 
-		long processingTime = System.currentTimeMillis();
+		long start = System.currentTimeMillis();
 		repository.process();
 		verifyProcessOngoing();
 
 		Thread.sleep(SLEEP);
 
-		verifyProcessDone(processingTime);
+		verifyProcessDone(start);
 		verifyResults();
 	}
 
@@ -57,9 +57,9 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		assertTrue(Processing.lastProcessingState(repository).isTemporary());
 	}
 
-	private void verifyProcessDone(long processingTime) {
+	private void verifyProcessDone(long start) {
 		processing = Processing.lastProcessing(repository);
-		assertEquals(processingTime, processing.getDate().getTime(), 500);
+		assertSorted(start, processing.getDate().getTime(), System.currentTimeMillis());
 		assertEquals(READY, processing.getState());
 		verifyStateTime(LOADING);
 		verifyStateTime(COLLECTING);

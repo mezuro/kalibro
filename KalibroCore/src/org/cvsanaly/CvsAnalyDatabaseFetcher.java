@@ -17,17 +17,20 @@ import org.kalibro.core.concurrent.Writer;
  */
 class CvsAnalyDatabaseFetcher {
 
+	private Set<CvsAnalyMetric> wantedMetrics;
 	private Connection connection;
 	private Statement statement;
 	private ResultSet resultSet;
 
-	void queryMetrics(
-		File databaseFile, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
+	CvsAnalyDatabaseFetcher(Set<NativeMetric> wantedMetrics) {
+		this.wantedMetrics = CvsAnalyMetric.selectMetrics(wantedMetrics);
+	}
+
+	void queryMetrics(File databaseFile, Writer<NativeModuleResult> resultWriter) throws Exception {
 		try {
-			Set<CvsAnalyMetric> metrics = CvsAnalyMetric.selectMetrics(wantedMetrics);
-			executeQuery(databaseFile, metrics);
+			executeQuery(databaseFile);
 			while (resultSet.next())
-				resultWriter.write(getModuleResult(metrics));
+				resultWriter.write(getModuleResult());
 		} finally {
 			resultWriter.close();
 			databaseFile.delete();
@@ -35,7 +38,7 @@ class CvsAnalyDatabaseFetcher {
 		}
 	}
 
-	private void executeQuery(File databaseFile, Set<CvsAnalyMetric> wantedMetrics) throws Exception {
+	private void executeQuery(File databaseFile) throws Exception {
 		Class.forName("org.sqlite.JDBC");
 		connection = DriverManager.getConnection("jdbc:sqlite:" + databaseFile.getAbsolutePath());
 		statement = connection.createStatement();
@@ -46,11 +49,11 @@ class CvsAnalyDatabaseFetcher {
 		resultSet = statement.executeQuery(query);
 	}
 
-	private NativeModuleResult getModuleResult(Set<CvsAnalyMetric> metrics) throws SQLException {
+	private NativeModuleResult getModuleResult() throws SQLException {
 		String filename = resultSet.getString("file_path");
 		Module module = new Module(Granularity.CLASS, filename.split(Pattern.quote(File.separator)));
 		NativeModuleResult moduleResult = new NativeModuleResult(module);
-		for (CvsAnalyMetric metric : metrics)
+		for (CvsAnalyMetric metric : wantedMetrics)
 			moduleResult.addMetricResult(new NativeMetricResult(metric, resultSet.getDouble(metric.getColumn())));
 		return moduleResult;
 	}

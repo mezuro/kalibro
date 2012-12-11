@@ -49,6 +49,6 @@ public class CvsAnalyMetricCollector implements MetricCollector {
 		File codeDirectory, Set<NativeMetric> wantedMetrics, Writer<NativeModuleResult> resultWriter) throws Exception {
 		File databaseFile = File.createTempFile("kalibro-cvsanaly-db", ".sqlite");
 		new CommandTask(COMMAND + databaseFile.getAbsolutePath(), codeDirectory).execute();
-		new CvsAnalyDatabaseFetcher().queryMetrics(databaseFile, wantedMetrics, resultWriter);
+		new CvsAnalyDatabaseFetcher(wantedMetrics).queryMetrics(databaseFile, resultWriter);
 	}
 }

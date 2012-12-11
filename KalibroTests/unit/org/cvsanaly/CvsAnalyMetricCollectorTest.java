@@ -27,6 +27,7 @@ public class CvsAnalyMetricCollectorTest extends UnitTest {
 
 	private File databaseFile;
 	private CommandTask commandTask;
+	private Set<NativeMetric> wantedMetrics;
 	private CvsAnalyDatabaseFetcher fetcher;
 
 	private CvsAnalyMetricCollector collector;
@@ -41,11 +42,12 @@ public class CvsAnalyMetricCollectorTest extends UnitTest {
 	private void createMocks() throws Exception {
 		databaseFile = mock(File.class);
 		commandTask = mock(CommandTask.class);
+		wantedMetrics = mock(Set.class);
 		fetcher = mock(CvsAnalyDatabaseFetcher.class);
 		mockStatic(File.class);
 		when(File.createTempFile("kalibro-cvsanaly-db", ".sqlite")).thenReturn(databaseFile);
 		when(databaseFile.getAbsolutePath()).thenReturn("/");
-		whenNew(CvsAnalyDatabaseFetcher.class).withNoArguments().thenReturn(fetcher);
+		whenNew(CvsAnalyDatabaseFetcher.class).withArguments(wantedMetrics).thenReturn(fetcher);
 	}
 
 	@Test
@@ -62,7 +64,6 @@ public class CvsAnalyMetricCollectorTest extends UnitTest {
 	@Test
 	public void shouldCollectMetrics() throws Exception {
 		File codeDirectory = mock(File.class);
-		Set<NativeMetric> wantedMetrics = mock(Set.class);
 		Writer<NativeModuleResult> resultWriter = mock(Writer.class);
 
 		Mockito.reset(commandTask);
@@ -71,6 +72,6 @@ public class CvsAnalyMetricCollectorTest extends UnitTest {
 		collector.collectMetrics(codeDirectory, wantedMetrics, resultWriter);
 		InOrder order = Mockito.inOrder(commandTask, fetcher);
 		order.verify(commandTask).execute();
-		order.verify(fetcher).queryMetrics(databaseFile, wantedMetrics, resultWriter);
+		order.verify(fetcher).queryMetrics(databaseFile, resultWriter);
 	}
 }

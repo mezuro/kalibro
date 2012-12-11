@@ -9,6 +9,8 @@ import java.util.TreeSet;
 
 import javax.persistence.TypedQuery;
 
+import org.kalibro.Configuration;
+import org.kalibro.KalibroException;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
@@ -77,6 +79,10 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 	public void process(Long repositoryId) {
 		cancelProcessing(repositoryId);
 		Repository repository = get(repositoryId);
+		Configuration configuration = repository.getConfiguration();
+		if (configuration.getNativeMetrics().isEmpty())
+			throw new KalibroException("Could not process repository (" + repository +
+				") because its configuration (" + configuration + ") has no native metrics.");
 		ProcessTask task = new ProcessTask(repository);
 		processTasks.put(repositoryId, task);
 		executeTask(task, repository.getProcessPeriod());
