@@ -1,8 +1,5 @@
 package org.kalibro;
 
-import java.util.Collection;
-import java.util.LinkedList;
-
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.Ignore;
@@ -30,7 +27,6 @@ public class Repository extends AbstractEntity<Repository> {
 	private Integer processPeriod;
 
 	private Configuration configuration;
-	private Collection<String> mailsToNotify;
 
 	@Ignore
 	private Project project;
@@ -46,7 +42,6 @@ public class Repository extends AbstractEntity<Repository> {
 		setAddress(address);
 		setType(type);
 		setProcessPeriod(0);
-		setMailsToNotify(new LinkedList<String>());
 	}
 
 	public Long getId() {
@@ -129,14 +124,6 @@ public class Repository extends AbstractEntity<Repository> {
 
 	public void setConfiguration(Configuration configuration) {
 		this.configuration = configuration;
-	}
-
-	public Collection<String> getMailsToNotify() {
-		return mailsToNotify;
-	}
-
-	public void setMailsToNotify(Collection<String> mailsToNotify) {
-		this.mailsToNotify = mailsToNotify;
 	}
 
 	public Project getProject() {

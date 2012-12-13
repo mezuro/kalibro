@@ -72,7 +72,6 @@ public class RepositoryTest extends UnitTest {
 		assertEquals(RepositoryType.LOCAL_DIRECTORY, repository.getType());
 		assertEquals(0, repository.getProcessPeriod().intValue());
 		assertNull(repository.getConfiguration());
-		assertTrue(repository.getMailsToNotify().isEmpty());
 		assertNull(repository.getProject());
 	}
 

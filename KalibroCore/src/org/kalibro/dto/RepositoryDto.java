@@ -1,7 +1,5 @@
 package org.kalibro.dto;
 
-import java.util.Collection;
-
 import org.kalibro.Configuration;
 import org.kalibro.Project;
 import org.kalibro.Repository;
@@ -23,7 +21,6 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 		repository.setLicense(license() == null ? "" : license());
 		repository.setProcessPeriod(processPeriod());
 		repository.setConfiguration(configuration());
-		repository.setMailsToNotify(mailsToNotify());
 		set(repository, "project", project());
 		return repository;
 	}
@@ -41,8 +38,6 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 	public abstract String license();
 
 	public abstract Integer processPeriod();
-
-	public abstract Collection<String> mailsToNotify();
 
 	public abstract Configuration configuration();
 

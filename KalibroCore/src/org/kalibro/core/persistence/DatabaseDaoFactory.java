@@ -12,6 +12,7 @@ import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProcessingNotificationDao;
 
 /**
  * Factory of data access objects that read and write on the database.
@@ -105,5 +106,10 @@ public class DatabaseDaoFactory extends DaoFactory {
 	@Override
 	protected RepositoryDatabaseDao createRepositoryDao() {
 		return new RepositoryDatabaseDao();
+	}
+
+	@Override
+	protected ProcessingNotificationDao createProcessingNotificationDao() {
+		return ProcessingNotificationDatabaseDao();
 	}
 }

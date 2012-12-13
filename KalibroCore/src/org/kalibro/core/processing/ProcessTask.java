@@ -2,10 +2,6 @@ package org.kalibro.core.processing;
 
 import java.io.File;
 
-import javax.mail.Message.RecipientType;
-
-import org.codemonkey.simplejavamail.Email;
-import org.codemonkey.simplejavamail.Mailer;
 import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.TaskListener;
@@ -35,20 +31,9 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 	protected void perform() {
 		new LoadingTask().prepare(this).execute();
 		new CollectingTask().prepare(this).executeInBackground();
-		new AnalyzingTask().prepare(this).execute();
-		sendMail();
-	}
-
-	private void sendMail() {
-		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
-		Email email = new Email();
-		Repository repository = processing.getRepository();
-		email.setSubject("Repository " + repository.getCompleteName() + " processing results");
-		email.setText("Processing results in repository " + repository.getName() + " has finished succesfully.");
-		for (String mail : repository.getMailsToNotify()) {
-			email.addRecipient(mail, mail, RecipientType.TO);
-		}
-		mailer.sendMail(email);
+		ProcessSubtask analyzingTask = new AnalyzingTask().prepare(this);
+		analyzingTask.addListener(new MailSender(processing.getRepository()));
+		analyzingTask.execute();
 	}
 
 	@Override

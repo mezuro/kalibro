@@ -63,7 +63,6 @@ public class RepositoryXml extends RepositoryDto {
 		type = repository.getType();
 		address = repository.getAddress();
 		configurationId = repository.getConfiguration().getId();
-		mailsToNotify = repository.getMailsToNotify();
 	}
 
 	@Override
@@ -104,10 +103,5 @@ public class RepositoryXml extends RepositoryDto {
 	@Override
 	public Configuration configuration() {
 		return DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configurationId);
-	}
-
-	@Override
-	public Collection<String> mailsToNotify() {
-		return mailsToNotify;
 	}
 }

@@ -54,9 +54,6 @@ public class RepositoryRecord extends RepositoryDto {
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	private ConfigurationRecord configuration;
 
-	@Column
-	private Collection<String> mailsToNotify;
-
 	@CascadeOnDelete
 	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "repository", orphanRemoval = true)
@@ -84,7 +81,6 @@ public class RepositoryRecord extends RepositoryDto {
 		license = repository.getLicense();
 		processPeriod = repository.getProcessPeriod();
 		configuration = new ConfigurationRecord(repository.getConfiguration().getId());
-		mailsToNotify = repository.getMailsToNotify();
 	}
 
 	@Override
@@ -120,11 +116,6 @@ public class RepositoryRecord extends RepositoryDto {
 	@Override
 	public Integer processPeriod() {
 		return processPeriod;
-	}
-
-	@Override
-	public Collection<String> mailsToNotify() {
-		return mailsToNotify;
 	}
 
 	@Override

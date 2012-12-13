@@ -69,4 +69,9 @@ public class ClientDaoFactory extends DaoFactory {
 	protected RepositoryDao createRepositoryDao() {
 		return new RepositoryClientDao(serviceAddress);
 	}
+
+	@Override
+	protected ProcessingNotificationDao createProcessingNotificationDao() {
+		return new ProcessingNotificationClientDao(serviceAddress);
+	}
 }
