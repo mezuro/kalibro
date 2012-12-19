@@ -44,6 +44,17 @@ public class BaseToolDatabaseDaoTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldThowExceptionWhenGettingInvalidBaseTool() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				dao.get("Invalid");
+			}
+		}).throwsException().withMessage("Base tool not found: Invalid.");
+	}
+
+	@Test
 	public void shouldThrowExceptionIfCannotReadCollectorClasses() throws IOException {
 		IOException error = new IOException();
 		when(IOUtils.readLines(any(InputStream.class))).thenThrow(error);

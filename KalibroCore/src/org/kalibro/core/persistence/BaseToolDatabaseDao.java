@@ -26,6 +26,7 @@ class BaseToolDatabaseDao implements BaseToolDao {
 	private Map<String, MetricCollector> collectors;
 
 	BaseToolDatabaseDao() {
+		collectors = new HashMap<String, MetricCollector>();
 		try {
 			createCollectors();
 		} catch (IOException exception) {
@@ -34,7 +35,6 @@ class BaseToolDatabaseDao implements BaseToolDao {
 	}
 
 	private void createCollectors() throws IOException {
-		collectors = new HashMap<String, MetricCollector>();
 		InputStream collectorsStream = getClass().getResourceAsStream("/META-INF/collectors");
 		for (Object collectorClassName : IOUtils.readLines(collectorsStream))
 			addCollector(collectorClassName.toString());
@@ -61,6 +61,8 @@ class BaseToolDatabaseDao implements BaseToolDao {
 
 	@Override
 	public BaseTool get(String baseToolName) {
-		return new BaseTool(collectors.get(baseToolName).getClass().getName());
+		if (collectors.containsKey(baseToolName))
+			return new BaseTool(collectors.get(baseToolName).getClass().getName());
+		throw new KalibroException("Base tool not found: " + baseToolName + ".");
 	}
 }
