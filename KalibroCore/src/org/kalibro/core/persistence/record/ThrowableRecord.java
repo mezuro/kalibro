@@ -23,9 +23,11 @@ public class ThrowableRecord extends ThrowableDto {
 	@SuppressWarnings("unused" /* used by JPA */)
 	private Long id;
 
+	@Lob
 	@Column(name = "\"target_string\"", nullable = false)
 	private String targetString;
 
+	@Lob
 	@Column(name = "\"message\"")
 	private String message;
 
