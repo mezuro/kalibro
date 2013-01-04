@@ -21,7 +21,6 @@ import org.kalibro.dto.RepositoryDto;
 @Table(name = "\"REPOSITORY\"")
 public class RepositoryRecord extends RepositoryDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"project\"", nullable = false, referencedColumnName = "\"id\"")
 	private ProjectRecord project;
@@ -49,13 +48,11 @@ public class RepositoryRecord extends RepositoryDto {
 	@Column(name = "\"process_period\"")
 	private Integer processPeriod;
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	private ConfigurationRecord configuration;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "repository", orphanRemoval = true)
 	private Collection<ProcessingRecord> processings;
 

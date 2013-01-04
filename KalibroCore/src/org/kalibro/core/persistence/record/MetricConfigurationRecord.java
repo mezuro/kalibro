@@ -18,7 +18,6 @@ import org.kalibro.dto.MetricConfigurationDto;
 @Table(name = "\"METRIC_CONFIGURATION\"")
 public class MetricConfigurationRecord extends MetricConfigurationDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	private ConfigurationRecord configuration;
@@ -57,7 +56,6 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	private ReadingGroupRecord readingGroup;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	private Collection<RangeRecord> ranges;
 

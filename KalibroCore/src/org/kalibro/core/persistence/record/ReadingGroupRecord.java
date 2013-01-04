@@ -29,7 +29,6 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	private String description;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "group", orphanRemoval = true)
 	private Collection<ReadingRecord> readings;
 

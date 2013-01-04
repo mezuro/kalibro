@@ -19,7 +19,6 @@ import org.kalibro.dto.ProcessingDto;
 @Table(name = "\"PROCESSING\"")
 public class ProcessingRecord extends ProcessingDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"repository\"", nullable = false, referencedColumnName = "\"id\"")
 	private RepositoryRecord repository;
@@ -48,7 +47,6 @@ public class ProcessingRecord extends ProcessingDto {
 	private ModuleResultRecord resultsRoot;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "processing", orphanRemoval = true)
 	private Collection<MetricConfigurationSnapshotRecord> configurations;
 

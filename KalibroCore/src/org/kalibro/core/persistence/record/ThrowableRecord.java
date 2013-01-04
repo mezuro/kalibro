@@ -20,7 +20,6 @@ public class ThrowableRecord extends ThrowableDto {
 	@Id
 	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
-	@SuppressWarnings("unused" /* used by JPA */)
 	private Long id;
 
 	@Lob

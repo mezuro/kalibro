@@ -20,7 +20,6 @@ import org.kalibro.dto.MetricResultDto;
 @Table(name = "\"METRIC_RESULT\"")
 public class MetricResultRecord extends MetricResultDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"module_result\"", nullable = false, referencedColumnName = "\"id\"")
 	private ModuleResultRecord moduleResult;

@@ -29,7 +29,6 @@ public class ConfigurationRecord extends ConfigurationDto {
 	private String description;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
 	private Collection<MetricConfigurationRecord> metricConfigurations;
 

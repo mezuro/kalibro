@@ -24,12 +24,11 @@ import org.kalibro.dto.ModuleResultDto;
 public class ModuleResultRecord extends ModuleResultDto {
 
 	private static ModuleResultRecord parentRecord(ModuleResult moduleResult) {
-		if (!moduleResult.hasParent())
+		if (! moduleResult.hasParent())
 			return null;
 		return new ModuleResultRecord(moduleResult.getParent().getId());
 	}
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
 	private ProcessingRecord processing;
@@ -54,7 +53,6 @@ public class ModuleResultRecord extends ModuleResultDto {
 	private ModuleResultRecord parent;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "parent", orphanRemoval = true)
 	private Collection<ModuleResultRecord> children;
 
