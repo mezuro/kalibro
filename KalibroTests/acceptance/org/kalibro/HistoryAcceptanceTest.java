@@ -11,7 +11,7 @@ import org.kalibro.tests.AcceptanceTest;
 
 public class HistoryAcceptanceTest extends AcceptanceTest {
 
-	private static final Long SLEEP = 15000L;
+	private static final Long SLEEP = 20000L;
 
 	private CompoundMetric metric;
 	private Configuration configuration;
@@ -75,9 +75,9 @@ public class HistoryAcceptanceTest extends AcceptanceTest {
 		assertDeepEquals(set(first.getDate(), second.getDate(), third.getDate()), history.keySet());
 		assertDoubleEquals(10.0, history.get(first.getDate()).getGrade());
 		assertDoubleEquals(10.0, history.get(second.getDate()).getGrade());
-		assertDoubleEquals(10.0, history.get(third.getDate()).getGrade());		
+		assertDoubleEquals(10.0, history.get(third.getDate()).getGrade());
 	}
-	
+
 	private void prepareProcessings(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.process();

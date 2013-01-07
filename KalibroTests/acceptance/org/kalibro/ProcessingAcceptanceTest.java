@@ -10,7 +10,7 @@ import org.kalibro.tests.AcceptanceTest;
 
 public class ProcessingAcceptanceTest extends AcceptanceTest {
 
-	private static final Long SLEEP = 12000L;
+	private static final Long SLEEP = 15000L;
 	private static final String REPOSITORY_NAME = "HelloWorldDirectory";
 
 	private Metric totalCof, cbo, lcom4, sc;
