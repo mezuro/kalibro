@@ -47,7 +47,7 @@ public class ModuleResultDatabaseDaoTest extends
 		SortedMap<Date, ModuleResult> history = dao.historyOf(ID);
 		assertEquals(1, history.size());
 		assertDeepEquals(entity, history.get(DATE));
-		verify(historyQuery).setParameter("moduleName", list(module.getName()));
+		verify(historyQuery).setParameter("moduleName", module.getName()[0]);
 		verify(historyQuery).setParameter("resultId", ID);
 	}
 
@@ -72,7 +72,7 @@ public class ModuleResultDatabaseDaoTest extends
 		Module module = new Module(Granularity.PACKAGE, "org");
 		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :module";
 		String where2 = "moduleResult.processing.id = :processingId AND moduleResult.moduleGranularity = :module";
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "module", list("org"));
+		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "module", "org");
 		doReturn(false).when(dao).exists("WHERE " + where2, "processingId", ID, "module", "SOFTWARE");
 		prepareQuery(where);
 		prepareQuery(where2);
@@ -100,7 +100,7 @@ public class ModuleResultDatabaseDaoTest extends
 		order.verify(query).getSingleResult();
 		order.verify(dao).save(record);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("module", list("org"));
+		order.verify(query).setParameter("module", "org");
 		order.verify(query).getSingleResult();
 		order.verify(preparedModule).setGranularity(Granularity.PACKAGE);
 	}

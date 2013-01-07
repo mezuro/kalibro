@@ -29,7 +29,6 @@ public class ProjectRecord extends ProjectDto {
 	private String description;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "project", orphanRemoval = true)
 	private Collection<RepositoryRecord> repositories;
 

@@ -14,7 +14,6 @@ import org.kalibro.dto.DataTransferObject;
 @Table(name = "\"DESCENDANT_RESULT\"")
 public class DescendantResultRecord extends DataTransferObject<Double> {
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"metric_result\"", nullable = false, referencedColumnName = "\"id\"")
 	private MetricResultRecord metricResult;
@@ -22,7 +21,6 @@ public class DescendantResultRecord extends DataTransferObject<Double> {
 	@Id
 	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
-	@SuppressWarnings("unused" /* used by JPA */)
 	private Long id;
 
 	@Column(name = "\"value\"", nullable = false)

@@ -45,14 +45,14 @@ class AnalyzingTask extends ProcessSubtask {
 	private void addValueToAncestry(ModuleResult moduleResult, MetricConfiguration snapshot, Double value) {
 		ModuleResult ancestor = moduleResult;
 		while (ancestor.hasParent()) {
-			ancestor = moduleResult.getParent();
+			ancestor = ancestor.getParent();
 			addDescendantResult(ancestor, snapshot, value);
 		}
 	}
 
 	private void addDescendantResult(ModuleResult moduleResult, MetricConfiguration snapshot, Double descendantResult) {
 		Metric metric = snapshot.getMetric();
-		if (!moduleResult.hasResultFor(metric))
+		if (! moduleResult.hasResultFor(metric))
 			moduleResult.addMetricResult(new MetricResult(snapshot, Double.NaN));
 		moduleResult.getResultFor(metric).addDescendantResult(descendantResult);
 	}
@@ -67,7 +67,7 @@ class AnalyzingTask extends ProcessSubtask {
 	}
 
 	private void changeRootName(ModuleResult resultsRoot) {
-		if (!resultsRoot.getModule().getName()[0].equals(repository().getName())) {
+		if (! resultsRoot.getModule().getName()[0].equals(repository().getName())) {
 			resultsRoot.getModule().getName()[0] = repository().getName();
 			save(resultsRoot);
 		}

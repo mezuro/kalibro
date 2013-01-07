@@ -18,18 +18,22 @@ class RecordManager {
 	}
 
 	Query createQuery(String queryString) {
+		clear();
 		return entityManager.createQuery(queryString);
 	}
 
 	<T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
+		clear();
 		return entityManager.createQuery(queryString, resultClass);
 	}
 
 	<T> T getById(Long id, Class<T> recordClass) {
+		clear();
 		return entityManager.find(recordClass, id);
 	}
 
 	<T> T save(T record) {
+		clear();
 		beginTransaction();
 		T merged = entityManager.merge(record);
 		entityManager.persist(merged);
@@ -41,6 +45,10 @@ class RecordManager {
 		beginTransaction();
 		entityManager.remove(getById(id, recordClass));
 		commitTransaction();
+	}
+
+	private void clear() {
+		entityManager.clear();
 	}
 
 	private void beginTransaction() {

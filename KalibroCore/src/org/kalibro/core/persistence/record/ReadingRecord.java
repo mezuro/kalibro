@@ -16,7 +16,6 @@ import org.kalibro.dto.ReadingDto;
 @Table(name = "\"READING\"")
 public class ReadingRecord extends ReadingDto {
 
-	@SuppressWarnings("unused" /* JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
 	private ReadingGroupRecord group;

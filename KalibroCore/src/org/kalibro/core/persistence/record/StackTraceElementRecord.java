@@ -14,14 +14,12 @@ import org.kalibro.dto.StackTraceElementDto;
 public class StackTraceElementRecord extends StackTraceElementDto {
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@SuppressWarnings("unused" /* used by JPA */)
 	@JoinColumn(name = "\"throwable\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord throwable;
 
 	@Id
 	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
-	@SuppressWarnings("unused" /* used by JPA */)
 	private Long id;
 
 	@Column(name = "\"index\"", nullable = false)

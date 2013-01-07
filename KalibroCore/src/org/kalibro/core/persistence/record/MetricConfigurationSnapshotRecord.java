@@ -21,7 +21,6 @@ import org.kalibro.dto.MetricConfigurationDto;
 @Table(name = "\"METRIC_CONFIGURATION_SNAPSHOT\"")
 public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
 	private ProcessingRecord processing;

@@ -1,9 +1,7 @@
 package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 import javax.persistence.*;
 
@@ -23,13 +21,23 @@ import org.kalibro.dto.ModuleResultDto;
 @Table(name = "\"MODULE_RESULT\"")
 public class ModuleResultRecord extends ModuleResultDto {
 
+	private static final String TOKEN = "&#&#&";
+
+	public static String persistedName(String[] moduleName) {
+		String name = "";
+		for (String namePart : moduleName)
+			name += TOKEN + namePart;
+		if (moduleName.length > 0)
+			name = name.substring(TOKEN.length());
+		return name;
+	}
+
 	private static ModuleResultRecord parentRecord(ModuleResult moduleResult) {
-		if (!moduleResult.hasParent())
+		if (! moduleResult.hasParent())
 			return null;
 		return new ModuleResultRecord(moduleResult.getParent().getId());
 	}
 
-	@SuppressWarnings("unused" /* used by JPA */)
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
 	private ProcessingRecord processing;
@@ -39,9 +47,9 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@OrderColumn(name = "\"index\"", nullable = false)
-	private List<String> moduleName;
+	@Lob
+	@Column(name = "\"module_name\"", nullable = false)
+	private String moduleName;
 
 	@Column(name = "\"module_granularity\"", nullable = false)
 	private String moduleGranularity;
@@ -54,7 +62,6 @@ public class ModuleResultRecord extends ModuleResultDto {
 	private ModuleResultRecord parent;
 
 	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
 	@OneToMany(mappedBy = "parent", orphanRemoval = true)
 	private Collection<ModuleResultRecord> children;
 
@@ -88,7 +95,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 	public ModuleResultRecord(Module module, ModuleResultRecord parent, Long processingId) {
 		this.parent = parent;
 		processing = new ProcessingRecord(processingId);
-		moduleName = Arrays.asList(module.getName());
+		moduleName = persistedName(module.getName());
 		moduleGranularity = module.getGranularity().name();
 	}
 
@@ -105,7 +112,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 
 	@Override
 	public Module module() {
-		return new Module(Granularity.valueOf(moduleGranularity), moduleName.toArray(new String[0]));
+		return new Module(Granularity.valueOf(moduleGranularity), moduleName.split(TOKEN));
 	}
 
 	@Override
