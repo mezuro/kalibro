@@ -2,11 +2,6 @@ package org.kalibro.core.persistence.record;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
-import javax.persistence.ElementCollection;
-import javax.persistence.OrderColumn;
-
 import org.junit.Test;
 import org.kalibro.Granularity;
 import org.kalibro.Module;
@@ -18,24 +13,12 @@ public class ModuleResultRecordTest extends RecordTest {
 	protected void verifyColumns() {
 		assertManyToOne("processing", ProcessingRecord.class).isRequired();
 		shouldHaveId();
-		assertOrderedElementCollection("moduleName");
+		assertColumn("moduleName", String.class).isRequired();
 		assertColumn("moduleGranularity", String.class).isRequired();
 		assertColumn("grade", Long.class).isNullable();
 		assertManyToOne("parent", ModuleResultRecord.class).isOptional();
 		assertOneToMany("children").doesNotCascade().isMappedBy("parent");
 		assertOneToMany("metricResults").cascades().isMappedBy("moduleResult");
-	}
-
-	private void assertOrderedElementCollection(String field) {
-		assertOrdered(field);
-		annotation(field, ElementCollection.class);
-	}
-
-	private void assertOrdered(String field) {
-		assertFieldType(field, List.class);
-		OrderColumn orderColumn = annotation(field, OrderColumn.class);
-		assertEquals("Wrong @OrderColumn name.", "\"index\"", orderColumn.name());
-		assertFalse("@OrderColumn should NOT be nullable.", orderColumn.nullable());
 	}
 
 	@Test

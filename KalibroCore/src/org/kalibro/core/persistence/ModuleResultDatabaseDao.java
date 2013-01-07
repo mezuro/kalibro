@@ -32,7 +32,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 
 	@Override
 	public SortedMap<Date, ModuleResult> historyOf(Long moduleResultId) {
-		List<String> moduleName = Arrays.asList(get(moduleResultId).getModule().getName());
+		String moduleName = ModuleResultRecord.persistedName(get(moduleResultId).getModule().getName());
 		TypedQuery<Object[]> query = createQuery("SELECT processing.date, result FROM ModuleResult result " +
 			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = " +
 			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :resultId)", Object[].class);
@@ -57,7 +57,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	}
 
 	private ModuleResultRecord findResultFor(Module module, Long processingId) {
-		if (!exists("WHERE " + moduleCondition(module),
+		if (! exists("WHERE " + moduleCondition(module),
 			"processingId", processingId, "module", moduleParameter(module)))
 			save(new ModuleResultRecord(module, findParentOf(module, processingId), processingId));
 		return getResultFor(module, processingId);
@@ -86,6 +86,6 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	private Object moduleParameter(Module module) {
 		if (module.getGranularity() == Granularity.SOFTWARE)
 			return Granularity.SOFTWARE.name();
-		return Arrays.asList(module.getName());
+		return ModuleResultRecord.persistedName(module.getName());
 	}
 }
