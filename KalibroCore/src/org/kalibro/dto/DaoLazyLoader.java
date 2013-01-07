@@ -46,7 +46,7 @@ public final class DaoLazyLoader implements MethodInterceptor {
 
 	@Override
 	public Object intercept(Object object, Method method, Object[] arguments, MethodProxy proxy) throws Throwable {
-		if (!started)
+		if (! started || method.getName().equals("finalize"))
 			return null;
 		if (target == null)
 			load();

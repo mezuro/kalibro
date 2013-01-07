@@ -1,7 +1,8 @@
 package org.kalibro.dto;
 
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
+import java.lang.reflect.Method;
 import java.util.Random;
 
 import org.junit.Before;
@@ -54,6 +55,15 @@ public class DaoLazyLoaderTest extends UnitTest {
 		proxy.getGrade();
 		proxy.getColor();
 		verify(dao, once()).get(ID);
+	}
+
+	@Test
+	public void shouldNotFetchForFinalize() throws Exception {
+		Method finalize = Object.class.getDeclaredMethod("finalize");
+		finalize.setAccessible(true);
+		finalize.invoke(proxy);
+		finalize.invoke(proxy);
+		verify(dao, never()).get(ID);
 	}
 
 	@Test
