@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.*;
 
@@ -63,7 +63,7 @@ public class MetricResultDatabaseDaoTest extends
 		assertEquals(1, history.size());
 		assertDeepEquals(entity, history.get(DATE));
 		verify(historyQuery).setParameter("metricName", METRIC_NAME);
-		verify(historyQuery).setParameter("moduleName", list("org"));
+		verify(historyQuery).setParameter("moduleName", "org");
 		verify(historyQuery).setParameter("moduleResultId", ID);
 	}
 

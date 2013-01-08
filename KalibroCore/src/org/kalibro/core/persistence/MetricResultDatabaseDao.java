@@ -8,6 +8,7 @@ import org.kalibro.MetricResult;
 import org.kalibro.ModuleResult;
 import org.kalibro.core.persistence.record.DescendantResultRecord;
 import org.kalibro.core.persistence.record.MetricResultRecord;
+import org.kalibro.core.persistence.record.ModuleResultRecord;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.dto.DataTransferObject;
 
@@ -40,7 +41,7 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 	@Override
 	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
 		ModuleResult moduleResult = new ModuleResultDatabaseDao().get(moduleResultId);
-		List<String> moduleName = Arrays.asList(moduleResult.getModule().getName());
+		String moduleName = ModuleResultRecord.persistedName(moduleResult.getModule().getName());
 		TypedQuery<Object[]> query = createQuery("SELECT processing.date, metricResult " +
 			"FROM MetricResult metricResult JOIN metricResult.moduleResult.processing processing " +
 			"WHERE metricResult.configuration.metricName = :metricName " +

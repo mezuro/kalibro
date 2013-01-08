@@ -8,7 +8,8 @@ import org.kalibro.core.concurrent.Writer;
 /**
  * Interface between Kalibro and the metric collector tool.<br/>
  * All implementations of this interface should have a public default constructor. The constructor should verify if the
- * collector is working and throw an exception otherwise.
+ * collector is working and throw an exception otherwise. The complete name of the class should be registered at the
+ * configuration file 'META-INF/collectors' for the collector to be used by Kalibro.
  * 
  * @author Carlos Morais
  * @author Paulo Meirelles
