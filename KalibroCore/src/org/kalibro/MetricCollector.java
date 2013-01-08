@@ -6,7 +6,10 @@ import java.util.Set;
 import org.kalibro.core.concurrent.Writer;
 
 /**
- * Interface between Kalibro and the metric collector tool.
+ * Interface between Kalibro and the metric collector tool.<br/>
+ * Implementing classes should have a public default constructor, which throws exception if the collector is not
+ * correctly installed or not available in some way. The complete name of the class should be registered at the
+ * configuration file 'META-INF/collectors' if the collector is to be used by Kalibro.
  * 
  * @author Carlos Morais
  * @author Paulo Meirelles
