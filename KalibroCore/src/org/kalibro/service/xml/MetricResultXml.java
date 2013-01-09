@@ -28,6 +28,9 @@ public class MetricResultXml extends MetricResultDto {
 	private Double value;
 
 	@XmlElement
+	private Double aggregatedValue;
+
+	@XmlElement
 	private ThrowableXml error;
 
 	public MetricResultXml() {
@@ -38,6 +41,7 @@ public class MetricResultXml extends MetricResultDto {
 		id = metricResult.getId();
 		configuration = new MetricConfigurationSnapshotXml(metricResult.getConfiguration());
 		value = metricResult.getValue();
+		aggregatedValue = metricResult.getAggregatedValue();
 		if (metricResult.hasError())
 			error = new ThrowableXml(metricResult.getError());
 	}
