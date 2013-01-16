@@ -1,5 +1,7 @@
 package org.kalibro.core.loaders;
 
+import static org.junit.Assert.*;
+
 import java.util.List;
 
 import org.junit.Before;
@@ -38,4 +40,11 @@ public abstract class RepositoryLoaderTestCase extends UnitTest {
 	}
 
 	protected abstract List<String> expectedUpdateCommands();
+
+	@Test
+	public void checkMetadataDirectoryName() {
+		assertEquals(expectedMetadataDirectoryName(), loader.metadataDirectoryName());
+	}
+
+	protected abstract String expectedMetadataDirectoryName();
 }

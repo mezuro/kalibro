@@ -21,4 +21,9 @@ public class GitLoader extends RepositoryLoader {
 			return Arrays.asList("git pull origin master");
 		return Arrays.asList("git clone " + address + " .");
 	}
+
+	@Override
+	protected String metadataDirectoryName() {
+		return ".git";
+	}
 }

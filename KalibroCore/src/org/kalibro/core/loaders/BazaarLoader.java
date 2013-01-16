@@ -21,4 +21,9 @@ public class BazaarLoader extends RepositoryLoader {
 			return Arrays.asList("bzr pull --overwrite");
 		return Arrays.asList("bzr branch --use-existing-dir " + address + " .");
 	}
+
+	@Override
+	protected String metadataDirectoryName() {
+		return ".bzr";
+	}
 }

@@ -5,6 +5,9 @@ import static java.util.concurrent.TimeUnit.*;
 import java.io.File;
 import java.util.List;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FalseFileFilter;
+import org.apache.commons.io.filefilter.NameFileFilter;
 import org.kalibro.core.command.CommandTask;
 
 /**
@@ -29,4 +32,11 @@ public abstract class RepositoryLoader {
 	}
 
 	protected abstract List<String> loadCommands(String address, boolean update);
+	
+	public boolean isUpdatable(File directory) {
+		NameFileFilter nameFilter = new NameFileFilter(metadataDirectoryName());
+		return FileUtils.iterateFiles(directory, FalseFileFilter.INSTANCE, nameFilter).hasNext();
+	}
+
+	protected abstract String metadataDirectoryName();
 }
