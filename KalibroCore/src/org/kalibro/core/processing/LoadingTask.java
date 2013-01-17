@@ -30,7 +30,7 @@ class LoadingTask extends ProcessSubtask {
 		File projectDirectory = prepareDirectory(loadDirectory, project().getId(), project().getName());
 		File repositoryDirectory = prepareDirectory(projectDirectory, repository().getId(), repository().getName());
 		if (repositoryDirectory.exists() && ! loader.isUpdatable(repositoryDirectory))
-			repositoryDirectory.delete();
+			FileUtils.deleteQuietly(repositoryDirectory);
 		setCodeDirectory(repositoryDirectory);
 	}
 

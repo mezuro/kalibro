@@ -20,7 +20,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({KalibroSettings.class, LoadingTask.class})
+@PrepareOnlyThisForTest({FileUtils.class, KalibroSettings.class, LoadingTask.class})
 public class LoadingTaskTest extends UnitTest {
 
 	private static final Long PROJECT_ID = 6L;
@@ -131,10 +131,12 @@ public class LoadingTaskTest extends UnitTest {
 		when(repositoryDirectory.isDirectory()).thenReturn(true);
 		when(loader.isUpdatable(repositoryDirectory)).thenReturn(false);
 		loadingTask.perform();
-		verify(repositoryDirectory).delete();
+		verifyStatic();
+		FileUtils.deleteQuietly(repositoryDirectory);
 	}
 
 	private File mockRepositoryDirectory() throws Exception {
+		mockStatic(FileUtils.class);
 		File projectDirectory = mock(File.class);
 		File repositoryDirectory = mock(File.class);
 		whenNew(File.class).withParameterTypes(File.class, String.class)

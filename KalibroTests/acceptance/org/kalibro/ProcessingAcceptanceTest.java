@@ -10,7 +10,7 @@ import org.kalibro.tests.AcceptanceTest;
 
 public class ProcessingAcceptanceTest extends AcceptanceTest {
 
-	private static final Long SLEEP = 15000L;
+	private static final Long SLEEP = 20000L;
 	private static final String REPOSITORY_NAME = "HelloWorldDirectory";
 
 	private Metric totalCof, cbo, lcom4, sc;
@@ -46,9 +46,16 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		verifyProcessOngoing();
 
 		Thread.sleep(SLEEP);
-
 		verifyProcessDone(start);
 		verifyResults();
+
+		// should allow changing repository type
+		repository.setType(RepositoryType.GIT);
+		repository.setAddress(repositoriesDirectory().getAbsolutePath() + "/HelloWorldGit/");
+		repository.process();
+
+		Thread.sleep(SLEEP);
+		verifyProcessDone(start);
 	}
 
 	private void verifyProcessOngoing() {
