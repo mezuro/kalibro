@@ -1,7 +1,5 @@
 package org.kalibro.core.loaders;
 
-import static org.junit.Assert.*;
-
 import java.util.List;
 
 import org.junit.Test;
@@ -42,14 +40,4 @@ public abstract class RemoteFileLoaderTestCase extends LoaderTestCase {
 	}
 
 	protected abstract Class<? extends FileLoader> expectedLocalLoader();
-
-	@Test
-	public void shouldNotBeUpdatable() {
-		assertFalse(loader.isUpdatable(null));
-	}
-
-	@Override
-	protected String expectedMetadataDirectoryName() {
-		return null;
-	}
 }

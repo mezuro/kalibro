@@ -34,14 +34,4 @@ abstract class RemoteFileLoader extends FileLoader {
 	}
 
 	protected abstract FileLoader localLoader();
-
-	@Override
-	public boolean isUpdatable(File directory) {
-		return false;
-	}
-
-	@Override
-	protected String metadataDirectoryName() {
-		return null;
-	}
 }

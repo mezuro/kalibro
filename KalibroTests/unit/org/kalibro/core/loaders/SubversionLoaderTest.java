@@ -2,7 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-public class SubversionLoaderTest extends LoaderTestCase {
+public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {

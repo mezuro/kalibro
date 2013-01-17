@@ -1,7 +1,5 @@
 package org.kalibro.core.loaders;
 
-import static org.junit.Assert.*;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;
@@ -48,15 +46,5 @@ public class RemoteFileLoaderTest extends UnitTest {
 			localCommand,
 			"rm -f " + temporaryFilePath),
 			remoteLoader.loadCommands(ADDRESS, update));
-	}
-
-	@Test
-	public void shouldNotBeUpdatable() {
-		assertFalse(remoteLoader.isUpdatable(null));
-	}
-
-	@Test
-	public void shouldNotHaveMetadataDirectoryName() {
-		assertNull(remoteLoader.metadataDirectoryName());
 	}
 }

@@ -1,5 +1,7 @@
 package org.kalibro.core.loaders;
 
+import java.io.File;
+
 /**
  * Abstract loader for simple files.
  * 
@@ -8,4 +10,8 @@ package org.kalibro.core.loaders;
  */
 abstract class FileLoader extends Loader {
 
+	@Override
+	public boolean isUpdatable(File directory) {
+		return false;
+	}
 }
