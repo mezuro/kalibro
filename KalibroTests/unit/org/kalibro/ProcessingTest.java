@@ -138,9 +138,7 @@ public class ProcessingTest extends UnitTest {
 	}
 
 	private Processing withRepositoryDate(String repositoryName, long date) {
-		Processing other = new Processing(new Repository(repositoryName, null, ""));
-		other.setDate(new Date(date));
-		return other;
+		return new Processing(new Repository(repositoryName, null, ""), new Date(date));
 	}
 
 	@Test
@@ -148,11 +146,10 @@ public class ProcessingTest extends UnitTest {
 		Processing other = new Processing(null);
 		assertFalse(other.equals(processing));
 
-		other = new Processing(repository);
-		other.setDate(new Date(0));
+		other = new Processing(repository, new Date(0));
 		assertFalse(other.equals(processing));
 
-		other.setDate(processing.getDate());
+		other = new Processing(repository, processing.getDate());
 		assertEquals(processing, other);
 	}
 

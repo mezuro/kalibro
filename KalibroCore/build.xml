@@ -1,92 +1,93 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 
 <project basedir="." default="build" name="KalibroCore">
-    <property environment="env"/>
-    <property name="ECLIPSE_HOME" value="../../../../Software/Eclipse"/>
-    <property name="debuglevel" value="source,lines,vars"/>
-    <property name="target" value="1.6"/>
-    <property name="source" value="1.6"/>
-    <path id="Apache Commons IO 1.4.userclasspath">
-        <pathelement location="../Libraries/Apache Commons IO 1.4/commons-io-1.4.jar"/>
-    </path>
-    <path id="Apache Derby 10.5.userclasspath">
-        <pathelement location="../Libraries/Apache Derby 10.5/derby-10.5.jar"/>
-    </path>
-    <path id="Checkstyle 5.5.userclasspath">
-        <pathelement location="../Libraries/Checkstyle 5.5/checkstyle-5.5-all.jar"/>
-    </path>
-    <path id="Cglib 3.0.userclasspath">
-        <pathelement location="../Libraries/Cglib 3.0/asm-all-4.0.jar"/>
-        <pathelement location="../Libraries/Cglib 3.0/cglib-3.0.jar"/>
-    </path>
-    <path id="EclipseLink 2.4.1.userclasspath">
-        <pathelement location="../Libraries/EclipseLink 2.4.1/eclipselink-2.4.1.jar"/>
-    </path>
-    <path id="JPA 2.0.userclasspath">
-        <pathelement location="../Libraries/JPA 2.0/jpa-2.0.1.jar"/>
-    </path>
-    <path id="Mysql 5.1.13.userclasspath">
-        <pathelement location="../Libraries/Mysql 5.1.13/mysql-connector-java-5.1.13.jar"/>
-    </path>
-    <path id="PostgreSQL 9.2.userclasspath">
-        <pathelement location="../Libraries/PostgreSQL 9.2/postgresql-9.2-1000.jdbc4.jar"/>
-    </path>
-    <path id="Rhino.userclasspath">
-        <pathelement location="../Libraries/Rhino/js.jar"/>
-    </path>
-    <path id="SnakeYaml 1.9.userclasspath">
-        <pathelement location="../Libraries/SnakeYaml 1.9/snakeyaml-1.9.jar"/>
-    </path>
-    <path id="SQLite v056.userclasspath">
-        <pathelement location="../Libraries/SQLite v056/sqlitejdbc-v056.jar"/>
-    </path>
-    <path id="KalibroCore.classpath">
-        <pathelement location="bin"/>
-        <path refid="Apache Commons IO 1.4.userclasspath"/>
-        <path refid="Apache Derby 10.5.userclasspath"/>
-        <path refid="Checkstyle 5.5.userclasspath"/>
-        <path refid="Cglib 3.0.userclasspath"/>
-        <path refid="EclipseLink 2.4.1.userclasspath"/>
-        <path refid="JPA 2.0.userclasspath"/>
-        <path refid="Mysql 5.1.13.userclasspath"/>
-        <path refid="PostgreSQL 9.2.userclasspath"/>
-        <path refid="Rhino.userclasspath"/>
-        <path refid="SnakeYaml 1.9.userclasspath"/>
-        <path refid="SQLite v056.userclasspath"/>
-    </path>
-    <target name="init">
-        <mkdir dir="bin"/>
-        <copy includeemptydirs="false" todir="bin">
-            <fileset dir="src">
-                <exclude name="**/*.launch"/>
-                <exclude name="**/*.java"/>
-            </fileset>
-        </copy>
-    </target>
-    <target name="clean">
-        <delete dir="bin"/>
-    </target>
-    <target depends="clean" name="cleanall"/>
-    <target depends="build-project" name="build"/>
-    <target depends="init" name="build-project">
-        <echo message="${ant.project.name}: ${ant.file}"/>
-    	<javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}" includeantruntime="false">
-            <src path="src"/>
-            <classpath refid="KalibroCore.classpath"/>
-        </javac>
-        <ant antfile="weave.xml" dir="${basedir}" inheritAll="false" target="weaving"/>
-    </target>
-    <target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
-        <copy todir="${ant.library.dir}">
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </copy>
-        <unzip dest="${ant.library.dir}">
-            <patternset includes="jdtCompilerAdapter.jar"/>
-            <fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar"/>
-        </unzip>
-    </target>
-    <target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
-        <property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter"/>
-        <antcall target="build"/>
-    </target>
+	<property environment="env" />
+	<property name="ECLIPSE_HOME" value="../../../../Software/Eclipse" />
+	<property name="debuglevel" value="source,lines,vars" />
+	<property name="target" value="1.6" />
+	<property name="source" value="1.6" />
+	<path id="Apache Commons IO 1.4.userclasspath">
+		<pathelement location="../Libraries/Apache Commons IO 1.4/commons-io-1.4.jar" />
+	</path>
+	<path id="Apache Derby 10.5.userclasspath">
+		<pathelement location="../Libraries/Apache Derby 10.5/derby-10.5.jar" />
+	</path>
+	<path id="Checkstyle 5.5.userclasspath">
+		<pathelement location="../Libraries/Checkstyle 5.5/checkstyle-5.5-all.jar" />
+	</path>
+	<path id="Cglib 3.0.userclasspath">
+		<pathelement location="../Libraries/Cglib 3.0/asm-all-4.0.jar" />
+		<pathelement location="../Libraries/Cglib 3.0/cglib-3.0.jar" />
+	</path>
+	<path id="EclipseLink 2.4.1.userclasspath">
+		<pathelement location="../Libraries/EclipseLink 2.4.1/eclipselink-2.4.1.jar" />
+	</path>
+	<path id="JPA 2.0.userclasspath">
+		<pathelement location="../Libraries/JPA 2.0/jpa-2.0.1.jar" />
+	</path>
+	<path id="Mysql 5.1.13.userclasspath">
+		<pathelement location="../Libraries/Mysql 5.1.13/mysql-connector-java-5.1.13.jar" />
+	</path>
+	<path id="PostgreSQL 9.2.userclasspath">
+		<pathelement location="../Libraries/PostgreSQL 9.2/postgresql-9.2-1000.jdbc4.jar" />
+	</path>
+	<path id="Rhino.userclasspath">
+		<pathelement location="../Libraries/Rhino/js.jar" />
+	</path>
+	<path id="SnakeYaml 1.9.userclasspath">
+		<pathelement location="../Libraries/SnakeYaml 1.9/snakeyaml-1.9.jar" />
+	</path>
+	<path id="SQLite v056.userclasspath">
+		<pathelement location="../Libraries/SQLite v056/sqlitejdbc-v056.jar" />
+	</path>
+	<path id="KalibroCore.classpath">
+		<pathelement location="bin" />
+		<path refid="Apache Commons IO 1.4.userclasspath" />
+		<path refid="Apache Derby 10.5.userclasspath" />
+		<path refid="Checkstyle 5.5.userclasspath" />
+		<path refid="Cglib 3.0.userclasspath" />
+		<path refid="EclipseLink 2.4.1.userclasspath" />
+		<path refid="JPA 2.0.userclasspath" />
+		<path refid="Mysql 5.1.13.userclasspath" />
+		<path refid="PostgreSQL 9.2.userclasspath" />
+		<path refid="Rhino.userclasspath" />
+		<path refid="SnakeYaml 1.9.userclasspath" />
+		<path refid="SQLite v056.userclasspath" />
+	</path>
+	<target name="init">
+		<mkdir dir="bin" />
+		<copy includeemptydirs="false" todir="bin">
+			<fileset dir="src">
+				<exclude name="**/*.launch" />
+				<exclude name="**/*.java" />
+			</fileset>
+		</copy>
+	</target>
+	<target name="clean">
+		<delete dir="bin" />
+	</target>
+	<target depends="clean" name="cleanall" />
+	<target depends="build-project" name="build" />
+	<target depends="init" name="build-project">
+		<echo message="${ant.project.name}: ${ant.file}" />
+		<javac debug="true" debuglevel="${debuglevel}" destdir="bin" source="${source}" target="${target}"
+			includeantruntime="false">
+			<src path="src" />
+			<classpath refid="KalibroCore.classpath" />
+		</javac>
+		<ant antfile="weave.xml" dir="${basedir}" inheritAll="false" target="weaving" />
+	</target>
+	<target description="copy Eclipse compiler jars to ant lib directory" name="init-eclipse-compiler">
+		<copy todir="${ant.library.dir}">
+			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar" />
+		</copy>
+		<unzip dest="${ant.library.dir}">
+			<patternset includes="jdtCompilerAdapter.jar" />
+			<fileset dir="${ECLIPSE_HOME}/plugins" includes="org.eclipse.jdt.core_*.jar" />
+		</unzip>
+	</target>
+	<target description="compile project with Eclipse compiler" name="build-eclipse-compiler">
+		<property name="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter" />
+		<antcall target="build" />
+	</target>
 </project>

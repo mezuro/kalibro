@@ -9,7 +9,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.kalibro.ModuleResult;
 
-
 /**
  * XML element for mapping {@link ModuleResult} to dates.
  * 

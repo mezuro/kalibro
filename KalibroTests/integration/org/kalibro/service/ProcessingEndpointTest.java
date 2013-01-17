@@ -21,9 +21,8 @@ public class ProcessingEndpointTest extends EndpointTest<Processing, ProcessingD
 
 	@Override
 	protected Processing loadFixture() {
-		Processing processing = new Processing(new Repository());
+		Processing processing = new Processing(new Repository(), DATE);
 		Whitebox.setInternalState(processing, "id", ID);
-		processing.setDate(DATE);
 		return processing;
 	}
 

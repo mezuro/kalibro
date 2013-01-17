@@ -7,7 +7,7 @@
 	<persistence-unit name="Kalibro" transaction-type="RESOURCE_LOCAL">
 		<class>org.kalibro.core.persistence.record.ReadingGroupRecord</class>
 		<class>org.kalibro.core.persistence.record.ReadingRecord</class>
-	
+
 		<class>org.kalibro.core.persistence.record.ConfigurationRecord</class>
 		<class>org.kalibro.core.persistence.record.MetricConfigurationRecord</class>
 		<class>org.kalibro.core.persistence.record.RangeRecord</class>
@@ -20,10 +20,10 @@
 
 		<class>org.kalibro.core.persistence.record.ProcessingRecord</class>
 		<class>org.kalibro.core.persistence.record.ProcessTimeRecord</class>
-		
+
 		<class>org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord</class>
 		<class>org.kalibro.core.persistence.record.RangeSnapshotRecord</class>
-		
+
 		<class>org.kalibro.core.persistence.record.ModuleResultRecord</class>
 		<class>org.kalibro.core.persistence.record.MetricResultRecord</class>
 		<class>org.kalibro.core.persistence.record.DescendantResultRecord</class>

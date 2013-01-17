@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <project name="KalibroCore" default="weaving" basedir=".">
-	<property environment="env"/>
+	<property environment="env" />
 
 	<path id="weavingclasspath">
 		<fileset dir="${basedir}/../Libraries">
