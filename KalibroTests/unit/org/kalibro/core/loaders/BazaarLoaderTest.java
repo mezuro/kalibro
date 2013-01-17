@@ -2,7 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-public class BazaarLoaderTest extends RepositoryLoaderTestCase {
+public class BazaarLoaderTest extends LoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {

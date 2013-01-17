@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public abstract class RemoteFileLoaderTestCase extends RepositoryLoaderTestCase {
+public abstract class RemoteFileLoaderTestCase extends LoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {
@@ -41,7 +41,7 @@ public abstract class RemoteFileLoaderTestCase extends RepositoryLoaderTestCase 
 		return (RemoteFileLoader) loader;
 	}
 
-	protected abstract Class<? extends RepositoryLoader> expectedLocalLoader();
+	protected abstract Class<? extends FileLoader> expectedLocalLoader();
 
 	@Test
 	public void shouldNotBeUpdatable() {

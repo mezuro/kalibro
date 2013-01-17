@@ -9,7 +9,7 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-abstract class RemoteFileLoader extends RepositoryLoader {
+abstract class RemoteFileLoader extends FileLoader {
 
 	@Override
 	public List<String> validationCommands() {
@@ -33,7 +33,7 @@ abstract class RemoteFileLoader extends RepositoryLoader {
 		return merged;
 	}
 
-	protected abstract RepositoryLoader localLoader();
+	protected abstract FileLoader localLoader();
 
 	@Override
 	public boolean isUpdatable(File directory) {

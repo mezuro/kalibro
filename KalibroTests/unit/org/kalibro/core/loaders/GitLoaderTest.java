@@ -2,7 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-public class GitLoaderTest extends RepositoryLoaderTestCase {
+public class GitLoaderTest extends LoaderTestCase {
 
 	@Override
 	public List<String> expectedValidationCommands() {

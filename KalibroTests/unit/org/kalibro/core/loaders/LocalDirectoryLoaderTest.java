@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class LocalDirectoryLoaderTest extends RepositoryLoaderTestCase {
+public class LocalDirectoryLoaderTest extends LoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {

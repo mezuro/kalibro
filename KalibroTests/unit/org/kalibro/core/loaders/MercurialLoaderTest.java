@@ -2,7 +2,7 @@ package org.kalibro.core.loaders;
 
 import java.util.List;
 
-public class MercurialLoaderTest extends RepositoryLoaderTestCase {
+public class MercurialLoaderTest extends LoaderTestCase {
 
 	@Override
 	protected List<String> expectedValidationCommands() {

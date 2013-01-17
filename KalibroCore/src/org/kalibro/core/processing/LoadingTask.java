@@ -9,7 +9,7 @@ import org.kalibro.KalibroSettings;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
-import org.kalibro.core.loaders.RepositoryLoader;
+import org.kalibro.core.loaders.Loader;
 
 /**
  * Loads source code from a {@link Repository} to a directory in the server file system.
@@ -20,12 +20,12 @@ class LoadingTask extends ProcessSubtask {
 
 	@Override
 	protected void perform() throws Exception {
-		RepositoryLoader loader = createLoader();
+		Loader loader = createLoader();
 		prepareCodeDirectory(loader);
 		loader.load(repository().getAddress(), codeDirectory());
 	}
 
-	private void prepareCodeDirectory(RepositoryLoader loader) {
+	private void prepareCodeDirectory(Loader loader) {
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
 		File projectDirectory = prepareDirectory(loadDirectory, project().getId(), project().getName());
 		File repositoryDirectory = prepareDirectory(projectDirectory, repository().getId(), repository().getName());
@@ -57,9 +57,9 @@ class LoadingTask extends ProcessSubtask {
 			FileUtils.deleteQuietly(file);
 	}
 
-	private RepositoryLoader createLoader() throws Exception {
+	private Loader createLoader() throws Exception {
 		RepositoryType repositoryType = repository().getType();
 		String loaderName = Identifier.fromConstant(repositoryType.name()).asClassName() + "Loader";
-		return (RepositoryLoader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
+		return (Loader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
 	}
 }

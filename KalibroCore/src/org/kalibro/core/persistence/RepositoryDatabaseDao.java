@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static java.util.concurrent.TimeUnit.DAYS;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import org.kalibro.KalibroException;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
-import org.kalibro.core.loaders.RepositoryLoader;
+import org.kalibro.core.loaders.Loader;
 import org.kalibro.core.persistence.record.RepositoryRecord;
 import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.RepositoryDao;
@@ -47,7 +47,7 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 		try {
 			String typeName = Identifier.fromConstant(type.name()).asClassName();
 			String loaderName = "org.kalibro.core.loaders." + typeName + "Loader";
-			RepositoryLoader loader = (RepositoryLoader) Class.forName(loaderName).newInstance();
+			Loader loader = (Loader) Class.forName(loaderName).newInstance();
 			loader.validate();
 			return true;
 		} catch (Exception exception) {

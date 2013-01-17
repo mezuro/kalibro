@@ -8,7 +8,7 @@ package org.kalibro.core.loaders;
 public class RemoteTarballLoader extends RemoteFileLoader {
 
 	@Override
-	protected RepositoryLoader localLoader() {
+	protected FileLoader localLoader() {
 		return new LocalTarballLoader();
 	}
 }

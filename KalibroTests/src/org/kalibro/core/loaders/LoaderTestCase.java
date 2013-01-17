@@ -8,16 +8,16 @@ import org.junit.Before;
 import org.junit.Test;
 import org.kalibro.tests.UnitTest;
 
-public abstract class RepositoryLoaderTestCase extends UnitTest {
+public abstract class LoaderTestCase extends UnitTest {
 
 	protected static final String ADDRESS = "RepositoryLoaderTestCase address";
 
-	protected RepositoryLoader loader;
+	protected Loader loader;
 
 	@Before
 	public void setUp() throws Exception {
 		Class<?> loaderClass = Class.forName(getClass().getName().replace("Test", ""));
-		loader = (RepositoryLoader) loaderClass.getConstructor().newInstance();
+		loader = (Loader) loaderClass.getConstructor().newInstance();
 	}
 
 	@Test

@@ -13,7 +13,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.*;
 import org.kalibro.core.Environment;
 import org.kalibro.core.loaders.GitLoader;
-import org.kalibro.core.loaders.RepositoryLoader;
+import org.kalibro.core.loaders.Loader;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -34,7 +34,7 @@ public class LoadingTaskTest extends UnitTest {
 	private File loadDirectory;
 	private Project project;
 	private Repository repository;
-	private RepositoryLoader loader;
+	private Loader loader;
 
 	private LoadingTask loadingTask;
 
@@ -48,7 +48,7 @@ public class LoadingTaskTest extends UnitTest {
 	}
 
 	private void mockLoader() throws Exception {
-		loader = mock(RepositoryLoader.class);
+		loader = mock(Loader.class);
 		doReturn(loader).when(loadingTask, "createLoader");
 	}
 
