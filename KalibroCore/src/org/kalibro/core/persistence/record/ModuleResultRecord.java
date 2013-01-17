@@ -33,7 +33,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	private static ModuleResultRecord parentRecord(ModuleResult moduleResult) {
-		if (! moduleResult.hasParent())
+		if (!moduleResult.hasParent())
 			return null;
 		return new ModuleResultRecord(moduleResult.getParent().getId());
 	}

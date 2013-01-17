@@ -57,7 +57,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	}
 
 	private ModuleResultRecord findResultFor(Module module, Long processingId) {
-		if (! exists("WHERE " + moduleCondition(module),
+		if (!exists("WHERE " + moduleCondition(module),
 			"processingId", processingId, "module", moduleParameter(module)))
 			save(new ModuleResultRecord(module, findParentOf(module, processingId), processingId));
 		return getResultFor(module, processingId);

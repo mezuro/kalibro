@@ -69,7 +69,7 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		child.parent = this;
 		children.add(child);
 	}
-	
+
 	public SortedMap<Date, ModuleResult> history() {
 		return DaoFactory.getModuleResultDao().historyOf(id);
 	}
