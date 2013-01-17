@@ -88,10 +88,14 @@ public class Processing extends AbstractEntity<Processing> {
 	private ModuleResult resultsRoot;
 
 	public Processing(Repository repository) {
-		setRepository(repository);
-		setDate(new Date());
+		this(repository, new Date());
+	}
+
+	public Processing(Repository repository, Date date) {
+		this.repository = repository;
+		this.date = date;
+		this.stateTimes = new HashMap<ProcessState, Long>();
 		setState(ProcessState.LOADING);
-		stateTimes = new HashMap<ProcessState, Long>();
 	}
 
 	public Long getId() {
@@ -102,16 +106,8 @@ public class Processing extends AbstractEntity<Processing> {
 		return repository;
 	}
 
-	public void setRepository(Repository repository) {
-		this.repository = repository;
-	}
-
 	public Date getDate() {
 		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public ProcessState getState() {

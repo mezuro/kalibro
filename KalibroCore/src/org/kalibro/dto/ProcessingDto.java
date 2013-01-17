@@ -19,9 +19,8 @@ public abstract class ProcessingDto extends DataTransferObject<Processing> {
 
 	@Override
 	public Processing convert() {
-		Processing processing = new Processing(repository());
+		Processing processing = new Processing(repository(), date());
 		setId(processing, id());
-		processing.setDate(date());
 		convertState(processing);
 		convertStateTimes(processing);
 		processing.setResultsRoot(resultsRootId() == null ? null : resultsRoot());
