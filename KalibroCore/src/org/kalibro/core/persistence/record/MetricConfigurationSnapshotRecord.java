@@ -58,6 +58,10 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationSnapshot", orphanRemoval = true)
 	private Collection<RangeSnapshotRecord> ranges;
 
+	@CascadeOnDelete
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configuration", orphanRemoval = true)
+	private Collection<MetricResultRecord> metricResults;
+
 	public MetricConfigurationSnapshotRecord() {
 		super();
 	}
