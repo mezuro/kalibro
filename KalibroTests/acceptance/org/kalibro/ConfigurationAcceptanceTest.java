@@ -3,6 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.TreeSet;
 
 import javax.persistence.RollbackException;
 
@@ -14,6 +15,7 @@ import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
@@ -93,6 +95,22 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		assertFalse(ReadingGroup.all().isEmpty());
 		configuration.delete();
 		assertFalse(ReadingGroup.all().isEmpty());
+	}
+
+	@Theory
+	public void deleteConfigurationShouldCascadeToMetricConfigurations(SupportedDatabase databaseType) {
+		resetDatabase(databaseType);
+		configuration.save();
+		Long id = configuration.getId();
+
+		configuration.delete();
+		configuration.setMetricConfigurations(new TreeSet<MetricConfiguration>());
+		Whitebox.setInternalState(configuration, "id", id);
+		configuration.save();
+
+		Configuration first = Configuration.all().first();
+		assertEquals(id, first.getId());
+		assertTrue(first.getMetricConfigurations().isEmpty());
 	}
 
 	@Test

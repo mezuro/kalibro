@@ -2,6 +2,8 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
+import java.util.TreeSet;
+
 import javax.persistence.RollbackException;
 
 import org.junit.Before;
@@ -9,6 +11,7 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ProjectAcceptanceTest extends AcceptanceTest {
 
@@ -89,5 +92,21 @@ public class ProjectAcceptanceTest extends AcceptanceTest {
 		assertDeepEquals(set(configuration), Configuration.all());
 		project.delete();
 		assertDeepEquals(set(configuration), Configuration.all());
+	}
+
+	@Theory
+	public void deleteProjectShouldCascadeToRepositories(SupportedDatabase databaseType) {
+		resetDatabase(databaseType);
+		project.save();
+		Long id = project.getId();
+
+		project.delete();
+		project.setRepositories(new TreeSet<Repository>());
+		Whitebox.setInternalState(project, "id", id);
+		project.save();
+
+		Project first = Project.all().first();
+		assertEquals(id, first.getId());
+		assertTrue(first.getRepositories().isEmpty());
 	}
 }

@@ -3,6 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.TreeSet;
 
 import javax.persistence.RollbackException;
 
@@ -14,6 +15,7 @@ import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 
@@ -75,6 +77,22 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 				group.save();
 			}
 		});
+	}
+
+	@Theory
+	public void deleteGroupShouldCascadeToReadings(SupportedDatabase databaseType) {
+		resetDatabase(databaseType);
+		group.save();
+		Long id = group.getId();
+
+		group.delete();
+		group.setReadings(new TreeSet<Reading>());
+		Whitebox.setInternalState(group, "id", id);
+		group.save();
+
+		ReadingGroup first = ReadingGroup.all().first();
+		assertEquals(id, first.getId());
+		assertTrue(first.getReadings().isEmpty());
 	}
 
 	@Test
