@@ -10,7 +10,6 @@ import org.kalibro.tests.AcceptanceTest;
 
 public class ProcessingAcceptanceTest extends AcceptanceTest {
 
-	private static final Long SLEEP = 20000L;
 	private static final String REPOSITORY_NAME = "HelloWorldDirectory";
 
 	private Metric totalCof, cbo, lcom4, sc;
@@ -41,41 +40,32 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		resetDatabase(databaseType);
 		assertFalse(Processing.hasProcessing(repository));
 
-		long start = System.currentTimeMillis();
-		repository.process();
-		verifyProcessOngoing();
-
-		Thread.sleep(SLEEP);
+		long start = process();
 		verifyProcessDone(start);
 		verifyResults();
 
 		// should allow changing repository type
 		repository.setType(RepositoryType.GIT);
 		repository.setAddress(repositoriesDirectory().getAbsolutePath() + "/HelloWorldGit/");
-		repository.process();
-
-		Thread.sleep(SLEEP);
+		start = process();
 		verifyProcessDone(start);
-	}
-
-	private void verifyProcessOngoing() {
-		assertTrue(Processing.hasProcessing(repository));
-		assertFalse(Processing.hasReadyProcessing(repository));
-		assertTrue(Processing.lastProcessingState(repository).isTemporary());
 	}
 
 	private void verifyProcessDone(long start) {
 		processing = Processing.lastProcessing(repository);
 		assertSorted(start, processing.getDate().getTime(), System.currentTimeMillis());
+		if (processing.getState() == ERROR)
+			throw new AssertionError(processing.getStateMessage() + "\n" + processing.getError().getMessage());
 		assertEquals(READY, processing.getState());
-		verifyStateTime(LOADING);
-		verifyStateTime(COLLECTING);
-		verifyStateTime(ANALYZING);
+		long totalTime = System.currentTimeMillis() - start;
+		verifyStateTime(LOADING, totalTime);
+		verifyStateTime(COLLECTING, totalTime);
+		verifyStateTime(ANALYZING, totalTime);
 	}
 
-	private void verifyStateTime(ProcessState state) {
+	private void verifyStateTime(ProcessState state, long totalTime) {
 		Long stateTime = processing.getStateTime(state);
-		assertTrue("Time for " + state + ": " + stateTime, 0 < stateTime && stateTime < SLEEP);
+		assertTrue("Time for " + state + ": " + stateTime, 0 < stateTime && stateTime < totalTime);
 	}
 
 	private void verifyResults() {
@@ -118,8 +108,7 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	public void shouldRetrieveErrorLoading(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.setAddress("/invalid/address/");
-		repository.process();
-		Thread.sleep(SLEEP / 4);
+		process();
 
 		processing = Processing.lastProcessing(repository);
 		assertEquals(ERROR, processing.getState());
@@ -134,8 +123,7 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	public void shouldRetrieveErrorCalculatingCompoundMetric(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		configuration.getCompoundMetrics().first().setScript("return cbo == 0 ? null : cbo;");
-		repository.process();
-		Thread.sleep(SLEEP);
+		process();
 
 		processing = Processing.lastProcessing(repository);
 		assertEquals(READY, processing.getState());
@@ -156,12 +144,21 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		repository.setAddress("/invalid/address/");
 
 		assertFalse(Processing.hasProcessing(repository));
-		repository.process();
-		Thread.sleep(SLEEP / 4);
+		process();
 		assertTrue(Processing.hasProcessing(repository));
 
 		repository.delete();
 		new Project().addRepository(repository);
 		assertFalse(Processing.hasProcessing(repository));
+	}
+
+	private long process() throws InterruptedException {
+		long start = System.currentTimeMillis();
+		repository.process();
+		assertTrue(Processing.hasProcessing(repository));
+		assertTrue(Processing.lastProcessingState(repository).isTemporary());
+		while (Processing.lastProcessingState(repository).isTemporary())
+			Thread.sleep(2000);
+		return start;
 	}
 }

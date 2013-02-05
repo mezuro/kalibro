@@ -11,8 +11,6 @@ import org.kalibro.tests.AcceptanceTest;
 
 public class HistoryAcceptanceTest extends AcceptanceTest {
 
-	private static final Long SLEEP = 20000L;
-
 	private CompoundMetric metric;
 	private Configuration configuration;
 
@@ -83,7 +81,8 @@ public class HistoryAcceptanceTest extends AcceptanceTest {
 		repository.process();
 		repository.process();
 		repository.process();
-		Thread.sleep(SLEEP);
+		while (Processing.lastProcessingState(repository).isTemporary())
+			Thread.sleep(2000);
 		first = Processing.firstProcessing(repository);
 		second = Processing.firstProcessingAfter(first.getDate(), repository);
 		third = Processing.firstProcessingAfter(second.getDate(), repository);
