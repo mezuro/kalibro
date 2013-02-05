@@ -11,8 +11,8 @@ public class StackTraceElementRecordTest extends RecordTest {
 		assertColumn("index", Integer.class).isRequired();
 		assertColumn("declaringClass", String.class).isRequired();
 		assertColumn("methodName", String.class).isRequired();
-		assertColumn("fileName", String.class).isRequired();
-		assertColumn("lineNumber", Integer.class).isRequired();
+		assertColumn("fileName", String.class).isNullable();
+		assertColumn("lineNumber", Integer.class).isNullable();
 	}
 
 	@Test

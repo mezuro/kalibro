@@ -31,10 +31,10 @@ public class StackTraceElementRecord extends StackTraceElementDto {
 	@Column(name = "\"method_name\"", nullable = false)
 	private String methodName;
 
-	@Column(name = "\"file_name\"", nullable = false)
+	@Column(name = "\"file_name\"")
 	private String fileName;
 
-	@Column(name = "\"line_number\"", nullable = false)
+	@Column(name = "\"line_number\"")
 	private Integer lineNumber;
 
 	public StackTraceElementRecord() {
