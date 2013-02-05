@@ -77,10 +77,8 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	}
 
 	private String moduleCondition(Module module) {
-		String processingCondition = "moduleResult.processing.id = :processingId AND ";
-		if (module.getGranularity() == Granularity.SOFTWARE)
-			return processingCondition + "moduleResult.moduleGranularity = :module";
-		return processingCondition + "moduleResult.moduleName = :module";
+		String attribute = (module.getGranularity() == Granularity.SOFTWARE) ? "Granularity" : "Name";
+		return "moduleResult.processing.id = :processingId AND moduleResult.module" + attribute + " = :module";
 	}
 
 	private Object moduleParameter(Module module) {
