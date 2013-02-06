@@ -22,6 +22,7 @@ import org.kalibro.dto.ModuleResultDto;
 public class ModuleResultRecord extends ModuleResultDto {
 
 	private static final String TOKEN = "&#&#&";
+	private static final int MAX_PATH_LENGTH = 2000;
 
 	public static String persistedName(String[] moduleName) {
 		String name = "";
@@ -47,8 +48,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@Lob
-	@Column(name = "\"module_name\"", nullable = false)
+	@Column(length = MAX_PATH_LENGTH, name = "\"module_name\"", nullable = false)
 	private String moduleName;
 
 	@Column(name = "\"module_granularity\"", nullable = false)

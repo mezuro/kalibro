@@ -54,9 +54,7 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	private void verifyProcessDone(long start) {
 		processing = Processing.lastProcessing(repository);
 		assertSorted(start, processing.getDate().getTime(), System.currentTimeMillis());
-		if (processing.getState() == ERROR)
-			throw new AssertionError(processing.getStateMessage() + "\n" + processing.getError().getMessage());
-		assertEquals(READY, processing.getState());
+		assertProcessingReady();
 		long totalTime = System.currentTimeMillis() - start;
 		verifyStateTime(LOADING, totalTime);
 		verifyStateTime(COLLECTING, totalTime);
@@ -126,11 +124,17 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		process();
 
 		processing = Processing.lastProcessing(repository);
-		assertEquals(READY, processing.getState());
+		assertProcessingReady();
 
 		ModuleResult root = processing.getResultsRoot();
 		verifyScError(root);
 		verifyScError(root.getChildren().first());
+	}
+
+	private void assertProcessingReady() {
+		if (processing.getState() == ERROR)
+			throw new AssertionError(processing.getStateMessage() + "\n" + processing.getError().getMessage());
+		assertEquals(READY, processing.getState());
 	}
 
 	private void verifyScError(ModuleResult moduleResult) {

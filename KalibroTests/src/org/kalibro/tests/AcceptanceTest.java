@@ -1,7 +1,7 @@
 package org.kalibro.tests;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
-import static org.kalibro.core.Environment.dotKalibro;
+import static java.util.concurrent.TimeUnit.*;
+import static org.kalibro.core.Environment.*;
 
 import java.io.File;
 
