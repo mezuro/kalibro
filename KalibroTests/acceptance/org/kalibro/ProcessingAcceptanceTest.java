@@ -7,6 +7,7 @@ import static org.kalibro.ProcessState.*;
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ProcessingAcceptanceTest extends AcceptanceTest {
 
@@ -146,13 +147,15 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	public void deleteRepositoryShouldCascadeToProcessings(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.setAddress("/invalid/address/");
-
-		assertFalse(Processing.hasProcessing(repository));
 		process();
 		assertTrue(Processing.hasProcessing(repository));
 
+		Long id = repository.getId();
 		repository.delete();
+		Whitebox.setInternalState(repository, "id", id);
+
 		new Project().addRepository(repository);
+		repository.save();
 		assertFalse(Processing.hasProcessing(repository));
 	}
 
