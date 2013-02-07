@@ -17,8 +17,8 @@ import org.kalibro.dto.ReadingDto;
 public class ReadingRecord extends ReadingDto {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
-	private ReadingGroupRecord group;
+	@JoinColumn(name = "\"reading_group\"", nullable = false, referencedColumnName = "\"id\"")
+	private ReadingGroupRecord readingGroup;
 
 	@Id
 	@GeneratedValue
@@ -51,7 +51,7 @@ public class ReadingRecord extends ReadingDto {
 		label = reading.getLabel();
 		grade = Double.doubleToLongBits(reading.getGrade());
 		color = reading.getColor().getRGB();
-		group = new ReadingGroupRecord(groupId);
+		readingGroup = new ReadingGroupRecord(groupId);
 	}
 
 	@Override

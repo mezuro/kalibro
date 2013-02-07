@@ -29,7 +29,7 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	private String description;
 
 	@CascadeOnDelete
-	@OneToMany(mappedBy = "group", orphanRemoval = true)
+	@OneToMany(mappedBy = "readingGroup", orphanRemoval = true)
 	private Collection<ReadingRecord> readings;
 
 	public ReadingGroupRecord() {
