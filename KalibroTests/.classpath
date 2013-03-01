@@ -10,7 +10,6 @@
 
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Derby 10.9.1" />
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Checkstyle 5.5" />
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Cglib 3.0" />
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.4.1" />

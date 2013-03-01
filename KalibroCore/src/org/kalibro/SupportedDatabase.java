@@ -9,7 +9,6 @@ import java.sql.Driver;
  */
 public enum SupportedDatabase {
 
-	APACHE_DERBY("Apache Derby", org.apache.derby.jdbc.EmbeddedDriver.class),
 	MYSQL("Mysql", com.mysql.jdbc.Driver.class),
 	POSTGRESQL("PostgreSQL", org.postgresql.Driver.class),
 	SQLITE("SQLite", org.sqlite.JDBC.class);
