@@ -17,7 +17,7 @@ public class ProcessingRecordTest extends RecordTest {
 		assertColumn("state", String.class).isRequired();
 		shouldHaveError("error");
 		assertOneToMany("processTimes").cascades().isMappedBy("processing");
-		assertOneToOne("resultsRoot", ModuleResultRecord.class).doesNotCascade();
+		assertColumn("resultsRoot", Long.class).isNullable();
 	}
 
 	@Test
@@ -37,6 +37,7 @@ public class ProcessingRecordTest extends RecordTest {
 
 	@Test
 	public void checkNullResultsRoot() {
-		assertNull(((ProcessingRecord) dto).resultsRootId());
+		ProcessingRecord record = (ProcessingRecord) dto;
+		assertNull(record.resultsRootId());
 	}
 }

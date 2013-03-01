@@ -14,7 +14,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
-import org.kalibro.core.Environment;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -67,12 +66,13 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 	@Test
 	public void shouldSetPersistencePropertiesAccordingToDatabaseSettings() {
 		Map<String, String> properties = capturePersistenceProperties();
-		assertEquals(Environment.ddlGeneration(), properties.get(DDL_GENERATION));
+		assertEquals(CREATE_ONLY, properties.get(DDL_GENERATION));
 		assertEquals(settings.getDatabaseType().getDriverClassName(), properties.get(JDBC_DRIVER));
 		assertEquals(settings.getJdbcUrl(), properties.get(JDBC_URL));
 		assertEquals(settings.getUsername(), properties.get(JDBC_USER));
 		assertEquals(settings.getPassword(), properties.get(JDBC_PASSWORD));
 		assertEquals(PersistenceLogger.class.getName(), properties.get(LOGGING_LOGGER));
+		assertEquals(DatabaseImport.class.getName(), properties.get(SESSION_CUSTOMIZER));
 	}
 
 	@SuppressWarnings("rawtypes")
