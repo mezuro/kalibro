@@ -2,7 +2,7 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
-import java.util.TreeSet;
+import java.util.Set;
 
 import javax.persistence.RollbackException;
 
@@ -10,6 +10,8 @@ import org.junit.Before;
 import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.RepositoryDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
@@ -95,18 +97,18 @@ public class ProjectAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteProjectShouldCascadeToRepositories(SupportedDatabase databaseType) {
+	public void deleteProjectShouldCascadeToRepositories(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		project.save();
-		Long id = project.getId();
+		assertEquals(project.getRepositories(), allRepositories());
 
 		project.delete();
-		project.setRepositories(new TreeSet<Repository>());
-		Whitebox.setInternalState(project, "id", id);
-		project.save();
+		assertTrue(allRepositories().isEmpty());
+	}
 
-		Project first = Project.all().first();
-		assertEquals(id, first.getId());
-		assertTrue(first.getRepositories().isEmpty());
+	private Set<Repository> allRepositories() throws Exception {
+		RepositoryDao repositoryDao = DaoFactory.getRepositoryDao();
+		Set<Repository> allRepositories = Whitebox.invokeMethod(repositoryDao, "all");
+		return allRepositories;
 	}
 }
