@@ -26,7 +26,7 @@ public abstract class RangeDto extends DataTransferObject<Range> {
 
 	public abstract Double end();
 
-	public Reading reading() {
+	protected Reading reading() {
 		return DaoLazyLoader.createProxy(ReadingDao.class, "get", readingId());
 	}
 

@@ -55,8 +55,12 @@ public class ProcessingRecord extends ProcessingDto {
 	}
 
 	public ProcessingRecord(Processing processing) {
+		this(processing, null);
+	}
+
+	public ProcessingRecord(Processing processing, Long repositoryId) {
 		id = processing.getId();
-		repository = processing.getRepository().getId();
+		repository = repositoryId;
 		date = processing.getDate().getTime();
 		setState(processing);
 		setProcessTimes(processing);

@@ -1,10 +1,9 @@
 package org.kalibro.dto;
 
 import org.kalibro.Configuration;
-import org.kalibro.Project;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
-import org.kalibro.dao.ProjectDao;
+import org.kalibro.dao.ConfigurationDao;
 
 /**
  * Data transfer object for {@link Repository}.
@@ -21,7 +20,6 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 		repository.setLicense(license() == null ? "" : license());
 		repository.setProcessPeriod(processPeriod());
 		repository.setConfiguration(configuration());
-		set(repository, "project", project());
 		return repository;
 	}
 
@@ -39,9 +37,9 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 
 	public abstract Integer processPeriod();
 
-	public abstract Configuration configuration();
-
-	public Project project() {
-		return DaoLazyLoader.createProxy(ProjectDao.class, "projectOf", id());
+	private Configuration configuration() {
+		return DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configurationId());
 	}
+
+	public abstract Long configurationId();
 }

@@ -29,7 +29,7 @@ public abstract class ReadingGroupDto extends DataTransferObject<ReadingGroup> {
 
 	public abstract String description();
 
-	public SortedSet<Reading> readings() {
+	protected SortedSet<Reading> readings() {
 		return DaoLazyLoader.createProxy(ReadingDao.class, "readingsOf", id());
 	}
 }

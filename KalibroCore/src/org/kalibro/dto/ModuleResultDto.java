@@ -32,17 +32,17 @@ public abstract class ModuleResultDto extends DataTransferObject<ModuleResult> {
 
 	public abstract Double grade();
 
-	public ModuleResult parent() {
+	private ModuleResult parent() {
 		return DaoLazyLoader.createProxy(ModuleResultDao.class, "get", parentId());
 	}
 
 	public abstract Long parentId();
 
-	public SortedSet<ModuleResult> children() {
+	private SortedSet<ModuleResult> children() {
 		return DaoLazyLoader.createProxy(ModuleResultDao.class, "childrenOf", id());
 	}
 
-	public SortedSet<MetricResult> metricResults() {
+	private SortedSet<MetricResult> metricResults() {
 		return DaoLazyLoader.createProxy(MetricResultDao.class, "metricResultsOf", id());
 	}
 }

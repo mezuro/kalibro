@@ -43,8 +43,8 @@ public class MetricConfigurationXmlTest extends XmlTest {
 	@Test
 	public void shouldRetrieveReadingGroupId() {
 		MetricConfiguration range = (MetricConfiguration) entity;
-		MetricConfigurationXml record = (MetricConfigurationXml) dto;
-		assertEquals(range.getReadingGroup().getId(), record.readingGroupId());
+		MetricConfigurationXml xml = (MetricConfigurationXml) dto;
+		assertEquals(range.getReadingGroup().getId(), xml.readingGroupId());
 	}
 
 	@Test

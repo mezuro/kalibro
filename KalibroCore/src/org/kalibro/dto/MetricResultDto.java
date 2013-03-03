@@ -37,7 +37,7 @@ public abstract class MetricResultDto extends DataTransferObject<MetricResult> {
 
 	public abstract Throwable error();
 
-	public List<Double> descendantResults() {
+	private List<Double> descendantResults() {
 		return DaoLazyLoader.createProxy(MetricResultDao.class, "descendantResultsOf", id());
 	}
 }

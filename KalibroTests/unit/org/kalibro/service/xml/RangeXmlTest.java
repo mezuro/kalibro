@@ -19,8 +19,8 @@ public class RangeXmlTest extends XmlTest {
 	@Test
 	public void shouldRetrieveReadingId() {
 		Range range = (Range) entity;
-		RangeXml record = (RangeXml) dto;
-		assertEquals(range.getReading().getId(), record.readingId());
+		RangeXml xml = (RangeXml) dto;
+		assertEquals(range.getReading().getId(), xml.readingId());
 	}
 
 	@Test

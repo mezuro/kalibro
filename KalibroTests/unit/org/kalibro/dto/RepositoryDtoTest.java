@@ -1,12 +1,14 @@
 package org.kalibro.dto;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
-import org.kalibro.dao.ProjectDao;
+import org.kalibro.dao.ConfigurationDao;
 
 public class RepositoryDtoTest extends AbstractDtoTest<Repository> {
 
@@ -19,7 +21,9 @@ public class RepositoryDtoTest extends AbstractDtoTest<Repository> {
 
 	@Override
 	protected void registerLazyLoadExpectations() throws Exception {
-		whenLazy(ProjectDao.class, "projectOf", entity.getId()).thenReturn(null);
+		Long configurationId = new Random().nextLong();
+		doReturn(configurationId).when(dto, "configurationId");
+		whenLazy(ConfigurationDao.class, "get", configurationId).thenReturn(entity.getConfiguration());
 	}
 
 	@Test

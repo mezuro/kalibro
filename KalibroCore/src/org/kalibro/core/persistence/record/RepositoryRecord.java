@@ -2,11 +2,8 @@ package org.kalibro.core.persistence.record;
 
 import javax.persistence.*;
 
-import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
-import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
@@ -103,7 +100,7 @@ public class RepositoryRecord extends RepositoryDto {
 	}
 
 	@Override
-	public Configuration configuration() {
-		return DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configuration);
+	public Long configurationId() {
+		return configuration;
 	}
 }

@@ -5,7 +5,6 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import org.kalibro.ModuleResult;
 import org.kalibro.Processing;
-import org.kalibro.Repository;
 
 public class ProcessingRecordTest extends RecordTest {
 
@@ -24,7 +23,7 @@ public class ProcessingRecordTest extends RecordTest {
 
 	@Test
 	public void shouldConvertNullErrorForNormalProcessing() {
-		Processing normalProcessing = new Processing(new Repository());
+		Processing normalProcessing = new Processing();
 		assertNull(new ProcessingRecord(normalProcessing).error());
 	}
 

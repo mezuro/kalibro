@@ -1,24 +1,11 @@
 package org.kalibro.core.persistence.record;
 
-import org.junit.runner.RunWith;
-import org.kalibro.Configuration;
-import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.dto.DaoLazyLoader;
-import org.powermock.core.classloader.annotations.PrepareForTest;
-import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
+import static org.junit.Assert.*;
 
-@RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoLazyLoader.class)
+import org.junit.Test;
+import org.kalibro.Repository;
+
 public class RepositoryRecordTest extends RecordTest {
-
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-		Configuration configuration = Whitebox.getInternalState(entity, "configuration");
-		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configuration.getId())).thenReturn(configuration);
-	}
 
 	@Override
 	protected void verifyColumns() {
@@ -31,5 +18,12 @@ public class RepositoryRecordTest extends RecordTest {
 		assertColumn("license", String.class).isNullable();
 		assertColumn("processPeriod", Integer.class).isNullable();
 		assertColumn("configuration", Long.class).isRequired();
+	}
+
+	@Test
+	public void shouldRetrieveConfigurationId() {
+		Repository repository = (Repository) entity;
+		RepositoryRecord record = (RepositoryRecord) dto;
+		assertEquals(repository.getConfiguration().getId(), record.configurationId());
 	}
 }

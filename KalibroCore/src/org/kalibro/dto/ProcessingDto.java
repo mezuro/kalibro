@@ -6,9 +6,7 @@ import java.util.Map;
 import org.kalibro.ModuleResult;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
-import org.kalibro.Repository;
 import org.kalibro.dao.ModuleResultDao;
-import org.kalibro.dao.RepositoryDao;
 
 /**
  * Data transfer object for {@link Processing}.
@@ -19,7 +17,7 @@ public abstract class ProcessingDto extends DataTransferObject<Processing> {
 
 	@Override
 	public Processing convert() {
-		Processing processing = new Processing(repository(), date());
+		Processing processing = new Processing(date());
 		setId(processing, id());
 		convertState(processing);
 		convertStateTimes(processing);
@@ -41,10 +39,6 @@ public abstract class ProcessingDto extends DataTransferObject<Processing> {
 
 	public abstract Long id();
 
-	public Repository repository() {
-		return DaoLazyLoader.createProxy(RepositoryDao.class, "repositoryOf", id());
-	}
-
 	public abstract Date date();
 
 	public abstract ProcessState state();
@@ -53,7 +47,7 @@ public abstract class ProcessingDto extends DataTransferObject<Processing> {
 
 	public abstract Map<ProcessState, Long> stateTimes();
 
-	public ModuleResult resultsRoot() {
+	private ModuleResult resultsRoot() {
 		return DaoLazyLoader.createProxy(ModuleResultDao.class, "get", resultsRootId());
 	}
 
