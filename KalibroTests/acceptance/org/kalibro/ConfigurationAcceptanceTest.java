@@ -3,7 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.RollbackException;
 
@@ -14,8 +14,6 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
@@ -100,20 +98,19 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteConfigurationShouldCascadeToMetricConfigurations(SupportedDatabase databaseType)
-		throws Exception {
+	public void deleteConfigurationShouldCascadeToMetricConfigurations(SupportedDatabase databaseType) {
 		resetDatabase(databaseType);
 		configuration.save();
-		assertEquals(configuration.getMetricConfigurations(), allMetricConfigurations());
+		Long id = configuration.getId();
 
 		configuration.delete();
-		assertTrue(allMetricConfigurations().isEmpty());
-	}
+		configuration.setMetricConfigurations(new TreeSet<MetricConfiguration>());
+		Whitebox.setInternalState(configuration, "id", id);
+		configuration.save();
 
-	private Set<MetricConfiguration> allMetricConfigurations() throws Exception {
-		MetricConfigurationDao metricConfigurationDao = DaoFactory.getMetricConfigurationDao();
-		Set<MetricConfiguration> allMetricConfigurations = Whitebox.invokeMethod(metricConfigurationDao, "all");
-		return allMetricConfigurations;
+		Configuration first = Configuration.all().first();
+		assertEquals(id, first.getId());
+		assertTrue(first.getMetricConfigurations().isEmpty());
 	}
 
 	@Test

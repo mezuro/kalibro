@@ -4,12 +4,8 @@ import static org.junit.Assert.*;
 import static org.kalibro.Granularity.*;
 import static org.kalibro.ProcessState.*;
 
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
-import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
@@ -154,14 +150,13 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		process();
 		assertTrue(Processing.hasProcessing(repository));
 
+		Long id = repository.getId();
 		repository.delete();
-		assertTrue(allProcessings().isEmpty());
-	}
+		Whitebox.setInternalState(repository, "id", id);
 
-	private Set<Processing> allProcessings() throws Exception {
-		ProcessingDao processingDao = DaoFactory.getProcessingDao();
-		Set<Processing> allProcessings = Whitebox.invokeMethod(processingDao, "all");
-		return allProcessings;
+		new Project().addRepository(repository);
+		repository.save();
+		assertFalse(Processing.hasProcessing(repository));
 	}
 
 	private long process() throws InterruptedException {
