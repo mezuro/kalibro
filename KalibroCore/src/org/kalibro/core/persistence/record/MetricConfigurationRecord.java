@@ -1,9 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
@@ -19,6 +16,7 @@ import org.kalibro.dto.MetricConfigurationDto;
 public class MetricConfigurationRecord extends MetricConfigurationDto {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

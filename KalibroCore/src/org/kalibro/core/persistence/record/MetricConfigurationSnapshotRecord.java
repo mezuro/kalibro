@@ -21,6 +21,7 @@ import org.kalibro.dto.MetricConfigurationDto;
 public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

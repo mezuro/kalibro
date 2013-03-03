@@ -13,10 +13,12 @@ import org.kalibro.dto.StackTraceElementDto;
 @Table(name = "\"stack_trace_element\"")
 public class StackTraceElementRecord extends StackTraceElementDto {
 
+	@Id
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "\"throwable\"", nullable = false, referencedColumnName = "\"id\"")
 	private ThrowableRecord throwable;
 
+	@Id
 	@Column(name = "\"index\"", nullable = false)
 	private Integer index;
 

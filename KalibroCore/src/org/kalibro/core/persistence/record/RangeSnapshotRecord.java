@@ -18,6 +18,7 @@ import org.kalibro.dto.RangeDto;
 public class RangeSnapshotRecord extends RangeDto {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

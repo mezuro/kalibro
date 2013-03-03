@@ -32,6 +32,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

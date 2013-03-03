@@ -1,9 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
@@ -18,6 +15,7 @@ import org.kalibro.dto.ReadingGroupDto;
 public class ReadingGroupRecord extends ReadingGroupDto {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

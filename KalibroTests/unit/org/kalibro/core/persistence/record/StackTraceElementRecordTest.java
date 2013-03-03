@@ -1,17 +1,25 @@
 package org.kalibro.core.persistence.record;
 
+import javax.persistence.Id;
+
 import org.junit.Test;
 
 public class StackTraceElementRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
+		verifyComposedId();
 		assertManyToOne("throwable", ThrowableRecord.class).isEager().isRequired();
 		assertColumn("index", Integer.class).isRequired();
 		assertColumn("declaringClass", String.class).isRequired();
 		assertColumn("methodName", String.class).isRequired();
 		assertColumn("fileName", String.class).isNullable();
 		assertColumn("lineNumber", Integer.class).isNullable();
+	}
+
+	private void verifyComposedId() {
+		annotation("throwable", Id.class);
+		annotation("index", Id.class);
 	}
 
 	@Test

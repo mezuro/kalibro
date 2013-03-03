@@ -1,9 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.kalibro.Configuration;
 import org.kalibro.Repository;
@@ -22,6 +19,7 @@ import org.kalibro.dto.RepositoryDto;
 public class RepositoryRecord extends RepositoryDto {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

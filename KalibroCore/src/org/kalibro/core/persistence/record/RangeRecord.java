@@ -1,9 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import org.kalibro.Range;
 import org.kalibro.dto.RangeDto;
@@ -18,6 +15,7 @@ import org.kalibro.dto.RangeDto;
 public class RangeRecord extends RangeDto {
 
 	@Id
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
