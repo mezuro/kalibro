@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
 import org.kalibro.dto.MetricResultDto;
@@ -17,31 +16,29 @@ import org.kalibro.dto.MetricResultDto;
  * @author Carlos Morais
  */
 @Entity(name = "MetricResult")
-@Table(name = "\"METRIC_RESULT\"")
+@Table(name = "\"metric_result\"")
 public class MetricResultRecord extends MetricResultDto {
+
+	@Id
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"module_result\"", nullable = false, referencedColumnName = "\"id\"")
 	private ModuleResultRecord moduleResult;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	private MetricConfigurationSnapshotRecord configuration;
-
-	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	private Long id;
 
 	@Column(name = "\"value\"", nullable = false)
 	private Long value;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "metricResult", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "metricResult")
 	private Collection<DescendantResultRecord> descendantResults;
 
 	public MetricResultRecord() {
@@ -53,9 +50,9 @@ public class MetricResultRecord extends MetricResultDto {
 	}
 
 	public MetricResultRecord(MetricResult metricResult, ModuleResultRecord moduleResult) {
+		id = metricResult.getId();
 		this.moduleResult = moduleResult;
 		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
-		id = metricResult.getId();
 		value = Double.doubleToLongBits(metricResult.getValue());
 		error = metricResult.hasError() ? new ThrowableRecord(metricResult.getError()) : null;
 		setDescendantResults(metricResult.getDescendantResults());

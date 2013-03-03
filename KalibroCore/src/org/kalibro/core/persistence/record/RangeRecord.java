@@ -1,6 +1,9 @@
 package org.kalibro.core.persistence.record;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.kalibro.Range;
 import org.kalibro.dto.RangeDto;
@@ -11,17 +14,15 @@ import org.kalibro.dto.RangeDto;
  * @author Carlos Morais
  */
 @Entity(name = "Range")
-@Table(name = "\"RANGE\"")
+@Table(name = "\"range\"")
 public class RangeRecord extends RangeDto {
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	private MetricConfigurationRecord configuration;
-
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
+
+	@Column(name = "\"configuration\"", nullable = false)
+	private Long configuration;
 
 	@Column(name = "\"beginning\"", nullable = false)
 	private Long beginning;
@@ -29,9 +30,8 @@ public class RangeRecord extends RangeDto {
 	@Column(name = "\"end\"", nullable = false)
 	private Long end;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"reading\"", referencedColumnName = "\"id\"")
-	private ReadingRecord reading;
+	@Column(name = "\"reading\"")
+	private Long reading;
 
 	@Column(name = "\"comments\"")
 	private String comments;
@@ -45,12 +45,12 @@ public class RangeRecord extends RangeDto {
 	}
 
 	public RangeRecord(Range range, Long configurationId) {
-		configuration = new MetricConfigurationRecord(configurationId);
 		id = range.getId();
+		configuration = configurationId;
 		beginning = Double.doubleToLongBits(range.getBeginning());
 		end = Double.doubleToLongBits(range.getEnd());
+		reading = range.hasReading() ? range.getReading().getId() : null;
 		comments = range.getComments();
-		reading = range.hasReading() ? new ReadingRecord(range.getReading().getId()) : null;
 	}
 
 	@Override
@@ -69,12 +69,12 @@ public class RangeRecord extends RangeDto {
 	}
 
 	@Override
-	public String comments() {
-		return comments;
+	public Long readingId() {
+		return reading;
 	}
 
 	@Override
-	public Long readingId() {
-		return reading == null ? null : reading.id();
+	public String comments() {
+		return comments;
 	}
 }

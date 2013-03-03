@@ -11,17 +11,16 @@ import org.kalibro.dto.DataTransferObject;
  * @author Carlos Morais
  */
 @Entity(name = "DescendantResult")
-@Table(name = "\"DESCENDANT_RESULT\"")
+@Table(name = "\"descendant_result\"")
 public class DescendantResultRecord extends DataTransferObject<Double> {
+
+	@Id
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"metric_result\"", nullable = false, referencedColumnName = "\"id\"")
 	private MetricResultRecord metricResult;
-
-	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	private Long id;
 
 	@Column(name = "\"value\"", nullable = false)
 	private Long value;

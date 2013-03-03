@@ -1,10 +1,10 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Collection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Configuration;
 import org.kalibro.dto.ConfigurationDto;
 
@@ -14,11 +14,10 @@ import org.kalibro.dto.ConfigurationDto;
  * @author Carlos Morais
  */
 @Entity(name = "Configuration")
-@Table(name = "\"CONFIGURATION\"")
+@Table(name = "\"configuration\"")
 public class ConfigurationRecord extends ConfigurationDto {
 
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
@@ -28,20 +27,12 @@ public class ConfigurationRecord extends ConfigurationDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@CascadeOnDelete
-	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
-	private Collection<MetricConfigurationRecord> metricConfigurations;
-
 	public ConfigurationRecord() {
 		super();
 	}
 
-	public ConfigurationRecord(Long id) {
-		this.id = id;
-	}
-
 	public ConfigurationRecord(Configuration configuration) {
-		this(configuration.getId());
+		id = configuration.getId();
 		name = configuration.getName();
 		description = configuration.getDescription();
 	}

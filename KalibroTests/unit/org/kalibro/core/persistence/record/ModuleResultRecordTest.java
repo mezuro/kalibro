@@ -11,20 +11,13 @@ public class ModuleResultRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("processing", ProcessingRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("processing", Long.class).isRequired();
 		assertColumn("moduleName", String.class).isRequired();
 		assertColumn("moduleGranularity", String.class).isRequired();
 		assertColumn("grade", Long.class).isNullable();
-		assertManyToOne("parent", ModuleResultRecord.class).isOptional();
-		assertOneToMany("children").doesNotCascade().isMappedBy("parent");
-		assertOneToMany("metricResults").cascades().isMappedBy("moduleResult");
-	}
-
-	@Test
-	public void shouldConstructWithId() {
-		Long id = mock(Long.class);
-		assertSame(id, new ModuleResultRecord(id).id());
+		assertColumn("parent", Long.class).isNullable();
+		assertOneToMany("metricResults").cascades().isMappedBy("moduleResult").isLazy();
 	}
 
 	@Test

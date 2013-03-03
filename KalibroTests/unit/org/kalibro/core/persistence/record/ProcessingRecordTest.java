@@ -11,12 +11,14 @@ public class ProcessingRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("repository", RepositoryRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("repository", Long.class).isRequired();
 		assertColumn("date", Long.class).isRequired();
 		assertColumn("state", String.class).isRequired();
-		shouldHaveError("error");
-		assertOneToMany("processTimes").cascades().isMappedBy("processing");
+		assertOneToOne("error", ThrowableRecord.class).isEager().cascades().isOptional();
+		assertColumn("loadingTime", Long.class).isNullable();
+		assertColumn("collectingTime", Long.class).isNullable();
+		assertColumn("analyzingTime", Long.class).isNullable();
 		assertColumn("resultsRoot", Long.class).isNullable();
 	}
 

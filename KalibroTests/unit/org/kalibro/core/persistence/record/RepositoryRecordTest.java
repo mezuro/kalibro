@@ -15,23 +15,21 @@ public class RepositoryRecordTest extends RecordTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		Long id = Whitebox.getInternalState(entity, "id");
 		Configuration configuration = Whitebox.getInternalState(entity, "configuration");
 		mockStatic(DaoLazyLoader.class);
-		when(DaoLazyLoader.createProxy(ConfigurationDao.class, "configurationOf", id)).thenReturn(configuration);
+		when(DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configuration.getId())).thenReturn(configuration);
 	}
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("project", ProjectRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("project", Long.class).isRequired();
 		assertColumn("name", String.class).isRequired();
 		assertColumn("type", String.class).isRequired();
 		assertColumn("address", String.class).isRequired();
 		assertColumn("description", String.class).isNullable();
 		assertColumn("license", String.class).isNullable();
 		assertColumn("processPeriod", Integer.class).isNullable();
-		assertManyToOne("configuration", ConfigurationRecord.class).isRequired();
-		assertOneToMany("processings").doesNotCascade().isMappedBy("repository");
+		assertColumn("configuration", Long.class).isRequired();
 	}
 }

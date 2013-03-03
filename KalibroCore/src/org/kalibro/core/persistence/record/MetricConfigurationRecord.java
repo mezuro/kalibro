@@ -1,10 +1,10 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Collection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dto.MetricConfigurationDto;
@@ -15,17 +15,15 @@ import org.kalibro.dto.MetricConfigurationDto;
  * @author Carlos Morais
  */
 @Entity(name = "MetricConfiguration")
-@Table(name = "\"METRIC_CONFIGURATION\"")
+@Table(name = "\"metric_configuration\"")
 public class MetricConfigurationRecord extends MetricConfigurationDto {
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	private ConfigurationRecord configuration;
-
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
+
+	@Column(name = "\"configuration\"", nullable = false)
+	private Long configuration;
 
 	@Column(name = "\"code\"", nullable = false)
 	private String code;
@@ -51,20 +49,11 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	@Column(name = "\"metric_origin\"", nullable = false)
 	private String metricOrigin;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"reading_group\"", referencedColumnName = "\"id\"")
-	private ReadingGroupRecord readingGroup;
-
-	@CascadeOnDelete
-	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
-	private Collection<RangeRecord> ranges;
+	@Column(name = "\"reading_group\"")
+	private Long readingGroup;
 
 	public MetricConfigurationRecord() {
 		super();
-	}
-
-	public MetricConfigurationRecord(Long id) {
-		this.id = id;
 	}
 
 	public MetricConfigurationRecord(MetricConfiguration metricConfiguration) {
@@ -72,13 +61,13 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 	}
 
 	public MetricConfigurationRecord(MetricConfiguration entity, Long configurationId) {
-		this(entity.getId());
-		configuration = new ConfigurationRecord(configurationId);
+		id = entity.getId();
+		configuration = configurationId;
 		code = entity.getCode();
 		weight = Double.doubleToLongBits(entity.getWeight());
 		aggregationForm = entity.getAggregationForm().name();
-		readingGroup = entity.hasReadingGroup() ? new ReadingGroupRecord(entity.getReadingGroup().getId()) : null;
 		setMetric(entity.getMetric(), entity.getBaseTool());
+		readingGroup = entity.hasReadingGroup() ? entity.getReadingGroup().getId() : null;
 	}
 
 	private void setMetric(Metric metric, BaseTool baseTool) {
@@ -133,6 +122,6 @@ public class MetricConfigurationRecord extends MetricConfigurationDto {
 
 	@Override
 	public Long readingGroupId() {
-		return readingGroup == null ? null : readingGroup.id();
+		return readingGroup;
 	}
 }

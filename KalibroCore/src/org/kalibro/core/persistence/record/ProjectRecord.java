@@ -1,10 +1,10 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Collection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Project;
 import org.kalibro.dto.ProjectDto;
 
@@ -14,11 +14,10 @@ import org.kalibro.dto.ProjectDto;
  * @author Carlos Morais
  */
 @Entity(name = "Project")
-@Table(name = "\"PROJECT\"")
+@Table(name = "\"project\"")
 public class ProjectRecord extends ProjectDto {
 
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
@@ -28,20 +27,12 @@ public class ProjectRecord extends ProjectDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@CascadeOnDelete
-	@OneToMany(mappedBy = "project", orphanRemoval = true)
-	private Collection<RepositoryRecord> repositories;
-
 	public ProjectRecord() {
 		super();
 	}
 
-	public ProjectRecord(Long id) {
-		this.id = id;
-	}
-
 	public ProjectRecord(Project project) {
-		this(project.getId());
+		id = project.getId();
 		name = project.getName();
 		description = project.getDescription();
 	}

@@ -2,7 +2,10 @@ package org.kalibro.core.persistence.record;
 
 import java.awt.Color;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 import org.kalibro.Reading;
 import org.kalibro.dto.ReadingDto;
@@ -13,17 +16,15 @@ import org.kalibro.dto.ReadingDto;
  * @author Carlos Morais
  */
 @Entity(name = "Reading")
-@Table(name = "\"READING\"")
+@Table(name = "\"reading\"")
 public class ReadingRecord extends ReadingDto {
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
-	private ReadingGroupRecord group;
-
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
+
+	@Column(name = "\"group\"", nullable = false)
+	private Long group;
 
 	@Column(name = "\"label\"", nullable = false)
 	private String label;
@@ -38,20 +39,16 @@ public class ReadingRecord extends ReadingDto {
 		super();
 	}
 
-	public ReadingRecord(Long id) {
-		this.id = id;
-	}
-
 	public ReadingRecord(Reading reading) {
 		this(reading, null);
 	}
 
 	public ReadingRecord(Reading reading, Long groupId) {
-		this(reading.getId());
+		this.id = reading.getId();
 		label = reading.getLabel();
 		grade = Double.doubleToLongBits(reading.getGrade());
 		color = reading.getColor().getRGB();
-		group = new ReadingGroupRecord(groupId);
+		group = groupId;
 	}
 
 	@Override

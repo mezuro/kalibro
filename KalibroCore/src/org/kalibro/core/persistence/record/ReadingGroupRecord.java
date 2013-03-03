@@ -1,10 +1,10 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Collection;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
-import javax.persistence.*;
-
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.ReadingGroup;
 import org.kalibro.dto.ReadingGroupDto;
 
@@ -14,11 +14,10 @@ import org.kalibro.dto.ReadingGroupDto;
  * @author Carlos Morais
  */
 @Entity(name = "ReadingGroup")
-@Table(name = "\"READING_GROUP\"")
+@Table(name = "\"reading_group\"")
 public class ReadingGroupRecord extends ReadingGroupDto {
 
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
@@ -28,20 +27,12 @@ public class ReadingGroupRecord extends ReadingGroupDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@CascadeOnDelete
-	@OneToMany(mappedBy = "readingGroup", orphanRemoval = true)
-	private Collection<ReadingRecord> readings;
-
 	public ReadingGroupRecord() {
 		super();
 	}
 
-	public ReadingGroupRecord(Long id) {
-		this.id = id;
-	}
-
 	public ReadingGroupRecord(ReadingGroup readingGroup) {
-		this(readingGroup.getId());
+		id = readingGroup.getId();
 		name = readingGroup.getName();
 		description = readingGroup.getDescription();
 	}

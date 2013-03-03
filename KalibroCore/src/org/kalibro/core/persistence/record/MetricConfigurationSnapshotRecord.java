@@ -7,7 +7,6 @@ import java.util.TreeSet;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dto.MetricConfigurationDto;
@@ -18,17 +17,15 @@ import org.kalibro.dto.MetricConfigurationDto;
  * @author Carlos Morais
  */
 @Entity(name = "MetricConfigurationSnapshot")
-@Table(name = "\"METRIC_CONFIGURATION_SNAPSHOT\"")
+@Table(name = "\"metric_configuration_snapshot\"")
 public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
-	private ProcessingRecord processing;
-
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
+
+	@Column(name = "\"processing\"", nullable = false)
+	private Long processing;
 
 	@Column(name = "\"code\"", nullable = false)
 	private String code;
@@ -54,13 +51,8 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	@Column(name = "\"metric_origin\"", nullable = false)
 	private String metricOrigin;
 
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configurationSnapshot", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "configurationSnapshot")
 	private Collection<RangeSnapshotRecord> ranges;
-
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "configuration", orphanRemoval = true)
-	private Collection<MetricResultRecord> metricResults;
 
 	public MetricConfigurationSnapshotRecord() {
 		super();
@@ -74,7 +66,7 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 		this(metricConfiguration, null);
 	}
 
-	public MetricConfigurationSnapshotRecord(MetricConfiguration metricConfiguration, ProcessingRecord processing) {
+	public MetricConfigurationSnapshotRecord(MetricConfiguration metricConfiguration, Long processing) {
 		this.processing = processing;
 		code = metricConfiguration.getCode();
 		weight = Double.doubleToLongBits(metricConfiguration.getWeight());

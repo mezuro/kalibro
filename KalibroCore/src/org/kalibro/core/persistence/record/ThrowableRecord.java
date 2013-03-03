@@ -1,11 +1,10 @@
 package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.dto.ThrowableDto;
 
 /**
@@ -14,30 +13,25 @@ import org.kalibro.dto.ThrowableDto;
  * @author Carlos Morais
  */
 @Entity(name = "Throwable")
-@Table(name = "\"THROWABLE\"")
+@Table(name = "\"throwable\"")
 public class ThrowableRecord extends ThrowableDto {
 
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@Lob
 	@Column(name = "\"target_string\"", nullable = false)
 	private String targetString;
 
-	@Lob
 	@Column(name = "\"message\"")
 	private String message;
 
-	@CascadeOnDelete
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "\"cause\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord cause;
 
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
-	private Collection<StackTraceElementRecord> stackTrace;
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "throwable")
+	private List<StackTraceElementRecord> stackTrace;
 
 	public ThrowableRecord() {
 		super();

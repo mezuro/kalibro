@@ -10,17 +10,12 @@ import org.kalibro.dto.StackTraceElementDto;
  * @author Carlos Morais
  */
 @Entity(name = "StackTraceElement")
-@Table(name = "\"STACK_TRACE_ELEMENT\"")
+@Table(name = "\"stack_trace_element\"")
 public class StackTraceElementRecord extends StackTraceElementDto {
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"throwable\"", referencedColumnName = "\"id\"")
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "\"throwable\"", nullable = false, referencedColumnName = "\"id\"")
 	private ThrowableRecord throwable;
-
-	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	private Long id;
 
 	@Column(name = "\"index\"", nullable = false)
 	private Integer index;

@@ -6,8 +6,7 @@ public class StackTraceElementRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("throwable", ThrowableRecord.class);
-		shouldHaveId();
+		assertManyToOne("throwable", ThrowableRecord.class).isEager().doesNotCascade().isRequired();
 		assertColumn("index", Integer.class).isRequired();
 		assertColumn("declaringClass", String.class).isRequired();
 		assertColumn("methodName", String.class).isRequired();

@@ -1,10 +1,11 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.*;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.ModuleResult;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
@@ -16,17 +17,15 @@ import org.kalibro.dto.ProcessingDto;
  * @author Carlos Morais
  */
 @Entity(name = "Processing")
-@Table(name = "\"PROCESSING\"")
+@Table(name = "\"processing\"")
 public class ProcessingRecord extends ProcessingDto {
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"repository\"", nullable = false, referencedColumnName = "\"id\"")
-	private RepositoryRecord repository;
-
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
+
+	@Column(name = "\"repository\"", nullable = false)
+	private Long repository;
 
 	@Column(name = "\"date\"", nullable = false)
 	private Long date;
@@ -34,32 +33,29 @@ public class ProcessingRecord extends ProcessingDto {
 	@Column(name = "\"state\"", nullable = false)
 	private String state;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "processing", orphanRemoval = true)
-	private Collection<ProcessTimeRecord> processTimes;
+	@Column(name = "\"loading_time\"")
+	private Long loadingTime;
+
+	@Column(name = "\"collecting_time\"")
+	private Long collectingTime;
+
+	@Column(name = "\"analyzing_time\"")
+	private Long analyzingTime;
 
 	@Column(name = "\"results_root\"")
 	private Long resultsRoot;
-
-	@CascadeOnDelete
-	@OneToMany(mappedBy = "processing", orphanRemoval = true)
-	private Collection<MetricConfigurationSnapshotRecord> configurations;
 
 	public ProcessingRecord() {
 		super();
 	}
 
-	public ProcessingRecord(Long id) {
-		this.id = id;
-	}
-
 	public ProcessingRecord(Processing processing) {
-		this(processing.getId());
-		repository = new RepositoryRecord(processing.getRepository().getId());
+		id = processing.getId();
+		repository = processing.getRepository().getId();
 		date = processing.getDate().getTime();
 		setState(processing);
 		setProcessTimes(processing);
@@ -75,12 +71,9 @@ public class ProcessingRecord extends ProcessingDto {
 	}
 
 	private void setProcessTimes(Processing processing) {
-		processTimes = new ArrayList<ProcessTimeRecord>();
-		for (ProcessState passedState : ProcessState.values()) {
-			Long time = processing.getStateTime(passedState);
-			if (time != null)
-				processTimes.add(new ProcessTimeRecord(passedState, time, this));
-		}
+		loadingTime = processing.getStateTime(ProcessState.LOADING);
+		collectingTime = processing.getStateTime(ProcessState.COLLECTING);
+		analyzingTime = processing.getStateTime(ProcessState.ANALYZING);
 	}
 
 	private void setResultsRoot(ModuleResult resultsRoot) {
@@ -110,9 +103,15 @@ public class ProcessingRecord extends ProcessingDto {
 	@Override
 	public Map<ProcessState, Long> stateTimes() {
 		Map<ProcessState, Long> map = new HashMap<ProcessState, Long>();
-		for (ProcessTimeRecord processTime : processTimes)
-			map.put(processTime.state(), processTime.time());
+		putTime(map, ProcessState.LOADING, loadingTime);
+		putTime(map, ProcessState.COLLECTING, collectingTime);
+		putTime(map, ProcessState.ANALYZING, analyzingTime);
 		return map;
+	}
+
+	private void putTime(Map<ProcessState, Long> map, ProcessState passedState, Long time) {
+		if (time != null)
+			map.put(passedState, time);
 	}
 
 	@Override

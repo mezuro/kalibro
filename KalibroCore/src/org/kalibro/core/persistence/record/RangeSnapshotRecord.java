@@ -14,17 +14,16 @@ import org.kalibro.dto.RangeDto;
  * @author Carlos Morais
  */
 @Entity(name = "RangeSnapshot")
-@Table(name = "\"RANGE_SNAPSHOT\"")
+@Table(name = "\"range_snapshot\"")
 public class RangeSnapshotRecord extends RangeDto {
+
+	@Id
+	@Column(name = "\"id\"", nullable = false)
+	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration_snapshot\"", nullable = false, referencedColumnName = "\"id\"")
 	private MetricConfigurationSnapshotRecord configurationSnapshot;
-
-	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	private Long id;
 
 	@Column(name = "\"beginning\"", nullable = false)
 	private Long beginning;

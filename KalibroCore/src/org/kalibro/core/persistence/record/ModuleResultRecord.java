@@ -5,7 +5,6 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Granularity;
 import org.kalibro.MetricResult;
 import org.kalibro.Module;
@@ -18,11 +17,10 @@ import org.kalibro.dto.ModuleResultDto;
  * @author Carlos Morais
  */
 @Entity(name = "ModuleResult")
-@Table(name = "\"MODULE_RESULT\"")
+@Table(name = "\"module_result\"")
 public class ModuleResultRecord extends ModuleResultDto {
 
-	private static final String TOKEN = "&#&#&";
-	private static final int MAX_PATH_LENGTH = 2000;
+	private static final String TOKEN = "###";
 
 	public static String persistedName(String[] moduleName) {
 		String name = "";
@@ -33,22 +31,14 @@ public class ModuleResultRecord extends ModuleResultDto {
 		return name;
 	}
 
-	private static ModuleResultRecord parentRecord(ModuleResult moduleResult) {
-		if (!moduleResult.hasParent())
-			return null;
-		return new ModuleResultRecord(moduleResult.getParent().getId());
-	}
-
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
-	private ProcessingRecord processing;
-
 	@Id
-	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false)
 	private Long id;
 
-	@Column(length = MAX_PATH_LENGTH, name = "\"module_name\"", nullable = false)
+	@Column(name = "\"processing\"", nullable = false)
+	private Long processing;
+
+	@Column(name = "\"module_name\"", nullable = false)
 	private String moduleName;
 
 	@Column(name = "\"module_granularity\"", nullable = false)
@@ -57,24 +47,14 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"grade\"")
 	private Long grade;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"parent\"", referencedColumnName = "\"id\"")
-	private ModuleResultRecord parent;
+	@Column(name = "\"parent\"")
+	private Long parent;
 
-	@CascadeOnDelete
-	@OneToMany(mappedBy = "parent", orphanRemoval = true)
-	private Collection<ModuleResultRecord> children;
-
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleResult", orphanRemoval = true)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "moduleResult")
 	private Collection<MetricResultRecord> metricResults;
 
 	public ModuleResultRecord() {
 		super();
-	}
-
-	public ModuleResultRecord(Long id) {
-		this.id = id;
 	}
 
 	public ModuleResultRecord(ModuleResult moduleResult) {
@@ -82,21 +62,25 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	public ModuleResultRecord(ModuleResult moduleResult, Long processingId) {
-		this(moduleResult, parentRecord(moduleResult), processingId);
+		this(moduleResult, null, processingId);
 	}
 
-	public ModuleResultRecord(ModuleResult moduleResult, ModuleResultRecord parent, Long processingId) {
-		this(moduleResult.getModule(), parent, processingId);
+	public ModuleResultRecord(ModuleResult moduleResult, Long parentId, Long processingId) {
 		id = moduleResult.getId();
+		processing = processingId;
+		moduleName = persistedName(moduleResult.getModule().getName());
+		moduleGranularity = moduleResult.getModule().getGranularity().name();
 		grade = Double.doubleToLongBits(moduleResult.getGrade());
+		parent = parentId;
 		setMetricResults(moduleResult.getMetricResults());
 	}
 
-	public ModuleResultRecord(Module module, ModuleResultRecord parent, Long processingId) {
-		this.parent = parent;
-		processing = new ProcessingRecord(processingId);
+	@Deprecated
+	public ModuleResultRecord(Module module, ModuleResultRecord parentRecord, Long processingId) {
+		processing = processingId;
 		moduleName = persistedName(module.getName());
 		moduleGranularity = module.getGranularity().name();
+		parent = parentRecord.id();
 	}
 
 	private void setMetricResults(Collection<MetricResult> results) {
@@ -122,6 +106,6 @@ public class ModuleResultRecord extends ModuleResultDto {
 
 	@Override
 	public Long parentId() {
-		return parent == null ? null : parent.id();
+		return parent;
 	}
 }
