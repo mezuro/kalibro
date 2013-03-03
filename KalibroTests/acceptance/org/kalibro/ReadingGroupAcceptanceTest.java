@@ -3,7 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.util.TreeSet;
+import java.util.Set;
 
 import javax.persistence.RollbackException;
 
@@ -14,6 +14,8 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ReadingDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
@@ -80,19 +82,19 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteGroupShouldCascadeToReadings(SupportedDatabase databaseType) {
+	public void deleteGroupShouldCascadeToReadings(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		group.save();
-		Long id = group.getId();
+		assertEquals(group.getReadings(), allReadings());
 
 		group.delete();
-		group.setReadings(new TreeSet<Reading>());
-		Whitebox.setInternalState(group, "id", id);
-		group.save();
+		assertTrue(allReadings().isEmpty());
+	}
 
-		ReadingGroup first = ReadingGroup.all().first();
-		assertEquals(id, first.getId());
-		assertTrue(first.getReadings().isEmpty());
+	private Set<Reading> allReadings() throws Exception {
+		ReadingDao readingDao = DaoFactory.getReadingDao();
+		Set<Reading> allReadings = Whitebox.invokeMethod(readingDao, "all");
+		return allReadings;
 	}
 
 	@Test

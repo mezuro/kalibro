@@ -3,10 +3,16 @@ package org.kalibro;
 import org.analizo.AnalizoMetricCollector;
 import org.checkstyle.CheckstyleMetricCollector;
 import org.cvsanaly.CvsAnalyMetricCollector;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.kalibro.tests.AcceptanceTest;
 
 public class BaseToolAcceptanceTest extends AcceptanceTest {
+
+	@BeforeClass
+	public static void prepareSettings() {
+		prepareSettings(SupportedDatabase.MYSQL);
+	}
 
 	@Test
 	public void shouldGetBaseToolNames() {
