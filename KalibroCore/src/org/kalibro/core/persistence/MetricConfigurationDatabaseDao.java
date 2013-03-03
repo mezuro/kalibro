@@ -23,9 +23,8 @@ class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, Me
 
 	@Override
 	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
-		String where = "metricConfiguration.configuration.id = :configurationId";
-		TypedQuery<MetricConfigurationRecord> query = createRecordQuery(where);
-		query.setParameter("configurationId", configurationId);
+		TypedQuery<MetricConfigurationRecord> query = createRecordQuery("metricConfiguration.configuration = :cId");
+		query.setParameter("cId", configurationId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
 

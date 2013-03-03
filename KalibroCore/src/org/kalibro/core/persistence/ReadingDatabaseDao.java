@@ -22,7 +22,7 @@ class ReadingDatabaseDao extends DatabaseDao<Reading, ReadingRecord> implements 
 
 	@Override
 	public SortedSet<Reading> readingsOf(Long groupId) {
-		TypedQuery<ReadingRecord> query = createRecordQuery("reading.group.id = :groupId");
+		TypedQuery<ReadingRecord> query = createRecordQuery("reading.group = :groupId");
 		query.setParameter("groupId", groupId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}

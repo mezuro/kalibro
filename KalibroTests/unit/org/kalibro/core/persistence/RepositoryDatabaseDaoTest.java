@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
-import static org.kalibro.RepositoryType.LOCAL_DIRECTORY;
+import static org.kalibro.RepositoryType.*;
 
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
@@ -43,19 +43,10 @@ public class RepositoryDatabaseDaoTest extends
 	}
 
 	@Test
-	public void shouldGetRepositoryOfProcessing() {
-		assertSame(entity, dao.repositoryOf(ID));
-
-		String from = "Processing processing JOIN processing.repository repository";
-		verify(dao).createRecordQuery(from, "processing.id = :processingId");
-		verify(query).setParameter("processingId", ID);
-	}
-
-	@Test
 	public void shouldGetRepositoriesOfProject() {
 		assertDeepEquals(set(entity), dao.repositoriesOf(PROJECT_ID));
 
-		verify(dao).createRecordQuery("repository.project.id = :projectId");
+		verify(dao).createRecordQuery("repository.project = :projectId");
 		verify(query).setParameter("projectId", PROJECT_ID);
 	}
 

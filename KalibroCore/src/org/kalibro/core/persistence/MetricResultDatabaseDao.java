@@ -42,12 +42,12 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
 		ModuleResult moduleResult = new ModuleResultDatabaseDao().get(moduleResultId);
 		String moduleName = ModuleResultRecord.persistedName(moduleResult.getModule().getName());
+		String repositoryId = "(SELECT p.repository FROM ModuleResult mor, Processing p " +
+			"WHERE p.id = mor.processing AND mor.id = :moduleResultId)";
 		TypedQuery<Object[]> query = createQuery("SELECT processing.date, metricResult " +
-			"FROM MetricResult metricResult JOIN metricResult.moduleResult.processing processing " +
-			"WHERE metricResult.configuration.metricName = :metricName " +
-			"AND metricResult.moduleResult.moduleName = :moduleName AND processing.repository.id = " +
-			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :moduleResultId)",
-			Object[].class);
+			"FROM MetricResult metricResult JOIN metricResult.moduleResult moduleResult, Processing processing " +
+			"WHERE processing.id = moduleResult.processing AND metricResult.configuration.metricName = :metricName " +
+			"AND moduleResult.moduleName = :moduleName AND processing.repository = " + repositoryId, Object[].class);
 		query.setParameter("metricName", metricName);
 		query.setParameter("moduleName", moduleName);
 		query.setParameter("moduleResultId", moduleResultId);

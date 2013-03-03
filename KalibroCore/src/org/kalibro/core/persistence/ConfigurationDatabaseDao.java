@@ -21,14 +21,6 @@ public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, Configu
 	}
 
 	@Override
-	public Configuration configurationOf(Long repositoryId) {
-		String from = "Repository repository JOIN repository.configuration configuration";
-		TypedQuery<ConfigurationRecord> query = createRecordQuery(from, "repository.id = :repositoryId");
-		query.setParameter("repositoryId", repositoryId);
-		return query.getSingleResult().convert();
-	}
-
-	@Override
 	public Long save(Configuration configuration) {
 		return save(new ConfigurationRecord(configuration)).id();
 	}
@@ -36,7 +28,7 @@ public class ConfigurationDatabaseDao extends DatabaseDao<Configuration, Configu
 	public Configuration snapshotFor(Long processingId) {
 		Configuration configuration = new Configuration();
 		TypedQuery<MetricConfigurationSnapshotRecord> query = createQuery(
-			"SELECT snapshot FROM MetricConfigurationSnapshot snapshot WHERE snapshot.processing.id = :processingId",
+			"SELECT snapshot FROM MetricConfigurationSnapshot snapshot WHERE snapshot.processing = :processingId",
 			MetricConfigurationSnapshotRecord.class);
 		query.setParameter("processingId", processingId);
 		configuration.setMetricConfigurations(DataTransferObject.toSortedSet(query.getResultList()));

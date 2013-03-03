@@ -24,8 +24,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 
 	@Override
 	public SortedSet<ModuleResult> childrenOf(Long moduleResultId) {
-		String from = "ModuleResult parent JOIN parent.children moduleResult";
-		TypedQuery<ModuleResultRecord> query = createRecordQuery(from, "parent.id = :parentId");
+		TypedQuery<ModuleResultRecord> query = createRecordQuery("moduleResult.parent = :parentId");
 		query.setParameter("parentId", moduleResultId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
@@ -33,9 +32,11 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 	@Override
 	public SortedMap<Date, ModuleResult> historyOf(Long moduleResultId) {
 		String moduleName = ModuleResultRecord.persistedName(get(moduleResultId).getModule().getName());
-		TypedQuery<Object[]> query = createQuery("SELECT processing.date, result FROM ModuleResult result " +
-			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = " +
-			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :resultId)", Object[].class);
+		String repositoryId = "(SELECT p.repository FROM ModuleResult mr, Processing p " +
+			"WHERE p.id = mr.processing AND mr.id = :moduleResultId)";
+		TypedQuery<Object[]> query = createQuery("SELECT processing.date, result " +
+			"FROM ModuleResult result, Processing processing WHERE processing.id = result.processing " +
+			"AND result.moduleName = :moduleName AND processing.repository = " + repositoryId, Object[].class);
 		query.setParameter("moduleName", moduleName);
 		query.setParameter("resultId", moduleResultId);
 		List<Object[]> results = query.getResultList();
@@ -80,7 +81,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 
 	private String moduleCondition(Module module) {
 		String attribute = (module.getGranularity() == Granularity.SOFTWARE) ? "Granularity" : "Name";
-		return "moduleResult.processing.id = :processingId AND moduleResult.module" + attribute + " = :module";
+		return "moduleResult.processing = :processingId AND moduleResult.module" + attribute + " = :module";
 	}
 
 	private Object moduleParameter(Module module) {

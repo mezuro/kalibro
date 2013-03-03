@@ -49,12 +49,7 @@ public class MetricResultDatabaseDaoTest extends
 	public void shouldGetMetricResultHistory() throws Exception {
 		mockModuleResult("org");
 		TypedQuery<Object[]> historyQuery = mock(TypedQuery.class);
-		doReturn(historyQuery).when(dao).createQuery("SELECT processing.date, metricResult " +
-			"FROM MetricResult metricResult JOIN metricResult.moduleResult.processing processing " +
-			"WHERE metricResult.configuration.metricName = :metricName " +
-			"AND metricResult.moduleResult.moduleName = :moduleName AND processing.repository.id = " +
-			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :moduleResultId)",
-			Object[].class);
+		doReturn(historyQuery).when(dao).createQuery(anyString(), eq(Object[].class));
 		List<Object[]> results = new ArrayList<Object[]>();
 		results.add(new Object[]{TIME, record});
 		when(historyQuery.getResultList()).thenReturn(results);

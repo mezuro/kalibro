@@ -27,7 +27,7 @@ public class ModuleResultDatabaseDaoTest extends
 	public void shouldGetChildren() {
 		assertDeepEquals(set(entity), dao.childrenOf(ID));
 
-		verify(dao).createRecordQuery("ModuleResult parent JOIN parent.children moduleResult", "parent.id = :parentId");
+		verify(dao).createRecordQuery("moduleResult.parent = :parentId");
 		verify(query).setParameter("parentId", ID);
 	}
 
@@ -36,9 +36,7 @@ public class ModuleResultDatabaseDaoTest extends
 		Module module = mockModule();
 
 		TypedQuery<Object[]> historyQuery = mock(TypedQuery.class);
-		doReturn(historyQuery).when(dao).createQuery("SELECT processing.date, result FROM ModuleResult result " +
-			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = " +
-			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :resultId)", Object[].class);
+		doReturn(historyQuery).when(dao).createQuery(anyString(), eq(Object[].class));
 
 		List<Object[]> results = new ArrayList<Object[]>();
 		results.add(new Object[]{TIME, record});
@@ -70,8 +68,8 @@ public class ModuleResultDatabaseDaoTest extends
 	@Test
 	public void shouldPrepareResultForModule() throws Exception {
 		Module module = new Module(Granularity.PACKAGE, "org");
-		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :module";
-		String where2 = "moduleResult.processing.id = :processingId AND moduleResult.moduleGranularity = :module";
+		String where = "moduleResult.processing = :processingId AND moduleResult.moduleName = :module";
+		String where2 = "moduleResult.processing = :processingId AND moduleResult.moduleGranularity = :module";
 		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "module", "org");
 		doReturn(false).when(dao).exists("WHERE " + where2, "processingId", ID, "module", "SOFTWARE");
 		prepareQuery(where);
