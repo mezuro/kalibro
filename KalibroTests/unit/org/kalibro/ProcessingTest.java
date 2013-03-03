@@ -15,6 +15,7 @@ import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
@@ -33,7 +34,8 @@ public class ProcessingTest extends UnitTest {
 		mockDao();
 		repository = mock(Repository.class);
 		when(repository.getId()).thenReturn(REPOSITORY_ID);
-		processing = new Processing(repository);
+		processing = new Processing();
+		Whitebox.setInternalState(processing, "repository", repository);
 	}
 
 	private void mockDao() {
@@ -129,34 +131,26 @@ public class ProcessingTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSortByRepositoryThenDate() {
-		Processing first = withRepositoryDate("A", 3);
-		Processing second = withRepositoryDate("A", 4);
-		Processing third = withRepositoryDate("Z", 1);
-		Processing fourth = withRepositoryDate("Z", 2);
-		assertSorted(first, second, third, fourth);
+	public void shouldSortByDate() {
+		assertSorted(withDate(1), withDate(2), withDate(3), withDate(4));
 	}
 
-	private Processing withRepositoryDate(String repositoryName, long date) {
-		return new Processing(new Repository(repositoryName, null, ""), new Date(date));
+	private Processing withDate(long date) {
+		return new Processing(new Date(date));
 	}
 
 	@Test
-	public void shouldIdentifyByRepositoryAndDate() {
-		Processing other = new Processing(null);
+	public void shouldIdentifyByDate() {
+		Processing other = new Processing(new Date(0));
 		assertFalse(other.equals(processing));
 
-		other = new Processing(repository, new Date(0));
-		assertFalse(other.equals(processing));
-
-		other = new Processing(repository, processing.getDate());
+		other = new Processing(processing.getDate());
 		assertEquals(processing, other);
 	}
 
 	@Test
 	public void checkConstruction() {
 		assertNull(processing.getId());
-		assertSame(repository, processing.getRepository());
 		assertEquals(new Date().getTime(), processing.getDate().getTime(), 100);
 		assertEquals(LOADING, processing.getState());
 		for (ProcessState state : ProcessState.values())

@@ -25,10 +25,6 @@ public interface RepositoryEndpoint {
 
 	@WebMethod
 	@WebResult(name = "repository")
-	RepositoryXml repositoryOf(@WebParam(name = "processingId") Long processingId);
-
-	@WebMethod
-	@WebResult(name = "repository")
 	List<RepositoryXml> repositoriesOf(@WebParam(name = "projectId") Long projectId);
 
 	@WebMethod

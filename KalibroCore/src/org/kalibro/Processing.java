@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
+import org.kalibro.core.abstractentity.Ignore;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProcessingDao;
@@ -16,7 +17,7 @@ import org.kalibro.dao.ProcessingDao;
  * 
  * @author Carlos Morais
  */
-@SortingFields({"repository", "date"})
+@SortingFields("date")
 public class Processing extends AbstractEntity<Processing> {
 
 	public static boolean hasProcessing(Repository repository) {
@@ -76,9 +77,6 @@ public class Processing extends AbstractEntity<Processing> {
 	private Long id;
 
 	@IdentityField
-	private Repository repository;
-
-	@IdentityField
 	private Date date;
 
 	private ProcessState state;
@@ -87,12 +85,14 @@ public class Processing extends AbstractEntity<Processing> {
 	private Map<ProcessState, Long> stateTimes;
 	private ModuleResult resultsRoot;
 
-	public Processing(Repository repository) {
-		this(repository, new Date());
+	@Ignore
+	private Repository repository;
+
+	public Processing() {
+		this(new Date());
 	}
 
-	public Processing(Repository repository, Date date) {
-		this.repository = repository;
+	public Processing(Date date) {
 		this.date = date;
 		this.stateTimes = new HashMap<ProcessState, Long>();
 		setState(ProcessState.LOADING);
@@ -100,10 +100,6 @@ public class Processing extends AbstractEntity<Processing> {
 
 	public Long getId() {
 		return id;
-	}
-
-	public Repository getRepository() {
-		return repository;
 	}
 
 	public Date getDate() {

@@ -3,13 +3,11 @@ package org.kalibro.service;
 import static org.junit.Assert.*;
 
 import java.util.Date;
-import java.util.List;
 import java.util.Random;
 
 import org.junit.Test;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
-import org.kalibro.Repository;
 import org.kalibro.client.EndpointTest;
 import org.kalibro.dao.ProcessingDao;
 import org.powermock.reflect.Whitebox;
@@ -21,14 +19,9 @@ public class ProcessingEndpointTest extends EndpointTest<Processing, ProcessingD
 
 	@Override
 	protected Processing loadFixture() {
-		Processing processing = new Processing(new Repository(), DATE);
+		Processing processing = new Processing(DATE);
 		Whitebox.setInternalState(processing, "id", ID);
 		return processing;
-	}
-
-	@Override
-	protected List<String> fieldsThatShouldBeProxy() {
-		return list("repository");
 	}
 
 	@Test
