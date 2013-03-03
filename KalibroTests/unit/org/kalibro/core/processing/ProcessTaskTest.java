@@ -21,8 +21,10 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ProcessTask.class)
 public class ProcessTaskTest extends UnitTest {
 
+	private static final Long REPOSITORY_ID = new Random().nextLong();
 	private static final Long EXECUTION_TIME = new Random().nextLong();
 
+	private Repository repository;
 	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
 
@@ -30,14 +32,15 @@ public class ProcessTaskTest extends UnitTest {
 
 	@Before
 	public void setUp() throws Exception {
+		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
-		Repository repository = mock(Repository.class);
-		mockProcessingDao(repository);
+		when(repository.getId()).thenReturn(REPOSITORY_ID);
+		mockProcessingDao();
 		processTask = new ProcessTask(repository);
 	}
 
-	private void mockProcessingDao(Repository repository) throws Exception {
+	private void mockProcessingDao() throws Exception {
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
 		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
@@ -74,7 +77,7 @@ public class ProcessTaskTest extends UnitTest {
 		InOrder order = Mockito.inOrder(processing, processingDao);
 		order.verify(processing).setStateTime(ProcessState.READY, EXECUTION_TIME);
 		order.verify(processing).setState(ProcessState.READY.nextState());
-		order.verify(processingDao).save(processing);
+		order.verify(processingDao).save(processing, REPOSITORY_ID);
 	}
 
 	@Test
@@ -86,7 +89,7 @@ public class ProcessTaskTest extends UnitTest {
 		InOrder order = Mockito.inOrder(processing, processingDao);
 		order.verify(processing).setStateTime(ProcessState.READY, EXECUTION_TIME);
 		order.verify(processing).setError(error);
-		order.verify(processingDao).save(processing);
+		order.verify(processingDao).save(processing, REPOSITORY_ID);
 	}
 
 	@Test

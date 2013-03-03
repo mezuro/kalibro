@@ -38,7 +38,7 @@ abstract class ProcessSubtask extends VoidTask {
 	}
 
 	Repository repository() {
-		return processing().getRepository();
+		return mainTask.repository;
 	}
 
 	Processing processing() {

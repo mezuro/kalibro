@@ -25,6 +25,7 @@ public class ProcessSubtaskTest extends UnitTest {
 	private static final String STATE_MESSAGE = "ProcessSubtaskTest state message";
 
 	private Processing processing;
+	private Repository repository;
 	private ProcessTask mainTask;
 
 	private ProcessSubtask subtask;
@@ -32,8 +33,10 @@ public class ProcessSubtaskTest extends UnitTest {
 	@Before
 	public void setUp() {
 		processing = mock(Processing.class);
+		repository = mock(Repository.class);
 		mainTask = mock(ProcessTask.class);
 		mainTask.processing = processing;
+		mainTask.repository = repository;
 		subtask = new ReadyTask();
 		assertSame(subtask, subtask.prepare(mainTask));
 	}
@@ -60,9 +63,6 @@ public class ProcessSubtaskTest extends UnitTest {
 	@Test
 	public void shouldGetProcessingRepositoryAndProjectFromMainTask() {
 		assertSame(processing, subtask.processing());
-
-		Repository repository = mock(Repository.class);
-		when(processing.getRepository()).thenReturn(repository);
 		assertSame(repository, subtask.repository());
 
 		Project project = mock(Project.class);
