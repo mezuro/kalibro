@@ -19,7 +19,7 @@ public class ReadingDatabaseDaoTest extends DatabaseDaoTestCase<Reading, Reading
 	public void shouldGetReadingsOfGroup() {
 		assertDeepEquals(set(entity), dao.readingsOf(GROUP_ID));
 
-		verify(dao).createRecordQuery("reading.readingGroup.id = :groupId");
+		verify(dao).createRecordQuery("reading.group.id = :groupId");
 		verify(query).setParameter("groupId", GROUP_ID);
 	}
 

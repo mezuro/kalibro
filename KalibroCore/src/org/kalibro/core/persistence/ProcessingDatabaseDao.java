@@ -99,7 +99,7 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRec
 	public Processing createProcessingFor(Repository repository) {
 		ProcessingRecord record = save(new ProcessingRecord(new Processing(repository)));
 		for (MetricConfiguration configuration : repository.getConfiguration().getMetricConfigurations())
-			save(new MetricConfigurationSnapshotRecord(configuration, record));
+			save(new MetricConfigurationSnapshotRecord(configuration, record.id()));
 		return record.convert();
 	}
 

@@ -1,6 +1,7 @@
 package org.kalibro.core.persistence;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.persistence.config.SessionCustomizer;
@@ -8,7 +9,10 @@ import org.eclipse.persistence.sessions.Session;
 import org.eclipse.persistence.sessions.SessionEvent;
 import org.eclipse.persistence.sessions.SessionEventAdapter;
 import org.eclipse.persistence.sessions.UnitOfWork;
+import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroException;
+import org.kalibro.KalibroSettings;
+import org.kalibro.core.Environment;
 
 public class DatabaseImport extends SessionEventAdapter implements SessionCustomizer {
 
@@ -34,6 +38,11 @@ public class DatabaseImport extends SessionEventAdapter implements SessionCustom
 	}
 
 	private String[] importStatements() throws IOException {
-		return IOUtils.toString(getClass().getResourceAsStream("/META-INF/kalibro.sql")).split(";");
+		DatabaseSettings databaseSettings = KalibroSettings.load().getServerSettings().getDatabaseSettings();
+		String resourceName = "/META-INF/" + databaseSettings.getDatabaseType() + ".sql";
+		String[] statements = IOUtils.toString(getClass().getResourceAsStream(resourceName)).split(";");
+		if (!Environment.testing())
+			statements = Arrays.copyOfRange(statements, 1, statements.length);
+		return statements;
 	}
 }
