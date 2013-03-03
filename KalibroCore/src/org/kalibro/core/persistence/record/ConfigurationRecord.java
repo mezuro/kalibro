@@ -18,7 +18,7 @@ import org.kalibro.dto.ConfigurationDto;
 public class ConfigurationRecord extends ConfigurationDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"name\"", nullable = false, unique = true)

@@ -15,7 +15,7 @@ public class ProcessingRecordTest extends RecordTest {
 		assertColumn("repository", Long.class).isRequired();
 		assertColumn("date", Long.class).isRequired();
 		assertColumn("state", String.class).isRequired();
-		assertOneToOne("error", ThrowableRecord.class).isEager().cascades().isOptional();
+		assertOneToOne("error", ThrowableRecord.class).isEager().isOptional();
 		assertColumn("loadingTime", Long.class).isNullable();
 		assertColumn("collectingTime", Long.class).isNullable();
 		assertColumn("analyzingTime", Long.class).isNullable();

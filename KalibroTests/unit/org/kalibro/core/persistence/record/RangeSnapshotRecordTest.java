@@ -15,8 +15,7 @@ public class RangeSnapshotRecordTest extends RecordTest {
 	@Override
 	protected void verifyColumns() {
 		shouldHaveId();
-		assertManyToOne("configurationSnapshot", MetricConfigurationSnapshotRecord.class)
-			.isLazy().doesNotCascade().isRequired();
+		assertManyToOne("configurationSnapshot", MetricConfigurationSnapshotRecord.class).isLazy().isRequired();
 		assertColumn("beginning", Long.class).isRequired();
 		assertColumn("end", Long.class).isRequired();
 		assertColumn("comments", String.class).isNullable();

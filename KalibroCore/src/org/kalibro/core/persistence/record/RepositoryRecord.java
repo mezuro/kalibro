@@ -22,7 +22,7 @@ import org.kalibro.dto.RepositoryDto;
 public class RepositoryRecord extends RepositoryDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"project\"", nullable = false)

@@ -18,7 +18,7 @@ import org.kalibro.dto.RangeDto;
 public class RangeSnapshotRecord extends RangeDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -21,7 +21,7 @@ import org.kalibro.dto.MetricConfigurationDto;
 public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"processing\"", nullable = false)

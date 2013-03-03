@@ -19,7 +19,7 @@ public class DescendantResultRecordTest extends RecordTest {
 	@Override
 	protected void verifyColumns() {
 		shouldHaveId();
-		assertManyToOne("metricResult", MetricResultRecord.class).isLazy().doesNotCascade().isRequired();
+		assertManyToOne("metricResult", MetricResultRecord.class).isLazy().isRequired();
 		assertColumn("value", Long.class).isRequired();
 	}
 

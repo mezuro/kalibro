@@ -18,7 +18,7 @@ import org.kalibro.dto.RangeDto;
 public class RangeRecord extends RangeDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"configuration\"", nullable = false)

@@ -15,7 +15,7 @@ import org.kalibro.dto.DataTransferObject;
 public class DescendantResultRecord extends DataTransferObject<Double> {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

@@ -21,12 +21,11 @@ public class MetricResultRecordTest extends RecordTest {
 	@Override
 	protected void verifyColumns() {
 		shouldHaveId();
-		assertManyToOne("moduleResult", ModuleResultRecord.class).isLazy().doesNotCascade().isRequired();
-		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class)
-			.isEager().doesNotCascade().isRequired();
+		assertManyToOne("moduleResult", ModuleResultRecord.class).isLazy().isRequired();
+		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isEager().isRequired();
 		assertColumn("value", Long.class).isRequired();
-		assertOneToOne("error", ThrowableRecord.class).isEager().cascades().isOptional();
-		assertOneToMany("descendantResults").isLazy().cascades().isMappedBy("metricResult");
+		assertOneToOne("error", ThrowableRecord.class).isEager().isOptional();
+		assertOneToMany("descendantResults").isLazy().isMappedBy("metricResult");
 	}
 
 	@Test

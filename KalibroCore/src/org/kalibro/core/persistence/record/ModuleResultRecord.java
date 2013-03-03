@@ -32,7 +32,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"processing\"", nullable = false)

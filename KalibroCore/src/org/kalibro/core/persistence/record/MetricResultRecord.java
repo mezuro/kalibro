@@ -20,7 +20,7 @@ import org.kalibro.dto.MetricResultDto;
 public class MetricResultRecord extends MetricResultDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)

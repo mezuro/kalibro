@@ -1,7 +1,7 @@
 package org.kalibro.core.persistence.record;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
 
 import javax.persistence.*;
 
@@ -17,7 +17,7 @@ import org.kalibro.dto.ThrowableDto;
 public class ThrowableRecord extends ThrowableDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"target_string\"", nullable = false)
@@ -31,7 +31,7 @@ public class ThrowableRecord extends ThrowableDto {
 	private ThrowableRecord cause;
 
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "throwable")
-	private List<StackTraceElementRecord> stackTrace;
+	private Collection<StackTraceElementRecord> stackTrace;
 
 	public ThrowableRecord() {
 		super();

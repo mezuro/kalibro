@@ -18,7 +18,7 @@ import org.kalibro.dto.ProjectDto;
 public class ProjectRecord extends ProjectDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"name\"", nullable = false, unique = true)

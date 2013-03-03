@@ -21,7 +21,7 @@ import org.kalibro.dto.ProcessingDto;
 public class ProcessingRecord extends ProcessingDto {
 
 	@Id
-	@Column(name = "\"id\"", nullable = false)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"repository\"", nullable = false)
