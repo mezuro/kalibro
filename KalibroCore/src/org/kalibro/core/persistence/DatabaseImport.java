@@ -40,9 +40,9 @@ public class DatabaseImport extends SessionEventAdapter implements SessionCustom
 	private String[] importStatements() throws IOException {
 		DatabaseSettings databaseSettings = KalibroSettings.load().getServerSettings().getDatabaseSettings();
 		String resourceName = "/META-INF/" + databaseSettings.getDatabaseType() + ".sql";
-		String[] statements = IOUtils.toString(getClass().getResourceAsStream(resourceName)).split(";");
+		String[] statements = IOUtils.toString(getClass().getResourceAsStream(resourceName)).split("\n\n");
 		if (!Environment.testing())
-			statements = Arrays.copyOfRange(statements, 1, statements.length);
+			statements = Arrays.copyOfRange(statements, 3, statements.length);
 		return statements;
 	}
 }

@@ -62,7 +62,7 @@ public class DatabaseImportTest extends UnitTest {
 	public void shouldImportDatabase() throws IOException {
 		databaseImport.postLogin(event);
 		InOrder order = Mockito.inOrder(unitOfWork);
-		for (String statement : loadResource("/META-INF/Mysql.sql").split(";"))
+		for (String statement : loadResource("/META-INF/Mysql.sql").split("\n\n"))
 			order.verify(unitOfWork).executeNonSelectingSQL(statement);
 		order.verify(unitOfWork).commit();
 	}
