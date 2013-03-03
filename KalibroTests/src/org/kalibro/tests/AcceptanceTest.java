@@ -6,7 +6,7 @@ import static org.kalibro.core.Environment.*;
 import java.io.File;
 
 import org.junit.AfterClass;
-import org.junit.experimental.theories.DataPoint;
+import org.junit.experimental.theories.DataPoints;
 import org.junit.experimental.theories.Theories;
 import org.junit.runner.RunWith;
 import org.kalibro.*;
@@ -14,9 +14,9 @@ import org.kalibro.*;
 @RunWith(Theories.class)
 public abstract class AcceptanceTest extends IntegrationTest {
 
-	@DataPoint
-	public static SupportedDatabase supportedDatabase() {
-		return SupportedDatabase.MYSQL;
+	@DataPoints
+	public static SupportedDatabase[] supportedDatabases() {
+		return SupportedDatabase.values();
 	}
 
 	@AfterClass
