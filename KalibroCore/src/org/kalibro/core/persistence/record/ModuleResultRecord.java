@@ -66,21 +66,17 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	public ModuleResultRecord(ModuleResult moduleResult, Long parentId, Long processingId) {
+		this(moduleResult.getModule(), parentId, processingId);
 		id = moduleResult.getId();
-		processing = processingId;
-		moduleName = persistedName(moduleResult.getModule().getName());
-		moduleGranularity = moduleResult.getModule().getGranularity().name();
 		grade = Double.doubleToLongBits(moduleResult.getGrade());
-		parent = parentId;
 		setMetricResults(moduleResult.getMetricResults());
 	}
 
-	@Deprecated
-	public ModuleResultRecord(Module module, ModuleResultRecord parentRecord, Long processingId) {
+	public ModuleResultRecord(Module module, Long parentId, Long processingId) {
 		processing = processingId;
 		moduleName = persistedName(module.getName());
 		moduleGranularity = module.getGranularity().name();
-		parent = parentRecord.id();
+		parent = parentId;
 	}
 
 	private void setMetricResults(Collection<MetricResult> results) {

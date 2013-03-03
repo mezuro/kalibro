@@ -132,7 +132,7 @@ public class ProcessingDatabaseDaoTest extends
 		MetricConfigurationSnapshotRecord snapshot = mock(MetricConfigurationSnapshotRecord.class);
 		when(repository.getConfiguration()).thenReturn(configuration);
 		doReturn(sortedSet(metricConf)).when(configuration).getMetricConfigurations();
-		whenNew(MetricConfigurationSnapshotRecord.class).withArguments(metricConf, record).thenReturn(snapshot);
+		whenNew(MetricConfigurationSnapshotRecord.class).withArguments(metricConf, record.id()).thenReturn(snapshot);
 		doReturn(snapshot).when(dao).save(snapshot);
 		return snapshot;
 	}

@@ -79,8 +79,8 @@ public class ModuleResultDatabaseDaoTest extends
 
 		Module preparedModule = mock(Module.class);
 		whenNew(ModuleResultRecord.class)
-			.withParameterTypes(Module.class, ModuleResultRecord.class, Long.class)
-			.withArguments(any(Module.class), any(ModuleResultRecord.class), eq(ID)).thenReturn(record);
+			.withParameterTypes(Module.class, Long.class, Long.class)
+			.withArguments(any(Module.class), any(Long.class), eq(ID)).thenReturn(record);
 		doReturn(null).when(dao).save(record);
 		when(entity.getModule()).thenReturn(preparedModule);
 
