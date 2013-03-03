@@ -32,12 +32,6 @@ public class RepositoryClientDaoTest extends
 	}
 
 	@Test
-	public void shouldGetRepositoryOfProcessing() {
-		when(port.repositoryOf(ID)).thenReturn(xml);
-		assertSame(entity, client.repositoryOf(ID));
-	}
-
-	@Test
 	public void shouldGetRepositoriesOfProject() {
 		when(port.repositoriesOf(PROJECT_ID)).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.repositoriesOf(PROJECT_ID));
