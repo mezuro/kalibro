@@ -87,4 +87,10 @@ public class MetricResult extends AbstractMetricResult {
 		setValue(Double.NaN);
 		error = exception;
 	}
+
+	@Override
+	public void setValue(Double value) {
+		super.setValue(value);
+		error = null;
+	}
 }
