@@ -63,8 +63,15 @@ public class DatabaseImportTest extends UnitTest {
 		databaseImport.postLogin(event);
 		InOrder order = Mockito.inOrder(unitOfWork);
 		for (String statement : loadResource("/META-INF/Mysql.sql").split("\n\n"))
-			order.verify(unitOfWork).executeNonSelectingSQL(statement);
+			verifyImportStatement(order, statement);
 		order.verify(unitOfWork).commit();
+	}
+
+	private void verifyImportStatement(InOrder order, String statement) {
+		if (statement.equals("/* END OF DROP TABLES */"))
+			verify(unitOfWork, never()).executeNonSelectingSQL(statement);
+		else
+			order.verify(unitOfWork).executeNonSelectingSQL(statement);
 	}
 
 	@Test

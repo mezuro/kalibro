@@ -6,6 +6,8 @@ DROP TABLE IF EXISTS `descendant_result`, `metric_result`, `module_result`,
 
 SET foreign_key_checks = 1;
 
+/* END OF DROP TABLES */
+
 CREATE TABLE IF NOT EXISTS `reading_group` (
   `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,

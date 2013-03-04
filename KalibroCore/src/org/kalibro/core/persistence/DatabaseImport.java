@@ -1,7 +1,9 @@
 package org.kalibro.core.persistence;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.eclipse.persistence.config.SessionCustomizer;
@@ -15,6 +17,8 @@ import org.kalibro.KalibroSettings;
 import org.kalibro.core.Environment;
 
 public class DatabaseImport extends SessionEventAdapter implements SessionCustomizer {
+
+	private static final String END_OF_DROP_TABLES = "/* END OF DROP TABLES */";
 
 	@Override
 	public void customize(Session session) throws Exception {
@@ -37,12 +41,16 @@ public class DatabaseImport extends SessionEventAdapter implements SessionCustom
 		unitOfWork.commit();
 	}
 
-	private String[] importStatements() throws IOException {
+	private List<String> importStatements() throws IOException {
 		DatabaseSettings databaseSettings = KalibroSettings.load().getServerSettings().getDatabaseSettings();
 		String resourceName = "/META-INF/" + databaseSettings.getDatabaseType() + ".sql";
-		String[] statements = IOUtils.toString(getClass().getResourceAsStream(resourceName)).split("\n\n");
-		if (!Environment.testing())
-			statements = Arrays.copyOfRange(statements, 3, statements.length);
+		String script = IOUtils.toString(getClass().getResourceAsStream(resourceName));
+		List<String> statements = new ArrayList<String>(Arrays.asList(script.split("\n\n")));
+		int endFlag = statements.indexOf(END_OF_DROP_TABLES);
+		if (Environment.testing())
+			statements.remove(endFlag);
+		else
+			statements = statements.subList(endFlag + 1, statements.size());
 		return statements;
 	}
 }
