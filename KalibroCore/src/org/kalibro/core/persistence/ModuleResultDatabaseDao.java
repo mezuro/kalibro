@@ -38,7 +38,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 			"FROM ModuleResult result, Processing processing WHERE processing.id = result.processing " +
 			"AND result.moduleName = :moduleName AND processing.repository = " + repositoryId, Object[].class);
 		query.setParameter("moduleName", moduleName);
-		query.setParameter("resultId", moduleResultId);
+		query.setParameter("moduleResultId", moduleResultId);
 		List<Object[]> results = query.getResultList();
 
 		SortedMap<Date, ModuleResult> history = new TreeMap<Date, ModuleResult>();

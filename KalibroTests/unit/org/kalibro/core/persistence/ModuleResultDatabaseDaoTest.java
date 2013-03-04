@@ -46,7 +46,7 @@ public class ModuleResultDatabaseDaoTest extends
 		assertEquals(1, history.size());
 		assertDeepEquals(entity, history.get(DATE));
 		verify(historyQuery).setParameter("moduleName", module.getName()[0]);
-		verify(historyQuery).setParameter("resultId", ID);
+		verify(historyQuery).setParameter("moduleResultId", ID);
 	}
 
 	private Module mockModule() {
