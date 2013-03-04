@@ -61,9 +61,10 @@ class AnalyzingTask extends ProcessSubtask {
 
 	private void configureAndSave() {
 		ModuleResultConfigurer.configure(moduleResult, configurationSnapshot);
+		ModuleResult parent = moduleResult.hasParent() ? moduleResult.getParent() : null;
 		save();
 		if (moduleResult.hasParent()) {
-			moduleResult = moduleResult.getParent();
+			moduleResult = parent;
 			configureAndSave();
 		} else
 			changeRootName();
