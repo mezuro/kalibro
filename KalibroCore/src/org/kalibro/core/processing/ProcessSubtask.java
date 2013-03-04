@@ -55,6 +55,6 @@ abstract class ProcessSubtask extends VoidTask {
 
 	@Override
 	public String toString() {
-		return mainTask.processing.getStateMessage();
+		return processing().getState().getMessage(repository().getCompleteName());
 	}
 }

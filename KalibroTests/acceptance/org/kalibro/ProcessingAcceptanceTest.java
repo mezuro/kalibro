@@ -138,7 +138,7 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 
 	private void assertProcessingReady() {
 		if (processing.getState() == ERROR)
-			throw new AssertionError(processing.getStateMessage() + "\n" + processing.getError().getMessage());
+			throw new KalibroException("Error while " + processing.getStateWhenErrorOcurred(), processing.getError());
 		assertEquals(READY, processing.getState());
 	}
 
@@ -168,7 +168,6 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		long start = System.currentTimeMillis();
 		repository.process();
 		assertTrue(Processing.hasProcessing(repository));
-		assertTrue(Processing.lastProcessingState(repository).isTemporary());
 		while (Processing.lastProcessingState(repository).isTemporary())
 			Thread.sleep(2000);
 		return start;

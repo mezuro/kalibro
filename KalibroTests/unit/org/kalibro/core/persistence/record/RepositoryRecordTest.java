@@ -2,6 +2,8 @@ package org.kalibro.core.persistence.record;
 
 import static org.junit.Assert.*;
 
+import java.util.Random;
+
 import org.junit.Test;
 import org.kalibro.Repository;
 
@@ -25,5 +27,12 @@ public class RepositoryRecordTest extends RecordTest {
 		Repository repository = (Repository) entity;
 		RepositoryRecord record = (RepositoryRecord) dto;
 		assertEquals(repository.getConfiguration().getId(), record.configurationId());
+	}
+
+	@Test
+	public void shouldRetrieveProjectId() {
+		Repository repository = (Repository) entity;
+		Long projectId = new Random().nextLong();
+		assertEquals(projectId, new RepositoryRecord(repository, projectId).projectId());
 	}
 }

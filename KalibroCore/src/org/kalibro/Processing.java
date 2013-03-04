@@ -6,7 +6,6 @@ import java.util.Map;
 
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
-import org.kalibro.core.abstractentity.Ignore;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProcessingDao;
@@ -85,9 +84,6 @@ public class Processing extends AbstractEntity<Processing> {
 	private Map<ProcessState, Long> stateTimes;
 	private ModuleResult resultsRoot;
 
-	@Ignore
-	private Repository repository;
-
 	public Processing() {
 		this(new Date());
 	}
@@ -110,10 +106,6 @@ public class Processing extends AbstractEntity<Processing> {
 		if (error != null)
 			return ProcessState.ERROR;
 		return state;
-	}
-
-	public String getStateMessage() {
-		return getState().getMessage(repository.getCompleteName());
 	}
 
 	public ProcessState getStateWhenErrorOcurred() {

@@ -7,10 +7,7 @@ import java.io.File;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.NativeModuleResult;
-import org.kalibro.Processing;
-import org.kalibro.Project;
-import org.kalibro.Repository;
+import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.tests.UnitTest;
@@ -21,8 +18,6 @@ import org.powermock.reflect.Whitebox;
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(ProcessSubtask.class)
 public class ProcessSubtaskTest extends UnitTest {
-
-	private static final String STATE_MESSAGE = "ProcessSubtaskTest state message";
 
 	private Processing processing;
 	private Repository repository;
@@ -86,7 +81,12 @@ public class ProcessSubtaskTest extends UnitTest {
 
 	@Test
 	public void toStringShouldBeStateMessage() {
-		when(processing.getStateMessage()).thenReturn(STATE_MESSAGE);
-		assertEquals(STATE_MESSAGE, "" + subtask);
+		String name = "ProcessingTest repository complete name";
+		when(repository.getCompleteName()).thenReturn(name);
+
+		for (ProcessState state : ProcessState.values()) {
+			when(processing.getState()).thenReturn(state);
+			assertEquals(state.getMessage(name), "" + subtask);
+		}
 	}
 }

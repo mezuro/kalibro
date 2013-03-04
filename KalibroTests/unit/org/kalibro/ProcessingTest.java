@@ -15,7 +15,6 @@ import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(DaoFactory.class)
@@ -35,7 +34,6 @@ public class ProcessingTest extends UnitTest {
 		repository = mock(Repository.class);
 		when(repository.getId()).thenReturn(REPOSITORY_ID);
 		processing = new Processing();
-		Whitebox.setInternalState(processing, "repository", repository);
 	}
 
 	private void mockDao() {
@@ -164,16 +162,6 @@ public class ProcessingTest extends UnitTest {
 		processing.setError(error);
 		assertSame(error, processing.getError());
 		assertEquals(ERROR, processing.getState());
-	}
-
-	@Test
-	public void shouldGetStateMessage() {
-		String name = "ProcessingTest repository complete name";
-		when(repository.getCompleteName()).thenReturn(name);
-
-		assertEquals(LOADING.getMessage(name), processing.getStateMessage());
-		processing.setState(ANALYZING);
-		assertEquals(ANALYZING.getMessage(name), processing.getStateMessage());
 	}
 
 	@Test

@@ -103,4 +103,9 @@ public class RepositoryRecord extends RepositoryDto {
 	public Long configurationId() {
 		return configuration;
 	}
+
+	@Override
+	public Long projectId() {
+		return project;
+	}
 }
