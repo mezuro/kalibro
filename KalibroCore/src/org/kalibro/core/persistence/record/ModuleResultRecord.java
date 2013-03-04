@@ -64,6 +64,8 @@ public class ModuleResultRecord extends ModuleResultDto {
 
 	public ModuleResultRecord(ModuleResult moduleResult, Long processingId) {
 		this(moduleResult, null, processingId);
+		if (moduleResult.hasParent())
+			parent = moduleResult.getParent().getId();
 	}
 
 	public ModuleResultRecord(ModuleResult moduleResult, Long parentId, Long processingId) {
