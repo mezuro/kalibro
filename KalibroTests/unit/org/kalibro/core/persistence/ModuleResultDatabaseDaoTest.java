@@ -59,8 +59,7 @@ public class ModuleResultDatabaseDaoTest extends
 
 	@Test
 	public void shouldSave() throws Exception {
-		dao.save(entity, ID);
-
+		assertSame(entity, dao.save(entity, ID));
 		verifyNew(ModuleResultRecord.class).withArguments(entity, ID);
 		verify(dao).save(record);
 	}

@@ -171,7 +171,7 @@ CREATE TABLE IF NOT EXISTS `metric_result` (
   `configuration` BIGINT NOT NULL,
   `value` BIGINT NOT NULL,
   `error` BIGINT DEFAULT NULL,
-  CONSTRAINT `metric_result_configuration` UNIQUE (`module_result`,`configuration`),
+  CONSTRAINT UNIQUE (`module_result`,`configuration`),
   CONSTRAINT FOREIGN KEY (`module_result`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
   CONSTRAINT FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   CONSTRAINT FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)

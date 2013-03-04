@@ -81,4 +81,10 @@ public class MetricResult extends AbstractMetricResult {
 	public Double getWeight() {
 		return configuration.getWeight();
 	}
+
+	@Deprecated
+	public void setError(Exception exception) {
+		setValue(Double.NaN);
+		error = exception;
+	}
 }

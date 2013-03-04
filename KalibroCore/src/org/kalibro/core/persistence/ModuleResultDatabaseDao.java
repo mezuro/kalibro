@@ -47,8 +47,8 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		return history;
 	}
 
-	public void save(ModuleResult moduleResult, Long processingId) {
-		save(new ModuleResultRecord(moduleResult, processingId));
+	public ModuleResult save(ModuleResult moduleResult, Long processingId) {
+		return save(new ModuleResultRecord(moduleResult, processingId)).convert();
 	}
 
 	public ModuleResult prepareResultFor(Module module, Long processingId) {

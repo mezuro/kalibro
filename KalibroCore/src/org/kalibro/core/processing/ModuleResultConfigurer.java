@@ -60,12 +60,18 @@ final class ModuleResultConfigurer {
 		try {
 			doComputeCompoundMetric(metricConfiguration);
 		} catch (Exception exception) {
-			moduleResult.addMetricResult(new MetricResult(metricConfiguration, exception));
+			if (moduleResult.hasResultFor(metricConfiguration.getMetric()))
+				moduleResult.getResultFor(metricConfiguration.getMetric()).setError(exception);
+			else
+				moduleResult.addMetricResult(new MetricResult(metricConfiguration, exception));
 		}
 	}
 
 	private void doComputeCompoundMetric(MetricConfiguration metricConfiguration) {
 		Double calculatedResult = scriptEvaluator.evaluate(metricConfiguration.getCode());
-		moduleResult.addMetricResult(new MetricResult(metricConfiguration, calculatedResult));
+		if (moduleResult.hasResultFor(metricConfiguration.getMetric()))
+			moduleResult.getResultFor(metricConfiguration.getMetric()).setValue(calculatedResult);
+		else
+			moduleResult.addMetricResult(new MetricResult(metricConfiguration, calculatedResult));
 	}
 }

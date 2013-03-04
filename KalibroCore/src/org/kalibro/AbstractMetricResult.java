@@ -29,4 +29,9 @@ abstract class AbstractMetricResult extends AbstractEntity<AbstractMetricResult>
 	public final Double getValue() {
 		return value;
 	}
+
+	@Deprecated
+	public void setValue(Double value) {
+		this.value = value;
+	}
 }

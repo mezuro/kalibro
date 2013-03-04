@@ -68,10 +68,12 @@ public class AnalyzingTaskTest extends UnitTest {
 		softwareModule = new Module(SOFTWARE, "null");
 		softwareResult = new ModuleResult(null, softwareModule);
 		when(moduleResultDao.prepareResultFor(softwareModule, PROCESSING_ID)).thenReturn(softwareResult);
+		when(moduleResultDao.save(softwareResult, PROCESSING_ID)).thenReturn(softwareResult);
 
 		classModule = new Module(CLASS, "HelloWorld");
 		classResult = new ModuleResult(softwareResult, classModule);
 		when(moduleResultDao.prepareResultFor(classModule, PROCESSING_ID)).thenReturn(classResult);
+		when(moduleResultDao.save(classResult, PROCESSING_ID)).thenReturn(classResult);
 	}
 
 	private void stubResultProducer() {
