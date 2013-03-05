@@ -35,6 +35,7 @@ public class ModuleResultTest extends UnitTest {
 		assertNull(result.getId());
 		assertSame(module, result.getModule());
 		assertDoubleEquals(Double.NaN, result.getGrade());
+		assertEquals(0, result.getHeight().intValue());
 		assertTrue(result.hasParent());
 		assertSame(parent, result.getParent());
 		assertTrue(result.getChildren().isEmpty());
@@ -67,7 +68,7 @@ public class ModuleResultTest extends UnitTest {
 		assertDeepEquals(set(child), result.getChildren());
 		assertSame(result, child.getParent());
 	}
-	
+
 	@Test
 	public void shouldGetHistory() {
 		ModuleResultDao dao = mock(ModuleResultDao.class);
