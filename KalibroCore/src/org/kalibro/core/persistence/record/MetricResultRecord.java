@@ -20,7 +20,7 @@ import org.kalibro.dto.MetricResultDto;
 public class MetricResultRecord extends MetricResultDto {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

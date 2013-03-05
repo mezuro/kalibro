@@ -9,13 +9,13 @@ SET foreign_key_checks = 1;
 /* END OF DROP TABLES */
 
 CREATE TABLE IF NOT EXISTS `reading_group` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `description` TEXT DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `reading` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `group` BIGINT NOT NULL,
   `label` VARCHAR(255) NOT NULL,
   `grade` BIGINT NOT NULL,
@@ -25,13 +25,13 @@ CREATE TABLE IF NOT EXISTS `reading` (
 );
 
 CREATE TABLE IF NOT EXISTS `configuration` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `description` TEXT DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `metric_configuration` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `configuration` BIGINT NOT NULL,
   `code` VARCHAR(255) NOT NULL,
   `weight` BIGINT NOT NULL,
@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS `metric_configuration` (
 );
 
 CREATE TABLE IF NOT EXISTS `range` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `configuration` BIGINT NOT NULL,
   `beginning` BIGINT NOT NULL,
   `end` BIGINT NOT NULL,
@@ -60,13 +60,13 @@ CREATE TABLE IF NOT EXISTS `range` (
 );
 
 CREATE TABLE IF NOT EXISTS `project` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `description` TEXT DEFAULT NULL
 );
 
 CREATE TABLE IF NOT EXISTS `repository` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `project` BIGINT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `type` VARCHAR(255) NOT NULL,
@@ -81,14 +81,15 @@ CREATE TABLE IF NOT EXISTS `repository` (
 );
 
 CREATE TABLE IF NOT EXISTS `throwable` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `target_string` TEXT NOT NULL,
   `message` TEXT,
   `cause` BIGINT DEFAULT NULL,
   CONSTRAINT FOREIGN KEY (`cause`) REFERENCES `throwable`(`id`) ON DELETE SET NULL
 );
 
-CREATE TRIGGER `delete_throwable_cause` AFTER DELETE ON `throwable` FOR EACH ROW BEGIN
+CREATE TRIGGER `delete_throwable_cause` AFTER DELETE ON `throwable`
+FOR EACH ROW BEGIN
   DELETE FROM `throwable` WHERE `id` = OLD.`cause`;
 END;
 
@@ -104,7 +105,7 @@ CREATE TABLE IF NOT EXISTS `stack_trace_element` (
 );
 
 CREATE TABLE IF NOT EXISTS `processing` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `repository` BIGINT NOT NULL,
   `date` BIGINT NOT NULL,
   `state` VARCHAR(255) NOT NULL,
@@ -118,12 +119,13 @@ CREATE TABLE IF NOT EXISTS `processing` (
   CONSTRAINT FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT
 );
 
-CREATE TRIGGER `delete_processing_error` AFTER DELETE ON `processing` FOR EACH ROW BEGIN
+CREATE TRIGGER `delete_processing_error` AFTER DELETE ON `processing`
+FOR EACH ROW BEGIN
   DELETE FROM `throwable` WHERE `id` = OLD.`error`;
 END;
 
 CREATE TABLE IF NOT EXISTS `metric_configuration_snapshot` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `processing` BIGINT NOT NULL,
   `code` VARCHAR(255) NOT NULL,
   `weight` BIGINT NOT NULL,
@@ -138,7 +140,7 @@ CREATE TABLE IF NOT EXISTS `metric_configuration_snapshot` (
 );
 
 CREATE TABLE IF NOT EXISTS `range_snapshot` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `configuration_snapshot` BIGINT NOT NULL,
   `beginning` BIGINT NOT NULL,
   `end` BIGINT NOT NULL,
@@ -151,7 +153,7 @@ CREATE TABLE IF NOT EXISTS `range_snapshot` (
 );
 
 CREATE TABLE IF NOT EXISTS `module_result` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `processing` BIGINT NOT NULL,
   `module_name` TEXT NOT NULL,
   `module_granularity` VARCHAR(255) NOT NULL,
@@ -168,7 +170,7 @@ ALTER TABLE `processing` ADD CONSTRAINT `processing_root`
   FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL;
 
 CREATE TABLE IF NOT EXISTS `metric_result` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `module_result` BIGINT NOT NULL,
   `configuration` BIGINT NOT NULL,
   `value` BIGINT NOT NULL,
@@ -179,12 +181,13 @@ CREATE TABLE IF NOT EXISTS `metric_result` (
   CONSTRAINT FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)
 );
 
-CREATE TRIGGER `delete_result_error` AFTER DELETE ON `metric_result` FOR EACH ROW BEGIN
+CREATE TRIGGER `delete_result_error` AFTER DELETE ON `metric_result`
+FOR EACH ROW BEGIN
   DELETE FROM `throwable` WHERE `id` = OLD.`error`;
 END;
 
 CREATE TABLE IF NOT EXISTS `descendant_result` (
-  `id` BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `id` BIGINT NOT NULL PRIMARY KEY,
   `metric_result` BIGINT NOT NULL,
   `value` BIGINT NOT NULL,
   CONSTRAINT FOREIGN KEY (`metric_result`) REFERENCES `metric_result`(`id`) ON DELETE CASCADE

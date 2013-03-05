@@ -36,7 +36,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 
 	protected void shouldHaveId() {
 		annotation("id", Id.class);
-		assertEquals(GenerationType.SEQUENCE, annotation("id", GeneratedValue.class).strategy());
+		annotation("id", GeneratedValue.class);
 		assertColumn("id", Long.class).isRequired().isUnique();
 	}
 

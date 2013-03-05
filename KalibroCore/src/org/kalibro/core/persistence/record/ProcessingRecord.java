@@ -21,7 +21,7 @@ import org.kalibro.dto.ProcessingDto;
 public class ProcessingRecord extends ProcessingDto {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

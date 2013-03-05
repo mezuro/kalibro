@@ -31,7 +31,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	private static void updateSettings(DatabaseSettings settings) {
 		currentSettings = settings;
 		Map<String, String> properties = new HashMap<String, String>();
-		properties.put(DDL_GENERATION, NONE);
+		properties.put(DDL_GENERATION, CREATE_ONLY);
 		properties.put(JDBC_DRIVER, settings.getDatabaseType().getDriverClassName());
 		properties.put(JDBC_URL, settings.getJdbcUrl());
 		properties.put(JDBC_USER, settings.getUsername());

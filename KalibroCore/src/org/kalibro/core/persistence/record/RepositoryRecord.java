@@ -16,7 +16,7 @@ import org.kalibro.dto.RepositoryDto;
 public class RepositoryRecord extends RepositoryDto {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

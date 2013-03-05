@@ -66,7 +66,7 @@ public class DatabaseDaoFactoryTest extends UnitTest {
 	@Test
 	public void shouldSetPersistencePropertiesAccordingToDatabaseSettings() {
 		Map<String, String> properties = capturePersistenceProperties();
-		assertEquals(NONE, properties.get(DDL_GENERATION));
+		assertEquals(CREATE_ONLY, properties.get(DDL_GENERATION));
 		assertEquals(settings.getDatabaseType().getDriverClassName(), properties.get(JDBC_DRIVER));
 		assertEquals(settings.getJdbcUrl(), properties.get(JDBC_URL));
 		assertEquals(settings.getUsername(), properties.get(JDBC_USER));

@@ -17,7 +17,7 @@ import org.kalibro.dto.ThrowableDto;
 public class ThrowableRecord extends ThrowableDto {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE)
+	@GeneratedValue
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
