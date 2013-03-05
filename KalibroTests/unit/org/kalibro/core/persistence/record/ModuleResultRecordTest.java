@@ -16,6 +16,7 @@ public class ModuleResultRecordTest extends RecordTest {
 		assertColumn("moduleName", String.class).isRequired();
 		assertColumn("moduleGranularity", String.class).isRequired();
 		assertColumn("grade", Long.class).isNullable();
+		assertColumn("height", Integer.class).isRequired();
 		assertColumn("parent", Long.class).isNullable();
 		assertOneToMany("metricResults").isLazy().isMappedBy("moduleResult");
 	}

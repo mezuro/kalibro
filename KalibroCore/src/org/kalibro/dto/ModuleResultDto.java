@@ -20,6 +20,7 @@ public abstract class ModuleResultDto extends DataTransferObject<ModuleResult> {
 		ModuleResult parent = parentId() == null ? null : parent();
 		ModuleResult moduleResult = new ModuleResult(parent, module());
 		setId(moduleResult, id());
+		set(moduleResult, "height", height());
 		moduleResult.setGrade(grade());
 		moduleResult.setChildren(children());
 		moduleResult.setMetricResults(metricResults());
@@ -45,4 +46,6 @@ public abstract class ModuleResultDto extends DataTransferObject<ModuleResult> {
 	private SortedSet<MetricResult> metricResults() {
 		return DaoLazyLoader.createProxy(MetricResultDao.class, "metricResultsOf", id());
 	}
+
+	public abstract Integer height();
 }

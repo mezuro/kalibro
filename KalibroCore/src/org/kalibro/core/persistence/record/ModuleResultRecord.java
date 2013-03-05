@@ -48,6 +48,9 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"grade\"")
 	private Long grade;
 
+	@Column(name = "\"height\"", nullable = false)
+	private Integer height;
+
 	@Column(name = "\"parent\"")
 	private Long parent;
 
@@ -72,6 +75,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 		this(moduleResult.getModule(), parentId, processingId);
 		id = moduleResult.getId();
 		grade = Double.doubleToLongBits(moduleResult.getGrade());
+		height = moduleResult.getHeight();
 		setMetricResults(moduleResult.getMetricResults());
 	}
 
@@ -101,6 +105,11 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Override
 	public Double grade() {
 		return grade == null ? Double.NaN : Double.longBitsToDouble(grade);
+	}
+
+	@Override
+	public Integer height() {
+		return height;
 	}
 
 	@Override

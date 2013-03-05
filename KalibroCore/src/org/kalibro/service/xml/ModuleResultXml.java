@@ -28,6 +28,9 @@ public class ModuleResultXml extends ModuleResultDto {
 	private Double grade;
 
 	@XmlElement
+	private Integer height;
+
+	@XmlElement
 	private Long parentId;
 
 	public ModuleResultXml() {
@@ -38,6 +41,7 @@ public class ModuleResultXml extends ModuleResultDto {
 		id = moduleResult.getId();
 		module = new ModuleXml(moduleResult.getModule());
 		grade = moduleResult.getGrade();
+		height = moduleResult.getHeight();
 		parentId = moduleResult.hasParent() ? moduleResult.getParent().getId() : null;
 	}
 
@@ -54,6 +58,11 @@ public class ModuleResultXml extends ModuleResultDto {
 	@Override
 	public Double grade() {
 		return grade;
+	}
+
+	@Override
+	public Integer height() {
+		return height;
 	}
 
 	@Override
