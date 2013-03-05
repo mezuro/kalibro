@@ -7,6 +7,7 @@ import java.util.TreeSet;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.*;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dto.MetricConfigurationDto;
@@ -52,6 +53,7 @@ public class MetricConfigurationSnapshotRecord extends MetricConfigurationDto {
 	@Column(name = "\"metric_origin\"", nullable = false)
 	private String metricOrigin;
 
+	@CascadeOnDelete
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "configurationSnapshot")
 	private Collection<RangeSnapshotRecord> ranges;
 
