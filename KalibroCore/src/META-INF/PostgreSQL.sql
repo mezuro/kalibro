@@ -173,6 +173,9 @@ CREATE TRIGGER "delete_result_error" AFTER DELETE ON "metric_result"
 
 CREATE TABLE IF NOT EXISTS "descendant_result" (
   "id" BIGINT NOT NULL PRIMARY KEY,
-  "metric_result" BIGINT NOT NULL REFERENCES "metric_result"("id") ON DELETE CASCADE,
+  "module_result" BIGINT NOT NULL REFERENCES "module_result"("id") ON DELETE CASCADE,
+  "configuration" BIGINT NOT NULL REFERENCES "metric_configuration_snapshot"("id") ON DELETE CASCADE,
   "value" BIGINT NOT NULL
 );
+
+CREATE INDEX "descendants" ON "descendant_result"("module_result","configuration");

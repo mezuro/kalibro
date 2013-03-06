@@ -1,9 +1,5 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.*;
 
 import org.kalibro.MetricConfiguration;
@@ -38,9 +34,6 @@ public class MetricResultRecord extends MetricResultDto {
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "metricResult")
-	private Collection<DescendantResultRecord> descendantResults;
-
 	public MetricResultRecord() {
 		super();
 	}
@@ -55,13 +48,6 @@ public class MetricResultRecord extends MetricResultDto {
 		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
 		value = Double.doubleToLongBits(metricResult.getValue());
 		error = metricResult.hasError() ? new ThrowableRecord(metricResult.getError()) : null;
-		setDescendantResults(metricResult.getDescendantResults());
-	}
-
-	private void setDescendantResults(List<Double> descendantResults) {
-		this.descendantResults = new ArrayList<DescendantResultRecord>();
-		for (Double descendantResult : descendantResults)
-			this.descendantResults.add(new DescendantResultRecord(descendantResult, this));
 	}
 
 	@Override

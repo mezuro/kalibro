@@ -25,8 +25,9 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public List<Double> descendantResultsOf(Long metricResultId) {
-		TypedQuery<DescendantResultRecord> query = createQuery(
-			"SELECT d FROM DescendantResult d WHERE d.metricResult.id = :metricResultId", DescendantResultRecord.class);
+		String queryString = "SELECT dr FROM DescendantResult dr, MetricResult mr WHERE " +
+			"dr.moduleResult = mr.moduleResult AND dr.configuration = mr.configuration AND mr.id = :metricResultId";
+		TypedQuery<DescendantResultRecord> query = createQuery(queryString, DescendantResultRecord.class);
 		query.setParameter("metricResultId", metricResultId);
 		return DataTransferObject.toList(query.getResultList());
 	}

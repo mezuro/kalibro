@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `reading` (
   `label` VARCHAR(255) NOT NULL,
   `grade` BIGINT NOT NULL,
   `color` INT NOT NULL,
-  CONSTRAINT UNIQUE (`group`,`label`),
-  CONSTRAINT FOREIGN KEY (`group`) REFERENCES `reading_group`(`id`) ON DELETE CASCADE
+  UNIQUE (`group`,`label`),
+  FOREIGN KEY (`group`) REFERENCES `reading_group`(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `configuration` (
@@ -42,9 +42,9 @@ CREATE TABLE IF NOT EXISTS `metric_configuration` (
   `metric_description` TEXT DEFAULT NULL,
   `metric_origin` VARCHAR(255) NOT NULL,
   `reading_group` BIGINT DEFAULT NULL,
-  CONSTRAINT UNIQUE (`configuration`,`code`),
-  CONSTRAINT FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FOREIGN KEY (`reading_group`) REFERENCES `reading_group`(`id`) ON DELETE RESTRICT
+  UNIQUE (`configuration`,`code`),
+  FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`reading_group`) REFERENCES `reading_group`(`id`) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS `range` (
@@ -54,9 +54,9 @@ CREATE TABLE IF NOT EXISTS `range` (
   `end` BIGINT NOT NULL,
   `reading` BIGINT DEFAULT NULL,
   `comments` TEXT DEFAULT NULL,
-  CONSTRAINT UNIQUE (`configuration`,`beginning`),
-  CONSTRAINT FOREIGN KEY (`configuration`) REFERENCES `metric_configuration`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FOREIGN KEY (`reading`) REFERENCES `reading`(`id`) ON DELETE RESTRICT
+  UNIQUE (`configuration`,`beginning`),
+  FOREIGN KEY (`configuration`) REFERENCES `metric_configuration`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`reading`) REFERENCES `reading`(`id`) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS `project` (
@@ -75,9 +75,9 @@ CREATE TABLE IF NOT EXISTS `repository` (
   `license` VARCHAR(255) DEFAULT NULL,
   `process_period` INT DEFAULT NULL,
   `configuration` BIGINT NOT NULL,
-  CONSTRAINT UNIQUE (`project`,`name`),
-  CONSTRAINT FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE RESTRICT
+  UNIQUE (`project`,`name`),
+  FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE RESTRICT
 );
 
 CREATE TABLE IF NOT EXISTS `throwable` (
@@ -85,7 +85,7 @@ CREATE TABLE IF NOT EXISTS `throwable` (
   `target_string` TEXT NOT NULL,
   `message` TEXT,
   `cause` BIGINT DEFAULT NULL,
-  CONSTRAINT FOREIGN KEY (`cause`) REFERENCES `throwable`(`id`) ON DELETE SET NULL
+  FOREIGN KEY (`cause`) REFERENCES `throwable`(`id`) ON DELETE SET NULL
 );
 
 CREATE TRIGGER `delete_throwable_cause` AFTER DELETE ON `throwable`
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `stack_trace_element` (
   `file_name` VARCHAR(255) DEFAULT NULL,
   `line_number` INT DEFAULT NULL,
   PRIMARY KEY (`throwable`,`index`),
-  CONSTRAINT FOREIGN KEY (`throwable`) REFERENCES `throwable`(`id`) ON DELETE CASCADE
+  FOREIGN KEY (`throwable`) REFERENCES `throwable`(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `processing` (
@@ -114,9 +114,9 @@ CREATE TABLE IF NOT EXISTS `processing` (
   `collecting_time` BIGINT DEFAULT NULL,
   `analyzing_time` BIGINT DEFAULT NULL,
   `results_root` BIGINT DEFAULT NULL,
-  CONSTRAINT UNIQUE (`repository`,`date`),
-  CONSTRAINT FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT
+  UNIQUE (`repository`,`date`),
+  FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT
 );
 
 CREATE TRIGGER `delete_processing_error` AFTER DELETE ON `processing`
@@ -135,8 +135,8 @@ CREATE TABLE IF NOT EXISTS `metric_configuration_snapshot` (
   `metric_scope` VARCHAR(255) NOT NULL,
   `metric_description` TEXT DEFAULT NULL,
   `metric_origin` VARCHAR(255) NOT NULL,
-  CONSTRAINT UNIQUE (`processing`,`code`),
-  CONSTRAINT FOREIGN KEY (`processing`) REFERENCES `processing`(`id`) ON DELETE CASCADE
+  UNIQUE (`processing`,`code`),
+  FOREIGN KEY (`processing`) REFERENCES `processing`(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `range_snapshot` (
@@ -148,8 +148,8 @@ CREATE TABLE IF NOT EXISTS `range_snapshot` (
   `label` VARCHAR(255) DEFAULT NULL,
   `grade` BIGINT DEFAULT NULL,
   `color` INT DEFAULT NULL,
-  CONSTRAINT UNIQUE (`configuration_snapshot`,`beginning`),
-  CONSTRAINT FOREIGN KEY (`configuration_snapshot`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE
+  UNIQUE (`configuration_snapshot`,`beginning`),
+  FOREIGN KEY (`configuration_snapshot`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE IF NOT EXISTS `module_result` (
@@ -160,8 +160,8 @@ CREATE TABLE IF NOT EXISTS `module_result` (
   `grade` BIGINT DEFAULT NULL,
   `parent` BIGINT DEFAULT NULL,
   `height` INT NOT NULL DEFAULT 0,
-  CONSTRAINT FOREIGN KEY (`processing`) REFERENCES `processing`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FOREIGN KEY (`parent`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`processing`) REFERENCES `processing`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`parent`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
   INDEX (`processing`,`module_name`(255)),
   INDEX (`processing`,`height`)
 );
@@ -175,10 +175,10 @@ CREATE TABLE IF NOT EXISTS `metric_result` (
   `configuration` BIGINT NOT NULL,
   `value` BIGINT NOT NULL,
   `error` BIGINT DEFAULT NULL,
-  CONSTRAINT UNIQUE (`module_result`,`configuration`),
-  CONSTRAINT FOREIGN KEY (`module_result`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
-  CONSTRAINT FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)
+  UNIQUE (`module_result`,`configuration`),
+  FOREIGN KEY (`module_result`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)
 );
 
 CREATE TRIGGER `delete_result_error` AFTER DELETE ON `metric_result`
@@ -188,7 +188,10 @@ END;
 
 CREATE TABLE IF NOT EXISTS `descendant_result` (
   `id` BIGINT NOT NULL PRIMARY KEY,
-  `metric_result` BIGINT NOT NULL,
+  `module_result` BIGINT NOT NULL,
+  `configuration` BIGINT NOT NULL,
   `value` BIGINT NOT NULL,
-  CONSTRAINT FOREIGN KEY (`metric_result`) REFERENCES `metric_result`(`id`) ON DELETE CASCADE
+  FOREIGN KEY (`module_result`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
+  INDEX (`module_result`,`configuration`)
 );

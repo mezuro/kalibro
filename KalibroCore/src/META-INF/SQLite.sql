@@ -223,6 +223,7 @@ CREATE INDEX IF NOT EXISTS `height` ON `module_result`(`processing`,`height`);
 CREATE TRIGGER IF NOT EXISTS `delete_module_result` AFTER DELETE ON `module_result`
 FOR EACH ROW BEGIN
   DELETE FROM `metric_result` WHERE `module_result` = OLD.`id`;
+  DELETE FROM `descendant_result` WHERE `module_result` = OLD.`id`;
 END;
 
 CREATE TABLE IF NOT EXISTS `metric_result` (
@@ -239,15 +240,13 @@ FOR EACH ROW BEGIN
   DELETE FROM `throwable` WHERE `id` = OLD.`error`;
 END;
 
-CREATE TRIGGER IF NOT EXISTS `delete_metric_result` AFTER DELETE ON `metric_result`
-FOR EACH ROW BEGIN
-  DELETE FROM `descendant_result` WHERE `metric_result` = OLD.`id`;
-END;
-
 CREATE TABLE IF NOT EXISTS `descendant_result` (
   `id` BIGINT NOT NULL PRIMARY KEY,
-  `metric_result` BIGINT NOT NULL REFERENCES `metric_result`(`id`) ON DELETE CASCADE,
+  `module_result` BIGINT NOT NULL REFERENCES `module_result`(`id`) ON DELETE CASCADE,
+  `configuration` BIGINT NOT NULL REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   `value` BIGINT NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS `descendants` ON `descendant_result`(`module_result`,`configuration`);
 
 PRAGMA foreign_keys = ON;

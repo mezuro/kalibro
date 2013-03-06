@@ -28,8 +28,7 @@ public class MetricResultDatabaseDaoTest extends
 	public void shouldGetDescendantResults() {
 		DescendantResultRecord result = mock(DescendantResultRecord.class);
 		TypedQuery<DescendantResultRecord> descendantQuery = mock(TypedQuery.class);
-		doReturn(descendantQuery).when(dao).createQuery(
-			"SELECT d FROM DescendantResult d WHERE d.metricResult.id = :metricResultId", DescendantResultRecord.class);
+		doReturn(descendantQuery).when(dao).createQuery(anyString(), eq(DescendantResultRecord.class));
 		when(descendantQuery.getResultList()).thenReturn(list(result));
 		when(result.convert()).thenReturn(42.0);
 
