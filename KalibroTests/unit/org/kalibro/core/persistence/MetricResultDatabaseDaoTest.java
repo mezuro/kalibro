@@ -40,7 +40,7 @@ public class MetricResultDatabaseDaoTest extends
 	public void shouldGetMetricResultsOfModuleResult() {
 		assertDeepEquals(set(entity), dao.metricResultsOf(ID));
 
-		verify(dao).createRecordQuery("metricResult.moduleResult.id = :moduleResultId");
+		verify(dao).createRecordQuery("metricResult.moduleResult = :moduleResultId");
 		verify(query).setParameter("moduleResultId", ID);
 	}
 

@@ -77,9 +77,4 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		query.setParameter("height", height);
 		return DataTransferObject.toList(query.getResultList());
 	}
-
-	public ModuleResult prepareResultFor(Module module, Long id) {
-		// TODO REMOVE
-		return null;
-	}
 }

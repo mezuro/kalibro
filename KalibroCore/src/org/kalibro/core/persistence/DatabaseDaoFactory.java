@@ -68,7 +68,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected MetricResultDatabaseDao createMetricResultDao() {
+	public MetricResultDatabaseDao createMetricResultDao() {
 		return new MetricResultDatabaseDao();
 	}
 

@@ -14,8 +14,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(ModuleResultConfigurer.class)
-public class ModuleResultConfigurerTest extends UnitTest {
+@PrepareForTest(CompoundResultCalculator.class)
+public class CompoundResultCalculatorTest extends UnitTest {
 
 	private static final double CBO = new Random().nextDouble();
 	private static final double LCOM4 = new Random().nextDouble();
@@ -25,6 +25,8 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	private NativeMetric cbo, lcom4;
 	private CompoundMetric sc, other;
 	private Configuration configuration;
+
+	private CompoundResultCalculator configurer;
 
 	@Before
 	public void setUp() {
@@ -40,12 +42,14 @@ public class ModuleResultConfigurerTest extends UnitTest {
 
 		NativeMetric totalCof = loadFixture("total_cof", NativeMetric.class);
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(totalCof), 42.0));
+
+		configurer = new CompoundResultCalculator(result, configuration);
 	}
 
 	@Test
 	public void shouldComputeCompoundResults() {
 		assertFalse(result.hasResultFor(sc));
-		configure();
+		configurer.calculateCompoundMetricResults();
 		assertDoubleEquals(SC, result.getResultFor(sc).getValue());
 	}
 
@@ -53,14 +57,14 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	public void shouldIncludeOnlyCompoundMetricsWithCompatibleScope() {
 		sc = (CompoundMetric) configuration.getConfigurationFor(sc).getMetric();
 		sc.setScope(Granularity.PACKAGE);
-		configure();
+		configurer.calculateCompoundMetricResults();
 		assertFalse(result.hasResultFor(sc));
 	}
 
 	@Test
 	public void shouldAddCompoundMetricsWithError() {
 		other.setScript("return null;");
-		configure();
+		configurer.calculateCompoundMetricResults();
 		MetricResult otherResult = result.getResultFor(other);
 		assertTrue(otherResult.hasError());
 
@@ -73,21 +77,19 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	@Test
 	public void shouldCalculateCompoundUsingOtherCompound() {
 		other.setScript("return 2 * sc();");
-		configure();
+		configurer.calculateCompoundMetricResults();
 		assertDoubleEquals(2 * SC, result.getResultFor(other).getValue());
 	}
 
 	@Test
 	public void shouldCalculateGrade() {
 		assertDoubleEquals(Double.NaN, result.getGrade());
-		configure();
-		assertDoubleEquals(10.0, result.getGrade());
+		assertDoubleEquals(10.0, configurer.calculateGrade());
 
 		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
 		cboConfiguration.addRange(rangeThatGradesCboWith(7.0));
 		cboConfiguration.setWeight(2.0);
-		configure();
-		assertDoubleEquals(8.0, result.getGrade());
+		assertDoubleEquals(8.0, configurer.calculateGrade());
 	}
 
 	private Range rangeThatGradesCboWith(Double grade) {
@@ -101,11 +103,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 		JavascriptEvaluator evaluator = spy(new JavascriptEvaluator());
 		whenNew(JavascriptEvaluator.class).withNoArguments().thenReturn(evaluator);
 
-		configure();
+		new CompoundResultCalculator(result, configuration).calculateCompoundMetricResults();
 		verify(evaluator).close();
-	}
-
-	private void configure() {
-		ModuleResultConfigurer.configure(result, configuration);
 	}
 }

@@ -5,6 +5,7 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.dto.ThrowableDto;
 
 /**
@@ -31,6 +32,7 @@ public class ThrowableRecord extends ThrowableDto {
 	@JoinColumn(name = "\"cause\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord cause;
 
+	@CascadeOnDelete
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "throwable")
 	private Collection<StackTraceElementRecord> stackTrace;
 

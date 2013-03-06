@@ -13,20 +13,24 @@ import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.Writer;
 import org.kalibro.core.persistence.ConfigurationDatabaseDao;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AnalyzingTask.class, ModuleResultConfigurer.class})
+@PrepareForTest(AnalyzingTask.class)
 public class AnalyzingTaskTest extends UnitTest {
 
 	private static final Long PROCESSING_ID = new Random().nextLong();
 	private static final String REPOSITORY_NAME = "AnalyzingTaskTest repository name";
 
 	private Processing processing;
-	private Configuration configurationSnapshot;
+	private Configuration configuration;
+	private SourceTreeBuilder treeBuilder;
+	private CompoundResultCalculator configurer;
+	private MetricResultDatabaseDao metricResultDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 
 	private Module softwareModule, classModule;
@@ -41,18 +45,20 @@ public class AnalyzingTaskTest extends UnitTest {
 		mockEntities();
 		stubModuleResultPreparation();
 		stubResultProducer();
-		mockStatic(ModuleResultConfigurer.class);
+		mockStatic(CompoundResultCalculator.class);
 	}
 
 	private void mockDaos() {
+		metricResultDao = mock(MetricResultDatabaseDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
-		configurationSnapshot = loadFixture("sc", Configuration.class);
+		configuration = loadFixture("sc", Configuration.class);
+		treeBuilder = mock(SourceTreeBuilder.class);
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
 		doReturn(daoFactory).when(analyzingTask).daoFactory();
 		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
-		when(configurationDao.snapshotFor(PROCESSING_ID)).thenReturn(configurationSnapshot);
+		when(configurationDao.snapshotFor(PROCESSING_ID)).thenReturn(configuration);
 	}
 
 	private void mockEntities() {
@@ -124,9 +130,9 @@ public class AnalyzingTaskTest extends UnitTest {
 	public void shouldConfigureResults() {
 		analyzingTask.perform();
 		verifyStatic(times(2));
-		ModuleResultConfigurer.configure(softwareResult, configurationSnapshot);
+		CompoundResultCalculator.configure(softwareResult, configuration);
 		verifyStatic();
-		ModuleResultConfigurer.configure(classResult, configurationSnapshot);
+		CompoundResultCalculator.configure(classResult, configuration);
 	}
 
 	@Test

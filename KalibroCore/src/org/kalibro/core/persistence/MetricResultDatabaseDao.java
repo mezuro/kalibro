@@ -17,7 +17,7 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements MetricResultDao {
+public class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements MetricResultDao {
 
 	MetricResultDatabaseDao() {
 		super(MetricResultRecord.class);
@@ -25,8 +25,10 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public List<Double> descendantResultsOf(Long metricResultId) {
-		String queryString = "SELECT dr FROM DescendantResult dr, MetricResult mr WHERE " +
-			"dr.moduleResult = mr.moduleResult AND dr.configuration = mr.configuration AND mr.id = :metricResultId";
+		String moduleResult = "(SELECT mr.moduleResult FROM MetricResult mr WHERE mr.id = :metricResultId)";
+		String configuration = "(SELECT mr.configuration.id FROM MetricResult mr WHERE mr.id = :metricResultId)";
+		String queryString = "SELECT dr FROM DescendantResult dr " +
+			"WHERE dr.moduleResult = " + moduleResult + " AND dr.configuration = " + configuration;
 		TypedQuery<DescendantResultRecord> query = createQuery(queryString, DescendantResultRecord.class);
 		query.setParameter("metricResultId", metricResultId);
 		return DataTransferObject.toList(query.getResultList());
@@ -34,7 +36,7 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public SortedSet<MetricResult> metricResultsOf(Long moduleResultId) {
-		TypedQuery<MetricResultRecord> query = createRecordQuery("metricResult.moduleResult.id = :moduleResultId");
+		TypedQuery<MetricResultRecord> query = createRecordQuery("metricResult.moduleResult = :moduleResultId");
 		query.setParameter("moduleResultId", moduleResultId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
