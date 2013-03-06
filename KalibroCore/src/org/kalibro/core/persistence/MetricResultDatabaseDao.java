@@ -63,4 +63,8 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 	public void save(MetricResult metricResult, Long moduleResultId) {
 		save(new MetricResultRecord(metricResult, moduleResultId));
 	}
+
+	public void addDescendantResult(Double value, Long moduleResultId, Long configurationId) {
+		save(new DescendantResultRecord(value, moduleResultId, configurationId));
+	}
 }
