@@ -24,9 +24,8 @@ public class MetricResultRecord extends MetricResultDto {
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"module_result\"", nullable = false, referencedColumnName = "\"id\"")
-	private ModuleResultRecord moduleResult;
+	@Column(name = "\"module_result\"", nullable = false)
+	private Long moduleResult;
 
 	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
@@ -50,9 +49,9 @@ public class MetricResultRecord extends MetricResultDto {
 		this(metricResult, null);
 	}
 
-	public MetricResultRecord(MetricResult metricResult, ModuleResultRecord moduleResult) {
+	public MetricResultRecord(MetricResult metricResult, Long moduleResultId) {
 		id = metricResult.getId();
-		this.moduleResult = moduleResult;
+		moduleResult = moduleResultId;
 		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
 		value = Double.doubleToLongBits(metricResult.getValue());
 		error = metricResult.hasError() ? new ThrowableRecord(metricResult.getError()) : null;

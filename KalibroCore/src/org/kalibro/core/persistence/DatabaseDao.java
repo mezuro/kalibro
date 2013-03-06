@@ -48,11 +48,7 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	protected TypedQuery<RECORD> createRecordQuery(String where) {
-		return createRecordQuery(entityName() + " " + alias(), where);
-	}
-
-	protected TypedQuery<RECORD> createRecordQuery(String from, String where) {
-		String queryString = "SELECT " + alias() + " FROM " + from;
+		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias();
 		if (where != null)
 			queryString += " WHERE " + where;
 		return createQuery(queryString, recordClass);

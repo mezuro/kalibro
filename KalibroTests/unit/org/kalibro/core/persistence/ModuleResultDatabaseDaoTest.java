@@ -58,47 +58,48 @@ public class ModuleResultDatabaseDaoTest extends
 	}
 
 	@Test
-	public void shouldSave() throws Exception {
-		assertSame(entity, dao.save(entity, ID));
-		verifyNew(ModuleResultRecord.class).withArguments(entity, ID);
-		verify(dao).save(record);
+	public void shouldGetResultForModule() {
+		Module module = new Module(Granularity.PACKAGE, "org");
+		prepareQuery("moduleResult.processing = :processingId AND moduleResult.moduleName = :module");
+
+		assertSame(entity, dao.getResultFor(module, ID));
+		verifyCallsInOrder("org");
 	}
 
 	@Test
-	public void shouldPrepareResultForModule() throws Exception {
+	public void shouldGetNullForInexistentResult() {
 		Module module = new Module(Granularity.PACKAGE, "org");
-		String where = "moduleResult.processing = :processingId AND moduleResult.moduleName = :module";
-		String where2 = "moduleResult.processing = :processingId AND moduleResult.moduleGranularity = :module";
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "module", "org");
-		doReturn(false).when(dao).exists("WHERE " + where2, "processingId", ID, "module", "SOFTWARE");
-		prepareQuery(where);
-		prepareQuery(where2);
+		prepareQuery("moduleResult.processing = :processingId AND moduleResult.moduleName = :module");
+		when(query.getResultList()).thenReturn(new ArrayList<ModuleResultRecord>());
 
-		Module preparedModule = mock(Module.class);
-		whenNew(ModuleResultRecord.class)
-			.withParameterTypes(Module.class, Long.class, Long.class)
-			.withArguments(any(Module.class), any(Long.class), eq(ID)).thenReturn(record);
-		doReturn(null).when(dao).save(record);
-		when(entity.getModule()).thenReturn(preparedModule);
+		assertNull(dao.getResultFor(module, ID));
+		verifyCallsInOrder("org");
+	}
 
-		assertSame(entity, dao.prepareResultFor(module, ID));
-		verifyCallsInOrder(preparedModule);
+	@Test
+	public void shouldFindResultByGranularityWhenRoot() {
+		Module module = new Module(Granularity.SOFTWARE, "null");
+		prepareQuery("moduleResult.processing = :processingId AND moduleResult.moduleGranularity = :module");
+
+		assertSame(entity, dao.getResultFor(module, ID));
+		verifyCallsInOrder("SOFTWARE");
+	}
+
+	private void verifyCallsInOrder(String moduleParameter) {
+		InOrder order = Mockito.inOrder(query);
+		order.verify(query).setParameter("processingId", ID);
+		order.verify(query).setParameter("module", moduleParameter);
+		order.verify(query).getResultList();
 	}
 
 	private void prepareQuery(String where) {
 		doReturn(query).when(dao).createRecordQuery(where);
 	}
 
-	private void verifyCallsInOrder(Module preparedModule) {
-		InOrder order = Mockito.inOrder(dao, query, dao, query, preparedModule);
-		order.verify(dao).save(record);
-		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("module", "SOFTWARE");
-		order.verify(query).getSingleResult();
-		order.verify(dao).save(record);
-		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("module", "org");
-		order.verify(query).getSingleResult();
-		order.verify(preparedModule).setGranularity(Granularity.PACKAGE);
+	@Test
+	public void shouldSave() throws Exception {
+		assertSame(entity, dao.save(entity, ID));
+		verifyNew(ModuleResultRecord.class).withArguments(entity, ID);
+		verify(dao).save(record);
 	}
 }

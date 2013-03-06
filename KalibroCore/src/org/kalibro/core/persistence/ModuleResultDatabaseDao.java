@@ -47,36 +47,12 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		return history;
 	}
 
-	public ModuleResult save(ModuleResult moduleResult, Long processingId) {
-		return save(new ModuleResultRecord(moduleResult, processingId)).convert();
-	}
-
-	public ModuleResult prepareResultFor(Module module, Long processingId) {
-		ModuleResult moduleResult = findResultFor(module, processingId).convert();
-		moduleResult.getModule().setGranularity(module.getGranularity());
-		return moduleResult;
-	}
-
-	private ModuleResultRecord findResultFor(Module module, Long processingId) {
-		if (!exists("WHERE " + moduleCondition(module),
-			"processingId", processingId, "module", moduleParameter(module))) {
-			ModuleResultRecord parent = findParentOf(module, processingId);
-			save(new ModuleResultRecord(module, parent == null ? null : parent.id(), processingId));
-		}
-		return getRecordFor(module, processingId);
-	}
-
-	private ModuleResultRecord findParentOf(Module module, Long processingId) {
-		if (module.getGranularity() == Granularity.SOFTWARE)
-			return null;
-		return findResultFor(module.inferParent(), processingId);
-	}
-
-	private ModuleResultRecord getRecordFor(Module module, Long processingId) {
+	public ModuleResult getResultFor(Module module, Long processingId) {
 		TypedQuery<ModuleResultRecord> query = createRecordQuery(moduleCondition(module));
 		query.setParameter("processingId", processingId);
 		query.setParameter("module", moduleParameter(module));
-		return query.getSingleResult();
+		List<ModuleResultRecord> results = query.getResultList();
+		return results.isEmpty() ? null : results.get(0).convert();
 	}
 
 	private String moduleCondition(Module module) {
@@ -90,8 +66,12 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		return ModuleResultRecord.persistedName(module.getName());
 	}
 
-	public ModuleResult getResultFor(Module module, Long processingId) {
-		// TODO Auto-generated method stub
+	public ModuleResult save(ModuleResult moduleResult, Long processingId) {
+		return save(new ModuleResultRecord(moduleResult, processingId)).convert();
+	}
+
+	public ModuleResult prepareResultFor(Module module, Long id) {
+		// TODO REMOVE
 		return null;
 	}
 }

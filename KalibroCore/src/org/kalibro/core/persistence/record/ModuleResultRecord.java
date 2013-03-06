@@ -1,12 +1,8 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
-import java.util.Collection;
-
 import javax.persistence.*;
 
 import org.kalibro.Granularity;
-import org.kalibro.MetricResult;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dto.ModuleResultDto;
@@ -54,9 +50,6 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"parent\"")
 	private Long parent;
 
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "moduleResult")
-	private Collection<MetricResultRecord> metricResults;
-
 	public ModuleResultRecord() {
 		super();
 	}
@@ -66,30 +59,22 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	public ModuleResultRecord(ModuleResult moduleResult, Long processingId) {
-		this(moduleResult, null, processingId);
-		if (moduleResult.hasParent())
-			parent = moduleResult.getParent().getId();
-	}
-
-	public ModuleResultRecord(ModuleResult moduleResult, Long parentId, Long processingId) {
-		this(moduleResult.getModule(), parentId, processingId);
 		id = moduleResult.getId();
+		processing = processingId;
+		setModule(moduleResult.getModule());
 		grade = Double.doubleToLongBits(moduleResult.getGrade());
-		height = moduleResult.getHeight();
-		setMetricResults(moduleResult.getMetricResults());
+		setParent(moduleResult.getParent());
 	}
 
-	public ModuleResultRecord(Module module, Long parentId, Long processingId) {
-		processing = processingId;
+	private void setModule(Module module) {
 		moduleName = persistedName(module.getName());
 		moduleGranularity = module.getGranularity().name();
-		parent = parentId;
 	}
 
-	private void setMetricResults(Collection<MetricResult> results) {
-		metricResults = new ArrayList<MetricResultRecord>();
-		for (MetricResult metricResult : results)
-			metricResults.add(new MetricResultRecord(metricResult, this));
+	private void setParent(ModuleResult parent) {
+		height = parent == null ? 0 : parent.getHeight() + 1;
+		if (parent != null)
+			this.parent = parent.getId();
 	}
 
 	@Override
