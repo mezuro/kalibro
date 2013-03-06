@@ -70,4 +70,11 @@ public class MetricResultDatabaseDaoTest extends
 		when(moduleResultDao.get(ID)).thenReturn(moduleResult);
 		when(moduleResult.getModule()).thenReturn(module);
 	}
+
+	@Test
+	public void shouldSave() throws Exception {
+		dao.save(entity, ID);
+		verifyNew(MetricResultRecord.class).withArguments(entity, ID);
+		verify(dao).save(record);
+	}
 }

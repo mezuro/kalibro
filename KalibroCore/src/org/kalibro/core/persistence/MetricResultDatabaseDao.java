@@ -58,4 +58,8 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 			history.put(new Date((Long) result[0]), ((MetricResultRecord) result[1]).convert());
 		return history;
 	}
+
+	public void save(MetricResult metricResult, Long moduleResultId) {
+		save(new MetricResultRecord(metricResult, moduleResultId));
+	}
 }
