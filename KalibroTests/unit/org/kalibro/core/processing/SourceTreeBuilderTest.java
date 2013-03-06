@@ -77,4 +77,18 @@ public class SourceTreeBuilderTest extends UnitTest {
 		verify(existingModule).setGranularity(CLASS);
 		verify(dao).save(result, PROCESSING_ID);
 	}
+
+	@Test
+	public void shouldRetrieveMaximumHeight() {
+		Module root = new Module(SOFTWARE, REPOSITORY_NAME);
+		Module leaf = new Module(CLASS, "org", "kalibro", "core", "processing", "SourceTreeBuilderTest");
+		when(dao.getResultFor(root, PROCESSING_ID)).thenReturn(new ModuleResult(null, root));
+		when(dao.getResultFor(leaf, PROCESSING_ID)).thenReturn(result);
+		when(result.getModule()).thenReturn(leaf);
+		when(result.getHeight()).thenReturn(5);
+
+		treeBuilder.save(root);
+		treeBuilder.save(leaf);
+		assertEquals(5, treeBuilder.getMaximumHeight());
+	}
 }

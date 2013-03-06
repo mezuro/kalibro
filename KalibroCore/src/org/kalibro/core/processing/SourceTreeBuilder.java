@@ -13,6 +13,7 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
  */
 class SourceTreeBuilder {
 
+	private int maxHeight;
 	private Long processingId;
 	private String repositoryName;
 	private ModuleResultDatabaseDao dao;
@@ -38,6 +39,7 @@ class SourceTreeBuilder {
 			moduleResult.getModule().setGranularity(module.getGranularity());
 			moduleResult = dao.save(moduleResult, processingId);
 		}
+		maxHeight = Math.max(maxHeight, moduleResult.getHeight());
 		return moduleResult;
 	}
 
@@ -45,5 +47,9 @@ class SourceTreeBuilder {
 		if (module.getGranularity() == SOFTWARE)
 			return new ModuleResult(null, new Module(SOFTWARE, repositoryName));
 		return new ModuleResult(parent, module);
+	}
+
+	public int getMaximumHeight() {
+		return maxHeight;
 	}
 }
