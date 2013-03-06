@@ -2,7 +2,7 @@ package org.kalibro.core.processing;
 
 import static org.junit.Assert.*;
 
-import java.awt.Color;
+import java.util.List;
 import java.util.Random;
 
 import org.junit.Before;
@@ -26,46 +26,47 @@ public class CompoundResultCalculatorTest extends UnitTest {
 	private CompoundMetric sc, other;
 	private Configuration configuration;
 
-	private CompoundResultCalculator configurer;
-
 	@Before
 	public void setUp() {
+		mockConfiguration();
+		prepareModuleResult();
+	}
+
+	private void mockConfiguration() {
 		cbo = loadFixture("cbo", NativeMetric.class);
 		lcom4 = loadFixture("lcom4", NativeMetric.class);
 		sc = loadFixture("sc", CompoundMetric.class);
 		other = new CompoundMetric("Other");
 		configuration = loadFixture("sc", Configuration.class);
 		configuration.addMetricConfiguration(new MetricConfiguration(other));
+	}
+
+	private void prepareModuleResult() {
+		NativeMetric totalCof = loadFixture("total_cof", NativeMetric.class);
 		result = new ModuleResult(null, new Module(Granularity.CLASS, "ClassX"));
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(lcom4), LCOM4));
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(cbo), CBO));
-
-		NativeMetric totalCof = loadFixture("total_cof", NativeMetric.class);
 		result.addMetricResult(new MetricResult(configuration.getConfigurationFor(totalCof), 42.0));
-
-		configurer = new CompoundResultCalculator(result, configuration);
 	}
 
 	@Test
 	public void shouldComputeCompoundResults() {
-		assertFalse(result.hasResultFor(sc));
-		configurer.calculateCompoundMetricResults();
-		assertDoubleEquals(SC, result.getResultFor(sc).getValue());
+		assertDeepEquals(other, computedResults().get(0).getMetric());
+		assertDoubleEquals(SC, computedResults().get(1).getValue());
 	}
 
 	@Test
 	public void shouldIncludeOnlyCompoundMetricsWithCompatibleScope() {
 		sc = (CompoundMetric) configuration.getConfigurationFor(sc).getMetric();
 		sc.setScope(Granularity.PACKAGE);
-		configurer.calculateCompoundMetricResults();
-		assertFalse(result.hasResultFor(sc));
+		assertEquals(1, computedResults().size());
+		assertDeepEquals(other, computedResults().get(0).getMetric());
 	}
 
 	@Test
-	public void shouldAddCompoundMetricsWithError() {
+	public void shouldComputeCompoundMetricsWithError() {
 		other.setScript("return null;");
-		configurer.calculateCompoundMetricResults();
-		MetricResult otherResult = result.getResultFor(other);
+		MetricResult otherResult = computedResults().get(0);
 		assertTrue(otherResult.hasError());
 
 		Throwable error = otherResult.getError();
@@ -77,25 +78,12 @@ public class CompoundResultCalculatorTest extends UnitTest {
 	@Test
 	public void shouldCalculateCompoundUsingOtherCompound() {
 		other.setScript("return 2 * sc();");
-		configurer.calculateCompoundMetricResults();
-		assertDoubleEquals(2 * SC, result.getResultFor(other).getValue());
+		assertDoubleEquals(2 * SC, computedResults().get(0).getValue());
+		assertDoubleEquals(SC, computedResults().get(1).getValue());
 	}
 
-	@Test
-	public void shouldCalculateGrade() {
-		assertDoubleEquals(Double.NaN, result.getGrade());
-		assertDoubleEquals(10.0, configurer.calculateGrade());
-
-		MetricConfiguration cboConfiguration = configuration.getConfigurationFor(cbo);
-		cboConfiguration.addRange(rangeThatGradesCboWith(7.0));
-		cboConfiguration.setWeight(2.0);
-		assertDoubleEquals(8.0, configurer.calculateGrade());
-	}
-
-	private Range rangeThatGradesCboWith(Double grade) {
-		Range range = new Range(CBO, CBO + 1.0);
-		range.setReading(new Reading("name", grade, Color.WHITE));
-		return range;
+	private List<MetricResult> computedResults() {
+		return new CompoundResultCalculator(result, configuration).calculateCompoundResults();
 	}
 
 	@Test
@@ -103,7 +91,7 @@ public class CompoundResultCalculatorTest extends UnitTest {
 		JavascriptEvaluator evaluator = spy(new JavascriptEvaluator());
 		whenNew(JavascriptEvaluator.class).withNoArguments().thenReturn(evaluator);
 
-		new CompoundResultCalculator(result, configuration).calculateCompoundMetricResults();
+		computedResults();
 		verify(evaluator).close();
 	}
 }

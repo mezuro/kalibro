@@ -12,8 +12,10 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
  */
 class AnalyzingTask extends ProcessSubtask {
 
-	private SourceTreeBuilder treeBuilder;
 	private Configuration configuration;
+	private SourceTreeBuilder treeBuilder;
+	private ModuleResultConfigurer configurer;
+
 	private MetricResultDatabaseDao metricResultDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 
@@ -24,6 +26,7 @@ class AnalyzingTask extends ProcessSubtask {
 		moduleResultDao = daoFactory.createModuleResultDao();
 		configuration = daoFactory.createConfigurationDao().snapshotFor(processing().getId());
 		treeBuilder = new SourceTreeBuilder(processing().getId(), repository().getName(), moduleResultDao);
+		configurer = new ModuleResultConfigurer(processing(), metricResultDao, moduleResultDao);
 		for (NativeModuleResult nativeModuleResult : resultProducer())
 			addNativeResult(nativeModuleResult);
 		configureFrom(treeBuilder.getMaximumHeight());
@@ -44,41 +47,8 @@ class AnalyzingTask extends ProcessSubtask {
 
 	private void configureFrom(int height) {
 		for (ModuleResult moduleResult : moduleResultDao.getResultsAtHeight(height, processing().getId()))
-			configure(moduleResult);
+			configurer.configure(moduleResult, configuration);
 		if (height > 0)
 			configureFrom(height - 1);
-	}
-
-	private void configure(ModuleResult moduleResult) {
-		CompoundResultCalculator configurer = new CompoundResultCalculator(moduleResult, configuration);
-		for (MetricResult compoundResult : configurer.calculateCompoundMetricResults())
-			metricResultDao.save(compoundResult, moduleResult.getId());
-		moduleResult.setGrade(configurer.calculateGrade());
-		moduleResultDao.save(moduleResult, processing().getId());
-		if (moduleResult.hasParent())
-			addResultsToParentOf(moduleResult);
-		else
-			processing().setResultsRoot(moduleResult);
-	}
-
-	private void addResultsToParentOf(ModuleResult moduleResult) {
-		for (MetricResult metricResult : moduleResult.getMetricResults())
-			addResultsToParent(moduleResult.getParent(), metricResult);
-	}
-
-	private void addResultsToParent(ModuleResult parent, MetricResult metricResult) {
-		MetricConfiguration snapshot = metricResult.getConfiguration();
-		Metric metric = metricResult.getMetric();
-		Double value = metricResult.getValue();
-
-		Long snapshotId = snapshot.getId();
-		Long parentId = parent.getId();
-
-		if (! (parent.hasResultFor(metric) || metric.isCompound()))
-			metricResultDao.save(new MetricResult(snapshot, Double.NaN), parentId);
-		if (value != Double.NaN)
-			metricResultDao.addDescendantResult(value, parentId, snapshotId);
-		for (Double descendantValue : metricResult.getDescendantResults())
-			metricResultDao.addDescendantResult(descendantValue, parentId, snapshotId);
 	}
 }
