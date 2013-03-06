@@ -60,40 +60,29 @@ public class ModuleResultDatabaseDaoTest extends
 	@Test
 	public void shouldGetResultForModule() {
 		Module module = new Module(Granularity.PACKAGE, "org");
-		prepareQuery("moduleResult.processing = :processingId AND moduleResult.moduleName = :module");
+		prepareQuery("moduleResult.moduleName = :module");
 
 		assertSame(entity, dao.getResultFor(module, ID));
-		verifyCallsInOrder("org");
+		verifyCallsInOrder("module", "org");
 	}
 
 	@Test
 	public void shouldGetNullForInexistentResult() {
 		Module module = new Module(Granularity.PACKAGE, "org");
-		prepareQuery("moduleResult.processing = :processingId AND moduleResult.moduleName = :module");
+		prepareQuery("moduleResult.moduleName = :module");
 		when(query.getResultList()).thenReturn(new ArrayList<ModuleResultRecord>());
 
 		assertNull(dao.getResultFor(module, ID));
-		verifyCallsInOrder("org");
+		verifyCallsInOrder("module", "org");
 	}
 
 	@Test
 	public void shouldFindResultByGranularityWhenRoot() {
 		Module module = new Module(Granularity.SOFTWARE, "null");
-		prepareQuery("moduleResult.processing = :processingId AND moduleResult.moduleGranularity = :module");
+		prepareQuery("moduleResult.moduleGranularity = :module");
 
 		assertSame(entity, dao.getResultFor(module, ID));
-		verifyCallsInOrder("SOFTWARE");
-	}
-
-	private void verifyCallsInOrder(String moduleParameter) {
-		InOrder order = Mockito.inOrder(query);
-		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("module", moduleParameter);
-		order.verify(query).getResultList();
-	}
-
-	private void prepareQuery(String where) {
-		doReturn(query).when(dao).createRecordQuery(where);
+		verifyCallsInOrder("module", "SOFTWARE");
 	}
 
 	@Test
@@ -101,5 +90,25 @@ public class ModuleResultDatabaseDaoTest extends
 		assertSame(entity, dao.save(entity, ID));
 		verifyNew(ModuleResultRecord.class).withArguments(entity, ID);
 		verify(dao).save(record);
+	}
+
+	@Test
+	public void shouldGetResultsAtHeight() {
+		int height = TIME.intValue();
+		prepareQuery("moduleResult.height = :height");
+
+		assertDeepEquals(list(entity), dao.getResultsAtHeight(height, ID));
+		verifyCallsInOrder("height", height);
+	}
+
+	private void prepareQuery(String secondCondition) {
+		doReturn(query).when(dao).createRecordQuery("moduleResult.processing = :processingId AND " + secondCondition);
+	}
+
+	private void verifyCallsInOrder(String secondParameterName, Object secondParameter) {
+		InOrder order = Mockito.inOrder(query);
+		order.verify(query).setParameter("processingId", ID);
+		order.verify(query).setParameter(secondParameterName, secondParameter);
+		order.verify(query).getResultList();
 	}
 }

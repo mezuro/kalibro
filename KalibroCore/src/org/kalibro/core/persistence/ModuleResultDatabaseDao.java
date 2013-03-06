@@ -70,6 +70,14 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		return save(new ModuleResultRecord(moduleResult, processingId)).convert();
 	}
 
+	public List<ModuleResult> getResultsAtHeight(int height, Long processingId) {
+		TypedQuery<ModuleResultRecord> query =
+			createRecordQuery("moduleResult.processing = :processingId AND moduleResult.height = :height");
+		query.setParameter("processingId", processingId);
+		query.setParameter("height", height);
+		return DataTransferObject.toList(query.getResultList());
+	}
+
 	public ModuleResult prepareResultFor(Module module, Long id) {
 		// TODO REMOVE
 		return null;
