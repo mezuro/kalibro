@@ -26,7 +26,7 @@ class AnalyzingTask extends ProcessSubtask {
 		moduleResultDao = daoFactory.createModuleResultDao();
 		configuration = daoFactory.createConfigurationDao().snapshotFor(processing().getId());
 		treeBuilder = new SourceTreeBuilder(processing().getId(), repository().getName(), moduleResultDao);
-		configurer = new ModuleResultConfigurer(processing(), metricResultDao, moduleResultDao);
+		configurer = new ModuleResultConfigurer(processing(), configuration, metricResultDao, moduleResultDao);
 		for (NativeModuleResult nativeModuleResult : resultProducer())
 			addNativeResult(nativeModuleResult);
 		configureFrom(treeBuilder.getMaximumHeight());
@@ -47,7 +47,7 @@ class AnalyzingTask extends ProcessSubtask {
 
 	private void configureFrom(int height) {
 		for (ModuleResult moduleResult : moduleResultDao.getResultsAtHeight(height, processing().getId()))
-			configurer.configure(moduleResult, configuration);
+			configurer.configure(moduleResult);
 		if (height > 0)
 			configureFrom(height - 1);
 	}

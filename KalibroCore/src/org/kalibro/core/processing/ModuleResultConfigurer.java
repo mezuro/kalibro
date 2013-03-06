@@ -12,22 +12,22 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 class ModuleResultConfigurer {
 
 	private Processing processing;
+	private Configuration configuration;
 	private MetricResultDatabaseDao metricResultDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 
 	private ModuleResult moduleResult;
-	private Configuration configuration;
 
-	ModuleResultConfigurer(Processing processing, MetricResultDatabaseDao metricResultDao,
+	ModuleResultConfigurer(Processing processing, Configuration configuration, MetricResultDatabaseDao metricResultDao,
 		ModuleResultDatabaseDao moduleResultDao) {
 		this.processing = processing;
+		this.configuration = configuration;
 		this.metricResultDao = metricResultDao;
 		this.moduleResultDao = moduleResultDao;
 	}
 
-	void configure(ModuleResult result, Configuration configurationSnapshot) {
+	void configure(ModuleResult result) {
 		moduleResult = result;
-		configuration = configurationSnapshot;
 		configure();
 	}
 
