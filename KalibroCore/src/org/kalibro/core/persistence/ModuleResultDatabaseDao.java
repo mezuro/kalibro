@@ -63,7 +63,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 			ModuleResultRecord parent = findParentOf(module, processingId);
 			save(new ModuleResultRecord(module, parent == null ? null : parent.id(), processingId));
 		}
-		return getResultFor(module, processingId);
+		return getRecordFor(module, processingId);
 	}
 
 	private ModuleResultRecord findParentOf(Module module, Long processingId) {
@@ -72,7 +72,7 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		return findResultFor(module.inferParent(), processingId);
 	}
 
-	private ModuleResultRecord getResultFor(Module module, Long processingId) {
+	private ModuleResultRecord getRecordFor(Module module, Long processingId) {
 		TypedQuery<ModuleResultRecord> query = createRecordQuery(moduleCondition(module));
 		query.setParameter("processingId", processingId);
 		query.setParameter("module", moduleParameter(module));
@@ -88,5 +88,10 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		if (module.getGranularity() == Granularity.SOFTWARE)
 			return Granularity.SOFTWARE.name();
 		return ModuleResultRecord.persistedName(module.getName());
+	}
+
+	public ModuleResult getResultFor(Module module, Long processingId) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
