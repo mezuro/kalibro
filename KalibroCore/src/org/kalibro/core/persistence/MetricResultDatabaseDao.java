@@ -48,9 +48,10 @@ public class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 		String repositoryId = "(SELECT p.repository FROM ModuleResult mor, Processing p " +
 			"WHERE p.id = mor.processing AND mor.id = :moduleResultId)";
 		TypedQuery<Object[]> query = createQuery("SELECT processing.date, metricResult " +
-			"FROM MetricResult metricResult JOIN metricResult.moduleResult moduleResult, Processing processing " +
-			"WHERE processing.id = moduleResult.processing AND metricResult.configuration.metricName = :metricName " +
-			"AND moduleResult.moduleName = :moduleName AND processing.repository = " + repositoryId, Object[].class);
+			"FROM MetricResult metricResult, ModuleResult moduleResult, Processing processing " +
+			"WHERE processing.id = moduleResult.processing AND moduleResult.id = metricResult.moduleResult " +
+			"AND metricResult.configuration.metricName = :metricName AND moduleResult.moduleName = :moduleName " +
+			"AND processing.repository = " + repositoryId, Object[].class);
 		query.setParameter("metricName", metricName);
 		query.setParameter("moduleName", moduleName);
 		query.setParameter("moduleResultId", moduleResultId);

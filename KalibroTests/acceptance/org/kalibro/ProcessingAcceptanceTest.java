@@ -148,13 +148,13 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteRepositoryShouldCascadeToProcessings(SupportedDatabase databaseType) throws Exception {
+	public void deleteProjectShouldCascadeToProcessings(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.setAddress("/invalid/address/");
 		process();
 		assertTrue(Processing.hasProcessing(repository));
 
-		repository.delete();
+		repository.getProject().delete();
 		assertTrue(allProcessings().isEmpty());
 	}
 
