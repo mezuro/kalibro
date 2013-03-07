@@ -1,6 +1,5 @@
 package org.kalibro.core.processing;
 
-import static org.junit.Assert.*;
 import static org.kalibro.Granularity.*;
 
 import java.util.Random;
@@ -16,6 +15,8 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.tests.UnitTest;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -23,13 +24,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(AnalyzingTask.class)
 public class AnalyzingTaskTest extends UnitTest {
 
+	private static final Long ROOT_ID = new Random().nextLong();
+	private static final Long CLASS_ID = new Random().nextLong();
 	private static final Long PROCESSING_ID = new Random().nextLong();
 	private static final String REPOSITORY_NAME = "AnalyzingTaskTest repository name";
 
 	private Processing processing;
 	private Configuration configuration;
 	private SourceTreeBuilder treeBuilder;
-	private CompoundResultCalculator configurer;
+	private ModuleResultConfigurer configurer;
 	private MetricResultDatabaseDao metricResultDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 
@@ -39,13 +42,13 @@ public class AnalyzingTaskTest extends UnitTest {
 	private AnalyzingTask analyzingTask;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		analyzingTask = spy(new AnalyzingTask());
 		mockDaos();
 		mockEntities();
-		stubModuleResultPreparation();
+		mockSourceTreeBuilder();
+		mockModuleResultConfigurer();
 		stubResultProducer();
-		mockStatic(CompoundResultCalculator.class);
 	}
 
 	private void mockDaos() {
@@ -55,31 +58,40 @@ public class AnalyzingTaskTest extends UnitTest {
 		treeBuilder = mock(SourceTreeBuilder.class);
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
+
 		doReturn(daoFactory).when(analyzingTask).daoFactory();
-		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
+		when(daoFactory.createMetricResultDao()).thenReturn(metricResultDao);
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
+		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
 		when(configurationDao.snapshotFor(PROCESSING_ID)).thenReturn(configuration);
 	}
 
 	private void mockEntities() {
-		processing = mock(Processing.class);
 		Repository repository = mock(Repository.class);
+		processing = mock(Processing.class);
+		softwareModule = new Module(SOFTWARE, "null");
+		softwareResult = new ModuleResult(null, new Module(SOFTWARE, REPOSITORY_NAME));
+		classModule = new Module(CLASS, "HelloWorld");
+		classResult = new ModuleResult(softwareResult, classModule);
+
 		doReturn(processing).when(analyzingTask).processing();
 		doReturn(repository).when(analyzingTask).repository();
 		when(processing.getId()).thenReturn(PROCESSING_ID);
 		when(repository.getName()).thenReturn(REPOSITORY_NAME);
 	}
 
-	private void stubModuleResultPreparation() {
-		softwareModule = new Module(SOFTWARE, "null");
-		softwareResult = new ModuleResult(null, softwareModule);
-		when(moduleResultDao.prepareResultFor(softwareModule, PROCESSING_ID)).thenReturn(softwareResult);
-		when(moduleResultDao.save(softwareResult, PROCESSING_ID)).thenReturn(softwareResult);
+	private void mockSourceTreeBuilder() throws Exception {
+		treeBuilder = mock(SourceTreeBuilder.class);
+		whenNew(SourceTreeBuilder.class)
+			.withArguments(PROCESSING_ID, REPOSITORY_NAME, moduleResultDao).thenReturn(treeBuilder);
+		when(treeBuilder.save(softwareModule)).thenReturn(ROOT_ID);
+		when(treeBuilder.save(classModule)).thenReturn(CLASS_ID);
+	}
 
-		classModule = new Module(CLASS, "HelloWorld");
-		classResult = new ModuleResult(softwareResult, classModule);
-		when(moduleResultDao.prepareResultFor(classModule, PROCESSING_ID)).thenReturn(classResult);
-		when(moduleResultDao.save(classResult, PROCESSING_ID)).thenReturn(classResult);
+	private void mockModuleResultConfigurer() throws Exception {
+		configurer = mock(ModuleResultConfigurer.class);
+		whenNew(ModuleResultConfigurer.class)
+			.withArguments(processing, configuration, metricResultDao, moduleResultDao).thenReturn(configurer);
 	}
 
 	private void stubResultProducer() {
@@ -102,50 +114,33 @@ public class AnalyzingTaskTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldAddModulesToSourceTree() {
+		analyzingTask.perform();
+		verify(treeBuilder).save(softwareModule);
+		verify(treeBuilder).save(classModule);
+	}
+
+	@Test
 	public void shouldAddMetricResults() {
-		NativeMetric lcom4 = loadFixture("lcom4", NativeMetric.class);
-		assertFalse(classResult.hasResultFor(lcom4));
-		analyzingTask.perform();
-
-		assertTrue(softwareResult.hasResultFor(lcom4));
-		MetricResult lcom4Result = classResult.getResultFor(lcom4);
-		assertDoubleEquals(1.0, lcom4Result.getValue());
-		assertTrue(lcom4Result.getDescendantResults().isEmpty());
-	}
-
-	@Test
-	public void shouldAddDescendantResults() {
 		NativeMetric cbo = loadFixture("cbo", NativeMetric.class);
-		assertFalse(softwareResult.hasResultFor(cbo));
-		analyzingTask.perform();
+		NativeMetric lcom4 = loadFixture("lcom4", NativeMetric.class);
+		NativeMetric totalCof = loadFixture("total_cof", NativeMetric.class);
 
-		assertTrue(softwareResult.hasResultFor(cbo));
-		MetricResult cboResult = softwareResult.getResultFor(cbo);
-		assertDoubleEquals(Double.NaN, cboResult.getValue());
-		assertDoubleEquals(0.0, cboResult.getAggregatedValue());
-		assertDeepEquals(list(0.0), cboResult.getDescendantResults());
+		analyzingTask.perform();
+		verify(metricResultDao).save(new MetricResult(configuration.getConfigurationFor(totalCof), 0.0), ROOT_ID);
+		verify(metricResultDao).save(new MetricResult(configuration.getConfigurationFor(cbo), 0.0), CLASS_ID);
+		verify(metricResultDao).save(new MetricResult(configuration.getConfigurationFor(lcom4), 1.0), CLASS_ID);
 	}
 
 	@Test
-	public void shouldConfigureResults() {
-		analyzingTask.perform();
-		verifyStatic(times(2));
-		CompoundResultCalculator.configure(softwareResult, configuration);
-		verifyStatic();
-		CompoundResultCalculator.configure(classResult, configuration);
-	}
+	public void shouldConfigureByHeight() {
+		when(treeBuilder.getMaximumHeight()).thenReturn(1);
+		when(moduleResultDao.getResultsAtHeight(1, PROCESSING_ID)).thenReturn(list(classResult));
+		when(moduleResultDao.getResultsAtHeight(0, PROCESSING_ID)).thenReturn(list(softwareResult));
 
-	@Test
-	public void shouldSaveResults() {
 		analyzingTask.perform();
-		verify(moduleResultDao, times(3)).save(softwareResult, PROCESSING_ID);
-		verify(moduleResultDao).save(classResult, PROCESSING_ID);
-	}
-
-	@Test
-	public void shouldSetRootOnProcessing() {
-		analyzingTask.perform();
-		assertArrayEquals(array(REPOSITORY_NAME), softwareModule.getName());
-		verify(processing, times(2)).setResultsRoot(softwareResult);
+		InOrder order = Mockito.inOrder(configurer);
+		order.verify(configurer).configure(classResult);
+		order.verify(configurer).configure(softwareResult);
 	}
 }
