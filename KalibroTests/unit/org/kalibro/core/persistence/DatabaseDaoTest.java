@@ -113,6 +113,12 @@ public class DatabaseDaoTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldSaveCollection() {
+		dao.saveAll(list(record));
+		verify(recordManager).saveAll(list(record));
+	}
+
+	@Test
 	public void shouldDeleteById() {
 		dao.delete(ID);
 		verify(recordManager).removeById(ID, PersonRecord.class);

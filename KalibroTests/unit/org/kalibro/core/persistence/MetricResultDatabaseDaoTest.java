@@ -78,17 +78,17 @@ public class MetricResultDatabaseDaoTest extends
 	}
 
 	@Test
-	public void shouldInsertDescendatResult() throws Exception {
+	public void shouldInsertDescendatResults() throws Exception {
 		Random random = new Random();
 		Double value = random.nextDouble();
 		Long moduleResultId = random.nextLong();
 		Long configurationId = random.nextLong();
 		DescendantResultRecord result = mock(DescendantResultRecord.class);
 		whenNew(DescendantResultRecord.class).withArguments(value, moduleResultId, configurationId).thenReturn(result);
-		doReturn(result).when(dao).save(result);
+		doNothing().when(dao).saveAll(list(result));
 
-		dao.addDescendantResult(value, moduleResultId, configurationId);
+		dao.addDescendantResults(list(value), moduleResultId, configurationId);
 		verifyNew(DescendantResultRecord.class).withArguments(value, moduleResultId, configurationId);
-		verify(dao).save(result);
+		verify(dao).saveAll(list(result));
 	}
 }

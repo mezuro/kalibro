@@ -1,5 +1,6 @@
 package org.kalibro.core.persistence;
 
+import java.util.Collection;
 import java.util.SortedSet;
 
 import javax.persistence.Entity;
@@ -64,6 +65,10 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	protected <T> T save(T record) {
 		return recordManager.save(record);
+	}
+
+	protected <T> void saveAll(Collection<T> records) {
+		recordManager.saveAll(records);
 	}
 
 	public void delete(Long recordId) {

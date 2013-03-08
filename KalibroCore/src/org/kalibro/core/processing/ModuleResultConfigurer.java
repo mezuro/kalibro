@@ -1,5 +1,7 @@
 package org.kalibro.core.processing;
 
+import java.util.List;
+
 import org.kalibro.*;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
@@ -74,9 +76,9 @@ class ModuleResultConfigurer {
 
 		if (! (parent.hasResultFor(metric) || metric.isCompound()))
 			metricResultDao.save(new MetricResult(snapshot, Double.NaN), parent.getId());
+		List<Double> descendantResults = metricResult.getDescendantResults();
 		if (value != Double.NaN)
-			metricResultDao.addDescendantResult(value, parent.getId(), snapshot.getId());
-		for (Double descendantValue : metricResult.getDescendantResults())
-			metricResultDao.addDescendantResult(descendantValue, parent.getId(), snapshot.getId());
+			descendantResults.add(value);
+		metricResultDao.addDescendantResults(descendantResults, parent.getId(), snapshot.getId());
 	}
 }

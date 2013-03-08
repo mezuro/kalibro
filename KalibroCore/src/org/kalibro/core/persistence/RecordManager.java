@@ -1,5 +1,7 @@
 package org.kalibro.core.persistence;
 
+import java.util.Collection;
+
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -39,6 +41,14 @@ class RecordManager {
 		entityManager.persist(merged);
 		commitTransaction();
 		return merged;
+	}
+
+	<T> void saveAll(Collection<T> records) {
+		clear();
+		beginTransaction();
+		for (T record : records)
+			entityManager.persist(entityManager.merge(record));
+		commitTransaction();
 	}
 
 	void removeById(Long id, Class<?> recordClass) {

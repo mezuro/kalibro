@@ -114,8 +114,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 
 		configurer.configure(moduleResult);
 		verify(metricResultDao).save(new MetricResult(snapshot, Double.NaN), parent.getId());
-		verify(metricResultDao).addDescendantResult(value, parent.getId(), snapshot.getId());
-		metricResultDao.addDescendantResult(descendantValue, parent.getId(), snapshot.getId());
+		verify(metricResultDao).addDescendantResults(list(descendantValue, value), parent.getId(), snapshot.getId());
 	}
 
 	private MetricResult mockMetricResult(Double grade, Double weight) throws Exception {

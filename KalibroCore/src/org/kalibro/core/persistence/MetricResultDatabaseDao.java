@@ -67,7 +67,10 @@ public class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 		save(new MetricResultRecord(metricResult, moduleResultId));
 	}
 
-	public void addDescendantResult(Double value, Long moduleResultId, Long configurationId) {
-		save(new DescendantResultRecord(value, moduleResultId, configurationId));
+	public void addDescendantResults(List<Double> descendantResults, Long moduleResultId, Long configurationId) {
+		List<DescendantResultRecord> records = new ArrayList<DescendantResultRecord>();
+		for (Double descendantResult : descendantResults)
+			records.add(new DescendantResultRecord(descendantResult, moduleResultId, configurationId));
+		saveAll(records);
 	}
 }

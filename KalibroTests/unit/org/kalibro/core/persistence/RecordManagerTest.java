@@ -68,6 +68,13 @@ public class RecordManagerTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldMergeAndSaveCollection() throws Exception {
+		recordManager.saveAll(list(UNMERGED));
+		verify(entityManager).clear();
+		verifyWithinTransaction("persist");
+	}
+
+	@Test
 	public void shouldRemoveById() throws Exception {
 		when(entityManager.find(String.class, ID)).thenReturn(MERGED);
 		recordManager.removeById(ID, String.class);
