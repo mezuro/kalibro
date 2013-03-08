@@ -4,6 +4,8 @@ DROP TABLE IF EXISTS "descendant_result", "metric_result", "module_result",
 
 /* END OF DROP TABLES */
 
+SET CONSTRAINTS ALL DEFERRED;
+
 CREATE TABLE IF NOT EXISTS "reading_group" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL UNIQUE,
@@ -87,6 +89,8 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+DROP TRIGGER IF EXISTS "delete_throwable_cause";
+
 CREATE TRIGGER "delete_throwable_cause" AFTER DELETE ON "throwable"
     FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('cause');
 
@@ -109,9 +113,11 @@ CREATE TABLE IF NOT EXISTS "processing" (
   "loading_time" BIGINT DEFAULT NULL,
   "collecting_time" BIGINT DEFAULT NULL,
   "analyzing_time" BIGINT DEFAULT NULL,
-  "results_root" BIGINT DEFAULT NULL,
+  "results_root" BIGINT DEFAULT NULL REFERENCES "module_result"("id") ON DELETE SET NULL,
   UNIQUE ("repository","date")
 );
+
+DROP TRIGGER IF EXISTS "delete_processing_error";
 
 CREATE TRIGGER "delete_processing_error" AFTER DELETE ON "processing"
     FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('error');
@@ -152,12 +158,13 @@ CREATE TABLE IF NOT EXISTS "module_result" (
   "height" INT NOT NULL DEFAULT 0
 );
 
+DROP INDEX IF EXISTS "module_name";
+
 CREATE INDEX "module_name" ON "module_result"("processing","module_name");
 
-CREATE INDEX "height" ON "module_result"("processing","height");
+DROP INDEX IF EXISTS "height";
 
-ALTER TABLE "processing" ADD CONSTRAINT "processing_root"
-  FOREIGN KEY ("results_root") REFERENCES "module_result"("id") ON DELETE SET NULL;
+CREATE INDEX "height" ON "module_result"("processing","height");
 
 CREATE TABLE IF NOT EXISTS "metric_result" (
   "id" BIGINT NOT NULL PRIMARY KEY,
@@ -168,6 +175,8 @@ CREATE TABLE IF NOT EXISTS "metric_result" (
   UNIQUE ("module_result","configuration")
 );
 
+DROP TRIGGER IF EXISTS "delete_result_error";
+
 CREATE TRIGGER "delete_result_error" AFTER DELETE ON "metric_result"
     FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('error');
 
@@ -177,5 +186,7 @@ CREATE TABLE IF NOT EXISTS "descendant_result" (
   "configuration" BIGINT NOT NULL REFERENCES "metric_configuration_snapshot"("id") ON DELETE CASCADE,
   "value" BIGINT NOT NULL
 );
+
+DROP INDEX IF EXISTS "descendants";
 
 CREATE INDEX "descendants" ON "descendant_result"("module_result","configuration");
