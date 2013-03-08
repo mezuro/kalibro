@@ -89,7 +89,7 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
-DROP TRIGGER IF EXISTS "delete_throwable_cause";
+DROP TRIGGER IF EXISTS "delete_throwable_cause" ON "throwable";
 
 CREATE TRIGGER "delete_throwable_cause" AFTER DELETE ON "throwable"
     FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('cause');
@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS "processing" (
   UNIQUE ("repository","date")
 );
 
-DROP TRIGGER IF EXISTS "delete_processing_error";
+DROP TRIGGER IF EXISTS "delete_processing_error" ON "processing";
 
 CREATE TRIGGER "delete_processing_error" AFTER DELETE ON "processing"
     FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('error');
@@ -175,7 +175,7 @@ CREATE TABLE IF NOT EXISTS "metric_result" (
   UNIQUE ("module_result","configuration")
 );
 
-DROP TRIGGER IF EXISTS "delete_result_error";
+DROP TRIGGER IF EXISTS "delete_result_error" ON "metric_result";
 
 CREATE TRIGGER "delete_result_error" AFTER DELETE ON "metric_result"
     FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('error');
