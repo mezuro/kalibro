@@ -4,9 +4,9 @@ DROP TABLE IF EXISTS `descendant_result`, `metric_result`, `module_result`,
   `range_snapshot`, `metric_configuration_snapshot`, `processing`, `stack_trace_element`, `throwable`,
   `repository`, `project`, `range`, `metric_configuration`, `configuration`, `reading`, `reading_group`;
 
-SET foreign_key_checks = 1;
-
 /* END OF DROP TABLES */
+
+SET foreign_key_checks = 0;
 
 CREATE TABLE IF NOT EXISTS `reading_group` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -88,6 +88,8 @@ CREATE TABLE IF NOT EXISTS `throwable` (
   FOREIGN KEY (`cause`) REFERENCES `throwable`(`id`) ON DELETE SET NULL
 );
 
+DROP TRIGGER IF EXISTS `delete_throwable_cause`;
+
 CREATE TRIGGER `delete_throwable_cause` AFTER DELETE ON `throwable`
 FOR EACH ROW BEGIN
   DELETE FROM `throwable` WHERE `id` = OLD.`cause`;
@@ -116,8 +118,11 @@ CREATE TABLE IF NOT EXISTS `processing` (
   `results_root` BIGINT DEFAULT NULL,
   UNIQUE (`repository`,`date`),
   FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE,
-  FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT
+  FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT,
+  FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL
 );
+
+DROP TRIGGER IF EXISTS `delete_processing_error`;
 
 CREATE TRIGGER `delete_processing_error` AFTER DELETE ON `processing`
 FOR EACH ROW BEGIN
@@ -166,9 +171,6 @@ CREATE TABLE IF NOT EXISTS `module_result` (
   INDEX (`processing`,`height`)
 );
 
-ALTER TABLE `processing` ADD CONSTRAINT `processing_root`
-  FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL;
-
 CREATE TABLE IF NOT EXISTS `metric_result` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `module_result` BIGINT NOT NULL,
@@ -180,6 +182,8 @@ CREATE TABLE IF NOT EXISTS `metric_result` (
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)
 );
+
+DROP TRIGGER IF EXISTS `delete_result_error`;
 
 CREATE TRIGGER `delete_result_error` AFTER DELETE ON `metric_result`
 FOR EACH ROW BEGIN
@@ -195,3 +199,5 @@ CREATE TABLE IF NOT EXISTS `descendant_result` (
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   INDEX (`module_result`,`configuration`)
 );
+
+SET foreign_key_checks = 1;
