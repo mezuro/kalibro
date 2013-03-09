@@ -63,8 +63,17 @@ public class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 		return history;
 	}
 
-	public void save(MetricResult metricResult, Long moduleResultId) {
-		save(new MetricResultRecord(metricResult, moduleResultId));
+	public MetricResult save(MetricResult metricResult, Long moduleResultId) {
+		return save(new MetricResultRecord(metricResult, moduleResultId)).convert();
+	}
+
+	public boolean metricResultExists(Long moduleResultId, Long configurationId) {
+		String queryString = "SELECT count(*) FROM MetricResult mr " +
+			"WHERE mr.moduleResult = :moduleResultId AND mr.configuration.id = :configurationId";
+		TypedQuery<Integer> query = createQuery(queryString, Integer.class);
+		query.setParameter("moduleResultId", moduleResultId);
+		query.setParameter("configurationId", configurationId);
+		return query.getSingleResult() > 0;
 	}
 
 	public void addDescendantResults(List<Double> descendantResults, Long moduleResultId, Long configurationId) {

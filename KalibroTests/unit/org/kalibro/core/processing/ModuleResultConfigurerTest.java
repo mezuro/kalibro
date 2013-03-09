@@ -1,5 +1,6 @@
 package org.kalibro.core.processing;
 
+import java.util.ArrayList;
 import java.util.Random;
 import java.util.SortedSet;
 
@@ -16,7 +17,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({MetricResult.class, ModuleResult.class, ModuleResultConfigurer.class})
+@PrepareForTest({Metric.class, MetricResult.class, ModuleResult.class, ModuleResultConfigurer.class})
 public class ModuleResultConfigurerTest extends UnitTest {
 
 	private static final Random RANDOM = new Random();
@@ -58,6 +59,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	public void shouldSaveCompoundResults() {
 		MetricResult compoundResult = mock(MetricResult.class);
 		when(compoundCalculator.calculateCompoundResults()).thenReturn(list(compoundResult));
+		when(metricResultDao.save(compoundResult, MODULE_RESULT_ID)).thenReturn(compoundResult);
 
 		configurer.configure(moduleResult);
 		verify(moduleResult).addMetricResult(compoundResult);
@@ -71,6 +73,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 		MetricResult compoundResult = mockMetricResult(7.0, 2.0);
 		SortedSet<MetricResult> metricResults = sortedSet(nativeResult1, nativeResult2, compoundResult);
 		when(compoundCalculator.calculateCompoundResults()).thenReturn(list(compoundResult));
+		when(metricResultDao.save(compoundResult, MODULE_RESULT_ID)).thenReturn(compoundResult);
 		when(moduleResult.getMetricResults()).thenReturn(metricResults);
 
 		configurer.configure(moduleResult);
@@ -79,6 +82,15 @@ public class ModuleResultConfigurerTest extends UnitTest {
 		order.verify(moduleResult).getMetricResults();
 		order.verify(moduleResult).setGrade(8.0);
 		order.verify(moduleResultDao).save(moduleResult, PROCESSING_ID);
+	}
+
+	private MetricResult mockMetricResult(Double grade, Double weight) throws Exception {
+		MetricResult metricResult = mock(MetricResult.class);
+		when(metricResult.hasGrade()).thenReturn(grade != null);
+		when(metricResult.getGrade()).thenReturn(grade);
+		when(metricResult.getWeight()).thenReturn(weight);
+		when(metricResult, Comparable.class.getMethods()[0]).withArguments(any()).thenReturn(1);
+		return metricResult;
 	}
 
 	@Test
@@ -93,6 +105,7 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	public void shouldAddResultsToParentAfterAddingCompoundResults() {
 		MetricResult compoundResult = mock(MetricResult.class);
 		when(compoundCalculator.calculateCompoundResults()).thenReturn(list(compoundResult));
+		when(metricResultDao.save(compoundResult, MODULE_RESULT_ID)).thenReturn(compoundResult);
 
 		configurer.configure(moduleResult);
 		InOrder order = Mockito.inOrder(moduleResult);
@@ -102,26 +115,29 @@ public class ModuleResultConfigurerTest extends UnitTest {
 
 	@Test
 	public void shouldAddResultsToParent() throws Exception {
-		Double value = RANDOM.nextDouble();
-		Double descendantValue = RANDOM.nextDouble();
-		Metric metric = mock(Metric.class);
-		MetricResult metricResult = mockMetricResult(1.0, 1.0);
-		MetricConfiguration snapshot = mockSnapshot(metricResult);
-		ModuleResult parent = mockModuleResult(metricResult);
-		when(metricResult.getValue()).thenReturn(value);
-		when(metricResult.getMetric()).thenReturn(metric);
-		when(metricResult.getDescendantResults()).thenReturn(list(descendantValue));
+		Double nativeValue = RANDOM.nextDouble();
+		Double compoundValue = RANDOM.nextDouble();
+		MetricResult nativeMetricResult = mockMetricResult(false, nativeValue);
+		MetricResult compoundMetricResult = mockMetricResult(true, compoundValue);
+		MetricConfiguration nativeSnapshot = mockSnapshot(nativeMetricResult);
+		MetricConfiguration compoundSnapshot = mockSnapshot(compoundMetricResult);
+		ModuleResult parent = mockModuleResult(sortedSet(nativeMetricResult, compoundMetricResult));
 
 		configurer.configure(moduleResult);
-		verify(metricResultDao).save(new MetricResult(snapshot, Double.NaN), parent.getId());
-		verify(metricResultDao).addDescendantResults(list(descendantValue, value), parent.getId(), snapshot.getId());
+		verify(metricResultDao).addDescendantResults(list(nativeValue, nativeValue), parent.getId(),
+			nativeSnapshot.getId());
+		verify(metricResultDao).addDescendantResults(list(compoundValue), parent.getId(), compoundSnapshot.getId());
 	}
 
-	private MetricResult mockMetricResult(Double grade, Double weight) throws Exception {
+	private MetricResult mockMetricResult(boolean compound, Double value) throws Exception {
+		Long id = RANDOM.nextLong();
+		Metric metric = mock(Metric.class);
 		MetricResult metricResult = mock(MetricResult.class);
-		when(metricResult.hasGrade()).thenReturn(grade != null);
-		when(metricResult.getGrade()).thenReturn(grade);
-		when(metricResult.getWeight()).thenReturn(weight);
+		when(metric.isCompound()).thenReturn(compound);
+		when(metricResult.getId()).thenReturn(id);
+		when(metricResult.getValue()).thenReturn(value);
+		when(metricResult.getMetric()).thenReturn(metric);
+		when(metricResultDao.descendantResultsOf(id)).thenReturn(compound ? new ArrayList<Double>() : list(value));
 		when(metricResult, Comparable.class.getMethods()[0]).withArguments(any()).thenReturn(1);
 		return metricResult;
 	}
@@ -134,10 +150,9 @@ public class ModuleResultConfigurerTest extends UnitTest {
 		return snapshot;
 	}
 
-	private ModuleResult mockModuleResult(MetricResult metricResult) {
+	private ModuleResult mockModuleResult(SortedSet<MetricResult> metricResults) {
 		Long parentId = RANDOM.nextLong();
 		ModuleResult parent = mock(ModuleResult.class);
-		SortedSet<MetricResult> metricResults = sortedSet(metricResult);
 		when(moduleResult.hasParent()).thenReturn(true);
 		when(moduleResult.getMetricResults()).thenReturn(metricResults);
 		when(moduleResult.getParent()).thenReturn(parent);

@@ -72,9 +72,24 @@ public class MetricResultDatabaseDaoTest extends
 
 	@Test
 	public void shouldSave() throws Exception {
-		dao.save(entity, ID);
+		assertSame(entity, dao.save(entity, ID));
 		verifyNew(MetricResultRecord.class).withArguments(entity, ID);
 		verify(dao).save(record);
+	}
+
+	@Test
+	public void shouldCheckExistenceOfMetricResult() {
+		Random random = new Random();
+		Long moduleResultId = random.nextLong();
+		Long configurationId = random.nextLong();
+		TypedQuery<Integer> countQuery = mock(TypedQuery.class);
+		doReturn(countQuery).when(dao).createQuery(anyString(), eq(Integer.class));
+
+		when(countQuery.getSingleResult()).thenReturn(1);
+		assertTrue(dao.metricResultExists(moduleResultId, configurationId));
+
+		when(countQuery.getSingleResult()).thenReturn(0);
+		assertFalse(dao.metricResultExists(moduleResultId, configurationId));
 	}
 
 	@Test

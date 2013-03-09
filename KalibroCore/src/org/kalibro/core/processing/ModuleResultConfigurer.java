@@ -44,10 +44,8 @@ class ModuleResultConfigurer {
 
 	private void saveCompoundResults() {
 		CompoundResultCalculator calculator = new CompoundResultCalculator(moduleResult, configuration);
-		for (MetricResult compoundResult : calculator.calculateCompoundResults()) {
-			moduleResult.addMetricResult(compoundResult);
-			metricResultDao.save(compoundResult, moduleResult.getId());
-		}
+		for (MetricResult compoundResult : calculator.calculateCompoundResults())
+			moduleResult.addMetricResult(metricResultDao.save(compoundResult, moduleResult.getId()));
 	}
 
 	private void updateGrade() {
@@ -74,11 +72,15 @@ class ModuleResultConfigurer {
 		Double value = metricResult.getValue();
 		ModuleResult parent = moduleResult.getParent();
 
-		if (! (parent.hasResultFor(metric) || metric.isCompound()))
+		if (needToInsertMetricResult(metric, parent.getId(), snapshot.getId()))
 			metricResultDao.save(new MetricResult(snapshot, Double.NaN), parent.getId());
-		List<Double> descendantResults = metricResult.getDescendantResults();
+		List<Double> descendantResults = metricResultDao.descendantResultsOf(metricResult.getId());
 		if (value != Double.NaN)
 			descendantResults.add(value);
 		metricResultDao.addDescendantResults(descendantResults, parent.getId(), snapshot.getId());
+	}
+
+	private boolean needToInsertMetricResult(Metric metric, Long parentId, Long configurationId) {
+		return !metric.isCompound() && !metricResultDao.metricResultExists(parentId, configurationId);
 	}
 }
