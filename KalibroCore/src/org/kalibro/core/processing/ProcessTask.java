@@ -24,13 +24,13 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
 	public ProcessTask(Repository repository) {
 		this.repository = repository;
-		daoFactory = new DatabaseDaoFactory();
-		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
-		resultProducer = new Producer<NativeModuleResult>();
 	}
 
 	@Override
 	protected void perform() {
+		daoFactory = new DatabaseDaoFactory();
+		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
+		resultProducer = new Producer<NativeModuleResult>();
 		new LoadingTask().prepare(this).execute();
 		new CollectingTask().prepare(this).executeInBackground();
 		new AnalyzingTask().prepare(this).execute();

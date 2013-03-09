@@ -28,38 +28,36 @@ public class ProcessTaskTest extends UnitTest {
 	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
 
+	private LoadingTask loadingTask;
+	private CollectingTask collectingTask;
+	private AnalyzingTask analyzingTask;
+
 	private ProcessTask processTask;
 
 	@Before
 	public void setUp() throws Exception {
+		mockEntities();
+		processTask = new ProcessTask(repository);
+		mockSubtasks();
+		processTask.perform();
+	}
+
+	private void mockEntities() throws Exception {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
-		when(repository.getId()).thenReturn(REPOSITORY_ID);
-		mockProcessingDao();
-		processTask = new ProcessTask(repository);
-	}
-
-	private void mockProcessingDao() throws Exception {
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
+
+		when(repository.getId()).thenReturn(REPOSITORY_ID);
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
 		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
 		when(processingDao.createProcessingFor(repository)).thenReturn(processing);
 	}
 
-	@Test
-	public void shouldPrepareAndExecuteSubtasks() throws Exception {
-		LoadingTask loadingTask = mockSubtask(LoadingTask.class);
-		CollectingTask collectingTask = mockSubtask(CollectingTask.class);
-		AnalyzingTask analyzingTask = mockSubtask(AnalyzingTask.class);
-		processTask.perform();
-		InOrder order = Mockito.inOrder(loadingTask, collectingTask, analyzingTask);
-		order.verify(loadingTask).prepare(processTask);
-		order.verify(loadingTask).execute();
-		order.verify(collectingTask).prepare(processTask);
-		order.verify(collectingTask).executeInBackground();
-		order.verify(analyzingTask).prepare(processTask);
-		order.verify(analyzingTask).execute();
+	private void mockSubtasks() throws Exception {
+		loadingTask = mockSubtask(LoadingTask.class);
+		collectingTask = mockSubtask(CollectingTask.class);
+		analyzingTask = mockSubtask(AnalyzingTask.class);
 	}
 
 	private <T extends ProcessSubtask> T mockSubtask(Class<T> subtaskClass) throws Exception {
@@ -67,6 +65,17 @@ public class ProcessTaskTest extends UnitTest {
 		whenNew(subtaskClass).withNoArguments().thenReturn(subtask);
 		when(subtask.prepare(processTask)).thenReturn(subtask);
 		return subtask;
+	}
+
+	@Test
+	public void shouldPrepareAndExecuteSubtasks() {
+		InOrder order = Mockito.inOrder(loadingTask, collectingTask, analyzingTask);
+		order.verify(loadingTask).prepare(processTask);
+		order.verify(loadingTask).execute();
+		order.verify(collectingTask).prepare(processTask);
+		order.verify(collectingTask).executeInBackground();
+		order.verify(analyzingTask).prepare(processTask);
+		order.verify(analyzingTask).execute();
 	}
 
 	@Test
