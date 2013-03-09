@@ -4,8 +4,6 @@ DROP TABLE IF EXISTS "descendant_result", "metric_result", "module_result",
 
 /* END OF DROP TABLES */
 
-SET CONSTRAINTS ALL DEFERRED;
-
 CREATE TABLE IF NOT EXISTS "reading_group" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL UNIQUE,
@@ -113,7 +111,7 @@ CREATE TABLE IF NOT EXISTS "processing" (
   "loading_time" BIGINT DEFAULT NULL,
   "collecting_time" BIGINT DEFAULT NULL,
   "analyzing_time" BIGINT DEFAULT NULL,
-  "results_root" BIGINT DEFAULT NULL REFERENCES "module_result"("id") ON DELETE SET NULL,
+  "results_root" BIGINT DEFAULT NULL,
   UNIQUE ("repository","date")
 );
 
@@ -165,6 +163,11 @@ CREATE INDEX "module_name" ON "module_result"("processing","module_name");
 DROP INDEX IF EXISTS "height";
 
 CREATE INDEX "height" ON "module_result"("processing","height");
+
+ALTER TABLE "processing" DROP CONSTRAINT IF EXISTS "processing_root";
+
+ALTER TABLE "processing" ADD CONSTRAINT "processing_root"
+  FOREIGN KEY ("results_root") REFERENCES "module_result"("id") ON DELETE SET NULL;
 
 CREATE TABLE IF NOT EXISTS "metric_result" (
   "id" BIGINT NOT NULL PRIMARY KEY,
