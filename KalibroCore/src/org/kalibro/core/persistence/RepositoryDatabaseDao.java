@@ -71,13 +71,18 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 	public void process(Long repositoryId) {
 		cancelProcessing(repositoryId);
 		Repository repository = get(repositoryId);
-		Configuration configuration = repository.getConfiguration();
-		if (configuration.getNativeMetrics().isEmpty())
-			throw new KalibroException("Could not process repository (" + repository +
-				") because its configuration (" + configuration + ") has no native metrics.");
+		validateConfiguration(repository);
 		ProcessTask task = new ProcessTask(repository);
 		processTasks.put(repositoryId, task);
 		executeTask(task, repository.getProcessPeriod());
+	}
+
+	private void validateConfiguration(Repository repository) {
+		Configuration configuration = repository.getConfiguration();
+		String errorMessage = "Could not process repository '" + repository +
+			"' because its configuration has no native metrics.";
+		if (configuration.getNativeMetrics().isEmpty())
+			throw new KalibroException(errorMessage);
 	}
 
 	private void executeTask(ProcessTask task, Integer processPeriod) {

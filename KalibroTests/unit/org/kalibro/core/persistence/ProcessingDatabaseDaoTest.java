@@ -123,7 +123,7 @@ public class ProcessingDatabaseDaoTest extends
 
 		assertSame(entity, dao.createProcessingFor(repository));
 		verify(dao).save(record);
-		verify(dao).save(snapshot);
+		verify(dao).saveAll(list(snapshot));
 	}
 
 	private MetricConfigurationSnapshotRecord mockSnapshot(Repository repository) throws Exception {
@@ -133,7 +133,7 @@ public class ProcessingDatabaseDaoTest extends
 		when(repository.getConfiguration()).thenReturn(configuration);
 		doReturn(sortedSet(metricConf)).when(configuration).getMetricConfigurations();
 		whenNew(MetricConfigurationSnapshotRecord.class).withArguments(metricConf, record.id()).thenReturn(snapshot);
-		doReturn(snapshot).when(dao).save(snapshot);
+		doNothing().when(dao).saveAll(list(snapshot));
 		return snapshot;
 	}
 

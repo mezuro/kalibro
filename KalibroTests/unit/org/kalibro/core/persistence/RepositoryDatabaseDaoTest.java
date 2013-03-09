@@ -93,8 +93,8 @@ public class RepositoryDatabaseDaoTest extends
 			protected void perform() {
 				dao.process(ID);
 			}
-		}).throwsException().withMessage("Could not process repository (" + entity +
-			") because its configuration (" + configuration + ") has no native metrics.");
+		}).throwsException().withMessage("Could not process repository '" + entity +
+			"' because its configuration has no native metrics.");
 		verifyNew(ProcessTask.class, never());
 	}
 

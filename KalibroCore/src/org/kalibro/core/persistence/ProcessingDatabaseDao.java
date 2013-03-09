@@ -2,7 +2,9 @@ package org.kalibro.core.persistence;
 
 import static org.kalibro.core.persistence.DatePicker.*;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.TypedQuery;
 
@@ -98,8 +100,10 @@ public class ProcessingDatabaseDao extends DatabaseDao<Processing, ProcessingRec
 
 	public Processing createProcessingFor(Repository repository) {
 		ProcessingRecord record = save(new ProcessingRecord(new Processing(), repository.getId()));
+		List<MetricConfigurationSnapshotRecord> snapshots = new ArrayList<MetricConfigurationSnapshotRecord>();
 		for (MetricConfiguration configuration : repository.getConfiguration().getMetricConfigurations())
-			save(new MetricConfigurationSnapshotRecord(configuration, record.id()));
+			snapshots.add(new MetricConfigurationSnapshotRecord(configuration, record.id()));
+		saveAll(snapshots);
 		return record.convert();
 	}
 
