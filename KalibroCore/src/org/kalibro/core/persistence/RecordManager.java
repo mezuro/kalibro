@@ -44,6 +44,8 @@ class RecordManager {
 	}
 
 	<T> void saveAll(Collection<T> records) {
+		if (records.isEmpty())
+			return;
 		clear();
 		beginTransaction();
 		for (T record : records)

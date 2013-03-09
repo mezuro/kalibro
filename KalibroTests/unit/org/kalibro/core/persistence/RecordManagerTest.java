@@ -2,6 +2,7 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.persistence.EntityManager;
@@ -72,6 +73,12 @@ public class RecordManagerTest extends UnitTest {
 		recordManager.saveAll(list(UNMERGED));
 		verify(entityManager).clear();
 		verifyWithinTransaction("persist");
+	}
+
+	@Test
+	public void shouldDoNothinWhenSavingEmptyCollection() {
+		recordManager.saveAll(new ArrayList<String>());
+		verifyZeroInteractions(entityManager);
 	}
 
 	@Test
