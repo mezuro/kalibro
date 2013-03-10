@@ -84,6 +84,14 @@ public class MetricResultDatabaseDaoTest extends
 	}
 
 	@Test
+	public void shouldSaveCollection() throws Exception {
+		doNothing().when(dao).saveAll(list(record));
+		dao.saveAll(list(entity), MODULE_RESULT_ID);
+		verifyNew(MetricResultRecord.class).withArguments(entity, MODULE_RESULT_ID);
+		verify(dao).saveAll(list(record));
+	}
+
+	@Test
 	public void shouldCheckExistenceOfMetricResult() {
 		Random random = new Random();
 		Long moduleResultId = random.nextLong();

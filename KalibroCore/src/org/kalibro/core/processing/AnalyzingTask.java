@@ -1,5 +1,8 @@
 package org.kalibro.core.processing;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.kalibro.*;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
@@ -34,15 +37,17 @@ class AnalyzingTask extends ProcessSubtask {
 
 	private void addNativeResult(NativeModuleResult nativeResult) {
 		Long moduleResultId = treeBuilder.save(nativeResult.getModule());
+		List<MetricResult> metricResults = new ArrayList<MetricResult>();
 		for (NativeMetricResult metricResult : nativeResult.getMetricResults())
-			addMetricResult(metricResult, moduleResultId);
+			metricResults.add(configureMetricResult(metricResult));
+		metricResultDao.saveAll(metricResults, moduleResultId);
 	}
 
-	private void addMetricResult(NativeMetricResult nativeMetricResult, Long moduleResultId) {
+	private MetricResult configureMetricResult(NativeMetricResult nativeMetricResult) {
 		Metric metric = nativeMetricResult.getMetric();
 		Double value = nativeMetricResult.getValue();
 		MetricConfiguration snapshot = configuration.getConfigurationFor(metric);
-		metricResultDao.save(new MetricResult(snapshot, value), moduleResultId);
+		return new MetricResult(snapshot, value);
 	}
 
 	private void configureFrom(int height) {

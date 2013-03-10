@@ -127,9 +127,11 @@ public class AnalyzingTaskTest extends UnitTest {
 		NativeMetric totalCof = loadFixture("total_cof", NativeMetric.class);
 
 		analyzingTask.perform();
-		verify(metricResultDao).save(new MetricResult(configuration.getConfigurationFor(totalCof), 0.0), ROOT_ID);
-		verify(metricResultDao).save(new MetricResult(configuration.getConfigurationFor(cbo), 0.0), CLASS_ID);
-		verify(metricResultDao).save(new MetricResult(configuration.getConfigurationFor(lcom4), 1.0), CLASS_ID);
+		verify(metricResultDao).saveAll(list(
+			new MetricResult(configuration.getConfigurationFor(totalCof), 0.0)), ROOT_ID);
+		verify(metricResultDao).saveAll(list(
+			new MetricResult(configuration.getConfigurationFor(cbo), 0.0),
+			new MetricResult(configuration.getConfigurationFor(lcom4), 1.0)), CLASS_ID);
 	}
 
 	@Test
