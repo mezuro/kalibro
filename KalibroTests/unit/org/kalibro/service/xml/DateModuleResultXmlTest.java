@@ -57,7 +57,7 @@ public class DateModuleResultXmlTest extends UnitTest {
 		Module module = new Module(Granularity.CLASS, "xml.DateModuleResultXmlTest");
 		ModuleResult parent = new ModuleResult(null, module.inferParent().inferParent());
 		ModuleResult moduleResult = new ModuleResult(parent, module.inferParent());
-		moduleResult.addChild(new ModuleResult(moduleResult, module));
+		moduleResult.setChildren(sortedSet(new ModuleResult(moduleResult, module)));
 		return moduleResult;
 	}
 

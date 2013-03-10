@@ -73,11 +73,6 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		this.children = children;
 	}
 
-	public void addChild(ModuleResult child) {
-		child.parent = this;
-		children.add(child);
-	}
-
 	public SortedMap<Date, ModuleResult> history() {
 		return DaoFactory.getModuleResultDao().historyOf(id);
 	}

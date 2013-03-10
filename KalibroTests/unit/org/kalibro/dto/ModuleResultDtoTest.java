@@ -19,7 +19,7 @@ public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 		ModuleResult parent = new ModuleResult(null, module.inferParent().inferParent());
 		ModuleResult moduleResult = new ModuleResult(parent, module.inferParent());
 		moduleResult.addMetricResult(new MetricResultDtoTest().loadFixture());
-		moduleResult.addChild(new ModuleResult(moduleResult, module));
+		moduleResult.setChildren(sortedSet(new ModuleResult(moduleResult, module)));
 		Whitebox.setInternalState(moduleResult, "height", 1);
 		return moduleResult;
 	}

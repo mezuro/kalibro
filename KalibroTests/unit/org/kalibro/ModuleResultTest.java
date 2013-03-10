@@ -62,14 +62,6 @@ public class ModuleResultTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSetParentOnAddChild() {
-		ModuleResult child = new ModuleResult(null, new Module(Granularity.METHOD, "getParent"));
-		result.addChild(child);
-		assertDeepEquals(set(child), result.getChildren());
-		assertSame(result, child.getParent());
-	}
-
-	@Test
 	public void shouldGetHistory() {
 		ModuleResultDao dao = mock(ModuleResultDao.class);
 		SortedMap<Date, ModuleResult> history = mock(SortedMap.class);

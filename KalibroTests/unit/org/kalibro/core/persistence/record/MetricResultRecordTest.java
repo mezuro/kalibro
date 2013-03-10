@@ -30,7 +30,7 @@ public class MetricResultRecordTest extends RecordTest {
 	@Test
 	public void shouldConvertNullErrorForNormalResult() {
 		MetricResult normalResult = new MetricResult(new MetricConfiguration(), 42.0);
-		normalResult.addDescendantResult(28.0);
+		normalResult.setDescendantResults(list(28.0));
 		assertNull(new MetricResultRecord(normalResult).error());
 	}
 }
