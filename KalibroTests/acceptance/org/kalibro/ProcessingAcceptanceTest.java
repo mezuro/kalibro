@@ -45,22 +45,24 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		resetDatabase(databaseType);
 		assertFalse(Processing.hasProcessing(repository));
 
-		long start = process();
-		verifyProcessDone(start);
+		process();
+		verifyProcessDone();
 		verifyResults();
 
 		// should allow changing repository type
 		repository.setType(RepositoryType.GIT);
 		repository.setAddress(repositoriesDirectory().getAbsolutePath() + "/HelloWorldGit/");
-		start = process();
-		verifyProcessDone(start);
+		process();
+		verifyProcessDone();
 	}
 
-	private void verifyProcessDone(long start) {
+	private void verifyProcessDone() {
 		processing = Processing.lastProcessing(repository);
-		assertSorted(start, processing.getDate().getTime(), System.currentTimeMillis());
+		long start = processing.getDate().getTime();
+		long now = System.currentTimeMillis();
+		long totalTime = now - start;
+		assertTrue(totalTime > 0);
 		assertProcessingReady();
-		long totalTime = System.currentTimeMillis() - start;
 		verifyStateTime(LOADING, totalTime);
 		verifyStateTime(COLLECTING, totalTime);
 		verifyStateTime(ANALYZING, totalTime);
@@ -68,7 +70,7 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 
 	private void verifyStateTime(ProcessState state, long totalTime) {
 		Long stateTime = processing.getStateTime(state);
-		assertTrue("Time for " + state + ": " + stateTime, 0 < stateTime && stateTime < totalTime);
+		assertTrue(0 < stateTime && stateTime < totalTime);
 	}
 
 	private void verifyResults() {
@@ -164,12 +166,11 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		return allProcessings;
 	}
 
-	private long process() throws InterruptedException {
-		long start = System.currentTimeMillis();
+	private void process() throws InterruptedException {
 		repository.process();
-		while (isProcessOngoing())
+		do
 			Thread.sleep(2000);
-		return start;
+		while (isProcessOngoing());
 	}
 
 	private boolean isProcessOngoing() {
