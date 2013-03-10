@@ -82,13 +82,13 @@ public class MetricResultDatabaseDaoTest extends
 		Random random = new Random();
 		Long moduleResultId = random.nextLong();
 		Long configurationId = random.nextLong();
-		TypedQuery<Integer> countQuery = mock(TypedQuery.class);
-		doReturn(countQuery).when(dao).createQuery(anyString(), eq(Integer.class));
+		TypedQuery<Long> countQuery = mock(TypedQuery.class);
+		doReturn(countQuery).when(dao).createQuery(anyString(), eq(Long.class));
 
-		when(countQuery.getSingleResult()).thenReturn(1);
+		when(countQuery.getSingleResult()).thenReturn(1L);
 		assertTrue(dao.metricResultExists(moduleResultId, configurationId));
 
-		when(countQuery.getSingleResult()).thenReturn(0);
+		when(countQuery.getSingleResult()).thenReturn(0L);
 		assertFalse(dao.metricResultExists(moduleResultId, configurationId));
 	}
 

@@ -167,9 +167,12 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	private long process() throws InterruptedException {
 		long start = System.currentTimeMillis();
 		repository.process();
-		assertTrue(Processing.hasProcessing(repository));
-		while (Processing.lastProcessingState(repository).isTemporary())
+		while (isProcessOngoing())
 			Thread.sleep(2000);
 		return start;
+	}
+
+	private boolean isProcessOngoing() {
+		return !Processing.hasProcessing(repository) || Processing.lastProcessingState(repository).isTemporary();
 	}
 }

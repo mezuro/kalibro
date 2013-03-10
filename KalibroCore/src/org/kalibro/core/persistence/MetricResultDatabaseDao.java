@@ -68,9 +68,9 @@ public class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 	}
 
 	public boolean metricResultExists(Long moduleResultId, Long configurationId) {
-		String queryString = "SELECT count(*) FROM MetricResult mr " +
+		String queryString = "SELECT count(mr) FROM MetricResult mr " +
 			"WHERE mr.moduleResult = :moduleResultId AND mr.configuration.id = :configurationId";
-		TypedQuery<Integer> query = createQuery(queryString, Integer.class);
+		TypedQuery<Long> query = createQuery(queryString, Long.class);
 		query.setParameter("moduleResultId", moduleResultId);
 		query.setParameter("configurationId", configurationId);
 		return query.getSingleResult() > 0;
