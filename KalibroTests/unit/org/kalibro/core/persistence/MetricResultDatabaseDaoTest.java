@@ -19,29 +19,35 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 public class MetricResultDatabaseDaoTest extends
 	DatabaseDaoTestCase<MetricResult, MetricResultRecord, MetricResultDatabaseDao> {
 
-	private static final Long ID = new Random().nextLong();
-	private static final Long TIME = new Random().nextLong();
+	private static final Random RANDOM = new Random();
+
+	private static final Long MODULE_RESULT_ID = RANDOM.nextLong();
+	private static final Long METRIC_RESULT_ID = RANDOM.nextLong();
+	private static final Long CONFIGURATION_ID = RANDOM.nextLong();
+
+	private static final Long TIME = RANDOM.nextLong();
 	private static final Date DATE = new Date(TIME);
 	private static final String METRIC_NAME = "MetricResultDatabaseDaoTest metric name";
 
 	@Test
-	public void shouldGetDescendantResults() {
+	public void shouldGetDescendantResultsByMetricResultId() {
+		Double value = RANDOM.nextDouble();
 		DescendantResultRecord result = mock(DescendantResultRecord.class);
 		TypedQuery<DescendantResultRecord> descendantQuery = mock(TypedQuery.class);
 		doReturn(descendantQuery).when(dao).createQuery(anyString(), eq(DescendantResultRecord.class));
 		when(descendantQuery.getResultList()).thenReturn(list(result));
-		when(result.convert()).thenReturn(42.0);
+		when(result.convert()).thenReturn(value);
 
-		assertDeepEquals(list(42.0), dao.descendantResultsOf(ID));
-		verify(descendantQuery).setParameter("metricResultId", ID);
+		assertDeepEquals(list(value), dao.descendantResultsOf(METRIC_RESULT_ID));
+		verify(descendantQuery).setParameter("metricResultId", METRIC_RESULT_ID);
 	}
 
 	@Test
 	public void shouldGetMetricResultsOfModuleResult() {
-		assertDeepEquals(set(entity), dao.metricResultsOf(ID));
+		assertDeepEquals(set(entity), dao.metricResultsOf(MODULE_RESULT_ID));
 
 		verify(dao).createRecordQuery("metricResult.moduleResult = :moduleResultId");
-		verify(query).setParameter("moduleResultId", ID);
+		verify(query).setParameter("moduleResultId", MODULE_RESULT_ID);
 	}
 
 	@Test
@@ -53,12 +59,12 @@ public class MetricResultDatabaseDaoTest extends
 		results.add(new Object[]{TIME, record});
 		when(historyQuery.getResultList()).thenReturn(results);
 
-		SortedMap<Date, MetricResult> history = dao.historyOf(METRIC_NAME, ID);
+		SortedMap<Date, MetricResult> history = dao.historyOf(METRIC_NAME, MODULE_RESULT_ID);
 		assertEquals(1, history.size());
 		assertDeepEquals(entity, history.get(DATE));
 		verify(historyQuery).setParameter("metricName", METRIC_NAME);
 		verify(historyQuery).setParameter("moduleName", "org");
-		verify(historyQuery).setParameter("moduleResultId", ID);
+		verify(historyQuery).setParameter("moduleResultId", MODULE_RESULT_ID);
 	}
 
 	private void mockModuleResult(String moduleName) throws Exception {
@@ -66,14 +72,14 @@ public class MetricResultDatabaseDaoTest extends
 		ModuleResult moduleResult = mock(ModuleResult.class);
 		ModuleResultDatabaseDao moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		whenNew(ModuleResultDatabaseDao.class).withNoArguments().thenReturn(moduleResultDao);
-		when(moduleResultDao.get(ID)).thenReturn(moduleResult);
+		when(moduleResultDao.get(MODULE_RESULT_ID)).thenReturn(moduleResult);
 		when(moduleResult.getModule()).thenReturn(module);
 	}
 
 	@Test
 	public void shouldSave() throws Exception {
-		assertSame(entity, dao.save(entity, ID));
-		verifyNew(MetricResultRecord.class).withArguments(entity, ID);
+		assertSame(entity, dao.save(entity, MODULE_RESULT_ID));
+		verifyNew(MetricResultRecord.class).withArguments(entity, MODULE_RESULT_ID);
 		verify(dao).save(record);
 	}
 
@@ -93,17 +99,29 @@ public class MetricResultDatabaseDaoTest extends
 	}
 
 	@Test
-	public void shouldInsertDescendatResults() throws Exception {
-		Random random = new Random();
-		Double value = random.nextDouble();
-		Long moduleResultId = random.nextLong();
-		Long configurationId = random.nextLong();
+	public void shouldGetDescendantResultsByModuleAndConfiguration() {
+		Double value = RANDOM.nextDouble();
 		DescendantResultRecord result = mock(DescendantResultRecord.class);
-		whenNew(DescendantResultRecord.class).withArguments(value, moduleResultId, configurationId).thenReturn(result);
+		TypedQuery<DescendantResultRecord> descendantQuery = mock(TypedQuery.class);
+		doReturn(descendantQuery).when(dao).createQuery(anyString(), eq(DescendantResultRecord.class));
+		when(descendantQuery.getResultList()).thenReturn(list(result));
+		when(result.convert()).thenReturn(value);
+
+		assertDeepEquals(list(value), dao.descendantResultsOf(MODULE_RESULT_ID, CONFIGURATION_ID));
+		verify(descendantQuery).setParameter("moduleResultId", MODULE_RESULT_ID);
+		verify(descendantQuery).setParameter("configurationId", CONFIGURATION_ID);
+	}
+
+	@Test
+	public void shouldInsertDescendantResults() throws Exception {
+		Double value = RANDOM.nextDouble();
+		DescendantResultRecord result = mock(DescendantResultRecord.class);
+		whenNew(DescendantResultRecord.class)
+			.withArguments(value, MODULE_RESULT_ID, CONFIGURATION_ID).thenReturn(result);
 		doNothing().when(dao).saveAll(list(result));
 
-		dao.addDescendantResults(list(value), moduleResultId, configurationId);
-		verifyNew(DescendantResultRecord.class).withArguments(value, moduleResultId, configurationId);
+		dao.addDescendantResults(list(value), MODULE_RESULT_ID, CONFIGURATION_ID);
+		verifyNew(DescendantResultRecord.class).withArguments(value, MODULE_RESULT_ID, CONFIGURATION_ID);
 		verify(dao).saveAll(list(result));
 	}
 }

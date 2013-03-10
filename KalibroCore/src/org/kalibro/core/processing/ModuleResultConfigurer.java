@@ -68,19 +68,19 @@ class ModuleResultConfigurer {
 
 	private void addResultsToParent(MetricResult metricResult) {
 		MetricConfiguration snapshot = metricResult.getConfiguration();
-		Metric metric = metricResult.getMetric();
+		Long parentId = moduleResult.getParent().getId();
 		Double value = metricResult.getValue();
-		ModuleResult parent = moduleResult.getParent();
 
-		if (needToInsertMetricResult(metric, parent.getId(), snapshot.getId()))
-			metricResultDao.save(new MetricResult(snapshot, Double.NaN), parent.getId());
-		List<Double> descendantResults = metricResultDao.descendantResultsOf(metricResult.getId());
-		if (value != Double.NaN)
+		if (!snapshot.getMetric().isCompound())
+			makeSureParentHasResultForMetric(parentId, snapshot);
+		List<Double> descendantResults = metricResultDao.descendantResultsOf(moduleResult.getId(), snapshot.getId());
+		if (!value.isNaN())
 			descendantResults.add(value);
-		metricResultDao.addDescendantResults(descendantResults, parent.getId(), snapshot.getId());
+		metricResultDao.addDescendantResults(descendantResults, parentId, snapshot.getId());
 	}
 
-	private boolean needToInsertMetricResult(Metric metric, Long parentId, Long configurationId) {
-		return !metric.isCompound() && !metricResultDao.metricResultExists(parentId, configurationId);
+	private void makeSureParentHasResultForMetric(Long parentId, MetricConfiguration snapshot) {
+		if (!metricResultDao.metricResultExists(parentId, snapshot.getId()))
+			metricResultDao.save(new MetricResult(snapshot, Double.NaN), parentId);
 	}
 }

@@ -76,6 +76,15 @@ public class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricRes
 		return query.getSingleResult() > 0;
 	}
 
+	public List<Double> descendantResultsOf(Long moduleResultId, Long configurationId) {
+		String queryString = "SELECT dr FROM DescendantResult dr " +
+			"WHERE dr.moduleResult = :moduleResultId AND dr.configuration = :configurationId";
+		TypedQuery<DescendantResultRecord> query = createQuery(queryString, DescendantResultRecord.class);
+		query.setParameter("moduleResultId", moduleResultId);
+		query.setParameter("configurationId", configurationId);
+		return DataTransferObject.toList(query.getResultList());
+	}
+
 	public void addDescendantResults(List<Double> descendantResults, Long moduleResultId, Long configurationId) {
 		List<DescendantResultRecord> records = new ArrayList<DescendantResultRecord>();
 		for (Double descendantResult : descendantResults)
