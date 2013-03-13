@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `reading_group` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `description` TEXT DEFAULT NULL
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `reading` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -22,13 +22,13 @@ CREATE TABLE IF NOT EXISTS `reading` (
   `color` INT NOT NULL,
   UNIQUE (`group`,`label`),
   FOREIGN KEY (`group`) REFERENCES `reading_group`(`id`) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `configuration` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `description` TEXT DEFAULT NULL
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `metric_configuration` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -45,7 +45,7 @@ CREATE TABLE IF NOT EXISTS `metric_configuration` (
   UNIQUE (`configuration`,`code`),
   FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`reading_group`) REFERENCES `reading_group`(`id`) ON DELETE RESTRICT
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `range` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -57,13 +57,13 @@ CREATE TABLE IF NOT EXISTS `range` (
   UNIQUE (`configuration`,`beginning`),
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`reading`) REFERENCES `reading`(`id`) ON DELETE RESTRICT
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `project` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
   `description` TEXT DEFAULT NULL
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `repository` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -78,7 +78,7 @@ CREATE TABLE IF NOT EXISTS `repository` (
   UNIQUE (`project`,`name`),
   FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE RESTRICT
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `throwable` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -86,7 +86,7 @@ CREATE TABLE IF NOT EXISTS `throwable` (
   `message` TEXT,
   `cause` BIGINT DEFAULT NULL,
   FOREIGN KEY (`cause`) REFERENCES `throwable`(`id`) ON DELETE SET NULL
-);
+) ENGINE=InnoDB;
 
 DROP TRIGGER IF EXISTS `delete_throwable_cause`;
 
@@ -104,7 +104,7 @@ CREATE TABLE IF NOT EXISTS `stack_trace_element` (
   `line_number` INT DEFAULT NULL,
   PRIMARY KEY (`throwable`,`index`),
   FOREIGN KEY (`throwable`) REFERENCES `throwable`(`id`) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `processing` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -120,7 +120,7 @@ CREATE TABLE IF NOT EXISTS `processing` (
   FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL
-);
+) ENGINE=InnoDB;
 
 DROP TRIGGER IF EXISTS `delete_processing_error`;
 
@@ -142,7 +142,7 @@ CREATE TABLE IF NOT EXISTS `metric_configuration_snapshot` (
   `metric_origin` VARCHAR(255) NOT NULL,
   UNIQUE (`processing`,`code`),
   FOREIGN KEY (`processing`) REFERENCES `processing`(`id`) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `range_snapshot` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -155,7 +155,7 @@ CREATE TABLE IF NOT EXISTS `range_snapshot` (
   `color` INT DEFAULT NULL,
   UNIQUE (`configuration_snapshot`,`beginning`),
   FOREIGN KEY (`configuration_snapshot`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `module_result` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -169,7 +169,7 @@ CREATE TABLE IF NOT EXISTS `module_result` (
   FOREIGN KEY (`parent`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
   INDEX (`processing`,`module_name`(255)),
   INDEX (`processing`,`height`)
-);
+) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `metric_result` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -181,7 +181,7 @@ CREATE TABLE IF NOT EXISTS `metric_result` (
   FOREIGN KEY (`module_result`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)
-);
+) ENGINE=InnoDB;
 
 DROP TRIGGER IF EXISTS `delete_result_error`;
 
@@ -198,6 +198,6 @@ CREATE TABLE IF NOT EXISTS `descendant_result` (
   FOREIGN KEY (`module_result`) REFERENCES `module_result`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   INDEX (`module_result`,`configuration`)
-);
+) ENGINE=InnoDB;
 
 SET foreign_key_checks = 1;
