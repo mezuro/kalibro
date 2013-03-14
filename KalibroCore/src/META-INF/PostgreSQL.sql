@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS "descendant_result", "metric_result", "module_result",
+DROP TABLE IF EXISTS sequences, "descendant_result", "metric_result", "module_result",
   "range_snapshot", "metric_configuration_snapshot", "processing", "stack_trace_element", "throwable",
   "repository", "project", "range", "metric_configuration", "configuration", "reading", "reading_group" CASCADE;
 
@@ -193,3 +193,50 @@ CREATE TABLE IF NOT EXISTS "descendant_result" (
 DROP INDEX IF EXISTS "descendants";
 
 CREATE INDEX "descendants" ON "descendant_result"("module_result","configuration");
+
+CREATE TABLE IF NOT EXISTS sequences (
+  table_name VARCHAR(50) NOT NULL PRIMARY KEY,
+  sequence_count BIGINT
+);
+
+INSERT INTO sequences SELECT 'reading_group', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'reading_group');
+
+INSERT INTO sequences SELECT 'reading', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'reading');
+ 
+INSERT INTO sequences SELECT 'configuration', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'configuration');
+
+INSERT INTO sequences SELECT 'metric_configuration', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'metric_configuration');
+
+INSERT INTO sequences SELECT 'range', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'range');
+
+INSERT INTO sequences SELECT 'project', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'project');
+
+INSERT INTO sequences SELECT 'repository', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'repository');
+
+INSERT INTO sequences SELECT 'processing', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing');
+
+INSERT INTO sequences SELECT 'throwable', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'throwable');
+
+INSERT INTO sequences SELECT 'metric_configuration_snapshot', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'metric_configuration_snapshot');
+
+INSERT INTO sequences SELECT 'range_snapshot', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'range_snapshot');
+
+INSERT INTO sequences SELECT 'module_result', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'module_result');
+
+INSERT INTO sequences SELECT 'metric_result', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'metric_result');
+
+INSERT INTO sequences SELECT 'descendant_result', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'descendant_result');

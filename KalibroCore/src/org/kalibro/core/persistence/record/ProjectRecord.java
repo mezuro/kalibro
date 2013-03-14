@@ -15,7 +15,9 @@ import org.kalibro.dto.ProjectDto;
 public class ProjectRecord extends ProjectDto {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "project")
+	@TableGenerator(name = "project", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "project", initialValue = 1, allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

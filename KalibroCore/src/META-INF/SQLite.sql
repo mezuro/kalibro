@@ -1,5 +1,7 @@
 PRAGMA foreign_keys = OFF;
 
+DROP TABLE IF EXISTS sequences;
+
 DROP TABLE IF EXISTS `descendant_result`;
 
 DROP TABLE IF EXISTS `metric_result`;
@@ -248,5 +250,38 @@ CREATE TABLE IF NOT EXISTS `descendant_result` (
 );
 
 CREATE INDEX IF NOT EXISTS `descendants` ON `descendant_result`(`module_result`,`configuration`);
+
+CREATE TABLE IF NOT EXISTS sequences (
+  table_name VARCHAR(50) NOT NULL PRIMARY KEY,
+  sequence_count BIGINT
+);
+
+INSERT OR IGNORE INTO sequences VALUES ('reading_group', 0);
+
+INSERT OR IGNORE INTO sequences VALUES ('reading',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('configuration',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('metric_configuration',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('range',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('project',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('repository',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('processing',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('throwable',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('metric_configuration_snapshot',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('range_snapshot',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('module_result',  0);
+
+INSERT OR IGNORE INTO sequences VALUES ('metric_result', 0);
+
+INSERT OR IGNORE INTO sequences VALUES ('descendant_result', 0);
 
 PRAGMA foreign_keys = ON;

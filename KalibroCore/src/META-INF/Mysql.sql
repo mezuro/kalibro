@@ -1,6 +1,6 @@
 SET foreign_key_checks = 0;
 
-DROP TABLE IF EXISTS `descendant_result`, `metric_result`, `module_result`,
+DROP TABLE IF EXISTS sequences, `descendant_result`, `metric_result`, `module_result`,
   `range_snapshot`, `metric_configuration_snapshot`, `processing`, `stack_trace_element`, `throwable`,
   `repository`, `project`, `range`, `metric_configuration`, `configuration`, `reading`, `reading_group`;
 
@@ -199,5 +199,26 @@ CREATE TABLE IF NOT EXISTS `descendant_result` (
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   INDEX (`module_result`,`configuration`)
 ) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS sequences (
+  table_name VARCHAR(50) NOT NULL PRIMARY KEY,
+  sequence_count BIGINT
+);
+
+INSERT IGNORE INTO sequences VALUES
+  ('reading_group', 0),
+  ('reading', 0),
+  ('configuration', 0),
+  ('metric_configuration', 0),
+  ('range', 0),
+  ('project', 0),
+  ('repository', 0),
+  ('processing', 0),
+  ('throwable', 0),
+  ('metric_configuration_snapshot', 0),
+  ('range_snapshot', 0),
+  ('module_result', 0),
+  ('metric_result', 0),
+  ('descendant_result', 0);
 
 SET foreign_key_checks = 1;

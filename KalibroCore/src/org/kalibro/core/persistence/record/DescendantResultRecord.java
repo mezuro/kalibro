@@ -15,7 +15,9 @@ import org.kalibro.dto.DataTransferObject;
 public class DescendantResultRecord extends DataTransferObject<Double> {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "descendant_result")
+	@TableGenerator(name = "descendant_result", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "descendant_result", initialValue = 1, allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

@@ -16,7 +16,9 @@ import org.kalibro.dto.MetricResultDto;
 public class MetricResultRecord extends MetricResultDto {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "metric_result")
+	@TableGenerator(name = "metric_result", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "metric_result", initialValue = 1, allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

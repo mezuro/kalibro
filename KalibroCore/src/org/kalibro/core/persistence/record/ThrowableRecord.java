@@ -18,7 +18,9 @@ import org.kalibro.dto.ThrowableDto;
 public class ThrowableRecord extends ThrowableDto {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "throwable")
+	@TableGenerator(name = "throwable", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "throwable", initialValue = 1, allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

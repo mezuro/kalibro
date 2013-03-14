@@ -36,7 +36,18 @@ public abstract class RecordTest extends ConcreteDtoTest {
 
 	protected void shouldHaveId() {
 		annotation("id", Id.class);
-		annotation("id", GeneratedValue.class);
+		String sequenceName = Identifier.fromVariable(entityName()).asConstant().toLowerCase();
+		GeneratedValue generatedValue = annotation("id", GeneratedValue.class);
+		assertEquals(GenerationType.TABLE, generatedValue.strategy());
+		assertEquals(sequenceName, generatedValue.generator());
+		TableGenerator generator = annotation("id", TableGenerator.class);
+		assertEquals(sequenceName, generator.name());
+		assertEquals("sequences", generator.table());
+		assertEquals("table_name", generator.pkColumnName());
+		assertEquals("sequence_count", generator.valueColumnName());
+		assertEquals(sequenceName, generator.pkColumnValue());
+		assertEquals(1, generator.initialValue());
+		assertEquals(1, generator.allocationSize());
 		assertColumn("id", Long.class).isRequired().isUnique();
 	}
 

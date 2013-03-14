@@ -21,7 +21,9 @@ import org.kalibro.dto.ProcessingDto;
 public class ProcessingRecord extends ProcessingDto {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "processing")
+	@TableGenerator(name = "processing", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "processing", initialValue = 1, allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

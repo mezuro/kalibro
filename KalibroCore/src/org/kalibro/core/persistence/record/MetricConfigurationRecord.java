@@ -16,7 +16,10 @@ import org.kalibro.dto.MetricConfigurationDto;
 public class MetricConfigurationRecord extends MetricConfigurationDto {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "metric_configuration")
+	@TableGenerator(name = "metric_configuration", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "metric_configuration", initialValue = 1,
+		allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

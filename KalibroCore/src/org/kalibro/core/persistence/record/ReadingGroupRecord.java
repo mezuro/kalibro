@@ -15,7 +15,9 @@ import org.kalibro.dto.ReadingGroupDto;
 public class ReadingGroupRecord extends ReadingGroupDto {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "reading_group")
+	@TableGenerator(name = "reading_group", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "reading_group", initialValue = 1, allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 

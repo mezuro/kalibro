@@ -15,7 +15,9 @@ import org.kalibro.dto.RangeDto;
 public class RangeRecord extends RangeDto {
 
 	@Id
-	@GeneratedValue
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "range")
+	@TableGenerator(name = "range", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "range", initialValue = 1, allocationSize = 1)
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
