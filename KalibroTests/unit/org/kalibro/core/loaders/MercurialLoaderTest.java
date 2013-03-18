@@ -18,4 +18,9 @@ public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 	protected List<String> expectedUpdateCommands() {
 		return list("hg pull -u");
 	}
+
+	@Override
+	protected String expectedMetadataDirectoryName() {
+		return ".hg";
+	}
 }

@@ -19,10 +19,6 @@ public class MetricConfigurationRecordTest extends RecordTest {
 	@Override
 	public void setUp() throws Exception {
 		super.setUp();
-		mockBaseTool();
-	}
-
-	private void mockBaseTool() {
 		BaseToolDao baseToolDao = mock(BaseToolDao.class);
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getBaseToolDao()).thenReturn(baseToolDao);
@@ -31,18 +27,17 @@ public class MetricConfigurationRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("configuration", ConfigurationRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("configuration", Long.class).isRequired();
 		assertColumn("code", String.class).isRequired();
 		assertColumn("weight", Long.class).isRequired();
 		assertColumn("aggregationForm", String.class).isRequired();
-		assertManyToOne("readingGroup", ReadingGroupRecord.class).isOptional();
 		assertColumn("compound", Boolean.class).isRequired();
 		assertColumn("metricName", String.class).isRequired();
 		assertColumn("metricScope", String.class).isRequired();
 		assertColumn("metricDescription", String.class).isNullable();
 		assertColumn("metricOrigin", String.class).isRequired();
-		assertOneToMany("ranges").doesNotCascade().isMappedBy("configuration");
+		assertColumn("readingGroup", Long.class).isNullable();
 	}
 
 	@Test

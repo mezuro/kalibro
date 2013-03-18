@@ -1,32 +1,24 @@
 package org.kalibro.core.loaders;
 
-import static java.util.concurrent.TimeUnit.*;
-
 import java.io.File;
-import java.util.List;
 
-import org.kalibro.core.command.CommandTask;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.filefilter.FalseFileFilter;
+import org.apache.commons.io.filefilter.NameFileFilter;
 
 /**
- * Abstract loader class. Loader download source code from repositories using system calls.
+ * Abstract loader for version control systems.
  * 
  * @author Carlos Morais
+ * @author Diego Araújo
  */
-public abstract class RepositoryLoader {
+abstract class RepositoryLoader extends Loader {
 
-	public void validate() {
-		for (String validationCommand : validationCommands())
-			new CommandTask(validationCommand).execute(30, SECONDS);
+	@Override
+	public boolean isUpdatable(File directory) {
+		NameFileFilter nameFilter = new NameFileFilter(metadataDirectoryName());
+		return FileUtils.iterateFiles(directory, FalseFileFilter.INSTANCE, nameFilter).hasNext();
 	}
 
-	protected abstract List<String> validationCommands();
-
-	public void load(String address, File loadDirectory) {
-		List<String> commands = loadCommands(address, loadDirectory.exists());
-		loadDirectory.mkdirs();
-		for (String loadCommand : commands)
-			new CommandTask(loadCommand, loadDirectory).execute(10, HOURS);
-	}
-
-	protected abstract List<String> loadCommands(String address, boolean update);
+	protected abstract String metadataDirectoryName();
 }

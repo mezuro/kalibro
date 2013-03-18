@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-public class LocalDirectoryLoader extends RepositoryLoader {
+public class LocalDirectoryLoader extends FileLoader {
 
 	@Override
 	public List<String> validationCommands() {

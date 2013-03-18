@@ -52,7 +52,6 @@ public abstract class DatabaseDaoTestCase<E, R extends DataTransferObject<E>, DA
 		doReturn(record).when(dao).save(record);
 		doReturn(entity).when(dao).get(anyLong());
 		doReturn(query).when(dao).createRecordQuery(anyString());
-		doReturn(query).when(dao).createRecordQuery(anyString(), anyString());
 	}
 
 	private Class<E> entityClass() throws ClassNotFoundException {

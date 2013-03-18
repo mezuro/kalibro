@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static java.util.concurrent.TimeUnit.DAYS;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import org.kalibro.KalibroException;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
-import org.kalibro.core.loaders.RepositoryLoader;
+import org.kalibro.core.loaders.Loader;
 import org.kalibro.core.persistence.record.RepositoryRecord;
 import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.RepositoryDao;
@@ -47,7 +47,7 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 		try {
 			String typeName = Identifier.fromConstant(type.name()).asClassName();
 			String loaderName = "org.kalibro.core.loaders." + typeName + "Loader";
-			RepositoryLoader loader = (RepositoryLoader) Class.forName(loaderName).newInstance();
+			Loader loader = (Loader) Class.forName(loaderName).newInstance();
 			loader.validate();
 			return true;
 		} catch (Exception exception) {
@@ -56,16 +56,8 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 	}
 
 	@Override
-	public Repository repositoryOf(Long processingId) {
-		String from = "Processing processing JOIN processing.repository repository";
-		TypedQuery<RepositoryRecord> query = createRecordQuery(from, "processing.id = :processingId");
-		query.setParameter("processingId", processingId);
-		return query.getSingleResult().convert();
-	}
-
-	@Override
 	public SortedSet<Repository> repositoriesOf(Long projectId) {
-		TypedQuery<RepositoryRecord> query = createRecordQuery("repository.project.id = :projectId");
+		TypedQuery<RepositoryRecord> query = createRecordQuery("repository.project = :projectId");
 		query.setParameter("projectId", projectId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
@@ -79,13 +71,18 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 	public void process(Long repositoryId) {
 		cancelProcessing(repositoryId);
 		Repository repository = get(repositoryId);
-		Configuration configuration = repository.getConfiguration();
-		if (configuration.getNativeMetrics().isEmpty())
-			throw new KalibroException("Could not process repository (" + repository +
-				") because its configuration (" + configuration + ") has no native metrics.");
+		validateConfiguration(repository);
 		ProcessTask task = new ProcessTask(repository);
 		processTasks.put(repositoryId, task);
 		executeTask(task, repository.getProcessPeriod());
+	}
+
+	private void validateConfiguration(Repository repository) {
+		Configuration configuration = repository.getConfiguration();
+		String errorMessage = "Could not process repository '" + repository +
+			"' because its configuration has no native metrics.";
+		if (configuration.getNativeMetrics().isEmpty())
+			throw new KalibroException(errorMessage);
 	}
 
 	private void executeTask(ProcessTask task, Integer processPeriod) {

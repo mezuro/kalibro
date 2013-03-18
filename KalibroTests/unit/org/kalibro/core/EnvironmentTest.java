@@ -1,6 +1,5 @@
 package org.kalibro.core;
 
-import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
 import static org.junit.Assert.*;
 import static org.kalibro.core.Environment.*;
 
@@ -12,7 +11,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.tests.UtilityClassTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest(Environment.class)
@@ -23,13 +21,9 @@ public class EnvironmentTest extends UtilityClassTest {
 	private static final File TESTS = new File(DOT_KALIBRO, "tests");
 
 	@Before
-	public void setUp() throws Exception {
+	public void setUp() {
 		spy(Environment.class);
-		assertTrue(isTesting());
-	}
-
-	private boolean isTesting() throws Exception {
-		return Whitebox.invokeMethod(Environment.class, "testing");
+		assertTrue(testing());
 	}
 
 	@Test
@@ -44,13 +38,6 @@ public class EnvironmentTest extends UtilityClassTest {
 		assertEquals(new File(TESTS, "logs"), logsDirectory());
 		setProduction();
 		assertEquals(new File(DOT_KALIBRO, "logs"), logsDirectory());
-	}
-
-	@Test
-	public void shouldGetDdlGeneration() throws Exception {
-		assertEquals(DROP_AND_CREATE, ddlGeneration());
-		setProduction();
-		assertEquals(CREATE_ONLY, ddlGeneration());
 	}
 
 	private void setProduction() throws Exception {

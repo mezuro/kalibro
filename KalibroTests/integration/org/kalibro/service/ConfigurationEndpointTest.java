@@ -42,12 +42,6 @@ public class ConfigurationEndpointTest extends EndpointTest<Configuration, Confi
 	}
 
 	@Test
-	public void shouldGetConfigurationOfRepository() {
-		when(dao.configurationOf(ID)).thenReturn(entity);
-		assertDeepDtoEquals(entity, port.configurationOf(ID));
-	}
-
-	@Test
 	public void shouldGetAll() {
 		when(dao.all()).thenReturn(sortedSet(entity));
 		assertDeepDtoList(list(entity), port.allConfigurations());

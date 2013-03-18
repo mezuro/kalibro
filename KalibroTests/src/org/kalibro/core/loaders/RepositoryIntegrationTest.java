@@ -12,12 +12,12 @@ import org.kalibro.tests.IntegrationTest;
 
 public abstract class RepositoryIntegrationTest extends IntegrationTest {
 
-	protected RepositoryLoader loader;
+	protected Loader loader;
 
 	@Before
 	public void setUp() throws Exception {
 		Class<?> loaderClass = Class.forName(getClass().getName().replace("Test", "Loader"));
-		loader = (RepositoryLoader) loaderClass.getConstructor().newInstance();
+		loader = (Loader) loaderClass.getConstructor().newInstance();
 	}
 
 	@Test

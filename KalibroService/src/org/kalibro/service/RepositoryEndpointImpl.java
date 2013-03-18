@@ -43,12 +43,6 @@ public class RepositoryEndpointImpl implements RepositoryEndpoint {
 
 	@Override
 	@WebResult(name = "repository")
-	public RepositoryXml repositoryOf(@WebParam(name = "processingId") Long processingId) {
-		return new RepositoryXml(dao.repositoryOf(processingId));
-	}
-
-	@Override
-	@WebResult(name = "repository")
 	public List<RepositoryXml> repositoriesOf(@WebParam(name = "projectId") Long projectId) {
 		return DataTransferObject.createDtos(dao.repositoriesOf(projectId), RepositoryXml.class);
 	}

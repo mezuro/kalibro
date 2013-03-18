@@ -98,19 +98,24 @@ public class DatabaseDaoTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldCreateRecordQueryWithClauses() {
-		String from = "Person parent JOIN parent.children child";
+	public void shouldCreateRecordQueryWithWhereClause() {
 		String where = "child.id = :id";
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
-		when(recordManager.createQuery("SELECT person FROM " + from + " WHERE " + where, PersonRecord.class))
+		when(recordManager.createQuery("SELECT person FROM Person person WHERE " + where, PersonRecord.class))
 			.thenReturn(query);
-		assertSame(query, dao.createRecordQuery(from, where));
+		assertSame(query, dao.createRecordQuery(where));
 	}
 
 	@Test
 	public void shouldSave() {
 		when(recordManager.save(record)).thenReturn(record);
 		assertSame(record, dao.save(record));
+	}
+
+	@Test
+	public void shouldSaveCollection() {
+		dao.saveAll(list(record));
+		verify(recordManager).saveAll(list(record));
 	}
 
 	@Test

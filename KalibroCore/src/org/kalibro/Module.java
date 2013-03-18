@@ -33,7 +33,7 @@ public class Module extends AbstractEntity<Module> {
 	}
 
 	public String[] getName() {
-		return name;
+		return Arrays.copyOf(name, name.length);
 	}
 
 	public String getShortName() {

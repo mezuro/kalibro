@@ -35,8 +35,8 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("processing", ProcessingRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("processing", Long.class).isRequired();
 		assertColumn("code", String.class).isRequired();
 		assertColumn("weight", Long.class).isRequired();
 		assertColumn("aggregationForm", String.class).isRequired();
@@ -45,7 +45,7 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 		assertColumn("metricScope", String.class).isRequired();
 		assertColumn("metricDescription", String.class).isNullable();
 		assertColumn("metricOrigin", String.class).isRequired();
-		assertOneToMany("ranges").cascades().isMappedBy("configurationSnapshot");
+		assertOneToMany("ranges").isLazy().isMappedBy("configurationSnapshot");
 	}
 
 	@Test
@@ -55,16 +55,16 @@ public class MetricConfigurationSnapshotRecordTest extends RecordTest {
 	}
 
 	@Test
-	public void shouldHaveIdConstructor() {
-		Long id = mock(Long.class);
-		assertSame(id, new MetricConfigurationSnapshotRecord(id).id());
-	}
-
-	@Test
 	public void shouldNotPreserveReadingGroup() {
 		MetricConfiguration metricConfiguration = new MetricConfiguration();
 		metricConfiguration.setReadingGroup(loadFixture("scholar", ReadingGroup.class));
 		MetricConfigurationSnapshotRecord snapshot = new MetricConfigurationSnapshotRecord(metricConfiguration);
 		assertNull(snapshot.readingGroupId());
+	}
+
+	@Test
+	public void shouldHaveIdConstructor() {
+		Long id = mock(Long.class);
+		assertSame(id, new MetricConfigurationSnapshotRecord(id).id());
 	}
 }

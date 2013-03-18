@@ -14,18 +14,19 @@ import org.kalibro.dto.RangeDto;
  * @author Carlos Morais
  */
 @Entity(name = "RangeSnapshot")
-@Table(name = "\"RANGE_SNAPSHOT\"")
+@Table(name = "\"range_snapshot\"")
 public class RangeSnapshotRecord extends RangeDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "range_snapshot")
+	@TableGenerator(name = "range_snapshot", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "range_snapshot", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
+	private Long id;
+
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
 	@JoinColumn(name = "\"configuration_snapshot\"", nullable = false, referencedColumnName = "\"id\"")
 	private MetricConfigurationSnapshotRecord configurationSnapshot;
-
-	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	private Long id;
 
 	@Column(name = "\"beginning\"", nullable = false)
 	private Long beginning;

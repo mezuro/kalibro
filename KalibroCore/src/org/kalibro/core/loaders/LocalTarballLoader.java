@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-public class LocalTarballLoader extends RepositoryLoader {
+public class LocalTarballLoader extends FileLoader {
 
 	@Override
 	public List<String> validationCommands() {

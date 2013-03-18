@@ -80,7 +80,7 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	private void validate(Double theBeginning, Double theEnd) {
-		throwExceptionIf(!(theBeginning < theEnd), "[" + theBeginning + ", " + theEnd + "[ is not a valid range");
+		throwExceptionIf(! (theBeginning < theEnd), "[" + theBeginning + ", " + theEnd + "[ is not a valid range");
 		if (configuration != null)
 			for (Range other : configuration.getRanges())
 				if (other != this)
@@ -93,7 +93,7 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	public boolean isFinite() {
-		return !(beginning.isInfinite() || end.isInfinite());
+		return ! (beginning.isInfinite() || end.isInfinite());
 	}
 
 	public boolean contains(Double value) {

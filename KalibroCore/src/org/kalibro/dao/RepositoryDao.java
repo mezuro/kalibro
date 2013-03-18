@@ -14,8 +14,6 @@ public interface RepositoryDao {
 
 	SortedSet<RepositoryType> supportedTypes();
 
-	Repository repositoryOf(Long processingId);
-
 	SortedSet<Repository> repositoriesOf(Long projectId);
 
 	Long save(Repository repository, Long projectId);

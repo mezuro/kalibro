@@ -15,15 +15,6 @@ public class ProjectDatabaseDaoTest extends DatabaseDaoTestCase<Project, Project
 	private static final Long ID = new Random().nextLong();
 
 	@Test
-	public void shouldGetProjectOfRepository() {
-		assertSame(entity, dao.projectOf(ID));
-
-		String from = "Repository repository JOIN repository.project project";
-		verify(dao).createRecordQuery(from, "repository.id = :repositoryId");
-		verify(query).setParameter("repositoryId", ID);
-	}
-
-	@Test
 	public void shouldSave() throws Exception {
 		when(record.id()).thenReturn(ID);
 		assertEquals(ID, dao.save(entity));

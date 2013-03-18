@@ -19,18 +19,8 @@ class OneToManyMatcher {
 		return this;
 	}
 
-	OneToManyMatcher doesNotCascade() {
-		assertArrayEquals("@OneToMany should NOT cascade", new CascadeType[]{}, oneToMany.cascade());
-		return this;
-	}
-
-	OneToManyMatcher removeOrphans() {
-		assertTrue("@OneToMany should remove orphans", oneToMany.orphanRemoval());
-		return this;
-	}
-
-	OneToManyMatcher doesNotRemoveOrphans() {
-		assertFalse("@OneToMany should NOT remove orphans", oneToMany.orphanRemoval());
+	OneToManyMatcher isEager() {
+		assertEquals("@OneToMany has wrong fetch type.", FetchType.EAGER, oneToMany.fetch());
 		return this;
 	}
 

@@ -8,7 +8,7 @@ package org.kalibro.core.loaders;
 public class RemoteZipLoader extends RemoteFileLoader {
 
 	@Override
-	protected RepositoryLoader localLoader() {
+	protected FileLoader localLoader() {
 		return new LocalZipLoader();
 	}
 }

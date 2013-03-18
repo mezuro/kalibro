@@ -10,20 +10,15 @@ import org.kalibro.dto.StackTraceElementDto;
  * @author Carlos Morais
  */
 @Entity(name = "StackTraceElement")
-@Table(name = "\"STACK_TRACE_ELEMENT\"")
+@Table(name = "\"stack_trace_element\"")
 public class StackTraceElementRecord extends StackTraceElementDto {
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@SuppressWarnings("unused" /* used by JPA */)
-	@JoinColumn(name = "\"throwable\"", referencedColumnName = "\"id\"")
+	@Id
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "\"throwable\"", nullable = false, referencedColumnName = "\"id\"")
 	private ThrowableRecord throwable;
 
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	@SuppressWarnings("unused" /* used by JPA */)
-	private Long id;
-
 	@Column(name = "\"index\"", nullable = false)
 	private Integer index;
 
@@ -33,10 +28,10 @@ public class StackTraceElementRecord extends StackTraceElementDto {
 	@Column(name = "\"method_name\"", nullable = false)
 	private String methodName;
 
-	@Column(name = "\"file_name\"", nullable = false)
+	@Column(name = "\"file_name\"")
 	private String fileName;
 
-	@Column(name = "\"line_number\"", nullable = false)
+	@Column(name = "\"line_number\"")
 	private Integer lineNumber;
 
 	public StackTraceElementRecord() {

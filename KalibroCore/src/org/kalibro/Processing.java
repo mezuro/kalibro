@@ -16,7 +16,7 @@ import org.kalibro.dao.ProcessingDao;
  * 
  * @author Carlos Morais
  */
-@SortingFields({"repository", "date"})
+@SortingFields("date")
 public class Processing extends AbstractEntity<Processing> {
 
 	public static boolean hasProcessing(Repository repository) {
@@ -76,9 +76,6 @@ public class Processing extends AbstractEntity<Processing> {
 	private Long id;
 
 	@IdentityField
-	private Repository repository;
-
-	@IdentityField
 	private Date date;
 
 	private ProcessState state;
@@ -87,41 +84,28 @@ public class Processing extends AbstractEntity<Processing> {
 	private Map<ProcessState, Long> stateTimes;
 	private ModuleResult resultsRoot;
 
-	public Processing(Repository repository) {
-		setRepository(repository);
-		setDate(new Date());
+	public Processing() {
+		this(new Date());
+	}
+
+	public Processing(Date date) {
+		this.date = date;
+		this.stateTimes = new HashMap<ProcessState, Long>();
 		setState(ProcessState.LOADING);
-		stateTimes = new HashMap<ProcessState, Long>();
 	}
 
 	public Long getId() {
 		return id;
 	}
 
-	public Repository getRepository() {
-		return repository;
-	}
-
-	public void setRepository(Repository repository) {
-		this.repository = repository;
-	}
-
 	public Date getDate() {
 		return date;
-	}
-
-	public void setDate(Date date) {
-		this.date = date;
 	}
 
 	public ProcessState getState() {
 		if (error != null)
 			return ProcessState.ERROR;
 		return state;
-	}
-
-	public String getStateMessage() {
-		return getState().getMessage(repository.getCompleteName());
 	}
 
 	public ProcessState getStateWhenErrorOcurred() {

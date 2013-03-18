@@ -43,12 +43,6 @@ public class ProjectEndpointImpl implements ProjectEndpoint {
 
 	@Override
 	@WebResult(name = "project")
-	public ProjectXml projectOf(@WebParam(name = "repositoryId") Long repositoryId) {
-		return new ProjectXml(dao.projectOf(repositoryId));
-	}
-
-	@Override
-	@WebResult(name = "project")
 	public List<ProjectXml> allProjects() {
 		return DataTransferObject.createDtos(dao.all(), ProjectXml.class);
 	}

@@ -13,18 +13,18 @@ import org.kalibro.dto.ReadingDto;
  * @author Carlos Morais
  */
 @Entity(name = "Reading")
-@Table(name = "\"READING\"")
+@Table(name = "\"reading\"")
 public class ReadingRecord extends ReadingDto {
 
-	@SuppressWarnings("unused" /* JPA */)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"group\"", nullable = false, referencedColumnName = "\"id\"")
-	private ReadingGroupRecord group;
-
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "reading")
+	@TableGenerator(name = "reading", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "reading", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
+
+	@Column(name = "\"group\"", nullable = false)
+	private Long group;
 
 	@Column(name = "\"label\"", nullable = false)
 	private String label;
@@ -39,20 +39,16 @@ public class ReadingRecord extends ReadingDto {
 		super();
 	}
 
-	public ReadingRecord(Long id) {
-		this.id = id;
-	}
-
 	public ReadingRecord(Reading reading) {
 		this(reading, null);
 	}
 
 	public ReadingRecord(Reading reading, Long groupId) {
-		this(reading.getId());
+		this.id = reading.getId();
 		label = reading.getLabel();
 		grade = Double.doubleToLongBits(reading.getGrade());
 		color = reading.getColor().getRGB();
-		group = new ReadingGroupRecord(groupId);
+		group = groupId;
 	}
 
 	@Override

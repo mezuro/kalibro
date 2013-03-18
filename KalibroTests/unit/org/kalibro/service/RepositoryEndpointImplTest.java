@@ -26,12 +26,6 @@ public class RepositoryEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetRepositoryOfProcessing() {
-		when(dao.repositoryOf(ID)).thenReturn(entity);
-		assertSame(xml, implementor.repositoryOf(ID));
-	}
-
-	@Test
 	public void shouldGetRepositoriesOfProject() {
 		doReturn(sortedSet(entity)).when(dao).repositoriesOf(PROJECT_ID);
 		assertDeepEquals(list(xml), implementor.repositoriesOf(PROJECT_ID));

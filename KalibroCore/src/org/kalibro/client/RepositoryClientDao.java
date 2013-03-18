@@ -27,11 +27,6 @@ class RepositoryClientDao extends EndpointClient<RepositoryEndpoint> implements 
 	}
 
 	@Override
-	public Repository repositoryOf(Long processingId) {
-		return port.repositoryOf(processingId).convert();
-	}
-
-	@Override
 	public SortedSet<Repository> repositoriesOf(Long projectId) {
 		return DataTransferObject.toSortedSet(port.repositoriesOf(projectId));
 	}

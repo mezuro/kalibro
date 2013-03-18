@@ -37,7 +37,7 @@ public abstract class MetricConfigurationDto extends DataTransferObject<MetricCo
 
 	public abstract Metric metric();
 
-	protected BaseTool baseTool() {
+	private BaseTool baseTool() {
 		return DaoLazyLoader.createProxy(BaseToolDao.class, "get", baseToolName());
 	}
 
@@ -51,13 +51,13 @@ public abstract class MetricConfigurationDto extends DataTransferObject<MetricCo
 
 	public abstract Statistic aggregationForm();
 
-	public ReadingGroup readingGroup() {
+	private ReadingGroup readingGroup() {
 		return DaoLazyLoader.createProxy(ReadingGroupDao.class, "get", readingGroupId());
 	}
 
 	public abstract Long readingGroupId();
 
-	public SortedSet<Range> ranges() {
+	protected SortedSet<Range> ranges() {
 		return DaoLazyLoader.createProxy(RangeDao.class, "rangesOf", id());
 	}
 }

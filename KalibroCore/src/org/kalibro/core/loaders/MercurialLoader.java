@@ -21,4 +21,9 @@ public class MercurialLoader extends RepositoryLoader {
 			return Arrays.asList("hg pull -u");
 		return Arrays.asList("hg clone " + address + " .");
 	}
+
+	@Override
+	protected String metadataDirectoryName() {
+		return ".hg";
+	}
 }

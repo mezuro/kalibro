@@ -14,13 +14,14 @@ import org.kalibro.dto.ThrowableDto;
  * @author Carlos Morais
  */
 @Entity(name = "Throwable")
-@Table(name = "\"THROWABLE\"")
+@Table(name = "\"throwable\"")
 public class ThrowableRecord extends ThrowableDto {
 
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	@SuppressWarnings("unused" /* used by JPA */)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "throwable")
+	@TableGenerator(name = "throwable", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "throwable", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"target_string\"", nullable = false)
@@ -29,13 +30,12 @@ public class ThrowableRecord extends ThrowableDto {
 	@Column(name = "\"message\"")
 	private String message;
 
-	@CascadeOnDelete
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "\"cause\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord cause;
 
 	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "throwable", orphanRemoval = true)
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "throwable")
 	private Collection<StackTraceElementRecord> stackTrace;
 
 	public ThrowableRecord() {

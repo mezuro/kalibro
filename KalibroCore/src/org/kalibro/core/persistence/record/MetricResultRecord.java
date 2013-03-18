@@ -1,12 +1,7 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.MetricConfiguration;
 import org.kalibro.MetricResult;
 import org.kalibro.dto.MetricResultDto;
@@ -17,33 +12,29 @@ import org.kalibro.dto.MetricResultDto;
  * @author Carlos Morais
  */
 @Entity(name = "MetricResult")
-@Table(name = "\"METRIC_RESULT\"")
+@Table(name = "\"metric_result\"")
 public class MetricResultRecord extends MetricResultDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"module_result\"", nullable = false, referencedColumnName = "\"id\"")
-	private ModuleResultRecord moduleResult;
+	@Id
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "metric_result")
+	@TableGenerator(name = "metric_result", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "metric_result", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
+	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
+	@Column(name = "\"module_result\"", nullable = false)
+	private Long moduleResult;
+
+	@ManyToOne(fetch = FetchType.EAGER, optional = false)
 	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
 	private MetricConfigurationSnapshotRecord configuration;
-
-	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	private Long id;
 
 	@Column(name = "\"value\"", nullable = false)
 	private Long value;
 
-	@OneToOne(cascade = CascadeType.ALL, orphanRemoval = true)
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
-
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "metricResult", orphanRemoval = true)
-	private Collection<DescendantResultRecord> descendantResults;
 
 	public MetricResultRecord() {
 		super();
@@ -53,19 +44,12 @@ public class MetricResultRecord extends MetricResultDto {
 		this(metricResult, null);
 	}
 
-	public MetricResultRecord(MetricResult metricResult, ModuleResultRecord moduleResult) {
-		this.moduleResult = moduleResult;
-		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
+	public MetricResultRecord(MetricResult metricResult, Long moduleResultId) {
 		id = metricResult.getId();
+		moduleResult = moduleResultId;
+		configuration = new MetricConfigurationSnapshotRecord(metricResult.getConfiguration().getId());
 		value = Double.doubleToLongBits(metricResult.getValue());
 		error = metricResult.hasError() ? new ThrowableRecord(metricResult.getError()) : null;
-		setDescendantResults(metricResult.getDescendantResults());
-	}
-
-	private void setDescendantResults(List<Double> descendantResults) {
-		this.descendantResults = new ArrayList<DescendantResultRecord>();
-		for (Double descendantResult : descendantResults)
-			this.descendantResults.add(new DescendantResultRecord(descendantResult, this));
 	}
 
 	@Override

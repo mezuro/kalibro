@@ -1,15 +1,9 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Collection;
-
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
-import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
-import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
@@ -18,18 +12,18 @@ import org.kalibro.dto.RepositoryDto;
  * @author Carlos Morais
  */
 @Entity(name = "Repository")
-@Table(name = "\"REPOSITORY\"")
+@Table(name = "\"repository\"")
 public class RepositoryRecord extends RepositoryDto {
 
-	@SuppressWarnings("unused" /* used by JPA */)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"project\"", nullable = false, referencedColumnName = "\"id\"")
-	private ProjectRecord project;
-
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "repository")
+	@TableGenerator(name = "repository", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "repository", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
+
+	@Column(name = "\"project\"", nullable = false)
+	private Long project;
 
 	@Column(name = "\"name\"", nullable = false)
 	private String name;
@@ -49,22 +43,11 @@ public class RepositoryRecord extends RepositoryDto {
 	@Column(name = "\"process_period\"")
 	private Integer processPeriod;
 
-	@SuppressWarnings("unused" /* used by JPA */)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"configuration\"", nullable = false, referencedColumnName = "\"id\"")
-	private ConfigurationRecord configuration;
-
-	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
-	@OneToMany(mappedBy = "repository", orphanRemoval = true)
-	private Collection<ProcessingRecord> processings;
+	@Column(name = "\"configuration\"", nullable = false)
+	private Long configuration;
 
 	public RepositoryRecord() {
 		super();
-	}
-
-	public RepositoryRecord(Long id) {
-		this.id = id;
 	}
 
 	public RepositoryRecord(Repository repository) {
@@ -72,15 +55,15 @@ public class RepositoryRecord extends RepositoryDto {
 	}
 
 	public RepositoryRecord(Repository repository, Long projectId) {
-		this(repository.getId());
-		project = new ProjectRecord(projectId);
+		id = repository.getId();
+		project = projectId;
 		name = repository.getName();
 		type = repository.getType().name();
 		address = repository.getAddress();
 		description = repository.getDescription();
 		license = repository.getLicense();
 		processPeriod = repository.getProcessPeriod();
-		configuration = new ConfigurationRecord(repository.getConfiguration().getId());
+		configuration = repository.getConfiguration().getId();
 	}
 
 	@Override
@@ -119,7 +102,12 @@ public class RepositoryRecord extends RepositoryDto {
 	}
 
 	@Override
-	public Configuration configuration() {
-		return DaoLazyLoader.createProxy(ConfigurationDao.class, "configurationOf", id);
+	public Long configurationId() {
+		return configuration;
+	}
+
+	@Override
+	public Long projectId() {
+		return project;
 	}
 }

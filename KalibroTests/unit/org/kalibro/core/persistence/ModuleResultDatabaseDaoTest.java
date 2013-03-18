@@ -27,7 +27,7 @@ public class ModuleResultDatabaseDaoTest extends
 	public void shouldGetChildren() {
 		assertDeepEquals(set(entity), dao.childrenOf(ID));
 
-		verify(dao).createRecordQuery("ModuleResult parent JOIN parent.children moduleResult", "parent.id = :parentId");
+		verify(dao).createRecordQuery("moduleResult.parent = :parentId");
 		verify(query).setParameter("parentId", ID);
 	}
 
@@ -36,9 +36,7 @@ public class ModuleResultDatabaseDaoTest extends
 		Module module = mockModule();
 
 		TypedQuery<Object[]> historyQuery = mock(TypedQuery.class);
-		doReturn(historyQuery).when(dao).createQuery("SELECT processing.date, result FROM ModuleResult result " +
-			"JOIN result.processing processing WHERE result.moduleName = :moduleName AND processing.repository.id = " +
-			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :resultId)", Object[].class);
+		doReturn(historyQuery).when(dao).createQuery(anyString(), eq(Object[].class));
 
 		List<Object[]> results = new ArrayList<Object[]>();
 		results.add(new Object[]{TIME, record});
@@ -47,8 +45,8 @@ public class ModuleResultDatabaseDaoTest extends
 		SortedMap<Date, ModuleResult> history = dao.historyOf(ID);
 		assertEquals(1, history.size());
 		assertDeepEquals(entity, history.get(DATE));
-		verify(historyQuery).setParameter("moduleName", list(module.getName()));
-		verify(historyQuery).setParameter("resultId", ID);
+		verify(historyQuery).setParameter("moduleName", module.getName()[0]);
+		verify(historyQuery).setParameter("moduleResultId", ID);
 	}
 
 	private Module mockModule() {
@@ -60,48 +58,57 @@ public class ModuleResultDatabaseDaoTest extends
 	}
 
 	@Test
-	public void shouldSave() throws Exception {
-		dao.save(entity, ID);
+	public void shouldGetResultForModule() {
+		Module module = new Module(Granularity.PACKAGE, "org");
+		prepareQuery("moduleResult.moduleName = :module");
 
+		assertSame(entity, dao.getResultFor(module, ID));
+		verifyCallsInOrder("module", "org");
+	}
+
+	@Test
+	public void shouldGetNullForInexistentResult() {
+		Module module = new Module(Granularity.PACKAGE, "org");
+		prepareQuery("moduleResult.moduleName = :module");
+		when(query.getResultList()).thenReturn(new ArrayList<ModuleResultRecord>());
+
+		assertNull(dao.getResultFor(module, ID));
+		verifyCallsInOrder("module", "org");
+	}
+
+	@Test
+	public void shouldFindResultByGranularityWhenRoot() {
+		Module module = new Module(Granularity.SOFTWARE, "null");
+		prepareQuery("moduleResult.moduleGranularity = :module");
+
+		assertSame(entity, dao.getResultFor(module, ID));
+		verifyCallsInOrder("module", "SOFTWARE");
+	}
+
+	@Test
+	public void shouldSave() throws Exception {
+		assertSame(entity, dao.save(entity, ID));
 		verifyNew(ModuleResultRecord.class).withArguments(entity, ID);
 		verify(dao).save(record);
 	}
 
 	@Test
-	public void shouldPrepareResultForModule() throws Exception {
-		Module module = new Module(Granularity.PACKAGE, "org");
-		String where = "moduleResult.processing.id = :processingId AND moduleResult.moduleName = :module";
-		String where2 = "moduleResult.processing.id = :processingId AND moduleResult.moduleGranularity = :module";
-		doReturn(false).when(dao).exists("WHERE " + where, "processingId", ID, "module", list("org"));
-		doReturn(false).when(dao).exists("WHERE " + where2, "processingId", ID, "module", "SOFTWARE");
-		prepareQuery(where);
-		prepareQuery(where2);
+	public void shouldGetResultsAtHeight() {
+		int height = TIME.intValue();
+		prepareQuery("moduleResult.height = :height");
 
-		Module preparedModule = mock(Module.class);
-		whenNew(ModuleResultRecord.class)
-			.withParameterTypes(Module.class, ModuleResultRecord.class, Long.class)
-			.withArguments(any(Module.class), any(ModuleResultRecord.class), eq(ID)).thenReturn(record);
-		doReturn(null).when(dao).save(record);
-		when(entity.getModule()).thenReturn(preparedModule);
-
-		assertSame(entity, dao.prepareResultFor(module, ID));
-		verifyCallsInOrder(preparedModule);
+		assertDeepEquals(list(entity), dao.getResultsAtHeight(height, ID));
+		verifyCallsInOrder("height", height);
 	}
 
-	private void prepareQuery(String where) {
-		doReturn(query).when(dao).createRecordQuery(where);
+	private void prepareQuery(String secondCondition) {
+		doReturn(query).when(dao).createRecordQuery("moduleResult.processing = :processingId AND " + secondCondition);
 	}
 
-	private void verifyCallsInOrder(Module preparedModule) {
-		InOrder order = Mockito.inOrder(dao, query, dao, query, preparedModule);
-		order.verify(dao).save(record);
+	private void verifyCallsInOrder(String secondParameterName, Object secondParameter) {
+		InOrder order = Mockito.inOrder(query);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("module", "SOFTWARE");
-		order.verify(query).getSingleResult();
-		order.verify(dao).save(record);
-		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter("module", list("org"));
-		order.verify(query).getSingleResult();
-		order.verify(preparedModule).setGranularity(Granularity.PACKAGE);
+		order.verify(query).setParameter(secondParameterName, secondParameter);
+		order.verify(query).getResultList();
 	}
 }

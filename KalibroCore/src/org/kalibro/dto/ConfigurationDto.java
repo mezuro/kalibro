@@ -28,7 +28,7 @@ public abstract class ConfigurationDto extends DataTransferObject<Configuration>
 
 	public abstract String description();
 
-	public SortedSet<MetricConfiguration> metricConfigurations() {
+	protected SortedSet<MetricConfiguration> metricConfigurations() {
 		return DaoLazyLoader.createProxy(MetricConfigurationDao.class, "metricConfigurationsOf", id());
 	}
 }

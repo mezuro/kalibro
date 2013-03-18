@@ -1,7 +1,5 @@
 package org.kalibro.core;
 
-import static org.eclipse.persistence.config.PersistenceUnitProperties.*;
-
 import java.io.File;
 
 /**
@@ -27,11 +25,7 @@ public final class Environment {
 		return dotKalibro;
 	}
 
-	public static String ddlGeneration() {
-		return testing() ? DROP_AND_CREATE : CREATE_ONLY;
-	}
-
-	private static boolean testing() {
+	public static boolean testing() {
 		return TESTS.exists();
 	}
 

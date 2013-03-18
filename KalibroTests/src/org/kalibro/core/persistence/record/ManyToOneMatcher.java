@@ -18,18 +18,17 @@ class ManyToOneMatcher {
 	}
 
 	ManyToOneMatcher doesNotCascade() {
-		assertArrayEquals(message("should NOT cascade"), new CascadeType[]{}, manyToOne.cascade());
+		assertArrayEquals("@ManyToOne should NOT cascade", new CascadeType[]{}, manyToOne.cascade());
+		return this;
+	}
+
+	ManyToOneMatcher isEager() {
+		assertEquals(message("has wrong fetch type"), FetchType.EAGER, manyToOne.fetch());
 		return this;
 	}
 
 	ManyToOneMatcher isLazy() {
 		assertEquals(message("has wrong fetch type"), FetchType.LAZY, manyToOne.fetch());
-		return this;
-	}
-
-	ManyToOneMatcher isOptional() {
-		assertTrue(message("should be optional"), manyToOne.optional());
-		assertTrue(message("JoinColumn", "should be nullable"), joinColumn.nullable());
 		return this;
 	}
 

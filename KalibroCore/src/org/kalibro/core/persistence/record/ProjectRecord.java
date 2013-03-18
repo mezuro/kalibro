@@ -1,10 +1,7 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Collection;
-
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Project;
 import org.kalibro.dto.ProjectDto;
 
@@ -14,12 +11,14 @@ import org.kalibro.dto.ProjectDto;
  * @author Carlos Morais
  */
 @Entity(name = "Project")
-@Table(name = "\"PROJECT\"")
+@Table(name = "\"project\"")
 public class ProjectRecord extends ProjectDto {
 
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "project")
+	@TableGenerator(name = "project", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "project", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"name\"", nullable = false, unique = true)
@@ -28,21 +27,12 @@ public class ProjectRecord extends ProjectDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
-	@OneToMany(mappedBy = "project", orphanRemoval = true)
-	private Collection<RepositoryRecord> repositories;
-
 	public ProjectRecord() {
 		super();
 	}
 
-	public ProjectRecord(Long id) {
-		this.id = id;
-	}
-
 	public ProjectRecord(Project project) {
-		this(project.getId());
+		id = project.getId();
 		name = project.getName();
 		description = project.getDescription();
 	}

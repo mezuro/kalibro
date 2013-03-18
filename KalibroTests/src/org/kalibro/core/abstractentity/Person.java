@@ -17,7 +17,6 @@ class Person extends AbstractEntity<Person> {
 	private Map<String, Person> relatives;
 
 	@Ignore
-	@SuppressWarnings("unused")
 	private double random;
 
 	protected Person() {

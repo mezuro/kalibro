@@ -1,15 +1,8 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Granularity;
-import org.kalibro.MetricResult;
 import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dto.ModuleResultDto;
@@ -20,28 +13,32 @@ import org.kalibro.dto.ModuleResultDto;
  * @author Carlos Morais
  */
 @Entity(name = "ModuleResult")
-@Table(name = "\"MODULE_RESULT\"")
+@Table(name = "\"module_result\"")
 public class ModuleResultRecord extends ModuleResultDto {
 
-	private static ModuleResultRecord parentRecord(ModuleResult moduleResult) {
-		if (!moduleResult.hasParent())
-			return null;
-		return new ModuleResultRecord(moduleResult.getParent().getId());
+	private static final String TOKEN = "###";
+
+	public static String persistedName(String[] moduleName) {
+		String name = "";
+		for (String namePart : moduleName)
+			name += TOKEN + namePart;
+		if (moduleName.length > 0)
+			name = name.substring(TOKEN.length());
+		return name;
 	}
 
-	@SuppressWarnings("unused" /* used by JPA */)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"processing\"", nullable = false, referencedColumnName = "\"id\"")
-	private ProcessingRecord processing;
-
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "module_result")
+	@TableGenerator(name = "module_result", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "module_result", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
-	@ElementCollection(fetch = FetchType.EAGER)
-	@OrderColumn(name = "\"index\"", nullable = false)
-	private List<String> moduleName;
+	@Column(name = "\"processing\"", nullable = false)
+	private Long processing;
+
+	@Column(name = "\"module_name\"", nullable = false)
+	private String moduleName;
 
 	@Column(name = "\"module_granularity\"", nullable = false)
 	private String moduleGranularity;
@@ -49,25 +46,14 @@ public class ModuleResultRecord extends ModuleResultDto {
 	@Column(name = "\"grade\"")
 	private Long grade;
 
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "\"parent\"", referencedColumnName = "\"id\"")
-	private ModuleResultRecord parent;
+	@Column(name = "\"height\"", nullable = false)
+	private Integer height;
 
-	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
-	@OneToMany(mappedBy = "parent", orphanRemoval = true)
-	private Collection<ModuleResultRecord> children;
-
-	@CascadeOnDelete
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "moduleResult", orphanRemoval = true)
-	private Collection<MetricResultRecord> metricResults;
+	@Column(name = "\"parent\"")
+	private Long parent;
 
 	public ModuleResultRecord() {
 		super();
-	}
-
-	public ModuleResultRecord(Long id) {
-		this.id = id;
 	}
 
 	public ModuleResultRecord(ModuleResult moduleResult) {
@@ -75,27 +61,22 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	public ModuleResultRecord(ModuleResult moduleResult, Long processingId) {
-		this(moduleResult, parentRecord(moduleResult), processingId);
-	}
-
-	public ModuleResultRecord(ModuleResult moduleResult, ModuleResultRecord parent, Long processingId) {
-		this(moduleResult.getModule(), parent, processingId);
 		id = moduleResult.getId();
+		processing = processingId;
+		setModule(moduleResult.getModule());
 		grade = Double.doubleToLongBits(moduleResult.getGrade());
-		setMetricResults(moduleResult.getMetricResults());
+		setParent(moduleResult.getParent());
 	}
 
-	public ModuleResultRecord(Module module, ModuleResultRecord parent, Long processingId) {
-		this.parent = parent;
-		processing = new ProcessingRecord(processingId);
-		moduleName = Arrays.asList(module.getName());
+	private void setModule(Module module) {
+		moduleName = persistedName(module.getName());
 		moduleGranularity = module.getGranularity().name();
 	}
 
-	private void setMetricResults(Collection<MetricResult> results) {
-		metricResults = new ArrayList<MetricResultRecord>();
-		for (MetricResult metricResult : results)
-			metricResults.add(new MetricResultRecord(metricResult, this));
+	private void setParent(ModuleResult parent) {
+		height = parent == null ? 0 : parent.getHeight() + 1;
+		if (parent != null)
+			this.parent = parent.getId();
 	}
 
 	@Override
@@ -105,7 +86,7 @@ public class ModuleResultRecord extends ModuleResultDto {
 
 	@Override
 	public Module module() {
-		return new Module(Granularity.valueOf(moduleGranularity), moduleName.toArray(new String[0]));
+		return new Module(Granularity.valueOf(moduleGranularity), moduleName.split(TOKEN));
 	}
 
 	@Override
@@ -114,7 +95,12 @@ public class ModuleResultRecord extends ModuleResultDto {
 	}
 
 	@Override
+	public Integer height() {
+		return height;
+	}
+
+	@Override
 	public Long parentId() {
-		return parent == null ? null : parent.id();
+		return parent;
 	}
 }

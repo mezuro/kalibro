@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 import static org.kalibro.SupportedDatabase.*;
 
 import org.junit.Test;
@@ -15,12 +15,11 @@ public class SupportedDatabaseTest extends EnumerationTest<SupportedDatabase> {
 
 	@Override
 	protected String expectedText(SupportedDatabase value) {
-		return array("Apache Derby", "Mysql", "PostgreSQL", "SQLite")[value.ordinal()];
+		return array("Mysql", "PostgreSQL", "SQLite")[value.ordinal()];
 	}
 
 	@Test
 	public void checkJdbcDrivers() {
-		assertEquals(org.apache.derby.jdbc.EmbeddedDriver.class.getName(), APACHE_DERBY.getDriverClassName());
 		assertEquals(com.mysql.jdbc.Driver.class.getName(), MYSQL.getDriverClassName());
 		assertEquals(org.sqlite.JDBC.class.getName(), SQLITE.getDriverClassName());
 		assertEquals(org.postgresql.Driver.class.getName(), POSTGRESQL.getDriverClassName());

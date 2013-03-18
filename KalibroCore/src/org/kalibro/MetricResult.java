@@ -52,10 +52,6 @@ public class MetricResult extends AbstractMetricResult {
 		this.descendantResults = descendantResults;
 	}
 
-	public void addDescendantResult(Double descendantResult) {
-		descendantResults.add(descendantResult);
-	}
-
 	public Double getAggregatedValue() {
 		if (getValue().isNaN() && !descendantResults.isEmpty())
 			return configuration.getAggregationForm().calculate(descendantResults);
