@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.SortedSet;
 
 import javax.persistence.Entity;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -38,10 +39,13 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	public ENTITY get(Long recordId) {
-		RECORD record = recordManager.getById(recordId, recordClass);
-		if (record == null)
-			throw new KalibroException(entityName() + " " + recordId + " not found.");
-		return record.convert();
+		TypedQuery<RECORD> query = createRecordQuery(alias() + ".id = :id");
+		query.setParameter("id", recordId);
+		try {
+			return query.getSingleResult().convert();
+		} catch (NoResultException exception) {
+			throw new KalibroException(entityName() + " " + recordId + " not found.", exception);
+		}
 	}
 
 	public SortedSet<ENTITY> all() {
