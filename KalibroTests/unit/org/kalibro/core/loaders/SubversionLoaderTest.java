@@ -18,4 +18,9 @@ public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 	protected List<String> expectedUpdateCommands() {
 		return list("svn update");
 	}
+
+	@Override
+	protected String expectedMetadataDirectoryName() {
+		return ".svn";
+	}
 }

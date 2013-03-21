@@ -86,7 +86,6 @@ public class EntityEqualityTest extends UnitTest {
 	private class PersonImitation extends AbstractEntity<PersonImitation> {
 
 		@IdentityField
-		@SuppressWarnings("unused")
 		private String identityNumber;
 
 		protected PersonImitation(Person person) {

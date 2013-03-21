@@ -15,7 +15,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 public class ProcessingDatabaseDaoTest extends
 	DatabaseDaoTestCase<Processing, ProcessingRecord, ProcessingDatabaseDao> {
 
-	private static final String WHERE = "processing.repository.id = :repositoryId";
+	private static final String WHERE = "processing.repository = :repositoryId";
 	private static final String CLAUSE = "WHERE " + WHERE;
 
 	private static final Long ID = Math.abs(new Random().nextLong());
@@ -64,7 +64,7 @@ public class ProcessingDatabaseDaoTest extends
 		assertEquals(ProcessState.COLLECTING, dao.lastProcessingState(ID));
 
 		verify(dao).createRecordQuery(WHERE + " AND processing.date = " +
-			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId)");
+			"(SELECT max(p.date) FROM Processing p WHERE p.repository = :repositoryId)");
 		verify(query).setParameter("repositoryId", ID);
 	}
 
@@ -73,7 +73,7 @@ public class ProcessingDatabaseDaoTest extends
 		assertSame(entity, dao.lastReadyProcessing(ID));
 
 		verify(dao).createRecordQuery(WHERE + " AND processing.date = " +
-			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId AND p.state = 'READY')");
+			"(SELECT max(p.date) FROM Processing p WHERE p.repository = :repositoryId AND p.state = 'READY')");
 		verify(query).setParameter("repositoryId", ID);
 	}
 
@@ -82,7 +82,7 @@ public class ProcessingDatabaseDaoTest extends
 		assertSame(entity, dao.firstProcessing(ID));
 
 		verify(dao).createRecordQuery(WHERE + " AND processing.date = " +
-			"(SELECT min(p.date) FROM Processing p WHERE p.repository.id = :repositoryId)");
+			"(SELECT min(p.date) FROM Processing p WHERE p.repository = :repositoryId)");
 		verify(query).setParameter("repositoryId", ID);
 	}
 
@@ -91,7 +91,7 @@ public class ProcessingDatabaseDaoTest extends
 		assertSame(entity, dao.lastProcessing(ID));
 
 		verify(dao).createRecordQuery(WHERE + " AND processing.date = " +
-			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId)");
+			"(SELECT max(p.date) FROM Processing p WHERE p.repository = :repositoryId)");
 		verify(query).setParameter("repositoryId", ID);
 	}
 
@@ -100,7 +100,7 @@ public class ProcessingDatabaseDaoTest extends
 		assertSame(entity, dao.firstProcessingAfter(DATE, ID));
 
 		verify(dao).createRecordQuery(WHERE + " AND processing.date = " +
-			"(SELECT min(p.date) FROM Processing p WHERE p.repository.id = :repositoryId AND p.date > :date)");
+			"(SELECT min(p.date) FROM Processing p WHERE p.repository = :repositoryId AND p.date > :date)");
 		verify(query).setParameter("repositoryId", ID);
 		verify(query).setParameter("date", TIME);
 	}
@@ -110,7 +110,7 @@ public class ProcessingDatabaseDaoTest extends
 		assertSame(entity, dao.lastProcessingBefore(DATE, ID));
 
 		verify(dao).createRecordQuery(WHERE + " AND processing.date = " +
-			"(SELECT max(p.date) FROM Processing p WHERE p.repository.id = :repositoryId AND p.date < :date)");
+			"(SELECT max(p.date) FROM Processing p WHERE p.repository = :repositoryId AND p.date < :date)");
 		verify(query).setParameter("repositoryId", ID);
 		verify(query).setParameter("date", TIME);
 	}
@@ -119,11 +119,11 @@ public class ProcessingDatabaseDaoTest extends
 	public void shouldCreateProcessingForRepository() throws Exception {
 		Repository repository = mock(Repository.class);
 		MetricConfigurationSnapshotRecord snapshot = mockSnapshot(repository);
-		whenNew(Processing.class).withArguments(repository).thenReturn(entity);
+		whenNew(Processing.class).withNoArguments().thenReturn(entity);
 
 		assertSame(entity, dao.createProcessingFor(repository));
 		verify(dao).save(record);
-		verify(dao).save(snapshot);
+		verify(dao).saveAll(list(snapshot));
 	}
 
 	private MetricConfigurationSnapshotRecord mockSnapshot(Repository repository) throws Exception {
@@ -132,16 +132,16 @@ public class ProcessingDatabaseDaoTest extends
 		MetricConfigurationSnapshotRecord snapshot = mock(MetricConfigurationSnapshotRecord.class);
 		when(repository.getConfiguration()).thenReturn(configuration);
 		doReturn(sortedSet(metricConf)).when(configuration).getMetricConfigurations();
-		whenNew(MetricConfigurationSnapshotRecord.class).withArguments(metricConf, record).thenReturn(snapshot);
-		doReturn(snapshot).when(dao).save(snapshot);
+		whenNew(MetricConfigurationSnapshotRecord.class).withArguments(metricConf, record.id()).thenReturn(snapshot);
+		doNothing().when(dao).saveAll(list(snapshot));
 		return snapshot;
 	}
 
 	@Test
 	public void shouldSaveProcessing() throws Exception {
-		dao.save(entity);
+		dao.save(entity, ID);
 
-		verifyNew(ProcessingRecord.class).withArguments(entity);
+		verifyNew(ProcessingRecord.class).withArguments(entity, ID);
 		verify(dao).save(record);
 	}
 }

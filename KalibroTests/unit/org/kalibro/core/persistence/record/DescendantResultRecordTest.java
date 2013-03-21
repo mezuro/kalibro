@@ -18,13 +18,14 @@ public class DescendantResultRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("metricResult", MetricResultRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("moduleResult", Long.class).isRequired();
+		assertColumn("configuration", Long.class).isRequired();
 		assertColumn("value", Long.class).isRequired();
 	}
 
 	@Test
-	public void shouldConvertProperly() {
+	public void shouldConvertSpecialValuesProperly() {
 		assertDoubleEquals(Double.NEGATIVE_INFINITY, new DescendantResultRecord(Double.NEGATIVE_INFINITY).convert());
 		assertDoubleEquals(Double.NaN, new DescendantResultRecord(Double.NaN).convert());
 		assertDoubleEquals(Double.POSITIVE_INFINITY, new DescendantResultRecord(Double.POSITIVE_INFINITY).convert());

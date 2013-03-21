@@ -1,8 +1,10 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
+import static org.kalibro.RepositoryType.*;
 
 import java.util.Random;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -49,6 +51,13 @@ public class RepositoryTest extends UnitTest {
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getRepositoryDao()).thenReturn(dao);
 		when(dao.save(repository, PROJECT_ID)).thenReturn(ID);
+	}
+
+	@Test
+	public void shouldRetrieveSupportedTypes() {
+		SortedSet<RepositoryType> supportedTypes = sortedSet(BAZAAR, GIT, MERCURIAL);
+		when(dao.supportedTypes()).thenReturn(supportedTypes);
+		assertSame(supportedTypes, Repository.supportedTypes());
 	}
 
 	@Test

@@ -2,9 +2,6 @@ package org.kalibro.core.processing;
 
 import java.util.List;
 
-import javax.mail.Message.RecipientType;
-
-import org.codemonkey.simplejavamail.Email;
 import org.codemonkey.simplejavamail.Mailer;
 import org.kalibro.KalibroSettings;
 import org.kalibro.ProcessingNotification;
@@ -13,11 +10,10 @@ import org.kalibro.core.concurrent.TaskListener;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.dao.DaoFactory;
 
-
 public class MailSender implements TaskListener<Void> {
 
 	private final Repository repository;
-	
+
 	public MailSender(Repository repository) {
 		this.repository = repository;
 	}
@@ -27,7 +23,7 @@ public class MailSender implements TaskListener<Void> {
 		if (report.isTaskDone())
 			sendEmail();
 	}
-	
+
 	private void sendEmail() {
 		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
 		List<ProcessingNotification> notifications = DaoFactory.getProcessingNotificationDao().
@@ -35,5 +31,4 @@ public class MailSender implements TaskListener<Void> {
 		for (ProcessingNotification notification : notifications)
 			mailer.sendMail(notification.createEmail());
 	}
-
 }

@@ -16,37 +16,37 @@ public class ClientDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	public BaseToolDao createBaseToolDao() {
+	protected BaseToolDao createBaseToolDao() {
 		return new BaseToolClientDao(serviceAddress);
 	}
 
 	@Override
-	public ConfigurationDao createConfigurationDao() {
+	protected ConfigurationDao createConfigurationDao() {
 		return new ConfigurationClientDao(serviceAddress);
 	}
 
 	@Override
-	public MetricConfigurationDao createMetricConfigurationDao() {
+	protected MetricConfigurationDao createMetricConfigurationDao() {
 		return new MetricConfigurationClientDao(serviceAddress);
 	}
 
 	@Override
-	public MetricResultDao createMetricResultDao() {
+	protected MetricResultDao createMetricResultDao() {
 		return new MetricResultClientDao(serviceAddress);
 	}
 
 	@Override
-	public ModuleResultDao createModuleResultDao() {
+	protected ModuleResultDao createModuleResultDao() {
 		return new ModuleResultClientDao(serviceAddress);
 	}
 
 	@Override
-	public ProcessingDao createProcessingDao() {
+	protected ProcessingDao createProcessingDao() {
 		return new ProcessingClientDao(serviceAddress);
 	}
 
 	@Override
-	public ProjectDao createProjectDao() {
+	protected ProjectDao createProjectDao() {
 		return new ProjectClientDao(serviceAddress);
 	}
 

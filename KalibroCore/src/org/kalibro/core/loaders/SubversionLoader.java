@@ -21,4 +21,9 @@ public class SubversionLoader extends RepositoryLoader {
 			return Arrays.asList("svn update");
 		return Arrays.asList("svn checkout " + address + " .");
 	}
+
+	@Override
+	protected String metadataDirectoryName() {
+		return ".svn";
+	}
 }

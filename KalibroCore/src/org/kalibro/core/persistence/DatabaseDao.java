@@ -1,8 +1,10 @@
 package org.kalibro.core.persistence;
 
+import java.util.Collection;
 import java.util.SortedSet;
 
 import javax.persistence.Entity;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -37,10 +39,13 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	public ENTITY get(Long recordId) {
-		RECORD record = recordManager.getById(recordId, recordClass);
-		if (record == null)
-			throw new KalibroException(entityName() + " " + recordId + " not found.");
-		return record.convert();
+		TypedQuery<RECORD> query = createRecordQuery(alias() + ".id = :id");
+		query.setParameter("id", recordId);
+		try {
+			return query.getSingleResult().convert();
+		} catch (NoResultException exception) {
+			throw new KalibroException(entityName() + " " + recordId + " not found.", exception);
+		}
 	}
 
 	public SortedSet<ENTITY> all() {
@@ -48,11 +53,7 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 	}
 
 	protected TypedQuery<RECORD> createRecordQuery(String where) {
-		return createRecordQuery(entityName() + " " + alias(), where);
-	}
-
-	protected TypedQuery<RECORD> createRecordQuery(String from, String where) {
-		String queryString = "SELECT " + alias() + " FROM " + from;
+		String queryString = "SELECT " + alias() + " FROM " + entityName() + " " + alias();
 		if (where != null)
 			queryString += " WHERE " + where;
 		return createQuery(queryString, recordClass);
@@ -68,6 +69,10 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	protected <T> T save(T record) {
 		return recordManager.save(record);
+	}
+
+	protected <T> void saveAll(Collection<T> records) {
+		recordManager.saveAll(records);
 	}
 
 	public void delete(Long recordId) {

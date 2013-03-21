@@ -17,11 +17,6 @@ class ColumnMatcher {
 		return this;
 	}
 
-	ColumnMatcher isNotUnique() {
-		assertFalse("@Column " + column.name() + " should NOT be unique.", column.unique());
-		return this;
-	}
-
 	ColumnMatcher isNullable() {
 		assertTrue("@Column " + column.name() + " should be nullable.", column.nullable());
 		return this;

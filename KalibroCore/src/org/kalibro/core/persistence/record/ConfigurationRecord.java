@@ -1,10 +1,7 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Collection;
-
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.Configuration;
 import org.kalibro.dto.ConfigurationDto;
 
@@ -14,12 +11,14 @@ import org.kalibro.dto.ConfigurationDto;
  * @author Carlos Morais
  */
 @Entity(name = "Configuration")
-@Table(name = "\"CONFIGURATION\"")
+@Table(name = "\"configuration\"")
 public class ConfigurationRecord extends ConfigurationDto {
 
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "configuration")
+	@TableGenerator(name = "configuration", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "configuration", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
 	@Column(name = "\"name\"", nullable = false, unique = true)
@@ -28,21 +27,12 @@ public class ConfigurationRecord extends ConfigurationDto {
 	@Column(name = "\"description\"")
 	private String description;
 
-	@CascadeOnDelete
-	@SuppressWarnings("unused" /* used by JPA */)
-	@OneToMany(mappedBy = "configuration", orphanRemoval = true)
-	private Collection<MetricConfigurationRecord> metricConfigurations;
-
 	public ConfigurationRecord() {
 		super();
 	}
 
-	public ConfigurationRecord(Long id) {
-		this.id = id;
-	}
-
 	public ConfigurationRecord(Configuration configuration) {
-		this(configuration.getId());
+		id = configuration.getId();
 		name = configuration.getName();
 		description = configuration.getDescription();
 	}

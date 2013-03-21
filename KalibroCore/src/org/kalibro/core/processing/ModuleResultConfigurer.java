@@ -1,16 +1,54 @@
 package org.kalibro.core.processing;
 
+import java.util.List;
+
 import org.kalibro.*;
+import org.kalibro.core.persistence.MetricResultDatabaseDao;
+import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
 /**
- * Uses a {@link Configuration} to add compound metrics and calculate the grade of a {@link ModuleResult}.
+ * Add compound metric results, set grade and add descendant results to the parent of a {@link ModuleResult}.
  * 
  * @author Carlos Morais
  */
-final class ModuleResultConfigurer {
+class ModuleResultConfigurer {
 
-	static void configure(ModuleResult moduleResult, Configuration configuration) {
-		new ModuleResultConfigurer(moduleResult, configuration).addCompoundMetrics();
+	private Processing processing;
+	private Configuration configuration;
+	private MetricResultDatabaseDao metricResultDao;
+	private ModuleResultDatabaseDao moduleResultDao;
+
+	private ModuleResult moduleResult;
+
+	ModuleResultConfigurer(Processing processing, Configuration configuration, MetricResultDatabaseDao metricResultDao,
+		ModuleResultDatabaseDao moduleResultDao) {
+		this.processing = processing;
+		this.configuration = configuration;
+		this.metricResultDao = metricResultDao;
+		this.moduleResultDao = moduleResultDao;
+	}
+
+	void configure(ModuleResult result) {
+		moduleResult = result;
+		configure();
+	}
+
+	private void configure() {
+		saveCompoundResults();
+		updateGrade();
+		if (moduleResult.hasParent())
+			addResultsToParent();
+		else
+			processing.setResultsRoot(moduleResult);
+	}
+
+	private void saveCompoundResults() {
+		CompoundResultCalculator calculator = new CompoundResultCalculator(moduleResult, configuration);
+		for (MetricResult compoundResult : calculator.calculateCompoundResults())
+			moduleResult.addMetricResult(metricResultDao.save(compoundResult, moduleResult.getId()));
+	}
+
+	private void updateGrade() {
 		double gradeSum = 0.0;
 		double weightSum = 0.0;
 		for (MetricResult metricResult : moduleResult.getMetricResults())
@@ -20,52 +58,29 @@ final class ModuleResultConfigurer {
 				weightSum += weight;
 			}
 		moduleResult.setGrade(gradeSum / weightSum);
+		moduleResultDao.save(moduleResult, processing.getId());
 	}
 
-	private ModuleResult moduleResult;
-	private Configuration configuration;
-	private JavascriptEvaluator scriptEvaluator;
-
-	private ModuleResultConfigurer(ModuleResult moduleResult, Configuration configuration) {
-		this.moduleResult = moduleResult;
-		this.configuration = configuration;
-		this.scriptEvaluator = new JavascriptEvaluator();
+	private void addResultsToParent() {
+		for (MetricResult metricResult : moduleResult.getMetricResults())
+			addResultsToParent(metricResult);
 	}
 
-	private void addCompoundMetrics() {
-		for (MetricConfiguration metricConfiguration : configuration.getMetricConfigurations())
-			includeScriptFor(metricConfiguration);
-		for (CompoundMetric compoundMetric : configuration.getCompoundMetrics())
-			if (isScopeCompatible(compoundMetric))
-				computeCompoundMetric(configuration.getConfigurationFor(compoundMetric));
-		scriptEvaluator.close();
+	private void addResultsToParent(MetricResult metricResult) {
+		MetricConfiguration snapshot = metricResult.getConfiguration();
+		Long parentId = moduleResult.getParent().getId();
+		Double value = metricResult.getValue();
+
+		if (!snapshot.getMetric().isCompound())
+			makeSureParentHasResultForMetric(parentId, snapshot);
+		List<Double> descendantResults = metricResultDao.descendantResultsOf(moduleResult.getId(), snapshot.getId());
+		if (!value.isNaN())
+			descendantResults.add(value);
+		metricResultDao.addDescendantResults(descendantResults, parentId, snapshot.getId());
 	}
 
-	private void includeScriptFor(MetricConfiguration metricConfiguration) {
-		String code = metricConfiguration.getCode();
-		Metric metric = metricConfiguration.getMetric();
-		if (!isScopeCompatible(metric))
-			return;
-		if (metric.isCompound())
-			scriptEvaluator.addFunction(code, ((CompoundMetric) metric).getScript());
-		else if (moduleResult.hasResultFor(metric))
-			scriptEvaluator.addVariable(code, moduleResult.getResultFor(metric).getAggregatedValue());
-	}
-
-	private boolean isScopeCompatible(Metric metric) {
-		return metric.getScope().ordinal() >= moduleResult.getModule().getGranularity().ordinal();
-	}
-
-	private void computeCompoundMetric(MetricConfiguration metricConfiguration) {
-		try {
-			doComputeCompoundMetric(metricConfiguration);
-		} catch (Exception exception) {
-			moduleResult.addMetricResult(new MetricResult(metricConfiguration, exception));
-		}
-	}
-
-	private void doComputeCompoundMetric(MetricConfiguration metricConfiguration) {
-		Double calculatedResult = scriptEvaluator.evaluate(metricConfiguration.getCode());
-		moduleResult.addMetricResult(new MetricResult(metricConfiguration, calculatedResult));
+	private void makeSureParentHasResultForMetric(Long parentId, MetricConfiguration snapshot) {
+		if (!metricResultDao.metricResultExists(parentId, snapshot.getId()))
+			metricResultDao.save(new MetricResult(snapshot, Double.NaN), parentId);
 	}
 }

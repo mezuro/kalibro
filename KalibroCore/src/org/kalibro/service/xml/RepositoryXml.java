@@ -7,11 +7,8 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.Configuration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
-import org.kalibro.dao.ConfigurationDao;
-import org.kalibro.dto.DaoLazyLoader;
 import org.kalibro.dto.RepositoryDto;
 
 /**
@@ -101,7 +98,7 @@ public class RepositoryXml extends RepositoryDto {
 	}
 
 	@Override
-	public Configuration configuration() {
-		return DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configurationId);
+	public Long configurationId() {
+		return configurationId;
 	}
 }

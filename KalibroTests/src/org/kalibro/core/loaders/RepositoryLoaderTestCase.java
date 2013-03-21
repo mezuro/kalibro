@@ -1,41 +1,19 @@
 package org.kalibro.core.loaders;
 
-import java.util.List;
+import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
-import org.kalibro.tests.UnitTest;
 
-public abstract class RepositoryLoaderTestCase extends UnitTest {
-
-	protected static final String ADDRESS = "RepositoryLoaderTestCase address";
-
-	protected RepositoryLoader loader;
-
-	@Before
-	public void setUp() throws Exception {
-		Class<?> loaderClass = Class.forName(getClass().getName().replace("Test", ""));
-		loader = (RepositoryLoader) loaderClass.getConstructor().newInstance();
-	}
+public abstract class RepositoryLoaderTestCase extends LoaderTestCase {
 
 	@Test
-	public void checkValidationCommands() {
-		assertDeepEquals(expectedValidationCommands(), loader.validationCommands());
+	public void checkMetadataDirectoryName() {
+		assertEquals(expectedMetadataDirectoryName(), loader().metadataDirectoryName());
 	}
 
-	protected abstract List<String> expectedValidationCommands();
+	protected abstract String expectedMetadataDirectoryName();
 
-	@Test
-	public void checkLoadCommands() {
-		assertDeepEquals(expectedLoadCommands(), loader.loadCommands(ADDRESS, false));
+	private RepositoryLoader loader() {
+		return (RepositoryLoader) loader;
 	}
-
-	protected abstract List<String> expectedLoadCommands();
-
-	@Test
-	public void checkUpdateCommands() {
-		assertDeepEquals(expectedUpdateCommands(), loader.loadCommands(ADDRESS, true));
-	}
-
-	protected abstract List<String> expectedUpdateCommands();
 }

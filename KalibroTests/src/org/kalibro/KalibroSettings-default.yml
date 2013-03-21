@@ -13,7 +13,7 @@ mailSettings: &id3 !!org.kalibro.MailSettings
 serverSettings: &id4 !!org.kalibro.ServerSettings
   loadDirectory: ~/.kalibro/projects # Source code will be loaded in this directory before analysis
   databaseSettings: &id5 !!org.kalibro.DatabaseSettings
-    databaseType: MYSQL # Possibilities: APACHE_DERBY, MYSQL, POSTGRESQL, SQLITE
+    databaseType: MYSQL # Possibilities: MYSQL, POSTGRESQL, SQLITE
     jdbcUrl: "jdbc:mysql://localhost:3306/kalibro"
     username: "kalibro"
     password: "kalibro"

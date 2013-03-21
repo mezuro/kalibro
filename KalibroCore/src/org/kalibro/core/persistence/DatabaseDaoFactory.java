@@ -10,7 +10,6 @@ import javax.persistence.Persistence;
 
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
-import org.kalibro.core.Environment;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProcessingNotificationDao;
 
@@ -33,12 +32,13 @@ public class DatabaseDaoFactory extends DaoFactory {
 	private static void updateSettings(DatabaseSettings settings) {
 		currentSettings = settings;
 		Map<String, String> properties = new HashMap<String, String>();
-		properties.put(DDL_GENERATION, Environment.ddlGeneration());
+		properties.put(DDL_GENERATION, NONE);
 		properties.put(JDBC_DRIVER, settings.getDatabaseType().getDriverClassName());
 		properties.put(JDBC_URL, settings.getJdbcUrl());
 		properties.put(JDBC_USER, settings.getUsername());
 		properties.put(JDBC_PASSWORD, settings.getPassword());
 		properties.put(LOGGING_LOGGER, PersistenceLogger.class.getName());
+		properties.put(SESSION_CUSTOMIZER, DatabaseImport.class.getName());
 		if (entityManagerFactory != null && entityManagerFactory.isOpen())
 			entityManagerFactory.close();
 		entityManagerFactory = Persistence.createEntityManagerFactory("Kalibro", properties);
@@ -69,7 +69,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected MetricResultDatabaseDao createMetricResultDao() {
+	public MetricResultDatabaseDao createMetricResultDao() {
 		return new MetricResultDatabaseDao();
 	}
 

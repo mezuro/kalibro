@@ -22,7 +22,7 @@ class RangeDatabaseDao extends DatabaseDao<Range, RangeRecord> implements RangeD
 
 	@Override
 	public SortedSet<Range> rangesOf(Long metricConfigurationId) {
-		TypedQuery<RangeRecord> query = createRecordQuery("range.configuration.id = :configurationId");
+		TypedQuery<RangeRecord> query = createRecordQuery("range.configuration = :configurationId");
 		query.setParameter("configurationId", metricConfigurationId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}

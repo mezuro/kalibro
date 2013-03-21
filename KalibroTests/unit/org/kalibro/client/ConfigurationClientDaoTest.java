@@ -35,12 +35,6 @@ public class ConfigurationClientDaoTest extends
 	}
 
 	@Test
-	public void shouldGetConfigurationOfRepository() {
-		when(port.configurationOf(ID)).thenReturn(xml);
-		assertSame(entity, client.configurationOf(ID));
-	}
-
-	@Test
 	public void shouldGetAll() {
 		when(port.allConfigurations()).thenReturn(list(xml));
 		assertDeepEquals(set(entity), client.all());

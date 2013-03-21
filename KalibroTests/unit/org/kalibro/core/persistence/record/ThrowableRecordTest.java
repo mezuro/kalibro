@@ -7,7 +7,7 @@ public class ThrowableRecordTest extends RecordTest {
 		shouldHaveId();
 		assertColumn("targetString", String.class).isRequired();
 		assertColumn("message", String.class).isNullable();
-		shouldHaveError("cause");
-		assertOneToMany("stackTrace").cascades().isMappedBy("throwable");
+		assertOneToOne("cause", ThrowableRecord.class).isEager().isOptional();
+		assertOneToMany("stackTrace").isEager().isMappedBy("throwable");
 	}
 }

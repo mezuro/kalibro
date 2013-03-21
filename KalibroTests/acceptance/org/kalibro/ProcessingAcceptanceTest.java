@@ -4,13 +4,17 @@ import static org.junit.Assert.*;
 import static org.kalibro.Granularity.*;
 import static org.kalibro.ProcessState.*;
 
+import java.util.Set;
+
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ProcessingAcceptanceTest extends AcceptanceTest {
 
-	private static final Long SLEEP = 12000L;
 	private static final String REPOSITORY_NAME = "HelloWorldDirectory";
 
 	private Metric totalCof, cbo, lcom4, sc;
@@ -41,34 +45,32 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		resetDatabase(databaseType);
 		assertFalse(Processing.hasProcessing(repository));
 
-		long processingTime = System.currentTimeMillis();
-		repository.process();
-		verifyProcessOngoing();
-
-		Thread.sleep(SLEEP);
-
-		verifyProcessDone(processingTime);
+		process();
+		verifyProcessDone();
 		verifyResults();
+
+		// should allow changing repository type
+		repository.setType(RepositoryType.GIT);
+		repository.setAddress(repositoriesDirectory().getAbsolutePath() + "/HelloWorldGit/");
+		process();
+		verifyProcessDone();
 	}
 
-	private void verifyProcessOngoing() {
-		assertTrue(Processing.hasProcessing(repository));
-		assertFalse(Processing.hasReadyProcessing(repository));
-		assertTrue(Processing.lastProcessingState(repository).isTemporary());
-	}
-
-	private void verifyProcessDone(long processingTime) {
+	private void verifyProcessDone() {
 		processing = Processing.lastProcessing(repository);
-		assertEquals(processingTime, processing.getDate().getTime(), 500);
-		assertEquals(READY, processing.getState());
-		verifyStateTime(LOADING);
-		verifyStateTime(COLLECTING);
-		verifyStateTime(ANALYZING);
+		long start = processing.getDate().getTime();
+		long now = System.currentTimeMillis();
+		long totalTime = now - start;
+		assertTrue(totalTime > 0);
+		assertProcessingReady();
+		verifyStateTime(LOADING, totalTime);
+		verifyStateTime(COLLECTING, totalTime);
+		verifyStateTime(ANALYZING, totalTime);
 	}
 
-	private void verifyStateTime(ProcessState state) {
+	private void verifyStateTime(ProcessState state, long totalTime) {
 		Long stateTime = processing.getStateTime(state);
-		assertTrue("Time for " + state + ": " + stateTime, 0 < stateTime && stateTime < SLEEP);
+		assertTrue(0 < stateTime && stateTime < totalTime);
 	}
 
 	private void verifyResults() {
@@ -111,8 +113,7 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	public void shouldRetrieveErrorLoading(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.setAddress("/invalid/address/");
-		repository.process();
-		Thread.sleep(SLEEP / 4);
+		process();
 
 		processing = Processing.lastProcessing(repository);
 		assertEquals(ERROR, processing.getState());
@@ -127,15 +128,20 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	public void shouldRetrieveErrorCalculatingCompoundMetric(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		configuration.getCompoundMetrics().first().setScript("return cbo == 0 ? null : cbo;");
-		repository.process();
-		Thread.sleep(SLEEP);
+		process();
 
 		processing = Processing.lastProcessing(repository);
-		assertEquals(READY, processing.getState());
+		assertProcessingReady();
 
 		ModuleResult root = processing.getResultsRoot();
 		verifyScError(root);
 		verifyScError(root.getChildren().first());
+	}
+
+	private void assertProcessingReady() {
+		if (processing.getState() == ERROR)
+			throw new KalibroException("Error while " + processing.getStateWhenErrorOcurred(), processing.getError());
+		assertEquals(READY, processing.getState());
 	}
 
 	private void verifyScError(ModuleResult moduleResult) {
@@ -144,17 +150,30 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteRepositoryShouldCascadeToProcessings(SupportedDatabase databaseType) throws Exception {
+	public void deleteProjectShouldCascadeToProcessings(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.setAddress("/invalid/address/");
-
-		assertFalse(Processing.hasProcessing(repository));
-		repository.process();
-		Thread.sleep(SLEEP / 4);
+		process();
 		assertTrue(Processing.hasProcessing(repository));
 
-		repository.delete();
-		new Project().addRepository(repository);
-		assertFalse(Processing.hasProcessing(repository));
+		repository.getProject().delete();
+		assertTrue(allProcessings().isEmpty());
+	}
+
+	private Set<Processing> allProcessings() throws Exception {
+		ProcessingDao processingDao = DaoFactory.getProcessingDao();
+		Set<Processing> allProcessings = Whitebox.invokeMethod(processingDao, "all");
+		return allProcessings;
+	}
+
+	private void process() throws InterruptedException {
+		repository.process();
+		do
+			Thread.sleep(2000);
+		while (isProcessOngoing());
+	}
+
+	private boolean isProcessOngoing() {
+		return !Processing.hasProcessing(repository) || Processing.lastProcessingState(repository).isTemporary();
 	}
 }

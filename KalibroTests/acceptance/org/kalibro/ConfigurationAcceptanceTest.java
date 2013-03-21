@@ -3,6 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.Set;
 
 import javax.persistence.RollbackException;
 
@@ -13,7 +14,10 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.Environment;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.MetricConfigurationDao;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ConfigurationAcceptanceTest extends AcceptanceTest {
 
@@ -93,6 +97,23 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 		assertFalse(ReadingGroup.all().isEmpty());
 		configuration.delete();
 		assertFalse(ReadingGroup.all().isEmpty());
+	}
+
+	@Theory
+	public void deleteConfigurationShouldCascadeToMetricConfigurations(SupportedDatabase databaseType)
+		throws Exception {
+		resetDatabase(databaseType);
+		configuration.save();
+		assertEquals(configuration.getMetricConfigurations(), allMetricConfigurations());
+
+		configuration.delete();
+		assertTrue(allMetricConfigurations().isEmpty());
+	}
+
+	private Set<MetricConfiguration> allMetricConfigurations() throws Exception {
+		MetricConfigurationDao metricConfigurationDao = DaoFactory.getMetricConfigurationDao();
+		Set<MetricConfiguration> allMetricConfigurations = Whitebox.invokeMethod(metricConfigurationDao, "all");
+		return allMetricConfigurations;
 	}
 
 	@Test

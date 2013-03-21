@@ -18,4 +18,9 @@ public class CvsLoaderTest extends RepositoryLoaderTestCase {
 	protected List<String> expectedUpdateCommands() {
 		return list("cvs update");
 	}
+
+	@Override
+	protected String expectedMetadataDirectoryName() {
+		return "CVSROOT";
+	}
 }

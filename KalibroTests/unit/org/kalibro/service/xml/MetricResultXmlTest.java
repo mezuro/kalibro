@@ -1,6 +1,6 @@
 package org.kalibro.service.xml;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 
@@ -11,6 +11,7 @@ public class MetricResultXmlTest extends XmlTest {
 		assertElement("id", Long.class);
 		assertElement("configuration", MetricConfigurationSnapshotXml.class);
 		assertElement("value", Double.class);
+		assertElement("aggregatedValue", Double.class);
 		assertElement("error", ThrowableXml.class);
 	}
 

@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -18,7 +18,7 @@ public class RangeDatabaseDaoTest extends DatabaseDaoTestCase<Range, RangeRecord
 	@Test
 	public void shouldGetRangesOfMetricConfiguration() {
 		assertDeepEquals(set(entity), dao.rangesOf(CONFIGURATION_ID));
-		verify(dao).createRecordQuery("range.configuration.id = :configurationId");
+		verify(dao).createRecordQuery("range.configuration = :configurationId");
 		verify(query).setParameter("configurationId", CONFIGURATION_ID);
 	}
 

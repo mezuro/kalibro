@@ -30,12 +30,6 @@ public class ProjectEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetProjectOfRepository() {
-		when(dao.projectOf(ID)).thenReturn(entity);
-		assertSame(xml, implementor.projectOf(ID));
-	}
-
-	@Test
 	public void shouldGetAll() {
 		doReturn(sortedSet(entity)).when(dao).all();
 		assertDeepEquals(list(xml), implementor.allProjects());

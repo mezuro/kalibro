@@ -43,12 +43,6 @@ public class ConfigurationEndpointImpl implements ConfigurationEndpoint {
 
 	@Override
 	@WebResult(name = "configuration")
-	public ConfigurationXml configurationOf(@WebParam(name = "repositoryId") Long repositoryId) {
-		return new ConfigurationXml(dao.configurationOf(repositoryId));
-	}
-
-	@Override
-	@WebResult(name = "configuration")
 	public List<ConfigurationXml> allConfigurations() {
 		return DataTransferObject.createDtos(dao.all(), ConfigurationXml.class);
 	}

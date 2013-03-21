@@ -8,7 +8,7 @@ import java.util.List;
  * 
  * @author Carlos Morais
  */
-public class LocalZipLoader extends RepositoryLoader {
+public class LocalZipLoader extends FileLoader {
 
 	@Override
 	public List<String> validationCommands() {

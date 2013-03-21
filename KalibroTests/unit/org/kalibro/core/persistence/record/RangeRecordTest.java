@@ -9,12 +9,12 @@ public class RangeRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("configuration", MetricConfigurationRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("configuration", Long.class).isRequired();
 		assertColumn("beginning", Long.class).isRequired();
 		assertColumn("end", Long.class).isRequired();
+		assertColumn("reading", Long.class).isNullable();
 		assertColumn("comments", String.class).isNullable();
-		assertManyToOne("reading", ReadingRecord.class).isOptional();
 	}
 
 	@Test

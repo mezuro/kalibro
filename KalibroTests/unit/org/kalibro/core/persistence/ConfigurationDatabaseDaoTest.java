@@ -23,15 +23,6 @@ public class ConfigurationDatabaseDaoTest extends
 	private static final Long ID = new Random().nextLong();
 
 	@Test
-	public void shouldGetConfigurationOfRepository() {
-		assertSame(entity, dao.configurationOf(ID));
-
-		String from = "Repository repository JOIN repository.configuration configuration";
-		verify(dao).createRecordQuery(from, "repository.id = :repositoryId");
-		verify(query).setParameter("repositoryId", ID);
-	}
-
-	@Test
 	public void shouldSave() throws Exception {
 		when(record.id()).thenReturn(ID);
 		assertEquals(ID, dao.save(entity));
@@ -46,7 +37,7 @@ public class ConfigurationDatabaseDaoTest extends
 		MetricConfigurationSnapshotRecord snapshotRecord = mock(MetricConfigurationSnapshotRecord.class);
 		TypedQuery<MetricConfigurationSnapshotRecord> snapshotQuery = mock(TypedQuery.class);
 		doReturn(snapshotQuery).when(dao).createQuery(
-			"SELECT snapshot FROM MetricConfigurationSnapshot snapshot WHERE snapshot.processing.id = :processingId",
+			"SELECT snapshot FROM MetricConfigurationSnapshot snapshot WHERE snapshot.processing = :processingId",
 			MetricConfigurationSnapshotRecord.class);
 		when(snapshotQuery.getResultList()).thenReturn(list(snapshotRecord));
 		when(snapshotRecord.convert()).thenReturn(snapshot);

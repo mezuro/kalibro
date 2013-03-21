@@ -55,8 +55,7 @@ public class MetricResultTest extends UnitTest {
 		assertSame(VALUE, result.getAggregatedValue());
 
 		result = new MetricResult(configuration, Double.NaN);
-		result.addDescendantResult(1.0);
-		result.addDescendantResult(2.0);
+		result.setDescendantResults(list(1.0, 2.0));
 
 		when(configuration.getAggregationForm()).thenReturn(Statistic.AVERAGE);
 		assertDoubleEquals(1.5, result.getAggregatedValue());

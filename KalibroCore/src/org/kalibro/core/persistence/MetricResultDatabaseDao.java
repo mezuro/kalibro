@@ -8,6 +8,7 @@ import org.kalibro.MetricResult;
 import org.kalibro.ModuleResult;
 import org.kalibro.core.persistence.record.DescendantResultRecord;
 import org.kalibro.core.persistence.record.MetricResultRecord;
+import org.kalibro.core.persistence.record.ModuleResultRecord;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.dto.DataTransferObject;
 
@@ -16,7 +17,7 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements MetricResultDao {
+public class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultRecord> implements MetricResultDao {
 
 	MetricResultDatabaseDao() {
 		super(MetricResultRecord.class);
@@ -24,15 +25,18 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 
 	@Override
 	public List<Double> descendantResultsOf(Long metricResultId) {
-		TypedQuery<DescendantResultRecord> query = createQuery(
-			"SELECT d FROM DescendantResult d WHERE d.metricResult.id = :metricResultId", DescendantResultRecord.class);
+		String moduleResult = "(SELECT mr.moduleResult FROM MetricResult mr WHERE mr.id = :metricResultId)";
+		String configuration = "(SELECT mr.configuration.id FROM MetricResult mr WHERE mr.id = :metricResultId)";
+		String queryString = "SELECT dr FROM DescendantResult dr " +
+			"WHERE dr.moduleResult = " + moduleResult + " AND dr.configuration = " + configuration;
+		TypedQuery<DescendantResultRecord> query = createQuery(queryString, DescendantResultRecord.class);
 		query.setParameter("metricResultId", metricResultId);
 		return DataTransferObject.toList(query.getResultList());
 	}
 
 	@Override
 	public SortedSet<MetricResult> metricResultsOf(Long moduleResultId) {
-		TypedQuery<MetricResultRecord> query = createRecordQuery("metricResult.moduleResult.id = :moduleResultId");
+		TypedQuery<MetricResultRecord> query = createRecordQuery("metricResult.moduleResult = :moduleResultId");
 		query.setParameter("moduleResultId", moduleResultId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
@@ -40,13 +44,14 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 	@Override
 	public SortedMap<Date, MetricResult> historyOf(String metricName, Long moduleResultId) {
 		ModuleResult moduleResult = new ModuleResultDatabaseDao().get(moduleResultId);
-		List<String> moduleName = Arrays.asList(moduleResult.getModule().getName());
+		String moduleName = ModuleResultRecord.persistedName(moduleResult.getModule().getName());
+		String repositoryId = "(SELECT p.repository FROM ModuleResult mor, Processing p " +
+			"WHERE p.id = mor.processing AND mor.id = :moduleResultId)";
 		TypedQuery<Object[]> query = createQuery("SELECT processing.date, metricResult " +
-			"FROM MetricResult metricResult JOIN metricResult.moduleResult.processing processing " +
-			"WHERE metricResult.configuration.metricName = :metricName " +
-			"AND metricResult.moduleResult.moduleName = :moduleName AND processing.repository.id = " +
-			"(SELECT mor.processing.repository.id FROM ModuleResult mor WHERE mor.id = :moduleResultId)",
-			Object[].class);
+			"FROM MetricResult metricResult, ModuleResult moduleResult, Processing processing " +
+			"WHERE processing.id = moduleResult.processing AND moduleResult.id = metricResult.moduleResult " +
+			"AND metricResult.configuration.metricName = :metricName AND moduleResult.moduleName = :moduleName " +
+			"AND processing.repository = " + repositoryId, Object[].class);
 		query.setParameter("metricName", metricName);
 		query.setParameter("moduleName", moduleName);
 		query.setParameter("moduleResultId", moduleResultId);
@@ -56,5 +61,41 @@ class MetricResultDatabaseDao extends DatabaseDao<MetricResult, MetricResultReco
 		for (Object[] result : results)
 			history.put(new Date((Long) result[0]), ((MetricResultRecord) result[1]).convert());
 		return history;
+	}
+
+	public MetricResult save(MetricResult metricResult, Long moduleResultId) {
+		return save(new MetricResultRecord(metricResult, moduleResultId)).convert();
+	}
+
+	public void saveAll(Collection<MetricResult> metricResults, Long moduleResultId) {
+		List<MetricResultRecord> records = new ArrayList<MetricResultRecord>();
+		for (MetricResult metricResult : metricResults)
+			records.add(new MetricResultRecord(metricResult, moduleResultId));
+		saveAll(records);
+	}
+
+	public boolean metricResultExists(Long moduleResultId, Long configurationId) {
+		String queryString = "SELECT count(mr) FROM MetricResult mr " +
+			"WHERE mr.moduleResult = :moduleResultId AND mr.configuration.id = :configurationId";
+		TypedQuery<Long> query = createQuery(queryString, Long.class);
+		query.setParameter("moduleResultId", moduleResultId);
+		query.setParameter("configurationId", configurationId);
+		return query.getSingleResult() > 0;
+	}
+
+	public List<Double> descendantResultsOf(Long moduleResultId, Long configurationId) {
+		String queryString = "SELECT dr FROM DescendantResult dr " +
+			"WHERE dr.moduleResult = :moduleResultId AND dr.configuration = :configurationId";
+		TypedQuery<DescendantResultRecord> query = createQuery(queryString, DescendantResultRecord.class);
+		query.setParameter("moduleResultId", moduleResultId);
+		query.setParameter("configurationId", configurationId);
+		return DataTransferObject.toList(query.getResultList());
+	}
+
+	public void addDescendantResults(List<Double> descendantResults, Long moduleResultId, Long configurationId) {
+		List<DescendantResultRecord> records = new ArrayList<DescendantResultRecord>();
+		for (Double descendantResult : descendantResults)
+			records.add(new DescendantResultRecord(descendantResult, moduleResultId, configurationId));
+		saveAll(records);
 	}
 }

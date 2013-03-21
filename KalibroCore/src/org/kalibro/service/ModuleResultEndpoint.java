@@ -8,6 +8,7 @@ import javax.jws.WebResult;
 import javax.jws.WebService;
 
 import org.kalibro.dao.ModuleResultDao;
+import org.kalibro.service.xml.DateModuleResultXml;
 import org.kalibro.service.xml.ModuleResultXml;
 
 /**

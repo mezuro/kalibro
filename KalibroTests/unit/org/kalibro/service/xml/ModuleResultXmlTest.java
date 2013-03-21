@@ -14,6 +14,7 @@ public class ModuleResultXmlTest extends XmlTest {
 		assertElement("id", Long.class, true);
 		assertElement("module", ModuleXml.class, true);
 		assertElement("grade", Double.class);
+		assertElement("height", Integer.class);
 		assertElement("parentId", Long.class);
 	}
 

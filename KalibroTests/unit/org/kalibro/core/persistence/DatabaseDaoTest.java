@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
@@ -73,44 +74,57 @@ public class DatabaseDaoTest extends UnitTest {
 
 	@Test
 	public void shouldGetById() {
-		when(recordManager.getById(ID, PersonRecord.class)).thenReturn(record);
-		assertSame(person, dao.get(ID));
+		TypedQuery<PersonRecord> query = prepareQuery("SELECT person FROM Person person WHERE person.id = :id");
+		when(query.getSingleResult()).thenReturn(record);
+		assertDeepEquals(person, dao.get(ID));
+		verify(query).setParameter("id", ID);
 	}
 
 	@Test
 	public void shouldThowExceptionWhenGettingWithInvalidId() {
-		when(recordManager.getById(ID, PersonRecord.class)).thenReturn(null);
+		NoResultException cause = new NoResultException();
+		TypedQuery<PersonRecord> query = prepareQuery("SELECT person FROM Person person WHERE person.id = :id");
+		when(query.getSingleResult()).thenThrow(cause);
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() throws Throwable {
 				dao.get(ID);
 			}
-		}).throwsException().withMessage("Person " + ID + " not found.");
+		}).throwsException().withMessage("Person " + ID + " not found.").withCause(cause);
+		verify(query).setParameter("id", ID);
 	}
 
 	@Test
 	public void shouldGetAll() {
-		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
-		when(recordManager.createQuery("SELECT person FROM Person person", PersonRecord.class)).thenReturn(query);
+		TypedQuery<PersonRecord> query = prepareQuery("SELECT person FROM Person person");
 		when(query.getResultList()).thenReturn(list(record));
 		assertDeepEquals(set(person), dao.all());
 	}
 
 	@Test
-	public void shouldCreateRecordQueryWithClauses() {
-		String from = "Person parent JOIN parent.children child";
+	public void shouldCreateRecordQueryWithWhereClause() {
 		String where = "child.id = :id";
+		TypedQuery<PersonRecord> query = prepareQuery("SELECT person FROM Person person WHERE " + where);
+		assertSame(query, dao.createRecordQuery(where));
+	}
+
+	private TypedQuery<PersonRecord> prepareQuery(String queryString) {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
-		when(recordManager.createQuery("SELECT person FROM " + from + " WHERE " + where, PersonRecord.class))
-			.thenReturn(query);
-		assertSame(query, dao.createRecordQuery(from, where));
+		when(recordManager.createQuery(queryString, PersonRecord.class)).thenReturn(query);
+		return query;
 	}
 
 	@Test
 	public void shouldSave() {
 		when(recordManager.save(record)).thenReturn(record);
 		assertSame(record, dao.save(record));
+	}
+
+	@Test
+	public void shouldSaveCollection() {
+		dao.saveAll(list(record));
+		verify(recordManager).saveAll(list(record));
 	}
 
 	@Test

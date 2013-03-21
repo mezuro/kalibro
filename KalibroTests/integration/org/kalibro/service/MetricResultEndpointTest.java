@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.*;
 
@@ -22,7 +22,7 @@ public class MetricResultEndpointTest extends EndpointTest<MetricResult, MetricR
 	protected MetricResult loadFixture() {
 		MetricConfiguration configuration = loadFixture("lcom4", MetricConfiguration.class);
 		MetricResult metricResult = new MetricResult(configuration, new Random().nextDouble());
-		metricResult.addDescendantResult(42.0);
+		metricResult.setDescendantResults(list(42.0));
 		Whitebox.setInternalState(metricResult, "id", ID);
 		return metricResult;
 	}

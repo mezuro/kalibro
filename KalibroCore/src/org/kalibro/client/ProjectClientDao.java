@@ -30,11 +30,6 @@ class ProjectClientDao extends EndpointClient<ProjectEndpoint> implements Projec
 	}
 
 	@Override
-	public Project projectOf(Long repositoryId) {
-		return port.projectOf(repositoryId).convert();
-	}
-
-	@Override
 	public SortedSet<Project> all() {
 		return DataTransferObject.toSortedSet(port.allProjects());
 	}
