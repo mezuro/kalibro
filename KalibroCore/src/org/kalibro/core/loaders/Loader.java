@@ -26,7 +26,7 @@ public abstract class Loader {
 		List<String> commands = loadCommands(address, loadDirectory.exists());
 		loadDirectory.mkdirs();
 		for (String loadCommand : commands)
-			new CommandTask(loadCommand, loadDirectory).execute(10, HOURS);
+			new CommandTask(loadCommand, loadDirectory).execute(12, HOURS);
 	}
 
 	protected abstract List<String> loadCommands(String address, boolean update);

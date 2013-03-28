@@ -57,7 +57,7 @@ public class LoaderTest extends UnitTest {
 	public void shouldExecuteLoadCommandsOnFirstLoad() throws Exception {
 		loader.load(ADDRESS, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, loadDirectory);
-		verify(commandTask).execute(10, HOURS);
+		verify(commandTask).execute(12, HOURS);
 	}
 
 	@Test
@@ -65,7 +65,6 @@ public class LoaderTest extends UnitTest {
 		when(loadDirectory.exists()).thenReturn(true);
 		loader.load(ADDRESS, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(UPDATE_COMMAND, loadDirectory);
-		verify(commandTask).execute(10, HOURS);
+		verify(commandTask).execute(12, HOURS);
 	}
-
 }
