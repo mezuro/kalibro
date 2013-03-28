@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS "repository" (
 CREATE TABLE IF NOT EXISTS "throwable" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "target_string" TEXT NOT NULL,
-  "message" TEXT,
+  "message" TEXT DEFAULT NULL,
   "cause" BIGINT DEFAULT NULL REFERENCES "throwable"("id") ON DELETE SET NULL
 );
 
