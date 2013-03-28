@@ -1,6 +1,6 @@
 package org.kalibro.core.concurrent;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
 
 import java.util.concurrent.ExecutionException;
