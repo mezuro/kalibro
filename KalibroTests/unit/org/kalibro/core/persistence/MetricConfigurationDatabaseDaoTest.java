@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -20,8 +20,8 @@ public class MetricConfigurationDatabaseDaoTest extends
 	public void shouldGetMetricConfigurationsOfConfiguration() {
 		assertDeepEquals(set(entity), dao.metricConfigurationsOf(CONFIGURATION_ID));
 
-		verify(dao).createRecordQuery("metricConfiguration.configuration.id = :configurationId");
-		verify(query).setParameter("configurationId", CONFIGURATION_ID);
+		verify(dao).createRecordQuery("metricConfiguration.configuration = :cId");
+		verify(query).setParameter("cId", CONFIGURATION_ID);
 	}
 
 	@Test

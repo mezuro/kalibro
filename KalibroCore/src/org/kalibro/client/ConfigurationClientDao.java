@@ -30,11 +30,6 @@ class ConfigurationClientDao extends EndpointClient<ConfigurationEndpoint> imple
 	}
 
 	@Override
-	public Configuration configurationOf(Long projectId) {
-		return port.configurationOf(projectId).convert();
-	}
-
-	@Override
 	public SortedSet<Configuration> all() {
 		return DataTransferObject.toSortedSet(port.allConfigurations());
 	}

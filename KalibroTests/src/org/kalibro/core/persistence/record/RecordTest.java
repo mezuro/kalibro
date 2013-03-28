@@ -7,7 +7,6 @@ import java.util.Collection;
 
 import javax.persistence.*;
 
-import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.junit.Test;
 import org.kalibro.core.Identifier;
 import org.kalibro.dto.ConcreteDtoTest;
@@ -25,11 +24,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 	public void tableNameShouldBeEntityNameAsConstant() throws ClassNotFoundException {
 		Table table = dtoClass().getAnnotation(Table.class);
 		assertNotNull("@Table not present", table);
-		assertEquals(tableName(), table.name());
-	}
-
-	private String tableName() {
-		return "\"" + Identifier.fromVariable(entityName()).asConstant() + "\"";
+		assertEquals(databaseName(entityName()), table.name());
 	}
 
 	@Test
@@ -40,39 +35,45 @@ public abstract class RecordTest extends ConcreteDtoTest {
 	protected abstract void verifyColumns();
 
 	protected void shouldHaveId() {
-		assertColumn("id", Long.class).isRequired().isNotUnique();
 		annotation("id", Id.class);
-		annotation("id", GeneratedValue.class);
+		String sequenceName = Identifier.fromVariable(entityName()).asConstant().toLowerCase();
+		GeneratedValue generatedValue = annotation("id", GeneratedValue.class);
+		assertEquals(GenerationType.TABLE, generatedValue.strategy());
+		assertEquals(sequenceName, generatedValue.generator());
+		TableGenerator generator = annotation("id", TableGenerator.class);
+		assertEquals(sequenceName, generator.name());
+		assertEquals("sequences", generator.table());
+		assertEquals("table_name", generator.pkColumnName());
+		assertEquals("sequence_count", generator.valueColumnName());
+		assertEquals(sequenceName, generator.pkColumnValue());
+		assertEquals(1, generator.initialValue());
+		assertEquals(1, generator.allocationSize());
+		assertColumn("id", Long.class).isRequired().isUnique();
 	}
 
 	protected ColumnMatcher assertColumn(String field, Class<?> type) {
 		assertFieldType(field, type);
-		return new ColumnMatcher(annotation(field, Column.class)).named(columnName(field));
+		return new ColumnMatcher(annotation(field, Column.class)).named(databaseName(field));
 	}
 
 	protected OneToManyMatcher assertOneToMany(String field) {
 		assertFieldType(field, Collection.class);
-		annotation(field, CascadeOnDelete.class);
-		return new OneToManyMatcher(annotation(field, OneToMany.class)).isLazy().removeOrphans();
+		return new OneToManyMatcher(annotation(field, OneToMany.class)).cascades();
 	}
 
 	protected ManyToOneMatcher assertManyToOne(String field, Class<?> type) {
 		assertFieldType(field, type);
-		return new ManyToOneMatcher(annotation(field, ManyToOne.class), joinColumn(field)).doesNotCascade().isLazy();
-	}
-
-	protected void shouldHaveError(String field) {
-		assertOneToOne(field, ThrowableRecord.class).cascades();
+		return new ManyToOneMatcher(annotation(field, ManyToOne.class), joinColumn(field)).doesNotCascade();
 	}
 
 	protected OneToOneMatcher assertOneToOne(String field, Class<?> type) {
 		assertFieldType(field, type);
-		return new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).isOptional().isEager();
+		return new OneToOneMatcher(annotation(field, OneToOne.class), joinColumn(field)).cascades();
 	}
 
 	protected JoinColumn joinColumn(String field) {
 		JoinColumn joinColumn = annotation(field, JoinColumn.class);
-		assertEquals("Wrong @JoinColumn name.", columnName(field), joinColumn.name());
+		assertEquals("Wrong @JoinColumn name.", databaseName(field), joinColumn.name());
 		assertEquals("@JoinColumn " + joinColumn.name() + " references wrong column.",
 			"\"id\"", joinColumn.referencedColumnName());
 		return joinColumn;
@@ -89,7 +90,7 @@ public abstract class RecordTest extends ConcreteDtoTest {
 		return annotation;
 	}
 
-	private String columnName(String field) {
-		return "\"" + Identifier.fromVariable(field).asConstant().toLowerCase() + "\"";
+	private String databaseName(String identifier) {
+		return "\"" + Identifier.fromVariable(identifier).asConstant().toLowerCase() + "\"";
 	}
 }

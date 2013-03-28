@@ -1,72 +1,69 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="/KalibroCore" combineaccessrules="false"/>
-	
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
-	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
-
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4">
+	<classpathentry combineaccessrules="false" kind="src" path="/KalibroCore">
 		<attributes>
 			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Derby 10.5">
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
+	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.web.container"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Checkstyle 5.5">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Cglib 3.0">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.4.1">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JAX-WS">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JPA 2.0">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mysql 5.1.22">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PostgreSQL 9.2">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Rhino">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SQLite v056">
 		<attributes>
-			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib"/>
+			<attribute name="org.eclipse.jst.component.dependency" value="/WEB-INF/lib" />
 		</attributes>
 	</classpathentry>
-	
-	<classpathentry kind="output" path="bin"/>
+
+	<classpathentry kind="output" path="bin" />
 </classpath>

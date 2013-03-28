@@ -2,13 +2,18 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
+import java.util.Set;
+
 import javax.persistence.RollbackException;
 
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.RepositoryDao;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class ProjectAcceptanceTest extends AcceptanceTest {
 
@@ -89,5 +94,21 @@ public class ProjectAcceptanceTest extends AcceptanceTest {
 		assertDeepEquals(set(configuration), Configuration.all());
 		project.delete();
 		assertDeepEquals(set(configuration), Configuration.all());
+	}
+
+	@Theory
+	public void deleteProjectShouldCascadeToRepositories(SupportedDatabase databaseType) throws Exception {
+		resetDatabase(databaseType);
+		project.save();
+		assertEquals(project.getRepositories(), allRepositories());
+
+		project.delete();
+		assertTrue(allRepositories().isEmpty());
+	}
+
+	private Set<Repository> allRepositories() throws Exception {
+		RepositoryDao repositoryDao = DaoFactory.getRepositoryDao();
+		Set<Repository> allRepositories = Whitebox.invokeMethod(repositoryDao, "all");
+		return allRepositories;
 	}
 }

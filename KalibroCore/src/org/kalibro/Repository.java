@@ -1,5 +1,7 @@
 package org.kalibro;
 
+import java.util.SortedSet;
+
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.Ignore;
@@ -14,6 +16,14 @@ import org.kalibro.dao.RepositoryDao;
  */
 @SortingFields("name")
 public class Repository extends AbstractEntity<Repository> {
+
+	public static SortedSet<RepositoryType> supportedTypes() {
+		return dao().supportedTypes();
+	}
+
+	private static RepositoryDao dao() {
+		return DaoFactory.getRepositoryDao();
+	}
 
 	private Long id;
 
@@ -169,10 +179,6 @@ public class Repository extends AbstractEntity<Repository> {
 
 	void deleted() {
 		id = null;
-	}
-
-	private RepositoryDao dao() {
-		return DaoFactory.getRepositoryDao();
 	}
 
 	@Override

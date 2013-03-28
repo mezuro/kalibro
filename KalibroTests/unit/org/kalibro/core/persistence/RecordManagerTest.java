@@ -2,6 +2,7 @@ package org.kalibro.core.persistence;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Random;
 
 import javax.persistence.EntityManager;
@@ -42,6 +43,7 @@ public class RecordManagerTest extends UnitTest {
 		Query query = mock(Query.class);
 		when(entityManager.createQuery(QUERY)).thenReturn(query);
 		assertSame(query, recordManager.createQuery(QUERY));
+		verify(entityManager).clear();
 	}
 
 	@Test
@@ -49,24 +51,41 @@ public class RecordManagerTest extends UnitTest {
 		TypedQuery<String> query = mock(TypedQuery.class);
 		when(entityManager.createQuery(QUERY, String.class)).thenReturn(query);
 		assertSame(query, recordManager.createQuery(QUERY, String.class));
+		verify(entityManager).clear();
 	}
 
 	@Test
 	public void shouldGetById() {
 		when(entityManager.find(String.class, ID)).thenReturn(MERGED);
 		assertSame(MERGED, recordManager.getById(ID, String.class));
+		verify(entityManager).clear();
 	}
 
 	@Test
 	public void shouldMergeAndSave() throws Exception {
 		assertEquals(MERGED, recordManager.save(UNMERGED));
+		verify(entityManager).clear();
 		verifyWithinTransaction("persist");
+	}
+
+	@Test
+	public void shouldMergeAndSaveCollection() throws Exception {
+		recordManager.saveAll(list(UNMERGED));
+		verify(entityManager).clear();
+		verifyWithinTransaction("persist");
+	}
+
+	@Test
+	public void shouldDoNothinWhenSavingEmptyCollection() {
+		recordManager.saveAll(new ArrayList<String>());
+		verifyZeroInteractions(entityManager);
 	}
 
 	@Test
 	public void shouldRemoveById() throws Exception {
 		when(entityManager.find(String.class, ID)).thenReturn(MERGED);
 		recordManager.removeById(ID, String.class);
+		verify(entityManager).clear();
 		verifyWithinTransaction("remove");
 	}
 

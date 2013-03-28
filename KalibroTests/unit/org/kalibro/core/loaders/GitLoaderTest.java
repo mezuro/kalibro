@@ -18,4 +18,9 @@ public class GitLoaderTest extends RepositoryLoaderTestCase {
 	protected List<String> expectedUpdateCommands() {
 		return list("git pull origin master");
 	}
+
+	@Override
+	protected String expectedMetadataDirectoryName() {
+		return ".git";
+	}
 }

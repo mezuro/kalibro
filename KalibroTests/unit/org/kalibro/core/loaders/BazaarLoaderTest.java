@@ -18,4 +18,9 @@ public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 	protected List<String> expectedUpdateCommands() {
 		return list("bzr pull --overwrite");
 	}
+
+	@Override
+	protected String expectedMetadataDirectoryName() {
+		return ".bzr";
+	}
 }

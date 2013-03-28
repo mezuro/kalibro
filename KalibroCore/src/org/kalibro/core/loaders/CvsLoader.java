@@ -21,4 +21,9 @@ public class CvsLoader extends RepositoryLoader {
 			return Arrays.asList("cvs update");
 		return Arrays.asList("cvs -z3 -d " + address + " checkout -d . -P .");
 	}
+
+	@Override
+	protected String metadataDirectoryName() {
+		return "CVSROOT";
+	}
 }

@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 
 import org.junit.Test;
 import org.kalibro.MetricConfiguration;
@@ -20,18 +20,17 @@ public class MetricResultRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
-		assertManyToOne("moduleResult", ModuleResultRecord.class).isRequired();
-		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isRequired();
 		shouldHaveId();
+		assertColumn("moduleResult", Long.class).isRequired();
+		assertManyToOne("configuration", MetricConfigurationSnapshotRecord.class).isEager().isRequired();
 		assertColumn("value", Long.class).isRequired();
-		shouldHaveError("error");
-		assertOneToMany("descendantResults").cascades().isMappedBy("metricResult");
+		assertOneToOne("error", ThrowableRecord.class).isEager().isOptional();
 	}
 
 	@Test
 	public void shouldConvertNullErrorForNormalResult() {
 		MetricResult normalResult = new MetricResult(new MetricConfiguration(), 42.0);
-		normalResult.addDescendantResult(28.0);
+		normalResult.setDescendantResults(list(28.0));
 		assertNull(new MetricResultRecord(normalResult).error());
 	}
 }

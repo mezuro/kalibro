@@ -11,14 +11,14 @@ public class RemoteFileLoaderTest extends UnitTest {
 	private static final String LOCAL_UPDATE_COMMAND = "LOCAL_UPDATE_COMMAND";
 	private static final String LOCAL_VALIDATION_COMMAND = "LOCAL_VALIDATION_COMMAND";
 
-	private RepositoryLoader localLoader;
+	private FileLoader localLoader;
 	private String temporaryFilePath;
 
 	private RemoteFileLoader remoteLoader;
 
 	@Before
 	public void setUp() throws Exception {
-		localLoader = mock(RepositoryLoader.class);
+		localLoader = mock(FileLoader.class);
 		remoteLoader = mockAbstract(RemoteFileLoader.class);
 		doReturn(localLoader).when(remoteLoader).localLoader();
 

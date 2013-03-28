@@ -31,7 +31,7 @@ public enum ProcessState {
 	}
 
 	public ProcessState nextState() {
-		return values()[(ordinal() + 1) % values().length];
+		return values()[ (ordinal() + 1) % values().length];
 	}
 
 	public String getMessage(String name) {

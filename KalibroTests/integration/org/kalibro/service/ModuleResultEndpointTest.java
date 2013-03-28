@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.*;
 
@@ -53,12 +53,6 @@ public class ModuleResultEndpointTest extends EndpointTest<ModuleResult, ModuleR
 		List<DateModuleResultXml> history = port.historyOfModule(ID);
 		assertEquals(1, history.size());
 		assertEquals(date, history.get(0).date());
-		assertDeepDtoEquals(Whitebox.getInternalState(history.get(0), ModuleResultXml.class));
-	}
-
-	private void assertDeepDtoEquals(ModuleResultXml xml) {
-		ModuleResultXml spy = spy(xml);
-		doReturn(entity.getParent()).when(spy).parent();
-		assertDeepDtoEquals(entity, spy);
+		assertDeepDtoEquals(entity, Whitebox.getInternalState(history.get(0), ModuleResultXml.class));
 	}
 }

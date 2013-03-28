@@ -45,6 +45,6 @@ enum DatePicker {
 
 	private String clause(String alias, String dateCondition) {
 		String dateClause = dateCondition.equals("") ? "" : " AND " + alias + ".date " + dateCondition;
-		return alias + ".repository.id = :repositoryId" + dateClause;
+		return alias + ".repository = :repositoryId" + dateClause;
 	}
 }

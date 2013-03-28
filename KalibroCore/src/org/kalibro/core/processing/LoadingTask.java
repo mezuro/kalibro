@@ -9,7 +9,7 @@ import org.kalibro.KalibroSettings;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
-import org.kalibro.core.loaders.RepositoryLoader;
+import org.kalibro.core.loaders.Loader;
 
 /**
  * Loads source code from a {@link Repository} to a directory in the server file system.
@@ -20,14 +20,17 @@ class LoadingTask extends ProcessSubtask {
 
 	@Override
 	protected void perform() throws Exception {
-		prepareCodeDirectory();
-		createLoader().load(repository().getAddress(), codeDirectory());
+		Loader loader = createLoader();
+		prepareCodeDirectory(loader);
+		loader.load(repository().getAddress(), codeDirectory());
 	}
 
-	private void prepareCodeDirectory() {
+	private void prepareCodeDirectory(Loader loader) {
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
 		File projectDirectory = prepareDirectory(loadDirectory, project().getId(), project().getName());
 		File repositoryDirectory = prepareDirectory(projectDirectory, repository().getId(), repository().getName());
+		if (repositoryDirectory.exists() && ! loader.isUpdatable(repositoryDirectory))
+			FileUtils.deleteQuietly(repositoryDirectory);
 		setCodeDirectory(repositoryDirectory);
 	}
 
@@ -40,7 +43,7 @@ class LoadingTask extends ProcessSubtask {
 			deleteAll(withSuffix);
 		else if (withSuffix.length == 1)
 			withSuffix[0].renameTo(directory);
-		if (directory.exists() && !directory.isDirectory())
+		if (directory.exists() && ! directory.isDirectory())
 			directory.delete();
 		return directory;
 	}
@@ -54,9 +57,9 @@ class LoadingTask extends ProcessSubtask {
 			FileUtils.deleteQuietly(file);
 	}
 
-	private RepositoryLoader createLoader() throws Exception {
+	private Loader createLoader() throws Exception {
 		RepositoryType repositoryType = repository().getType();
 		String loaderName = Identifier.fromConstant(repositoryType.name()).asClassName() + "Loader";
-		return (RepositoryLoader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
+		return (Loader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
 	}
 }

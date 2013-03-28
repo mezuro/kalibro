@@ -1,8 +1,11 @@
 package org.kalibro.core.processing;
 
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.kalibro.*;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
 /**
@@ -12,69 +15,45 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
  */
 class AnalyzingTask extends ProcessSubtask {
 
-	private Configuration configurationSnapshot;
+	private Configuration configuration;
+	private SourceTreeBuilder treeBuilder;
+	private ModuleResultConfigurer configurer;
+
+	private MetricResultDatabaseDao metricResultDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 
 	@Override
 	protected void perform() {
-		moduleResultDao = daoFactory().createModuleResultDao();
-		configurationSnapshot = daoFactory().createConfigurationDao().snapshotFor(processing().getId());
+		DatabaseDaoFactory daoFactory = daoFactory();
+		metricResultDao = daoFactory.createMetricResultDao();
+		moduleResultDao = daoFactory.createModuleResultDao();
+		configuration = daoFactory.createConfigurationDao().snapshotFor(processing().getId());
+		treeBuilder = new SourceTreeBuilder(processing().getId(), repository().getName(), moduleResultDao);
+		configurer = new ModuleResultConfigurer(processing(), configuration, metricResultDao, moduleResultDao);
 		for (NativeModuleResult nativeModuleResult : resultProducer())
-			analyzing(nativeModuleResult);
+			addNativeResult(nativeModuleResult);
+		configureFrom(treeBuilder.getMaximumHeight());
 	}
 
-	private void analyzing(NativeModuleResult nativeResult) {
-		ModuleResult moduleResult = moduleResultDao.prepareResultFor(nativeResult.getModule(), processing().getId());
-		addMetricResults(moduleResult, nativeResult.getMetricResults());
-		configureAndSave(moduleResult);
+	private void addNativeResult(NativeModuleResult nativeResult) {
+		Long moduleResultId = treeBuilder.save(nativeResult.getModule());
+		List<MetricResult> metricResults = new ArrayList<MetricResult>();
+		for (NativeMetricResult metricResult : nativeResult.getMetricResults())
+			metricResults.add(configureMetricResult(metricResult));
+		metricResultDao.saveAll(metricResults, moduleResultId);
 	}
 
-	private void addMetricResults(ModuleResult moduleResult, Collection<NativeMetricResult> metricResults) {
-		for (NativeMetricResult metricResult : metricResults)
-			addMetricResult(moduleResult, metricResult);
-	}
-
-	private void addMetricResult(ModuleResult moduleResult, NativeMetricResult nativeMetricResult) {
+	private MetricResult configureMetricResult(NativeMetricResult nativeMetricResult) {
 		Metric metric = nativeMetricResult.getMetric();
 		Double value = nativeMetricResult.getValue();
-		MetricConfiguration snapshot = configurationSnapshot.getConfigurationFor(metric);
-		moduleResult.addMetricResult(new MetricResult(snapshot, value));
-		addValueToAncestry(moduleResult, snapshot, value);
+		MetricConfiguration snapshot = configuration.getConfigurationFor(metric);
+		return new MetricResult(snapshot, value);
 	}
 
-	private void addValueToAncestry(ModuleResult moduleResult, MetricConfiguration snapshot, Double value) {
-		ModuleResult ancestor = moduleResult;
-		while (ancestor.hasParent()) {
-			ancestor = moduleResult.getParent();
-			addDescendantResult(ancestor, snapshot, value);
-		}
-	}
-
-	private void addDescendantResult(ModuleResult moduleResult, MetricConfiguration snapshot, Double descendantResult) {
-		Metric metric = snapshot.getMetric();
-		if (!moduleResult.hasResultFor(metric))
-			moduleResult.addMetricResult(new MetricResult(snapshot, Double.NaN));
-		moduleResult.getResultFor(metric).addDescendantResult(descendantResult);
-	}
-
-	private void configureAndSave(ModuleResult moduleResult) {
-		ModuleResultConfigurer.configure(moduleResult, configurationSnapshot);
-		save(moduleResult);
-		if (moduleResult.hasParent())
-			configureAndSave(moduleResult.getParent());
-		else
-			changeRootName(moduleResult);
-	}
-
-	private void changeRootName(ModuleResult resultsRoot) {
-		if (!resultsRoot.getModule().getName()[0].equals(repository().getName())) {
-			resultsRoot.getModule().getName()[0] = repository().getName();
-			save(resultsRoot);
-		}
-		processing().setResultsRoot(resultsRoot);
-	}
-
-	private void save(ModuleResult moduleResult) {
-		moduleResultDao.save(moduleResult, processing().getId());
+	private void configureFrom(int height) {
+		for (ModuleResult moduleResult : moduleResultDao.getResultsAtHeight(height, processing().getId()))
+			configurer.configure(moduleResult);
+		if (height > 0)
+			configureFrom(height - 1);
 	}
 }

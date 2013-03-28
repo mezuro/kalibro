@@ -15,8 +15,6 @@ public interface ConfigurationDao {
 
 	Configuration get(Long configurationId);
 
-	Configuration configurationOf(Long repositoryId);
-
 	SortedSet<Configuration> all();
 
 	Long save(Configuration configuration);

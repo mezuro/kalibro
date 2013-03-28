@@ -17,18 +17,20 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
 public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
 	File codeDirectory;
+	Repository repository;
 	Processing processing;
 	DatabaseDaoFactory daoFactory;
 	Producer<NativeModuleResult> resultProducer;
 
 	public ProcessTask(Repository repository) {
-		daoFactory = new DatabaseDaoFactory();
-		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
-		resultProducer = new Producer<NativeModuleResult>();
+		this.repository = repository;
 	}
 
 	@Override
 	protected void perform() {
+		daoFactory = new DatabaseDaoFactory();
+		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
+		resultProducer = new Producer<NativeModuleResult>();
 		new LoadingTask().prepare(this).execute();
 		new CollectingTask().prepare(this).executeInBackground();
 		new AnalyzingTask().prepare(this).execute();
@@ -39,7 +41,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 		processing.setStateTime(getTaskState(report), report.getExecutionTime());
 		if (processing.getState().isTemporary())
 			updateState(report);
-		daoFactory.createProcessingDao().save(processing);
+		daoFactory.createProcessingDao().save(processing, repository.getId());
 	}
 
 	private void updateState(TaskReport<Void> report) {

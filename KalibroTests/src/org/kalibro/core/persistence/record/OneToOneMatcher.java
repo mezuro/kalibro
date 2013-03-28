@@ -22,33 +22,13 @@ class OneToOneMatcher {
 		return this;
 	}
 
-	OneToOneMatcher doesNotCascade() {
-		assertArrayEquals(message("should NOT cascade"), new CascadeType[]{}, oneToOne.cascade());
-		return this;
-	}
-
-	OneToOneMatcher removeOrphans() {
-		assertTrue(message("should remove orphans"), oneToOne.orphanRemoval());
-		return this;
-	}
-
-	OneToOneMatcher doesNotRemoveOrphans() {
-		assertFalse(message("should NOT remove orphans"), oneToOne.orphanRemoval());
+	OneToOneMatcher isEager() {
+		assertEquals(message("has wrong fetch type"), FetchType.EAGER, oneToOne.fetch());
 		return this;
 	}
 
 	OneToOneMatcher isLazy() {
 		assertEquals(message("has wrong fetch type"), FetchType.LAZY, oneToOne.fetch());
-		return this;
-	}
-
-	public OneToOneMatcher isEager() {
-		assertEquals(message("has wrong fetch type"), FetchType.EAGER, oneToOne.fetch());
-		return this;
-	}
-
-	OneToOneMatcher isMappedBy(String fieldName) {
-		assertEquals(message("has wrong mapping"), fieldName, oneToOne.mappedBy());
 		return this;
 	}
 

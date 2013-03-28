@@ -29,7 +29,7 @@ public abstract class ProjectDto extends DataTransferObject<Project> {
 
 	public abstract String description();
 
-	public SortedSet<Repository> repositories() {
+	protected SortedSet<Repository> repositories() {
 		return DaoLazyLoader.createProxy(RepositoryDao.class, "repositoriesOf", id());
 	}
 }

@@ -30,12 +30,6 @@ public class ConfigurationEndpointImplTest extends
 	}
 
 	@Test
-	public void shouldGetConfigurationOfRepository() {
-		when(dao.configurationOf(ID)).thenReturn(entity);
-		assertSame(xml, implementor.configurationOf(ID));
-	}
-
-	@Test
 	public void shouldGetAll() {
 		doReturn(sortedSet(entity)).when(dao).all();
 		assertDeepEquals(list(xml), implementor.allConfigurations());

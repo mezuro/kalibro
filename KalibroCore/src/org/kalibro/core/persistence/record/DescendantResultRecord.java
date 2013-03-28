@@ -11,19 +11,21 @@ import org.kalibro.dto.DataTransferObject;
  * @author Carlos Morais
  */
 @Entity(name = "DescendantResult")
-@Table(name = "\"DESCENDANT_RESULT\"")
+@Table(name = "\"descendant_result\"")
 public class DescendantResultRecord extends DataTransferObject<Double> {
 
-	@SuppressWarnings("unused" /* used by JPA */)
-	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "\"metric_result\"", nullable = false, referencedColumnName = "\"id\"")
-	private MetricResultRecord metricResult;
-
 	@Id
-	@GeneratedValue
-	@Column(name = "\"id\"", nullable = false)
-	@SuppressWarnings("unused" /* used by JPA */)
+	@GeneratedValue(strategy = GenerationType.TABLE, generator = "descendant_result")
+	@TableGenerator(name = "descendant_result", table = "sequences", pkColumnName = "table_name",
+		valueColumnName = "sequence_count", pkColumnValue = "descendant_result", initialValue = 1, allocationSize = 1)
+	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
+
+	@Column(name = "\"module_result\"", nullable = false)
+	private Long moduleResult;
+
+	@Column(name = "\"configuration\"", nullable = false)
+	private Long configuration;
 
 	@Column(name = "\"value\"", nullable = false)
 	private Long value;
@@ -33,11 +35,12 @@ public class DescendantResultRecord extends DataTransferObject<Double> {
 	}
 
 	public DescendantResultRecord(Double value) {
-		this(value, null);
+		this(value, null, null);
 	}
 
-	public DescendantResultRecord(Double value, MetricResultRecord metricResult) {
-		this.metricResult = metricResult;
+	public DescendantResultRecord(Double value, Long moduleResult, Long configuration) {
+		this.moduleResult = moduleResult;
+		this.configuration = configuration;
 		this.value = Double.doubleToLongBits(value);
 	}
 

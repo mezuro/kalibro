@@ -1,6 +1,6 @@
 package org.kalibro.dto;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -9,6 +9,7 @@ import org.kalibro.Module;
 import org.kalibro.ModuleResult;
 import org.kalibro.dao.MetricResultDao;
 import org.kalibro.dao.ModuleResultDao;
+import org.powermock.reflect.Whitebox;
 
 public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 
@@ -18,7 +19,8 @@ public class ModuleResultDtoTest extends AbstractDtoTest<ModuleResult> {
 		ModuleResult parent = new ModuleResult(null, module.inferParent().inferParent());
 		ModuleResult moduleResult = new ModuleResult(parent, module.inferParent());
 		moduleResult.addMetricResult(new MetricResultDtoTest().loadFixture());
-		moduleResult.addChild(new ModuleResult(moduleResult, module));
+		moduleResult.setChildren(sortedSet(new ModuleResult(moduleResult, module)));
+		Whitebox.setInternalState(moduleResult, "height", 1);
 		return moduleResult;
 	}
 

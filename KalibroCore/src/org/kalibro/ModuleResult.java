@@ -16,8 +16,11 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	private Double grade;
 
+	private Integer height;
+
 	@Ignore
 	private ModuleResult parent;
+
 	private Set<ModuleResult> children;
 
 	/** Should NOT be used. Only for CGLIB proxy creation. */
@@ -27,8 +30,9 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	public ModuleResult(ModuleResult parent, Module module) {
 		super(module);
-		setGrade(Double.NaN);
 		this.parent = parent;
+		this.height = 0;
+		setGrade(Double.NaN);
 		setChildren(new TreeSet<ModuleResult>());
 	}
 
@@ -42,6 +46,10 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 
 	public void setGrade(Double grade) {
 		this.grade = grade;
+	}
+
+	public Integer getHeight() {
+		return height;
 	}
 
 	public boolean hasParent() {
@@ -65,11 +73,6 @@ public class ModuleResult extends AbstractModuleResult<MetricResult> {
 		this.children = children;
 	}
 
-	public void addChild(ModuleResult child) {
-		child.parent = this;
-		children.add(child);
-	}
-	
 	public SortedMap<Date, ModuleResult> history() {
 		return DaoFactory.getModuleResultDao().historyOf(id);
 	}

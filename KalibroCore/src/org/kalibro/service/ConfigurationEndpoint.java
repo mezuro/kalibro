@@ -28,10 +28,6 @@ public interface ConfigurationEndpoint {
 
 	@WebMethod
 	@WebResult(name = "configuration")
-	ConfigurationXml configurationOf(@WebParam(name = "repositoryId") Long repositoryId);
-
-	@WebMethod
-	@WebResult(name = "configuration")
 	List<ConfigurationXml> allConfigurations();
 
 	@WebMethod
