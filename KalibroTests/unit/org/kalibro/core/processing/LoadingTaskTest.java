@@ -3,7 +3,6 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileFilter;
 
 import org.apache.commons.io.FileUtils;
 import org.junit.After;
@@ -20,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({FileUtils.class, KalibroSettings.class, LoadingTask.class})
+@PrepareOnlyThisForTest({KalibroSettings.class, LoadingTask.class})
 public class LoadingTaskTest extends UnitTest {
 
 	private static final Long PROJECT_ID = 6L;
@@ -122,28 +121,5 @@ public class LoadingTaskTest extends UnitTest {
 		when(repository.getType()).thenReturn(RepositoryType.GIT);
 		doCallRealMethod().when(loadingTask, "createLoader");
 		assertClassEquals(GitLoader.class, Whitebox.invokeMethod(loadingTask, "createLoader"));
-	}
-
-	@Test
-	public void shouldDeleteRepositoryDirectoryIfNotUpdatable() throws Exception {
-		File repositoryDirectory = mockRepositoryDirectory();
-		when(repositoryDirectory.exists()).thenReturn(true);
-		when(repositoryDirectory.isDirectory()).thenReturn(true);
-		when(loader.isUpdatable(repositoryDirectory)).thenReturn(false);
-		loadingTask.perform();
-		verifyStatic();
-		FileUtils.deleteQuietly(repositoryDirectory);
-	}
-
-	private File mockRepositoryDirectory() throws Exception {
-		mockStatic(FileUtils.class);
-		File projectDirectory = mock(File.class);
-		File repositoryDirectory = mock(File.class);
-		whenNew(File.class).withParameterTypes(File.class, String.class)
-			.withArguments(eq(loadDirectory), anyString()).thenReturn(projectDirectory);
-		when(projectDirectory.listFiles(any(FileFilter.class))).thenReturn(new File[0]);
-		whenNew(File.class).withParameterTypes(File.class, String.class)
-			.withArguments(eq(projectDirectory), anyString()).thenReturn(repositoryDirectory);
-		return repositoryDirectory;
 	}
 }

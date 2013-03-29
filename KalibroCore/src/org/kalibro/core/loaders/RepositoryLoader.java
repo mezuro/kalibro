@@ -15,7 +15,7 @@ import org.apache.commons.io.filefilter.NameFileFilter;
 abstract class RepositoryLoader extends Loader {
 
 	@Override
-	public boolean isUpdatable(File directory) {
+	protected boolean isUpdatable(File directory) {
 		NameFileFilter nameFilter = new NameFileFilter(metadataDirectoryName());
 		return FileUtils.iterateFiles(directory, FalseFileFilter.INSTANCE, nameFilter).hasNext();
 	}
