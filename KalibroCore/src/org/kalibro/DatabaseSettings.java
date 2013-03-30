@@ -23,8 +23,8 @@ public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 	private String password;
 
 	public DatabaseSettings() {
-		setDatabaseType(SupportedDatabase.MYSQL);
-		setJdbcUrl("jdbc:mysql://localhost:3306/kalibro");
+		setDatabaseType(SupportedDatabase.POSTGRESQL);
+		setJdbcUrl("jdbc:postgresql://localhost:5432/kalibro");
 		setUsername("kalibro");
 		setPassword("kalibro");
 	}

@@ -17,8 +17,8 @@ public class DatabaseSettingsTest extends UnitTest {
 
 	@Test
 	public void checkConstruction() {
-		assertEquals(SupportedDatabase.MYSQL, settings.getDatabaseType());
-		assertEquals("jdbc:mysql://localhost:3306/kalibro", settings.getJdbcUrl());
+		assertEquals(SupportedDatabase.POSTGRESQL, settings.getDatabaseType());
+		assertEquals("jdbc:postgresql://localhost:5432/kalibro", settings.getJdbcUrl());
 		assertEquals("kalibro", settings.getUsername());
 		assertEquals("kalibro", settings.getPassword());
 	}
