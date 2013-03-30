@@ -4,14 +4,22 @@ README - Kalibro
 Kalibro aims to improve the use of source code metrics.
 It is designed for easy integration with a metric collector tool and show the results in a friendlier way.
 For that, it allows a metric specialist to create a configuration of thresholds associated with qualitative evaluation,
-including comments and recommendations.
+  including comments and recommendations.
 These configurations are used to enhance metric results interpretation.
 
-Kalibro is delivered with the proper configuration for running using Analizo - a free and multi-language toolkit - as
-the source code analysis tool.
+Kalibro is delivered with the proper configuration for running using Analizo, Checkstyle and CVSAnalY as source code
+  analysis tools.
+
+Analizo is a free and multi-language toolkit.
 Analizo supports the extraction and calculation of a fair number of source code metrics, generation of dependency
-graphs, and software evolution analysis.
+  graphs, and software evolution analysis.
 It efficiently parses source code written in C, C++ and Java.
+
+Checkstyle is a development tool to help programmers write Java code that adheres to a coding standard.
+Kalibro uses its has many metric checks to analyze Java code.
+
+CVSAnalY is a tool that extracts information out of source code repository logs and stores it into a database.
+Kalibro uses its metric table to retrieve last commit metrics.
 
 INSTALL
 =======
@@ -23,8 +31,6 @@ SOURCE CODE
 
 Each directory corresponds to an Eclipse IDE project.
 There are dependencies between these projects.
-
-See the architeture overview at "Resources/Guides" directory
 
 The last source code can be found at:
 
@@ -51,13 +57,11 @@ Copyright (c) The Authors developers.
 Kalibro is Free Software and can distributed under the GNU LPGL (GNU Lesser
 General Public License) version 3.0.
 
-The license terms can be found in the GNU Project's Web site at
-http://www.gnu.org/copyleft/lesser.html (a copy of GPL text upon which LGPL
-relies is also provided).
+The license terms can be found in the GNU Project's Web site at http://www.gnu.org/copyleft/lesser.html (a copy of GPL
+  text upon which LGPL relies is also provided).
 
-The directory "Libraries" contains third-party libraries distributed along with
-Kalibro source code for convenience. Their respective licenses are indicated in
-the file LICENSE within the referred directory.
+The directory "Libraries" contains third-party libraries distributed along with Kalibro source code for convenience.
+Their respective licenses are indicated in the file LICENSE within the referred directory.
 
 Please see the file COPYING
 
@@ -86,5 +90,4 @@ http://www.qualipso.org/
 
 USP FLOSS Competence Center
 http://ccsl.ime.usp.br/
-
 
