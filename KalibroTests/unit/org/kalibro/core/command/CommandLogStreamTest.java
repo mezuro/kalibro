@@ -28,10 +28,13 @@ public class CommandLogStreamTest extends UnitTest {
 	public void setUp() throws Exception {
 		logFile = mock(File.class);
 		fileStream = mock(FileOutputStream.class);
-		logStream = new CommandLogStream("analizo metrics --list", "out");
+		logStream = new CommandLogStream(
+				"analizo metrics --list", "out");
 		whenNew(File.class).withParameterTypes(File.class, String.class)
-			.withArguments(eq(logsDirectory()), anyString()).thenReturn(logFile);
-		whenNew(FileOutputStream.class).withArguments(logFile, true).thenReturn(fileStream);
+			.withArguments(eq(logsDirectory()),
+					anyString()).thenReturn(logFile);
+		whenNew(FileOutputStream.class).withArguments(logFile, true)
+			.thenReturn(fileStream);
 		mockStatic(IOUtils.class);
 	}
 
@@ -55,7 +58,9 @@ public class CommandLogStreamTest extends UnitTest {
 	@Test
 	public void shouldWriteOnFileWithDateOnName() throws Exception {
 		logStream.write(42);
-		String today = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-		verifyNew(File.class).withArguments(eq(logsDirectory()), eq("analizo." + today + ".out"));
+		String today = new SimpleDateFormat("yyyy-MM-dd")
+			.format(new Date());
+		verifyNew(File.class).withArguments(eq(logsDirectory()),
+				eq("analizo." + today + ".out"));
 	}
 }

@@ -5,7 +5,8 @@ import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RangeDao;
 
 /**
- * Evaluation range to be associated with a metric result. Contains {@link Reading} and comments.
+ * Evaluation range to be associated with a metric result. Contains
+ * {@link Reading} and comments.
  * 
  * @author Carlos Morais
  */
@@ -80,7 +81,8 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	private void validate(Double theBeginning, Double theEnd) {
-		throwExceptionIf(! (theBeginning < theEnd), "[" + theBeginning + ", " + theEnd + "[ is not a valid range");
+		throwExceptionIf(!(theBeginning < theEnd), "[" + theBeginning + ", "
+				+ theEnd + "[ is not a valid range");
 		if (configuration != null)
 			for (Range other : configuration.getRanges())
 				if (other != this)
@@ -88,12 +90,13 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	private void assertNoIntersection(Range range, Range other) {
-		throwExceptionIf(range.contains(other.beginning) || other.contains(range.beginning),
-			"Range " + other + " would conflict with " + range);
+		throwExceptionIf(range.contains(other.beginning)
+				|| other.contains(range.beginning), "Range " + other
+				+ " would conflict with " + range);
 	}
 
 	public boolean isFinite() {
-		return ! (beginning.isInfinite() || end.isInfinite());
+		return !(beginning.isInfinite() || end.isInfinite());
 	}
 
 	public boolean contains(Double value) {
@@ -125,7 +128,8 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	public void save() {
-		throwExceptionIf(configuration == null, "Range is not in any configuration.");
+		throwExceptionIf(configuration == null,
+				"Range is not in any configuration.");
 		configuration.assertSaved();
 		if (hasReading())
 			reading.assertSaved();

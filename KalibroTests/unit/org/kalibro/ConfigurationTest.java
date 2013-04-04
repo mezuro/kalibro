@@ -21,7 +21,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({AbstractEntity.class, DaoFactory.class, FileUtils.class, ScriptValidator.class})
+@PrepareForTest({ AbstractEntity.class, DaoFactory.class, FileUtils.class, ScriptValidator.class })
 public class ConfigurationTest extends UnitTest {
 
 	private ConfigurationDao dao;
