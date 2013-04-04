@@ -11,7 +11,7 @@ import java.io.File;
 abstract class FileLoader extends Loader {
 
 	@Override
-	public boolean isUpdatable(File directory) {
+	protected boolean isUpdatable(File directory) {
 		return false;
 	}
 }

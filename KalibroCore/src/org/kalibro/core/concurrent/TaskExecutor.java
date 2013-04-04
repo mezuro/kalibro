@@ -13,7 +13,8 @@ import org.kalibro.KalibroException;
  */
 final class TaskExecutor {
 
-	private static final int THREAD_POOL_SIZE = 28;
+	private static final int PROCESSORS = Runtime.getRuntime().availableProcessors();
+	private static final int THREAD_POOL_SIZE = PROCESSORS * 10;
 	private static final ScheduledExecutorService EXECUTOR = Executors.newScheduledThreadPool(THREAD_POOL_SIZE);
 
 	static Future<?> executeInBackground(Task<?> task) {

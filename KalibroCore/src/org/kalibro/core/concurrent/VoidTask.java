@@ -9,7 +9,7 @@ package org.kalibro.core.concurrent;
 public abstract class VoidTask extends Task<Void> {
 
 	@Override
-	protected Void compute() throws Throwable {
+	protected final Void compute() throws Throwable {
 		perform();
 		return null;
 	}

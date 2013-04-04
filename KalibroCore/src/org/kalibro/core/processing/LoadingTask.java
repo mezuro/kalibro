@@ -21,16 +21,14 @@ class LoadingTask extends ProcessSubtask {
 	@Override
 	protected void perform() throws Exception {
 		Loader loader = createLoader();
-		prepareCodeDirectory(loader);
+		prepareCodeDirectory();
 		loader.load(repository().getAddress(), codeDirectory());
 	}
 
-	private void prepareCodeDirectory(Loader loader) {
+	private void prepareCodeDirectory() {
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
 		File projectDirectory = prepareDirectory(loadDirectory, project().getId(), project().getName());
 		File repositoryDirectory = prepareDirectory(projectDirectory, repository().getId(), repository().getName());
-		if (repositoryDirectory.exists() && ! loader.isUpdatable(repositoryDirectory))
-			FileUtils.deleteQuietly(repositoryDirectory);
 		setCodeDirectory(repositoryDirectory);
 	}
 
@@ -43,7 +41,7 @@ class LoadingTask extends ProcessSubtask {
 			deleteAll(withSuffix);
 		else if (withSuffix.length == 1)
 			withSuffix[0].renameTo(directory);
-		if (directory.exists() && ! directory.isDirectory())
+		if (directory.exists() && !directory.isDirectory())
 			directory.delete();
 		return directory;
 	}

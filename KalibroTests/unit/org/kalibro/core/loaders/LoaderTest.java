@@ -4,6 +4,7 @@ import static java.util.concurrent.TimeUnit.*;
 
 import java.io.File;
 
+import org.apache.commons.io.FileUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -13,7 +14,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(RepositoryLoader.class)
+@PrepareForTest({FileUtils.class, Loader.class})
 public class LoaderTest extends UnitTest {
 
 	private static final String ADDRESS = "RepositoryLoaderTest address";
@@ -30,6 +31,7 @@ public class LoaderTest extends UnitTest {
 	public void setUp() throws Exception {
 		loadDirectory = mock(File.class);
 		mockCommandTask();
+		mockStatic(FileUtils.class);
 		loader = mockAbstract(Loader.class);
 		doReturn(list(VALIDATION_COMMAND)).when(loader).validationCommands();
 		doReturn(list(LOAD_COMMAND)).when(loader).loadCommands(ADDRESS, false);
@@ -54,18 +56,27 @@ public class LoaderTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldExecuteLoadCommandsOnFirstLoad() throws Exception {
+	public void shouldDeleteLoadDirectoryIfNotUpdatable() {
+		when(loadDirectory.exists()).thenReturn(true);
+		doReturn(false).when(loader).isUpdatable(loadDirectory);
+		loader.load(ADDRESS, loadDirectory);
+		verifyStatic();
+		FileUtils.deleteQuietly(loadDirectory);
+	}
+
+	@Test
+	public void shouldExecuteLoadCommandsIfLoadDirectoryDoesNotExist() throws Exception {
 		loader.load(ADDRESS, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, loadDirectory);
-		verify(commandTask).execute(10, HOURS);
+		verify(commandTask).execute(12, HOURS);
 	}
 
 	@Test
 	public void shouldExecuteUpdateCommandsIfLoadDirectoryExists() throws Exception {
 		when(loadDirectory.exists()).thenReturn(true);
+		doReturn(true).when(loader).isUpdatable(loadDirectory);
 		loader.load(ADDRESS, loadDirectory);
 		verifyNew(CommandTask.class).withArguments(UPDATE_COMMAND, loadDirectory);
-		verify(commandTask).execute(10, HOURS);
+		verify(commandTask).execute(12, HOURS);
 	}
-
 }
