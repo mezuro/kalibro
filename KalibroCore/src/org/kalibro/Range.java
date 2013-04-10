@@ -81,8 +81,8 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	private void validate(Double theBeginning, Double theEnd) {
-		throwExceptionIf(!(theBeginning < theEnd), "[" + theBeginning + ", "
-				+ theEnd + "[ is not a valid range");
+		throwExceptionIf(!(theBeginning < theEnd), "[" + theBeginning + ", " +
+			theEnd + "[ is not a valid range");
 		if (configuration != null)
 			for (Range other : configuration.getRanges())
 				if (other != this)
@@ -91,8 +91,8 @@ public class Range extends AbstractEntity<Range> {
 
 	private void assertNoIntersection(Range range, Range other) {
 		throwExceptionIf(range.contains(other.beginning)
-				|| other.contains(range.beginning), "Range " + other
-				+ " would conflict with " + range);
+				|| other.contains(range.beginning), "Range " + other +
+				" would conflict with " + range);
 	}
 
 	public boolean isFinite() {

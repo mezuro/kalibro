@@ -72,8 +72,8 @@ public class AbstractEntityTest extends UnitTest {
 				entity.exportTo(file);
 			}
 		}).throwsException().withMessage(
-				"Could not export person to file: "
-				+ file).withCause(IOException.class);
+				"Could not export person to file: " +
+					file).withCause(IOException.class);
 	}
 
 	@Test

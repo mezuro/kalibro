@@ -6,8 +6,8 @@ import org.codemonkey.simplejavamail.Email;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.SortingFields;
 
-@SortingFields({"repository","name"})
-public class ProcessingNotification extends AbstractEntity<Repository> {
+@SortingFields({"repository", "name"})
+public class ProcessingNotification extends AbstractEntity<ProcessingNotification> {
 	private Long id;
 	
 	private Repository repository;

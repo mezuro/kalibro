@@ -1,6 +1,6 @@
 package org.kalibro.core.processing;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.codemonkey.simplejavamail.Mailer;
 import org.kalibro.KalibroSettings;
@@ -26,7 +26,7 @@ public class MailSender implements TaskListener<Void> {
 
 	private void sendEmail() {
 		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
-		List<ProcessingNotification> notifications = DaoFactory.getProcessingNotificationDao().
+		SortedSet<ProcessingNotification> notifications = DaoFactory.getProcessingNotificationDao().
 			notificationsOf(repository);
 		for (ProcessingNotification notification : notifications)
 			mailer.sendMail(notification.createEmail());

@@ -1,11 +1,13 @@
 package org.kalibro.dao;
 
-import java.util.List;
+import java.util.SortedSet;
 
 import org.kalibro.ProcessingNotification;
 import org.kalibro.Repository;
 
 public interface ProcessingNotificationDao {
 
-	List<ProcessingNotification> notificationsOf(Repository repository);
+	SortedSet<ProcessingNotification> notificationsOf(Repository repository);
+	
+	SortedSet<ProcessingNotification> all();
 }
