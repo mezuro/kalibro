@@ -13,13 +13,13 @@ import org.kalibro.service.xml.ProcessingNotificationXml;
 @WebService(name = "ProcessingNotificationEndpoint", serviceName = "ProcessingNotificationEndpointService")
 public class ProcessingNotificationEndpointImpl
 	implements ProcessingNotificationEndpoint {
-	
+
 	private ProcessingNotificationDao dao;
-	
+
 	public ProcessingNotificationEndpointImpl() {
 		this(DaoFactory.getProcessingNotificationDao());
 	}
-	
+
 	public ProcessingNotificationEndpointImpl(ProcessingNotificationDao processingNotificationDao) {
 		dao = processingNotificationDao;
 	}

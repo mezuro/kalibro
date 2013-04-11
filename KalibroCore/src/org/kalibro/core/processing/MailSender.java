@@ -27,7 +27,7 @@ public class MailSender implements TaskListener<Void> {
 	private void sendEmail() {
 		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
 		SortedSet<ProcessingNotification> notifications = DaoFactory.getProcessingNotificationDao().
-			notificationsOf(repository);
+			notificationsOf(repository.getId());
 		for (ProcessingNotification notification : notifications)
 			mailer.sendMail(notification.createEmail());
 	}

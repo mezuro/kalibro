@@ -1,7 +1,6 @@
 package org.kalibro.dto;
 
 import org.kalibro.ProcessingNotification;
-import org.kalibro.Repository;
 
 public abstract class ProcessingNotificationDto extends DataTransferObject<ProcessingNotification> {
 
@@ -9,16 +8,16 @@ public abstract class ProcessingNotificationDto extends DataTransferObject<Proce
 	public ProcessingNotification convert() {
 		ProcessingNotification notification = new ProcessingNotification();
 		setId(notification, id());
-		notification.setRepository(repository());
+		notification.setRepositoryId(repositoryId());
 		notification.setName(name());
 		notification.setEmail(email());
 		return notification;
 	}
-	
+
 	public abstract Long id();
 
-	public abstract Repository repository();
-	
+	public abstract Long repositoryId();
+
 	public abstract String name();
 
 	public abstract String email();

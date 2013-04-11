@@ -1,57 +1,71 @@
 package org.kalibro;
 
+import java.io.File;
+
 import javax.mail.Message.RecipientType;
 
 import org.codemonkey.simplejavamail.Email;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.RepositoryDao;
 
-@SortingFields({"repository", "name"})
+@SortingFields({"repository_id", "name"})
 public class ProcessingNotification extends AbstractEntity<ProcessingNotification> {
+
+	public static ProcessingNotification importFrom(File file) {
+		return importFrom(file, ProcessingNotification.class);
+	}
+
+	private static RepositoryDao dao() {
+		return DaoFactory.getRepositoryDao();
+	}
+
 	private Long id;
-	
-	private Repository repository;
+
+	private Long repositoryId;
 	private String name;
 	private String email;
-	
+
 	public Long getId() {
 		return id;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
-	
-	public Repository getRepository() {
-		return repository;
+
+	public Long getRepositoryId() {
+		return repositoryId;
 	}
-	
-	public void setRepository(Repository repository) {
-		this.repository = repository;
+
+	public void setRepositoryId(Long repositoryId) {
+		this.repositoryId = repositoryId;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	public void setName(String name) {
 		this.name = name;
 	}
-	
+
 	public String getEmail() {
 		return email;
 	}
-	
+
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+
 	public Email createEmail() {
+		Repository repository = dao().get(repositoryId);
 		Email emailToSend = new Email();
 		emailToSend.setSubject("Repository " + repository.getCompleteName() + " processing results");
 		emailToSend.setText("Processing results in repository " + repository.getName() + " has finished succesfully.");
 		emailToSend.addRecipient(getName(), getEmail(), RecipientType.TO);
 		return emailToSend;
 	}
-	
+
 }
