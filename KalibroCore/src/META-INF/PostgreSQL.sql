@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS sequences, "descendant_result", "metric_result", "module_result",
-  "range_snapshot", "metric_configuration_snapshot", "processing", "stack_trace_element", "throwable",
+  "range_snapshot", "metric_configuration_snapshot", "processing", "processing_notification", "stack_trace_element", "throwable",
   "repository", "project", "range", "metric_configuration", "configuration", "reading", "reading_group" CASCADE;
 
 /* END OF DROP TABLES */
@@ -115,6 +115,13 @@ CREATE TABLE IF NOT EXISTS "processing" (
   UNIQUE ("repository","date")
 );
 
+CREATE TABLE IF NOT EXISTS "processing_notification" (
+  "id" BIGINT NOT NULL PRIMARY KEY,
+  "repository_id" BIGINT NOT NULL REFERENCES "repository"("id") ON DELETE CASCADE,
+  "name" VARCHAR(255) NOT NULL,
+  "email" VARCHAR(255) NOT NULL
+);
+
 DROP TRIGGER IF EXISTS "delete_processing_error" ON "processing";
 
 CREATE TRIGGER "delete_processing_error" AFTER DELETE ON "processing"
@@ -223,6 +230,9 @@ INSERT INTO sequences SELECT 'repository', 0
 INSERT INTO sequences SELECT 'processing', 0
   WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing');
 
+INSERT INTO sequences SELECT 'processing_notification', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing_notification');
+  
 INSERT INTO sequences SELECT 'throwable', 0
   WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'throwable');
 

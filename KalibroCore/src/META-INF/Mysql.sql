@@ -1,7 +1,7 @@
 SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS sequences, `descendant_result`, `metric_result`, `module_result`,
-  `range_snapshot`, `metric_configuration_snapshot`, `processing`, `stack_trace_element`, `throwable`,
+  `range_snapshot`, `metric_configuration_snapshot`, `processing`, `processing_notification`, `stack_trace_element`, `throwable`,
   `repository`, `project`, `range`, `metric_configuration`, `configuration`, `reading`, `reading_group`;
 
 /* END OF DROP TABLES */
@@ -122,6 +122,14 @@ CREATE TABLE IF NOT EXISTS `processing` (
   FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `processing_notification` (
+  `id` BIGINT NOT NULL PRIMARY KEY,
+  `repository_id` BIGINT NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  FOREIGN KEY (`repository_id`) REFERENCES `repository`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 DROP TRIGGER IF EXISTS `delete_processing_error`;
 
 CREATE TRIGGER `delete_processing_error` AFTER DELETE ON `processing`
@@ -214,6 +222,7 @@ INSERT IGNORE INTO sequences VALUES
   ('project', 0),
   ('repository', 0),
   ('processing', 0),
+  ('processing_notification', 0),
   ('throwable', 0),
   ('metric_configuration_snapshot', 0),
   ('range_snapshot', 0),

@@ -2,6 +2,8 @@ package org.kalibro.service;
 
 import java.util.List;
 
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
 
@@ -28,6 +30,22 @@ public class ProcessingNotificationEndpointImpl
 	@WebResult(name = "processingNotification")
 	public List<ProcessingNotificationXml> allProcessingNotifications() {
 		return DataTransferObject.createDtos(dao.all(), ProcessingNotificationXml.class);
+	}
+
+	@Override
+	@WebMethod
+	@WebResult(name = "processingNotificationId")
+	public Long saveProcessingNotification(
+		@WebParam(name = "processingNotification") ProcessingNotificationXml processingNotification, @WebParam(
+			name = "repositoryId") Long repositoryId) {
+		return dao.save(processingNotification.convert(), repositoryId);
+	}
+
+	@Override
+	@WebMethod
+	public void
+		deleteProcessingNotification(@WebParam(name = "processingNotificationId") Long processingNotificationId) {
+		dao.delete(processingNotificationId);
 	}
 
 }

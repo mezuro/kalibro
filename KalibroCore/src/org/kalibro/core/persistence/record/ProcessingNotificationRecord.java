@@ -2,6 +2,7 @@ package org.kalibro.core.persistence.record;
 
 import javax.persistence.*;
 
+import org.kalibro.ProcessingNotification;
 import org.kalibro.dto.ProcessingNotificationDto;
 
 @Entity(name = "ProcessingNotification")
@@ -22,31 +23,37 @@ public class ProcessingNotificationRecord extends ProcessingNotificationDto {
 	@Column(name = "\"name\"", nullable = false)
 	private String name;
 
-	@Column(name = "\"email\"", nullable = false, unique = true)
+	@Column(name = "\"email\"", nullable = false)
 	private String email;
 
-	@Override
-	public Long id() {
-		// TODO Auto-generated method stub
-		return null;
+	public ProcessingNotificationRecord() {
+		super();
+	}
+
+	public ProcessingNotificationRecord(ProcessingNotification processingNotification, Long repositoryId) {
+		id = processingNotification.getId();
+		this.repositoryId = repositoryId;
+		name = processingNotification.getName();
+		email = processingNotification.getEmail();
 	}
 
 	@Override
+	public Long id() {
+		return id;
+	}
+
 	public Long repositoryId() {
-		// TODO Auto-generated method stub
-		return null;
+		return repositoryId;
 	}
 
 	@Override
 	public String name() {
-		// TODO Auto-generated method stub
-		return null;
+		return name;
 	}
 
 	@Override
 	public String email() {
-		// TODO Auto-generated method stub
-		return null;
+		return email;
 	}
 
 }

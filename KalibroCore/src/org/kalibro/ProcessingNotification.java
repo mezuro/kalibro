@@ -8,6 +8,7 @@ import org.codemonkey.simplejavamail.Email;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProcessingNotificationDao;
 import org.kalibro.dao.RepositoryDao;
 
 @SortingFields({"repository_id", "name"})
@@ -17,7 +18,11 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 		return importFrom(file, ProcessingNotification.class);
 	}
 
-	private static RepositoryDao dao() {
+	private static ProcessingNotificationDao dao() {
+		return DaoFactory.getProcessingNotificationDao();
+	}
+
+	private static RepositoryDao repositoryDao() {
 		return DaoFactory.getRepositoryDao();
 	}
 
@@ -60,7 +65,7 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 	}
 
 	public Email createEmail() {
-		Repository repository = dao().get(repositoryId);
+		Repository repository = repositoryDao().get(repositoryId);
 		Email emailToSend = new Email();
 		emailToSend.setSubject("Repository " + repository.getCompleteName() + " processing results");
 		emailToSend.setText("Processing results in repository " + repository.getName() + " has finished succesfully.");
@@ -68,4 +73,12 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 		return emailToSend;
 	}
 
+	public void save() {
+		throwExceptionIf(repositoryId == null, "Notification is not related to any repository.");
+		id = dao().save(this, repositoryId);
+	}
+
+	public void delete() {
+		dao().delete(id);
+	}
 }

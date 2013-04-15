@@ -10,4 +10,7 @@ public interface ProcessingNotificationDao {
 
 	SortedSet<ProcessingNotification> all();
 
+	Long save(ProcessingNotification processingNotification, Long repositoryId);
+
+	void delete(Long processingNotificationId);
 }

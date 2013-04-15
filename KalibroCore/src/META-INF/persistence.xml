@@ -19,6 +19,7 @@
 		<class>org.kalibro.core.persistence.record.StackTraceElementRecord</class>
 
 		<class>org.kalibro.core.persistence.record.ProcessingRecord</class>
+		<class>org.kalibro.core.persistence.record.ProcessingNotificationRecord</class>		
 		<class>org.kalibro.core.persistence.record.MetricConfigurationSnapshotRecord</class>
 		<class>org.kalibro.core.persistence.record.RangeSnapshotRecord</class>
 

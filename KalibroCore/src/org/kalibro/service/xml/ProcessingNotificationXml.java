@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.kalibro.ProcessingNotification;
 import org.kalibro.dto.ProcessingNotificationDto;
 
 @XmlRootElement(name = "processingNotification")
@@ -15,22 +16,24 @@ public class ProcessingNotificationXml extends ProcessingNotificationDto {
 	private Long id;
 
 	@XmlElement(required = true)
-	private Long repositoryId;
-
-	@XmlElement(required = true)
 	private String name;
 
 	@XmlElement(required = true)
 	private String email;
 
-	@Override
-	public Long id() {
-		return id;
+	public ProcessingNotificationXml() {
+		super();
+	}
+
+	public ProcessingNotificationXml(ProcessingNotification processingNotification) {
+		id = processingNotification.getId();
+		name = processingNotification.getName();
+		email = processingNotification.getEmail();
 	}
 
 	@Override
-	public Long repositoryId() {
-		return repositoryId;
+	public Long id() {
+		return id;
 	}
 
 	@Override

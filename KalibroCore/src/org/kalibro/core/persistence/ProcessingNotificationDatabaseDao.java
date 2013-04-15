@@ -22,4 +22,9 @@ public class ProcessingNotificationDatabaseDao extends
 		query.setParameter("repositoryId", repositoryId);
 		return DataTransferObject.toSortedSet(query.getResultList());
 	}
+
+	@Override
+	public Long save(ProcessingNotification processingNotification, Long repositoryId) {
+		return save(new ProcessingNotificationRecord(processingNotification, repositoryId)).id();
+	}
 }
