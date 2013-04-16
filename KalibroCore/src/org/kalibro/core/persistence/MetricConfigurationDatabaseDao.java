@@ -14,22 +14,27 @@ import org.kalibro.dto.DataTransferObject;
  * 
  * @author Carlos Morais
  */
-class MetricConfigurationDatabaseDao extends DatabaseDao<MetricConfiguration, MetricConfigurationRecord>
-	implements MetricConfigurationDao {
+class MetricConfigurationDatabaseDao extends
+	DatabaseDao<MetricConfiguration, MetricConfigurationRecord> implements
+	MetricConfigurationDao {
 
-	MetricConfigurationDatabaseDao() {
-		super(MetricConfigurationRecord.class);
-	}
+    MetricConfigurationDatabaseDao() {
+	super(MetricConfigurationRecord.class);
+    }
 
-	@Override
-	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
-		TypedQuery<MetricConfigurationRecord> query = createRecordQuery("metricConfiguration.configuration = :cId");
-		query.setParameter("cId", configurationId);
-		return DataTransferObject.toSortedSet(query.getResultList());
-	}
+    @Override
+    public SortedSet<MetricConfiguration> metricConfigurationsOf(
+	    Long configurationId) {
+	TypedQuery<MetricConfigurationRecord> query = createRecordQuery("metricConfiguration.configuration = :cId");
+	query.setParameter("cId", configurationId);
+	return DataTransferObject.toSortedSet(query.getResultList());
+    }
 
-	@Override
-	public Long save(MetricConfiguration metricConfiguration, Long configurationId) {
-		return save(new MetricConfigurationRecord(metricConfiguration, configurationId)).id();
-	}
+    @Override
+    public Long save(MetricConfiguration metricConfiguration,
+	    Long configurationId) {
+	return save(
+		new MetricConfigurationRecord(metricConfiguration,
+			configurationId)).id();
+    }
 }
