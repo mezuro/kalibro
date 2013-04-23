@@ -1,5 +1,6 @@
 package org.kalibro.core.persistence;
 
+import java.util.ArrayList;
 import java.util.SortedSet;
 
 import javax.persistence.TypedQuery;
@@ -16,11 +17,17 @@ public class ProcessingNotificationDatabaseDao extends
 		super(ProcessingNotificationRecord.class);
 	}
 
-	@Override
 	public SortedSet<ProcessingNotification> notificationsOf(Long repositoryId) {
-		TypedQuery<ProcessingNotificationRecord> query = createRecordQuery("repository.id = :repositoryId");
-		query.setParameter("repositoryId", repositoryId);
-		return DataTransferObject.toSortedSet(query.getResultList());
+		TypedQuery<ProcessingNotificationRecord> query = 
+			createRecordQuery("processingNotification.repository = :repository");
+		query.setParameter("repository", repositoryId);
+		
+		ArrayList<ProcessingNotification> notificationsList = query.getResultList();
+		for (ProcessingNotification notification : notificationsList) {
+			notifications.setRepository(repository);
+		}
+		
+		return DataTransferObject.toSortedSet(
 	}
 
 	@Override

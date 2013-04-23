@@ -8,6 +8,7 @@ import org.kalibro.ProcessingNotification;
 import org.kalibro.Repository;
 import org.kalibro.core.concurrent.TaskListener;
 import org.kalibro.core.concurrent.TaskReport;
+import org.kalibro.core.persistence.ProcessingNotificationDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 
 public class MailSender implements TaskListener<Void> {
@@ -23,10 +24,12 @@ public class MailSender implements TaskListener<Void> {
 		if (report.isTaskDone())
 			sendEmail();
 	}
-
+	
 	private void sendEmail() {
 		Mailer mailer = KalibroSettings.load().getMailSettings().createMailer();
-		SortedSet<ProcessingNotification> notifications = DaoFactory.getProcessingNotificationDao().
+		ProcessingNotificationDatabaseDao processingNotificationDatabaseDao = 
+			(ProcessingNotificationDatabaseDao) DaoFactory.getProcessingNotificationDao();
+		SortedSet<ProcessingNotification> notifications = processingNotificationDatabaseDao.
 			notificationsOf(repository.getId());
 		for (ProcessingNotification notification : notifications)
 			mailer.sendMail(notification.createEmail());

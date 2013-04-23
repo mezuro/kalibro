@@ -17,8 +17,8 @@ public class ProcessingNotificationRecord extends ProcessingNotificationDto {
 	@Column(name = "\"id\"", nullable = false, unique = true)
 	private Long id;
 
-	@Column(name = "\"repository_id\"", nullable = false)
-	private Long repositoryId;
+	@Column(name = "\"repository\"", nullable = false)
+	private Long repository;
 
 	@Column(name = "\"name\"", nullable = false)
 	private String name;
@@ -32,7 +32,7 @@ public class ProcessingNotificationRecord extends ProcessingNotificationDto {
 
 	public ProcessingNotificationRecord(ProcessingNotification processingNotification, Long repositoryId) {
 		id = processingNotification.getId();
-		this.repositoryId = repositoryId;
+		this.repository = repositoryId;
 		name = processingNotification.getName();
 		email = processingNotification.getEmail();
 	}
@@ -42,8 +42,8 @@ public class ProcessingNotificationRecord extends ProcessingNotificationDto {
 		return id;
 	}
 
-	public Long repositoryId() {
-		return repositoryId;
+	public Long repository() {
+		return repository;
 	}
 
 	@Override

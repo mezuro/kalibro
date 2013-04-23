@@ -9,9 +9,8 @@ import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProcessingNotificationDao;
-import org.kalibro.dao.RepositoryDao;
 
-@SortingFields({"repository_id", "name"})
+@SortingFields("name")
 public class ProcessingNotification extends AbstractEntity<ProcessingNotification> {
 
 	public static ProcessingNotification importFrom(File file) {
@@ -22,30 +21,27 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 		return DaoFactory.getProcessingNotificationDao();
 	}
 
-	private static RepositoryDao repositoryDao() {
-		return DaoFactory.getRepositoryDao();
-	}
-
 	private Long id;
 
-	private Long repositoryId;
 	private String name;
 	private String email;
-
+	
+	
+	public ProcessingNotification() {
+		super();
+	}
+	
+	public ProcessingNotification(String name, String email) {
+		setName(name);
+		setEmail(email);
+	}
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public Long getRepositoryId() {
-		return repositoryId;
-	}
-
-	public void setRepositoryId(Long repositoryId) {
-		this.repositoryId = repositoryId;
 	}
 
 	public String getName() {
@@ -64,8 +60,7 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 		this.email = email;
 	}
 
-	public Email createEmail() {
-		Repository repository = repositoryDao().get(repositoryId);
+	public Email createEmail(Repository repository) {
 		Email emailToSend = new Email();
 		emailToSend.setSubject("Repository " + repository.getCompleteName() + " processing results");
 		emailToSend.setText("Processing results in repository " + repository.getName() + " has finished succesfully.");
@@ -73,9 +68,9 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 		return emailToSend;
 	}
 
-	public void save() {
-		throwExceptionIf(repositoryId == null, "Notification is not related to any repository.");
-		id = dao().save(this, repositoryId);
+	public void save(Repository repository) {
+		throwExceptionIf(repository == null, "Notification is not related to any repository.");
+		id = dao().save(this, repository.getId());
 	}
 
 	public void delete() {

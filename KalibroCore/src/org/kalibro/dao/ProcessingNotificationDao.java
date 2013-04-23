@@ -6,8 +6,6 @@ import org.kalibro.ProcessingNotification;
 
 public interface ProcessingNotificationDao {
 
-	SortedSet<ProcessingNotification> notificationsOf(Long repositoryId);
-
 	SortedSet<ProcessingNotification> all();
 
 	Long save(ProcessingNotification processingNotification, Long repositoryId);

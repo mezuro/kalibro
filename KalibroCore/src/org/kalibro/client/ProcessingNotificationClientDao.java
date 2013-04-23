@@ -1,7 +1,6 @@
 package org.kalibro.client;
 
 import java.util.SortedSet;
-import java.util.TreeSet;
 
 import org.kalibro.ProcessingNotification;
 import org.kalibro.dao.ProcessingNotificationDao;
@@ -14,18 +13,6 @@ public class ProcessingNotificationClientDao extends EndpointClient<ProcessingNo
 
 	public ProcessingNotificationClientDao(String serviceAddress) {
 		super(serviceAddress, ProcessingNotificationEndpoint.class);
-	}
-
-	@Override
-	public SortedSet<ProcessingNotification> notificationsOf(Long repositoryId) {
-		SortedSet<ProcessingNotification> allNotifications =
-			DataTransferObject.toSortedSet(port.allProcessingNotifications());
-		SortedSet<ProcessingNotification> repositoryNotifications = new TreeSet<ProcessingNotification>();
-		for (ProcessingNotification notification : allNotifications) {
-			if (notification.getRepositoryId() == repositoryId)
-				repositoryNotifications.add(notification);
-		}
-		return repositoryNotifications;
 	}
 
 	@Override

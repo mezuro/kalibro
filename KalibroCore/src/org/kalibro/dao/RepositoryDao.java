@@ -24,5 +24,4 @@ public interface RepositoryDao {
 
 	void delete(Long repositoryId);
 
-	Repository get(Long repositoryId);
 }

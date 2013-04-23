@@ -124,10 +124,10 @@ CREATE TABLE IF NOT EXISTS `processing` (
 
 CREATE TABLE IF NOT EXISTS `processing_notification` (
   `id` BIGINT NOT NULL PRIMARY KEY,
-  `repository_id` BIGINT NOT NULL,
+  `repository` BIGINT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
   `email` VARCHAR(255) NOT NULL,
-  FOREIGN KEY (`repository_id`) REFERENCES `repository`(`id`) ON DELETE CASCADE
+  FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 DROP TRIGGER IF EXISTS `delete_processing_error`;

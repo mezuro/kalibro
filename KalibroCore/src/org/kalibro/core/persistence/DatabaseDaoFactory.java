@@ -11,7 +11,6 @@ import javax.persistence.Persistence;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProcessingNotificationDao;
 
 /**
  * Factory of data access objects that read and write on the database.
@@ -109,7 +108,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected ProcessingNotificationDao createProcessingNotificationDao() {
+	public ProcessingNotificationDatabaseDao createProcessingNotificationDao() {
 		return new ProcessingNotificationDatabaseDao();
 	}
 }
