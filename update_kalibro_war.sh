@@ -12,10 +12,11 @@ validate() {
 TOMCAT_HOME="/var/lib/tomcat6/webapps"
 
 echo "* Exporting Kalibro .war file."
-#ant -f build.xml
+ant -f build.xml
 sudo service tomcat6 stop
 sudo rm -rf $TOMCAT_HOME/KalibroService
 sudo mv KalibroService.war $TOMCAT_HOME
+sudo chown tomcat6.tomcat6 $TOMCAT_HOME/KalibroService.war
 
 echo "* Please, drop your kalibro database now."
 validate
