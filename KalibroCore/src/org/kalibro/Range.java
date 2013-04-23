@@ -40,6 +40,7 @@ public class Range extends AbstractEntity<Range> {
 		this.beginning = beginning;
 		this.end = end;
 		setReading(null);
+		setConfiguration(null);
 		setComments("");
 	}
 
@@ -76,20 +77,19 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	void assertNoIntersectionWith(Range other) {
-		assertNoIntersection(this, other);
+		throwExceptionIf(
+			this.contains(other.beginning)
+				|| other.contains(this.beginning), "Range " + other + " would conflict with " + this);
 	}
 
 	private void validate(Double theBeginning, Double theEnd) {
 		throwExceptionIf(! (theBeginning < theEnd), "[" + theBeginning + ", " + theEnd + "[ is not a valid range");
-		if (configuration != null)
+		if (configuration != null) {
+			Range range = new Range(theBeginning, theEnd);
 			for (Range other : configuration.getRanges())
 				if (other != this)
-					assertNoIntersection(other, new Range(theBeginning, theEnd));
-	}
-
-	private void assertNoIntersection(Range range, Range other) {
-		throwExceptionIf(range.contains(other.beginning) || other.contains(range.beginning),
-			"Range " + other + " would conflict with " + range);
+					other.assertNoIntersectionWith(range);
+		}
 	}
 
 	public boolean isFinite() {
@@ -120,7 +120,7 @@ public class Range extends AbstractEntity<Range> {
 		this.comments = comments;
 	}
 
-	void setConfiguration(MetricConfiguration configuration) {
+	public void setConfiguration(MetricConfiguration configuration) {
 		this.configuration = configuration;
 	}
 
