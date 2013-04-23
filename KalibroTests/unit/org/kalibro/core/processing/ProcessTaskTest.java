@@ -2,12 +2,14 @@ package org.kalibro.core.processing;
 
 import java.util.Random;
 
+import javax.mail.Message.RecipientType;
+
+import org.codemonkey.simplejavamail.Email;
+import org.codemonkey.simplejavamail.Mailer;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.ProcessState;
-import org.kalibro.Processing;
-import org.kalibro.Repository;
+import org.kalibro.*;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
@@ -24,6 +26,7 @@ public class ProcessTaskTest extends UnitTest {
 	private static final Long REPOSITORY_ID = new Random().nextLong();
 	private static final Long EXECUTION_TIME = new Random().nextLong();
 
+	private Mailer mailer;
 	private Repository repository;
 	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
@@ -37,6 +40,7 @@ public class ProcessTaskTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		mockEntities();
+		mockMailer();
 		processTask = new ProcessTask(repository);
 		mockSubtasks();
 		processTask.perform();
@@ -52,6 +56,16 @@ public class ProcessTaskTest extends UnitTest {
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
 		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
 		when(processingDao.createProcessingFor(repository)).thenReturn(processing);
+	}
+
+	private void mockMailer() {
+		KalibroSettings kalibroSettings = mock(KalibroSettings.class);
+		MailSettings mailSettings = mock(MailSettings.class);
+		mailer = mock(Mailer.class);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(kalibroSettings);
+		when(kalibroSettings.getMailSettings()).thenReturn(mailSettings);
+		when(mailSettings.createMailer()).thenReturn(mailer);
 	}
 
 	private void mockSubtasks() throws Exception {
@@ -116,5 +130,16 @@ public class ProcessTaskTest extends UnitTest {
 		when(report.getError()).thenReturn(error);
 		when(report.getTask()).thenReturn(new ReadyTask());
 		return report;
+	}
+
+	@Test
+	public void shouldSendMailAfterProcess() throws Exception {
+		Email email = mock(Email.class);
+		whenNew(Email.class).withNoArguments().thenReturn(email);
+		processTask.perform();
+
+		verify(mailer).sendMail(email);
+		verify(email).addRecipient("aaa@example.com", "aaa@example.com", RecipientType.TO);
+		verify(email).addRecipient("bbb@example.com", "bbb@example.com", RecipientType.TO);
 	}
 }

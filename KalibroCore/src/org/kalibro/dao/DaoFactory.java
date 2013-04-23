@@ -56,6 +56,10 @@ public abstract class DaoFactory {
 	public static RepositoryDao getRepositoryDao() {
 		return createFactory().createRepositoryDao();
 	}
+	
+	public static ProcessingNotificationDao getProcessingNotificationDao() {
+		return createFactory().createProcessingNotificationDao();
+	}
 
 	private static DaoFactory createFactory() {
 		KalibroSettings settings = KalibroSettings.load();
@@ -85,4 +89,6 @@ public abstract class DaoFactory {
 	protected abstract ReadingGroupDao createReadingGroupDao();
 
 	protected abstract RepositoryDao createRepositoryDao();
+	
+	protected abstract ProcessingNotificationDao createProcessingNotificationDao();
 }

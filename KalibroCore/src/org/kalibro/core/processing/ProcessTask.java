@@ -33,7 +33,9 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 		resultProducer = new Producer<NativeModuleResult>();
 		new LoadingTask().prepare(this).execute();
 		new CollectingTask().prepare(this).executeInBackground();
-		new AnalyzingTask().prepare(this).execute();
+		ProcessSubtask analyzingTask = new AnalyzingTask().prepare(this);
+		analyzingTask.addListener(new MailSender(repository));
+		analyzingTask.execute();
 	}
 
 	@Override

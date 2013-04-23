@@ -2,15 +2,15 @@
 
 TOMCAT_HOME="/var/lib/tomcat6/webapps"
 
+echo "* Exporting Kalibro .war file."
+ant -f build.xml
 sudo service tomcat6 stop
-
-#echo " * Exporting new Kalibro Service."
-#ant -f build.xml
 
 echo " * Updating Kalibro Service."
 sudo rm -rf $TOMCAT_HOME/KalibroService
 sudo chown tomcat6:tomcat6 KalibroService.war
 sudo mv KalibroService.war $TOMCAT_HOME
+sudo chown tomcat6.tomcat6 $TOMCAT_HOME/KalibroService.war
 
 echo " * Erasing old kalibro database entries."
 echo -en "\t > Please, type your kalibro database password: "

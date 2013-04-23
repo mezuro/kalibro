@@ -4,9 +4,15 @@ serviceSide: SERVER # CLIENT to connect to Kalibro Service; SERVER if the servic
 clientSettings: &id2 !!org.kalibro.ClientSettings
   serviceAddress: "http://localhost:8080/KalibroService/" # Address of the remote Kalibro Service
 
-serverSettings: &id3 !!org.kalibro.ServerSettings
+mailSettings: &id3 !!org.kalibro.MailSettings
+  smtpHost: "smtp.gmail.com"
+  smtpPort: 465
+  senderMail: "example@gmail.com"
+  password: "examplepassword"
+
+serverSettings: &id4 !!org.kalibro.ServerSettings
   loadDirectory: ~/.kalibro/projects # Source code will be loaded in this directory before analysis
-  databaseSettings: &id4 !!org.kalibro.DatabaseSettings
+  databaseSettings: &id5 !!org.kalibro.DatabaseSettings
     databaseType: POSTGRESQL # Possibilities: MYSQL, POSTGRESQL, SQLITE
     jdbcUrl: "jdbc:postgresql://localhost:5432/kalibro"
     username: "kalibro"

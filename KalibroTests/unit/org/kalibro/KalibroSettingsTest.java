@@ -50,6 +50,7 @@ public class KalibroSettingsTest extends UnitTest {
 		assertFalse(settings.clientSide());
 		assertDeepEquals(new ClientSettings(), settings.getClientSettings());
 		assertDeepEquals(new ServerSettings(), settings.getServerSettings());
+		assertDeepEquals(new MailSettings(), settings.getMailSettings());
 	}
 
 	@Test

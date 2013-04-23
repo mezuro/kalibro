@@ -6,15 +6,16 @@
 
 	<endpoint name="Kalibro" url-pattern="/" implementation="org.kalibro.service.KalibroImpl"/>
 
-	<endpoint name="BaseToolEndpoint"            url-pattern="/BaseToolEndpoint/"            implementation="org.kalibro.service.BaseToolEndpointImpl"/>
-	<endpoint name="ConfigurationEndpoint"       url-pattern="/ConfigurationEndpoint/"       implementation="org.kalibro.service.ConfigurationEndpointImpl"/>
-	<endpoint name="MetricConfigurationEndpoint" url-pattern="/MetricConfigurationEndpoint/" implementation="org.kalibro.service.MetricConfigurationEndpointImpl"/>
-	<endpoint name="MetricResultEndpoint"        url-pattern="/MetricResultEndpoint/"        implementation="org.kalibro.service.MetricResultEndpointImpl"/>
-	<endpoint name="ModuleResultEndpoint"        url-pattern="/ModuleResultEndpoint/"        implementation="org.kalibro.service.ModuleResultEndpointImpl"/>
-	<endpoint name="ProcessingEndpoint"          url-pattern="/ProcessingEndpoint/"          implementation="org.kalibro.service.ProcessingEndpointImpl"/>
-	<endpoint name="ProjectEndpoint"             url-pattern="/ProjectEndpoint/"             implementation="org.kalibro.service.ProjectEndpointImpl"/>
-	<endpoint name="RangeEndpoint"               url-pattern="/RangeEndpoint/"               implementation="org.kalibro.service.RangeEndpointImpl"/>
-	<endpoint name="ReadingEndpoint"             url-pattern="/ReadingEndpoint/"             implementation="org.kalibro.service.ReadingEndpointImpl"/>
-	<endpoint name="ReadingGroupEndpoint"        url-pattern="/ReadingGroupEndpoint/"        implementation="org.kalibro.service.ReadingGroupEndpointImpl"/>
-	<endpoint name="RepositoryEndpoint"          url-pattern="/RepositoryEndpoint/"          implementation="org.kalibro.service.RepositoryEndpointImpl"/>
+	<endpoint name="BaseToolEndpoint"            	url-pattern="/BaseToolEndpoint/"            	implementation="org.kalibro.service.BaseToolEndpointImpl"/>
+	<endpoint name="ConfigurationEndpoint"       	url-pattern="/ConfigurationEndpoint/"       	implementation="org.kalibro.service.ConfigurationEndpointImpl"/>
+	<endpoint name="MetricConfigurationEndpoint" 	url-pattern="/MetricConfigurationEndpoint/" 	implementation="org.kalibro.service.MetricConfigurationEndpointImpl"/>
+	<endpoint name="MetricResultEndpoint"        	url-pattern="/MetricResultEndpoint/"        	implementation="org.kalibro.service.MetricResultEndpointImpl"/>
+	<endpoint name="ModuleResultEndpoint"        	url-pattern="/ModuleResultEndpoint/"        	implementation="org.kalibro.service.ModuleResultEndpointImpl"/>
+	<endpoint name="ProcessingEndpoint"          	url-pattern="/ProcessingEndpoint/"          	implementation="org.kalibro.service.ProcessingEndpointImpl"/>
+	<endpoint name="ProcessingNotificationEndpoint"	url-pattern="/ProcessingNotificationEndpoint/"  implementation="org.kalibro.service.ProcessingNotificationEndpointImpl"/>
+	<endpoint name="ProjectEndpoint"             	url-pattern="/ProjectEndpoint/"             	implementation="org.kalibro.service.ProjectEndpointImpl"/>
+	<endpoint name="RangeEndpoint" 	              	url-pattern="/RangeEndpoint/"               	implementation="org.kalibro.service.RangeEndpointImpl"/>
+	<endpoint name="ReadingEndpoint"             	url-pattern="/ReadingEndpoint/"             	implementation="org.kalibro.service.ReadingEndpointImpl"/>
+	<endpoint name="ReadingGroupEndpoint"        	url-pattern="/ReadingGroupEndpoint/"        	implementation="org.kalibro.service.ReadingGroupEndpointImpl"/>
+	<endpoint name="RepositoryEndpoint"          	url-pattern="/RepositoryEndpoint/"          	implementation="org.kalibro.service.RepositoryEndpointImpl"/>
 </endpoints>

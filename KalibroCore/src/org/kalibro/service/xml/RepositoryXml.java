@@ -1,5 +1,7 @@
 package org.kalibro.service.xml;
 
+import java.util.Collection;
+
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -41,6 +43,9 @@ public class RepositoryXml extends RepositoryDto {
 
 	@XmlElement(required = true)
 	private Long configurationId;
+
+	@XmlElement
+	private Collection<String> mailsToNotify;
 
 	public RepositoryXml() {
 		super();

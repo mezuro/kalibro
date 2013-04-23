@@ -41,6 +41,7 @@ public class AbstractMetricResultTest extends UnitTest {
 	}
 
 	private AbstractMetricResult result(Metric theMetric, Double value) {
-		return new AbstractMetricResult(theMetric, value) {/* just for test */};
+		return new AbstractMetricResult(theMetric, value)
+			{ /* just for test */ };
 	}
 }

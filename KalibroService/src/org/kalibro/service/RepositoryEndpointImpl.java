@@ -3,6 +3,7 @@ package org.kalibro.service;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
@@ -36,7 +37,7 @@ public class RepositoryEndpointImpl implements RepositoryEndpoint {
 	public List<RepositoryType> supportedRepositoryTypes() {
 		ArrayList<RepositoryType> supportedTypes = new ArrayList<RepositoryType>();
 		for (RepositoryType type : dao.supportedTypes())
-			if (!type.isLocal())
+			if (! type.isLocal())
 				supportedTypes.add(type);
 		return supportedTypes;
 	}
@@ -68,5 +69,11 @@ public class RepositoryEndpointImpl implements RepositoryEndpoint {
 	@Override
 	public void deleteRepository(@WebParam(name = "repositoryId") Long repositoryId) {
 		dao.delete(repositoryId);
+	}
+
+	@Override
+	@WebMethod
+	public RepositoryXml getRepository(@WebParam(name = "repositoryId") Long repositoryId) {
+		return new RepositoryXml(dao.get(repositoryId));
 	}
 }

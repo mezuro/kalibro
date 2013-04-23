@@ -40,7 +40,27 @@
   <!--Creates the deployable jar file  -->
   <target name="war" depends="compile">
     <war destfile="KalibroService.war" basedir="${destination}" webxml="KalibroService/WebContent/WEB-INF/web.xml">
-			<fileset dir="KalibroService/WebContent"/>
+			<fileset dir="KalibroService/WebContent">
+        <include name="**/*.*"/>
+      </fileset>
+      <lib dir="${libraries}/Apache Commons IO 1.4"/>
+      <lib dir="${libraries}/Apache Log4j 1.2.17"/>
+      <lib dir="${libraries}/Cglib 3.0"/>
+      <lib dir="${libraries}/Checkstyle 5.5"/>
+      <lib dir="${libraries}/EclipseLink 2.4.1"/>
+      <lib dir="${libraries}/FEST Swing"/>
+      <lib dir="${libraries}/JAX-WS"/>
+      <lib dir="${libraries}/JPA 2.0"/>
+      <lib dir="${libraries}/JUnit 4.8.2"/>
+      <lib dir="${libraries}/Mockito 1.8.5"/>
+      <lib dir="${libraries}/Mysql 5.1.22"/>
+      <lib dir="${libraries}/PostgreSQL 9.2"/>
+      <lib dir="${libraries}/PowerMock 1.4.12"/>
+      <lib dir="${libraries}/SimpleJavaMail 2.0"/>
+      <lib dir="${libraries}/SnakeYaml 1.9"/>
+      <lib dir="${libraries}/SQLite v056"/>
+      <lib dir="${libraries}/Rhino"/>
+      <classes dir="${service}/src"/>
     </war>
   </target>
 
