@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<project name="Kalibro" default="main" basedir=".">
+	<!-- Fixing ant warning mistake -->
+	<presetdef name="javac">
+    <javac includeantruntime="false" debug="true"/>
+  </presetdef>
+
+  <!-- Sets variables which can later be used. -->
+  <!-- The value of a property is accessed via ${} -->
+  <property name="core" location="KalibroCore" />	
+	<property name="service" location="KalibroService" />
+  <property name="destination" location="KalibroService1.0" />
+  <property name="libraries" location="Libraries" />
+
+  <!-- Create a classpath container which can be later used in the ant task -->
+  <path id="libraries.classpath">
+    <fileset dir="${libraries}">
+      <include name="**/*" />
+    </fileset>
+  </path>
+
+  <!-- Deletes the existing build, docs and dist directory-->
+  <target name="clean">
+    <delete dir="${destination}" />
+  </target>
+
+  <!-- Creates the  build, docs and dist directory-->
+  <target name="makedir">
+    <mkdir dir="${destination}" />
+  </target>
+
+  <!-- Compiles the java code (including the usage of library for JUnit -->
+  <target name="compile" depends="makedir">
+    <javac srcdir="${core}" destdir="${destination}" classpathref="libraries.classpath">
+		</javac>		
+		<javac srcdir="${service}" destdir="${destination}" classpathref="libraries.classpath">
+    </javac>
+  </target>
+
+  <!--Creates the deployable jar file  -->
+  <target name="war" depends="compile">
+    <war destfile="KalibroService.war" basedir="${destination}" webxml="KalibroService/WebContent/WEB-INF/web.xml">
+			<fileset dir="KalibroService/WebContent"/>
+    </war>
+  </target>
+
+	<target name="main" depends="war, clean">
+    <description>Builds Kalibro war file</description>
+  </target>
+
+</project>

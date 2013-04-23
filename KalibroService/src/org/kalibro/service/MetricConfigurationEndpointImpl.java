@@ -2,6 +2,7 @@ package org.kalibro.service;
 
 import java.util.List;
 
+import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
@@ -17,35 +18,48 @@ import org.kalibro.service.xml.MetricConfigurationXml;
  * @author Carlos Morais
  */
 @WebService(name = "MetricConfigurationEndpoint", serviceName = "MetricConfigurationEndpointService")
-public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpoint {
+public class MetricConfigurationEndpointImpl implements
+	MetricConfigurationEndpoint {
 
-	private MetricConfigurationDao dao;
+    private MetricConfigurationDao dao;
 
-	public MetricConfigurationEndpointImpl() {
-		this(DaoFactory.getMetricConfigurationDao());
-	}
+    public MetricConfigurationEndpointImpl() {
+	this(DaoFactory.getMetricConfigurationDao());
+    }
 
-	public MetricConfigurationEndpointImpl(MetricConfigurationDao metricConfigurationDao) {
-		dao = metricConfigurationDao;
-	}
+    public MetricConfigurationEndpointImpl(
+	    MetricConfigurationDao metricConfigurationDao) {
+	dao = metricConfigurationDao;
+    }
 
-	@Override
-	@WebResult(name = "metricConfiguration")
-	public List<MetricConfigurationXml> metricConfigurationsOf(
-		@WebParam(name = "configurationId") Long configurationId) {
-		return DataTransferObject.createDtos(dao.metricConfigurationsOf(configurationId), MetricConfigurationXml.class);
-	}
+    @Override
+    @WebResult(name = "metricConfiguration")
+    public List<MetricConfigurationXml> metricConfigurationsOf(
+	    @WebParam(name = "configurationId") Long configurationId) {
+	return DataTransferObject.createDtos(
+		dao.metricConfigurationsOf(configurationId),
+		MetricConfigurationXml.class);
+    }
 
-	@Override
-	@WebResult(name = "metricConfigurationId")
-	public Long saveMetricConfiguration(
-		@WebParam(name = "metricConfiguration") MetricConfigurationXml metricConfiguration,
-		@WebParam(name = "configurationId") Long configurationId) {
-		return dao.save(metricConfiguration.convert(), configurationId);
-	}
+    @Override
+    @WebResult(name = "metricConfigurationId")
+    public Long saveMetricConfiguration(
+	    @WebParam(name = "metricConfiguration") MetricConfigurationXml metricConfiguration,
+	    @WebParam(name = "configurationId") Long configurationId) {
+	return dao.save(metricConfiguration.convert(), configurationId);
+    }
 
-	@Override
-	public void deleteMetricConfiguration(@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
-		dao.delete(metricConfigurationId);
-	}
+    @Override
+    public void deleteMetricConfiguration(
+	    @WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
+	dao.delete(metricConfigurationId);
+    }
+
+    @Override
+    @WebMethod
+    @WebResult(name = "metricConfiguration")
+    public MetricConfigurationXml getMetricConfiguration(
+	    @WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
+	return new MetricConfigurationXml(dao.get(metricConfigurationId));
+    }
 }
