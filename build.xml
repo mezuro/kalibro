@@ -1,0 +1,102 @@
+<?xml version="1.0"?>
+<project name="Kalibro" default="main" basedir="." >
+	<!-- Fixing ant warning mistake -->
+	<presetdef name="javac">
+    <javac includeantruntime="false" debug="true" />
+  </presetdef>
+
+  <!-- Sets variables which can later be used. -->
+  <!-- The value of a property is accessed via ${} -->
+  <property name="core" location="KalibroCore" />	
+	<property name="service" location="KalibroService" />
+  <property name="libraries" location="Libraries" />
+  <property name="coreDestination" location="tmpCore" />
+  <property name="destination" location="Kalibro-1.0" />
+  <property name="temp.lib" location="tmpLibrary" />
+  <property name="serviceDestination" location="tmpService" />
+
+
+  <!-- Create a classpath container which can be later used in the ant task -->
+  <path id="libraries.classpath" >
+    <fileset dir="${libraries}" >
+      <include name="**/*.jar" />
+    </fileset>
+  </path>
+
+  <path id="tmpLibrary.classpath" >
+    <fileset dir="${temp.lib}" >
+      <include name="*.jar" />
+    </fileset>
+  </path>
+
+  <!-- Deletes the existing build, docs and dist directory-->
+  <target name="clean" >
+    <delete dir="${coreDestination}" />
+    <delete dir="${destination}" />
+    <delete dir="${serviceDestination}" />
+    <delete dir="${temp.lib}" />
+  </target>
+
+  <!-- Creates the  build, docs and dist directory-->
+  <target name="makedir" >
+    <mkdir dir="${coreDestination}" />
+    <mkdir dir="${destination}" />
+    <mkdir dir="${serviceDestination}" />
+    <mkdir dir="${temp.lib}" />
+  </target>
+
+  <!-- Compiles the java code (including the usage of library for JUnit -->
+  <target name="compileCore" depends="makedir" >
+    <javac srcdir="${core}" destdir="${coreDestination}" >
+      <classpath refid="libraries.classpath" />
+		</javac>		
+  </target>
+
+  <!-- Copy the jars to temp folder -->
+  <target name="prepareJars" depends="compileCore" >
+     <copy todir="${temp.lib}" flatten="true" >
+       <fileset dir="${libraries}" >
+         <include name="**/*.jar" />
+         <exclude name="**/*src.jar" />
+         <exclude name="**/*source.jar" />
+         <exclude name="**/*sources.jar" />
+       </fileset>
+     </copy>
+
+     <copy todir="${coreDestination}/META-INF" >
+       <fileset dir="${core}/src/META-INF" >
+       </fileset>
+     </copy>
+
+     <jar destfile="${temp.lib}/KalibroCore.jar"
+          basedir="${coreDestination}" >
+     </jar>
+  </target>
+
+  <target name="compileService" depends="prepareJars" >
+    <javac srcdir="${service}" destdir="${serviceDestination}" >
+      <classpath refid="tmpLibrary.classpath" />
+		</javac>		
+
+     <copy todir="${serviceDestination}" flatten="true" >
+       <fileset dir="${service}/src" >
+         <include name="**/*.java" />
+       </fileset>
+     </copy>
+  </target>
+
+  <!--Creates the deployable jar file  -->
+  <target name="war" depends="compileCore, prepareJars, compileService" >
+    <war destfile="KalibroService.war" basedir="${destination}" webxml="KalibroService/WebContent/WEB-INF/web.xml" >
+			<fileset dir="KalibroService/WebContent" >
+        <include name="**/*.*" />
+      </fileset>
+      <lib dir="${temp.lib}" />
+      <classes dir="${serviceDestination}" />
+    </war>
+  </target>
+
+	<target name="main" depends="war, clean" >
+    <description>Builds Kalibro war file</description>
+  </target>
+</project>

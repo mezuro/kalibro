@@ -42,7 +42,8 @@ public class AbstractModuleResultTest extends UnitTest {
 	}
 
 	private AbstractModuleResult<NativeMetricResult> moduleResult(Module theModule) {
-		return new AbstractModuleResult<NativeMetricResult>(theModule) {/* just for test */};
+		return new AbstractModuleResult<NativeMetricResult>(theModule)
+			{ /* just for test */ };
 	}
 
 	@Test

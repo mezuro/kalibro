@@ -5,7 +5,8 @@ import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RangeDao;
 
 /**
- * Evaluation range to be associated with a metric result. Contains {@link Reading} and comments.
+ * Evaluation range to be associated with a metric result. Contains
+ * {@link Reading} and comments.
  * 
  * @author Carlos Morais
  */
@@ -93,7 +94,7 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	public boolean isFinite() {
-		return ! (beginning.isInfinite() || end.isInfinite());
+		return !(beginning.isInfinite() || end.isInfinite());
 	}
 
 	public boolean contains(Double value) {
@@ -125,7 +126,8 @@ public class Range extends AbstractEntity<Range> {
 	}
 
 	public void save() {
-		throwExceptionIf(configuration == null, "Range is not in any configuration.");
+		throwExceptionIf(configuration == null,
+				"Range is not in any configuration.");
 		configuration.assertSaved();
 		if (hasReading())
 			reading.assertSaved();

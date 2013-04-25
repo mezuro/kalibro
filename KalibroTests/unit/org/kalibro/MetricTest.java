@@ -39,6 +39,7 @@ public class MetricTest extends UnitTest {
 	}
 
 	private Metric metric(boolean compound, String name, Granularity scope) {
-		return new Metric(compound, name, scope) {/* just for test */};
+		return new Metric(compound, name, scope)
+			{ /* just for test */ };
 	}
 }

@@ -41,4 +41,9 @@ public interface RepositoryEndpoint {
 
 	@WebMethod
 	void deleteRepository(@WebParam(name = "repositoryId") Long repositoryId);
+
+	@WebMethod
+	@WebResult(name = "repository")
+	RepositoryXml getRepository(@WebParam(name = "repositoryId") Long repositoryId);
+
 }

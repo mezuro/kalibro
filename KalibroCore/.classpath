@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src" />
-
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER" />
-
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Checkstyle 5.5" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Cglib 3.0" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.4.1" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JPA 2.0" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mysql 5.1.22" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PostgreSQL 9.2" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Rhino" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9" />
-	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SQLite v056" />
-
-	<classpathentry kind="output" path="bin" />
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Commons IO 1.4"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Checkstyle 5.5"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Cglib 3.0"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/EclipseLink 2.4.1"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/JPA 2.0"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Mysql 5.1.22"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/PostgreSQL 9.2"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Rhino"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SimpleJavaMail 2.0"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SnakeYaml 1.9"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/SQLite v056"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/Apache Log4j 1.2.17"/>
+	<classpathentry kind="output" path="bin"/>
 </classpath>

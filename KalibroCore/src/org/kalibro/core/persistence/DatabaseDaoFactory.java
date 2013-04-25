@@ -11,6 +11,7 @@ import javax.persistence.Persistence;
 import org.kalibro.DatabaseSettings;
 import org.kalibro.KalibroSettings;
 import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProcessingNotificationDao;
 
 /**
  * Factory of data access objects that read and write on the database.
@@ -23,7 +24,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	private static EntityManagerFactory entityManagerFactory;
 
 	static RecordManager createRecordManager() {
-		if (entityManagerFactory == null || !entityManagerFactory.isOpen())
+		if (entityManagerFactory == null || ! entityManagerFactory.isOpen())
 			updateSettings(currentSettings);
 		return new RecordManager(entityManagerFactory.createEntityManager());
 	}
@@ -48,7 +49,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	public DatabaseDaoFactory(DatabaseSettings settings) {
-		if (!settings.deepEquals(currentSettings))
+		if (! settings.deepEquals(currentSettings))
 			updateSettings(settings);
 	}
 
@@ -105,5 +106,10 @@ public class DatabaseDaoFactory extends DaoFactory {
 	@Override
 	protected RepositoryDatabaseDao createRepositoryDao() {
 		return new RepositoryDatabaseDao();
+	}
+
+	@Override
+	protected ProcessingNotificationDao createProcessingNotificationDao() {
+		return new ProcessingNotificationDatabaseDao();
 	}
 }
