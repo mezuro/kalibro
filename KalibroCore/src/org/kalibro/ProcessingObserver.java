@@ -8,17 +8,17 @@ import org.codemonkey.simplejavamail.Email;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProcessingNotificationDao;
+import org.kalibro.dao.ProcessingObserverDao;
 
 @SortingFields("name")
-public class ProcessingNotification extends AbstractEntity<ProcessingNotification> {
+public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
 
-	public static ProcessingNotification importFrom(File file) {
-		return importFrom(file, ProcessingNotification.class);
+	public static ProcessingObserver importFrom(File file) {
+		return importFrom(file, ProcessingObserver.class);
 	}
 
-	private static ProcessingNotificationDao dao() {
-		return DaoFactory.getProcessingNotificationDao();
+	private static ProcessingObserverDao dao() {
+		return DaoFactory.getProcessingObserverDao();
 	}
 
 	private Long id;
@@ -26,12 +26,11 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 	private String name;
 	private String email;
 	
-	
-	public ProcessingNotification() {
+	public ProcessingObserver() {
 		super();
 	}
 	
-	public ProcessingNotification(String name, String email) {
+	public ProcessingObserver(String name, String email) {
 		setName(name);
 		setEmail(email);
 	}
@@ -76,4 +75,5 @@ public class ProcessingNotification extends AbstractEntity<ProcessingNotificatio
 	public void delete() {
 		dao().delete(id);
 	}
+
 }
