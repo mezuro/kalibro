@@ -12,7 +12,6 @@ import org.kalibro.dao.ProcessingObserverDao;
 
 @SortingFields("name")
 public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
-
 	public static ProcessingObserver importFrom(File file) {
 		return importFrom(file, ProcessingObserver.class);
 	}
@@ -25,6 +24,9 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
 
 	private String name;
 	private String email;
+	
+	private static final String NOREPLY = "This is an automatic message." + 
+		" Please, do not reply.";
 	
 	public ProcessingObserver() {
 		super();
@@ -59,10 +61,10 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
 		this.email = email;
 	}
 
-	public Email createEmail(Repository repository) {
-		Email emailToSend = new Email();
-		emailToSend.setSubject("Repository " + repository.getCompleteName() + " processing results");
-		emailToSend.setText("Processing results in repository " + repository.getName() + " has finished succesfully.");
+	public Email prepareEmailToSend(Email emailToSend, Repository repository) {
+		emailToSend.setSubject(repository.getCompleteName() + " processing results");
+		emailToSend.setText("Processing results in repository " + repository.getName() +
+			" has finished succesfully.\n\n" + NOREPLY);
 		emailToSend.addRecipient(getName(), getEmail(), RecipientType.TO);
 		return emailToSend;
 	}
@@ -75,5 +77,4 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
 	public void delete() {
 		dao().delete(id);
 	}
-
 }

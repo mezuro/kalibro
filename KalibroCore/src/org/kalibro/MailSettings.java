@@ -21,12 +21,16 @@ public class MailSettings extends AbstractEntity<MailSettings> {
 	private String senderMail;
 	@Print (order = 4, comment = "This password shall be stored securely in the future\n")
 	private String password;
+	@Print (order = 5)
+	private String sender;
 
 	public MailSettings() {
 		setSmtpHost("smtp.gmail.com");
 		setSmtpPort(465);
 		setSenderMail("example@gmail.com");
 		setPassword("securepassword");
+		setSender("Kalibro");
+		
 	}
 
 	public String getSmtpHost() {
@@ -61,6 +65,15 @@ public class MailSettings extends AbstractEntity<MailSettings> {
 		this.password = password;
 	}
 
+	
+	public String getSender() {
+		return sender;
+	}
+	
+	public void setSender(String sender) {
+		this.sender = sender;
+	}
+	
 	public Mailer createMailer() {
 		return new Mailer(smtpHost, smtpPort, senderMail, password, TransportStrategy.SMTP_SSL);
 	}
