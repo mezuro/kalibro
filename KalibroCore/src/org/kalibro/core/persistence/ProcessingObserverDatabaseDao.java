@@ -24,7 +24,7 @@ public class ProcessingObserverDatabaseDao extends
 	}
 
 	@Override
-	public Long save(ProcessingObserver processingNotification, Long repositoryId) {
-		return save(new ProcessingObserverRecord(processingNotification, repositoryId)).id();
+	public Long save(ProcessingObserver processingObserver, Long repositoryId) {
+		return save(new ProcessingObserverRecord(processingObserver, repositoryId)).id();
 	}
 }

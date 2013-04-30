@@ -108,7 +108,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	public ProcessingNotificationDatabaseDao createProcessingNotificationDao() {
-		return new ProcessingNotificationDatabaseDao();
+	public ProcessingObserverDatabaseDao createProcessingObserverDao() {
+		return new ProcessingObserverDatabaseDao();
 	}
 }

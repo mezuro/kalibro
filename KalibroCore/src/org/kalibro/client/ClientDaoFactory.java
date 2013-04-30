@@ -71,7 +71,7 @@ public class ClientDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected ProcessingNotificationDao createProcessingNotificationDao() {
-		return new ProcessingNotificationClientDao(serviceAddress);
+	protected ProcessingObserverDao createProcessingObserverDao() {
+		return new ProcessingObserverClientDao(serviceAddress);
 	}
 }
