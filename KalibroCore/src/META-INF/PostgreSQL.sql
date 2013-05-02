@@ -231,7 +231,7 @@ INSERT INTO sequences SELECT 'processing', 0
   WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing');
 
 INSERT INTO sequences SELECT 'processing_observer', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing_notification');
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing_observer');
   
 INSERT INTO sequences SELECT 'throwable', 0
   WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'throwable');

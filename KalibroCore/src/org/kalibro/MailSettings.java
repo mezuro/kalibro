@@ -27,8 +27,8 @@ public class MailSettings extends AbstractEntity<MailSettings> {
 	public MailSettings() {
 		setSmtpHost("smtp.gmail.com");
 		setSmtpPort(465);
-		setSenderMail("example@gmail.com");
-		setPassword("securepassword");
+		setSenderMail("kalibro.mail@gmail.com");
+		setPassword("kalibro123");
 		setSender("Kalibro");
 		
 	}

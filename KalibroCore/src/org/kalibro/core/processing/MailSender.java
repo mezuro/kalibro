@@ -1,45 +1,24 @@
 package org.kalibro.core.processing;
 
-import java.util.SortedSet;
-
 import org.codemonkey.simplejavamail.Email;
 import org.codemonkey.simplejavamail.Mailer;
 import org.kalibro.KalibroSettings;
 import org.kalibro.MailSettings;
-import org.kalibro.ProcessingObserver;
-import org.kalibro.Repository;
-import org.kalibro.core.concurrent.TaskListener;
-import org.kalibro.core.concurrent.TaskReport;
-import org.kalibro.core.persistence.ProcessingObserverDatabaseDao;
-import org.kalibro.dao.DaoFactory;
 
-public class MailSender implements TaskListener<Void> {
+public class MailSender {
 
-	private final Repository repository;
+	private MailSettings mailSettings;
 
-	public MailSender(Repository repository) {
-		this.repository = repository;
-	}
-
-	@Override
-	public void taskFinished(TaskReport<Void> report) {
-		if (report.isTaskDone())
-			sendEmail();
+	public MailSender() {
+		this.mailSettings = KalibroSettings.load().getMailSettings();
 	}
 	
-	public void sendEmail() {
-		MailSettings mailSettings = KalibroSettings.load().getMailSettings();
+	public void sendEmail(Email email) {
 		Mailer mailer = mailSettings.createMailer();
-		
-		ProcessingObserverDatabaseDao processingObserverDatabaseDao = 
-			(ProcessingObserverDatabaseDao) DaoFactory.getProcessingObserverDao();
-		SortedSet<ProcessingObserver> observers = processingObserverDatabaseDao.
-			observersOf(repository.getId());
-		for (ProcessingObserver observer : observers)
-			mailer.sendMail(observer.prepareEmailToSend(createEmptyEmailWithSender(mailSettings), repository));
+		mailer.sendMail(email);
 	}
 	
-	private Email createEmptyEmailWithSender(MailSettings mailSettings) {
+	public Email createEmptyEmailWithSender() {
 		Email email = new Email();
 		email.setFromAddress(mailSettings.getSender(), mailSettings.getSenderMail());
 		return email;
