@@ -7,11 +7,14 @@ import javax.mail.Message.RecipientType;
 import org.codemonkey.simplejavamail.Email;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.processing.MailSender;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProcessingObserverDao;
 
 @SortingFields("name")
-public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
+public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
+			implements Observer<Repository, ProcessState> {
+	
 	public static ProcessingObserver importFrom(File file) {
 		return importFrom(file, ProcessingObserver.class);
 	}
@@ -25,7 +28,7 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
 	private String name;
 	private String email;
 	
-	private static final String NOREPLY = "This is an automatic message." + 
+	private static final String NOREPLY = "\n\nThis is an automatic message." + 
 		" Please, do not reply.";
 	
 	public ProcessingObserver() {
@@ -61,12 +64,22 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
 		this.email = email;
 	}
 
-	public Email prepareEmailToSend(Email emailToSend, Repository repository) {
+	public void sendEmail(Repository repository, ProcessState processState) {
+		MailSender mailSender = new MailSender();
+		Email emailToSend = mailSender.createEmptyEmailWithSender();
+		
+		String status;
+		if (processState.equals(ProcessState.READY))
+			status = " has finished succesfully.";
+		else
+			status = " has resulted in error.";
+		
 		emailToSend.setSubject(repository.getCompleteName() + " processing results");
 		emailToSend.setText("Processing results in repository " + repository.getName() +
-			" has finished succesfully.\n\n" + NOREPLY);
+			status + NOREPLY);
 		emailToSend.addRecipient(getName(), getEmail(), RecipientType.TO);
-		return emailToSend;
+		
+		mailSender.sendEmail(emailToSend);
 	}
 
 	public void save(Repository repository) {
@@ -76,5 +89,10 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver> {
 
 	public void delete() {
 		dao().delete(id);
+	}
+	
+	@Override
+	public void update(Repository repository, ProcessState processState) {
+		sendEmail(repository, processState);
 	}
 }
