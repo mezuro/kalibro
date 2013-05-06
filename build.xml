@@ -86,7 +86,7 @@
   </target>
 
   <!--Creates the deployable jar file  -->
-  <target name="war" depends="compileCore, prepareJars, compileService" >
+  <target name="war" depends="compileCore, prepareJars, compileService, weaving" >
     <war destfile="KalibroService.war" basedir="${destination}" webxml="KalibroService/WebContent/WEB-INF/web.xml" >
 			<fileset dir="KalibroService/WebContent" >
         <include name="**/*.*" />
@@ -95,6 +95,10 @@
       <classes dir="${serviceDestination}" />
     </war>
   </target>
+
+	<target name="weaving" >	
+		<ant antfile="weave.xml" dir="${core}" inheritAll="false" target="weaving" />
+	</target>
 
 	<target name="main" depends="war, clean" >
     <description>Builds Kalibro war file</description>
