@@ -25,13 +25,14 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 	DatabaseDaoFactory daoFactory;
 	Producer<NativeModuleResult> resultProducer;
 	SortedSet<ProcessingObserver> observers;
-	
+
 	public ProcessTask(Repository repository) {
 		this.repository = repository;
+		setObservers();
 	}
-	
+
 	public void setObservers() {
-		ProcessingObserverDatabaseDao processingObserverDatabaseDao = 
+		ProcessingObserverDatabaseDao processingObserverDatabaseDao =
 			(ProcessingObserverDatabaseDao) DaoFactory.getProcessingObserverDao();
 		this.observers = processingObserverDatabaseDao.
 			observersOf(repository.getId());
@@ -45,7 +46,6 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 		new LoadingTask().prepare(this).execute();
 		new CollectingTask().prepare(this).executeInBackground();
 		ProcessSubtask analyzingTask = new AnalyzingTask().prepare(this);
-		setObservers();
 		analyzingTask.execute();
 	}
 
@@ -54,9 +54,9 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 		processing.setStateTime(getTaskState(report), report.getExecutionTime());
 		if (processing.getState().isTemporary())
 			updateState(report);
-		if (!processing.getState().isTemporary())
+		if (! processing.getState().isTemporary())
 			notifyObservers();
-		
+
 		daoFactory.createProcessingDao().save(processing, repository.getId());
 	}
 
@@ -73,7 +73,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 		else
 			processing.setError(report.getError());
 	}
-	
+
 	private ProcessState getTaskState(TaskReport<Void> report) {
 		String taskClassName = report.getTask().getClass().getSimpleName();
 		return ProcessState.valueOf(taskClassName.replace("Task", "").toUpperCase());

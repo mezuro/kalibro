@@ -117,7 +117,7 @@ CREATE TABLE IF NOT EXISTS "processing" (
 
 CREATE TABLE IF NOT EXISTS "processing_observer" (
   "id" BIGINT NOT NULL PRIMARY KEY,
-  "repository_id" BIGINT NOT NULL REFERENCES "repository"("id") ON DELETE CASCADE,
+  "repository" BIGINT NOT NULL REFERENCES "repository"("id") ON DELETE CASCADE,
   "name" VARCHAR(255) NOT NULL,
   "email" VARCHAR(255) NOT NULL
 );
