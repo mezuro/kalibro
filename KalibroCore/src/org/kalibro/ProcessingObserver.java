@@ -70,7 +70,7 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 		
 		String status;
 		if (processState.equals(ProcessState.READY))
-			status = " has finished succesfully.";
+			status = " has finished successfully.";
 		else
 			status = " has resulted in error.";
 		
