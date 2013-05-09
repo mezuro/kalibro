@@ -11,9 +11,10 @@
 	<property name="service" location="KalibroService" />
   <property name="libraries" location="Libraries" />
   <property name="coreDestination" location="tmpCore" />
-  <property name="destination" location="Kalibro-1.0" />
   <property name="temp.lib" location="tmpLibrary" />
   <property name="serviceDestination" location="tmpService" />
+  <property name="destination" location="KalibroCore/bin" />
+	<property environment="env" />
 
 
   <!-- Create a classpath container which can be later used in the ant task -->
@@ -40,9 +41,9 @@
   <!-- Creates the  build, docs and dist directory-->
   <target name="makedir" >
     <mkdir dir="${coreDestination}" />
-    <mkdir dir="${destination}" />
     <mkdir dir="${serviceDestination}" />
     <mkdir dir="${temp.lib}" />
+    <mkdir dir="${destination}" />
   </target>
 
   <!-- Compiles the java code (including the usage of library for JUnit -->
@@ -63,22 +64,23 @@
        </fileset>
      </copy>
 
-     <copy todir="${coreDestination}/META-INF" >
-       <fileset dir="${core}/src/META-INF" >
+     <copy todir="${coreDestination}" >
+       <fileset dir="${core}/src" >
        </fileset>
      </copy>
+
 
      <jar destfile="${temp.lib}/KalibroCore.jar"
           basedir="${coreDestination}" >
      </jar>
   </target>
 
-  <target name="compileService" depends="prepareJars" >
+  <target name="compileService" depends="weaving, prepareJars" >
     <javac srcdir="${service}" destdir="${serviceDestination}" >
       <classpath refid="tmpLibrary.classpath" />
 		</javac>		
 
-     <copy todir="${serviceDestination}" flatten="true" >
+     <copy todir="${serviceDestination}" >
        <fileset dir="${service}/src" >
          <include name="**/*.java" />
        </fileset>
@@ -86,7 +88,7 @@
   </target>
 
   <!--Creates the deployable jar file  -->
-  <target name="war" depends="compileCore, prepareJars, compileService, weaving" >
+  <target name="war" depends="compileCore, prepareJars, weaving, compileService" >
     <war destfile="KalibroService.war" basedir="${destination}" webxml="KalibroService/WebContent/WEB-INF/web.xml" >
 			<fileset dir="KalibroService/WebContent" >
         <include name="**/*.*" />
@@ -96,8 +98,26 @@
     </war>
   </target>
 
-	<target name="weaving" >	
-		<ant antfile="weave.xml" dir="${core}" inheritAll="false" target="weaving" />
+	<path id="weavingclasspath">
+		<fileset dir="${temp.lib}">
+			<include name="**/*.jar" />
+		</fileset>
+		<pathelement location="classes" />
+		<dirset dir="${coreDestination}">
+			<include name="**/classes" />
+		</dirset>
+	</path>
+
+	<target name="define.weave">
+		<taskdef name="weave" classname="org.eclipse.persistence.tools.weaving.jpa.StaticWeaveAntTask">
+			<classpath refid="weavingclasspath" />
+		</taskdef>
+	</target>
+
+	<target name="weaving" depends="define.weave">
+		<weave loglevel="WARNING" source="${coreDestination}" target="${coreDestination}" >
+			<classpath refid="weavingclasspath" />
+		</weave>
 	</target>
 
 	<target name="main" depends="war, clean" >
