@@ -22,7 +22,7 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	private static ProcessingObserverDao dao() {
 		return DaoFactory.getProcessingObserverDao();
 	}
-
+	
 	private Long id;
 
 	private String name;
@@ -32,18 +32,22 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 		" Please, do not reply.";
 	
 	public ProcessingObserver() {
-		super();
+		this("New name", "New email");
 	}
 	
 	public ProcessingObserver(String name, String email) {
 		setName(name);
 		setEmail(email);
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
 
+	public boolean hasId() {
+		return id != null;
+	}
+	
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -64,7 +68,7 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 		this.email = email;
 	}
 
-	public void sendEmail(Repository repository, ProcessState processState) {
+	private void sendEmail(Repository repository, ProcessState processState) {
 		MailSender mailSender = new MailSender();
 		Email emailToSend = mailSender.createEmptyEmailWithSender();
 		
@@ -88,7 +92,13 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	}
 
 	public void delete() {
-		dao().delete(id);
+		if (hasId()) 
+			dao().delete(id);
+		deleted();
+	}
+	
+	private void deleted() {
+		id = null;
 	}
 	
 	@Override
