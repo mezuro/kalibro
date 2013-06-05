@@ -34,6 +34,7 @@ class LoadingTask extends ProcessSubtask {
 
 	private File prepareDirectory(File parent, Long id, String name) {
 		parent.mkdirs();
+		assert parent.exists() : "Could not create directory: " + parent;
 		String suffix = "-" + id;
 		File directory = new File(parent, Identifier.fromText(name).asClassName() + suffix);
 		File[] withSuffix = listWithSuffix(parent, suffix);
