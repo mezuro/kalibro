@@ -13,8 +13,8 @@ import org.kalibro.dao.ProcessingObserverDao;
 
 @SortingFields("name")
 public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
-			implements Observer<Repository, ProcessState> {
-	
+	implements Observer<Repository, ProcessState> {
+
 	public static ProcessingObserver importFrom(File file) {
 		return importFrom(file, ProcessingObserver.class);
 	}
@@ -22,19 +22,19 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	private static ProcessingObserverDao dao() {
 		return DaoFactory.getProcessingObserverDao();
 	}
-	
+
 	private Long id;
 
 	private String name;
 	private String email;
-	
-	private static final String NOREPLY = "\n\nThis is an automatic message." + 
+
+	private static final String NOREPLY = "\n\nThis is an automatic message." +
 		" Please, do not reply.";
-	
+
 	public ProcessingObserver() {
 		this("New name", "New email");
 	}
-	
+
 	public ProcessingObserver(String name, String email) {
 		setName(name);
 		setEmail(email);
@@ -47,7 +47,7 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	public boolean hasId() {
 		return id != null;
 	}
-	
+
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -69,21 +69,20 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	}
 
 	private void sendEmail(Repository repository, ProcessState processState) {
-		MailSender mailSender = new MailSender();
-		Email emailToSend = mailSender.createEmptyEmailWithSender();
-		
+		Email emailToSend = MailSender.createEmptyEmailWithSender();
+
 		String status;
 		if (processState.equals(ProcessState.READY))
 			status = " has finished successfully.";
 		else
 			status = " has resulted in error.";
-		
+
 		emailToSend.setSubject(repository.getCompleteName() + " processing results");
 		emailToSend.setText("Processing results in repository " + repository.getName() +
 			status + NOREPLY);
 		emailToSend.addRecipient(getName(), getEmail(), RecipientType.TO);
-		
-		mailSender.sendEmail(emailToSend);
+
+		MailSender.sendEmail(emailToSend);
 	}
 
 	public void save(Repository repository) {
@@ -92,15 +91,15 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	}
 
 	public void delete() {
-		if (hasId()) 
+		if (hasId())
 			dao().delete(id);
 		deleted();
 	}
-	
+
 	private void deleted() {
 		id = null;
 	}
-	
+
 	@Override
 	public void update(Repository repository, ProcessState processState) {
 		sendEmail(repository, processState);
