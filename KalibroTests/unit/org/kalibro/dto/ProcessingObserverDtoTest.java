@@ -6,7 +6,8 @@ public class ProcessingObserverDtoTest extends AbstractDtoTest<ProcessingObserve
 
 	@Override
 	protected ProcessingObserver loadFixture() {
-		return loadFixture("", ProcessingObserver.class);
+		return new ProcessingObserver("ProcessingObserverDtoTest name",
+			"ProcessingObserverDtoTest email");
 	}
 
 }
