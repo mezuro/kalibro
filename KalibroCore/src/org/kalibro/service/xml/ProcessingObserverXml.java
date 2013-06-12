@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.ProcessingObserver;
 import org.kalibro.dto.ProcessingObserverDto;
 
-@XmlRootElement(name = "processingNotification")
+@XmlRootElement(name = "processingObserver")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ProcessingObserverXml extends ProcessingObserverDto {
 
@@ -25,10 +25,10 @@ public class ProcessingObserverXml extends ProcessingObserverDto {
 		super();
 	}
 
-	public ProcessingObserverXml(ProcessingObserver processingNotification) {
-		id = processingNotification.getId();
-		name = processingNotification.getName();
-		email = processingNotification.getEmail();
+	public ProcessingObserverXml(ProcessingObserver processingObserver) {
+		id = processingObserver.getId();
+		name = processingObserver.getName();
+		email = processingObserver.getEmail();
 	}
 
 	@Override

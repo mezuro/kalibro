@@ -9,7 +9,7 @@ import javax.jws.WebService;
 
 import org.kalibro.service.xml.ProcessingObserverXml;
 
-@WebService(name = "ProcessingNotificationEndpoint", serviceName = "ProcessingNotificationEndpointService")
+@WebService(name = "ProcessingObserverEndpoint", serviceName = "ProcessingObserverEndpointService")
 public interface ProcessingObserverEndpoint {
 
 	@WebMethod
@@ -18,9 +18,9 @@ public interface ProcessingObserverEndpoint {
 	@WebMethod
 	@WebResult(name = "processingObserverId")
 	Long saveProcessingObserver(
-		@WebParam(name = "processingObserver") ProcessingObserverXml processingNotification,
+		@WebParam(name = "processingObserver") ProcessingObserverXml processingObserver,
 		@WebParam(name = "repositoryId") Long repositoryId);
 
 	@WebMethod
-	void deleteProcessingObserver(@WebParam(name = "processingObserverId") Long processingNotificationId);
+	void deleteProcessingObserver(@WebParam(name = "processingObserverId") Long processingObserverId);
 }

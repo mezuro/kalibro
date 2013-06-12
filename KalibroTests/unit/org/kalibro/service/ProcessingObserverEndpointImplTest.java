@@ -20,7 +20,7 @@ public class ProcessingObserverEndpointImplTest
 
 	@Test
 	public void shouldGetAll() {
-		doReturn(sortedSet(entity)).when(dao).all();
+		when(dao.all()).thenReturn(sortedSet(entity));
 		assertDeepEquals(list(xml), implementor.allProcessingObservers());
 	}
 

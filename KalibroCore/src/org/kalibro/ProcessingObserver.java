@@ -6,6 +6,7 @@ import javax.mail.Message.RecipientType;
 
 import org.codemonkey.simplejavamail.Email;
 import org.kalibro.core.abstractentity.AbstractEntity;
+import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.processing.MailSender;
 import org.kalibro.dao.DaoFactory;
@@ -22,10 +23,14 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	private static ProcessingObserverDao dao() {
 		return DaoFactory.getProcessingObserverDao();
 	}
-
+	
+	@Print(skip = true)
 	private Long id;
 
+	@Print(order = 1)
 	private String name;
+	
+	@Print(order = 2)
 	private String email;
 
 	private static final String NOREPLY = "\n\nThis is an automatic message." +

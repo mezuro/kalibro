@@ -8,7 +8,7 @@ public interface ProcessingObserverDao {
 
 	SortedSet<ProcessingObserver> all();
 
-	Long save(ProcessingObserver processingNotification, Long repositoryId);
+	Long save(ProcessingObserver processingObserver, Long repositoryId);
 
-	void delete(Long processingNotificationId);
+	void delete(Long processingObserverId);
 }
