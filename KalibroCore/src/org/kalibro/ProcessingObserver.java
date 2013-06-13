@@ -23,13 +23,13 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	private static ProcessingObserverDao dao() {
 		return DaoFactory.getProcessingObserverDao();
 	}
-	
+
 	@Print(skip = true)
 	private Long id;
 
 	@Print(order = 1)
 	private String name;
-	
+
 	@Print(order = 2)
 	private String email;
 
@@ -91,7 +91,8 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	}
 
 	public void save(Repository repository) {
-		throwExceptionIf(repository == null, "Notification is not related to any repository.");
+		if (repository == null)
+			throw new KalibroException("Notification is not related to any repository.");
 		id = dao().save(this, repository.getId());
 	}
 

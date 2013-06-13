@@ -30,6 +30,10 @@ public class ProcessingObserverRecord extends ProcessingObserverDto {
 		super();
 	}
 
+	public ProcessingObserverRecord(ProcessingObserver processingObserver) {
+		this(processingObserver, null);
+	}
+
 	public ProcessingObserverRecord(ProcessingObserver processingObserver, Long repositoryId) {
 		id = processingObserver.getId();
 		this.repository = repositoryId;

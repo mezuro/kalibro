@@ -31,7 +31,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 		setObservers();
 	}
 
-	public void setObservers() {
+	private void setObservers() {
 		ProcessingObserverDatabaseDao processingObserverDatabaseDao =
 			(ProcessingObserverDatabaseDao) DaoFactory.getProcessingObserverDao();
 		this.observers = processingObserverDatabaseDao.
@@ -54,8 +54,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 		processing.setStateTime(getTaskState(report), report.getExecutionTime());
 		if (processing.getState().isTemporary())
 			updateState(report);
-		if (! processing.getState().isTemporary())
-			notifyObservers();
+		tryToNotify();
 
 		daoFactory.createProcessingDao().save(processing, repository.getId());
 	}
@@ -72,6 +71,11 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 			processing.setState(getTaskState(report).nextState());
 		else
 			processing.setError(report.getError());
+	}
+
+	private void tryToNotify() {
+		if (! processing.getState().isTemporary())
+			notifyObservers();
 	}
 
 	private ProcessState getTaskState(TaskReport<Void> report) {
