@@ -1,6 +1,6 @@
 package org.kalibro;
 
-import java.io.File;
+import java.util.SortedSet;
 
 import javax.mail.Message.RecipientType;
 
@@ -16,8 +16,8 @@ import org.kalibro.dao.ProcessingObserverDao;
 public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	implements Observer<Repository, ProcessState> {
 
-	public static ProcessingObserver importFrom(File file) {
-		return importFrom(file, ProcessingObserver.class);
+	public static SortedSet<ProcessingObserver> all() {
+		return dao().all();
 	}
 
 	private static ProcessingObserverDao dao() {
@@ -92,7 +92,10 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 
 	public void save(Repository repository) {
 		if (repository == null)
-			throw new KalibroException("Notification is not related to any repository.");
+			throw new KalibroException("ProcessingObserver is not related to any repository.");
+		throwExceptionIf(name.trim().isEmpty(), "ProcessingObserver requires name.");
+		throwExceptionIf(email.trim().isEmpty(), "ProcessingObserver requires email.");
+		repository.assertSaved();
 		id = dao().save(this, repository.getId());
 	}
 

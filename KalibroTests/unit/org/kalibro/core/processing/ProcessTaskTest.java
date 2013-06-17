@@ -79,7 +79,7 @@ public class ProcessTaskTest extends UnitTest {
 		return subtask;
 	}
 
-	// @Test
+	@Test
 	public void shouldPrepareAndExecuteSubtasks() {
 		InOrder order = Mockito.inOrder(loadingTask, collectingTask, analyzingTask);
 		order.verify(loadingTask).prepare(processTask);
@@ -98,28 +98,31 @@ public class ProcessTaskTest extends UnitTest {
 		InOrder order = Mockito.inOrder(processing, processTask, processingDao);
 		order.verify(processing).setStateTime(ProcessState.READY, EXECUTION_TIME);
 		order.verify(processing).setState(ProcessState.READY.nextState());
-		// order.verify(processTask).notifyObservers();
+		order.verify(processTask).tryToNotify();
 		order.verify(processingDao).save(processing, REPOSITORY_ID);
 	}
 
-	// @Test
+	@Test
 	public void shouldUpdateProcessingOnTaskHalted() {
 		Throwable error = mock(Throwable.class);
 		when(processing.getState()).thenReturn(ProcessState.COLLECTING);
 		processTask.taskFinished(report(error));
 
-		InOrder order = Mockito.inOrder(processing, processingDao);
+		InOrder order = Mockito.inOrder(processing, processTask, processingDao);
 		order.verify(processing).setStateTime(ProcessState.READY, EXECUTION_TIME);
 		order.verify(processing).setError(error);
+		order.verify(processTask).tryToNotify();
 		order.verify(processingDao).save(processing, REPOSITORY_ID);
 	}
 
-	// @Test
+	@Test
 	public void shouldNotUpdateStateOnlyIfCurrentStateIsTemporary() {
 		when(processing.getState()).thenReturn(ProcessState.ERROR);
 		processTask.taskFinished(report(null));
 		verify(processing, never()).setState(any(ProcessState.class));
 		verify(processing, never()).setError(any(Throwable.class));
+		verify(processTask).tryToNotify();
+		verify(processingDao).save(processing, REPOSITORY_ID);
 	}
 
 	private TaskReport<Void> report(Throwable error) {
@@ -131,7 +134,22 @@ public class ProcessTaskTest extends UnitTest {
 		return report;
 	}
 
-	// @Test
+	@Test
+	public void shouldNotifyObservers() {
+		when(processing.getState()).thenReturn(ProcessState.READY);
+		processTask.tryToNotify();
+		verify(processTask).notifyObservers();
+	}
+
+	@Test
+	public void shouldNotNotifyObservers() {
+		when(processing.getState()).thenReturn(ProcessState.ANALYZING);
+		processTask.tryToNotify();
+		verify(processTask, never()).notifyObservers();
+	}
+
+	// FIXME
+	@Test
 	public void shouldNotifyAllObservers() {
 		ProcessingObserver processingObserver = mock(ProcessingObserver.class);
 		ProcessingObserver anotherProcessingObserver = mock(ProcessingObserver.class);
@@ -141,6 +159,7 @@ public class ProcessTaskTest extends UnitTest {
 		observers.add(anotherProcessingObserver);
 		Assert.assertTrue(observers.contains(processingObserver));
 		Assert.assertTrue(observers.contains(anotherProcessingObserver));
+
 		System.out.println(observers.size());
 
 		when(processing.getState()).thenReturn(ProcessState.ERROR);
@@ -150,11 +169,10 @@ public class ProcessTaskTest extends UnitTest {
 		}
 	}
 
-	// @Test
+	@Test
 	public void shouldNotNotifyIfThereIsNoObserver() {
 		Assert.assertTrue(observers.isEmpty());
 		processTask.notifyObservers();
 		verify(processing, never()).getState();
 	}
-
 }

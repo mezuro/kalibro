@@ -73,7 +73,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 			processing.setError(report.getError());
 	}
 
-	private void tryToNotify() {
+	void tryToNotify() {
 		if (! processing.getState().isTemporary())
 			notifyObservers();
 	}
