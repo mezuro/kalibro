@@ -7,16 +7,19 @@ import org.kalibro.MailSettings;
 
 public abstract class MailSender {
 
-	private static final MailSettings MAIL_SETTINGS = KalibroSettings.load().getMailSettings();
+	private static MailSettings mailSettings() {
+		return KalibroSettings.load().getMailSettings();
+	}
 
 	public static void sendEmail(Email email) {
-		Mailer mailer = MAIL_SETTINGS.createMailer();
+		Mailer mailer = mailSettings().createMailer();
 		mailer.sendMail(email);
 	}
 
 	public static Email createEmptyEmailWithSender() {
 		Email email = new Email();
-		email.setFromAddress(MAIL_SETTINGS.getSender(), MAIL_SETTINGS.getSenderMail());
+		MailSettings mailSettings = mailSettings();
+		email.setFromAddress(mailSettings.getSender(), mailSettings.getSenderMail());
 		return email;
 	}
 }

@@ -148,25 +148,23 @@ public class ProcessTaskTest extends UnitTest {
 		verify(processTask, never()).notifyObservers();
 	}
 
-	// FIXME
 	@Test
 	public void shouldNotifyAllObservers() {
 		ProcessingObserver processingObserver = mock(ProcessingObserver.class);
 		ProcessingObserver anotherProcessingObserver = mock(ProcessingObserver.class);
-
+		when(processingObserver.compareTo(anotherProcessingObserver)).thenReturn(1);
+		when(anotherProcessingObserver.compareTo(processingObserver)).thenReturn(-1);
+		
 		Assert.assertTrue(observers.isEmpty());
 		observers.add(processingObserver);
 		observers.add(anotherProcessingObserver);
 		Assert.assertTrue(observers.contains(processingObserver));
 		Assert.assertTrue(observers.contains(anotherProcessingObserver));
 
-		System.out.println(observers.size());
-
 		when(processing.getState()).thenReturn(ProcessState.ERROR);
 		processTask.notifyObservers();
-		for (ProcessingObserver observer : observers) {
+		for (ProcessingObserver observer : observers)
 			verify(observer).update(repository, ProcessState.ERROR);
-		}
 	}
 
 	@Test
