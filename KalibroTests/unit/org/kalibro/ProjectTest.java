@@ -112,7 +112,7 @@ public class ProjectTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRequiredNameToSave() {
+	public void shouldRequireNameToSave() {
 		project.setName(" ");
 		assertThat(new VoidTask() {
 

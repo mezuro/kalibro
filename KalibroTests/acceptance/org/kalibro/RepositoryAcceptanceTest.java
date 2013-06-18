@@ -1,12 +1,17 @@
 package org.kalibro;
 
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
+
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
+import org.kalibro.dao.DaoFactory;
+import org.kalibro.dao.ProcessingObserverDao;
 import org.kalibro.tests.AcceptanceTest;
+import org.powermock.reflect.Whitebox;
 
 public class RepositoryAcceptanceTest extends AcceptanceTest {
 
@@ -63,20 +68,24 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void nameShouldBeRequired() {
+		String name = repository.getName();
 		repository.setName(" ");
 		assertSave().throwsException().withMessage("Repository requires name.");
-		repository.setName("name");
+		repository.setName(name);
 	}
 
 	private void addressShouldBeRequired() {
+		String address = repository.getAddress();
 		repository.setAddress(" ");
 		assertSave().throwsException().withMessage("Repository requires address.");
-		repository.setAddress("address");
+		repository.setAddress(address);
 	}
 
 	private void configurationShouldBeRequired() {
+		Configuration c = repository.getConfiguration();
 		repository.setConfiguration(null);
 		assertSave().throwsException().withMessage("A configuration should be associated with the repository.");
+		repository.setConfiguration(c);
 	}
 
 	private TaskMatcher assertSave() {
@@ -87,5 +96,30 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 				repository.save();
 			}
 		});
+	}
+
+	@Theory
+	public void deleteRepositoryShouldCascadeToProcessingObservers(SupportedDatabase databaseType) throws Exception {
+		resetDatabase(databaseType);
+		repository.save();
+		ProcessingObserver processingObserver = new ProcessingObserver();
+		processingObserver.save(repository);
+		assertEquals(processingObserversOf(repository), allProcessingObservers());
+
+		repository.delete();
+		assertTrue(allProcessingObservers().isEmpty());
+	}
+
+	private Set<ProcessingObserver> allProcessingObservers() throws Exception {
+		ProcessingObserverDao processingObserverDao = DaoFactory.getProcessingObserverDao();
+		Set<ProcessingObserver> allProcessingObservers = Whitebox.invokeMethod(processingObserverDao, "all");
+		return allProcessingObservers;
+	}
+
+	private Set<ProcessingObserver> processingObserversOf(Repository r) throws Exception {
+		ProcessingObserverDao processingObserverDao = DaoFactory.getProcessingObserverDao();
+		Set<ProcessingObserver> processingObserversOf = Whitebox.invokeMethod(processingObserverDao, "observersOf",
+			r.getId());
+		return processingObserversOf;
 	}
 }

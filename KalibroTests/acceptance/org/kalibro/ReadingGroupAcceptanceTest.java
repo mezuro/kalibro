@@ -67,8 +67,10 @@ public class ReadingGroupAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void nameShouldBeRequired() {
+		String name = group.getName();
 		group.setName(" ");
 		assertSave().throwsException().withMessage("Reading group requires name.");
+		group.setName(name);
 	}
 
 	private TaskMatcher assertSave() {

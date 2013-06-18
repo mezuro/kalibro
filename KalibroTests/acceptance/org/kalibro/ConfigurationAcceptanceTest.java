@@ -75,8 +75,10 @@ public class ConfigurationAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void nameShouldBeRequired() {
+		String name = configuration.getName();
 		configuration.setName(" ");
 		assertSave().throwsException().withMessage("Configuration requires name.");
+		configuration.setName(name);
 	}
 
 	private TaskMatcher assertSave() {

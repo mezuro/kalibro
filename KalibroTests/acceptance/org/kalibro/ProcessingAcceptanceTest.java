@@ -49,11 +49,16 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		verifyProcessDone();
 		verifyResults();
 
-		// should allow changing repository type
+		shouldAllowChangingRepositoryType();
+	}
+
+	private void shouldAllowChangingRepositoryType() throws InterruptedException {
+		RepositoryType repositoryType = repository.getType();
 		repository.setType(RepositoryType.GIT);
 		repository.setAddress(repositoriesDirectory().getAbsolutePath() + "/HelloWorldGit/");
 		process();
 		verifyProcessDone();
+		repository.setType(repositoryType);
 	}
 
 	private void verifyProcessDone() {
@@ -174,6 +179,6 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	}
 
 	private boolean isProcessOngoing() {
-		return !Processing.hasProcessing(repository) || Processing.lastProcessingState(repository).isTemporary();
+		return ! Processing.hasProcessing(repository) || Processing.lastProcessingState(repository).isTemporary();
 	}
 }

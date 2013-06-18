@@ -134,7 +134,7 @@ public class ReadingGroupTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldRequiredNameToSave() {
+	public void shouldRequireNameToSave() {
 		group.setName(" ");
 		assertThat(new VoidTask() {
 

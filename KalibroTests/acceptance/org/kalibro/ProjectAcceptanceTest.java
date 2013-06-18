@@ -72,8 +72,10 @@ public class ProjectAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void nameShouldBeRequired() {
+		String name = project.getName();
 		project.setName(" ");
 		assertSave().throwsException().withMessage("Project requires name.");
+		project.setName(name);
 	}
 
 	private TaskMatcher assertSave() {
