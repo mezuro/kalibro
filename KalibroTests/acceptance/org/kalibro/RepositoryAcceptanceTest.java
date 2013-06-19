@@ -110,10 +110,9 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 		assertTrue(allProcessingObservers().isEmpty());
 	}
 
-	private Set<ProcessingObserver> allProcessingObservers() throws Exception {
+	private Set<ProcessingObserver> allProcessingObservers() {
 		ProcessingObserverDao processingObserverDao = DaoFactory.getProcessingObserverDao();
-		Set<ProcessingObserver> allProcessingObservers = Whitebox.invokeMethod(processingObserverDao, "all");
-		return allProcessingObservers;
+		return processingObserverDao.all();
 	}
 
 	private Set<ProcessingObserver> processingObserversOf(Repository r) throws Exception {
