@@ -3,6 +3,8 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kalibro.KalibroException;
+
 /**
  * Loader for CVS repositories.
  * 
@@ -25,5 +27,13 @@ public class CvsLoader extends RepositoryLoader {
 	@Override
 	protected String metadataDirectoryName() {
 		return "CVSROOT";
+	}
+
+	@Override
+	// FIXME
+	protected List<String> rollBackOneCommit(boolean update) {
+		if (!update)
+			throw new KalibroException(LOAD_ERROR_MESSAGE); 
+		return null;
 	}
 }

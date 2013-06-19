@@ -3,6 +3,8 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kalibro.KalibroException;
+
 /**
  * Loader for Subversion repositories.
  * 
@@ -26,4 +28,15 @@ public class SubversionLoader extends RepositoryLoader {
 	protected String metadataDirectoryName() {
 		return ".svn";
 	}
+
+	@Override
+	protected List<String> rollBackOneCommit(boolean update) {
+		if (!update)
+			throw new KalibroException(LOAD_ERROR_MESSAGE);
+
+		// command svn info + 1
+		Long previousRevision = new Long(1);
+		return Arrays.asList("svn update -r " + previousRevision);
+	}
+	
 }

@@ -3,10 +3,16 @@ package org.kalibro.core.loaders;
 import java.util.Arrays;
 import java.util.List;
 
+import org.kalibro.KalibroException;
+
 /**
  * Loader for Git repositories.
  * 
  * @author Carlos Morais
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
+ *  
  */
 public class GitLoader extends RepositoryLoader {
 
@@ -25,5 +31,12 @@ public class GitLoader extends RepositoryLoader {
 	@Override
 	protected String metadataDirectoryName() {
 		return ".git";
+	}
+
+	@Override
+	protected List<String> rollBackOneCommit(boolean update) {
+		if (!update)
+			throw new KalibroException(LOAD_ERROR_MESSAGE); 
+		return Arrays.asList("git checkout HEAD~1");
 	}
 }
