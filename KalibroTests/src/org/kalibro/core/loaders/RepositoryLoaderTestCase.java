@@ -2,7 +2,10 @@ package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
 
+import java.util.List;
+
 import org.junit.Test;
+import org.kalibro.core.concurrent.VoidTask;
 
 public abstract class RepositoryLoaderTestCase extends LoaderTestCase {
 
@@ -13,7 +16,22 @@ public abstract class RepositoryLoaderTestCase extends LoaderTestCase {
 
 	protected abstract String expectedMetadataDirectoryName();
 
-	private RepositoryLoader loader() {
+	protected abstract List<String> expectedRollBackCommands(Long revision);
+
+	protected RepositoryLoader loader() {
 		return (RepositoryLoader) loader;
 	}
+
+	@Test
+	public void shouldNotRollBackOneCommitWhenIsNotUpdatable() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				loader().rollBackOneCommit(false);
+			}
+		}).throwsException().withMessage("Repository content has not been loaded yet.");
+	}
+
+	public abstract void shouldRollBackOneCommitWhenIsUpdatable() throws Exception;
 }

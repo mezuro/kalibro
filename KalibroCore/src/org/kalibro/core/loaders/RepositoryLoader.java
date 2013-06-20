@@ -1,6 +1,7 @@
 package org.kalibro.core.loaders;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
@@ -17,9 +18,9 @@ import org.apache.commons.io.filefilter.NameFileFilter;
  */
 abstract class RepositoryLoader extends Loader {
 
-	protected static final String LOAD_ERROR_MESSAGE = 
+	protected static final String LOAD_ERROR_MESSAGE =
 		"Repository content has not been loaded yet.";
-	
+
 	@Override
 	protected boolean isUpdatable(File directory) {
 		NameFileFilter nameFilter = new NameFileFilter(metadataDirectoryName());
@@ -27,6 +28,6 @@ abstract class RepositoryLoader extends Loader {
 	}
 
 	protected abstract String metadataDirectoryName();
-	
-	protected abstract List<String> rollBackOneCommit(boolean update);
+
+	protected abstract List<String> rollBackOneCommit(boolean update) throws IOException;
 }

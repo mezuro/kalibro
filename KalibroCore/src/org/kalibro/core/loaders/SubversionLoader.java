@@ -1,9 +1,12 @@
 package org.kalibro.core.loaders;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
 import org.kalibro.KalibroException;
+import org.kalibro.core.command.CommandTask;
 
 /**
  * Loader for Subversion repositories.
@@ -30,13 +33,13 @@ public class SubversionLoader extends RepositoryLoader {
 	}
 
 	@Override
-	protected List<String> rollBackOneCommit(boolean update) {
-		if (!update)
+	protected List<String> rollBackOneCommit(boolean update) throws IOException {
+		if (! update)
 			throw new KalibroException(LOAD_ERROR_MESSAGE);
 
-		// command svn info + 1
-		Long previousRevision = new Long(1);
+		String command = "svn info | grep Revision | cut -d' ' -f2";
+		InputStream data = new CommandTask(command).executeAndGetOuput();
+		Long previousRevision = new Long(data.read()) - 1;
 		return Arrays.asList("svn update -r " + previousRevision);
 	}
-	
 }
