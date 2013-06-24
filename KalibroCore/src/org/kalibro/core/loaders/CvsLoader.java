@@ -31,9 +31,11 @@ public class CvsLoader extends RepositoryLoader {
 
 	@Override
 	// FIXME
-	protected List<String> rollBackOneCommit(boolean update) {
-		if (!update)
-			throw new KalibroException(LOAD_ERROR_MESSAGE); 
-		return null;
+		protected List<String> rollBackOneCommit(boolean update) {
+		if (! update)
+			throw new KalibroException(LOAD_ERROR_MESSAGE);
+
+		int previousRevision = 0;
+		return Arrays.asList("cvs checkout -r " + previousRevision);
 	}
 }

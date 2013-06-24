@@ -1,5 +1,6 @@
 package org.kalibro.core.loaders;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class GitLoaderTest extends RepositoryLoaderTestCase {
@@ -22,5 +23,14 @@ public class GitLoaderTest extends RepositoryLoaderTestCase {
 	@Override
 	protected String expectedMetadataDirectoryName() {
 		return ".git";
+	}
+
+	private List<String> expectedRollBackCommands() {
+		return Arrays.asList("git checkout HEAD~1");
+	}
+
+	@Override
+	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
+		assertDeepEquals(expectedRollBackCommands(), loader().rollBackOneCommit(true));
 	}
 }

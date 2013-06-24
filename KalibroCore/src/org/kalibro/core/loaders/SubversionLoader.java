@@ -39,7 +39,7 @@ public class SubversionLoader extends RepositoryLoader {
 
 		String command = "svn info | grep Revision | cut -d' ' -f2";
 		InputStream data = new CommandTask(command).executeAndGetOuput();
-		Long previousRevision = new Long(data.read()) - 1;
+		Long previousRevision = new Long(data.read() - 1);
 		return Arrays.asList("svn update -r " + previousRevision);
 	}
 }

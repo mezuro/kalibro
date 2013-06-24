@@ -2,8 +2,6 @@ package org.kalibro.core.loaders;
 
 import static org.junit.Assert.*;
 
-import java.util.List;
-
 import org.junit.Test;
 import org.kalibro.core.concurrent.VoidTask;
 
@@ -15,8 +13,6 @@ public abstract class RepositoryLoaderTestCase extends LoaderTestCase {
 	}
 
 	protected abstract String expectedMetadataDirectoryName();
-
-	protected abstract List<String> expectedRollBackCommands(Long revision);
 
 	protected RepositoryLoader loader() {
 		return (RepositoryLoader) loader;
@@ -33,5 +29,6 @@ public abstract class RepositoryLoaderTestCase extends LoaderTestCase {
 		}).throwsException().withMessage("Repository content has not been loaded yet.");
 	}
 
+	@Test
 	public abstract void shouldRollBackOneCommitWhenIsUpdatable() throws Exception;
 }

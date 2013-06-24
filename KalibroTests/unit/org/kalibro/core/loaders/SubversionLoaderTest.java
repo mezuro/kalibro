@@ -9,9 +9,11 @@ import java.util.Random;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.command.CommandTask;
+import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
+@PrepareForTest(SubversionLoader.class)
 public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
@@ -34,22 +36,21 @@ public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 		return ".svn";
 	}
 
-	@Override
-	protected List<String> expectedRollBackCommands(Long revision) {
+	private List<String> expectedRollBackCommands(int revision) {
 		return Arrays.asList("svn update -r " + (revision - 1));
 	}
 
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		final Long revision = new Random().nextLong();
+		final int revision = Math.abs(new Random().nextInt());
 		CommandTask commandTask = mock(CommandTask.class);
 		whenNew(CommandTask.class).withArguments(any(String.class)).thenReturn(commandTask);
 		when(commandTask.executeAndGetOuput()).thenReturn(new InputStream() {
 
 			@Override
 			public int read() throws IOException {
-				return revision.intValue();
+				return revision;
 			}
 		});
 		assertDeepEquals(expectedRollBackCommands(revision), loader().rollBackOneCommit(true));
