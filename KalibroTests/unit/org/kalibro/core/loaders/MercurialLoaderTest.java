@@ -2,7 +2,6 @@ package org.kalibro.core.loaders;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -37,7 +36,12 @@ public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	private List<String> expectedRollBackCommands(int revision) {
-		return Arrays.asList("hg update " + (revision - 1));
+		return list("hg update " + (revision - 1));
+	}
+
+	@Override
+	protected List<String> expectedLatestCommitCommand() {
+		return list("hg update");
 	}
 
 	@Override

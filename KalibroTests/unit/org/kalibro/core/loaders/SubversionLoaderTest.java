@@ -2,7 +2,6 @@ package org.kalibro.core.loaders;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -36,8 +35,13 @@ public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 		return ".svn";
 	}
 
+	@Override
+	protected List<String> expectedLatestCommitCommand() {
+		return list("svn update");
+	}
+
 	private List<String> expectedRollBackCommands(int revision) {
-		return Arrays.asList("svn update -r " + (revision - 1));
+		return list("svn update -r " + (revision - 1));
 	}
 
 	@Override

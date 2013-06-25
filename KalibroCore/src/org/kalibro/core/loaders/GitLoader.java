@@ -12,7 +12,6 @@ import org.kalibro.KalibroException;
  * @author Daniel Alves
  * @author Diego Araújo
  * @author Guilherme Rojas
- *  
  */
 public class GitLoader extends RepositoryLoader {
 
@@ -35,8 +34,13 @@ public class GitLoader extends RepositoryLoader {
 
 	@Override
 	protected List<String> rollBackOneCommit(boolean update) {
-		if (!update)
-			throw new KalibroException(LOAD_ERROR_MESSAGE); 
+		if (! update)
+			throw new KalibroException(LOAD_ERROR_MESSAGE);
 		return Arrays.asList("git checkout HEAD~1");
+	}
+
+	@Override
+	protected List<String> returnToLatestCommit() {
+		return Arrays.asList("git checkout");
 	}
 }

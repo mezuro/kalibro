@@ -1,7 +1,18 @@
 package org.kalibro.core.loaders;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
+import java.util.Random;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.kalibro.core.command.CommandTask;
+import org.powermock.core.classloader.annotations.PrepareForTest;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+@RunWith(PowerMockRunner.class)
+@PrepareForTest(BazaarLoader.class)
 public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
@@ -22,5 +33,30 @@ public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 	@Override
 	protected String expectedMetadataDirectoryName() {
 		return ".bzr";
+	}
+
+	private List<String> expectedRollBackCommands(int revision) {
+		return list("bzr update -r " + (revision - 1));
+	}
+
+	@Override
+	protected List<String> expectedLatestCommitCommand() {
+		return list("bzr update");
+	}
+
+	@Override
+	@Test
+	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
+		final int revision = Math.abs(new Random().nextInt());
+		CommandTask commandTask = mock(CommandTask.class);
+		whenNew(CommandTask.class).withArguments(any(String.class)).thenReturn(commandTask);
+		when(commandTask.executeAndGetOuput()).thenReturn(new InputStream() {
+
+			@Override
+			public int read() throws IOException {
+				return revision;
+			}
+		});
+		assertDeepEquals(expectedRollBackCommands(revision), loader().rollBackOneCommit(true));
 	}
 }

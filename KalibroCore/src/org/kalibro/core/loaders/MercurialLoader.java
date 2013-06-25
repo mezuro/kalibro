@@ -42,4 +42,9 @@ public class MercurialLoader extends RepositoryLoader {
 		Long previousRevision = new Long(data.read() - 1);
 		return Arrays.asList("hg update " + previousRevision);
 	}
+
+	@Override
+	protected List<String> returnToLatestCommit() {
+		return Arrays.asList("hg update");
+	}
 }

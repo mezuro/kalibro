@@ -1,6 +1,5 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -27,8 +26,14 @@ public class CvsLoaderTest extends RepositoryLoaderTestCase {
 		return "CVSROOT";
 	}
 
+	// FIXME
 	private List<String> expectedRollBackCommands(int revision) {
-		return Arrays.asList("cvs checkout -r " + (revision - 1));
+		return list("cvs checkout -r " + (revision - 1) + " historicDirectory");
+	}
+
+	@Override
+	protected List<String> expectedLatestCommitCommand() {
+		return list("");
 	}
 
 	@Override

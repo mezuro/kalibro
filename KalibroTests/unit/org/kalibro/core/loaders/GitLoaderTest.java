@@ -1,8 +1,12 @@
 package org.kalibro.core.loaders;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.powermock.modules.junit4.PowerMockRunner;
+
+@RunWith(PowerMockRunner.class)
 public class GitLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
@@ -26,10 +30,16 @@ public class GitLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	private List<String> expectedRollBackCommands() {
-		return Arrays.asList("git checkout HEAD~1");
+		return list("git checkout HEAD~1");
 	}
 
 	@Override
+	protected List<String> expectedLatestCommitCommand() {
+		return list("git checkout");
+	}
+
+	@Override
+	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
 		assertDeepEquals(expectedRollBackCommands(), loader().rollBackOneCommit(true));
 	}

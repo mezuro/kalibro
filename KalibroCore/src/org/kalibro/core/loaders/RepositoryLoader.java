@@ -30,4 +30,6 @@ abstract class RepositoryLoader extends Loader {
 	protected abstract String metadataDirectoryName();
 
 	protected abstract List<String> rollBackOneCommit(boolean update) throws IOException;
+
+	protected abstract List<String> returnToLatestCommit();
 }
