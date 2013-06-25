@@ -9,7 +9,7 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProcessingObserverDao;
+import org.kalibro.dao.RepositoryObserverDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
@@ -99,26 +99,26 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteRepositoryShouldCascadeToProcessingObservers(SupportedDatabase databaseType) throws Exception {
+	public void deleteRepositoryShouldCascadeToRepositoryObservers(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.save();
-		ProcessingObserver processingObserver = new ProcessingObserver();
-		processingObserver.save(repository);
-		assertEquals(processingObserversOf(repository), allProcessingObservers());
+		RepositoryObserver repositoryObserver = new RepositoryObserver();
+		repositoryObserver.save(repository);
+		assertEquals(repositoryObserversOf(repository), allRepositoryObservers());
 
 		repository.delete();
-		assertTrue(allProcessingObservers().isEmpty());
+		assertTrue(allRepositoryObservers().isEmpty());
 	}
 
-	private Set<ProcessingObserver> allProcessingObservers() {
-		ProcessingObserverDao processingObserverDao = DaoFactory.getProcessingObserverDao();
-		return processingObserverDao.all();
+	private Set<RepositoryObserver> allRepositoryObservers() {
+		RepositoryObserverDao repositoryObserverDao = DaoFactory.getRepositoryObserverDao();
+		return repositoryObserverDao.all();
 	}
 
-	private Set<ProcessingObserver> processingObserversOf(Repository r) throws Exception {
-		ProcessingObserverDao processingObserverDao = DaoFactory.getProcessingObserverDao();
-		Set<ProcessingObserver> processingObserversOf = Whitebox.invokeMethod(processingObserverDao, "observersOf",
+	private Set<RepositoryObserver> repositoryObserversOf(Repository r) throws Exception {
+		RepositoryObserverDao repositoryObserverDao = DaoFactory.getRepositoryObserverDao();
+		Set<RepositoryObserver> repositoryObserversOf = Whitebox.invokeMethod(repositoryObserverDao, "observersOf",
 			r.getId());
-		return processingObserversOf;
+		return repositoryObserversOf;
 	}
 }

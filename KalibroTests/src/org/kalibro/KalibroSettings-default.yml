@@ -7,8 +7,9 @@ clientSettings: &id2 !!org.kalibro.ClientSettings
 mailSettings: &id3 !!org.kalibro.MailSettings
   smtpHost: "smtp.gmail.com"
   smtpPort: 465
+  sender: "Kalibro"
   senderMail: "example@gmail.com"
-  password: "examplepassword"
+  password: "secure-password"
 
 serverSettings: &id4 !!org.kalibro.ServerSettings
   loadDirectory: ~/.kalibro/projects # Source code will be loaded in this directory before analysis

@@ -9,7 +9,7 @@ import org.kalibro.core.concurrent.TaskListener;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
-import org.kalibro.core.persistence.ProcessingObserverDatabaseDao;
+import org.kalibro.core.persistence.RepositoryObserverDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 
 /**
@@ -24,7 +24,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 	Processing processing;
 	DatabaseDaoFactory daoFactory;
 	Producer<NativeModuleResult> resultProducer;
-	SortedSet<ProcessingObserver> observers;
+	SortedSet<RepositoryObserver> observers;
 
 	public ProcessTask(Repository repository) {
 		this.repository = repository;
@@ -32,9 +32,9 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 	}
 
 	private void setObservers() {
-		ProcessingObserverDatabaseDao processingObserverDatabaseDao =
-			(ProcessingObserverDatabaseDao) DaoFactory.getProcessingObserverDao();
-		this.observers = processingObserverDatabaseDao.
+		RepositoryObserverDatabaseDao repositoryObserverDatabaseDao =
+			(RepositoryObserverDatabaseDao) DaoFactory.getRepositoryObserverDao();
+		this.observers = repositoryObserverDatabaseDao.
 			observersOf(repository.getId());
 	}
 
@@ -61,7 +61,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 
 	@Override
 	public void notifyObservers() {
-		for (ProcessingObserver observer : observers) {
+		for (RepositoryObserver observer : observers) {
 			observer.update(repository, processing.getState());
 		}
 	}

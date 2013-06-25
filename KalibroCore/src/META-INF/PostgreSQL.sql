@@ -1,5 +1,5 @@
 DROP TABLE IF EXISTS sequences, "descendant_result", "metric_result", "module_result",
-  "range_snapshot", "metric_configuration_snapshot", "processing", "processing_observer", "stack_trace_element", "throwable",
+  "range_snapshot", "metric_configuration_snapshot", "processing", "repository_observer", "stack_trace_element", "throwable",
   "repository", "project", "range", "metric_configuration", "configuration", "reading", "reading_group" CASCADE;
 
 /* END OF DROP TABLES */
@@ -115,7 +115,7 @@ CREATE TABLE IF NOT EXISTS "processing" (
   UNIQUE ("repository","date")
 );
 
-CREATE TABLE IF NOT EXISTS "processing_observer" (
+CREATE TABLE IF NOT EXISTS "repository_observer" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "repository" BIGINT NOT NULL REFERENCES "repository"("id") ON DELETE CASCADE,
   "name" VARCHAR(255) NOT NULL,
@@ -230,8 +230,8 @@ INSERT INTO sequences SELECT 'repository', 0
 INSERT INTO sequences SELECT 'processing', 0
   WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing');
 
-INSERT INTO sequences SELECT 'processing_observer', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing_observer');
+INSERT INTO sequences SELECT 'repository_observer', 0
+  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'repository_observer');
   
 INSERT INTO sequences SELECT 'throwable', 0
   WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'throwable');

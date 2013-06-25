@@ -71,7 +71,7 @@ public class ClientDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected ProcessingObserverDao createProcessingObserverDao() {
-		return new ProcessingObserverClientDao(serviceAddress);
+	protected RepositoryObserverDao createRepositoryObserverDao() {
+		return new RepositoryObserverClientDao(serviceAddress);
 	}
 }

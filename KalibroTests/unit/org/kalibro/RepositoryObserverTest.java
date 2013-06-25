@@ -14,7 +14,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.processing.MailSender;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProcessingObserverDao;
+import org.kalibro.dao.RepositoryObserverDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -22,9 +22,9 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DaoFactory.class, MailSender.class})
-public class ProcessingObserverTest extends UnitTest {
+public class RepositoryObserverTest extends UnitTest {
 
-	private ProcessingObserver processingObserver;
+	private RepositoryObserver repositoryObserver;
 	private Repository repository;
 	private Email email;
 
@@ -33,11 +33,11 @@ public class ProcessingObserverTest extends UnitTest {
 	private static final String REPOSITORY_NAME = "New repository";
 	private static final String REPOSITORY_COMPLETE_NAME = "My project - " + REPOSITORY_NAME;
 
-	private ProcessingObserverDao dao;
+	private RepositoryObserverDao dao;
 
 	@Before
 	public void setUp() {
-		processingObserver = new ProcessingObserver();
+		repositoryObserver = new RepositoryObserver();
 		mockRepository();
 		mockDao();
 		mockMailSender();
@@ -51,10 +51,10 @@ public class ProcessingObserverTest extends UnitTest {
 	}
 
 	private void mockDao() {
-		dao = mock(ProcessingObserverDao.class);
+		dao = mock(RepositoryObserverDao.class);
 		mockStatic(DaoFactory.class);
-		when(DaoFactory.getProcessingObserverDao()).thenReturn(dao);
-		when(dao.save(processingObserver, REPOSITORY_ID)).thenReturn(ID);
+		when(DaoFactory.getRepositoryObserverDao()).thenReturn(dao);
+		when(dao.save(repositoryObserver, REPOSITORY_ID)).thenReturn(ID);
 	}
 
 	private void mockMailSender() {
@@ -64,26 +64,26 @@ public class ProcessingObserverTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetAllProcessingObservers() {
-		SortedSet<ProcessingObserver> processingObservers = mock(SortedSet.class);
-		when(dao.all()).thenReturn(processingObservers);
-		assertSame(processingObservers, ProcessingObserver.all());
+	public void shouldGetAllRepositoryObservers() {
+		SortedSet<RepositoryObserver> repositoryObservers = mock(SortedSet.class);
+		when(dao.all()).thenReturn(repositoryObservers);
+		assertSame(repositoryObservers, RepositoryObserver.all());
 	}
 
 	@Test
 	public void shouldSortByName() {
 		assertSorted(withName("A"), withName("B"), withName("C"), withName("X"), withName("Y"), withName("Z"));
 	}
-	
-	private ProcessingObserver withName(String name) {
-		return new ProcessingObserver(name, "Any email");
+
+	private RepositoryObserver withName(String name) {
+		return new RepositoryObserver(name, "Any email");
 	}
 
 	@Test
 	public void checkConstruction() {
-		assertFalse(processingObserver.hasId());
-		assertEquals("New name", processingObserver.getName());
-		assertEquals("New email", processingObserver.getEmail());
+		assertFalse(repositoryObserver.hasId());
+		assertEquals("New name", repositoryObserver.getName());
+		assertEquals("New email", repositoryObserver.getEmail());
 	}
 
 	@Test
@@ -92,81 +92,79 @@ public class ProcessingObserverTest extends UnitTest {
 
 			@Override
 			protected void perform() {
-				processingObserver.save(null);
+				repositoryObserver.save(null);
 			}
-		}).throwsException().withMessage("ProcessingObserver is not related to any repository.");
+		}).throwsException().withMessage("RepositoryObserver is not related to any repository.");
 	}
 
 	@Test
 	public void shouldRequireNameToSave() {
-		processingObserver.setName(" ");
+		repositoryObserver.setName(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				processingObserver.save(repository);
+				repositoryObserver.save(repository);
 			}
-		}).throwsException().withMessage("ProcessingObserver requires name.");
+		}).throwsException().withMessage("RepositoryObserver requires name.");
 	}
-	
+
 	@Test
 	public void shouldRequireEmailToSave() {
-		processingObserver.setEmail(" ");
+		repositoryObserver.setEmail(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				processingObserver.save(repository);
+				repositoryObserver.save(repository);
 			}
-		}).throwsException().withMessage("ProcessingObserver requires email.");
+		}).throwsException().withMessage("RepositoryObserver requires email.");
 	}
-	
+
 	@Test
 	public void shouldSaveIfRepositoryIsNotNull() {
-		assertFalse(processingObserver.hasId());
-		processingObserver.save(repository);
-		assertEquals(processingObserver.getId(), ID);
+		assertFalse(repositoryObserver.hasId());
+		repositoryObserver.save(repository);
+		assertEquals(repositoryObserver.getId(), ID);
 	}
 
 	@Test
 	public void shouldIgnoreDeleteIfIsNotSaved() {
-		processingObserver.delete();
+		repositoryObserver.delete();
 		verify(dao, never()).delete(any(Long.class));
 	}
 
 	@Test
 	public void shouldDeleteIfIsSaved() {
-		Whitebox.setInternalState(processingObserver, "id", ID);
+		Whitebox.setInternalState(repositoryObserver, "id", ID);
 
-		assertTrue(processingObserver.hasId());
-		processingObserver.delete();
-		assertFalse(processingObserver.hasId());
+		assertTrue(repositoryObserver.hasId());
+		repositoryObserver.delete();
+		assertFalse(repositoryObserver.hasId());
 		verify(dao).delete(ID);
 	}
 
-
-    @Test
-    public void shouldSendEmailWithErrorMessage() {
-        processingObserver.update(repository, ProcessState.ERROR);
-        verify(email).setSubject(REPOSITORY_COMPLETE_NAME + " processing results");
-        verify(email).setText("Processing results in repository " + REPOSITORY_NAME +
-            " has resulted in error.\n\nThis is an automatic message." +
-            " Please, do not reply.");
-        verify(email).addRecipient("New name", "New email", RecipientType.TO);
-        verifyStatic();
-        MailSender.sendEmail(email);
-    }
-
+	@Test
+	public void shouldSendEmailWithErrorMessage() {
+		repositoryObserver.update(repository, ProcessState.ERROR);
+		verify(email).setSubject(REPOSITORY_COMPLETE_NAME + " processing results");
+		verify(email).setText("Processing results in repository " + REPOSITORY_NAME +
+			" has resulted in error.\n\nThis is an automatic message." +
+			" Please, do not reply.");
+		verify(email).addRecipient("New name", "New email", RecipientType.TO);
+		verifyStatic();
+		MailSender.sendEmail(email);
+	}
 
 	@Test
 	public void shouldSendEmailWithSucessfulMessage() {
-		processingObserver.update(repository, ProcessState.READY);
+		repositoryObserver.update(repository, ProcessState.READY);
 		verify(email).setSubject(REPOSITORY_COMPLETE_NAME + " processing results");
 		verify(email).setText("Processing results in repository " + REPOSITORY_NAME +
 			" has finished successfully.\n\nThis is an automatic message." +
 			" Please, do not reply.");
 		verify(email).addRecipient("New name", "New email", RecipientType.TO);
 		verifyStatic();
-        MailSender.sendEmail(email);
+		MailSender.sendEmail(email);
 	}
 }

@@ -7,9 +7,9 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
-public class ProcessingObserverAcceptanceTest extends AcceptanceTest {
+public class RepositoryObserverAcceptanceTest extends AcceptanceTest {
 
-	private ProcessingObserver processingObserver;
+	private RepositoryObserver repositoryObserver;
 	private Repository repository;
 	private Project project;
 	private Configuration configuration;
@@ -23,8 +23,8 @@ public class ProcessingObserverAcceptanceTest extends AcceptanceTest {
 		project = new Project("Hello World");
 		project.setDescription("Sample project");
 		project.addRepository(repository);
-		processingObserver = new ProcessingObserver("ProcessingObserverAcceptanceTest name",
-			"ProcessingObserverAcceptanceTest email");
+		repositoryObserver = new RepositoryObserver("RepositoryObserverAcceptanceTest name",
+			"RepositoryObserverAcceptanceTest email");
 	}
 
 	@Theory
@@ -32,25 +32,25 @@ public class ProcessingObserverAcceptanceTest extends AcceptanceTest {
 		resetDatabase(databaseType);
 		assertNotSaved();
 
-		processingObserver.save(repository);
+		repositoryObserver.save(repository);
 		assertSaved();
 
-		processingObserver.setName("Customized name");
-		assertFalse(ProcessingObserver.all().first().deepEquals(processingObserver));
+		repositoryObserver.setName("Customized name");
+		assertFalse(RepositoryObserver.all().first().deepEquals(repositoryObserver));
 
-		processingObserver.save(repository);
+		repositoryObserver.save(repository);
 		assertSaved();
 
-		processingObserver.delete();
+		repositoryObserver.delete();
 		assertNotSaved();
 	}
 
 	private void assertNotSaved() {
-		assertTrue(ProcessingObserver.all().isEmpty());
+		assertTrue(RepositoryObserver.all().isEmpty());
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(set(processingObserver), ProcessingObserver.all());
+		assertDeepEquals(set(repositoryObserver), RepositoryObserver.all());
 	}
 
 	@Theory
@@ -62,29 +62,29 @@ public class ProcessingObserverAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void nameShouldBeRequired() {
-		String name = processingObserver.getName();
-		processingObserver.setName(" ");
+		String name = repositoryObserver.getName();
+		repositoryObserver.setName(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				processingObserver.save(repository);
+				repositoryObserver.save(repository);
 			}
-		}).throwsException().withMessage("ProcessingObserver requires name.");
-		processingObserver.setName(name);
+		}).throwsException().withMessage("RepositoryObserver requires name.");
+		repositoryObserver.setName(name);
 	}
 
 	private void emailShouldBeRequired() {
-		String email = processingObserver.getEmail();
-		processingObserver.setEmail(" ");
+		String email = repositoryObserver.getEmail();
+		repositoryObserver.setEmail(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				processingObserver.save(repository);
+				repositoryObserver.save(repository);
 			}
-		}).throwsException().withMessage("ProcessingObserver requires email.");
-		processingObserver.setEmail(email);
+		}).throwsException().withMessage("RepositoryObserver requires email.");
+		repositoryObserver.setEmail(email);
 	}
 
 	private void repositoryShouldNotBeNull() {
@@ -92,9 +92,9 @@ public class ProcessingObserverAcceptanceTest extends AcceptanceTest {
 
 			@Override
 			protected void perform() {
-				processingObserver.save(null);
+				repositoryObserver.save(null);
 			}
-		}).throwsException().withMessage("ProcessingObserver is not related to any repository.");
+		}).throwsException().withMessage("RepositoryObserver is not related to any repository.");
 	}
 
 }

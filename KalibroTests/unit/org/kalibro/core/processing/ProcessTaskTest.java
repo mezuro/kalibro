@@ -10,12 +10,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
-import org.kalibro.ProcessingObserver;
 import org.kalibro.Repository;
+import org.kalibro.RepositoryObserver;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
-import org.kalibro.core.persistence.ProcessingObserverDatabaseDao;
+import org.kalibro.core.persistence.RepositoryObserverDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
@@ -33,7 +33,7 @@ public class ProcessTaskTest extends UnitTest {
 	private Repository repository;
 	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
-	private SortedSet<ProcessingObserver> observers = new TreeSet<ProcessingObserver>();
+	private SortedSet<RepositoryObserver> observers = new TreeSet<RepositoryObserver>();
 
 	private LoadingTask loadingTask;
 	private CollectingTask collectingTask;
@@ -53,11 +53,11 @@ public class ProcessTaskTest extends UnitTest {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
-		ProcessingObserverDatabaseDao processingObserverDatabaseDao = mock(ProcessingObserverDatabaseDao.class);
+		RepositoryObserverDatabaseDao repositoryObserverDatabaseDao = mock(RepositoryObserverDatabaseDao.class);
 
 		mockStatic(DaoFactory.class);
-		when(DaoFactory.getProcessingObserverDao()).thenReturn(processingObserverDatabaseDao);
-		when(processingObserverDatabaseDao.observersOf(REPOSITORY_ID)).thenReturn(observers);
+		when(DaoFactory.getRepositoryObserverDao()).thenReturn(repositoryObserverDatabaseDao);
+		when(repositoryObserverDatabaseDao.observersOf(REPOSITORY_ID)).thenReturn(observers);
 
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
 		when(repository.getId()).thenReturn(REPOSITORY_ID);
@@ -150,20 +150,20 @@ public class ProcessTaskTest extends UnitTest {
 
 	@Test
 	public void shouldNotifyAllObservers() {
-		ProcessingObserver processingObserver = mock(ProcessingObserver.class);
-		ProcessingObserver anotherProcessingObserver = mock(ProcessingObserver.class);
-		when(processingObserver.compareTo(anotherProcessingObserver)).thenReturn(1);
-		when(anotherProcessingObserver.compareTo(processingObserver)).thenReturn(-1);
-		
+		RepositoryObserver repositoryObserver = mock(RepositoryObserver.class);
+		RepositoryObserver anotherRepositoryObserver = mock(RepositoryObserver.class);
+		when(repositoryObserver.compareTo(anotherRepositoryObserver)).thenReturn(1);
+		when(anotherRepositoryObserver.compareTo(repositoryObserver)).thenReturn(- 1);
+
 		Assert.assertTrue(observers.isEmpty());
-		observers.add(processingObserver);
-		observers.add(anotherProcessingObserver);
-		Assert.assertTrue(observers.contains(processingObserver));
-		Assert.assertTrue(observers.contains(anotherProcessingObserver));
+		observers.add(repositoryObserver);
+		observers.add(anotherRepositoryObserver);
+		Assert.assertTrue(observers.contains(repositoryObserver));
+		Assert.assertTrue(observers.contains(anotherRepositoryObserver));
 
 		when(processing.getState()).thenReturn(ProcessState.ERROR);
 		processTask.notifyObservers();
-		for (ProcessingObserver observer : observers)
+		for (RepositoryObserver observer : observers)
 			verify(observer).update(repository, ProcessState.ERROR);
 	}
 

@@ -56,9 +56,9 @@ public abstract class DaoFactory {
 	public static RepositoryDao getRepositoryDao() {
 		return createFactory().createRepositoryDao();
 	}
-	
-	public static ProcessingObserverDao getProcessingObserverDao() {
-		return createFactory().createProcessingObserverDao();
+
+	public static RepositoryObserverDao getRepositoryObserverDao() {
+		return createFactory().createRepositoryObserverDao();
 	}
 
 	private static DaoFactory createFactory() {
@@ -89,6 +89,6 @@ public abstract class DaoFactory {
 	protected abstract ReadingGroupDao createReadingGroupDao();
 
 	protected abstract RepositoryDao createRepositoryDao();
-	
-	protected abstract ProcessingObserverDao createProcessingObserverDao();
+
+	protected abstract RepositoryObserverDao createRepositoryObserverDao();
 }

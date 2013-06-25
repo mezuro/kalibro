@@ -10,18 +10,18 @@ import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
 import org.kalibro.core.processing.MailSender;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.ProcessingObserverDao;
+import org.kalibro.dao.RepositoryObserverDao;
 
 @SortingFields("name")
-public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
+public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
 	implements Observer<Repository, ProcessState> {
 
-	public static SortedSet<ProcessingObserver> all() {
+	public static SortedSet<RepositoryObserver> all() {
 		return dao().all();
 	}
 
-	private static ProcessingObserverDao dao() {
-		return DaoFactory.getProcessingObserverDao();
+	private static RepositoryObserverDao dao() {
+		return DaoFactory.getRepositoryObserverDao();
 	}
 
 	@Print(skip = true)
@@ -36,11 +36,11 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 	private static final String NOREPLY = "\n\nThis is an automatic message." +
 		" Please, do not reply.";
 
-	public ProcessingObserver() {
+	public RepositoryObserver() {
 		this("New name", "New email");
 	}
 
-	public ProcessingObserver(String name, String email) {
+	public RepositoryObserver(String name, String email) {
 		setName(name);
 		setEmail(email);
 	}
@@ -92,9 +92,9 @@ public class ProcessingObserver extends AbstractEntity<ProcessingObserver>
 
 	public void save(Repository repository) {
 		if (repository == null)
-			throw new KalibroException("ProcessingObserver is not related to any repository.");
-		throwExceptionIf(name.trim().isEmpty(), "ProcessingObserver requires name.");
-		throwExceptionIf(email.trim().isEmpty(), "ProcessingObserver requires email.");
+			throw new KalibroException("RepositoryObserver is not related to any repository.");
+		throwExceptionIf(name.trim().isEmpty(), "RepositoryObserver requires name.");
+		throwExceptionIf(email.trim().isEmpty(), "RepositoryObserver requires email.");
 		repository.assertSaved();
 		id = dao().save(this, repository.getId());
 	}

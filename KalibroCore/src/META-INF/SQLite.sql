@@ -14,7 +14,7 @@ DROP TABLE IF EXISTS `metric_configuration_snapshot`;
 
 DROP TABLE IF EXISTS `processing`;
 
-DROP TABLE IF EXISTS `processing_observer`;
+DROP TABLE IF EXISTS `repository_observer`;
 
 DROP TABLE IF EXISTS `stack_trace_element`;
 
@@ -126,7 +126,7 @@ CREATE TABLE IF NOT EXISTS `repository` (
 CREATE TRIGGER IF NOT EXISTS `delete_repository` AFTER DELETE ON `repository`
 FOR EACH ROW BEGIN
   DELETE FROM `processing` WHERE `repository` = OLD.`id`;
-  DELETE FROM `processing_observer` WHERE `repository` = OLD.`id`;
+  DELETE FROM `repository_observer` WHERE `repository` = OLD.`id`;
 END;
 
 CREATE TABLE IF NOT EXISTS `throwable` (
@@ -180,7 +180,7 @@ FOR EACH ROW BEGIN
   DELETE FROM `metric_configuration_snapshot` WHERE `processing` = OLD.`id`;
 END;
 
-CREATE TABLE IF NOT EXISTS `processing_observer` (
+CREATE TABLE IF NOT EXISTS `repository_observer` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `repository` BIGINT NOT NULL REFERENCES `repository`(`id`) ON DELETE CASCADE,
   `name` VARCHAR(255) NOT NULL,
@@ -282,7 +282,7 @@ INSERT OR IGNORE INTO sequences VALUES ('repository',  0);
 
 INSERT OR IGNORE INTO sequences VALUES ('processing',  0);
 
-INSERT OR IGNORE INTO sequences VALUES ('processing_observer',  0);
+INSERT OR IGNORE INTO sequences VALUES ('repository_observer',  0);
 
 INSERT OR IGNORE INTO sequences VALUES ('throwable',  0);
 

@@ -5,12 +5,12 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.ProcessingObserver;
-import org.kalibro.dto.ProcessingObserverDto;
+import org.kalibro.RepositoryObserver;
+import org.kalibro.dto.RepositoryObserverDto;
 
-@XmlRootElement(name = "processingObserver")
+@XmlRootElement(name = "repositoryObserver")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class ProcessingObserverXml extends ProcessingObserverDto {
+public class RepositoryObserverXml extends RepositoryObserverDto {
 
 	@XmlElement
 	private Long id;
@@ -21,14 +21,14 @@ public class ProcessingObserverXml extends ProcessingObserverDto {
 	@XmlElement(required = true)
 	private String email;
 
-	public ProcessingObserverXml() {
+	public RepositoryObserverXml() {
 		super();
 	}
 
-	public ProcessingObserverXml(ProcessingObserver processingObserver) {
-		id = processingObserver.getId();
-		name = processingObserver.getName();
-		email = processingObserver.getEmail();
+	public RepositoryObserverXml(RepositoryObserver repositoryObserver) {
+		id = repositoryObserver.getId();
+		name = repositoryObserver.getName();
+		email = repositoryObserver.getEmail();
 	}
 
 	@Override

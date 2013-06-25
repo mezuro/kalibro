@@ -1,7 +1,7 @@
 SET foreign_key_checks = 0;
 
 DROP TABLE IF EXISTS sequences, `descendant_result`, `metric_result`, `module_result`,
-  `range_snapshot`, `metric_configuration_snapshot`, `processing`, `processing_observer`, `stack_trace_element`, `throwable`,
+  `range_snapshot`, `metric_configuration_snapshot`, `processing`, `repository_observer`, `stack_trace_element`, `throwable`,
   `repository`, `project`, `range`, `metric_configuration`, `configuration`, `reading`, `reading_group`;
 
 /* END OF DROP TABLES */
@@ -122,7 +122,7 @@ CREATE TABLE IF NOT EXISTS `processing` (
   FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `processing_observer` (
+CREATE TABLE IF NOT EXISTS `repository_observer` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `repository` BIGINT NOT NULL,
   `name` VARCHAR(255) NOT NULL,
@@ -222,7 +222,7 @@ INSERT IGNORE INTO sequences VALUES
   ('project', 0),
   ('repository', 0),
   ('processing', 0),
-  ('processing_observer', 0),
+  ('repository_observer', 0),
   ('throwable', 0),
   ('metric_configuration_snapshot', 0),
   ('range_snapshot', 0),
