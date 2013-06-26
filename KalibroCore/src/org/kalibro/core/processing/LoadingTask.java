@@ -25,7 +25,7 @@ class LoadingTask extends ProcessSubtask {
 		loader.load(repository().getAddress(), codeDirectory());
 	}
 
-	private void prepareCodeDirectory() {
+	protected void prepareCodeDirectory() {
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
 		File projectDirectory = prepareDirectory(loadDirectory, project().getId(), project().getName());
 		File repositoryDirectory = prepareDirectory(projectDirectory, repository().getId(), repository().getName());

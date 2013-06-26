@@ -1,5 +1,7 @@
 package org.kalibro.core.loaders;
 
+import static java.util.concurrent.TimeUnit.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -7,6 +9,7 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.FalseFileFilter;
 import org.apache.commons.io.filefilter.NameFileFilter;
+import org.kalibro.core.command.CommandTask;
 
 /**
  * Abstract loader for version control systems.
@@ -16,7 +19,7 @@ import org.apache.commons.io.filefilter.NameFileFilter;
  * @author Diego Araújo
  * @author Guilherme Rojas
  */
-abstract class RepositoryLoader extends Loader {
+public abstract class RepositoryLoader extends Loader {
 
 	protected static final String LOAD_ERROR_MESSAGE =
 		"Repository content has not been loaded yet.";
@@ -32,4 +35,11 @@ abstract class RepositoryLoader extends Loader {
 	protected abstract List<String> rollBackOneCommit(boolean update) throws IOException;
 
 	protected abstract List<String> returnToLatestCommit();
+	
+	
+	public void loadForHistoricProcessing(File loadDirectory) throws IOException {
+		List<String> commands = rollBackOneCommit(isUpdatable(loadDirectory));
+		for (String loadCommand : commands)
+			new CommandTask(loadCommand, loadDirectory).execute(12, HOURS);
+	}
 }
