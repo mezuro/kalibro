@@ -47,4 +47,10 @@ public class RepositoryObserverEndpointTest extends
 		port.deleteRepositoryObserver(ID);
 		verify(dao).delete(ID);
 	}
+
+	@Test
+	public void shouldGetObserversOf() {
+		when(dao.observersOf(REPOSITORY_ID)).thenReturn(sortedSet(entity));
+		assertDeepDtoList(list(entity), port.repositoryObserversOf(REPOSITORY_ID));
+	}
 }

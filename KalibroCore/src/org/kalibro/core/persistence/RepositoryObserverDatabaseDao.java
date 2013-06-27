@@ -9,6 +9,13 @@ import org.kalibro.core.persistence.record.RepositoryObserverRecord;
 import org.kalibro.dao.RepositoryObserverDao;
 import org.kalibro.dto.DataTransferObject;
 
+/**
+ * Database access implementation for {@link RepositoryObserverDao}.
+ * 
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
+ */
 public class RepositoryObserverDatabaseDao extends
 	DatabaseDao<RepositoryObserver, RepositoryObserverRecord> implements RepositoryObserverDao {
 
@@ -16,6 +23,7 @@ public class RepositoryObserverDatabaseDao extends
 		super(RepositoryObserverRecord.class);
 	}
 
+	@Override
 	public SortedSet<RepositoryObserver> observersOf(Long repositoryId) {
 		TypedQuery<RepositoryObserverRecord> query =
 			createRecordQuery("repositoryObserver.repository = :repository");

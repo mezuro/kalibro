@@ -40,4 +40,9 @@ public class RepositoryObserverClientDaoTest extends
 		verify(port).deleteRepositoryObserver(ID);
 	}
 
+	@Test
+	public void shouldGetObserversOf() {
+		when(port.repositoryObserversOf(REPOSITORY_ID)).thenReturn(list(xml));
+		assertDeepEquals(set(entity), client.observersOf(REPOSITORY_ID));
+	}
 }

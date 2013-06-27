@@ -8,6 +8,13 @@ import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.RepositoryObserverEndpoint;
 import org.kalibro.service.xml.RepositoryObserverXml;
 
+/**
+ * {@link RepositoryObserverEndpoint} client implementation of {@link RepositoryObserverDao}.
+ * 
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
+ */
 public class RepositoryObserverClientDao extends EndpointClient<RepositoryObserverEndpoint>
 	implements RepositoryObserverDao {
 
@@ -28,5 +35,10 @@ public class RepositoryObserverClientDao extends EndpointClient<RepositoryObserv
 	@Override
 	public void delete(Long repositoryObserverId) {
 		port.deleteRepositoryObserver(repositoryObserverId);
+	}
+
+	@Override
+	public SortedSet<RepositoryObserver> observersOf(Long repositoryId) {
+		return DataTransferObject.toSortedSet(port.repositoryObserversOf(repositoryId));
 	}
 }

@@ -5,6 +5,13 @@ import javax.persistence.*;
 import org.kalibro.RepositoryObserver;
 import org.kalibro.dto.RepositoryObserverDto;
 
+/**
+ * Java Persistence API entity for {@link RepositoryObserver}.
+ * 
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
+ */
 @Entity(name = "RepositoryObserver")
 @Table(name = "\"repository_observer\"")
 public class RepositoryObserverRecord extends RepositoryObserverDto {

@@ -12,6 +12,13 @@ import org.kalibro.core.processing.MailSender;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RepositoryObserverDao;
 
+/**
+ * Source code RepositoryObserver.
+ * 
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
+ */
 @SortingFields("name")
 public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
 	implements Observer<Repository, ProcessState> {

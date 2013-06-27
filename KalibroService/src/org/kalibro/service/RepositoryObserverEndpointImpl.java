@@ -12,6 +12,13 @@ import org.kalibro.dao.RepositoryObserverDao;
 import org.kalibro.dto.DataTransferObject;
 import org.kalibro.service.xml.RepositoryObserverXml;
 
+/**
+ * Implementation of {@link RepositoryObserverEndpoint}.
+ * 
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
+ */
 @WebService(name = "RepositoryObserverEndpoint", serviceName = "RepositoryObserverEndpointService")
 public class RepositoryObserverEndpointImpl
 	implements RepositoryObserverEndpoint {
@@ -48,4 +55,11 @@ public class RepositoryObserverEndpointImpl
 		dao.delete(repositoryObserverId);
 	}
 
+	@Override
+	@WebMethod
+	@WebResult(name = "repositoryObserver")
+	public List<RepositoryObserverXml> repositoryObserversOf(
+		@WebParam(name = "repositoryObserverId") Long repositoryId) {
+		return DataTransferObject.createDtos(dao.observersOf(repositoryId), RepositoryObserverXml.class);
+	}
 }

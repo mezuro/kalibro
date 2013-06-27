@@ -8,6 +8,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.kalibro.RepositoryObserver;
 import org.kalibro.dto.RepositoryObserverDto;
 
+/**
+ * XML element for {@link RepositoryObserver}.
+ * 
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
+ */
 @XmlRootElement(name = "repositoryObserver")
 @XmlAccessorType(XmlAccessType.FIELD)
 public class RepositoryObserverXml extends RepositoryObserverDto {

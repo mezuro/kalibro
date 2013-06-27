@@ -35,4 +35,10 @@ public class RepositoryObserverEndpointImplTest
 		implementor.deleteRepositoryObserver(ID);
 		verify(dao).delete(ID);
 	}
+
+	@Test
+	public void shouldGetObserversOf() {
+		when(dao.observersOf(REPOSITORY_ID)).thenReturn(sortedSet(entity));
+		assertDeepEquals(list(xml), implementor.repositoryObserversOf(REPOSITORY_ID));
+	}
 }
