@@ -37,6 +37,9 @@ public abstract class RepositoryLoaderTestCase extends LoaderTestCase {
 	public abstract void shouldRollBackOneCommitWhenIsUpdatable() throws Exception;
 
 	@Test
+	public abstract void shouldNotRollBackWhenReachedFirstCommit() throws Exception;
+
+	@Test
 	public void shouldReturnToLatestCommit() {
 		assertDeepEquals(expectedLatestCommitCommand(), loader().returnToLatestCommit());
 	}

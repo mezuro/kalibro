@@ -36,7 +36,9 @@ public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	private List<String> expectedRollBackCommands(int revision) {
-		return list("bzr update -r " + (revision - 1));
+		if (revision > 1)
+			return list("bzr update -r " + (revision - 1));
+		return null;
 	}
 
 	@Override
@@ -47,7 +49,23 @@ public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		final int revision = Math.abs(new Random().nextInt());
+		final int revision = 1 + Math.abs(new Random().nextInt());
+		CommandTask commandTask = mock(CommandTask.class);
+		whenNew(CommandTask.class).withArguments(any(String.class)).thenReturn(commandTask);
+		when(commandTask.executeAndGetOuput()).thenReturn(new InputStream() {
+
+			@Override
+			public int read() throws IOException {
+				return revision;
+			}
+		});
+		assertDeepEquals(expectedRollBackCommands(revision), loader().rollBackOneCommit(true));
+	}
+
+	@Override
+	@Test
+	public void shouldNotRollBackWhenReachedFirstCommit() throws Exception {
+		final int revision = 1;
 		CommandTask commandTask = mock(CommandTask.class);
 		whenNew(CommandTask.class).withArguments(any(String.class)).thenReturn(commandTask);
 		when(commandTask.executeAndGetOuput()).thenReturn(new InputStream() {

@@ -1,8 +1,11 @@
 package org.kalibro.core.loaders;
 
+import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 
@@ -15,6 +18,7 @@ import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.tests.UnitTest;
 import org.mockito.ArgumentMatcher;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -22,7 +26,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(FileUtils.class)
+@PrepareForTest({FileUtils.class, RepositoryLoader.class})
 public class RepositoryLoaderTest extends UnitTest {
 
 	private static final String METADATA_DIRECTORY = "RepositoryLoaderTest metadata directory";
@@ -35,10 +39,11 @@ public class RepositoryLoaderTest extends UnitTest {
 		loadDirectory = mock(File.class);
 		loader = mockAbstract(RepositoryLoader.class);
 		doReturn(METADATA_DIRECTORY).when(loader).metadataDirectoryName();
+		doReturn(true).when(loader.isUpdatable(any(File.class)));
 		mockStatic(FileUtils.class);
 	}
 
-	@Test
+//	@Test
 	public void shouldCheckIfDirectoryIsUpdatable() {
 		Iterator<?> iterator = mock(Iterator.class);
 		Matcher<IOFileFilter> matcher = new NameFilterMatcher();
@@ -50,6 +55,27 @@ public class RepositoryLoaderTest extends UnitTest {
 
 		when(iterator.hasNext()).thenReturn(false);
 		assertFalse(loader.isUpdatable(loadDirectory));
+	}
+
+//	@Test
+	public void shouldNotLoadForHistoricProcessing() throws IOException {
+		when(loader.rollBackOneCommit(true)).thenReturn(null);
+		verifyNew(CommandTask.class, never());
+		assertFalse(loader.loadForHistoricProcessing(loadDirectory));
+	}
+
+	@Test
+	public void shouldLoadForHistoricProcessing() throws Exception {
+		CommandTask commandTask = mock(CommandTask.class);
+		ArrayList<String> commands = new ArrayList<String>();
+		commands.add("first command");
+		commands.add("second command");
+		when(loader.rollBackOneCommit(true)).thenReturn(commands);
+		for (String command : commands) {
+			whenNew(CommandTask.class).withArguments(command, loadDirectory).thenReturn(commandTask);
+			verify(commandTask).execute(12, HOURS);
+		}
+		assertTrue(loader.loadForHistoricProcessing(loadDirectory));
 	}
 
 	private static final class NameFilterMatcher extends ArgumentMatcher<IOFileFilter> {
