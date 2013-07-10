@@ -40,7 +40,13 @@ public class MercurialLoader extends RepositoryLoader {
 		String command = "hg id -n";
 		InputStream data = new CommandTask(command).executeAndGetOuput();
 		Long previousRevision = new Long(data.read() - 1);
-		return Arrays.asList("hg update " + previousRevision);
+		if (isPossibleToRollBack(previousRevision))
+			return Arrays.asList("hg update " + previousRevision);
+		return null;
+	}
+
+	private boolean isPossibleToRollBack(Long previousRevision) {
+		return previousRevision >= 1;
 	}
 
 	@Override

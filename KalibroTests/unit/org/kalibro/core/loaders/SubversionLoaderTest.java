@@ -41,13 +41,24 @@ public class SubversionLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	private List<String> expectedRollBackCommands(int revision) {
-		return list("svn update -r " + (revision - 1));
+		if (revision > 1)
+			return list("svn update -r " + (revision - 1));
+		return null;
 	}
 
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		final int revision = Math.abs(new Random().nextInt());
+		rollBackOneCommit(Math.abs(new Random().nextInt()));
+	}
+
+	@Override
+	@Test
+	public void shouldNotRollBackWhenReachedFirstCommit() throws Exception {
+		rollBackOneCommit(1);
+	}
+
+	private void rollBackOneCommit(final int revision) throws Exception {
 		CommandTask commandTask = mock(CommandTask.class);
 		whenNew(CommandTask.class).withArguments(any(String.class)).thenReturn(commandTask);
 		when(commandTask.executeAndGetOuput()).thenReturn(new InputStream() {

@@ -36,7 +36,9 @@ public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 	}
 
 	private List<String> expectedRollBackCommands(int revision) {
-		return list("hg update " + (revision - 1));
+		if (revision > 1)
+			return list("hg update " + (revision - 1));
+		return null;
 	}
 
 	@Override
@@ -47,7 +49,16 @@ public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		final int revision = Math.abs(new Random().nextInt());
+		rollBackOneCommit(Math.abs(new Random().nextInt()));
+	}
+
+	@Override
+	@Test
+	public void shouldNotRollBackWhenReachedFirstCommit() throws Exception {
+		rollBackOneCommit(1);
+	}
+
+	private void rollBackOneCommit(final int revision) throws Exception {
 		CommandTask commandTask = mock(CommandTask.class);
 		whenNew(CommandTask.class).withArguments(any(String.class)).thenReturn(commandTask);
 		when(commandTask.executeAndGetOuput()).thenReturn(new InputStream() {
