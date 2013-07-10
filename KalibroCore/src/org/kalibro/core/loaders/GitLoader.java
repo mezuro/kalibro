@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.kalibro.KalibroException;
+import org.kalibro.core.command.CommandTask;
 
 /**
  * Loader for Git repositories.
@@ -14,6 +15,13 @@ import org.kalibro.KalibroException;
  * @author Guilherme Rojas
  */
 public class GitLoader extends RepositoryLoader {
+
+	private String latestCommit = "KalibroTag";
+
+	public GitLoader() {
+		String command = "git tag " + latestCommit;
+		new CommandTask(command).execute();
+	}
 
 	@Override
 	public List<String> validationCommands() {
@@ -36,11 +44,25 @@ public class GitLoader extends RepositoryLoader {
 	protected List<String> rollBackOneCommit(boolean update) {
 		if (! update)
 			throw new KalibroException(LOAD_ERROR_MESSAGE);
-		return Arrays.asList("git checkout HEAD~1");
+
+		if (isPossibleToRollBack())
+			return Arrays.asList("git checkout HEAD~1");
+		return null;
+	}
+
+	// FIXME
+	private boolean isPossibleToRollBack() {
+		return true;
 	}
 
 	@Override
 	protected List<String> returnToLatestCommit() {
-		return Arrays.asList("git checkout");
+		return Arrays.asList("git checkout " + latestCommit);
+	}
+
+	// FIXME I need testing
+	public void destroyTag() {
+		String command = "git tag -d " + latestCommit;
+		new CommandTask(command).execute();
 	}
 }
