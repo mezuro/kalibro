@@ -16,7 +16,7 @@ public class GitLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedUpdateCommands() {
-		return list("git pull origin master");
+		return list("git pull");
 	}
 
 	@Override

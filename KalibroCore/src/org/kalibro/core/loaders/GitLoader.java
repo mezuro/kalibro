@@ -18,7 +18,7 @@ public class GitLoader extends RepositoryLoader {
 	@Override
 	protected List<String> loadCommands(String address, boolean update) {
 		if (update)
-			return Arrays.asList("git pull origin master");
+			return Arrays.asList("git pull");
 		return Arrays.asList("git clone " + address + " .");
 	}
 
