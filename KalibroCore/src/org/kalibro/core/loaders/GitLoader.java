@@ -1,5 +1,7 @@
 package org.kalibro.core.loaders;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -16,11 +18,16 @@ import org.kalibro.core.command.CommandTask;
  */
 public class GitLoader extends RepositoryLoader {
 
-	private String latestCommit = "KalibroTag";
+	private String branch;
 
-	public GitLoader() {
-		String command = "git tag " + latestCommit;
-		new CommandTask(command).execute();
+	private String getBranch(InputStream inputStream) throws IOException {
+		inputStream.skip(2);
+		return inputStream.toString();
+	}
+
+	public GitLoader() throws IOException {
+		String command = "git branch | grep \\*";
+		branch = getBranch(new CommandTask(command).executeAndGetOuput());
 	}
 
 	@Override
@@ -41,28 +48,25 @@ public class GitLoader extends RepositoryLoader {
 	}
 
 	@Override
-	protected List<String> rollBackOneCommit(boolean update) {
+	protected List<String> rollBackOneCommit(boolean update) throws IOException {
 		if (! update)
 			throw new KalibroException(LOAD_ERROR_MESSAGE);
-
-		if (isPossibleToRollBack())
-			return Arrays.asList("git checkout HEAD~1");
-		return null;
+		String command = "git checkout HEAD~1";
+		InputStream commandOutput = new CommandTask(command).executeAndGetOuput();
+		if (cannotRollBack(commandOutput))
+			return null;
+		String revert = "git checkout HEAD@{1}";
+		new CommandTask(revert).execute();
+		return Arrays.asList(command);
 	}
 
-	// FIXME
-	private boolean isPossibleToRollBack() {
-		return true;
+	private Boolean cannotRollBack(InputStream commandOutput) {
+		return commandOutput.toString().contains(
+			"error: pathspec 'HEAD~1' did not match any file(s) known to git.");
 	}
 
 	@Override
 	protected List<String> returnToLatestCommit() {
-		return Arrays.asList("git checkout " + latestCommit);
-	}
-
-	// FIXME I need testing
-	public void destroyTag() {
-		String command = "git tag -d " + latestCommit;
-		new CommandTask(command).execute();
+		return Arrays.asList("git checkout " + branch);
 	}
 }

@@ -1,5 +1,6 @@
 package org.kalibro.core.loaders;
 
+import java.io.InputStream;
 import java.util.List;
 
 import org.junit.Before;
@@ -13,11 +14,16 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(GitLoader.class)
 public class GitLoaderTest extends RepositoryLoaderTestCase {
 
+	private String myBranch;
+
 	@Before
 	@Override
 	public void setUp() throws Exception {
 		CommandTask commandTask = mock(CommandTask.class);
-		whenNew(CommandTask.class).withArguments("git tag KalibroTag").thenReturn(commandTask);
+		InputStream outputCommand = mock(InputStream.class);
+		whenNew(CommandTask.class).withArguments("git branch | grep \\*").thenReturn(commandTask);
+		when(commandTask.executeAndGetOuput()).thenReturn(outputCommand);
+		myBranch = outputCommand.toString();
 		loader = new GitLoader();
 	}
 
@@ -47,7 +53,7 @@ public class GitLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
 	protected List<String> expectedLatestCommitCommand() {
-		return list("git checkout KalibroTag");
+		return list("git checkout " + myBranch);
 	}
 
 	// FIXME
