@@ -49,7 +49,7 @@ public class MercurialLoaderTest extends RepositoryLoaderTestCase {
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		rollBackOneCommit(Math.abs(new Random().nextInt()));
+		rollBackOneCommit(2 + Math.abs(new Random().nextInt()));
 	}
 
 	@Override
