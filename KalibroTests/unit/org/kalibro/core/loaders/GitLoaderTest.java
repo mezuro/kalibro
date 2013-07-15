@@ -14,17 +14,21 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(GitLoader.class)
 public class GitLoaderTest extends RepositoryLoaderTestCase {
 
-	private String myBranch;
+	private static final String MY_BRANCH = "branch";
+	private InputStream outputCommand;
+	private CommandTask commandTask;
 
 	@Before
 	@Override
 	public void setUp() throws Exception {
-		CommandTask commandTask = mock(CommandTask.class);
-		InputStream outputCommand = mock(InputStream.class);
+		commandTask = mock(CommandTask.class);
+		outputCommand = mock(InputStream.class);
 		whenNew(CommandTask.class).withArguments("git branch | grep \\*").thenReturn(commandTask);
+		whenNew(CommandTask.class).withArguments("git checkout HEAD~1").thenReturn(commandTask);
 		when(commandTask.executeAndGetOuput()).thenReturn(outputCommand);
-		myBranch = outputCommand.toString();
+		when(outputCommand.toString()).thenReturn(MY_BRANCH);
 		loader = new GitLoader();
+		verify(outputCommand, once()).skip(2);
 	}
 
 	@Override
@@ -47,25 +51,33 @@ public class GitLoaderTest extends RepositoryLoaderTestCase {
 		return ".git";
 	}
 
-	private List<String> expectedRollBackCommands() {
+	private List<String> expectedRollBackCommands(String gitMessage) {
+		if (gitMessage.contains("error: pathspec 'HEAD~1' did not match any file(s) known to git."))
+			return null;
 		return list("git checkout HEAD~1");
 	}
 
 	@Override
 	protected List<String> expectedLatestCommitCommand() {
-		return list("git checkout " + myBranch);
+		return list("git checkout " + MY_BRANCH);
 	}
 
-	// FIXME
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		assertDeepEquals(expectedRollBackCommands(), loader().rollBackOneCommit(true));
+		String gitMessage = "A few git text...";
+		when(outputCommand.toString()).thenReturn(gitMessage);
+		CommandTask revertCommandTask = mock(CommandTask.class);
+		whenNew(CommandTask.class).withArguments("git checkout HEAD@{1}").thenReturn(revertCommandTask);
+		assertDeepEquals(expectedRollBackCommands(gitMessage), loader().rollBackOneCommit(true));
+		verify(revertCommandTask, once()).execute();
 	}
 
 	@Override
 	@Test
 	public void shouldNotRollBackWhenReachedFirstCommit() throws Exception {
-
+		String gitErrorMessage = "error: pathspec 'HEAD~1' did not match any file(s) known to git.";
+		when(outputCommand.toString()).thenReturn(gitErrorMessage);
+		assertDeepEquals(expectedRollBackCommands(gitErrorMessage), loader().rollBackOneCommit(true));
 	}
 }

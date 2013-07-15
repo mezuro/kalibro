@@ -3,6 +3,8 @@ package org.kalibro.core.loaders;
 import java.util.List;
 
 import org.junit.Test;
+import org.kalibro.KalibroException;
+import org.kalibro.core.concurrent.VoidTask;
 
 public class CvsLoaderTest extends RepositoryLoaderTestCase {
 
@@ -26,19 +28,37 @@ public class CvsLoaderTest extends RepositoryLoaderTestCase {
 		return "CVSROOT";
 	}
 
-	// FIXME
-	private List<String> expectedRollBackCommands(int revision) {
-		return list("cvs checkout -r " + (revision - 1) + " historicDirectory");
+	// FIXME historic processing does not work for CVS
+
+	@Override
+	public void shouldReturnToLatestCommit() {
+		shouldCatchException();
 	}
 
 	@Override
 	protected List<String> expectedLatestCommitCommand() {
-		return list("");
+		throw new KalibroException("Kalibro does not support CVS historic analysis.");
 	}
 
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		assertDeepEquals(expectedRollBackCommands(1), loader().rollBackOneCommit(true));
+		shouldCatchException();
+	}
+
+	@Override
+	@Test
+	public void shouldNotRollBackWhenReachedFirstCommit() throws Exception {
+		shouldCatchException();
+	}
+
+	private void shouldCatchException() {
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				loader().rollBackOneCommit(true);
+			}
+		}).throwsException().withMessage("Kalibro does not support CVS historic analysis.");
 	}
 }

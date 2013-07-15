@@ -21,7 +21,8 @@ public class GitLoader extends RepositoryLoader {
 	private String branch;
 
 	private String getBranch(InputStream inputStream) throws IOException {
-		inputStream.skip(2);
+		int asteriskAndWhiteSpace = 2;
+		inputStream.skip(asteriskAndWhiteSpace);
 		return inputStream.toString();
 	}
 
