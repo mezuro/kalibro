@@ -1,10 +1,10 @@
 package org.kalibro.core.loaders;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 import java.util.Random;
 
+import org.apache.commons.io.IOUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.core.command.CommandTask;
@@ -12,7 +12,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(BazaarLoader.class)
+@PrepareForTest({BazaarLoader.class, IOUtils.class})
 public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 
 	@Override
@@ -35,9 +35,10 @@ public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 		return ".bzr";
 	}
 
-	private List<String> expectedRollBackCommands(int revision) {
-		if (revision > 1)
-			return list("bzr update -r " + (revision - 1));
+	private List<String> expectedRollBackCommands(String revision) {
+		Long rev = new Long(revision);
+		if (rev > 1)
+			return list("bzr update -r " + (rev - 1));
 		return null;
 	}
 
@@ -49,25 +50,23 @@ public class BazaarLoaderTest extends RepositoryLoaderTestCase {
 	@Override
 	@Test
 	public void shouldRollBackOneCommitWhenIsUpdatable() throws Exception {
-		rollBackOneCommit(2 + Math.abs(new Random().nextInt()));
+		Long revision = 2 + Math.abs(new Random().nextLong());
+		rollBackOneCommit(revision.toString());
 	}
 
 	@Override
 	@Test
 	public void shouldNotRollBackWhenReachedFirstCommit() throws Exception {
-		rollBackOneCommit(1);
+		rollBackOneCommit("1");
 	}
 
-	private void rollBackOneCommit(final int revision) throws Exception {
+	private void rollBackOneCommit(String revision) throws Exception {
+		mockStatic(IOUtils.class);
 		CommandTask commandTask = mock(CommandTask.class);
+		InputStream commandOutput = mock(InputStream.class);
 		whenNew(CommandTask.class).withArguments(any(String.class)).thenReturn(commandTask);
-		when(commandTask.executeAndGetOuput()).thenReturn(new InputStream() {
-
-			@Override
-			public int read() throws IOException {
-				return revision;
-			}
-		});
+		when(commandTask.executeAndGetOuput()).thenReturn(commandOutput);
+		when(IOUtils.toString(commandOutput)).thenReturn(revision);
 		assertDeepEquals(expectedRollBackCommands(revision), loader().rollBackOneCommit(true));
 	}
 }

@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.kalibro.KalibroException;
 import org.kalibro.core.command.CommandTask;
 
@@ -20,15 +21,9 @@ public class GitLoader extends RepositoryLoader {
 
 	private String branch;
 
-	private String getBranch(InputStream inputStream) throws IOException {
-		int asteriskAndWhiteSpace = 2;
-		inputStream.skip(asteriskAndWhiteSpace);
-		return inputStream.toString();
-	}
-
 	public GitLoader() throws IOException {
-		String command = "git branch | grep \\*";
-		branch = getBranch(new CommandTask(command).executeAndGetOuput());
+		String command = "git rev-parse --abbrev-ref HEAD";
+		branch = IOUtils.toString(new CommandTask(command).executeAndGetOuput());
 	}
 
 	@Override
@@ -61,8 +56,8 @@ public class GitLoader extends RepositoryLoader {
 		return Arrays.asList(command);
 	}
 
-	private Boolean cannotRollBack(InputStream commandOutput) {
-		return commandOutput.toString().contains(
+	private Boolean cannotRollBack(InputStream commandOutput) throws IOException {
+		return IOUtils.toString(commandOutput).contains(
 			"error: pathspec 'HEAD~1' did not match any file(s) known to git.");
 	}
 

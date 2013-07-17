@@ -43,7 +43,7 @@ public class RepositoryLoaderTest extends UnitTest {
 		mockStatic(FileUtils.class);
 	}
 
-//	@Test
+	@Test
 	public void shouldCheckIfDirectoryIsUpdatable() {
 		Iterator<?> iterator = mock(Iterator.class);
 		Matcher<IOFileFilter> matcher = new NameFilterMatcher();
@@ -57,7 +57,7 @@ public class RepositoryLoaderTest extends UnitTest {
 		assertFalse(loader.isUpdatable(loadDirectory));
 	}
 
-//	@Test
+	@Test
 	public void shouldNotLoadForHistoricProcessing() throws IOException {
 		when(loader.rollBackOneCommit(true)).thenReturn(null);
 		verifyNew(CommandTask.class, never());

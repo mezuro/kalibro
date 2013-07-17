@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.Arrays;
 import java.util.List;
 
+import org.apache.commons.io.IOUtils;
 import org.kalibro.KalibroException;
 import org.kalibro.core.command.CommandTask;
 
@@ -39,7 +40,7 @@ public class BazaarLoader extends RepositoryLoader {
 
 		String command = "bzr revno --tree";
 		InputStream data = new CommandTask(command).executeAndGetOuput();
-		Long previousRevision = new Long(data.read() - 1);
+		Long previousRevision = new Long(IOUtils.toString(data)) - 1;
 		if (isPossibleToRollBack(previousRevision))
 			return Arrays.asList("bzr update -r " + previousRevision);
 		return null;
