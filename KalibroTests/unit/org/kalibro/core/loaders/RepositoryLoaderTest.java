@@ -4,7 +4,6 @@ import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
@@ -33,14 +32,15 @@ public class RepositoryLoaderTest extends UnitTest {
 
 	private File loadDirectory;
 	private RepositoryLoader loader;
+	private CommandTask commandTask;
 
 	@Before
 	public void setUp() throws Exception {
 		loadDirectory = mock(File.class);
 		loader = mockAbstract(RepositoryLoader.class);
-		doReturn(METADATA_DIRECTORY).when(loader).metadataDirectoryName();
-		doReturn(true).when(loader.isUpdatable(any(File.class)));
+		commandTask = mock(CommandTask.class);
 		mockStatic(FileUtils.class);
+		doReturn(METADATA_DIRECTORY).when(loader).metadataDirectoryName();
 	}
 
 	@Test
@@ -58,24 +58,26 @@ public class RepositoryLoaderTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotLoadForHistoricProcessing() throws IOException {
-		when(loader.rollBackOneCommit(true)).thenReturn(null);
-		verifyNew(CommandTask.class, never());
+	public void shouldNotLoadForHistoricProcessing() throws Exception {
+		doReturn(true).when(loader).isUpdatable(any(File.class));
+		doReturn(null).when(loader).rollBackOneCommit(true);
+		whenNew(CommandTask.class).withArguments(null, loadDirectory).thenReturn(commandTask);
 		assertFalse(loader.loadForHistoricProcessing(loadDirectory));
+		verifyNew(CommandTask.class, never());
 	}
 
 	@Test
 	public void shouldLoadForHistoricProcessing() throws Exception {
-		CommandTask commandTask = mock(CommandTask.class);
 		ArrayList<String> commands = new ArrayList<String>();
 		commands.add("first command");
 		commands.add("second command");
-		when(loader.rollBackOneCommit(true)).thenReturn(commands);
+		doReturn(true).when(loader).isUpdatable(any(File.class));
+		doReturn(commands).when(loader).rollBackOneCommit(true);
 		for (String command : commands) {
 			whenNew(CommandTask.class).withArguments(command, loadDirectory).thenReturn(commandTask);
-			verify(commandTask).execute(12, HOURS);
 		}
 		assertTrue(loader.loadForHistoricProcessing(loadDirectory));
+		verify(commandTask, times(2)).execute(12, HOURS);
 	}
 
 	private static final class NameFilterMatcher extends ArgumentMatcher<IOFileFilter> {
