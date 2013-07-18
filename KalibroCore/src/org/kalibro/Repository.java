@@ -1,7 +1,9 @@
 package org.kalibro;
 
+import java.io.File;
 import java.util.SortedSet;
 
+import org.kalibro.core.Identifier;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.IdentityField;
 import org.kalibro.core.abstractentity.Ignore;
@@ -145,7 +147,7 @@ public class Repository extends AbstractEntity<Repository> {
 	}
 
 	void assertSaved() {
-		if (!hasId())
+		if (! hasId())
 			save();
 	}
 
@@ -179,6 +181,14 @@ public class Repository extends AbstractEntity<Repository> {
 
 	void deleted() {
 		id = null;
+	}
+
+	public boolean hasBeenProcessedAtLeastOnce() {
+		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
+		String formattedName = Identifier.fromText(project.getName()).asClassName() + "-" + project.getId() +
+			Identifier.fromText(name).asClassName() + "-" + id;
+		File directory = new File(loadDirectory, formattedName);
+		return directory.exists() && directory.isDirectory();
 	}
 
 	@Override

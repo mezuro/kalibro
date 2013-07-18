@@ -13,16 +13,14 @@ import org.kalibro.core.loaders.RepositoryLoader;
  * @author Guilherme Rojas
  */
 public class HistoricLoadingTask extends LoadingTask {
+
 	@Override
 	protected void perform() throws Exception {
 		RepositoryLoader repositoryLoader = createLoader();
 		prepareCodeDirectory();
-		
-		// FIXME: merge methods?
-		repositoryLoader.load(repository().getAddress(), codeDirectory());
 		repositoryLoader.loadForHistoricProcessing(codeDirectory());
 	}
-	
+
 	private RepositoryLoader createLoader() throws Exception {
 		RepositoryType repositoryType = repository().getType();
 		String loaderName = Identifier.fromConstant(repositoryType.name()).asClassName() + "Loader";
