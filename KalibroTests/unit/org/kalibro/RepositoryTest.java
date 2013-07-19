@@ -3,6 +3,7 @@ package org.kalibro;
 import static org.junit.Assert.*;
 import static org.kalibro.RepositoryType.*;
 
+import java.io.File;
 import java.util.Random;
 import java.util.SortedSet;
 
@@ -20,11 +21,11 @@ import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(DaoFactory.class)
+@PrepareForTest({DaoFactory.class, KalibroSettings.class, Repository.class})
 public class RepositoryTest extends UnitTest {
 
-	private static final Long ID = new Random().nextLong();
-	private static final Long PROJECT_ID = new Random().nextLong();
+	private static final Long ID = Math.abs(new Random().nextLong());
+	private static final Long PROJECT_ID = Math.abs(new Random().nextLong());
 
 	private RepositoryDao dao;
 
@@ -33,16 +34,21 @@ public class RepositoryTest extends UnitTest {
 
 	private Repository repository;
 
+	private String formattedName;
+
 	@Before
 	public void setUp() {
 		project = mock(Project.class);
 		configuration = mock(Configuration.class);
+		when(project.getName()).thenReturn("Project name");
 		when(project.getId()).thenReturn(PROJECT_ID);
 
 		repository = new Repository();
 		repository.setConfiguration(configuration);
 		repository.setProject(project);
 		repository.setAddress("/");
+
+		formattedName = "ProjectName-" + PROJECT_ID + "NewRepository-" + ID;
 		mockDao();
 	}
 
@@ -211,5 +217,39 @@ public class RepositoryTest extends UnitTest {
 	@Test
 	public void toStringShouldBeCompleteName() {
 		assertEquals(repository.getCompleteName(), "" + repository);
+	}
+
+	@Test
+	public void shouldVerifyDirectoryExistence() throws Exception {
+		File loadDirectory = mockLoadDirectory();
+		Whitebox.setInternalState(repository, "id", ID);
+
+		File file = mock(File.class);
+		whenNew(File.class).withArguments(loadDirectory, formattedName).thenReturn(file);
+		when(file.isDirectory()).thenReturn(true);
+		when(file.exists()).thenReturn(true);
+		assertTrue(repository.hasBeenProcessedAtLeastOnce());
+	}
+
+	@Test
+	public void shouldVerifyDirectoryInexistence() throws Exception {
+		File loadDirectory = mockLoadDirectory();
+		Whitebox.setInternalState(repository, "id", ID);
+
+		File file = mock(File.class);
+		whenNew(File.class).withArguments(loadDirectory, formattedName).thenReturn(file);
+		when(file.exists()).thenReturn(false);
+		assertFalse(repository.hasBeenProcessedAtLeastOnce());
+	}
+
+	private File mockLoadDirectory() {
+		KalibroSettings kalibroSettings = mock(KalibroSettings.class);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(kalibroSettings);
+		ServerSettings serverSettings = mock(ServerSettings.class);
+		when(kalibroSettings.getServerSettings()).thenReturn(serverSettings);
+		File loadDirectory = mock(File.class);
+		when(serverSettings.getLoadDirectory()).thenReturn(loadDirectory);
+		return loadDirectory;
 	}
 }
