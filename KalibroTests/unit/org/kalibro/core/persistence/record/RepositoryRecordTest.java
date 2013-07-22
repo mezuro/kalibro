@@ -19,6 +19,7 @@ public class RepositoryRecordTest extends RecordTest {
 		assertColumn("description", String.class).isNullable();
 		assertColumn("license", String.class).isNullable();
 		assertColumn("processPeriod", Integer.class).isNullable();
+		assertColumn("processHistorically", boolean.class).isNullable();
 		assertColumn("configuration", Long.class).isRequired();
 	}
 

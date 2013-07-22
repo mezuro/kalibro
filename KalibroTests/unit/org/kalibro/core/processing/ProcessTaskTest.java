@@ -153,7 +153,7 @@ public class ProcessTaskTest extends UnitTest {
 		RepositoryObserver repositoryObserver = mock(RepositoryObserver.class);
 		RepositoryObserver anotherRepositoryObserver = mock(RepositoryObserver.class);
 		when(repositoryObserver.compareTo(anotherRepositoryObserver)).thenReturn(1);
-		when(anotherRepositoryObserver.compareTo(repositoryObserver)).thenReturn(- 1);
+		when(anotherRepositoryObserver.compareTo(repositoryObserver)).thenReturn(-1);
 
 		Assert.assertTrue(observers.isEmpty());
 		observers.add(repositoryObserver);

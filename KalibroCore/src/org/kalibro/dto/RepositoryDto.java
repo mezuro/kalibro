@@ -21,6 +21,7 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 		repository.setDescription(description() == null ? "" : description());
 		repository.setLicense(license() == null ? "" : license());
 		repository.setProcessPeriod(processPeriod());
+		repository.setProcessHistorically(processHistorically());
 		repository.setConfiguration(configuration());
 		set(repository, "project", project());
 		return repository;
@@ -39,6 +40,8 @@ public abstract class RepositoryDto extends DataTransferObject<Repository> {
 	public abstract String license();
 
 	public abstract Integer processPeriod();
+
+	public abstract boolean processHistorically();
 
 	private Configuration configuration() {
 		return DaoLazyLoader.createProxy(ConfigurationDao.class, "get", configurationId());

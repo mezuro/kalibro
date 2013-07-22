@@ -35,6 +35,9 @@ public class RepositoryXml extends RepositoryDto {
 	@XmlElement
 	private Integer processPeriod;
 
+	@XmlElement
+	private boolean processHistorically;
+
 	@XmlElement(required = true)
 	private RepositoryType type;
 
@@ -57,6 +60,7 @@ public class RepositoryXml extends RepositoryDto {
 		description = repository.getDescription();
 		license = repository.getLicense();
 		processPeriod = repository.getProcessPeriod();
+		processHistorically = repository.historicProcessingIsDesired();
 		type = repository.getType();
 		address = repository.getAddress();
 		configurationId = repository.getConfiguration().getId();
@@ -85,6 +89,11 @@ public class RepositoryXml extends RepositoryDto {
 	@Override
 	public Integer processPeriod() {
 		return processPeriod;
+	}
+
+	@Override
+	public boolean processHistorically() {
+		return processHistorically;
 	}
 
 	@Override

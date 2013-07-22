@@ -119,6 +119,7 @@ CREATE TABLE IF NOT EXISTS `repository` (
   `description` TEXT DEFAULT NULL,
   `license` VARCHAR(255) DEFAULT NULL,
   `process_period` INT DEFAULT NULL,
+  `process_historically` BOOLEAN DEFAULT NULL,
   `configuration` BIGINT NOT NULL REFERENCES `configuration`(`id`) ON DELETE RESTRICT,
   UNIQUE (`project`,`name`)
 );

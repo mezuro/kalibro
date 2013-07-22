@@ -1,5 +1,7 @@
 package org.kalibro.core.processing;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 
 import org.junit.Before;
@@ -7,10 +9,13 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.Project;
 import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
+import org.kalibro.core.loaders.GitLoader;
 import org.kalibro.core.loaders.RepositoryLoader;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
+import org.powermock.reflect.Whitebox;
 
 @PrepareForTest(HistoricLoadingTask.class)
 @RunWith(PowerMockRunner.class)
@@ -41,7 +46,15 @@ public class HistoricLoadingTaskTest extends UnitTest {
 		when(historicLoadingTask.codeDirectory()).thenReturn(file);
 		when(repositoryLoader.loadForHistoricProcessing(file)).thenReturn(true);
 		historicLoadingTask.perform();
+		assertFalse(historicLoadingTask.finishedHistoricProcessing());
 		verify(historicLoadingTask, once()).prepareCodeDirectory();
+	}
+
+	@Test
+	public void shouldCreateCorrectRepositoryLoader() throws Exception {
+		when(repository.getType()).thenReturn(RepositoryType.GIT);
+		doCallRealMethod().when(historicLoadingTask, "createLoader");
+		assertClassEquals(GitLoader.class, Whitebox.invokeMethod(historicLoadingTask, "createLoader"));
 	}
 
 	private void mockRepositoryLoader() throws Exception {

@@ -14,11 +14,17 @@ import org.kalibro.core.loaders.RepositoryLoader;
  */
 public class HistoricLoadingTask extends LoadingTask {
 
+	private boolean rolledBackSuccessfully;
+
+	public boolean finishedHistoricProcessing() {
+		return ! rolledBackSuccessfully;
+	}
+
 	@Override
 	protected void perform() throws Exception {
 		RepositoryLoader repositoryLoader = createLoader();
 		prepareCodeDirectory();
-		repositoryLoader.loadForHistoricProcessing(codeDirectory());
+		rolledBackSuccessfully = repositoryLoader.loadForHistoricProcessing(codeDirectory());
 	}
 
 	private RepositoryLoader createLoader() throws Exception {

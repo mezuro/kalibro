@@ -15,6 +15,7 @@ public class RepositoryXmlTest extends XmlTest {
 		assertElement("description", String.class);
 		assertElement("license", String.class);
 		assertElement("processPeriod", Integer.class);
+		assertElement("processHistorically", boolean.class);
 		assertElement("type", RepositoryType.class, true);
 		assertElement("address", String.class, true);
 		assertElement("configurationId", Long.class, true);

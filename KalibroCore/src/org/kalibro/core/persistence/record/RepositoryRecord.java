@@ -43,6 +43,9 @@ public class RepositoryRecord extends RepositoryDto {
 	@Column(name = "\"process_period\"")
 	private Integer processPeriod;
 
+	@Column(name = "\"process_historically\"")
+	private boolean processHistorically;
+
 	@Column(name = "\"configuration\"", nullable = false)
 	private Long configuration;
 
@@ -63,6 +66,7 @@ public class RepositoryRecord extends RepositoryDto {
 		description = repository.getDescription();
 		license = repository.getLicense();
 		processPeriod = repository.getProcessPeriod();
+		processHistorically = repository.historicProcessingIsDesired();
 		configuration = repository.getConfiguration().getId();
 	}
 
@@ -99,6 +103,11 @@ public class RepositoryRecord extends RepositoryDto {
 	@Override
 	public Integer processPeriod() {
 		return processPeriod;
+	}
+
+	@Override
+	public boolean processHistorically() {
+		return processHistorically;
 	}
 
 	@Override

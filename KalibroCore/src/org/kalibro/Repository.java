@@ -37,6 +37,7 @@ public class Repository extends AbstractEntity<Repository> {
 	private String address;
 	private RepositoryType type;
 	private Integer processPeriod;
+	private boolean processHistorically;
 
 	private Configuration configuration;
 
@@ -54,6 +55,7 @@ public class Repository extends AbstractEntity<Repository> {
 		setAddress(address);
 		setType(type);
 		setProcessPeriod(0);
+		setProcessHistorically(true);
 	}
 
 	public Long getId() {
@@ -128,6 +130,14 @@ public class Repository extends AbstractEntity<Repository> {
 
 	public void setProcessPeriod(Integer processPeriod) {
 		this.processPeriod = processPeriod;
+	}
+
+	public boolean historicProcessingIsDesired() {
+		return processHistorically;
+	}
+
+	public void setProcessHistorically(boolean processHistorically) {
+		this.processHistorically = processHistorically;
 	}
 
 	public Configuration getConfiguration() {

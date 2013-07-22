@@ -74,6 +74,7 @@ CREATE TABLE IF NOT EXISTS `repository` (
   `description` TEXT DEFAULT NULL,
   `license` VARCHAR(255) DEFAULT NULL,
   `process_period` INT DEFAULT NULL,
+  `process_historically` BOOLEAN DEFAULT NULL,
   `configuration` BIGINT NOT NULL,
   UNIQUE (`project`,`name`),
   FOREIGN KEY (`project`) REFERENCES `project`(`id`) ON DELETE CASCADE,
