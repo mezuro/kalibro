@@ -16,6 +16,7 @@ import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
 import org.kalibro.core.loaders.Loader;
 import org.kalibro.core.persistence.record.RepositoryRecord;
+import org.kalibro.core.processing.HistoricProcessTask;
 import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.RepositoryDao;
 import org.kalibro.dto.DataTransferObject;
@@ -75,6 +76,11 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 		ProcessTask task = new ProcessTask(repository);
 		processTasks.put(repositoryId, task);
 		executeTask(task, repository.getProcessPeriod());
+		if (repository.historicProcessingIsDesired() && ! repository.hasBeenProcessedAtLeastOnce()) {
+			HistoricProcessTask historicTask = new HistoricProcessTask(repository);
+			processTasks.put(repositoryId, historicTask);
+			executeTask(historicTask, 0);
+		}
 	}
 
 	private void validateConfiguration(Repository repository) {

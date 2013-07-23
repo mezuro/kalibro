@@ -13,6 +13,7 @@ import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.record.RepositoryRecord;
+import org.kalibro.core.processing.HistoricProcessTask;
 import org.kalibro.core.processing.ProcessTask;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
@@ -61,21 +62,21 @@ public class RepositoryDatabaseDaoTest extends
 
 	@Test
 	public void shouldProcessOnce() throws Exception {
-		ProcessTask task = mockProcessTask(0);
+		ProcessTask task = mockTask(0, ProcessTask.class);
 		dao.process(ID);
 		verify(task).executeInBackground();
 	}
 
 	@Test
 	public void shouldProcessPeriodically() throws Exception {
-		ProcessTask task = mockProcessTask(42);
+		ProcessTask task = mockTask(42, ProcessTask.class);
 		dao.process(ID);
 		verify(task).executePeriodically(42, TimeUnit.DAYS);
 	}
 
 	@Test
 	public void shouldCancelProcessing() throws Exception {
-		ProcessTask task = mockProcessTask(0);
+		ProcessTask task = mockTask(0, ProcessTask.class);
 		dao.process(ID);
 		dao.cancelProcessing(ID);
 		verify(task).cancelExecution();
@@ -84,9 +85,9 @@ public class RepositoryDatabaseDaoTest extends
 	@Test
 	public void shouldNotProcessIfConfigurationHasNoNativeMetrics() throws Exception {
 		for (MetricConfiguration metricConfiguration : configuration.getMetricConfigurations())
-			if (!metricConfiguration.getMetric().isCompound())
+			if (! metricConfiguration.getMetric().isCompound())
 				configuration.removeMetricConfiguration(metricConfiguration);
-		mockProcessTask(0);
+		mockTask(0, ProcessTask.class);
 		assertThat(new VoidTask() {
 
 			@Override
@@ -98,9 +99,31 @@ public class RepositoryDatabaseDaoTest extends
 		verifyNew(ProcessTask.class, never());
 	}
 
-	private ProcessTask mockProcessTask(Integer period) throws Exception {
-		ProcessTask task = mock(ProcessTask.class);
-		whenNew(ProcessTask.class).withArguments(entity).thenReturn(task);
+	@Test
+	public void shouldHistoricProcess() throws Exception {
+		when(entity.historicProcessingIsDesired()).thenReturn(true);
+		when(entity.hasBeenProcessedAtLeastOnce()).thenReturn(false);
+		ProcessTask task = mockTask(10, ProcessTask.class);
+		HistoricProcessTask historicTask = mockTask(10, HistoricProcessTask.class);
+		dao.process(ID);
+		verify(task).executePeriodically(10, TimeUnit.DAYS);
+		verify(historicTask).executeInBackground();
+	}
+
+	@Test
+	public void shouldNotHistoricProcessAgain() throws Exception {
+		when(entity.historicProcessingIsDesired()).thenReturn(true);
+		when(entity.hasBeenProcessedAtLeastOnce()).thenReturn(true);
+		ProcessTask task = mockTask(10, ProcessTask.class);
+		HistoricProcessTask historicTask = mockTask(10, HistoricProcessTask.class);
+		dao.process(ID);
+		verify(task).executePeriodically(10, TimeUnit.DAYS);
+		verify(historicTask, never()).executeInBackground();
+	}
+
+	private <T extends ProcessTask> T mockTask(Integer period, Class<T> taskClass) throws Exception {
+		T task = mock(taskClass);
+		whenNew(taskClass).withArguments(entity).thenReturn(task);
 		when(entity.getProcessPeriod()).thenReturn(period);
 		return task;
 	}
