@@ -64,7 +64,7 @@ public class HistoricProcessTaskTest extends UnitTest {
 
 	private void mockSubtasks() throws Exception {
 		historicLoadingTask = mockSubtask(HistoricLoadingTask.class);
-		when(historicLoadingTask.finishedHistoricProcessing()).thenReturn(true);
+		when(historicLoadingTask.finishedHistoricProcessing()).thenReturn(false).thenReturn(true);
 		collectingTask = mockSubtask(CollectingTask.class);
 		analyzingTask = mockSubtask(AnalyzingTask.class);
 	}
@@ -85,5 +85,7 @@ public class HistoricProcessTaskTest extends UnitTest {
 		order.verify(collectingTask).executeInBackground();
 		order.verify(analyzingTask).prepare(historicProcessTask);
 		order.verify(analyzingTask).execute();
+		order.verify(historicLoadingTask).prepare(historicProcessTask);
+		order.verify(historicLoadingTask).execute();
 	}
 }

@@ -25,6 +25,8 @@ public class HistoricLoadingTask extends LoadingTask {
 		RepositoryLoader repositoryLoader = createLoader();
 		prepareCodeDirectory();
 		rolledBackSuccessfully = repositoryLoader.loadForHistoricProcessing(codeDirectory());
+		if (finishedHistoricProcessing())
+			repositoryLoader.returnToLatestCommit();
 	}
 
 	private RepositoryLoader createLoader() throws Exception {

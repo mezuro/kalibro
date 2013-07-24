@@ -38,7 +38,7 @@ public class CvsLoader extends RepositoryLoader {
 	}
 
 	@Override
-	protected List<String> returnToLatestCommit() {
+	public List<String> returnToLatestCommit() {
 		throw new KalibroException("Kalibro does not support CVS historic analysis.");
 	}
 }

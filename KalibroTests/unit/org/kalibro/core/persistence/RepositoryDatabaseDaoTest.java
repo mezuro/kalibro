@@ -15,6 +15,8 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.record.RepositoryRecord;
 import org.kalibro.core.processing.HistoricProcessTask;
 import org.kalibro.core.processing.ProcessTask;
+import org.mockito.InOrder;
+import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 
 @PrepareForTest({RepositoryDatabaseDao.class, RepositoryType.class})
@@ -103,22 +105,23 @@ public class RepositoryDatabaseDaoTest extends
 	public void shouldHistoricProcess() throws Exception {
 		when(entity.historicProcessingIsDesired()).thenReturn(true);
 		when(entity.hasBeenProcessedAtLeastOnce()).thenReturn(false);
-		ProcessTask task = mockTask(10, ProcessTask.class);
 		HistoricProcessTask historicTask = mockTask(10, HistoricProcessTask.class);
+		ProcessTask task = mockTask(10, ProcessTask.class);
 		dao.process(ID);
-		verify(task).executePeriodically(10, TimeUnit.DAYS);
-		verify(historicTask).executeInBackground();
+		InOrder order = Mockito.inOrder(task, historicTask);
+		order.verify(historicTask).executeInBackground();
+		order.verify(task).executePeriodically(10, TimeUnit.DAYS);
 	}
 
 	@Test
 	public void shouldNotHistoricProcessAgain() throws Exception {
 		when(entity.historicProcessingIsDesired()).thenReturn(true);
 		when(entity.hasBeenProcessedAtLeastOnce()).thenReturn(true);
-		ProcessTask task = mockTask(10, ProcessTask.class);
 		HistoricProcessTask historicTask = mockTask(10, HistoricProcessTask.class);
+		ProcessTask task = mockTask(10, ProcessTask.class);
 		dao.process(ID);
-		verify(task).executePeriodically(10, TimeUnit.DAYS);
 		verify(historicTask, never()).executeInBackground();
+		verify(task).executePeriodically(10, TimeUnit.DAYS);
 	}
 
 	private <T extends ProcessTask> T mockTask(Integer period, Class<T> taskClass) throws Exception {

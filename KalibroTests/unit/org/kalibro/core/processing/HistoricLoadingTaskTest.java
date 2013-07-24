@@ -41,13 +41,25 @@ public class HistoricLoadingTaskTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldLoadRepository() throws Exception {
+	public void shouldLoadRepositoryAndProcess() throws Exception {
 		File file = mock(File.class);
 		when(historicLoadingTask.codeDirectory()).thenReturn(file);
 		when(repositoryLoader.loadForHistoricProcessing(file)).thenReturn(true);
 		historicLoadingTask.perform();
-		assertFalse(historicLoadingTask.finishedHistoricProcessing());
 		verify(historicLoadingTask, once()).prepareCodeDirectory();
+		assertFalse(historicLoadingTask.finishedHistoricProcessing());
+		verify(repositoryLoader, never()).returnToLatestCommit();
+	}
+
+	@Test
+	public void shouldReturnToLatestCommitWhenCouldNotLoadRepository() throws Exception {
+		File file = mock(File.class);
+		when(historicLoadingTask.codeDirectory()).thenReturn(file);
+		when(repositoryLoader.loadForHistoricProcessing(file)).thenReturn(false);
+		historicLoadingTask.perform();
+		verify(historicLoadingTask, once()).prepareCodeDirectory();
+		assertTrue(historicLoadingTask.finishedHistoricProcessing());
+		verify(repositoryLoader, once()).returnToLatestCommit();
 	}
 
 	@Test

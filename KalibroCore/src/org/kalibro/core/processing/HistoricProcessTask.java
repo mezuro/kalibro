@@ -23,14 +23,19 @@ public class HistoricProcessTask extends ProcessTask {
 	@Override
 	public void perform() {
 		HistoricLoadingTask historicLoadingTask = new HistoricLoadingTask();
-		do {
-			daoFactory = new DatabaseDaoFactory();
-			processing = daoFactory.createProcessingDao().createProcessingFor(repository);
-			resultProducer = new Producer<NativeModuleResult>();
-			historicLoadingTask.prepare(this).execute();
+		daoFactory = new DatabaseDaoFactory();
+		prepareAndLoad(historicLoadingTask);
+		while (! historicLoadingTask.finishedHistoricProcessing()) {
 			new CollectingTask().prepare(this).executeInBackground();
 			ProcessSubtask analyzingTask = new AnalyzingTask().prepare(this);
 			analyzingTask.execute();
-		} while (! historicLoadingTask.finishedHistoricProcessing());
+			prepareAndLoad(historicLoadingTask);
+		}
+	}
+
+	private void prepareAndLoad(HistoricLoadingTask historicLoadingTask) {
+		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
+		resultProducer = new Producer<NativeModuleResult>();
+		historicLoadingTask.prepare(this).execute();
 	}
 }

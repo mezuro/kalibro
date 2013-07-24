@@ -34,7 +34,7 @@ public abstract class RepositoryLoader extends Loader {
 
 	protected abstract List<String> rollBackOneCommit(boolean update) throws IOException;
 
-	protected abstract List<String> returnToLatestCommit();
+	public abstract List<String> returnToLatestCommit();
 
 	public boolean loadForHistoricProcessing(File loadDirectory) throws IOException {
 		List<String> commands = rollBackOneCommit(isUpdatable(loadDirectory));

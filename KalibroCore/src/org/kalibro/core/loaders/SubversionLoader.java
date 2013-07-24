@@ -63,7 +63,7 @@ public class SubversionLoader extends RepositoryLoader {
 	}
 
 	@Override
-	protected List<String> returnToLatestCommit() {
+	public List<String> returnToLatestCommit() {
 		return Arrays.asList("svn update");
 	}
 }

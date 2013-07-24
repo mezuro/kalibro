@@ -25,6 +25,9 @@ import org.kalibro.dto.DataTransferObject;
  * Database access implementation for {@link RepositoryDao}.
  * 
  * @author Carlos Morais
+ * @author Daniel Alves
+ * @author Diego Araújo
+ * @author Guilherme Rojas
  */
 class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> implements RepositoryDao {
 
@@ -73,14 +76,14 @@ class RepositoryDatabaseDao extends DatabaseDao<Repository, RepositoryRecord> im
 		cancelProcessing(repositoryId);
 		Repository repository = get(repositoryId);
 		validateConfiguration(repository);
-		ProcessTask task = new ProcessTask(repository);
-		processTasks.put(repositoryId, task);
-		executeTask(task, repository.getProcessPeriod());
 		if (repository.historicProcessingIsDesired() && ! repository.hasBeenProcessedAtLeastOnce()) {
 			HistoricProcessTask historicTask = new HistoricProcessTask(repository);
 			processTasks.put(repositoryId, historicTask);
 			executeTask(historicTask, 0);
 		}
+		ProcessTask task = new ProcessTask(repository);
+		processTasks.put(repositoryId, task);
+		executeTask(task, repository.getProcessPeriod());
 	}
 
 	private void validateConfiguration(Repository repository) {
