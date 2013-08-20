@@ -1,6 +1,6 @@
 package org.kalibro.tests;
 
-import static java.util.concurrent.TimeUnit.SECONDS;
+import static java.util.concurrent.TimeUnit.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,7 +27,7 @@ public abstract class UnitTest extends SpecialAssertions {
 	public MethodRule testTimeout = testTimeout();
 
 	protected Timeout testTimeout() {
-		return new TestTimeout(2, SECONDS);
+		return new TestTimeout(1, SECONDS);
 	}
 
 	protected String loadResource(String name) throws IOException {
