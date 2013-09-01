@@ -32,15 +32,10 @@ $$ LANGUAGE plpgsql IMMUTABLE;
 
 CREATE OR REPLACE FUNCTION next_id(name varchar(50)) RETURNS bigint AS $$
 BEGIN
-  RETURN (SELECT sequence_count + 1 FROM sequences WHERE table_name = name);
+  UPDATE sequences SET sequence_count = sequence_count + 1 WHERE table_name = name;
+  RETURN (SELECT sequence_count FROM sequences WHERE table_name = name);
 END;
 $$ LANGUAGE plpgsql STABLE;
-
-CREATE OR REPLACE FUNCTION update_sequence(name varchar(50)) RETURNS void AS $$
-BEGIN
-  UPDATE sequences SET sequence_count = sequence_count + 1 WHERE table_name = name;
-END;
-$$ LANGUAGE plpgsql VOLATILE;
 
 CREATE OR REPLACE FUNCTION push_up_results(process_id bigint, h int) RETURNS void AS $$
 DECLARE
@@ -54,14 +49,12 @@ BEGIN
     BEGIN
       INSERT INTO metric_result(id, module_result, configuration, value)
         VALUES (next_id('metric_result'), result.module, result.configuration, nan());
-      PERFORM update_sequence('metric_result');
     EXCEPTION WHEN unique_violation THEN
       -- do nothing
     END;
     IF result.value <> nan() THEN
       INSERT INTO descendant_result(id, module_result, configuration, value)
         VALUES (next_id('descendant_result'), result.module, result.configuration, result.value);
-      PERFORM update_sequence('descendant_result');
     END IF;
   END LOOP;
 END;
@@ -80,7 +73,6 @@ BEGIN
   LOOP
     INSERT INTO descendant_result(id, module_result, configuration, value)
       VALUES (next_id('descendant_result'), result.module, result.configuration, result.value);
-    PERFORM update_sequence('descendant_result');
   END LOOP;
 END;
 $$ LANGUAGE plpgsql VOLATILE;
@@ -89,7 +81,7 @@ CREATE OR REPLACE FUNCTION aggregate_results(process_id bigint) RETURNS void AS 
 DECLARE
   h integer;
 BEGIN
-  h := (SELECT max(height) from module_result where processing = process_id);
+  h := (SELECT max(height) FROM module_result WHERE processing = process_id);
   IF h is null THEN
     RAISE EXCEPTION 'Nonexistent processing --> %', process_id;
   END IF;

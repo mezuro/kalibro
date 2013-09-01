@@ -1,13 +1,5 @@
 SET foreign_key_checks = 0;
 
-DROP TABLE IF EXISTS sequences, `descendant_result`, `metric_result`, `module_result`,
-  `range_snapshot`, `metric_configuration_snapshot`, `processing`, `stack_trace_element`, `throwable`,
-  `repository`, `project`, `range`, `metric_configuration`, `configuration`, `reading`, `reading_group`;
-
-/* END OF DROP TABLES */
-
-SET foreign_key_checks = 0;
-
 CREATE TABLE IF NOT EXISTS `reading_group` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
@@ -88,13 +80,6 @@ CREATE TABLE IF NOT EXISTS `throwable` (
   FOREIGN KEY (`cause`) REFERENCES `throwable`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
-DROP TRIGGER IF EXISTS `delete_throwable_cause`;
-
-CREATE TRIGGER `delete_throwable_cause` AFTER DELETE ON `throwable`
-FOR EACH ROW BEGIN
-  DELETE FROM `throwable` WHERE `id` = OLD.`cause`;
-END;
-
 CREATE TABLE IF NOT EXISTS `stack_trace_element` (
   `throwable` BIGINT NOT NULL,
   `index` INT NOT NULL,
@@ -121,13 +106,6 @@ CREATE TABLE IF NOT EXISTS `processing` (
   FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB;
-
-DROP TRIGGER IF EXISTS `delete_processing_error`;
-
-CREATE TRIGGER `delete_processing_error` AFTER DELETE ON `processing`
-FOR EACH ROW BEGIN
-  DELETE FROM `throwable` WHERE `id` = OLD.`error`;
-END;
 
 CREATE TABLE IF NOT EXISTS `metric_configuration_snapshot` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -182,13 +160,6 @@ CREATE TABLE IF NOT EXISTS `metric_result` (
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)
 ) ENGINE=InnoDB;
-
-DROP TRIGGER IF EXISTS `delete_result_error`;
-
-CREATE TRIGGER `delete_result_error` AFTER DELETE ON `metric_result`
-FOR EACH ROW BEGIN
-  DELETE FROM `throwable` WHERE `id` = OLD.`error`;
-END;
 
 CREATE TABLE IF NOT EXISTS `descendant_result` (
   `id` BIGINT NOT NULL PRIMARY KEY,
