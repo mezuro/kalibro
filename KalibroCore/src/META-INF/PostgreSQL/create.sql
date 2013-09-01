@@ -183,5 +183,5 @@ INSERT INTO sequences SELECT * FROM
     ('module_result', 0),
     ('metric_result', 0),
     ('descendant_result', 0)
-  ) as tmp (table_name, sequence_count))
+  ) AS tmp (table_name, sequence_count)
 WHERE NOT EXISTS (SELECT 1 FROM sequences WHERE table_name = tmp.table_name);

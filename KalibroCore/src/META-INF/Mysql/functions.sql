@@ -19,11 +19,6 @@ FOR EACH ROW BEGIN
   DELETE FROM `throwable` WHERE `id` = OLD.`error`;
 END;
 
-DROP FUNCTION IF EXISTS nan;
-
-CREATE FUNCTION nan() RETURNS BIGINT DETERMINISTIC
-  RETURN 9221120237041090560;
-
 DROP FUNCTION IF EXISTS next_id;
 
 CREATE FUNCTION next_id(name VARCHAR(50)) RETURNS BIGINT
@@ -37,12 +32,13 @@ DROP PROCEDURE IF EXISTS push_up_results;
 CREATE PROCEDURE push_up_results(process_id BIGINT, h INT)
 BEGIN
   DECLARE done INT DEFAULT FALSE;
-  DECLARE module, configuration, value BIGINT;
+  DECLARE nan, module, configuration, value BIGINT;
   DECLARE result CURSOR FOR
     SELECT mor.parent, mer.configuration, mer.value
     FROM module_result mor JOIN metric_result mer ON mer.module_result = mor.id
     WHERE mor.processing = process_id AND mor.height = h;
   DECLARE CONTINUE HANDLER FOR NOT FOUND SET done = TRUE;
+  SET nan = 9221120237041090560;
   OPEN result;
   FETCH result INTO module, configuration, value;
   WHILE NOT done DO
@@ -85,10 +81,10 @@ BEGIN
   DECLARE h integer;
   SET h = (SELECT max(height) FROM module_result WHERE processing = process_id);
   IF h is null THEN
-    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = concat('Nonexistent processing --> ', process_id);
+    SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Nonexistent processing';
   END IF;
   WHILE h > 0 DO
-    h := h - 1;
+    SET h = h - 1;
     CALL push_up_results(process_id, h + 1);
     CALL pull_up_descendants(process_id, h);
   END WHILE;
