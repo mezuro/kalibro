@@ -10,8 +10,7 @@ import java.sql.Driver;
 public enum SupportedDatabase {
 
 	MYSQL("Mysql", com.mysql.jdbc.Driver.class),
-	POSTGRESQL("PostgreSQL", org.postgresql.Driver.class),
-	SQLITE("SQLite", org.sqlite.JDBC.class);
+	POSTGRESQL("PostgreSQL", org.postgresql.Driver.class);
 
 	private String name;
 	private String driverClassName;
