@@ -3,10 +3,7 @@ package org.kalibro.core.persistence;
 import java.util.Collection;
 import java.util.SortedSet;
 
-import javax.persistence.Entity;
-import javax.persistence.NoResultException;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 
 import org.kalibro.KalibroException;
 import org.kalibro.core.Identifier;
@@ -61,6 +58,10 @@ abstract class DatabaseDao<ENTITY, RECORD extends DataTransferObject<ENTITY>> {
 
 	protected <T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
 		return recordManager.createQuery(queryString, resultClass);
+	}
+
+	protected StoredProcedureQuery createProcedureQuery(String name) {
+		return recordManager.createProcedureQuery(name);
 	}
 
 	private String alias() {

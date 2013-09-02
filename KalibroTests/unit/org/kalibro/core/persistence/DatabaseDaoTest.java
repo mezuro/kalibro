@@ -7,6 +7,7 @@ import java.util.Random;
 
 import javax.persistence.NoResultException;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 
 import org.junit.Before;
@@ -113,6 +114,14 @@ public class DatabaseDaoTest extends UnitTest {
 		TypedQuery<PersonRecord> query = mock(TypedQuery.class);
 		when(recordManager.createQuery(queryString, PersonRecord.class)).thenReturn(query);
 		return query;
+	}
+
+	@Test
+	public void shouldCreateProcedureQuery() {
+		String name = "My procedure name";
+		StoredProcedureQuery query = mock(StoredProcedureQuery.class);
+		when(recordManager.createProcedureQuery(name)).thenReturn(query);
+		assertSame(query, dao.createProcedureQuery(name));
 	}
 
 	@Test
