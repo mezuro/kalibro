@@ -43,8 +43,8 @@ BEGIN
   FETCH result INTO module, configuration, value;
   WHILE NOT done DO
     INSERT IGNORE INTO metric_result(id, module_result, configuration, value)
-      VALUES (next_id('metric_result'), module, configuration, nan());
-    IF value <> nan() THEN
+      VALUES (next_id('metric_result'), module, configuration, nan);
+    IF value <> nan THEN
       INSERT INTO descendant_result(id, module_result, configuration, value)
         VALUES (next_id('descendant_result'), module, configuration, value);
     END IF;
