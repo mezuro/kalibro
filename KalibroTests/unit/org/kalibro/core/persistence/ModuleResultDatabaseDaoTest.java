@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.util.*;
 
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 
 import org.junit.Test;
@@ -93,22 +94,34 @@ public class ModuleResultDatabaseDaoTest extends
 	}
 
 	@Test
-	public void shouldGetResultsAtHeight() {
-		int height = TIME.intValue();
-		prepareQuery("moduleResult.height = :height");
+	public void shouldAggregateResults() {
+		StoredProcedureQuery procedure = mock(StoredProcedureQuery.class);
+		doReturn(procedure).when(dao).createProcedureQuery("aggregate_results");
+		dao.aggregateResults(ID);
+		InOrder order = Mockito.inOrder(procedure);
+		order.verify(procedure).setParameter("process_id", ID);
+		order.verify(procedure).execute();
+	}
 
-		assertDeepEquals(list(entity), dao.getResultsAtHeight(height, ID));
-		verifyCallsInOrder("height", height);
+	@Test
+	public void shouldGetResultsOfProcessing() {
+		prepareQuery(null);
+		assertDeepEquals(list(entity), dao.getResultsOfProcessing(ID));
+		verifyCallsInOrder(null, null);
 	}
 
 	private void prepareQuery(String secondCondition) {
-		doReturn(query).when(dao).createRecordQuery("moduleResult.processing = :processingId AND " + secondCondition);
+		String where = "moduleResult.processing = :processingId";
+		if (secondCondition != null)
+			where += " AND " + secondCondition;
+		doReturn(query).when(dao).createRecordQuery(where);
 	}
 
 	private void verifyCallsInOrder(String secondParameterName, Object secondParameter) {
 		InOrder order = Mockito.inOrder(query);
 		order.verify(query).setParameter("processingId", ID);
-		order.verify(query).setParameter(secondParameterName, secondParameter);
+		if (secondParameterName != null)
+			order.verify(query).setParameter(secondParameterName, secondParameter);
 		order.verify(query).getResultList();
 	}
 }
