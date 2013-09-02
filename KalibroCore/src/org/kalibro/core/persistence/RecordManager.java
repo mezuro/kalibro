@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 
 /**
@@ -27,6 +28,11 @@ class RecordManager {
 	<T> TypedQuery<T> createQuery(String queryString, Class<T> resultClass) {
 		clear();
 		return entityManager.createQuery(queryString, resultClass);
+	}
+
+	StoredProcedureQuery createProcedureQuery(String procedureName) {
+		clear();
+		return entityManager.createStoredProcedureQuery(procedureName);
 	}
 
 	<T> T getById(Long id, Class<T> recordClass) {

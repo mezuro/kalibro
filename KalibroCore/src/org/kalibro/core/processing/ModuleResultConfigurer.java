@@ -1,8 +1,9 @@
 package org.kalibro.core.processing;
 
-import java.util.List;
-
-import org.kalibro.*;
+import org.kalibro.Configuration;
+import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
+import org.kalibro.Processing;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
@@ -36,9 +37,7 @@ class ModuleResultConfigurer {
 	private void configure() {
 		saveCompoundResults();
 		updateGrade();
-		if (moduleResult.hasParent())
-			addResultsToParent();
-		else
+		if (!moduleResult.hasParent())
 			processing.setResultsRoot(moduleResult);
 	}
 
@@ -59,28 +58,5 @@ class ModuleResultConfigurer {
 			}
 		moduleResult.setGrade(gradeSum / weightSum);
 		moduleResultDao.save(moduleResult, processing.getId());
-	}
-
-	private void addResultsToParent() {
-		for (MetricResult metricResult : moduleResult.getMetricResults())
-			addResultsToParent(metricResult);
-	}
-
-	private void addResultsToParent(MetricResult metricResult) {
-		MetricConfiguration snapshot = metricResult.getConfiguration();
-		Long parentId = moduleResult.getParent().getId();
-		Double value = metricResult.getValue();
-
-		if (!snapshot.getMetric().isCompound())
-			makeSureParentHasResultForMetric(parentId, snapshot);
-		List<Double> descendantResults = metricResultDao.descendantResultsOf(moduleResult.getId(), snapshot.getId());
-		if (!value.isNaN())
-			descendantResults.add(value);
-		metricResultDao.addDescendantResults(descendantResults, parentId, snapshot.getId());
-	}
-
-	private void makeSureParentHasResultForMetric(Long parentId, MetricConfiguration snapshot) {
-		if (!metricResultDao.metricResultExists(parentId, snapshot.getId()))
-			metricResultDao.save(new MetricResult(snapshot, Double.NaN), parentId);
 	}
 }

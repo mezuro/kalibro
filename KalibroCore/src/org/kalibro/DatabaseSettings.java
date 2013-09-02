@@ -10,7 +10,7 @@ import org.kalibro.core.abstractentity.Print;
  */
 public class DatabaseSettings extends AbstractEntity<DatabaseSettings> {
 
-	@Print(order = 1, comment = "Possibilities: MYSQL, POSTGRESQL, SQLITE")
+	@Print(order = 1, comment = "Possibilities: MYSQL, POSTGRESQL")
 	private SupportedDatabase databaseType;
 
 	@Print(order = 2)

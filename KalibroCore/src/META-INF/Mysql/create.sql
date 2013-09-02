@@ -1,13 +1,5 @@
 SET foreign_key_checks = 0;
 
-DROP TABLE IF EXISTS sequences, `descendant_result`, `metric_result`, `module_result`,
-  `range_snapshot`, `metric_configuration_snapshot`, `processing`, `repository_observer`, `stack_trace_element`, `throwable`,
-  `repository`, `project`, `range`, `metric_configuration`, `configuration`, `reading`, `reading_group`;
-
-/* END OF DROP TABLES */
-
-SET foreign_key_checks = 0;
-
 CREATE TABLE IF NOT EXISTS `reading_group` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `name` VARCHAR(255) NOT NULL UNIQUE,
@@ -80,6 +72,14 @@ CREATE TABLE IF NOT EXISTS `repository` (
   FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
+CREATE TABLE IF NOT EXISTS `repository_observer` (
+  `id` BIGINT NOT NULL PRIMARY KEY,
+  `repository` BIGINT NOT NULL,
+  `name` VARCHAR(255) NOT NULL,
+  `email` VARCHAR(255) NOT NULL,
+  FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE
+) ENGINE=InnoDB;
+
 CREATE TABLE IF NOT EXISTS `throwable` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `target_string` TEXT NOT NULL,
@@ -87,13 +87,6 @@ CREATE TABLE IF NOT EXISTS `throwable` (
   `cause` BIGINT DEFAULT NULL,
   FOREIGN KEY (`cause`) REFERENCES `throwable`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB;
-
-DROP TRIGGER IF EXISTS `delete_throwable_cause`;
-
-CREATE TRIGGER `delete_throwable_cause` AFTER DELETE ON `throwable`
-FOR EACH ROW BEGIN
-  DELETE FROM `throwable` WHERE `id` = OLD.`cause`;
-END;
 
 CREATE TABLE IF NOT EXISTS `stack_trace_element` (
   `throwable` BIGINT NOT NULL,
@@ -112,9 +105,6 @@ CREATE TABLE IF NOT EXISTS `processing` (
   `date` BIGINT NOT NULL,
   `state` VARCHAR(255) NOT NULL,
   `error` BIGINT DEFAULT NULL,
-  `loading_time` BIGINT DEFAULT NULL,
-  `collecting_time` BIGINT DEFAULT NULL,
-  `analyzing_time` BIGINT DEFAULT NULL,
   `results_root` BIGINT DEFAULT NULL,
   UNIQUE (`repository`,`date`),
   FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE,
@@ -122,20 +112,13 @@ CREATE TABLE IF NOT EXISTS `processing` (
   FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `repository_observer` (
-  `id` BIGINT NOT NULL PRIMARY KEY,
-  `repository` BIGINT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE
+CREATE TABLE IF NOT EXISTS `processing_time` (
+  `processing` BIGINT NOT NULL,
+  `state` VARCHAR(255) NOT NULL,
+  `time` BIGINT NOT NULL,
+  PRIMARY KEY (`processing`,`state`),
+  FOREIGN KEY (`processing`) REFERENCES `processing`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
-
-DROP TRIGGER IF EXISTS `delete_processing_error`;
-
-CREATE TRIGGER `delete_processing_error` AFTER DELETE ON `processing`
-FOR EACH ROW BEGIN
-  DELETE FROM `throwable` WHERE `id` = OLD.`error`;
-END;
 
 CREATE TABLE IF NOT EXISTS `metric_configuration_snapshot` (
   `id` BIGINT NOT NULL PRIMARY KEY,
@@ -190,13 +173,6 @@ CREATE TABLE IF NOT EXISTS `metric_result` (
   FOREIGN KEY (`configuration`) REFERENCES `metric_configuration_snapshot`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`error`) REFERENCES `throwable`(`id`)
 ) ENGINE=InnoDB;
-
-DROP TRIGGER IF EXISTS `delete_result_error`;
-
-CREATE TRIGGER `delete_result_error` AFTER DELETE ON `metric_result`
-FOR EACH ROW BEGIN
-  DELETE FROM `throwable` WHERE `id` = OLD.`error`;
-END;
 
 CREATE TABLE IF NOT EXISTS `descendant_result` (
   `id` BIGINT NOT NULL PRIMARY KEY,

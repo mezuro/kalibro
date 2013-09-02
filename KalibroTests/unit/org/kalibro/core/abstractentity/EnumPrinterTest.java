@@ -31,7 +31,7 @@ public class EnumPrinterTest extends PrinterTestCase<Enum<?>> {
 
 	@Test
 	public void shouldBeLoadableAsYaml() throws Exception {
-		String printed = print(SQLITE, "");
-		assertEquals(SQLITE, new Yaml().loadAs(printed, SupportedDatabase.class));
+		String printed = print(POSTGRESQL, "");
+		assertEquals(POSTGRESQL, new Yaml().loadAs(printed, SupportedDatabase.class));
 	}
 }

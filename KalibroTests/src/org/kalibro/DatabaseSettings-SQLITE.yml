@@ -1,5 +1,0 @@
- &id1 !!org.kalibro.DatabaseSettings
-databaseType: SQLITE
-jdbcUrl: "jdbc:sqlite:./kalibro.sqlite"
-username: ""
-password: ""

@@ -15,13 +15,12 @@ public class SupportedDatabaseTest extends EnumerationTest<SupportedDatabase> {
 
 	@Override
 	protected String expectedText(SupportedDatabase value) {
-		return array("Mysql", "PostgreSQL", "SQLite")[value.ordinal()];
+		return array("Mysql", "PostgreSQL")[value.ordinal()];
 	}
 
 	@Test
 	public void checkJdbcDrivers() {
 		assertEquals(com.mysql.jdbc.Driver.class.getName(), MYSQL.getDriverClassName());
-		assertEquals(org.sqlite.JDBC.class.getName(), SQLITE.getDriverClassName());
 		assertEquals(org.postgresql.Driver.class.getName(), POSTGRESQL.getDriverClassName());
 	}
 }

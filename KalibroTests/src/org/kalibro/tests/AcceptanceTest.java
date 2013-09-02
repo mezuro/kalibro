@@ -20,9 +20,7 @@ public abstract class AcceptanceTest extends IntegrationTest {
 	}
 
 	@AfterClass
-	public static void deleteGeneratedFiles() {
-		File directory = new File(System.getProperty("user.dir"));
-		new File(directory, "kalibro.sqlite").delete();
+	public static void deleteSettingsFile() {
 		new File(dotKalibro(), "kalibro.settings").delete();
 	}
 

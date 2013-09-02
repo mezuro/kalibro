@@ -15,8 +15,6 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.tests.UnitTest;
-import org.mockito.InOrder;
-import org.mockito.Mockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -135,14 +133,17 @@ public class AnalyzingTaskTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldConfigureByHeight() {
-		when(treeBuilder.getMaximumHeight()).thenReturn(1);
-		when(moduleResultDao.getResultsAtHeight(1, PROCESSING_ID)).thenReturn(list(classResult));
-		when(moduleResultDao.getResultsAtHeight(0, PROCESSING_ID)).thenReturn(list(softwareResult));
+	public void shouldAggregateResults() {
+		analyzingTask.perform();
+		verify(moduleResultDao).aggregateResults(PROCESSING_ID);
+	}
+
+	@Test
+	public void shouldConfigureResults() {
+		when(moduleResultDao.getResultsOfProcessing(PROCESSING_ID)).thenReturn(list(softwareResult, classResult));
 
 		analyzingTask.perform();
-		InOrder order = Mockito.inOrder(configurer);
-		order.verify(configurer).configure(classResult);
-		order.verify(configurer).configure(softwareResult);
+		verify(configurer).configure(softwareResult);
+		verify(configurer).configure(classResult);
 	}
 }

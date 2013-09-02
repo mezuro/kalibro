@@ -18,8 +18,6 @@ import org.kalibro.core.Environment;
 
 public class DatabaseImport extends SessionEventAdapter implements SessionCustomizer {
 
-	private static final String END_OF_DROP_TABLES = "/* END OF DROP TABLES */";
-
 	@Override
 	public void customize(Session session) throws Exception {
 		session.getEventManager().addListener(this);
@@ -43,14 +41,17 @@ public class DatabaseImport extends SessionEventAdapter implements SessionCustom
 
 	private List<String> importStatements() throws IOException {
 		DatabaseSettings databaseSettings = KalibroSettings.load().getServerSettings().getDatabaseSettings();
-		String resourceName = "/META-INF/" + databaseSettings.getDatabaseType() + ".sql";
-		String script = IOUtils.toString(getClass().getResourceAsStream(resourceName));
-		List<String> statements = new ArrayList<String>(Arrays.asList(script.split("\n\n")));
-		int endFlag = statements.indexOf(END_OF_DROP_TABLES);
+		List<String> statements = new ArrayList<String>();
 		if (Environment.testing())
-			statements.remove(endFlag);
-		else
-			statements = statements.subList(endFlag + 1, statements.size());
+			statements.addAll(importStatements(databaseSettings, "clean"));
+		statements.addAll(importStatements(databaseSettings, "create"));
+		statements.addAll(importStatements(databaseSettings, "functions"));
 		return statements;
+	}
+
+	private List<String> importStatements(DatabaseSettings databaseSettings, String fileName) throws IOException {
+		String resourceName = "/META-INF/" + databaseSettings.getDatabaseType() + "/" + fileName + ".sql";
+		String script = IOUtils.toString(getClass().getResourceAsStream(resourceName));
+		return Arrays.asList(script.split("\n\n"));
 	}
 }

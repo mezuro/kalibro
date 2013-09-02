@@ -5,10 +5,7 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.Random;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Query;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -51,6 +48,14 @@ public class RecordManagerTest extends UnitTest {
 		TypedQuery<String> query = mock(TypedQuery.class);
 		when(entityManager.createQuery(QUERY, String.class)).thenReturn(query);
 		assertSame(query, recordManager.createQuery(QUERY, String.class));
+		verify(entityManager).clear();
+	}
+
+	@Test
+	public void shouldCreateProcedureQuery() {
+		StoredProcedureQuery query = mock(StoredProcedureQuery.class);
+		when(entityManager.createStoredProcedureQuery(QUERY)).thenReturn(query);
+		assertSame(query, recordManager.createProcedureQuery(QUERY));
 		verify(entityManager).clear();
 	}
 

@@ -2,6 +2,8 @@ package org.kalibro.core.persistence;
 
 import java.util.*;
 
+import javax.persistence.ParameterMode;
+import javax.persistence.StoredProcedureQuery;
 import javax.persistence.TypedQuery;
 
 import org.kalibro.Granularity;
@@ -70,11 +72,16 @@ public class ModuleResultDatabaseDao extends DatabaseDao<ModuleResult, ModuleRes
 		return save(new ModuleResultRecord(moduleResult, processingId)).convert();
 	}
 
-	public List<ModuleResult> getResultsAtHeight(int height, Long processingId) {
-		TypedQuery<ModuleResultRecord> query =
-			createRecordQuery("moduleResult.processing = :processingId AND moduleResult.height = :height");
+	public void aggregateResults(Long processingId) {
+		StoredProcedureQuery query = createProcedureQuery("aggregate_results");
+		query.registerStoredProcedureParameter("process_id", Long.class, ParameterMode.IN);
+		query.setParameter("process_id", processingId);
+		query.execute();
+	}
+
+	public List<ModuleResult> getResultsOfProcessing(Long processingId) {
+		TypedQuery<ModuleResultRecord> query = createRecordQuery("moduleResult.processing = :processingId");
 		query.setParameter("processingId", processingId);
-		query.setParameter("height", height);
 		return DataTransferObject.toList(query.getResultList());
 	}
 }

@@ -76,4 +76,8 @@ public abstract class SpecialAssertions extends MockitoProxy {
 			map.put(elements[i], elements[i + 1]);
 		return map;
 	}
+
+	public static <T> T randomElementFrom(T... elements) {
+		return elements[new Random().nextInt(elements.length)];
+	}
 }

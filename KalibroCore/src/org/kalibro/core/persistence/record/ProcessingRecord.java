@@ -1,11 +1,10 @@
 package org.kalibro.core.persistence.record;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import javax.persistence.*;
 
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 import org.kalibro.ModuleResult;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
@@ -40,17 +39,12 @@ public class ProcessingRecord extends ProcessingDto {
 	@JoinColumn(name = "\"error\"", referencedColumnName = "\"id\"")
 	private ThrowableRecord error;
 
-	@Column(name = "\"loading_time\"")
-	private Long loadingTime;
-
-	@Column(name = "\"collecting_time\"")
-	private Long collectingTime;
-
-	@Column(name = "\"analyzing_time\"")
-	private Long analyzingTime;
-
 	@Column(name = "\"results_root\"")
 	private Long resultsRoot;
+
+	@CascadeOnDelete
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "processing")
+	private Collection<ProcessingTimeRecord> processingTimes;
 
 	public ProcessingRecord() {
 		super();
@@ -78,9 +72,12 @@ public class ProcessingRecord extends ProcessingDto {
 	}
 
 	private void setProcessTimes(Processing processing) {
-		loadingTime = processing.getStateTime(ProcessState.LOADING);
-		collectingTime = processing.getStateTime(ProcessState.COLLECTING);
-		analyzingTime = processing.getStateTime(ProcessState.ANALYZING);
+		processingTimes = new ArrayList<ProcessingTimeRecord>();
+		for (ProcessState timedState : ProcessState.values()) {
+			Long time = processing.getStateTime(timedState);
+			if (time != null)
+				processingTimes.add(new ProcessingTimeRecord(timedState, time, this));
+		}
 	}
 
 	private void setResultsRoot(ModuleResult resultsRoot) {
@@ -110,15 +107,9 @@ public class ProcessingRecord extends ProcessingDto {
 	@Override
 	public Map<ProcessState, Long> stateTimes() {
 		Map<ProcessState, Long> map = new HashMap<ProcessState, Long>();
-		putTime(map, ProcessState.LOADING, loadingTime);
-		putTime(map, ProcessState.COLLECTING, collectingTime);
-		putTime(map, ProcessState.ANALYZING, analyzingTime);
+		for (ProcessingTimeRecord processingTime : processingTimes)
+			map.put(processingTime.state(), processingTime.time());
 		return map;
-	}
-
-	private void putTime(Map<ProcessState, Long> map, ProcessState passedState, Long time) {
-		if (time != null)
-			map.put(passedState, time);
 	}
 
 	@Override

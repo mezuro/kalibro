@@ -1,6 +1,5 @@
 package org.kalibro.core.processing;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.SortedSet;
 
@@ -99,63 +98,5 @@ public class ModuleResultConfigurerTest extends UnitTest {
 
 		configurer.configure(moduleResult);
 		verify(processing).setResultsRoot(moduleResult);
-	}
-
-	@Test
-	public void shouldAddResultsToParentAfterAddingCompoundResults() {
-		MetricResult compoundResult = mock(MetricResult.class);
-		when(compoundCalculator.calculateCompoundResults()).thenReturn(list(compoundResult));
-		when(metricResultDao.save(compoundResult, MODULE_RESULT_ID)).thenReturn(compoundResult);
-
-		configurer.configure(moduleResult);
-		InOrder order = Mockito.inOrder(moduleResult);
-		order.verify(moduleResult).addMetricResult(compoundResult);
-		order.verify(moduleResult).hasParent();
-	}
-
-	@Test
-	public void shouldAddResultsToParent() throws Exception {
-		Double value = RANDOM.nextDouble();
-		MetricResult nativeMetricResult = mockMetricResult(value);
-		MetricResult compoundMetricResult = mockMetricResult(value);
-		MetricConfiguration nativeSnapshot = mockSnapshot(false, nativeMetricResult);
-		MetricConfiguration compoundSnapshot = mockSnapshot(true, compoundMetricResult);
-		Long parent = mockModuleResult(sortedSet(nativeMetricResult, compoundMetricResult));
-
-		configurer.configure(moduleResult);
-		verify(metricResultDao).addDescendantResults(list(42.0, value), parent, nativeSnapshot.getId());
-		verify(metricResultDao).addDescendantResults(list(value), parent, compoundSnapshot.getId());
-	}
-
-	private MetricResult mockMetricResult(Double value) throws Exception {
-		Long id = RANDOM.nextLong();
-		MetricResult metricResult = mock(MetricResult.class);
-		when(metricResult.getId()).thenReturn(id);
-		when(metricResult.getValue()).thenReturn(value);
-		when(metricResult, Comparable.class.getMethods()[0]).withArguments(any()).thenReturn(1);
-		return metricResult;
-	}
-
-	private MetricConfiguration mockSnapshot(boolean compound, MetricResult metricResult) {
-		Long snapshotId = RANDOM.nextLong();
-		Metric metric = mock(Metric.class);
-		MetricConfiguration snapshot = mock(MetricConfiguration.class);
-		when(metricResult.getConfiguration()).thenReturn(snapshot);
-		when(snapshot.getId()).thenReturn(snapshotId);
-		when(snapshot.getMetric()).thenReturn(metric);
-		when(metric.isCompound()).thenReturn(compound);
-		when(metricResultDao.descendantResultsOf(MODULE_RESULT_ID, snapshotId))
-			.thenReturn(compound ? new ArrayList<Double>() : list(42.0));
-		return snapshot;
-	}
-
-	private Long mockModuleResult(SortedSet<MetricResult> metricResults) {
-		Long parentId = RANDOM.nextLong();
-		ModuleResult parent = mock(ModuleResult.class);
-		when(moduleResult.hasParent()).thenReturn(true);
-		when(moduleResult.getMetricResults()).thenReturn(metricResults);
-		when(moduleResult.getParent()).thenReturn(parent);
-		when(parent.getId()).thenReturn(parentId);
-		return parentId;
 	}
 }

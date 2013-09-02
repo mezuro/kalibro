@@ -32,7 +32,8 @@ class AnalyzingTask extends ProcessSubtask {
 		configurer = new ModuleResultConfigurer(processing(), configuration, metricResultDao, moduleResultDao);
 		for (NativeModuleResult nativeModuleResult : resultProducer())
 			addNativeResult(nativeModuleResult);
-		configureFrom(treeBuilder.getMaximumHeight());
+		moduleResultDao.aggregateResults(processing().getId());
+		configureResults();
 	}
 
 	private void addNativeResult(NativeModuleResult nativeResult) {
@@ -50,10 +51,8 @@ class AnalyzingTask extends ProcessSubtask {
 		return new MetricResult(snapshot, value);
 	}
 
-	private void configureFrom(int height) {
-		for (ModuleResult moduleResult : moduleResultDao.getResultsAtHeight(height, processing().getId()))
+	private void configureResults() {
+		for (ModuleResult moduleResult : moduleResultDao.getResultsOfProcessing(processing().getId()))
 			configurer.configure(moduleResult);
-		if (height > 0)
-			configureFrom(height - 1);
 	}
 }

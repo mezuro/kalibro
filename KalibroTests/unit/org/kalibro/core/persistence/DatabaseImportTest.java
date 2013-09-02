@@ -1,6 +1,9 @@
 package org.kalibro.core.persistence;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import org.eclipse.persistence.sessions.Session;
 import org.eclipse.persistence.sessions.SessionEvent;
@@ -62,16 +65,13 @@ public class DatabaseImportTest extends UnitTest {
 	public void shouldImportDatabase() throws IOException {
 		databaseImport.postLogin(event);
 		InOrder order = Mockito.inOrder(unitOfWork);
-		for (String statement : loadResource("/META-INF/PostgreSQL.sql").split("\n\n"))
-			verifyImportStatement(order, statement);
-		order.verify(unitOfWork).commit();
-	}
-
-	private void verifyImportStatement(InOrder order, String statement) {
-		if (statement.equals("/* END OF DROP TABLES */"))
-			verify(unitOfWork, never()).executeNonSelectingSQL(statement);
-		else
+		List<String> statements = new ArrayList<String>();
+		statements.addAll(Arrays.asList(loadResource("/META-INF/PostgreSQL/clean.sql").split("\n\n")));
+		statements.addAll(Arrays.asList(loadResource("/META-INF/PostgreSQL/create.sql").split("\n\n")));
+		statements.addAll(Arrays.asList(loadResource("/META-INF/PostgreSQL/functions.sql").split("\n\n")));
+		for (String statement : statements)
 			order.verify(unitOfWork).executeNonSelectingSQL(statement);
+		order.verify(unitOfWork).commit();
 	}
 
 	@Test

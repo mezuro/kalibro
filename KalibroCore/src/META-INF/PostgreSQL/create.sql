@@ -1,9 +1,3 @@
-DROP TABLE IF EXISTS sequences, "descendant_result", "metric_result", "module_result",
-  "range_snapshot", "metric_configuration_snapshot", "processing", "repository_observer", "stack_trace_element", "throwable",
-  "repository", "project", "range", "metric_configuration", "configuration", "reading", "reading_group" CASCADE;
-
-/* END OF DROP TABLES */
-
 CREATE TABLE IF NOT EXISTS "reading_group" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "name" VARCHAR(255) NOT NULL UNIQUE,
@@ -69,28 +63,19 @@ CREATE TABLE IF NOT EXISTS "repository" (
   UNIQUE ("project","name")
 );
 
+CREATE TABLE IF NOT EXISTS "repository_observer" (
+  "id" BIGINT NOT NULL PRIMARY KEY,
+  "repository" BIGINT NOT NULL REFERENCES "repository"("id") ON DELETE CASCADE,
+  "name" VARCHAR(255) NOT NULL,
+  "email" VARCHAR(255) NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS "throwable" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "target_string" TEXT NOT NULL,
   "message" TEXT DEFAULT NULL,
   "cause" BIGINT DEFAULT NULL REFERENCES "throwable"("id") ON DELETE SET NULL
 );
-
-CREATE OR REPLACE FUNCTION "delete_throwable"() RETURNS trigger AS $$
-BEGIN
-  IF TG_ARGV[0] = 'cause' THEN
-    DELETE FROM "throwable" WHERE "id" = OLD."cause";
-  ELSIF TG_ARGV[0] = 'error' THEN
-    DELETE FROM "throwable" WHERE "id" = OLD."error";
-  END IF;
-  RETURN NULL;
-END;
-$$ LANGUAGE plpgsql;
-
-DROP TRIGGER IF EXISTS "delete_throwable_cause" ON "throwable";
-
-CREATE TRIGGER "delete_throwable_cause" AFTER DELETE ON "throwable"
-    FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('cause');
 
 CREATE TABLE IF NOT EXISTS "stack_trace_element" (
   "throwable" BIGINT NOT NULL REFERENCES "throwable"("id") ON DELETE CASCADE,
@@ -108,24 +93,16 @@ CREATE TABLE IF NOT EXISTS "processing" (
   "date" BIGINT NOT NULL,
   "state" VARCHAR(255) NOT NULL,
   "error" BIGINT DEFAULT NULL REFERENCES "throwable"("id") ON DELETE RESTRICT,
-  "loading_time" BIGINT DEFAULT NULL,
-  "collecting_time" BIGINT DEFAULT NULL,
-  "analyzing_time" BIGINT DEFAULT NULL,
   "results_root" BIGINT DEFAULT NULL,
   UNIQUE ("repository","date")
 );
 
-CREATE TABLE IF NOT EXISTS "repository_observer" (
-  "id" BIGINT NOT NULL PRIMARY KEY,
-  "repository" BIGINT NOT NULL REFERENCES "repository"("id") ON DELETE CASCADE,
-  "name" VARCHAR(255) NOT NULL,
-  "email" VARCHAR(255) NOT NULL
+CREATE TABLE IF NOT EXISTS "processing_time" (
+  "processing" BIGINT NOT NULL REFERENCES "processing"("id") ON DELETE CASCADE,
+  "state" VARCHAR(255) NOT NULL,
+  "time" BIGINT NOT NULL,
+  PRIMARY KEY ("processing","state")
 );
-
-DROP TRIGGER IF EXISTS "delete_processing_error" ON "processing";
-
-CREATE TRIGGER "delete_processing_error" AFTER DELETE ON "processing"
-    FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('error');
 
 CREATE TABLE IF NOT EXISTS "metric_configuration_snapshot" (
   "id" BIGINT NOT NULL PRIMARY KEY,
@@ -185,11 +162,6 @@ CREATE TABLE IF NOT EXISTS "metric_result" (
   UNIQUE ("module_result","configuration")
 );
 
-DROP TRIGGER IF EXISTS "delete_result_error" ON "metric_result";
-
-CREATE TRIGGER "delete_result_error" AFTER DELETE ON "metric_result"
-    FOR EACH ROW EXECUTE PROCEDURE "delete_throwable"('error');
-
 CREATE TABLE IF NOT EXISTS "descendant_result" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "module_result" BIGINT NOT NULL REFERENCES "module_result"("id") ON DELETE CASCADE,
@@ -206,47 +178,21 @@ CREATE TABLE IF NOT EXISTS sequences (
   sequence_count BIGINT
 );
 
-INSERT INTO sequences SELECT 'reading_group', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'reading_group');
-
-INSERT INTO sequences SELECT 'reading', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'reading');
- 
-INSERT INTO sequences SELECT 'configuration', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'configuration');
-
-INSERT INTO sequences SELECT 'metric_configuration', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'metric_configuration');
-
-INSERT INTO sequences SELECT 'range', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'range');
-
-INSERT INTO sequences SELECT 'project', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'project');
-
-INSERT INTO sequences SELECT 'repository', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'repository');
-
-INSERT INTO sequences SELECT 'processing', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'processing');
-
-INSERT INTO sequences SELECT 'repository_observer', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'repository_observer');
-  
-INSERT INTO sequences SELECT 'throwable', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'throwable');
-
-INSERT INTO sequences SELECT 'metric_configuration_snapshot', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'metric_configuration_snapshot');
-
-INSERT INTO sequences SELECT 'range_snapshot', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'range_snapshot');
-
-INSERT INTO sequences SELECT 'module_result', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'module_result');
-
-INSERT INTO sequences SELECT 'metric_result', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'metric_result');
-
-INSERT INTO sequences SELECT 'descendant_result', 0
-  WHERE NOT EXISTS (SELECT * FROM sequences WHERE table_name = 'descendant_result');
+INSERT INTO sequences SELECT * FROM
+  (VALUES
+    ('reading_group', 0),
+    ('reading', 0),
+    ('configuration', 0),
+    ('metric_configuration', 0),
+    ('range', 0),
+    ('project', 0),
+    ('repository', 0),
+    ('processing', 0),
+    ('throwable', 0),
+    ('metric_configuration_snapshot', 0),
+    ('range_snapshot', 0),
+    ('module_result', 0),
+    ('metric_result', 0),
+    ('descendant_result', 0)
+  ) AS tmp (table_name, sequence_count)
+WHERE NOT EXISTS (SELECT 1 FROM sequences WHERE table_name = tmp.table_name);
