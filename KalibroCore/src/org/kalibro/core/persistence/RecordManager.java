@@ -32,7 +32,7 @@ class RecordManager {
 
 	StoredProcedureQuery createProcedureQuery(String procedureName) {
 		clear();
-		return entityManager.createNamedStoredProcedureQuery(procedureName);
+		return entityManager.createStoredProcedureQuery(procedureName);
 	}
 
 	<T> T getById(Long id, Class<T> recordClass) {

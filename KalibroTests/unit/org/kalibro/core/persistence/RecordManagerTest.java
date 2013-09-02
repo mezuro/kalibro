@@ -54,7 +54,7 @@ public class RecordManagerTest extends UnitTest {
 	@Test
 	public void shouldCreateProcedureQuery() {
 		StoredProcedureQuery query = mock(StoredProcedureQuery.class);
-		when(entityManager.createNamedStoredProcedureQuery(QUERY)).thenReturn(query);
+		when(entityManager.createStoredProcedureQuery(QUERY)).thenReturn(query);
 		assertSame(query, recordManager.createProcedureQuery(QUERY));
 		verify(entityManager).clear();
 	}
