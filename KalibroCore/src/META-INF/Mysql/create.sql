@@ -97,14 +97,19 @@ CREATE TABLE IF NOT EXISTS `processing` (
   `date` BIGINT NOT NULL,
   `state` VARCHAR(255) NOT NULL,
   `error` BIGINT DEFAULT NULL,
-  `loading_time` BIGINT DEFAULT NULL,
-  `collecting_time` BIGINT DEFAULT NULL,
-  `analyzing_time` BIGINT DEFAULT NULL,
   `results_root` BIGINT DEFAULT NULL,
   UNIQUE (`repository`,`date`),
   FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE,
   FOREIGN KEY (`error`) REFERENCES `throwable`(`id`) ON DELETE RESTRICT,
   FOREIGN KEY (`results_root`) REFERENCES `module_result`(`id`) ON DELETE SET NULL
+) ENGINE=InnoDB;
+
+CREATE TABLE IF NOT EXISTS `processing_time` (
+  `processing` BIGINT NOT NULL,
+  `state` VARCHAR(255) NOT NULL,
+  `time` BIGINT NOT NULL,
+  PRIMARY KEY (`processing`,`state`),
+  FOREIGN KEY (`processing`) REFERENCES `processing`(`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB;
 
 CREATE TABLE IF NOT EXISTS `metric_configuration_snapshot` (
