@@ -65,7 +65,9 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		assertProcessingReady();
 		verifyStateTime(LOADING, totalTime);
 		verifyStateTime(COLLECTING, totalTime);
-		verifyStateTime(ANALYZING, totalTime);
+		verifyStateTime(BUILDING, totalTime);
+		verifyStateTime(AGGREGATING, totalTime);
+		verifyStateTime(CALCULATING, totalTime);
 	}
 
 	private void verifyStateTime(ProcessState state, long totalTime) {
@@ -119,7 +121,9 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		assertEquals(ERROR, processing.getState());
 		assertEquals(LOADING, processing.getStateWhenErrorOcurred());
 		assertNull(processing.getStateTime(COLLECTING));
-		assertNull(processing.getStateTime(ANALYZING));
+		assertNull(processing.getStateTime(BUILDING));
+		assertNull(processing.getStateTime(AGGREGATING));
+		assertNull(processing.getStateTime(CALCULATING));
 		assertNull(processing.getResultsRoot());
 		assertEquals("Error while executing command: cp -ru /invalid/address/ .", processing.getError().getMessage());
 	}

@@ -11,7 +11,9 @@ public enum ProcessState {
 
 	LOADING("Loading $name from repository"),
 	COLLECTING("Collecting metric values for $name"),
-	ANALYZING("Processing metric results for $name"),
+	BUILDING("Building source tree of $name"),
+	AGGREGATING("Aggregating metric results for $name"),
+	CALCULATING("Calculating compound metric results and grades of $name"),
 	READY("Processing of $name done"),
 	ERROR("Error while processing $name");
 
