@@ -1,14 +1,8 @@
 package org.kalibro.core.processing;
 
-import java.io.File;
-
-import org.kalibro.NativeModuleResult;
+import org.kalibro.ProcessState;
 import org.kalibro.Processing;
-import org.kalibro.Project;
-import org.kalibro.Repository;
-import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.persistence.DatabaseDaoFactory;
 
 /**
  * Subtask of the whole {@link Processing}.
@@ -17,44 +11,18 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
  */
 abstract class ProcessSubtask extends VoidTask {
 
-	private ProcessTask mainTask;
+	ProcessContext context;
 
-	ProcessSubtask prepare(ProcessTask task) {
-		mainTask = task;
-		addListener(mainTask);
-		return this;
+	ProcessSubtask(ProcessContext context) {
+		this.context = context;
 	}
 
-	File codeDirectory() {
-		return mainTask.codeDirectory;
-	}
-
-	void setCodeDirectory(File codeDirectory) {
-		mainTask.codeDirectory = codeDirectory;
-	}
-
-	Project project() {
-		return repository().getProject();
-	}
-
-	Repository repository() {
-		return mainTask.repository;
-	}
-
-	Processing processing() {
-		return mainTask.processing;
-	}
-
-	DatabaseDaoFactory daoFactory() {
-		return mainTask.daoFactory;
-	}
-
-	Producer<NativeModuleResult> resultProducer() {
-		return mainTask.resultProducer;
+	ProcessState getState() {
+		return ProcessState.valueOf(getClass().getSimpleName().replace("Task", "").toUpperCase());
 	}
 
 	@Override
 	public String toString() {
-		return processing().getState().getMessage(repository().getCompleteName());
+		return context.processing().getState().getMessage(context.repository().getCompleteName());
 	}
 }
