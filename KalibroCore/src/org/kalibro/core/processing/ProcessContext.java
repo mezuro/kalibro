@@ -14,14 +14,18 @@ class ProcessContext {
 	private Repository repository;
 
 	private File codeDirectory;
-	private DatabaseDaoFactory daoFactory;
 	private Producer<NativeModuleResult> resultProducer;
+
+	private ProcessingDatabaseDao processingDao;
+	private ModuleResultDatabaseDao moduleResultDao;
+	private MetricResultDatabaseDao metricResultDao;
+	private ConfigurationDatabaseDao configurationDao;
 
 	ProcessContext(Repository repository) {
 		this.repository = repository;
-		this.daoFactory = new DatabaseDaoFactory();
-		this.resultProducer = new Producer<NativeModuleResult>();
 		establishCodeDirectory();
+		createResultProducer();
+		createDaos();
 
 	}
 
@@ -32,6 +36,18 @@ class ProcessContext {
 		codeDirectory = new File(projectDirectory, repository.getName() + "-" + repository.getId());
 	}
 
+	private void createResultProducer() {
+		this.resultProducer = new Producer<NativeModuleResult>();
+	}
+
+	private void createDaos() {
+		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
+		processingDao = daoFactory.createProcessingDao();
+		moduleResultDao = daoFactory.createModuleResultDao();
+		metricResultDao = daoFactory.createMetricResultDao();
+		configurationDao = daoFactory.createConfigurationDao();
+	}
+
 	File codeDirectory() {
 		return codeDirectory;
 	}
@@ -40,19 +56,19 @@ class ProcessContext {
 		return resultProducer;
 	}
 
-	ConfigurationDatabaseDao createConfigurationDao() {
-		return daoFactory.createConfigurationDao();
+	ProcessingDatabaseDao processingDao() {
+		return processingDao;
 	}
 
-	ProcessingDatabaseDao createProcessingDao() {
-		return daoFactory.createProcessingDao();
+	ModuleResultDatabaseDao moduleResultDao() {
+		return moduleResultDao;
 	}
 
-	ModuleResultDatabaseDao createModuleResultDao() {
-		return daoFactory.createModuleResultDao();
+	MetricResultDatabaseDao metricResultDao() {
+		return metricResultDao;
 	}
 
-	MetricResultDatabaseDao createMetricResultDao() {
-		return daoFactory.createMetricResultDao();
+	ConfigurationDatabaseDao configurationDao() {
+		return configurationDao;
 	}
 }

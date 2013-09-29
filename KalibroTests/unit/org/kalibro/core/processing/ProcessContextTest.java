@@ -23,7 +23,10 @@ public class ProcessContextTest extends UnitTest {
 	private Repository repository;
 
 	private File loadDirectory;
-	private DatabaseDaoFactory daoFactory;
+	private ProcessingDatabaseDao processingDao;
+	private ModuleResultDatabaseDao moduleResultDao;
+	private MetricResultDatabaseDao metricResultDao;
+	private ConfigurationDatabaseDao configurationDao;
 
 	private ProcessContext context;
 
@@ -32,7 +35,7 @@ public class ProcessContextTest extends UnitTest {
 		mockProject();
 		mockRepository();
 		mockLoadDirectory();
-		mockDaoFactory();
+		mockDaos();
 		context = new ProcessContext(repository);
 	}
 
@@ -59,9 +62,18 @@ public class ProcessContextTest extends UnitTest {
 		when(serverSettings.getLoadDirectory()).thenReturn(loadDirectory);
 	}
 
-	private void mockDaoFactory() throws Exception {
-		daoFactory = mock(DatabaseDaoFactory.class);
+	private void mockDaos() throws Exception {
+		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
+		processingDao = mock(ProcessingDatabaseDao.class);
+		moduleResultDao = mock(ModuleResultDatabaseDao.class);
+		metricResultDao = mock(MetricResultDatabaseDao.class);
+		configurationDao = mock(ConfigurationDatabaseDao.class);
+
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
+		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
+		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
+		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
+		when(daoFactory.createMetricResultDao()).thenReturn(metricResultDao);
 	}
 
 	@Test
@@ -91,30 +103,26 @@ public class ProcessContextTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldCreateConfigurationDao() {
-		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
-		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
-		assertSame(configurationDao, context.createConfigurationDao());
+	public void shouldCreateAndRememberProcessingDao() {
+		assertSame(processingDao, context.processingDao());
+		assertSame(processingDao, context.processingDao());
 	}
 
 	@Test
-	public void shouldCreateProcessingDao() {
-		ProcessingDatabaseDao processingDao = mock(ProcessingDatabaseDao.class);
-		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
-		assertSame(processingDao, context.createProcessingDao());
+	public void shouldCreateAndRememberModuleResultDao() {
+		assertSame(moduleResultDao, context.moduleResultDao());
+		assertSame(moduleResultDao, context.moduleResultDao());
 	}
 
 	@Test
-	public void shouldCreateModuleResultDao() {
-		ModuleResultDatabaseDao moduleResultDao = mock(ModuleResultDatabaseDao.class);
-		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
-		assertSame(moduleResultDao, context.createModuleResultDao());
+	public void shouldCreateAndRememberMetricResultDao() {
+		assertSame(metricResultDao, context.metricResultDao());
+		assertSame(metricResultDao, context.metricResultDao());
 	}
 
 	@Test
-	public void shouldCreateMetricResultDao() {
-		MetricResultDatabaseDao metricResultDao = mock(MetricResultDatabaseDao.class);
-		when(daoFactory.createMetricResultDao()).thenReturn(metricResultDao);
-		assertSame(metricResultDao, context.createMetricResultDao());
+	public void shouldCreateAndRememberConfigurationDao() {
+		assertSame(configurationDao, context.configurationDao());
+		assertSame(configurationDao, context.configurationDao());
 	}
 }
