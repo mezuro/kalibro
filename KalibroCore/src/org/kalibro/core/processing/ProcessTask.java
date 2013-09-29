@@ -1,13 +1,12 @@
 package org.kalibro.core.processing;
 
-import java.io.File;
-
-import org.kalibro.*;
-import org.kalibro.core.concurrent.Producer;
+import org.kalibro.Configuration;
+import org.kalibro.ProcessState;
+import org.kalibro.Processing;
+import org.kalibro.Repository;
 import org.kalibro.core.concurrent.TaskListener;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.persistence.DatabaseDaoFactory;
 
 /**
  * Performs a {@link Processing} for a {@link Repository} according to its {@link Configuration}.
@@ -16,43 +15,44 @@ import org.kalibro.core.persistence.DatabaseDaoFactory;
  */
 public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
-	File codeDirectory;
-	Repository repository;
-	Processing processing;
-	DatabaseDaoFactory daoFactory;
-	Producer<NativeModuleResult> resultProducer;
+	private Repository repository;
+	private ProcessContext context;
 
 	public ProcessTask(Repository repository) {
 		this.repository = repository;
 	}
 
 	@Override
-	protected void perform() {
-		daoFactory = new DatabaseDaoFactory();
-		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
-		resultProducer = new Producer<NativeModuleResult>();
-		new LoadingTask().prepare(this).execute();
-		new CollectingTask().prepare(this).executeInBackground();
-		new AnalyzingTask().prepare(this).execute();
+	protected void perform() throws Exception {
+		context = new ProcessContext(repository);
+		createSubtask(LoadingTask.class).execute();
+		createSubtask(CollectingTask.class).executeInBackground();
+		createSubtask(BuildingTask.class).execute();
+		createSubtask(AggregatingTask.class).execute();
+		createSubtask(CalculatingTask.class).execute();
+	}
+
+	private ProcessSubtask createSubtask(Class<? extends ProcessSubtask> subtaskClass) throws Exception {
+		ProcessSubtask subtask = subtaskClass.getConstructor(ProcessContext.class).newInstance(context);
+		subtask.addListener(this);
+		return subtask;
 	}
 
 	@Override
 	public synchronized void taskFinished(TaskReport<Void> report) {
-		processing.setStateTime(getTaskState(report), report.getExecutionTime());
-		if (processing.getState().isTemporary())
-			updateState(report);
-		daoFactory.createProcessingDao().save(processing, repository.getId());
+		updateProcessing(report);
+		context.processingDao().save(context.processing(), repository.getId());
 	}
 
-	private void updateState(TaskReport<Void> report) {
+	private void updateProcessing(TaskReport<Void> report) {
+		Processing processing = context.processing();
+		ProcessState subtaskState = ((ProcessSubtask) report.getTask()).getState();
+		processing.setStateTime(subtaskState, report.getExecutionTime());
+		if (!processing.getState().isTemporary())
+			return;
 		if (report.isTaskDone())
-			processing.setState(getTaskState(report).nextState());
+			processing.setState(subtaskState.nextState());
 		else
 			processing.setError(report.getError());
-	}
-
-	private ProcessState getTaskState(TaskReport<Void> report) {
-		String taskClassName = report.getTask().getClass().getSimpleName();
-		return ProcessState.valueOf(taskClassName.replace("Task", "").toUpperCase());
 	}
 }

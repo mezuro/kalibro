@@ -5,7 +5,7 @@ import java.io.FileFilter;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.filefilter.SuffixFileFilter;
-import org.kalibro.KalibroSettings;
+import org.kalibro.KalibroException;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
 import org.kalibro.core.Identifier;
@@ -18,46 +18,52 @@ import org.kalibro.core.loaders.Loader;
  */
 class LoadingTask extends ProcessSubtask {
 
+	LoadingTask(ProcessContext context) {
+		super(context);
+	}
+
 	@Override
 	protected void perform() throws Exception {
-		Loader loader = createLoader();
-		prepareCodeDirectory();
-		loader.load(repository().getAddress(), codeDirectory());
+		File codeDirectory = context.codeDirectory();
+		prepare(codeDirectory.getParentFile());
+		prepare(codeDirectory);
+		createLoader().load(context.repository().getAddress(), codeDirectory);
 	}
 
-	private void prepareCodeDirectory() {
-		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
-		File projectDirectory = prepareDirectory(loadDirectory, project().getId(), project().getName());
-		File repositoryDirectory = prepareDirectory(projectDirectory, repository().getId(), repository().getName());
-		setCodeDirectory(repositoryDirectory);
-	}
-
-	private File prepareDirectory(File parent, Long id, String name) {
-		parent.mkdirs();
-		assert parent.exists() : "Could not create directory: " + parent;
-		String suffix = "-" + id;
-		File directory = new File(parent, Identifier.fromText(name).asClassName() + suffix);
-		File[] withSuffix = listWithSuffix(parent, suffix);
-		if (withSuffix.length > 1)
-			deleteAll(withSuffix);
-		else if (withSuffix.length == 1)
-			withSuffix[0].renameTo(directory);
-		if (directory.exists() && !directory.isDirectory())
-			directory.delete();
+	private File prepare(File directory) {
+		assertParentExists(directory);
+		File[] withSameSuffix = filesWithSameSuffixOf(directory);
+		assertSuffixExclusivity(withSameSuffix);
+		if (withSameSuffix.length == 1)
+			withSameSuffix[0].renameTo(directory);
+		assertIsDirectory(directory);
 		return directory;
 	}
 
-	private File[] listWithSuffix(File directory, String suffix) {
-		return directory.listFiles((FileFilter) new SuffixFileFilter(suffix));
+	private void assertParentExists(File directory) {
+		if (!directory.getParentFile().mkdirs())
+			throw new KalibroException("Could not create directory: " + directory);
 	}
 
-	private void deleteAll(File[] files) {
-		for (File file : files)
-			FileUtils.deleteQuietly(file);
+	private File[] filesWithSameSuffixOf(File directory) {
+		String directoryName = directory.getName();
+		String suffix = directoryName.substring(directoryName.lastIndexOf('-'));
+		return directory.getParentFile().listFiles((FileFilter) new SuffixFileFilter(suffix));
+	}
+
+	private void assertSuffixExclusivity(File[] withSameSuffix) {
+		if (withSameSuffix.length > 1)
+			for (File file : withSameSuffix)
+				FileUtils.deleteQuietly(file);
+	}
+
+	private void assertIsDirectory(File directory) {
+		if (directory.exists() && !directory.isDirectory())
+			directory.delete();
 	}
 
 	private Loader createLoader() throws Exception {
-		RepositoryType repositoryType = repository().getType();
+		RepositoryType repositoryType = context.repository().getType();
 		String loaderName = Identifier.fromConstant(repositoryType.name()).asClassName() + "Loader";
 		return (Loader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
 	}
