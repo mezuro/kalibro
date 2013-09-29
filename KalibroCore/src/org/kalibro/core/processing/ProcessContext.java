@@ -8,7 +8,7 @@ import org.kalibro.Project;
 import org.kalibro.Repository;
 import org.kalibro.core.concurrent.Producer;
 
-public class ProcessContext {
+class ProcessContext {
 
 	private Repository repository;
 
