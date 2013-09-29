@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.persistence.*;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -20,15 +21,18 @@ public class ProcessContextTest extends UnitTest {
 
 	private Project project;
 	private Repository repository;
+
 	private File loadDirectory;
+	private DatabaseDaoFactory daoFactory;
 
 	private ProcessContext context;
 
 	@Before
-	public void setUp() {
+	public void setUp() throws Exception {
 		mockProject();
 		mockRepository();
 		mockLoadDirectory();
+		mockDaoFactory();
 		context = new ProcessContext(repository);
 	}
 
@@ -55,6 +59,11 @@ public class ProcessContextTest extends UnitTest {
 		when(serverSettings.getLoadDirectory()).thenReturn(loadDirectory);
 	}
 
+	private void mockDaoFactory() throws Exception {
+		daoFactory = mock(DatabaseDaoFactory.class);
+		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
+	}
+
 	@Test
 	public void shouldEstablishCodeDirectory() {
 		File projectDirectory = new File(loadDirectory, project.getName() + "-" + project.getId());
@@ -79,5 +88,33 @@ public class ProcessContextTest extends UnitTest {
 		Producer<NativeModuleResult> producer = context.resultProducer();
 		assertSame(producer, context.resultProducer());
 		assertSame(producer, context.resultProducer());
+	}
+
+	@Test
+	public void shouldCreateConfigurationDao() {
+		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
+		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
+		assertSame(configurationDao, context.createConfigurationDao());
+	}
+
+	@Test
+	public void shouldCreateProcessingDao() {
+		ProcessingDatabaseDao processingDao = mock(ProcessingDatabaseDao.class);
+		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
+		assertSame(processingDao, context.createProcessingDao());
+	}
+
+	@Test
+	public void shouldCreateModuleResultDao() {
+		ModuleResultDatabaseDao moduleResultDao = mock(ModuleResultDatabaseDao.class);
+		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
+		assertSame(moduleResultDao, context.createModuleResultDao());
+	}
+
+	@Test
+	public void shouldCreateMetricResultDao() {
+		MetricResultDatabaseDao metricResultDao = mock(MetricResultDatabaseDao.class);
+		when(daoFactory.createMetricResultDao()).thenReturn(metricResultDao);
+		assertSame(metricResultDao, context.createMetricResultDao());
 	}
 }

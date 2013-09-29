@@ -7,16 +7,19 @@ import org.kalibro.NativeModuleResult;
 import org.kalibro.Project;
 import org.kalibro.Repository;
 import org.kalibro.core.concurrent.Producer;
+import org.kalibro.core.persistence.*;
 
 class ProcessContext {
 
 	private Repository repository;
 
 	private File codeDirectory;
+	private DatabaseDaoFactory daoFactory;
 	private Producer<NativeModuleResult> resultProducer;
 
 	ProcessContext(Repository repository) {
 		this.repository = repository;
+		this.daoFactory = new DatabaseDaoFactory();
 		this.resultProducer = new Producer<NativeModuleResult>();
 		establishCodeDirectory();
 
@@ -35,5 +38,21 @@ class ProcessContext {
 
 	Producer<NativeModuleResult> resultProducer() {
 		return resultProducer;
+	}
+
+	ConfigurationDatabaseDao createConfigurationDao() {
+		return daoFactory.createConfigurationDao();
+	}
+
+	ProcessingDatabaseDao createProcessingDao() {
+		return daoFactory.createProcessingDao();
+	}
+
+	ModuleResultDatabaseDao createModuleResultDao() {
+		return daoFactory.createModuleResultDao();
+	}
+
+	MetricResultDatabaseDao createMetricResultDao() {
+		return daoFactory.createMetricResultDao();
 	}
 }
