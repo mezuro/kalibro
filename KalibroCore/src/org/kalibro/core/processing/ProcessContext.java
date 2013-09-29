@@ -3,18 +3,23 @@ package org.kalibro.core.processing;
 import java.io.File;
 
 import org.kalibro.KalibroSettings;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.Project;
 import org.kalibro.Repository;
+import org.kalibro.core.concurrent.Producer;
 
 public class ProcessContext {
 
 	private Repository repository;
 
 	private File codeDirectory;
+	private Producer<NativeModuleResult> resultProducer;
 
 	ProcessContext(Repository repository) {
 		this.repository = repository;
+		this.resultProducer = new Producer<NativeModuleResult>();
 		establishCodeDirectory();
+
 	}
 
 	private void establishCodeDirectory() {
@@ -26,5 +31,9 @@ public class ProcessContext {
 
 	File codeDirectory() {
 		return codeDirectory;
+	}
+
+	Producer<NativeModuleResult> resultProducer() {
+		return resultProducer;
 	}
 }

@@ -8,10 +8,8 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.KalibroSettings;
-import org.kalibro.Project;
-import org.kalibro.Repository;
-import org.kalibro.ServerSettings;
+import org.kalibro.*;
+import org.kalibro.core.concurrent.Producer;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -69,5 +67,17 @@ public class ProcessContextTest extends UnitTest {
 		File codeDirectory = context.codeDirectory();
 		assertSame(codeDirectory, context.codeDirectory());
 		assertSame(codeDirectory, context.codeDirectory());
+	}
+
+	@Test
+	public void shouldCreateResultProducer() {
+		assertNotNull(context.resultProducer());
+	}
+
+	@Test
+	public void shouldRememberResultProducer() {
+		Producer<NativeModuleResult> producer = context.resultProducer();
+		assertSame(producer, context.resultProducer());
+		assertSame(producer, context.resultProducer());
 	}
 }
