@@ -3,6 +3,7 @@ package org.kalibro.core.processing;
 import java.io.File;
 
 import org.kalibro.*;
+import org.kalibro.core.Identifier;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.*;
 
@@ -34,8 +35,12 @@ class ProcessContext {
 	private void establishCodeDirectory() {
 		Project project = repository.getProject();
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
-		File projectDirectory = new File(loadDirectory, project.getName() + "-" + project.getId());
-		codeDirectory = new File(projectDirectory, repository.getName() + "-" + repository.getId());
+		File projectDirectory = newFile(loadDirectory, project.getName(), project.getId());
+		codeDirectory = newFile(projectDirectory, repository.getName(), repository.getId());
+	}
+
+	private File newFile(File parent, String name, Long id) {
+		return new File(parent, Identifier.fromText(name).asClassName() + "-" + id);
 	}
 
 	private void createResultProducer() {

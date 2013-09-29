@@ -43,14 +43,14 @@ public class ProcessContextTest extends UnitTest {
 	private void mockProject() {
 		project = mock(Project.class);
 		when(project.getId()).thenReturn(new Random().nextLong());
-		when(project.getName()).thenReturn("ProcessContextTest PROJECT_NAME");
+		when(project.getName()).thenReturn("MY PROJECT_NAME");
 	}
 
 	private void mockRepository() {
 		repository = mock(Repository.class);
 		when(repository.getProject()).thenReturn(project);
 		when(repository.getId()).thenReturn(new Random().nextLong());
-		when(repository.getName()).thenReturn("ProcessContextTest REPOSITORY_NAME");
+		when(repository.getName()).thenReturn("MY REPOSITORY_NAME");
 	}
 
 	private void mockLoadDirectory() {
@@ -91,9 +91,9 @@ public class ProcessContextTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldEstablishAndRememberCodeDirectory() {
-		File projectDirectory = new File(loadDirectory, project.getName() + "-" + project.getId());
-		File repositoryDirectory = new File(projectDirectory, repository.getName() + "-" + repository.getId());
+	public void shouldEstablishCodeDirectory() {
+		File projectDirectory = new File(loadDirectory, "MyProjectName-" + project.getId());
+		File repositoryDirectory = new File(projectDirectory, "MyRepositoryName-" + repository.getId());
 		assertEquals(repositoryDirectory, context.codeDirectory());
 	}
 
