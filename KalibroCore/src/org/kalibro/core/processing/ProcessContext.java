@@ -2,13 +2,15 @@ package org.kalibro.core.processing;
 
 import java.io.File;
 
-import org.kalibro.KalibroSettings;
-import org.kalibro.NativeModuleResult;
-import org.kalibro.Project;
-import org.kalibro.Repository;
+import org.kalibro.*;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.*;
 
+/**
+ * Context of a {@link Processing}. Contains common data used by {@link ProcessSubtask}s.
+ * 
+ * @author Carlos Morais
+ */
 class ProcessContext {
 
 	private Repository repository;
@@ -16,6 +18,7 @@ class ProcessContext {
 	private File codeDirectory;
 	private Producer<NativeModuleResult> resultProducer;
 
+	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private MetricResultDatabaseDao metricResultDao;
@@ -25,8 +28,7 @@ class ProcessContext {
 		this.repository = repository;
 		establishCodeDirectory();
 		createResultProducer();
-		createDaos();
-
+		createDaosAndProcessing();
 	}
 
 	private void establishCodeDirectory() {
@@ -40,12 +42,17 @@ class ProcessContext {
 		this.resultProducer = new Producer<NativeModuleResult>();
 	}
 
-	private void createDaos() {
+	private void createDaosAndProcessing() {
 		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
 		processingDao = daoFactory.createProcessingDao();
 		moduleResultDao = daoFactory.createModuleResultDao();
 		metricResultDao = daoFactory.createMetricResultDao();
 		configurationDao = daoFactory.createConfigurationDao();
+		processing = processingDao.createProcessingFor(repository);
+	}
+
+	Processing processing() {
+		return processing;
 	}
 
 	File codeDirectory() {

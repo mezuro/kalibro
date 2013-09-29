@@ -23,6 +23,7 @@ public class ProcessContextTest extends UnitTest {
 	private Repository repository;
 
 	private File loadDirectory;
+	private Processing processing;
 	private ProcessingDatabaseDao processingDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private MetricResultDatabaseDao metricResultDao;
@@ -35,7 +36,7 @@ public class ProcessContextTest extends UnitTest {
 		mockProject();
 		mockRepository();
 		mockLoadDirectory();
-		mockDaos();
+		mockDaosAndProcessing();
 		context = new ProcessContext(repository);
 	}
 
@@ -62,22 +63,30 @@ public class ProcessContextTest extends UnitTest {
 		when(serverSettings.getLoadDirectory()).thenReturn(loadDirectory);
 	}
 
-	private void mockDaos() throws Exception {
+	private void mockDaosAndProcessing() throws Exception {
 		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
+		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		metricResultDao = mock(MetricResultDatabaseDao.class);
 		configurationDao = mock(ConfigurationDatabaseDao.class);
 
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
-		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
 		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
 		when(daoFactory.createMetricResultDao()).thenReturn(metricResultDao);
+		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
+		when(processingDao.createProcessingFor(repository)).thenReturn(processing);
 	}
 
 	@Test
-	public void shouldEstablishCodeDirectory() {
+	public void shouldCreateAndRememberProcessing() {
+		assertSame(processing, context.processing());
+		assertSame(processing, context.processing());
+	}
+
+	@Test
+	public void shouldEstablishAndRememberCodeDirectory() {
 		File projectDirectory = new File(loadDirectory, project.getName() + "-" + project.getId());
 		File repositoryDirectory = new File(projectDirectory, repository.getName() + "-" + repository.getId());
 		assertEquals(repositoryDirectory, context.codeDirectory());
