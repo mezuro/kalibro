@@ -51,6 +51,10 @@ class ProcessContext {
 		processing = processingDao.createProcessingFor(repository);
 	}
 
+	Repository repository() {
+		return repository;
+	}
+
 	Processing processing() {
 		return processing;
 	}

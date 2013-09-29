@@ -80,6 +80,11 @@ public class ProcessContextTest extends UnitTest {
 	}
 
 	@Test
+	public void shouldRetrieveRepository() {
+		assertSame(repository, context.repository());
+	}
+
+	@Test
 	public void shouldCreateAndRememberProcessing() {
 		assertSame(processing, context.processing());
 		assertSame(processing, context.processing());
