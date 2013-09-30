@@ -23,13 +23,13 @@ public abstract class Loader {
 
 	protected abstract List<String> validationCommands();
 
-	public void load(String address, File loadDirectory) {
-		if (loadDirectory.exists() && !isUpdatable(loadDirectory))
-			FileUtils.deleteQuietly(loadDirectory);
-		List<String> commands = loadCommands(address, loadDirectory.exists());
-		loadDirectory.mkdirs();
+	public void load(String address, File codeDirectory) {
+		if (codeDirectory.exists() && !isUpdatable(codeDirectory))
+			FileUtils.deleteQuietly(codeDirectory);
+		List<String> commands = loadCommands(address, codeDirectory.exists());
+		codeDirectory.mkdirs();
 		for (String loadCommand : commands)
-			new CommandTask(loadCommand, loadDirectory).execute(12, HOURS);
+			new CommandTask(loadCommand, codeDirectory).execute(12, HOURS);
 	}
 
 	protected abstract List<String> loadCommands(String address, boolean update);
