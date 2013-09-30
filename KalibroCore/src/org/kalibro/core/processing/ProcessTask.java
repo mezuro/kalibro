@@ -40,19 +40,13 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
 	@Override
 	public synchronized void taskFinished(TaskReport<Void> report) {
-		updateProcessing(report);
-		context.processingDao().save(context.processing(), repository.getId());
-	}
-
-	private void updateProcessing(TaskReport<Void> report) {
 		Processing processing = context.processing();
 		ProcessState subtaskState = ((ProcessSubtask) report.getTask()).getState();
 		processing.setStateTime(subtaskState, report.getExecutionTime());
-		if (!processing.getState().isTemporary())
-			return;
 		if (report.isTaskDone())
 			processing.setState(subtaskState.nextState());
 		else
 			processing.setError(report.getError());
+		context.processingDao().save(processing, repository.getId());
 	}
 }
