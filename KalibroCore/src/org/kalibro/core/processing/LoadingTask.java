@@ -33,16 +33,16 @@ class LoadingTask extends ProcessSubtask {
 	private File prepare(File directory) {
 		assertParentExists(directory);
 		File[] withSameSuffix = filesWithSameSuffixOf(directory);
-		assertSuffixExclusivity(withSameSuffix);
-		if (withSameSuffix.length == 1)
-			withSameSuffix[0].renameTo(directory);
+		deleteAllInCaseOfAmbiguity(withSameSuffix);
+		assertNameIsUpdated(withSameSuffix, directory);
 		assertIsDirectory(directory);
 		return directory;
 	}
 
 	private void assertParentExists(File directory) {
-		if (!directory.getParentFile().mkdirs())
-			throw new KalibroException("Could not create directory: " + directory);
+		File parent = directory.getParentFile();
+		if (!parent.mkdirs())
+			throw new KalibroException("Could not create directory: " + parent);
 	}
 
 	private File[] filesWithSameSuffixOf(File directory) {
@@ -51,10 +51,15 @@ class LoadingTask extends ProcessSubtask {
 		return directory.getParentFile().listFiles((FileFilter) new SuffixFileFilter(suffix));
 	}
 
-	private void assertSuffixExclusivity(File[] withSameSuffix) {
+	private void deleteAllInCaseOfAmbiguity(File[] withSameSuffix) {
 		if (withSameSuffix.length > 1)
 			for (File file : withSameSuffix)
 				FileUtils.deleteQuietly(file);
+	}
+
+	private void assertNameIsUpdated(File[] withSameSuffix, File directory) {
+		if (withSameSuffix.length == 1)
+			withSameSuffix[0].renameTo(directory);
 	}
 
 	private void assertIsDirectory(File directory) {
