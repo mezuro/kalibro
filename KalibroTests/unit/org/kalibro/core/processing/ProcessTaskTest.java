@@ -30,7 +30,7 @@ public class ProcessTaskTest extends UnitTest {
 
 	private LoadingTask loadingTask;
 	private CollectingTask collectingTask;
-	private AnalyzingTask analyzingTask;
+	private AggregatingTask aggregatingTask;
 
 	private ProcessTask processTask;
 
@@ -57,7 +57,7 @@ public class ProcessTaskTest extends UnitTest {
 	private void mockSubtasks() throws Exception {
 		loadingTask = mockSubtask(LoadingTask.class);
 		collectingTask = mockSubtask(CollectingTask.class);
-		analyzingTask = mockSubtask(AnalyzingTask.class);
+		aggregatingTask = mockSubtask(AggregatingTask.class);
 	}
 
 	private <T extends ProcessSubtask> T mockSubtask(Class<T> subtaskClass) throws Exception {
@@ -69,13 +69,13 @@ public class ProcessTaskTest extends UnitTest {
 
 	@Test
 	public void shouldPrepareAndExecuteSubtasks() {
-		InOrder order = Mockito.inOrder(loadingTask, collectingTask, analyzingTask);
+		InOrder order = Mockito.inOrder(loadingTask, collectingTask, aggregatingTask);
 		order.verify(loadingTask).prepare(processTask);
 		order.verify(loadingTask).execute();
 		order.verify(collectingTask).prepare(processTask);
 		order.verify(collectingTask).executeInBackground();
-		order.verify(analyzingTask).prepare(processTask);
-		order.verify(analyzingTask).execute();
+		order.verify(aggregatingTask).prepare(processTask);
+		order.verify(aggregatingTask).execute();
 	}
 
 	@Test

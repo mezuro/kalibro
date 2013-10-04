@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.*;
+import org.kalibro.core.persistence.ConfigurationDatabaseDao;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.tests.UnitTest;
@@ -16,13 +17,8 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Metric.class, MetricResult.class, ModuleResult.class, ModuleResultConfigurer.class})
-public class ModuleResultConfigurerTest extends UnitTest {
-
-	private static final Random RANDOM = new Random();
-	private static final Long PROCESSING_ID = RANDOM.nextLong();
-	private static final Long MODULE_RESULT_ID = RANDOM.nextLong();
-	private static final Long CONFIGURATION_ID = RANDOM.nextLong();
+@PrepareForTest({Metric.class, MetricResult.class, ModuleResult.class, CalculatingTask.class})
+public class CalculatingTaskTest extends UnitTest {
 
 	private Processing processing;
 	private ModuleResult moduleResult;
@@ -31,56 +27,73 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	private ModuleResultDatabaseDao moduleResultDao;
 	private CompoundResultCalculator compoundCalculator;
 
-	private ModuleResultConfigurer configurer;
+	private CalculatingTask calculatingTask;
 
 	@Before
 	public void setUp() throws Exception {
-		mockEntities();
-		metricResultDao = mock(MetricResultDatabaseDao.class);
-		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		compoundCalculator = mock(CompoundResultCalculator.class);
-		whenNew(CompoundResultCalculator.class)
-			.withArguments(moduleResult, configuration).thenReturn(compoundCalculator);
 
-		configurer = new ModuleResultConfigurer(processing, configuration, metricResultDao, moduleResultDao);
+		calculatingTask = new CalculatingTask(mockContext());
+		whenNew(CompoundResultCalculator.class).withArguments(moduleResult, configuration)
+			.thenReturn(compoundCalculator);
+	}
+
+	private ProcessContext mockContext() {
+		mockEntities();
+		mockDaos();
+		ProcessContext context = mock(ProcessContext.class);
+		when(context.moduleResultDao()).thenReturn(moduleResultDao);
+		when(context.metricResultDao()).thenReturn(metricResultDao);
+		when(moduleResultDao.getResultsOfProcessing(processing.getId())).thenReturn(list(moduleResult));
+		when(context.processing()).thenReturn(processing);
+		when(context.configurationDao()).thenReturn(configurationDao);
+		return context;
 	}
 
 	private void mockEntities() {
+		Random random = new Random();
 		processing = mock(Processing.class);
 		moduleResult = mock(ModuleResult.class);
 		configuration = mock(Configuration.class);
-		when(processing.getId()).thenReturn(PROCESSING_ID);
-		when(moduleResult.getId()).thenReturn(MODULE_RESULT_ID);
-		when(configuration.getId()).thenReturn(CONFIGURATION_ID);
+		when(processing.getId()).thenReturn(random.nextLong());
+		when(moduleResult.getId()).thenReturn(random.nextLong());
+		when(configuration.getId()).thenReturn(random.nextLong());
+	}
+
+	private void mockDaos() {
+		metricResultDao = mock(MetricResultDatabaseDao.class);
+		moduleResultDao = mock(ModuleResultDatabaseDao.class);
+		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
+		when(configurationDao.snapshotFor(processing.getId())).thenReturn(configuration);
 	}
 
 	@Test
-	public void shouldSaveCompoundResults() {
+	public void shouldSaveCompoundResults() throws Throwable {
 		MetricResult compoundResult = mock(MetricResult.class);
 		when(compoundCalculator.calculateCompoundResults()).thenReturn(list(compoundResult));
-		when(metricResultDao.save(compoundResult, MODULE_RESULT_ID)).thenReturn(compoundResult);
+		when(metricResultDao.save(compoundResult, moduleResult.getId())).thenReturn(compoundResult);
 
-		configurer.configure(moduleResult);
+		calculatingTask.perform();
 		verify(moduleResult).addMetricResult(compoundResult);
-		verify(metricResultDao).save(compoundResult, MODULE_RESULT_ID);
+		verify(metricResultDao).save(compoundResult, moduleResult.getId());
 	}
 
 	@Test
-	public void shouldUpdateGradeAfterAddingCompoundResults() throws Exception {
+	public void shouldUpdateGradeAfterAddingCompoundResults() throws Throwable {
 		MetricResult nativeResult1 = mockMetricResult(null, null);
 		MetricResult nativeResult2 = mockMetricResult(10.0, 1.0);
 		MetricResult compoundResult = mockMetricResult(7.0, 2.0);
 		SortedSet<MetricResult> metricResults = sortedSet(nativeResult1, nativeResult2, compoundResult);
 		when(compoundCalculator.calculateCompoundResults()).thenReturn(list(compoundResult));
-		when(metricResultDao.save(compoundResult, MODULE_RESULT_ID)).thenReturn(compoundResult);
+		when(metricResultDao.save(compoundResult, moduleResult.getId())).thenReturn(compoundResult);
 		when(moduleResult.getMetricResults()).thenReturn(metricResults);
 
-		configurer.configure(moduleResult);
+		calculatingTask.perform();
 		InOrder order = Mockito.inOrder(moduleResult, moduleResultDao);
 		order.verify(moduleResult).addMetricResult(compoundResult);
 		order.verify(moduleResult).getMetricResults();
 		order.verify(moduleResult).setGrade(8.0);
-		order.verify(moduleResultDao).save(moduleResult, PROCESSING_ID);
+		order.verify(moduleResultDao).save(moduleResult, processing.getId());
 	}
 
 	private MetricResult mockMetricResult(Double grade, Double weight) throws Exception {
@@ -93,10 +106,10 @@ public class ModuleResultConfigurerTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldSetAsRoootIfHasNoParent() {
+	public void shouldSetAsRoootIfHasNoParent() throws Throwable {
 		when(moduleResult.hasParent()).thenReturn(false);
 
-		configurer.configure(moduleResult);
+		calculatingTask.perform();
 		verify(processing).setResultsRoot(moduleResult);
 	}
 }

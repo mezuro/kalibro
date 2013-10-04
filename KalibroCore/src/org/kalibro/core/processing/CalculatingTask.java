@@ -8,46 +8,45 @@ import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
 /**
- * Add compound metric results, set grade and add descendant results to the parent of a {@link ModuleResult}.
+ * Add compound metric results and set grades on {@link ModuleResult}s.
  * 
  * @author Carlos Morais
  */
-class ModuleResultConfigurer {
+class CalculatingTask extends ProcessSubtask {
 
 	private Processing processing;
 	private Configuration configuration;
-	private MetricResultDatabaseDao metricResultDao;
 	private ModuleResultDatabaseDao moduleResultDao;
+	private MetricResultDatabaseDao metricResultDao;
 
-	private ModuleResult moduleResult;
-
-	ModuleResultConfigurer(Processing processing, Configuration configuration, MetricResultDatabaseDao metricResultDao,
-		ModuleResultDatabaseDao moduleResultDao) {
-		this.processing = processing;
-		this.configuration = configuration;
-		this.metricResultDao = metricResultDao;
-		this.moduleResultDao = moduleResultDao;
+	CalculatingTask(ProcessContext context) {
+		super(context);
 	}
 
-	void configure(ModuleResult result) {
-		moduleResult = result;
-		configure();
+	@Override
+	protected void perform() throws Throwable {
+		processing = context.processing();
+		configuration = context.configurationDao().snapshotFor(processing.getId());
+		moduleResultDao = context.moduleResultDao();
+		metricResultDao = context.metricResultDao();
+		for (ModuleResult moduleResult : moduleResultDao.getResultsOfProcessing(processing.getId()))
+			configure(moduleResult);
 	}
 
-	private void configure() {
-		saveCompoundResults();
-		updateGrade();
+	private void configure(ModuleResult moduleResult) {
+		saveCompoundResults(moduleResult);
+		updateGrade(moduleResult);
 		if (!moduleResult.hasParent())
 			processing.setResultsRoot(moduleResult);
 	}
 
-	private void saveCompoundResults() {
+	private void saveCompoundResults(ModuleResult moduleResult) {
 		CompoundResultCalculator calculator = new CompoundResultCalculator(moduleResult, configuration);
 		for (MetricResult compoundResult : calculator.calculateCompoundResults())
 			moduleResult.addMetricResult(metricResultDao.save(compoundResult, moduleResult.getId()));
 	}
 
-	private void updateGrade() {
+	private void updateGrade(ModuleResult moduleResult) {
 		double gradeSum = 0.0;
 		double weightSum = 0.0;
 		for (MetricResult metricResult : moduleResult.getMetricResults())
