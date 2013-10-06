@@ -28,7 +28,7 @@ class BuildingTask extends ProcessSubtask {
 	@Override
 	protected void perform() throws Throwable {
 		processingId = context.processing().getId();
-		configuration = context.configurationDao().snapshotFor(processingId);
+		configuration = context.configuration();
 		moduleResultDao = context.moduleResultDao();
 		metricResultDao = context.metricResultDao();
 		for (NativeModuleResult nativeModuleResult : context.resultProducer())
