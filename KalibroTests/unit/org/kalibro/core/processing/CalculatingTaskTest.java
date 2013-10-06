@@ -6,7 +6,10 @@ import java.util.SortedSet;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.*;
+import org.kalibro.Configuration;
+import org.kalibro.MetricResult;
+import org.kalibro.ModuleResult;
+import org.kalibro.Processing;
 import org.kalibro.core.persistence.ConfigurationDatabaseDao;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
@@ -17,12 +20,11 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({Metric.class, MetricResult.class, ModuleResult.class, CalculatingTask.class})
+@PrepareForTest({CalculatingTask.class, ModuleResult.class})
 public class CalculatingTaskTest extends UnitTest {
 
 	private Processing processing;
 	private ModuleResult moduleResult;
-	private Configuration configuration;
 	private MetricResultDatabaseDao metricResultDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private CompoundResultCalculator compoundCalculator;
@@ -31,40 +33,39 @@ public class CalculatingTaskTest extends UnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		compoundCalculator = mock(CompoundResultCalculator.class);
-
-		calculatingTask = new CalculatingTask(mockContext());
-		whenNew(CompoundResultCalculator.class).withArguments(moduleResult, configuration)
-			.thenReturn(compoundCalculator);
-	}
-
-	private ProcessContext mockContext() {
-		mockEntities();
-		mockDaos();
 		ProcessContext context = mock(ProcessContext.class);
-		when(context.moduleResultDao()).thenReturn(moduleResultDao);
-		when(context.metricResultDao()).thenReturn(metricResultDao);
-		when(moduleResultDao.getResultsOfProcessing(processing.getId())).thenReturn(list(moduleResult));
-		when(context.processing()).thenReturn(processing);
-		when(context.configurationDao()).thenReturn(configurationDao);
-		return context;
+		mockEntities(context);
+		mockDatabaseDaos(context);
+		mockCompoundCalculator(context);
+		calculatingTask = new CalculatingTask(context);
 	}
 
-	private void mockEntities() {
+	private void mockEntities(ProcessContext context) {
 		Random random = new Random();
 		processing = mock(Processing.class);
 		moduleResult = mock(ModuleResult.class);
-		configuration = mock(Configuration.class);
 		when(processing.getId()).thenReturn(random.nextLong());
 		when(moduleResult.getId()).thenReturn(random.nextLong());
-		when(configuration.getId()).thenReturn(random.nextLong());
+		when(context.processing()).thenReturn(processing);
 	}
 
-	private void mockDaos() {
+	private void mockDatabaseDaos(ProcessContext context) {
 		metricResultDao = mock(MetricResultDatabaseDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
+		when(context.moduleResultDao()).thenReturn(moduleResultDao);
+		when(context.metricResultDao()).thenReturn(metricResultDao);
+		when(moduleResultDao.getResultsOfProcessing(processing.getId())).thenReturn(list(moduleResult));
+	}
+
+	private void mockCompoundCalculator(ProcessContext context) throws Exception {
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
+		Configuration configuration = mock(Configuration.class);
+		compoundCalculator = mock(CompoundResultCalculator.class);
+
+		when(context.configurationDao()).thenReturn(configurationDao);
 		when(configurationDao.snapshotFor(processing.getId())).thenReturn(configuration);
+		whenNew(CompoundResultCalculator.class).withArguments(moduleResult, configuration)
+			.thenReturn(compoundCalculator);
 	}
 
 	@Test
