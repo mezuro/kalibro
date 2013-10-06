@@ -20,7 +20,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ModuleResult.class, BuildingTask.class})
+@PrepareForTest({BuildingTask.class, ModuleResult.class})
 public class BuildingTaskTest extends UnitTest {
 
 	private static final Long RESULT_ID = new Random().nextLong();

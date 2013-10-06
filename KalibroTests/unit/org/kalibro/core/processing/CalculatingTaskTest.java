@@ -10,7 +10,6 @@ import org.kalibro.Configuration;
 import org.kalibro.MetricResult;
 import org.kalibro.ModuleResult;
 import org.kalibro.Processing;
-import org.kalibro.core.persistence.ConfigurationDatabaseDao;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 import org.kalibro.tests.UnitTest;
@@ -58,12 +57,9 @@ public class CalculatingTaskTest extends UnitTest {
 	}
 
 	private void mockCompoundCalculator(ProcessContext context) throws Exception {
-		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
 		Configuration configuration = mock(Configuration.class);
 		compoundCalculator = mock(CompoundResultCalculator.class);
-
-		when(context.configurationDao()).thenReturn(configurationDao);
-		when(configurationDao.snapshotFor(processing.getId())).thenReturn(configuration);
+		when(context.configuration()).thenReturn(configuration);
 		whenNew(CompoundResultCalculator.class).withArguments(moduleResult, configuration)
 			.thenReturn(compoundCalculator);
 	}

@@ -20,16 +20,16 @@ class ProcessContext {
 	private Producer<NativeModuleResult> resultProducer;
 
 	private Processing processing;
+	private Configuration configuration;
 	private ProcessingDatabaseDao processingDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private MetricResultDatabaseDao metricResultDao;
-	private ConfigurationDatabaseDao configurationDao;
 
 	ProcessContext(Repository repository) {
 		this.repository = repository;
 		establishCodeDirectory();
 		createResultProducer();
-		createDaosAndProcessing();
+		prepareDatabase();
 	}
 
 	private void establishCodeDirectory() {
@@ -47,13 +47,15 @@ class ProcessContext {
 		this.resultProducer = new Producer<NativeModuleResult>();
 	}
 
-	private void createDaosAndProcessing() {
+	private void prepareDatabase() {
 		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
+		ConfigurationDatabaseDao configurationDao = daoFactory.createConfigurationDao();
 		processingDao = daoFactory.createProcessingDao();
 		moduleResultDao = daoFactory.createModuleResultDao();
 		metricResultDao = daoFactory.createMetricResultDao();
-		configurationDao = daoFactory.createConfigurationDao();
+
 		processing = processingDao.createProcessingFor(repository);
+		configuration = configurationDao.snapshotFor(processing.getId());
 	}
 
 	Repository repository() {
@@ -62,6 +64,10 @@ class ProcessContext {
 
 	Processing processing() {
 		return processing;
+	}
+
+	Configuration configuration() {
+		return configuration;
 	}
 
 	File codeDirectory() {
@@ -82,9 +88,5 @@ class ProcessContext {
 
 	MetricResultDatabaseDao metricResultDao() {
 		return metricResultDao;
-	}
-
-	ConfigurationDatabaseDao configurationDao() {
-		return configurationDao;
 	}
 }

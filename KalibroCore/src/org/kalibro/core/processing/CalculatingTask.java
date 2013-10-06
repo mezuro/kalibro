@@ -26,7 +26,7 @@ class CalculatingTask extends ProcessSubtask {
 	@Override
 	protected void perform() throws Throwable {
 		processing = context.processing();
-		configuration = context.configurationDao().snapshotFor(processing.getId());
+		configuration = context.configuration();
 		moduleResultDao = context.moduleResultDao();
 		metricResultDao = context.metricResultDao();
 		for (ModuleResult moduleResult : moduleResultDao.getResultsOfProcessing(processing.getId()))
