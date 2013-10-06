@@ -25,17 +25,11 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 	@Override
 	protected void perform() throws Exception {
 		context = new ProcessContext(repository);
-		createSubtask(LoadingTask.class).execute();
-		createSubtask(CollectingTask.class).executeInBackground();
-		createSubtask(BuildingTask.class).execute();
-		createSubtask(AggregatingTask.class).execute();
-		createSubtask(CalculatingTask.class).execute();
-	}
-
-	private ProcessSubtask createSubtask(Class<? extends ProcessSubtask> subtaskClass) throws Exception {
-		ProcessSubtask subtask = subtaskClass.getConstructor(ProcessContext.class).newInstance(context);
-		subtask.addListener(this);
-		return subtask;
+		new LoadingTask(context).addListener(this).execute();
+		new CollectingTask(context).addListener(this).executeInBackground();
+		new BuildingTask(context).addListener(this).execute();
+		new AggregatingTask(context).addListener(this).execute();
+		new CalculatingTask(context).addListener(this).execute();
 	}
 
 	@Override
