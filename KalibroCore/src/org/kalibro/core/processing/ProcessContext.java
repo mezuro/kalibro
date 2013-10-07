@@ -94,7 +94,7 @@ class ProcessContext {
 		return metricResultDao;
 	}
 
-	SortedSet<RepositoryObserver> repositoryListeners() {
-		return daoFactory.createRepositoryObserverDao().observersOf(repository.getId());
+	SortedSet<RepositoryListener> repositoryListeners() {
+		return daoFactory.createRepositoryListenerDao().listenersOf(repository.getId());
 	}
 }

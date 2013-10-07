@@ -9,7 +9,7 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.RepositoryObserverDao;
+import org.kalibro.dao.RepositoryListenerDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
@@ -99,26 +99,26 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteRepositoryShouldCascadeToRepositoryObservers(SupportedDatabase databaseType) throws Exception {
+	public void deleteRepositoryShouldCascadeToRepositoryListeners(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.save();
-		RepositoryObserver repositoryObserver = new RepositoryObserver();
-		repositoryObserver.save(repository);
-		assertEquals(repositoryObserversOf(repository), allRepositoryObservers());
+		RepositoryListener repositoryListener = new RepositoryListener();
+		repositoryListener.save(repository);
+		assertEquals(repositoryListenersOf(repository), allRepositoryListeners());
 
 		repository.delete();
-		assertTrue(allRepositoryObservers().isEmpty());
+		assertTrue(allRepositoryListeners().isEmpty());
 	}
 
-	private Set<RepositoryObserver> allRepositoryObservers() {
-		RepositoryObserverDao repositoryObserverDao = DaoFactory.getRepositoryObserverDao();
-		return repositoryObserverDao.all();
+	private Set<RepositoryListener> allRepositoryListeners() {
+		RepositoryListenerDao repositoryListenerDao = DaoFactory.getRepositoryListenerDao();
+		return repositoryListenerDao.all();
 	}
 
-	private Set<RepositoryObserver> repositoryObserversOf(Repository r) throws Exception {
-		RepositoryObserverDao repositoryObserverDao = DaoFactory.getRepositoryObserverDao();
-		Set<RepositoryObserver> repositoryObserversOf = Whitebox.invokeMethod(repositoryObserverDao, "observersOf",
+	private Set<RepositoryListener> repositoryListenersOf(Repository r) throws Exception {
+		RepositoryListenerDao repositoryListenerDao = DaoFactory.getRepositoryListenerDao();
+		Set<RepositoryListener> repositoryListenersOf = Whitebox.invokeMethod(repositoryListenerDao, "listenersOf",
 			r.getId());
-		return repositoryObserversOf;
+		return repositoryListenersOf;
 	}
 }

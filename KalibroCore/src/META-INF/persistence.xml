@@ -14,7 +14,7 @@
 
 		<class>org.kalibro.core.persistence.record.ProjectRecord</class>
 		<class>org.kalibro.core.persistence.record.RepositoryRecord</class>
-		<class>org.kalibro.core.persistence.record.RepositoryObserverRecord</class>		
+		<class>org.kalibro.core.persistence.record.RepositoryListenerRecord</class>		
 
 		<class>org.kalibro.core.persistence.record.ThrowableRecord</class>
 		<class>org.kalibro.core.persistence.record.StackTraceElementRecord</class>

@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.Repository;
-import org.kalibro.RepositoryObserver;
+import org.kalibro.RepositoryListener;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
@@ -26,7 +26,7 @@ public class ProcessTaskTest extends UnitTest {
 	private Repository repository;
 	private Processing processing;
 	private ProcessContext context;
-	private RepositoryObserver listener;
+	private RepositoryListener listener;
 	private ProcessingDatabaseDao processingDao;
 
 	private LoadingTask loadingTask;
@@ -49,7 +49,7 @@ public class ProcessTaskTest extends UnitTest {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
-		listener = mock(RepositoryObserver.class);
+		listener = mock(RepositoryListener.class);
 		context = mock(ProcessContext.class);
 		whenNew(ProcessContext.class).withArguments(repository).thenReturn(context);
 		when(context.processingDao()).thenReturn(processingDao);

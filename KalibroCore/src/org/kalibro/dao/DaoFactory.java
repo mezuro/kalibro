@@ -57,8 +57,8 @@ public abstract class DaoFactory {
 		return createFactory().createRepositoryDao();
 	}
 
-	public static RepositoryObserverDao getRepositoryObserverDao() {
-		return createFactory().createRepositoryObserverDao();
+	public static RepositoryListenerDao getRepositoryListenerDao() {
+		return createFactory().createRepositoryListenerDao();
 	}
 
 	private static DaoFactory createFactory() {
@@ -90,5 +90,5 @@ public abstract class DaoFactory {
 
 	protected abstract RepositoryDao createRepositoryDao();
 
-	protected abstract RepositoryObserverDao createRepositoryObserverDao();
+	protected abstract RepositoryListenerDao createRepositoryListenerDao();
 }

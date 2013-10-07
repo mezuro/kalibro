@@ -5,19 +5,19 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import org.kalibro.RepositoryObserver;
-import org.kalibro.dto.RepositoryObserverDto;
+import org.kalibro.RepositoryListener;
+import org.kalibro.dto.RepositoryListenerDto;
 
 /**
- * XML element for {@link RepositoryObserver}.
+ * XML element for {@link RepositoryListener}.
  * 
  * @author Daniel Alves
  * @author Diego Araújo
  * @author Guilherme Rojas
  */
-@XmlRootElement(name = "repositoryObserver")
+@XmlRootElement(name = "repositoryListener")
 @XmlAccessorType(XmlAccessType.FIELD)
-public class RepositoryObserverXml extends RepositoryObserverDto {
+public class RepositoryListenerXml extends RepositoryListenerDto {
 
 	@XmlElement
 	private Long id;
@@ -28,14 +28,14 @@ public class RepositoryObserverXml extends RepositoryObserverDto {
 	@XmlElement(required = true)
 	private String email;
 
-	public RepositoryObserverXml() {
+	public RepositoryListenerXml() {
 		super();
 	}
 
-	public RepositoryObserverXml(RepositoryObserver repositoryObserver) {
-		id = repositoryObserver.getId();
-		name = repositoryObserver.getName();
-		email = repositoryObserver.getEmail();
+	public RepositoryListenerXml(RepositoryListener repositoryListener) {
+		id = repositoryListener.getId();
+		name = repositoryListener.getName();
+		email = repositoryListener.getEmail();
 	}
 
 	@Override

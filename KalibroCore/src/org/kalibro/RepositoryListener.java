@@ -13,25 +13,24 @@ import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.processing.MailSender;
 import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.RepositoryObserverDao;
+import org.kalibro.dao.RepositoryListenerDao;
 
 /**
- * Source code RepositoryObserver.
+ * Listener of {@link Repository} processings.
  * 
  * @author Daniel Alves
  * @author Diego Araújo
  * @author Guilherme Rojas
  */
 @SortingFields("name")
-public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
-	implements TaskListener<Void> {
+public class RepositoryListener extends AbstractEntity<RepositoryListener> implements TaskListener<Void> {
 
-	public static SortedSet<RepositoryObserver> all() {
+	public static SortedSet<RepositoryListener> all() {
 		return dao().all();
 	}
 
-	private static RepositoryObserverDao dao() {
-		return DaoFactory.getRepositoryObserverDao();
+	private static RepositoryListenerDao dao() {
+		return DaoFactory.getRepositoryListenerDao();
 	}
 
 	@Print(skip = true)
@@ -43,13 +42,13 @@ public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
 	@Print(order = 2)
 	private String email;
 
-	private static final String NOREPLY = "\n\nThis is an automatic message." + " Please, do not reply.";
+	private static final String NOREPLY = "\n\nThis is an automatic message. Please, do not reply.";
 
-	public RepositoryObserver() {
+	public RepositoryListener() {
 		this("New name", "New email");
 	}
 
-	public RepositoryObserver(String name, String email) {
+	public RepositoryListener(String name, String email) {
 		setName(name);
 		setEmail(email);
 	}
@@ -100,10 +99,9 @@ public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
 	}
 
 	public void save(Repository repository) {
-		if (repository == null)
-			throw new KalibroException("RepositoryObserver is not related to any repository.");
-		throwExceptionIf(name.trim().isEmpty(), "RepositoryObserver requires name.");
-		throwExceptionIf(email.trim().isEmpty(), "RepositoryObserver requires email.");
+		throwExceptionIf(repository == null, "Listener is not related to any repository.");
+		throwExceptionIf(name.trim().isEmpty(), "RepositoryListener requires name.");
+		throwExceptionIf(email.trim().isEmpty(), "RepositoryListener requires email.");
 		repository.assertSaved();
 		id = dao().save(this, repository.getId());
 	}

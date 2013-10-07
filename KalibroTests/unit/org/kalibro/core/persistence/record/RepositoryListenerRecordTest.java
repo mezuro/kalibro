@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-public class RepositoryObserverRecordTest extends RecordTest {
+public class RepositoryListenerRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {
@@ -9,5 +9,4 @@ public class RepositoryObserverRecordTest extends RecordTest {
 		assertColumn("email", String.class).isRequired();
 		assertColumn("repository", Long.class).isRequired();
 	}
-
 }

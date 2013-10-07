@@ -1,13 +1,13 @@
 package org.kalibro.service.xml;
 
-import org.kalibro.RepositoryObserver;
+import org.kalibro.RepositoryListener;
 
 
-public class RepositoryObserverXmlTest extends XmlTest {
+public class RepositoryListenerXmlTest extends XmlTest {
 
 	@Override
 	protected Class<?> entityClass() {
-		return RepositoryObserver.class;
+		return RepositoryListener.class;
 	}
 	
 	@Override

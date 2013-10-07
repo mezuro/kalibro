@@ -51,7 +51,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 	}
 
 	private void addRepositoryListeners() {
-		for (RepositoryObserver listener : context.repositoryListeners())
+		for (RepositoryListener listener : context.repositoryListeners())
 			addListener(listener);
 	}
 }
