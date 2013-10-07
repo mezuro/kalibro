@@ -41,7 +41,8 @@ class LoadingTask extends ProcessSubtask {
 
 	private void assertParentExists(File directory) {
 		File parent = directory.getParentFile();
-		if (!parent.mkdirs())
+		parent.mkdirs();
+		if (!parent.exists())
 			throw new KalibroException("Could not create directory: " + parent);
 	}
 

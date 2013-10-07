@@ -51,11 +51,11 @@ public class LoadingTaskTest extends UnitTest {
 		when(context.codeDirectory()).thenReturn(repositoryDirectory);
 		when(repositoryDirectory.getName()).thenReturn("RepositoryName-1");
 		when(repositoryDirectory.getParentFile()).thenReturn(projectDirectory);
-		when(projectDirectory.mkdirs()).thenReturn(true);
+		when(projectDirectory.exists()).thenReturn(true);
 		when(projectDirectory.getName()).thenReturn("ProjectName-2");
 		when(projectDirectory.listFiles(any(FileFilter.class))).thenReturn(new File[0]);
 		when(projectDirectory.getParentFile()).thenReturn(loadDirectory);
-		when(loadDirectory.mkdirs()).thenReturn(true);
+		when(loadDirectory.exists()).thenReturn(true);
 		when(loadDirectory.listFiles(any(FileFilter.class))).thenReturn(new File[0]);
 		mockStatic(FileUtils.class);
 	}
@@ -79,7 +79,7 @@ public class LoadingTaskTest extends UnitTest {
 	}
 
 	private void shouldMakeSureIsCreated(File directory) {
-		when(directory.mkdirs()).thenReturn(false);
+		when(directory.exists()).thenReturn(false);
 		assertThat(loadingTask).throwsException().withMessage("Could not create directory: " + directory);
 	}
 
