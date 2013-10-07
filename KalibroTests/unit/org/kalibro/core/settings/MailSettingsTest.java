@@ -22,7 +22,7 @@ public class MailSettingsTest extends UnitTest {
 		assertEquals("smtp.gmail.com", settings.getSmtpHost());
 		assertEquals(465, settings.getSmtpPort().intValue());
 		assertEquals("example@gmail.com", settings.getSenderMail());
-		assertEquals("securepassword", settings.getPassword());
+		assertEquals("secure-password", settings.getPassword());
 	}
 
 	@Test

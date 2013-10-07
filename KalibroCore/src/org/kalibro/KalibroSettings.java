@@ -30,13 +30,11 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	private ClientSettings clientSettings;
 	private ServerSettings serverSettings;
-	private MailSettings mailSettings;
 
 	public KalibroSettings() {
 		setServiceSide(ServiceSide.SERVER);
 		setClientSettings(new ClientSettings());
 		setServerSettings(new ServerSettings());
-		setMailSettings(new MailSettings());
 	}
 
 	public boolean clientSide() {
@@ -61,14 +59,6 @@ public class KalibroSettings extends AbstractEntity<KalibroSettings> {
 
 	public void setServerSettings(ServerSettings serverSettings) {
 		this.serverSettings = serverSettings;
-	}
-	
-	public MailSettings getMailSettings() {
-		return mailSettings;
-	}
-	
-	public void setMailSettings(MailSettings mailSettings) {
-		this.mailSettings = mailSettings;
 	}
 
 	public void save() {

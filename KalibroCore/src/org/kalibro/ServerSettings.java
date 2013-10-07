@@ -17,10 +17,12 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 	private File loadDirectory;
 
 	private DatabaseSettings databaseSettings;
+	private MailSettings mailSettings;
 
 	public ServerSettings() {
 		setLoadDirectory(new File(Environment.dotKalibro(), "projects"));
 		setDatabaseSettings(new DatabaseSettings());
+		setMailSettings(new MailSettings());
 	}
 
 	public File getLoadDirectory() {
@@ -38,5 +40,13 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 
 	public void setDatabaseSettings(DatabaseSettings databaseSettings) {
 		this.databaseSettings = databaseSettings;
+	}
+
+	public MailSettings getMailSettings() {
+		return mailSettings;
+	}
+
+	public void setMailSettings(MailSettings mailSettings) {
+		this.mailSettings = mailSettings;
 	}
 }

@@ -8,7 +8,7 @@ import org.kalibro.MailSettings;
 public abstract class MailSender {
 
 	private static MailSettings mailSettings() {
-		return KalibroSettings.load().getMailSettings();
+		return KalibroSettings.load().getServerSettings().getMailSettings();
 	}
 
 	public static void sendEmail(Email email) {

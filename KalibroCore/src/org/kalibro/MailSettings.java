@@ -13,15 +13,19 @@ import org.kalibro.core.abstractentity.Print;
  */
 public class MailSettings extends AbstractEntity<MailSettings> {
 
-	@Print (order = 1)
+	@Print(order = 1)
 	private String smtpHost;
-	@Print (order = 2)
+
+	@Print(order = 2)
 	private Integer smtpPort;
-	@Print (order = 3, comment = "This sender name may be customized in kalibro.settings file.\n")
+
+	@Print(order = 3)
 	private String sender;
-	@Print (order = 4, comment = "This email shall be modified in kalibro.settings file.\n")
+
+	@Print(order = 4)
 	private String senderMail;
-	@Print (order = 5, comment = "This password shall be modified in kalibro.settings file.\n")
+
+	@Print(order = 5)
 	private String password;
 
 	public MailSettings() {
@@ -63,15 +67,15 @@ public class MailSettings extends AbstractEntity<MailSettings> {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 	public String getSender() {
 		return sender;
 	}
-	
+
 	public void setSender(String sender) {
 		this.sender = sender;
 	}
-	
+
 	public Mailer createMailer() {
 		return new Mailer(smtpHost, smtpPort, senderMail, password, TransportStrategy.SMTP_SSL);
 	}

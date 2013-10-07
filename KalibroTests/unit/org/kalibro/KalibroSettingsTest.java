@@ -1,7 +1,7 @@
 package org.kalibro;
 
 import static org.junit.Assert.*;
-import static org.kalibro.core.Environment.dotKalibro;
+import static org.kalibro.core.Environment.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,7 +50,6 @@ public class KalibroSettingsTest extends UnitTest {
 		assertFalse(settings.clientSide());
 		assertDeepEquals(new ClientSettings(), settings.getClientSettings());
 		assertDeepEquals(new ServerSettings(), settings.getServerSettings());
-		assertDeepEquals(new MailSettings(), settings.getMailSettings());
 	}
 
 	@Test
