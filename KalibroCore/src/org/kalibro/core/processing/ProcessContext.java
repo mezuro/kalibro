@@ -24,6 +24,7 @@ class ProcessContext {
 	private ProcessingDatabaseDao processingDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private MetricResultDatabaseDao metricResultDao;
+	private RepositoryObserverDatabaseDao repositoryObserverDao;
 
 	ProcessContext(Repository repository) {
 		this.repository = repository;
@@ -53,6 +54,7 @@ class ProcessContext {
 		processingDao = daoFactory.createProcessingDao();
 		moduleResultDao = daoFactory.createModuleResultDao();
 		metricResultDao = daoFactory.createMetricResultDao();
+		repositoryObserverDao = daoFactory.createRepositoryObserverDao();
 
 		processing = processingDao.createProcessingFor(repository);
 		configuration = configurationDao.snapshotFor(processing.getId());
@@ -88,5 +90,9 @@ class ProcessContext {
 
 	MetricResultDatabaseDao metricResultDao() {
 		return metricResultDao;
+	}
+
+	RepositoryObserverDatabaseDao repositoryObserverDao() {
+		return repositoryObserverDao;
 	}
 }

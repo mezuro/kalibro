@@ -28,6 +28,7 @@ public class ProcessContextTest extends UnitTest {
 	private ProcessingDatabaseDao processingDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private MetricResultDatabaseDao metricResultDao;
+	private RepositoryObserverDatabaseDao repositoryObserverDao;
 
 	private ProcessContext context;
 
@@ -70,6 +71,7 @@ public class ProcessContextTest extends UnitTest {
 		processingDao = mock(ProcessingDatabaseDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		metricResultDao = mock(MetricResultDatabaseDao.class);
+		repositoryObserverDao = mock(RepositoryObserverDatabaseDao.class);
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
 
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
@@ -77,6 +79,7 @@ public class ProcessContextTest extends UnitTest {
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
 		when(daoFactory.createMetricResultDao()).thenReturn(metricResultDao);
 		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
+		when(daoFactory.createRepositoryObserverDao()).thenReturn(repositoryObserverDao);
 		when(processingDao.createProcessingFor(repository)).thenReturn(processing);
 		when(processing.getId()).thenReturn(new Random().nextLong());
 		when(configurationDao.snapshotFor(processing.getId())).thenReturn(configuration);
@@ -141,5 +144,11 @@ public class ProcessContextTest extends UnitTest {
 	public void shouldCreateAndRememberMetricResultDao() {
 		assertSame(metricResultDao, context.metricResultDao());
 		assertSame(metricResultDao, context.metricResultDao());
+	}
+
+	@Test
+	public void shouldCreateAndRememberRepositoryObserverDao() {
+		assertSame(repositoryObserverDao, context.repositoryObserverDao());
+		assertSame(repositoryObserverDao, context.repositoryObserverDao());
 	}
 }
