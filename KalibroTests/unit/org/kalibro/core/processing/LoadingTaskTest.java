@@ -3,47 +3,61 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.FileFilter;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.*;
-import org.kalibro.core.Environment;
-import org.kalibro.core.loaders.GitLoader;
-import org.kalibro.core.loaders.Loader;
+import org.kalibro.Repository;
+import org.kalibro.RepositoryType;
+import org.kalibro.core.loaders.*;
 import org.kalibro.tests.UnitTest;
+import org.mockito.ArgumentCaptor;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
-@PrepareOnlyThisForTest({KalibroSettings.class, LoadingTask.class})
+@PrepareOnlyThisForTest({FileUtils.class, LoadingTask.class})
 public class LoadingTaskTest extends UnitTest {
 
-	private static final Long PROJECT_ID = 6L;
-	private static final String PROJECT_NAME = "  my project()";
-	private static final String PROJECT_DIRECTORY = "MyProject-6";
-
-	private static final Long REPOSITORY_ID = 28L;
-	private static final String REPOSITORY_NAME = "***MY REPOSITORY***";
-	private static final String REPOSITORY_DIRECTORY = "MyRepository-28";
-
-	private File loadDirectory;
-	private Project project;
+	private ProcessContext context;
 	private Repository repository;
 	private Loader loader;
+	private File loadDirectory, projectDirectory, repositoryDirectory;
 
 	private LoadingTask loadingTask;
 
 	@Before
 	public void setUp() throws Exception {
-		loadingTask = spy(new LoadingTask());
-		loadingTask.prepare(mock(ProcessTask.class));
+		mockRepository();
+		mockDirectories();
+		loadingTask = spy(new LoadingTask(context));
 		mockLoader();
-		mockEntities();
-		mockLoadDirectory();
+	}
+
+	private void mockRepository() {
+		context = mock(ProcessContext.class);
+		repository = mock(Repository.class);
+		when(context.repository()).thenReturn(repository);
+		when(repository.getAddress()).thenReturn("LoadingTask repository address");
+	}
+
+	private void mockDirectories() {
+		loadDirectory = mock(File.class);
+		projectDirectory = mock(File.class);
+		repositoryDirectory = mock(File.class);
+		when(context.codeDirectory()).thenReturn(repositoryDirectory);
+		when(repositoryDirectory.getName()).thenReturn("RepositoryName-1");
+		when(repositoryDirectory.getParentFile()).thenReturn(projectDirectory);
+		when(projectDirectory.exists()).thenReturn(true);
+		when(projectDirectory.getName()).thenReturn("ProjectName-2");
+		when(projectDirectory.listFiles(any(FileFilter.class))).thenReturn(new File[0]);
+		when(projectDirectory.getParentFile()).thenReturn(loadDirectory);
+		when(loadDirectory.exists()).thenReturn(true);
+		when(loadDirectory.listFiles(any(FileFilter.class))).thenReturn(new File[0]);
+		mockStatic(FileUtils.class);
 	}
 
 	private void mockLoader() throws Exception {
@@ -51,75 +65,93 @@ public class LoadingTaskTest extends UnitTest {
 		doReturn(loader).when(loadingTask, "createLoader");
 	}
 
-	private void mockEntities() {
-		project = mock(Project.class);
-		repository = mock(Repository.class);
-		doReturn(project).when(loadingTask).project();
-		doReturn(repository).when(loadingTask).repository();
-		when(project.getId()).thenReturn(PROJECT_ID);
-		when(repository.getId()).thenReturn(REPOSITORY_ID);
-		when(project.getName()).thenReturn(PROJECT_NAME);
-		when(repository.getName()).thenReturn(REPOSITORY_NAME);
-	}
-
-	private void mockLoadDirectory() {
-		loadDirectory = new File(Environment.dotKalibro(), "projects");
-		ServerSettings serverSettings = mock(ServerSettings.class);
-		KalibroSettings kalibroSettings = mock(KalibroSettings.class);
-		mockStatic(KalibroSettings.class);
-		when(KalibroSettings.load()).thenReturn(kalibroSettings);
-		when(kalibroSettings.getServerSettings()).thenReturn(serverSettings);
-		when(serverSettings.getLoadDirectory()).thenReturn(loadDirectory);
-	}
-
-	@After
-	public void tearDown() {
-		FileUtils.deleteQuietly(loadDirectory);
+	@Test
+	public void shouldCreateParentDirectories() throws Exception {
+		loadingTask.perform();
+		verify(loadDirectory).mkdirs();
+		verify(projectDirectory).mkdirs();
 	}
 
 	@Test
-	public void checkPreparedDirectoryNames() throws Exception {
-		loadingTask.perform();
-		File codeDirectory = loadingTask.codeDirectory();
+	public void shouldMakeSureParentDirectoriesAreCreated() {
+		shouldMakeSureIsCreated(projectDirectory);
+		shouldMakeSureIsCreated(loadDirectory);
+	}
 
-		assertEquals(REPOSITORY_DIRECTORY, codeDirectory.getName());
-		assertEquals(PROJECT_DIRECTORY, codeDirectory.getParentFile().getName());
-		assertEquals(loadDirectory, codeDirectory.getParentFile().getParentFile());
+	private void shouldMakeSureIsCreated(File directory) {
+		when(directory.exists()).thenReturn(false);
+		assertThat(loadingTask).throwsException().withMessage("Could not create directory: " + directory);
 	}
 
 	@Test
-	public void shouldDeleteIfManyWithSameSuffix() throws Exception {
-		File fileA = new File(loadDirectory, "A-" + PROJECT_ID);
-		File fileB = new File(loadDirectory, "B-" + PROJECT_ID);
-		fileA.mkdirs();
-		fileB.mkdirs();
+	public void shouldListFilesWithSameSuffix() throws Exception {
 		loadingTask.perform();
-		assertFalse(fileA.exists());
-		assertFalse(fileB.exists());
+		ArgumentCaptor<FileFilter> captor = ArgumentCaptor.forClass(FileFilter.class);
+
+		verify(loadDirectory).listFiles(captor.capture());
+		assertArrayEquals(new String[]{"-2"}, (String[]) Whitebox.getInternalState(captor.getValue(), "suffixes"));
+		verify(projectDirectory).listFiles(captor.capture());
+		assertArrayEquals(new String[]{"-1"}, (String[]) Whitebox.getInternalState(captor.getValue(), "suffixes"));
+	}
+
+	@Test
+	public void shouldDeleteAllInCaseOfAmbiguity() throws Exception {
+		File[] withSameSuffix = new File[]{projectDirectory, repositoryDirectory};
+		when(loadDirectory.listFiles(any(FileFilter.class))).thenReturn(withSameSuffix);
+		loadingTask.perform();
+
+		verifyStatic();
+		FileUtils.deleteQuietly(projectDirectory);
+		verifyStatic();
+		FileUtils.deleteQuietly(repositoryDirectory);
+	}
+
+	@Test
+	public void shouldUpdateNamesIfDirectoriesExist() throws Exception {
+		when(loadDirectory.listFiles(any(FileFilter.class))).thenReturn(new File[]{projectDirectory});
+		when(projectDirectory.listFiles(any(FileFilter.class))).thenReturn(new File[]{repositoryDirectory});
+		loadingTask.perform();
+
+		verify(projectDirectory).renameTo(projectDirectory);
+		verify(repositoryDirectory).renameTo(repositoryDirectory);
+	}
+
+	@Test
+	public void shouldTellLoaderToLoad() throws Exception {
+		loadingTask.perform();
+		verify(loader).load(repository.getAddress(), repositoryDirectory);
 	}
 
 	@Test
 	public void shouldDeleteIfExistsButIsNotDirectory() throws Exception {
-		File file = new File(loadDirectory, "X-" + PROJECT_ID);
-		loadDirectory.mkdirs();
-		file.createNewFile();
-		loadingTask.perform();
-		assertFalse(file.exists());
+		shouldDeleteIfExistsButIsNotDirectory(projectDirectory);
+		shouldDeleteIfExistsButIsNotDirectory(repositoryDirectory);
 	}
 
-	@Test
-	public void shouldLoadWithLoader() throws Exception {
-		String address = "My repository address";
-		when(repository.getAddress()).thenReturn(address);
+	private void shouldDeleteIfExistsButIsNotDirectory(File directory) throws Exception {
+		when(directory.exists()).thenReturn(true);
+		when(directory.isDirectory()).thenReturn(false);
 		loadingTask.perform();
-		File codeDirectory = loadingTask.codeDirectory();
-		verify(loader).load(address, codeDirectory);
+		verify(directory).delete();
 	}
 
 	@Test
 	public void shouldCreateCorrectLoader() throws Exception {
-		when(repository.getType()).thenReturn(RepositoryType.GIT);
+		assertLoaderCreated(RepositoryType.BAZAAR, BazaarLoader.class);
+		assertLoaderCreated(RepositoryType.CVS, CvsLoader.class);
+		assertLoaderCreated(RepositoryType.GIT, GitLoader.class);
+		assertLoaderCreated(RepositoryType.LOCAL_DIRECTORY, LocalDirectoryLoader.class);
+		assertLoaderCreated(RepositoryType.LOCAL_TARBALL, LocalTarballLoader.class);
+		assertLoaderCreated(RepositoryType.LOCAL_ZIP, LocalZipLoader.class);
+		assertLoaderCreated(RepositoryType.MERCURIAL, MercurialLoader.class);
+		assertLoaderCreated(RepositoryType.REMOTE_TARBALL, RemoteTarballLoader.class);
+		assertLoaderCreated(RepositoryType.REMOTE_ZIP, RemoteZipLoader.class);
+		assertLoaderCreated(RepositoryType.SUBVERSION, SubversionLoader.class);
+	}
+
+	private void assertLoaderCreated(RepositoryType type, Class<? extends Loader> loaderClass) throws Exception {
+		when(repository.getType()).thenReturn(type);
 		doCallRealMethod().when(loadingTask, "createLoader");
-		assertClassEquals(GitLoader.class, Whitebox.invokeMethod(loadingTask, "createLoader"));
+		assertClassEquals(loaderClass, Whitebox.invokeMethod(loadingTask, "createLoader"));
 	}
 }

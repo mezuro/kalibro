@@ -22,8 +22,9 @@ public abstract class Task<T> implements Runnable {
 		listeners = new HashSet<TaskListener<T>>();
 	}
 
-	public void addListener(TaskListener<T> listener) {
+	public Task<T> addListener(TaskListener<T> listener) {
 		listeners.add(listener);
+		return this;
 	}
 
 	public void executeInBackground() {

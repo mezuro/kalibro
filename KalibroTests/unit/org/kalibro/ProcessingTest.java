@@ -88,8 +88,8 @@ public class ProcessingTest extends UnitTest {
 
 	@Test
 	public void shouldGetLastProcessingState() {
-		when(dao.lastProcessingState(REPOSITORY_ID)).thenReturn(ANALYZING);
-		assertEquals(ANALYZING, Processing.lastProcessingState(repository));
+		when(dao.lastProcessingState(REPOSITORY_ID)).thenReturn(CALCULATING);
+		assertEquals(CALCULATING, Processing.lastProcessingState(repository));
 		verify(repository).assertSaved();
 	}
 
@@ -167,9 +167,9 @@ public class ProcessingTest extends UnitTest {
 	@Test
 	public void shouldGetStateWhenErrorOcurred() {
 		assertNull(processing.getStateWhenErrorOcurred());
-		processing.setState(ANALYZING);
+		processing.setState(BUILDING);
 		processing.setError(mock(Throwable.class));
-		assertEquals(ANALYZING, processing.getStateWhenErrorOcurred());
+		assertEquals(BUILDING, processing.getStateWhenErrorOcurred());
 	}
 
 	@Test
@@ -187,10 +187,10 @@ public class ProcessingTest extends UnitTest {
 	public void shouldSetStateTimes() {
 		processing.setStateTime(LOADING, 6);
 		processing.setStateTime(COLLECTING, 28);
-		processing.setStateTime(ANALYZING, 496);
+		processing.setStateTime(CALCULATING, 496);
 		assertEquals(6, processing.getStateTime(LOADING).longValue());
 		assertEquals(28, processing.getStateTime(COLLECTING).longValue());
-		assertEquals(496, processing.getStateTime(ANALYZING).longValue());
+		assertEquals(496, processing.getStateTime(CALCULATING).longValue());
 	}
 
 	@Test

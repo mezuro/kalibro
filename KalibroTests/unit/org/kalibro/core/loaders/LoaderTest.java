@@ -22,14 +22,14 @@ public class LoaderTest extends UnitTest {
 	private static final String UPDATE_COMMAND = "RepositoryLoaderTest update command";
 	private static final String VALIDATION_COMMAND = "RepositoryLoaderTest validation command";
 
-	private File loadDirectory;
+	private File codeDirectory;
 	private CommandTask commandTask;
 
 	private Loader loader;
 
 	@Before
 	public void setUp() throws Exception {
-		loadDirectory = mock(File.class);
+		codeDirectory = mock(File.class);
 		mockCommandTask();
 		mockStatic(FileUtils.class);
 		loader = mockAbstract(Loader.class);
@@ -41,7 +41,7 @@ public class LoaderTest extends UnitTest {
 	private void mockCommandTask() throws Exception {
 		commandTask = mock(CommandTask.class);
 		whenNew(CommandTask.class).withArguments(anyString()).thenReturn(commandTask);
-		whenNew(CommandTask.class).withArguments(anyString(), same(loadDirectory)).thenReturn(commandTask);
+		whenNew(CommandTask.class).withArguments(anyString(), same(codeDirectory)).thenReturn(commandTask);
 	}
 
 	@Test
@@ -50,33 +50,33 @@ public class LoaderTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldCreateLoadDirectory() {
-		loader.load(ADDRESS, loadDirectory);
-		verify(loadDirectory).mkdirs();
+	public void shouldCreateCodeDirectory() {
+		loader.load(ADDRESS, codeDirectory);
+		verify(codeDirectory).mkdirs();
 	}
 
 	@Test
-	public void shouldDeleteLoadDirectoryIfNotUpdatable() {
-		when(loadDirectory.exists()).thenReturn(true);
-		doReturn(false).when(loader).isUpdatable(loadDirectory);
-		loader.load(ADDRESS, loadDirectory);
+	public void shouldDeleteCodeDirectoryIfNotUpdatable() {
+		when(codeDirectory.exists()).thenReturn(true);
+		doReturn(false).when(loader).isUpdatable(codeDirectory);
+		loader.load(ADDRESS, codeDirectory);
 		verifyStatic();
-		FileUtils.deleteQuietly(loadDirectory);
+		FileUtils.deleteQuietly(codeDirectory);
 	}
 
 	@Test
-	public void shouldExecuteLoadCommandsIfLoadDirectoryDoesNotExist() throws Exception {
-		loader.load(ADDRESS, loadDirectory);
-		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, loadDirectory);
+	public void shouldExecuteLoadCommandsIfCodeDirectoryDoesNotExist() throws Exception {
+		loader.load(ADDRESS, codeDirectory);
+		verifyNew(CommandTask.class).withArguments(LOAD_COMMAND, codeDirectory);
 		verify(commandTask).execute(12, HOURS);
 	}
 
 	@Test
-	public void shouldExecuteUpdateCommandsIfLoadDirectoryExists() throws Exception {
-		when(loadDirectory.exists()).thenReturn(true);
-		doReturn(true).when(loader).isUpdatable(loadDirectory);
-		loader.load(ADDRESS, loadDirectory);
-		verifyNew(CommandTask.class).withArguments(UPDATE_COMMAND, loadDirectory);
+	public void shouldExecuteUpdateCommandsIfCodeDirectoryExists() throws Exception {
+		when(codeDirectory.exists()).thenReturn(true);
+		doReturn(true).when(loader).isUpdatable(codeDirectory);
+		loader.load(ADDRESS, codeDirectory);
+		verifyNew(CommandTask.class).withArguments(UPDATE_COMMAND, codeDirectory);
 		verify(commandTask).execute(12, HOURS);
 	}
 }

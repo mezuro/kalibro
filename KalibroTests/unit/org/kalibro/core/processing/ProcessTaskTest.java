@@ -13,7 +13,6 @@ import org.kalibro.Processing;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryObserver;
 import org.kalibro.core.concurrent.TaskReport;
-import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.core.persistence.RepositoryObserverDatabaseDao;
 import org.kalibro.dao.DaoFactory;
@@ -27,110 +26,106 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest({ProcessTask.class, DaoFactory.class})
 public class ProcessTaskTest extends UnitTest {
 
-	private static final Long REPOSITORY_ID = new Random().nextLong();
 	private static final Long EXECUTION_TIME = new Random().nextLong();
 
 	private Repository repository;
 	private Processing processing;
+	private ProcessContext context;
 	private ProcessingDatabaseDao processingDao;
 	private SortedSet<RepositoryObserver> observers = new TreeSet<RepositoryObserver>();
 
 	private LoadingTask loadingTask;
 	private CollectingTask collectingTask;
-	private AnalyzingTask analyzingTask;
+	private BuildingTask buildingTask;
+	private AggregatingTask aggregatingTask;
+	private CalculatingTask calculatingTask;
 
 	private ProcessTask processTask;
 
 	@Before
 	public void setUp() throws Exception {
-		mockEntities();
+		mockContext();
 		processTask = spy(new ProcessTask(repository));
 		mockSubtasks();
 		processTask.perform();
 	}
 
-	private void mockEntities() throws Exception {
+	private void mockContext() throws Exception {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
+		context = mock(ProcessContext.class);
 		RepositoryObserverDatabaseDao repositoryObserverDatabaseDao = mock(RepositoryObserverDatabaseDao.class);
+		whenNew(ProcessContext.class).withArguments(repository).thenReturn(context);
+		when(context.processingDao()).thenReturn(processingDao);
+		when(context.processing()).thenReturn(processing);
+		when(repository.getId()).thenReturn(new Random().nextLong());
+		when(processing.getState()).thenReturn(ProcessState.LOADING);
 
 		mockStatic(DaoFactory.class);
 		when(DaoFactory.getRepositoryObserverDao()).thenReturn(repositoryObserverDatabaseDao);
-		when(repositoryObserverDatabaseDao.observersOf(REPOSITORY_ID)).thenReturn(observers);
-
-		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
-		when(repository.getId()).thenReturn(REPOSITORY_ID);
-		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
-		when(daoFactory.createProcessingDao()).thenReturn(processingDao);
-		when(processingDao.createProcessingFor(repository)).thenReturn(processing);
+		when(repositoryObserverDatabaseDao.observersOf(repository.getId())).thenReturn(observers);
 	}
 
 	private void mockSubtasks() throws Exception {
 		loadingTask = mockSubtask(LoadingTask.class);
 		collectingTask = mockSubtask(CollectingTask.class);
-		analyzingTask = mockSubtask(AnalyzingTask.class);
+		buildingTask = mockSubtask(BuildingTask.class);
+		aggregatingTask = mockSubtask(AggregatingTask.class);
+		calculatingTask = mockSubtask(CalculatingTask.class);
 	}
 
 	private <T extends ProcessSubtask> T mockSubtask(Class<T> subtaskClass) throws Exception {
 		T subtask = mock(subtaskClass);
-		whenNew(subtaskClass).withNoArguments().thenReturn(subtask);
-		when(subtask.prepare(processTask)).thenReturn(subtask);
+		whenNew(subtaskClass).withArguments(context).thenReturn(subtask);
+		when(subtask.addListener(processTask)).thenReturn(subtask);
 		return subtask;
 	}
 
 	@Test
-	public void shouldPrepareAndExecuteSubtasks() {
-		InOrder order = Mockito.inOrder(loadingTask, collectingTask, analyzingTask);
-		order.verify(loadingTask).prepare(processTask);
+	public void shouldExecuteSubtasksListeningToThem() {
+		InOrder order = Mockito.inOrder(loadingTask, collectingTask, buildingTask, aggregatingTask, calculatingTask);
+		order.verify(loadingTask).addListener(processTask);
 		order.verify(loadingTask).execute();
-		order.verify(collectingTask).prepare(processTask);
+		order.verify(collectingTask).addListener(processTask);
 		order.verify(collectingTask).executeInBackground();
-		order.verify(analyzingTask).prepare(processTask);
-		order.verify(analyzingTask).execute();
+		order.verify(buildingTask).addListener(processTask);
+		order.verify(buildingTask).execute();
+		order.verify(aggregatingTask).addListener(processTask);
+		order.verify(aggregatingTask).execute();
+		order.verify(calculatingTask).addListener(processTask);
+		order.verify(calculatingTask).execute();
 	}
 
 	@Test
 	public void shouldUpdateProcessingOnTaskFinished() {
-		when(processing.getState()).thenReturn(ProcessState.LOADING);
-		processTask.taskFinished(report(null));
+		when(loadingTask.getState()).thenReturn(ProcessState.LOADING);
+		processTask.taskFinished(report(loadingTask, null));
 
-		InOrder order = Mockito.inOrder(processing, processTask, processingDao);
-		order.verify(processing).setStateTime(ProcessState.READY, EXECUTION_TIME);
-		order.verify(processing).setState(ProcessState.READY.nextState());
-		order.verify(processTask).tryToNotify();
-		order.verify(processingDao).save(processing, REPOSITORY_ID);
+		InOrder order = Mockito.inOrder(processing, processingDao);
+		order.verify(processing).setStateTime(ProcessState.LOADING, EXECUTION_TIME);
+		order.verify(processing).setState(ProcessState.COLLECTING);
+		order.verify(processingDao).save(processing, repository.getId());
 	}
 
 	@Test
 	public void shouldUpdateProcessingOnTaskHalted() {
 		Throwable error = mock(Throwable.class);
-		when(processing.getState()).thenReturn(ProcessState.COLLECTING);
-		processTask.taskFinished(report(error));
+		when(collectingTask.getState()).thenReturn(ProcessState.COLLECTING);
+		processTask.taskFinished(report(collectingTask, error));
 
-		InOrder order = Mockito.inOrder(processing, processTask, processingDao);
-		order.verify(processing).setStateTime(ProcessState.READY, EXECUTION_TIME);
+		InOrder order = Mockito.inOrder(processing, processingDao);
+		order.verify(processing).setStateTime(ProcessState.COLLECTING, EXECUTION_TIME);
 		order.verify(processing).setError(error);
-		order.verify(processTask).tryToNotify();
-		order.verify(processingDao).save(processing, REPOSITORY_ID);
+		order.verify(processingDao).save(processing, repository.getId());
 	}
 
-	@Test
-	public void shouldNotUpdateStateOnlyIfCurrentStateIsTemporary() {
-		when(processing.getState()).thenReturn(ProcessState.ERROR);
-		processTask.taskFinished(report(null));
-		verify(processing, never()).setState(any(ProcessState.class));
-		verify(processing, never()).setError(any(Throwable.class));
-		verify(processTask).tryToNotify();
-		verify(processingDao).save(processing, REPOSITORY_ID);
-	}
-
-	private TaskReport<Void> report(Throwable error) {
+	private TaskReport<Void> report(ProcessSubtask subtask, Throwable error) {
 		TaskReport<Void> report = mock(TaskReport.class);
 		when(report.getExecutionTime()).thenReturn(EXECUTION_TIME);
 		when(report.isTaskDone()).thenReturn(error == null);
 		when(report.getError()).thenReturn(error);
-		when(report.getTask()).thenReturn(new ReadyTask());
+		when(report.getTask()).thenReturn(subtask);
 		return report;
 	}
 
@@ -143,7 +138,7 @@ public class ProcessTaskTest extends UnitTest {
 
 	@Test
 	public void shouldNotNotifyObservers() {
-		when(processing.getState()).thenReturn(ProcessState.ANALYZING);
+		when(processing.getState()).thenReturn(ProcessState.CALCULATING);
 		processTask.tryToNotify();
 		verify(processTask, never()).notifyObservers();
 	}

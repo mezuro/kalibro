@@ -1,12 +1,11 @@
 package org.kalibro.core.processing;
 
+import java.io.File;
 import java.util.Map;
 import java.util.Set;
 
-import org.kalibro.BaseTool;
-import org.kalibro.Configuration;
-import org.kalibro.NativeMetric;
-import org.kalibro.Repository;
+import org.kalibro.*;
+import org.kalibro.core.concurrent.Producer;
 
 /**
  * Collects metric results using the {@link BaseTool}s specified at the {@link Repository}'s {@link Configuration}.
@@ -15,11 +14,17 @@ import org.kalibro.Repository;
  */
 class CollectingTask extends ProcessSubtask {
 
+	CollectingTask(ProcessContext context) {
+		super(context);
+	}
+
 	@Override
 	protected void perform() throws Exception {
-		Configuration configuration = repository().getConfiguration();
+		File codeDirectory = context.codeDirectory();
+		Configuration configuration = context.repository().getConfiguration();
+		Producer<NativeModuleResult> resultProducer = context.resultProducer();
 		Map<BaseTool, Set<NativeMetric>> wantedMetrics = configuration.getNativeMetrics();
 		for (BaseTool baseTool : wantedMetrics.keySet())
-			baseTool.collectMetrics(codeDirectory(), wantedMetrics.get(baseTool), resultProducer().createWriter());
+			baseTool.collectMetrics(codeDirectory, wantedMetrics.get(baseTool), resultProducer.createWriter());
 	}
 }

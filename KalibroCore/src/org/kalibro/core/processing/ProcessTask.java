@@ -1,14 +1,11 @@
 package org.kalibro.core.processing;
 
-import java.io.File;
 import java.util.SortedSet;
 
 import org.kalibro.*;
-import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.TaskListener;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.core.persistence.DatabaseDaoFactory;
 import org.kalibro.core.persistence.RepositoryObserverDatabaseDao;
 import org.kalibro.dao.DaoFactory;
 
@@ -19,12 +16,10 @@ import org.kalibro.dao.DaoFactory;
  */
 public class ProcessTask extends VoidTask implements TaskListener<Void>, Observable {
 
-	File codeDirectory;
-	Repository repository;
-	Processing processing;
-	DatabaseDaoFactory daoFactory;
-	Producer<NativeModuleResult> resultProducer;
-	SortedSet<RepositoryObserver> observers;
+	private Repository repository;
+	private ProcessContext context;
+
+	private SortedSet<RepositoryObserver> observers;
 
 	public ProcessTask(Repository repository) {
 		this.repository = repository;
@@ -34,52 +29,41 @@ public class ProcessTask extends VoidTask implements TaskListener<Void>, Observa
 	private void setObservers() {
 		RepositoryObserverDatabaseDao repositoryObserverDatabaseDao =
 			(RepositoryObserverDatabaseDao) DaoFactory.getRepositoryObserverDao();
-		this.observers = repositoryObserverDatabaseDao.
-			observersOf(repository.getId());
+		this.observers = repositoryObserverDatabaseDao.observersOf(repository.getId());
 	}
 
 	@Override
 	protected void perform() {
-		daoFactory = new DatabaseDaoFactory();
-		processing = daoFactory.createProcessingDao().createProcessingFor(repository);
-		resultProducer = new Producer<NativeModuleResult>();
-		new LoadingTask().prepare(this).execute();
-		new CollectingTask().prepare(this).executeInBackground();
-		ProcessSubtask analyzingTask = new AnalyzingTask().prepare(this);
-		analyzingTask.execute();
+		context = new ProcessContext(repository);
+		new LoadingTask(context).addListener(this).execute();
+		new CollectingTask(context).addListener(this).executeInBackground();
+		new BuildingTask(context).addListener(this).execute();
+		new AggregatingTask(context).addListener(this).execute();
+		new CalculatingTask(context).addListener(this).execute();
 	}
 
 	@Override
 	public synchronized void taskFinished(TaskReport<Void> report) {
-		processing.setStateTime(getTaskState(report), report.getExecutionTime());
-		if (processing.getState().isTemporary())
-			updateState(report);
+		Processing processing = context.processing();
+		ProcessState subtaskState = ((ProcessSubtask) report.getTask()).getState();
+		processing.setStateTime(subtaskState, report.getExecutionTime());
+		if (report.isTaskDone())
+			processing.setState(subtaskState.nextState());
+		else
+			processing.setError(report.getError());
+		context.processingDao().save(processing, repository.getId());
 		tryToNotify();
+	}
 
-		daoFactory.createProcessingDao().save(processing, repository.getId());
+	void tryToNotify() {
+		if (!context.processing().getState().isTemporary())
+			notifyObservers();
 	}
 
 	@Override
 	public void notifyObservers() {
 		for (RepositoryObserver observer : observers) {
-			observer.update(repository, processing.getState());
+			observer.update(repository, context.processing().getState());
 		}
-	}
-
-	private void updateState(TaskReport<Void> report) {
-		if (report.isTaskDone())
-			processing.setState(getTaskState(report).nextState());
-		else
-			processing.setError(report.getError());
-	}
-
-	void tryToNotify() {
-		if (! processing.getState().isTemporary())
-			notifyObservers();
-	}
-
-	private ProcessState getTaskState(TaskReport<Void> report) {
-		String taskClassName = report.getTask().getClass().getSimpleName();
-		return ProcessState.valueOf(taskClassName.replace("Task", "").toUpperCase());
 	}
 }
