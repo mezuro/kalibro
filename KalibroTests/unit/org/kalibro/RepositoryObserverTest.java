@@ -11,8 +11,10 @@ import org.codemonkey.simplejavamail.Email;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.processing.MailSender;
+import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RepositoryObserverDao;
 import org.kalibro.tests.UnitTest;
@@ -146,7 +148,7 @@ public class RepositoryObserverTest extends UnitTest {
 
 	@Test
 	public void shouldSendEmailWithErrorMessage() {
-		repositoryObserver.update(repository, ProcessState.ERROR);
+		repositoryObserver.taskFinished(mockReport(ProcessState.ERROR));
 		verify(email).setSubject(REPOSITORY_COMPLETE_NAME + " processing results");
 		verify(email).setText("Processing results in repository " + REPOSITORY_NAME +
 			" has resulted in error.\n\nThis is an automatic message." +
@@ -158,7 +160,7 @@ public class RepositoryObserverTest extends UnitTest {
 
 	@Test
 	public void shouldSendEmailWithSucessfulMessage() {
-		repositoryObserver.update(repository, ProcessState.READY);
+		repositoryObserver.taskFinished(mockReport(ProcessState.READY));
 		verify(email).setSubject(REPOSITORY_COMPLETE_NAME + " processing results");
 		verify(email).setText("Processing results in repository " + REPOSITORY_NAME +
 			" has finished successfully.\n\nThis is an automatic message." +
@@ -166,5 +168,14 @@ public class RepositoryObserverTest extends UnitTest {
 		verify(email).addRecipient("New name", "New email", RecipientType.TO);
 		verifyStatic();
 		MailSender.sendEmail(email);
+	}
+
+	private TaskReport<Void> mockReport(ProcessState processState) {
+		TaskReport<Void> report = mock(TaskReport.class);
+		ProcessTask task = mock(ProcessTask.class);
+		when(report.getTask()).thenReturn(task);
+		when(task.getRepository()).thenReturn(repository);
+		when(task.getProcessState()).thenReturn(processState);
+		return report;
 	}
 }

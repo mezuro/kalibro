@@ -8,7 +8,10 @@ import org.codemonkey.simplejavamail.Email;
 import org.kalibro.core.abstractentity.AbstractEntity;
 import org.kalibro.core.abstractentity.Print;
 import org.kalibro.core.abstractentity.SortingFields;
+import org.kalibro.core.concurrent.TaskListener;
+import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.processing.MailSender;
+import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.RepositoryObserverDao;
 
@@ -21,7 +24,7 @@ import org.kalibro.dao.RepositoryObserverDao;
  */
 @SortingFields("name")
 public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
-	implements Observer<Repository, ProcessState> {
+	implements TaskListener<Void> {
 
 	public static SortedSet<RepositoryObserver> all() {
 		return dao().all();
@@ -40,8 +43,7 @@ public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
 	@Print(order = 2)
 	private String email;
 
-	private static final String NOREPLY = "\n\nThis is an automatic message." +
-		" Please, do not reply.";
+	private static final String NOREPLY = "\n\nThis is an automatic message." + " Please, do not reply.";
 
 	public RepositoryObserver() {
 		this("New name", "New email");
@@ -117,7 +119,8 @@ public class RepositoryObserver extends AbstractEntity<RepositoryObserver>
 	}
 
 	@Override
-	public void update(Repository repository, ProcessState processState) {
-		sendEmail(repository, processState);
+	public void taskFinished(TaskReport<Void> report) {
+		ProcessTask task = (ProcessTask) report.getTask();
+		sendEmail(task.getRepository(), task.getProcessState());
 	}
 }

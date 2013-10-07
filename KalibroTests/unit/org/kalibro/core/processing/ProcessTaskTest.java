@@ -1,10 +1,7 @@
 package org.kalibro.core.processing;
 
 import java.util.Random;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,8 +11,6 @@ import org.kalibro.Repository;
 import org.kalibro.RepositoryObserver;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
-import org.kalibro.core.persistence.RepositoryObserverDatabaseDao;
-import org.kalibro.dao.DaoFactory;
 import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
 import org.mockito.Mockito;
@@ -23,7 +18,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ProcessTask.class, DaoFactory.class})
+@PrepareForTest(ProcessTask.class)
 public class ProcessTaskTest extends UnitTest {
 
 	private static final Long EXECUTION_TIME = new Random().nextLong();
@@ -31,8 +26,8 @@ public class ProcessTaskTest extends UnitTest {
 	private Repository repository;
 	private Processing processing;
 	private ProcessContext context;
+	private RepositoryObserver listener;
 	private ProcessingDatabaseDao processingDao;
-	private SortedSet<RepositoryObserver> observers = new TreeSet<RepositoryObserver>();
 
 	private LoadingTask loadingTask;
 	private CollectingTask collectingTask;
@@ -54,17 +49,14 @@ public class ProcessTaskTest extends UnitTest {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
+		listener = mock(RepositoryObserver.class);
 		context = mock(ProcessContext.class);
-		RepositoryObserverDatabaseDao repositoryObserverDatabaseDao = mock(RepositoryObserverDatabaseDao.class);
 		whenNew(ProcessContext.class).withArguments(repository).thenReturn(context);
 		when(context.processingDao()).thenReturn(processingDao);
 		when(context.processing()).thenReturn(processing);
 		when(repository.getId()).thenReturn(new Random().nextLong());
 		when(processing.getState()).thenReturn(ProcessState.LOADING);
-
-		mockStatic(DaoFactory.class);
-		when(DaoFactory.getRepositoryObserverDao()).thenReturn(repositoryObserverDatabaseDao);
-		when(repositoryObserverDatabaseDao.observersOf(repository.getId())).thenReturn(observers);
+		when(context.repositoryListeners()).thenReturn(sortedSet(listener));
 	}
 
 	private void mockSubtasks() throws Exception {
@@ -130,42 +122,7 @@ public class ProcessTaskTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotifyObservers() {
-		when(processing.getState()).thenReturn(ProcessState.READY);
-		processTask.tryToNotify();
-		verify(processTask).notifyObservers();
-	}
-
-	@Test
-	public void shouldNotNotifyObservers() {
-		when(processing.getState()).thenReturn(ProcessState.CALCULATING);
-		processTask.tryToNotify();
-		verify(processTask, never()).notifyObservers();
-	}
-
-	@Test
-	public void shouldNotifyAllObservers() {
-		RepositoryObserver repositoryObserver = mock(RepositoryObserver.class);
-		RepositoryObserver anotherRepositoryObserver = mock(RepositoryObserver.class);
-		when(repositoryObserver.compareTo(anotherRepositoryObserver)).thenReturn(1);
-		when(anotherRepositoryObserver.compareTo(repositoryObserver)).thenReturn(-1);
-
-		Assert.assertTrue(observers.isEmpty());
-		observers.add(repositoryObserver);
-		observers.add(anotherRepositoryObserver);
-		Assert.assertTrue(observers.contains(repositoryObserver));
-		Assert.assertTrue(observers.contains(anotherRepositoryObserver));
-
-		when(processing.getState()).thenReturn(ProcessState.ERROR);
-		processTask.notifyObservers();
-		for (RepositoryObserver observer : observers)
-			verify(observer).update(repository, ProcessState.ERROR);
-	}
-
-	@Test
-	public void shouldNotNotifyIfThereIsNoObserver() {
-		Assert.assertTrue(observers.isEmpty());
-		processTask.notifyObservers();
-		verify(processing, never()).getState();
+	public void shouldAddListeners() {
+		verify(processTask.addListener(listener));
 	}
 }
