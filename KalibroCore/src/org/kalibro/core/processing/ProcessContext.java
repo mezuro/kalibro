@@ -1,11 +1,15 @@
 package org.kalibro.core.processing;
 
 import java.io.File;
+import java.util.SortedSet;
 
 import org.kalibro.*;
 import org.kalibro.core.Identifier;
 import org.kalibro.core.concurrent.Producer;
-import org.kalibro.core.persistence.*;
+import org.kalibro.core.persistence.DatabaseDaoFactory;
+import org.kalibro.core.persistence.MetricResultDatabaseDao;
+import org.kalibro.core.persistence.ModuleResultDatabaseDao;
+import org.kalibro.core.persistence.ProcessingDatabaseDao;
 
 /**
  * Context of a {@link Processing}. Contains common data used by {@link ProcessSubtask}s.
@@ -21,10 +25,10 @@ class ProcessContext {
 
 	private Processing processing;
 	private Configuration configuration;
+	private DatabaseDaoFactory daoFactory;
 	private ProcessingDatabaseDao processingDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private MetricResultDatabaseDao metricResultDao;
-	private RepositoryObserverDatabaseDao repositoryObserverDao;
 
 	ProcessContext(Repository repository) {
 		this.repository = repository;
@@ -49,15 +53,13 @@ class ProcessContext {
 	}
 
 	private void prepareDatabase() {
-		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
-		ConfigurationDatabaseDao configurationDao = daoFactory.createConfigurationDao();
+		daoFactory = new DatabaseDaoFactory();
 		processingDao = daoFactory.createProcessingDao();
 		moduleResultDao = daoFactory.createModuleResultDao();
 		metricResultDao = daoFactory.createMetricResultDao();
-		repositoryObserverDao = daoFactory.createRepositoryObserverDao();
 
 		processing = processingDao.createProcessingFor(repository);
-		configuration = configurationDao.snapshotFor(processing.getId());
+		configuration = daoFactory.createConfigurationDao().snapshotFor(processing.getId());
 	}
 
 	Repository repository() {
@@ -92,7 +94,7 @@ class ProcessContext {
 		return metricResultDao;
 	}
 
-	RepositoryObserverDatabaseDao repositoryObserverDao() {
-		return repositoryObserverDao;
+	SortedSet<RepositoryObserver> repositoryListeners() {
+		return daoFactory.createRepositoryObserverDao().observersOf(repository.getId());
 	}
 }

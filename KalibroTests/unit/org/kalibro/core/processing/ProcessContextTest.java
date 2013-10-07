@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.util.Random;
+import java.util.SortedSet;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -25,10 +26,11 @@ public class ProcessContextTest extends UnitTest {
 	private File loadDirectory;
 	private Processing processing;
 	private Configuration configuration;
+
+	private DatabaseDaoFactory daoFactory;
 	private ProcessingDatabaseDao processingDao;
 	private ModuleResultDatabaseDao moduleResultDao;
 	private MetricResultDatabaseDao metricResultDao;
-	private RepositoryObserverDatabaseDao repositoryObserverDao;
 
 	private ProcessContext context;
 
@@ -65,13 +67,12 @@ public class ProcessContextTest extends UnitTest {
 	}
 
 	private void mockDaosAndProcessing() throws Exception {
-		DatabaseDaoFactory daoFactory = mock(DatabaseDaoFactory.class);
+		daoFactory = mock(DatabaseDaoFactory.class);
 		processing = mock(Processing.class);
 		configuration = mock(Configuration.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		metricResultDao = mock(MetricResultDatabaseDao.class);
-		repositoryObserverDao = mock(RepositoryObserverDatabaseDao.class);
 		ConfigurationDatabaseDao configurationDao = mock(ConfigurationDatabaseDao.class);
 
 		whenNew(DatabaseDaoFactory.class).withNoArguments().thenReturn(daoFactory);
@@ -79,7 +80,6 @@ public class ProcessContextTest extends UnitTest {
 		when(daoFactory.createModuleResultDao()).thenReturn(moduleResultDao);
 		when(daoFactory.createMetricResultDao()).thenReturn(metricResultDao);
 		when(daoFactory.createConfigurationDao()).thenReturn(configurationDao);
-		when(daoFactory.createRepositoryObserverDao()).thenReturn(repositoryObserverDao);
 		when(processingDao.createProcessingFor(repository)).thenReturn(processing);
 		when(processing.getId()).thenReturn(new Random().nextLong());
 		when(configurationDao.snapshotFor(processing.getId())).thenReturn(configuration);
@@ -100,6 +100,16 @@ public class ProcessContextTest extends UnitTest {
 	public void shouldCreateAndRememberConfigurationSnapshot() {
 		assertSame(configuration, context.configuration());
 		assertSame(configuration, context.configuration());
+	}
+
+	@Test
+	public void shouldCreateRepositoryListeners() {
+		RepositoryObserverDatabaseDao repositoryObserverDao = mock(RepositoryObserverDatabaseDao.class);
+		SortedSet<RepositoryObserver> listeners = mock(SortedSet.class);
+		when(daoFactory.createRepositoryObserverDao()).thenReturn(repositoryObserverDao);
+		when(repositoryObserverDao.observersOf(repository.getId())).thenReturn(listeners);
+
+		assertSame(listeners, context.repositoryListeners());
 	}
 
 	@Test
@@ -144,11 +154,5 @@ public class ProcessContextTest extends UnitTest {
 	public void shouldCreateAndRememberMetricResultDao() {
 		assertSame(metricResultDao, context.metricResultDao());
 		assertSame(metricResultDao, context.metricResultDao());
-	}
-
-	@Test
-	public void shouldCreateAndRememberRepositoryObserverDao() {
-		assertSame(repositoryObserverDao, context.repositoryObserverDao());
-		assertSame(repositoryObserverDao, context.repositoryObserverDao());
 	}
 }
