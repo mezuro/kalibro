@@ -108,7 +108,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	public RepositoryListenerDatabaseDao createRepositoryListenerDao() {
-		return new RepositoryListenerDatabaseDao();
+	public RepositorySubscriberDatabaseDao createRepositorySubscriberDao() {
+		return new RepositorySubscriberDatabaseDao();
 	}
 }

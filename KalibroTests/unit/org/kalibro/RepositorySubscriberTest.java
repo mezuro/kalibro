@@ -16,7 +16,7 @@ import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.processing.MailSender;
 import org.kalibro.core.processing.ProcessTask;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.RepositoryListenerDao;
+import org.kalibro.dao.RepositorySubscriberDao;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
@@ -24,9 +24,9 @@ import org.powermock.reflect.Whitebox;
 
 @RunWith(PowerMockRunner.class)
 @PrepareForTest({DaoFactory.class, MailSender.class})
-public class RepositoryListenerTest extends UnitTest {
+public class RepositorySubscriberTest extends UnitTest {
 
-	private RepositoryListener repositoryListener;
+	private RepositorySubscriber repositorySubscriber;
 	private Repository repository;
 	private Email email;
 
@@ -35,11 +35,11 @@ public class RepositoryListenerTest extends UnitTest {
 	private static final String REPOSITORY_NAME = "New repository";
 	private static final String REPOSITORY_COMPLETE_NAME = "My project - " + REPOSITORY_NAME;
 
-	private RepositoryListenerDao dao;
+	private RepositorySubscriberDao dao;
 
 	@Before
 	public void setUp() {
-		repositoryListener = new RepositoryListener();
+		repositorySubscriber = new RepositorySubscriber();
 		mockRepository();
 		mockDao();
 		mockMailSender();
@@ -53,10 +53,10 @@ public class RepositoryListenerTest extends UnitTest {
 	}
 
 	private void mockDao() {
-		dao = mock(RepositoryListenerDao.class);
+		dao = mock(RepositorySubscriberDao.class);
 		mockStatic(DaoFactory.class);
-		when(DaoFactory.getRepositoryListenerDao()).thenReturn(dao);
-		when(dao.save(repositoryListener, REPOSITORY_ID)).thenReturn(ID);
+		when(DaoFactory.getRepositorySubscriberDao()).thenReturn(dao);
+		when(dao.save(repositorySubscriber, REPOSITORY_ID)).thenReturn(ID);
 	}
 
 	private void mockMailSender() {
@@ -66,10 +66,10 @@ public class RepositoryListenerTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldGetAllRepositoryListeners() {
-		SortedSet<RepositoryListener> repositoryListeners = mock(SortedSet.class);
-		when(dao.all()).thenReturn(repositoryListeners);
-		assertSame(repositoryListeners, RepositoryListener.all());
+	public void shouldGetAllRepositorySubscribers() {
+		SortedSet<RepositorySubscriber> repositorySubscribers = mock(SortedSet.class);
+		when(dao.all()).thenReturn(repositorySubscribers);
+		assertSame(repositorySubscribers, RepositorySubscriber.all());
 	}
 
 	@Test
@@ -77,15 +77,15 @@ public class RepositoryListenerTest extends UnitTest {
 		assertSorted(withName("A"), withName("B"), withName("C"), withName("X"), withName("Y"), withName("Z"));
 	}
 
-	private RepositoryListener withName(String name) {
-		return new RepositoryListener(name, "Any email");
+	private RepositorySubscriber withName(String name) {
+		return new RepositorySubscriber(name, "Any email");
 	}
 
 	@Test
 	public void checkConstruction() {
-		assertFalse(repositoryListener.hasId());
-		assertEquals("New name", repositoryListener.getName());
-		assertEquals("New email", repositoryListener.getEmail());
+		assertFalse(repositorySubscriber.hasId());
+		assertEquals("New name", repositorySubscriber.getName());
+		assertEquals("New email", repositorySubscriber.getEmail());
 	}
 
 	@Test
@@ -94,61 +94,61 @@ public class RepositoryListenerTest extends UnitTest {
 
 			@Override
 			protected void perform() {
-				repositoryListener.save(null);
+				repositorySubscriber.save(null);
 			}
-		}).throwsException().withMessage("Listener is not related to any repository.");
+		}).throwsException().withMessage("Repository subscriber is not related to any repository.");
 	}
 
 	@Test
 	public void shouldRequireNameToSave() {
-		repositoryListener.setName(" ");
+		repositorySubscriber.setName(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				repositoryListener.save(repository);
+				repositorySubscriber.save(repository);
 			}
-		}).throwsException().withMessage("RepositoryListener requires name.");
+		}).throwsException().withMessage("Repository subscriber requires name.");
 	}
 
 	@Test
 	public void shouldRequireEmailToSave() {
-		repositoryListener.setEmail(" ");
+		repositorySubscriber.setEmail(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				repositoryListener.save(repository);
+				repositorySubscriber.save(repository);
 			}
-		}).throwsException().withMessage("RepositoryListener requires email.");
+		}).throwsException().withMessage("Repository subscriber requires email.");
 	}
 
 	@Test
 	public void shouldSaveIfRepositoryIsNotNull() {
-		assertFalse(repositoryListener.hasId());
-		repositoryListener.save(repository);
-		assertEquals(repositoryListener.getId(), ID);
+		assertFalse(repositorySubscriber.hasId());
+		repositorySubscriber.save(repository);
+		assertEquals(repositorySubscriber.getId(), ID);
 	}
 
 	@Test
 	public void shouldIgnoreDeleteIfIsNotSaved() {
-		repositoryListener.delete();
+		repositorySubscriber.delete();
 		verify(dao, never()).delete(any(Long.class));
 	}
 
 	@Test
 	public void shouldDeleteIfIsSaved() {
-		Whitebox.setInternalState(repositoryListener, "id", ID);
+		Whitebox.setInternalState(repositorySubscriber, "id", ID);
 
-		assertTrue(repositoryListener.hasId());
-		repositoryListener.delete();
-		assertFalse(repositoryListener.hasId());
+		assertTrue(repositorySubscriber.hasId());
+		repositorySubscriber.delete();
+		assertFalse(repositorySubscriber.hasId());
 		verify(dao).delete(ID);
 	}
 
 	@Test
 	public void shouldSendEmailWithErrorMessage() {
-		repositoryListener.taskFinished(mockReport(ProcessState.ERROR));
+		repositorySubscriber.taskFinished(mockReport(ProcessState.ERROR));
 		verify(email).setSubject(REPOSITORY_COMPLETE_NAME + " processing results");
 		verify(email).setText("Processing results in repository " + REPOSITORY_NAME +
 			" has resulted in error.\n\nThis is an automatic message." +
@@ -160,7 +160,7 @@ public class RepositoryListenerTest extends UnitTest {
 
 	@Test
 	public void shouldSendEmailWithSucessfulMessage() {
-		repositoryListener.taskFinished(mockReport(ProcessState.READY));
+		repositorySubscriber.taskFinished(mockReport(ProcessState.READY));
 		verify(email).setSubject(REPOSITORY_COMPLETE_NAME + " processing results");
 		verify(email).setText("Processing results in repository " + REPOSITORY_NAME +
 			" has finished successfully.\n\nThis is an automatic message." +

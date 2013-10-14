@@ -7,9 +7,9 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.tests.AcceptanceTest;
 
-public class RepositoryListenerAcceptanceTest extends AcceptanceTest {
+public class RepositorySubscriberAcceptanceTest extends AcceptanceTest {
 
-	private RepositoryListener repositoryListener;
+	private RepositorySubscriber repositorySubscriber;
 	private Repository repository;
 	private Project project;
 	private Configuration configuration;
@@ -23,8 +23,8 @@ public class RepositoryListenerAcceptanceTest extends AcceptanceTest {
 		project = new Project("Hello World");
 		project.setDescription("Sample project");
 		project.addRepository(repository);
-		repositoryListener = new RepositoryListener("RepositoryListenerAcceptanceTest name",
-			"RepositoryListenerAcceptanceTest email");
+		repositorySubscriber = new RepositorySubscriber("RepositorySubscriberAcceptanceTest name",
+			"RepositorySubscriberAcceptanceTest email");
 	}
 
 	@Theory
@@ -32,25 +32,25 @@ public class RepositoryListenerAcceptanceTest extends AcceptanceTest {
 		resetDatabase(databaseType);
 		assertNotSaved();
 
-		repositoryListener.save(repository);
+		repositorySubscriber.save(repository);
 		assertSaved();
 
-		repositoryListener.setName("Customized name");
-		assertFalse(RepositoryListener.all().first().deepEquals(repositoryListener));
+		repositorySubscriber.setName("Customized name");
+		assertFalse(RepositorySubscriber.all().first().deepEquals(repositorySubscriber));
 
-		repositoryListener.save(repository);
+		repositorySubscriber.save(repository);
 		assertSaved();
 
-		repositoryListener.delete();
+		repositorySubscriber.delete();
 		assertNotSaved();
 	}
 
 	private void assertNotSaved() {
-		assertTrue(RepositoryListener.all().isEmpty());
+		assertTrue(RepositorySubscriber.all().isEmpty());
 	}
 
 	private void assertSaved() {
-		assertDeepEquals(set(repositoryListener), RepositoryListener.all());
+		assertDeepEquals(set(repositorySubscriber), RepositorySubscriber.all());
 	}
 
 	@Theory
@@ -62,29 +62,29 @@ public class RepositoryListenerAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void nameShouldBeRequired() {
-		String name = repositoryListener.getName();
-		repositoryListener.setName(" ");
+		String name = repositorySubscriber.getName();
+		repositorySubscriber.setName(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				repositoryListener.save(repository);
+				repositorySubscriber.save(repository);
 			}
-		}).throwsException().withMessage("RepositoryListener requires name.");
-		repositoryListener.setName(name);
+		}).throwsException().withMessage("Repository subscriber requires name.");
+		repositorySubscriber.setName(name);
 	}
 
 	private void emailShouldBeRequired() {
-		String email = repositoryListener.getEmail();
-		repositoryListener.setEmail(" ");
+		String email = repositorySubscriber.getEmail();
+		repositorySubscriber.setEmail(" ");
 		assertThat(new VoidTask() {
 
 			@Override
 			protected void perform() {
-				repositoryListener.save(repository);
+				repositorySubscriber.save(repository);
 			}
-		}).throwsException().withMessage("RepositoryListener requires email.");
-		repositoryListener.setEmail(email);
+		}).throwsException().withMessage("Repository subscriber requires email.");
+		repositorySubscriber.setEmail(email);
 	}
 
 	private void repositoryShouldNotBeNull() {
@@ -92,9 +92,9 @@ public class RepositoryListenerAcceptanceTest extends AcceptanceTest {
 
 			@Override
 			protected void perform() {
-				repositoryListener.save(null);
+				repositorySubscriber.save(null);
 			}
-		}).throwsException().withMessage("RepositoryListener is not related to any repository.");
+		}).throwsException().withMessage("Repository subscriber is not related to any repository.");
 	}
 
 }

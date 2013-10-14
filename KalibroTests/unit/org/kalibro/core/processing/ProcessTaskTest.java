@@ -8,7 +8,7 @@ import org.junit.runner.RunWith;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.Repository;
-import org.kalibro.RepositoryListener;
+import org.kalibro.RepositorySubscriber;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
@@ -26,7 +26,7 @@ public class ProcessTaskTest extends UnitTest {
 	private Repository repository;
 	private Processing processing;
 	private ProcessContext context;
-	private RepositoryListener listener;
+	private RepositorySubscriber subscriber;
 	private ProcessingDatabaseDao processingDao;
 
 	private LoadingTask loadingTask;
@@ -49,14 +49,14 @@ public class ProcessTaskTest extends UnitTest {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
-		listener = mock(RepositoryListener.class);
+		subscriber = mock(RepositorySubscriber.class);
 		context = mock(ProcessContext.class);
 		whenNew(ProcessContext.class).withArguments(repository).thenReturn(context);
 		when(context.processingDao()).thenReturn(processingDao);
 		when(context.processing()).thenReturn(processing);
 		when(repository.getId()).thenReturn(new Random().nextLong());
 		when(processing.getState()).thenReturn(ProcessState.LOADING);
-		when(context.repositoryListeners()).thenReturn(sortedSet(listener));
+		when(context.repositorySubscribers()).thenReturn(sortedSet(subscriber));
 	}
 
 	private void mockSubtasks() throws Exception {
@@ -123,6 +123,6 @@ public class ProcessTaskTest extends UnitTest {
 
 	@Test
 	public void shouldAddListeners() {
-		verify(processTask.addListener(listener));
+		verify(processTask.addListener(subscriber));
 	}
 }

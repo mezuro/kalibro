@@ -27,7 +27,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 		new BuildingTask(context).addListener(this).execute();
 		new AggregatingTask(context).addListener(this).execute();
 		new CalculatingTask(context).addListener(this).execute();
-		addRepositoryListeners();
+		addRepositorySubscribers();
 	}
 
 	@Override
@@ -50,8 +50,8 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 		return context.processing().getState();
 	}
 
-	private void addRepositoryListeners() {
-		for (RepositoryListener listener : context.repositoryListeners())
+	private void addRepositorySubscribers() {
+		for (RepositorySubscriber listener : context.repositorySubscribers())
 			addListener(listener);
 	}
 }

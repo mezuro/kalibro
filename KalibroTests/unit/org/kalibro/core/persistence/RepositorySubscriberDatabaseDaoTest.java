@@ -6,23 +6,23 @@ import java.util.Random;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.RepositoryListener;
-import org.kalibro.core.persistence.record.RepositoryListenerRecord;
+import org.kalibro.RepositorySubscriber;
+import org.kalibro.core.persistence.record.RepositorySubscriberRecord;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(RepositoryListenerDatabaseDao.class)
-public class RepositoryListenerDatabaseDaoTest extends
-	DatabaseDaoTestCase<RepositoryListener, RepositoryListenerRecord, RepositoryListenerDatabaseDao> {
+@PrepareForTest(RepositorySubscriberDatabaseDao.class)
+public class RepositorySubscriberDatabaseDaoTest extends
+	DatabaseDaoTestCase<RepositorySubscriber, RepositorySubscriberRecord, RepositorySubscriberDatabaseDao> {
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long REPOSITORY_ID = new Random().nextLong();
 
 	@Test
-	public void shouldGetListenersOfRepository() {
-		assertDeepEquals(set(entity), dao.listenersOf(REPOSITORY_ID));
-		verify(dao).createRecordQuery("repositoryListener.repository = :repository");
+	public void shouldGetSubscribersOfRepository() {
+		assertDeepEquals(set(entity), dao.subscribersOf(REPOSITORY_ID));
+		verify(dao).createRecordQuery("repositorySubscriber.repository = :repository");
 		verify(query).setParameter("repository", REPOSITORY_ID);
 	}
 
@@ -31,7 +31,7 @@ public class RepositoryListenerDatabaseDaoTest extends
 		when(record.id()).thenReturn(ID);
 		assertEquals(ID, dao.save(entity, REPOSITORY_ID));
 
-		verifyNew(RepositoryListenerRecord.class).withArguments(entity, REPOSITORY_ID);
+		verifyNew(RepositorySubscriberRecord.class).withArguments(entity, REPOSITORY_ID);
 		verify(dao).save(record);
 	}
 

@@ -9,7 +9,7 @@ import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.RepositoryListenerDao;
+import org.kalibro.dao.RepositorySubscriberDao;
 import org.kalibro.tests.AcceptanceTest;
 import org.powermock.reflect.Whitebox;
 
@@ -99,26 +99,26 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 	}
 
 	@Theory
-	public void deleteRepositoryShouldCascadeToRepositoryListeners(SupportedDatabase databaseType) throws Exception {
+	public void deleteRepositoryShouldCascadeToRepositorySubscribers(SupportedDatabase databaseType) throws Exception {
 		resetDatabase(databaseType);
 		repository.save();
-		RepositoryListener repositoryListener = new RepositoryListener();
-		repositoryListener.save(repository);
-		assertEquals(repositoryListenersOf(repository), allRepositoryListeners());
+		RepositorySubscriber repositorySubscriber = new RepositorySubscriber();
+		repositorySubscriber.save(repository);
+		assertEquals(repositorySubscribersOf(repository), allRepositorySubscribers());
 
 		repository.delete();
-		assertTrue(allRepositoryListeners().isEmpty());
+		assertTrue(allRepositorySubscribers().isEmpty());
 	}
 
-	private Set<RepositoryListener> allRepositoryListeners() {
-		RepositoryListenerDao repositoryListenerDao = DaoFactory.getRepositoryListenerDao();
-		return repositoryListenerDao.all();
+	private Set<RepositorySubscriber> allRepositorySubscribers() {
+		RepositorySubscriberDao repositorySubscriberDao = DaoFactory.getRepositorySubscriberDao();
+		return repositorySubscriberDao.all();
 	}
 
-	private Set<RepositoryListener> repositoryListenersOf(Repository r) throws Exception {
-		RepositoryListenerDao repositoryListenerDao = DaoFactory.getRepositoryListenerDao();
-		Set<RepositoryListener> repositoryListenersOf = Whitebox.invokeMethod(repositoryListenerDao, "listenersOf",
-			r.getId());
-		return repositoryListenersOf;
+	private Set<RepositorySubscriber> repositorySubscribersOf(Repository r) throws Exception {
+		RepositorySubscriberDao repositorySubscriberDao = DaoFactory.getRepositorySubscriberDao();
+		Set<RepositorySubscriber> repositorySubscribersOf =
+			Whitebox.invokeMethod(repositorySubscriberDao, "repositorySubscribersOf", r.getId());
+		return repositorySubscribersOf;
 	}
 }

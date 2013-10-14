@@ -103,13 +103,13 @@ public class ProcessContextTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldCreateRepositoryListeners() {
-		RepositoryListenerDatabaseDao repositoryListenerDao = mock(RepositoryListenerDatabaseDao.class);
-		SortedSet<RepositoryListener> listeners = mock(SortedSet.class);
-		when(daoFactory.createRepositoryListenerDao()).thenReturn(repositoryListenerDao);
-		when(repositoryListenerDao.listenersOf(repository.getId())).thenReturn(listeners);
+	public void shouldCreateRepositorySubscribers() {
+		RepositorySubscriberDatabaseDao repositorySubscriberDao = mock(RepositorySubscriberDatabaseDao.class);
+		SortedSet<RepositorySubscriber> subscribers = mock(SortedSet.class);
+		when(daoFactory.createRepositorySubscriberDao()).thenReturn(repositorySubscriberDao);
+		when(repositorySubscriberDao.subscribersOf(repository.getId())).thenReturn(subscribers);
 
-		assertSame(listeners, context.repositoryListeners());
+		assertSame(subscribers, context.repositorySubscribers());
 	}
 
 	@Test

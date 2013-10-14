@@ -1,6 +1,6 @@
 package org.kalibro.core.persistence.record;
 
-public class RepositoryListenerRecordTest extends RecordTest {
+public class RepositorySubscriberRecordTest extends RecordTest {
 
 	@Override
 	protected void verifyColumns() {

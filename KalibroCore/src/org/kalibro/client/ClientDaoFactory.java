@@ -71,7 +71,7 @@ public class ClientDaoFactory extends DaoFactory {
 	}
 
 	@Override
-	protected RepositoryListenerDao createRepositoryListenerDao() {
-		return new RepositoryListenerClientDao(serviceAddress);
+	protected RepositorySubscriberDao createRepositorySubscriberDao() {
+		return new RepositorySubscriberClientDao(serviceAddress);
 	}
 }
