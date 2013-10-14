@@ -27,6 +27,7 @@ public class ProcessTaskTest extends UnitTest {
 	private ProcessContext context;
 	private ProcessingDatabaseDao processingDao;
 
+	private PreparingTask preparingTask;
 	private LoadingTask loadingTask;
 	private CollectingTask collectingTask;
 	private BuildingTask buildingTask;
@@ -56,6 +57,7 @@ public class ProcessTaskTest extends UnitTest {
 	}
 
 	private void mockSubtasks() throws Exception {
+		preparingTask = mockSubtask(PreparingTask.class);
 		loadingTask = mockSubtask(LoadingTask.class);
 		collectingTask = mockSubtask(CollectingTask.class);
 		buildingTask = mockSubtask(BuildingTask.class);
@@ -72,7 +74,10 @@ public class ProcessTaskTest extends UnitTest {
 
 	@Test
 	public void shouldExecuteSubtasksListeningToThem() {
-		InOrder order = Mockito.inOrder(loadingTask, collectingTask, buildingTask, aggregatingTask, calculatingTask);
+		InOrder order = Mockito.inOrder(preparingTask, loadingTask, collectingTask, buildingTask, aggregatingTask,
+			calculatingTask);
+		order.verify(preparingTask).addListener(processTask);
+		order.verify(preparingTask).execute();
 		order.verify(loadingTask).addListener(processTask);
 		order.verify(loadingTask).execute();
 		order.verify(collectingTask).addListener(processTask);

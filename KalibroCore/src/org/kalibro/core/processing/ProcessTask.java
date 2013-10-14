@@ -25,6 +25,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 	@Override
 	protected void perform() throws Exception {
 		context = new ProcessContext(repository);
+		new PreparingTask(context).addListener(this).execute();
 		new LoadingTask(context).addListener(this).execute();
 		new CollectingTask(context).addListener(this).executeInBackground();
 		new BuildingTask(context).addListener(this).execute();

@@ -15,6 +15,7 @@ public class ProcessStateTest extends EnumerationTest<ProcessState> {
 
 	@Test
 	public void shouldAnswerIfIsTemporary() {
+		assertTrue(PREPARING.isTemporary());
 		assertTrue(LOADING.isTemporary());
 		assertTrue(COLLECTING.isTemporary());
 		assertTrue(BUILDING.isTemporary());
@@ -27,6 +28,7 @@ public class ProcessStateTest extends EnumerationTest<ProcessState> {
 	@Test
 	public void shouldProvideExplainingMessage() {
 		String projectName = "HelloWorld-1.0";
+		assertEquals("Preparing context for HelloWorld-1.0", PREPARING.getMessage(projectName));
 		assertEquals("Loading HelloWorld-1.0 from repository", LOADING.getMessage(projectName));
 		assertEquals("Collecting metric values for HelloWorld-1.0", COLLECTING.getMessage(projectName));
 		assertEquals("Building source tree of HelloWorld-1.0", BUILDING.getMessage(projectName));
@@ -39,12 +41,12 @@ public class ProcessStateTest extends EnumerationTest<ProcessState> {
 
 	@Test
 	public void shouldGetNextState() {
+		assertEquals(LOADING, PREPARING.nextState());
 		assertEquals(COLLECTING, LOADING.nextState());
 		assertEquals(BUILDING, COLLECTING.nextState());
 		assertEquals(AGGREGATING, BUILDING.nextState());
 		assertEquals(CALCULATING, AGGREGATING.nextState());
 		assertEquals(READY, CALCULATING.nextState());
 		assertEquals(ERROR, READY.nextState());
-		assertEquals(LOADING, ERROR.nextState());
 	}
 }
