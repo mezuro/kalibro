@@ -40,6 +40,7 @@ public class ProcessTaskTest extends UnitTest {
 	public void setUp() throws Exception {
 		mockContext();
 		processTask = new ProcessTask(repository);
+		verifyNew(ProcessContext.class).withArguments(repository);
 		mockSubtasks();
 		processTask.perform();
 	}
@@ -48,11 +49,11 @@ public class ProcessTaskTest extends UnitTest {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
-		context = mock(ProcessContext.class);
+		context = new ProcessContext(repository);
 
 		whenNew(ProcessContext.class).withArguments(repository).thenReturn(context);
-		when(context.processingDao()).thenReturn(processingDao);
-		when(context.processing()).thenReturn(processing);
+		context.processingDao = processingDao;
+		context.processing = processing;
 		when(repository.getId()).thenReturn(new Random().nextLong());
 	}
 

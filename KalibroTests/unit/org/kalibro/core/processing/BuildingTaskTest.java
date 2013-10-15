@@ -32,30 +32,30 @@ public class BuildingTaskTest extends UnitTest {
 
 	@Before
 	public void setUp() {
-		ProcessContext context = mock(ProcessContext.class);
-		mockEntities(context);
+		ProcessContext context = mockContext();
 		mockDaosAndProducer(context);
 		buildingTask = new BuildingTask(context);
 	}
 
-	private void mockEntities(ProcessContext context) {
-		configuration = loadFixture("sc", Configuration.class);
+	private ProcessContext mockContext() {
 		Processing processing = mock(Processing.class);
 		Repository repository = mock(Repository.class);
+		ProcessContext context = new ProcessContext(repository);
+		configuration = loadFixture("sc", Configuration.class);
 		when(processing.getId()).thenReturn(PROCESSING_ID);
 		when(repository.getName()).thenReturn(REPOSITORY_NAME);
-		when(context.repository()).thenReturn(repository);
-		when(context.processing()).thenReturn(processing);
-		when(context.configuration()).thenReturn(configuration);
+		context.processing = processing;
+		context.configuration = configuration;
+		return context;
 	}
 
 	private void mockDaosAndProducer(ProcessContext context) {
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
 		metricResultDao = mock(MetricResultDatabaseDao.class);
 		resultProducer = new Producer<NativeModuleResult>();
-		when(context.moduleResultDao()).thenReturn(moduleResultDao);
-		when(context.metricResultDao()).thenReturn(metricResultDao);
-		when(context.resultProducer()).thenReturn(resultProducer);
+		context.moduleResultDao = moduleResultDao;
+		context.metricResultDao = metricResultDao;
+		context.resultProducer = resultProducer;
 	}
 
 	@Test

@@ -24,10 +24,9 @@ class LoadingTask extends ProcessSubtask {
 
 	@Override
 	protected void perform() throws Exception {
-		File codeDirectory = context.codeDirectory();
-		prepare(codeDirectory.getParentFile());
-		prepare(codeDirectory);
-		createLoader().load(context.repository().getAddress(), codeDirectory);
+		prepare(context.codeDirectory.getParentFile());
+		prepare(context.codeDirectory);
+		createLoader().load(context.repository.getAddress(), context.codeDirectory);
 	}
 
 	private File prepare(File directory) {
@@ -69,7 +68,7 @@ class LoadingTask extends ProcessSubtask {
 	}
 
 	private Loader createLoader() throws Exception {
-		RepositoryType repositoryType = context.repository().getType();
+		RepositoryType repositoryType = context.repository.getType();
 		String loaderName = Identifier.fromConstant(repositoryType.name()).asClassName() + "Loader";
 		return (Loader) Class.forName("org.kalibro.core.loaders." + loaderName).newInstance();
 	}

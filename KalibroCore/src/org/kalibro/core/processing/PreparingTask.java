@@ -23,12 +23,12 @@ class PreparingTask extends ProcessSubtask {
 	}
 
 	private void establishCodeDirectory() {
-		Repository repository = context.repository();
+		Repository repository = context.repository;
 		Project project = repository.getProject();
 		File loadDirectory = KalibroSettings.load().getServerSettings().getLoadDirectory();
 		File projectDirectory = newFile(loadDirectory, project.getName(), project.getId());
 		File repositoryDirectory = newFile(projectDirectory, repository.getName(), repository.getId());
-		context.setCodeDirectory(repositoryDirectory);
+		context.codeDirectory = repositoryDirectory;
 	}
 
 	private File newFile(File parent, String name, Long id) {
@@ -36,18 +36,18 @@ class PreparingTask extends ProcessSubtask {
 	}
 
 	private void createResultProducer() {
-		context.setProducer(new Producer<NativeModuleResult>());
+		context.resultProducer = new Producer<NativeModuleResult>();
 	}
 
 	private void prepareDatabase() {
 		DatabaseDaoFactory daoFactory = new DatabaseDaoFactory();
 		ProcessingDatabaseDao processingDao = daoFactory.createProcessingDao();
-		Processing processing = processingDao.createProcessingFor(context.repository());
+		Processing processing = processingDao.createProcessingFor(context.repository);
 		ConfigurationDatabaseDao configurationDao = daoFactory.createConfigurationDao();
-		context.setProcessing(processing);
-		context.setProcessingDao(processingDao);
-		context.setModuleResultDao(daoFactory.createModuleResultDao());
-		context.setMetricResultDao(daoFactory.createMetricResultDao());
-		context.setConfigurationSnapshot(configurationDao.snapshotFor(processing.getId()));
+		context.processing = processing;
+		context.processingDao = processingDao;
+		context.moduleResultDao = daoFactory.createModuleResultDao();
+		context.metricResultDao = daoFactory.createMetricResultDao();
+		context.configuration = configurationDao.snapshotFor(processing.getId());
 	}
 }

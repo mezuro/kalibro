@@ -7,7 +7,10 @@ import java.util.Random;
 import java.util.Set;
 
 import org.junit.Test;
-import org.kalibro.*;
+import org.kalibro.BaseTool;
+import org.kalibro.Configuration;
+import org.kalibro.NativeMetric;
+import org.kalibro.NativeModuleResult;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.concurrent.Writer;
 import org.kalibro.tests.UnitTest;
@@ -41,15 +44,13 @@ public class CollectingTaskTest extends UnitTest {
 	}
 
 	private ProcessContext mockContext() {
-		Repository repository = mock(Repository.class);
 		Configuration configuration = mock(Configuration.class);
-		ProcessContext processContext = mock(ProcessContext.class);
-		when(processContext.codeDirectory()).thenReturn(codeDirectory);
-		when(processContext.repository()).thenReturn(repository);
-		when(repository.getConfiguration()).thenReturn(configuration);
+		ProcessContext context = new ProcessContext(null);
+		context.codeDirectory = codeDirectory;
+		context.configuration = configuration;
+		context.resultProducer = resultProducer;
 		when(configuration.getNativeMetrics()).thenReturn(wantedMetrics);
-		when(processContext.resultProducer()).thenReturn(resultProducer);
 		when(resultProducer.createWriter()).thenReturn(resultWriter);
-		return processContext;
+		return context;
 	}
 }

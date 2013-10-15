@@ -1,5 +1,7 @@
 package org.kalibro.core.processing;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.util.Random;
 
@@ -7,7 +9,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.kalibro.*;
-import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.*;
 import org.kalibro.tests.UnitTest;
 import org.powermock.core.classloader.annotations.PrepareOnlyThisForTest;
@@ -34,8 +35,7 @@ public class PreparingTaskTest extends UnitTest {
 		mockRepository();
 		mockLoadDirectory();
 		mockDaosAndProcessing();
-		context = mock(ProcessContext.class);
-		when(context.repository()).thenReturn(repository);
+		context = new ProcessContext(repository);
 		new PreparingTask(context).perform();
 	}
 
@@ -83,38 +83,38 @@ public class PreparingTaskTest extends UnitTest {
 
 	@Test
 	public void shouldCreateProcessing() {
-		verify(context).setProcessing(processing);
+		assertSame(processing, context.processing);
 	}
 
 	@Test
 	public void shouldCreateConfigurationSnapshot() {
-		verify(context).setConfigurationSnapshot(configuration);
+		assertSame(configuration, context.configuration);
 	}
 
 	@Test
 	public void shouldEstablishCodeDirectory() {
 		File projectDirectory = new File(loadDirectory, "MyProjectName-" + project.getId());
 		File repositoryDirectory = new File(projectDirectory, "MyRepositoryName-" + repository.getId());
-		verify(context).setCodeDirectory(repositoryDirectory);
+		assertEquals(repositoryDirectory, context.codeDirectory);
 	}
 
 	@Test
 	public void shouldCreateResultProducer() {
-		verify(context).setProducer(any(Producer.class));
+		assertNotNull(context.resultProducer);
 	}
 
 	@Test
 	public void shouldCreateProcessingDao() {
-		verify(context).setProcessingDao(processingDao);
+		assertSame(processingDao, context.processingDao);
 	}
 
 	@Test
 	public void shouldCreateModuleResultDao() {
-		verify(context).setModuleResultDao(moduleResultDao);
+		assertSame(moduleResultDao, context.moduleResultDao);
 	}
 
 	@Test
 	public void shouldCreateMetricResultDao() {
-		verify(context).setMetricResultDao(metricResultDao);
+		assertSame(metricResultDao, context.metricResultDao);
 	}
 }

@@ -16,24 +16,15 @@ import org.powermock.modules.junit4.PowerMockRunner;
 @PrepareForTest(ProcessSubtask.class)
 public class ProcessSubtaskTest extends UnitTest {
 
-	private Repository repository;
-	private Processing processing;
 	private ProcessContext context;
 
 	private ProcessSubtask subtask;
 
 	@Before
 	public void setUp() {
-		mockContext();
+		context = new ProcessContext(mock(Repository.class));
+		context.processing = mock(Processing.class);
 		subtask = new ReadyTask(context);
-	}
-
-	private void mockContext() {
-		repository = mock(Repository.class);
-		processing = mock(Processing.class);
-		context = mock(ProcessContext.class);
-		when(context.repository()).thenReturn(repository);
-		when(context.processing()).thenReturn(processing);
 	}
 
 	@Test
@@ -44,9 +35,9 @@ public class ProcessSubtaskTest extends UnitTest {
 	@Test
 	public void toStringShouldBeStateMessage() {
 		String repositoryName = "ProcessingTest repository complete name";
-		when(repository.getCompleteName()).thenReturn(repositoryName);
+		when(context.repository.getCompleteName()).thenReturn(repositoryName);
 		for (ProcessState state : ProcessState.values()) {
-			when(processing.getState()).thenReturn(state);
+			when(context.processing.getState()).thenReturn(state);
 			assertEquals(state.getMessage(repositoryName), "" + subtask);
 		}
 	}

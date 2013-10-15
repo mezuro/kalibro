@@ -1,11 +1,7 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Configuration;
 import org.kalibro.MetricResult;
 import org.kalibro.ModuleResult;
-import org.kalibro.Processing;
-import org.kalibro.core.persistence.MetricResultDatabaseDao;
-import org.kalibro.core.persistence.ModuleResultDatabaseDao;
 
 /**
  * Add compound metric results and set grades on {@link ModuleResult}s.
@@ -14,22 +10,13 @@ import org.kalibro.core.persistence.ModuleResultDatabaseDao;
  */
 class CalculatingTask extends ProcessSubtask {
 
-	private Processing processing;
-	private Configuration configuration;
-	private ModuleResultDatabaseDao moduleResultDao;
-	private MetricResultDatabaseDao metricResultDao;
-
 	CalculatingTask(ProcessContext context) {
 		super(context);
 	}
 
 	@Override
 	protected void perform() throws Throwable {
-		processing = context.processing();
-		configuration = context.configuration();
-		moduleResultDao = context.moduleResultDao();
-		metricResultDao = context.metricResultDao();
-		for (ModuleResult moduleResult : moduleResultDao.getResultsOfProcessing(processing.getId()))
+		for (ModuleResult moduleResult : context.moduleResultDao.getResultsOfProcessing(context.processing.getId()))
 			configure(moduleResult);
 	}
 
@@ -37,13 +24,13 @@ class CalculatingTask extends ProcessSubtask {
 		saveCompoundResults(moduleResult);
 		updateGrade(moduleResult);
 		if (!moduleResult.hasParent())
-			processing.setResultsRoot(moduleResult);
+			context.processing.setResultsRoot(moduleResult);
 	}
 
 	private void saveCompoundResults(ModuleResult moduleResult) {
-		CompoundResultCalculator calculator = new CompoundResultCalculator(moduleResult, configuration);
+		CompoundResultCalculator calculator = new CompoundResultCalculator(moduleResult, context.configuration);
 		for (MetricResult compoundResult : calculator.calculateCompoundResults())
-			moduleResult.addMetricResult(metricResultDao.save(compoundResult, moduleResult.getId()));
+			moduleResult.addMetricResult(context.metricResultDao.save(compoundResult, moduleResult.getId()));
 	}
 
 	private void updateGrade(ModuleResult moduleResult) {
@@ -56,6 +43,6 @@ class CalculatingTask extends ProcessSubtask {
 				weightSum += weight;
 			}
 		moduleResult.setGrade(gradeSum / weightSum);
-		moduleResultDao.save(moduleResult, processing.getId());
+		context.moduleResultDao.save(moduleResult, context.processing.getId());
 	}
 }
