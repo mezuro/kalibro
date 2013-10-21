@@ -32,7 +32,7 @@ public class CalculatingTaskTest extends UnitTest {
 
 	@Before
 	public void setUp() throws Exception {
-		ProcessContext context = mock(ProcessContext.class);
+		ProcessContext context = new ProcessContext(null);
 		mockEntities(context);
 		mockDatabaseDaos(context);
 		mockCompoundCalculator(context);
@@ -45,21 +45,21 @@ public class CalculatingTaskTest extends UnitTest {
 		moduleResult = mock(ModuleResult.class);
 		when(processing.getId()).thenReturn(random.nextLong());
 		when(moduleResult.getId()).thenReturn(random.nextLong());
-		when(context.processing()).thenReturn(processing);
+		context.processing = processing;
 	}
 
 	private void mockDatabaseDaos(ProcessContext context) {
 		metricResultDao = mock(MetricResultDatabaseDao.class);
 		moduleResultDao = mock(ModuleResultDatabaseDao.class);
-		when(context.moduleResultDao()).thenReturn(moduleResultDao);
-		when(context.metricResultDao()).thenReturn(metricResultDao);
+		context.moduleResultDao = moduleResultDao;
+		context.metricResultDao = metricResultDao;
 		when(moduleResultDao.getResultsOfProcessing(processing.getId())).thenReturn(list(moduleResult));
 	}
 
 	private void mockCompoundCalculator(ProcessContext context) throws Exception {
 		Configuration configuration = mock(Configuration.class);
 		compoundCalculator = mock(CompoundResultCalculator.class);
-		when(context.configuration()).thenReturn(configuration);
+		context.configuration = configuration;
 		whenNew(CompoundResultCalculator.class).withArguments(moduleResult, configuration)
 			.thenReturn(compoundCalculator);
 	}

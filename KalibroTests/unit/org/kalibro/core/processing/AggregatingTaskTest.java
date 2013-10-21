@@ -22,9 +22,9 @@ public class AggregatingTaskTest extends UnitTest {
 	}
 
 	private ProcessContext mockContext() {
-		ProcessContext context = mock(ProcessContext.class);
-		when(context.processing()).thenReturn(processing);
-		when(context.moduleResultDao()).thenReturn(moduleResultDao);
+		ProcessContext context = new ProcessContext(null);
+		context.processing = processing;
+		context.moduleResultDao = moduleResultDao;
 		when(processing.getId()).thenReturn(new Random().nextLong());
 		return context;
 	}

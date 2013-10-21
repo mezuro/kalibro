@@ -8,7 +8,6 @@ import org.junit.runner.RunWith;
 import org.kalibro.ProcessState;
 import org.kalibro.Processing;
 import org.kalibro.Repository;
-import org.kalibro.RepositorySubscriber;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
@@ -26,9 +25,9 @@ public class ProcessTaskTest extends UnitTest {
 	private Repository repository;
 	private Processing processing;
 	private ProcessContext context;
-	private RepositorySubscriber subscriber;
 	private ProcessingDatabaseDao processingDao;
 
+	private PreparingTask preparingTask;
 	private LoadingTask loadingTask;
 	private CollectingTask collectingTask;
 	private BuildingTask buildingTask;
@@ -40,7 +39,8 @@ public class ProcessTaskTest extends UnitTest {
 	@Before
 	public void setUp() throws Exception {
 		mockContext();
-		processTask = spy(new ProcessTask(repository));
+		processTask = new ProcessTask(repository);
+		verifyNew(ProcessContext.class).withArguments(repository);
 		mockSubtasks();
 		processTask.perform();
 	}
@@ -49,17 +49,17 @@ public class ProcessTaskTest extends UnitTest {
 		repository = mock(Repository.class);
 		processing = mock(Processing.class);
 		processingDao = mock(ProcessingDatabaseDao.class);
-		subscriber = mock(RepositorySubscriber.class);
-		context = mock(ProcessContext.class);
+		context = new ProcessContext(repository);
+
 		whenNew(ProcessContext.class).withArguments(repository).thenReturn(context);
-		when(context.processingDao()).thenReturn(processingDao);
-		when(context.processing()).thenReturn(processing);
+		context.processingDao = processingDao;
+		context.processing = processing;
 		when(repository.getId()).thenReturn(new Random().nextLong());
 		when(processing.getState()).thenReturn(ProcessState.LOADING);
-		when(context.repositorySubscribers()).thenReturn(sortedSet(subscriber));
 	}
 
 	private void mockSubtasks() throws Exception {
+		preparingTask = mockSubtask(PreparingTask.class);
 		loadingTask = mockSubtask(LoadingTask.class);
 		collectingTask = mockSubtask(CollectingTask.class);
 		buildingTask = mockSubtask(BuildingTask.class);
@@ -76,7 +76,10 @@ public class ProcessTaskTest extends UnitTest {
 
 	@Test
 	public void shouldExecuteSubtasksListeningToThem() {
-		InOrder order = Mockito.inOrder(loadingTask, collectingTask, buildingTask, aggregatingTask, calculatingTask);
+		InOrder order = Mockito.inOrder(preparingTask, loadingTask, collectingTask, buildingTask, aggregatingTask,
+			calculatingTask);
+		order.verify(preparingTask).addListener(processTask);
+		order.verify(preparingTask).execute();
 		order.verify(loadingTask).addListener(processTask);
 		order.verify(loadingTask).execute();
 		order.verify(collectingTask).addListener(processTask);
@@ -119,10 +122,5 @@ public class ProcessTaskTest extends UnitTest {
 		when(report.getError()).thenReturn(error);
 		when(report.getTask()).thenReturn(subtask);
 		return report;
-	}
-
-	@Test
-	public void shouldAddListeners() {
-		verify(processTask.addListener(subscriber));
 	}
 }

@@ -9,6 +9,7 @@ import org.kalibro.core.Identifier;
  */
 public enum ProcessState {
 
+	PREPARING("Preparing context for $name"),
 	LOADING("Loading $name from repository"),
 	COLLECTING("Collecting metric values for $name"),
 	BUILDING("Building source tree of $name"),

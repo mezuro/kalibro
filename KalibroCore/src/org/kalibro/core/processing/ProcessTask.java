@@ -12,16 +12,15 @@ import org.kalibro.core.concurrent.VoidTask;
  */
 public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
-	private Repository repository;
 	private ProcessContext context;
 
 	public ProcessTask(Repository repository) {
-		this.repository = repository;
+		context = new ProcessContext(repository);
 	}
 
 	@Override
-	protected void perform() {
-		context = new ProcessContext(repository);
+	protected void perform() throws Exception {
+		new PreparingTask(context).addListener(this).execute();
 		new LoadingTask(context).addListener(this).execute();
 		new CollectingTask(context).addListener(this).executeInBackground();
 		new BuildingTask(context).addListener(this).execute();
@@ -32,22 +31,22 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
 	@Override
 	public synchronized void taskFinished(TaskReport<Void> report) {
-		Processing processing = context.processing();
+		Processing processing = context.processing;
 		ProcessState subtaskState = ((ProcessSubtask) report.getTask()).getState();
 		processing.setStateTime(subtaskState, report.getExecutionTime());
 		if (report.isTaskDone())
 			processing.setState(subtaskState.nextState());
 		else
 			processing.setError(report.getError());
-		context.processingDao().save(processing, repository.getId());
+		context.processingDao.save(processing, context.repository.getId());
 	}
 
 	public Repository getRepository() {
-		return repository;
+		return context.repository;
 	}
 
 	public ProcessState getProcessState() {
-		return context.processing().getState();
+		return context.processing.getState();
 	}
 
 	private void addRepositorySubscribers() {

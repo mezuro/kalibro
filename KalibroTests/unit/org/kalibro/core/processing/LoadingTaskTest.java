@@ -38,9 +38,8 @@ public class LoadingTaskTest extends UnitTest {
 	}
 
 	private void mockRepository() {
-		context = mock(ProcessContext.class);
 		repository = mock(Repository.class);
-		when(context.repository()).thenReturn(repository);
+		context = new ProcessContext(repository);
 		when(repository.getAddress()).thenReturn("LoadingTask repository address");
 	}
 
@@ -48,7 +47,7 @@ public class LoadingTaskTest extends UnitTest {
 		loadDirectory = mock(File.class);
 		projectDirectory = mock(File.class);
 		repositoryDirectory = mock(File.class);
-		when(context.codeDirectory()).thenReturn(repositoryDirectory);
+		context.codeDirectory = repositoryDirectory;
 		when(repositoryDirectory.getName()).thenReturn("RepositoryName-1");
 		when(repositoryDirectory.getParentFile()).thenReturn(projectDirectory);
 		when(projectDirectory.exists()).thenReturn(true);

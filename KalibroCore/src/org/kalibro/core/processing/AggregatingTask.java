@@ -13,6 +13,6 @@ class AggregatingTask extends ProcessSubtask {
 
 	@Override
 	protected void perform() {
-		context.moduleResultDao().aggregateResults(context.processing().getId());
+		context.moduleResultDao.aggregateResults(context.processing.getId());
 	}
 }

@@ -20,10 +20,9 @@ class CollectingTask extends ProcessSubtask {
 
 	@Override
 	protected void perform() throws Exception {
-		File codeDirectory = context.codeDirectory();
-		Configuration configuration = context.repository().getConfiguration();
-		Producer<NativeModuleResult> resultProducer = context.resultProducer();
-		Map<BaseTool, Set<NativeMetric>> wantedMetrics = configuration.getNativeMetrics();
+		File codeDirectory = context.codeDirectory;
+		Producer<NativeModuleResult> resultProducer = context.resultProducer;
+		Map<BaseTool, Set<NativeMetric>> wantedMetrics = context.configuration.getNativeMetrics();
 		for (BaseTool baseTool : wantedMetrics.keySet())
 			baseTool.collectMetrics(codeDirectory, wantedMetrics.get(baseTool), resultProducer.createWriter());
 	}
