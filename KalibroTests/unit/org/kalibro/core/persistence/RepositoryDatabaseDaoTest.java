@@ -7,11 +7,8 @@ import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 import org.junit.Test;
-import org.kalibro.Configuration;
-import org.kalibro.MetricConfiguration;
 import org.kalibro.Repository;
 import org.kalibro.RepositoryType;
-import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.record.RepositoryRecord;
 import org.kalibro.core.processing.ProcessTask;
 import org.powermock.core.classloader.annotations.PrepareForTest;
@@ -22,15 +19,6 @@ public class RepositoryDatabaseDaoTest extends
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long PROJECT_ID = new Random().nextLong();
-
-	private Configuration configuration;
-
-	@Override
-	public void setUp() throws Exception {
-		super.setUp();
-		configuration = loadFixture("sc", Configuration.class);
-		when(entity.getConfiguration()).thenReturn(configuration);
-	}
 
 	@Test
 	public void shouldGetSupportedRepositoryTypes() {
@@ -79,23 +67,6 @@ public class RepositoryDatabaseDaoTest extends
 		dao.process(ID);
 		dao.cancelProcessing(ID);
 		verify(task).cancelExecution();
-	}
-
-	@Test
-	public void shouldNotProcessIfConfigurationHasNoNativeMetrics() throws Exception {
-		for (MetricConfiguration metricConfiguration : configuration.getMetricConfigurations())
-			if (!metricConfiguration.getMetric().isCompound())
-				configuration.removeMetricConfiguration(metricConfiguration);
-		mockProcessTask(0);
-		assertThat(new VoidTask() {
-
-			@Override
-			protected void perform() {
-				dao.process(ID);
-			}
-		}).throwsException().withMessage("Could not process repository '" + entity +
-			"' because its configuration has no native metrics.");
-		verifyNew(ProcessTask.class, never());
 	}
 
 	private ProcessTask mockProcessTask(Integer period) throws Exception {

@@ -3,7 +3,10 @@ package org.kalibro.core.processing;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
+import java.util.Set;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -79,6 +82,14 @@ public class PreparingTaskTest extends UnitTest {
 		when(processingDao.createProcessingFor(repository)).thenReturn(processing);
 		when(processing.getId()).thenReturn(new Random().nextLong());
 		when(configurationDao.snapshotFor(processing.getId())).thenReturn(configuration);
+		mockNativeMetrics();
+	}
+
+	private void mockNativeMetrics() {
+		Map<BaseTool, Set<NativeMetric>> nativeMetrics = mock(Map.class);
+		when(repository.getConfiguration()).thenReturn(configuration);
+		when(configuration.getNativeMetrics()).thenReturn(nativeMetrics);
+		when(nativeMetrics.isEmpty()).thenReturn(false);
 	}
 
 	@Test
@@ -116,5 +127,13 @@ public class PreparingTaskTest extends UnitTest {
 	@Test
 	public void shouldCreateMetricResultDao() {
 		assertSame(metricResultDao, context.metricResultDao);
+	}
+
+	@Test
+	public void shouldNotProcessIfConfigurationHasNoNativeMetrics() {
+		when(configuration.getNativeMetrics()).thenReturn(new HashMap<BaseTool, Set<NativeMetric>>());
+		assertThat(new PreparingTask(context)).throwsException().withMessage(
+			"Could not process repository '" + repository.getCompleteName() +
+				"' because its configuration has no native metrics.");
 	}
 }

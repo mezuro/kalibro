@@ -49,5 +49,14 @@ class PreparingTask extends ProcessSubtask {
 		context.moduleResultDao = daoFactory.createModuleResultDao();
 		context.metricResultDao = daoFactory.createMetricResultDao();
 		context.configuration = configurationDao.snapshotFor(processing.getId());
+		validateConfiguration();
+	}
+
+	private void validateConfiguration() {
+		Configuration configuration = context.repository.getConfiguration();
+		String errorMessage = "Could not process repository '" + context.repository.getCompleteName() +
+			"' because its configuration has no native metrics.";
+		if (configuration.getNativeMetrics().isEmpty())
+			throw new KalibroException(errorMessage);
 	}
 }
