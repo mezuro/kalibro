@@ -5,10 +5,10 @@ import java.util.Random;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.kalibro.ProcessState;
-import org.kalibro.Processing;
-import org.kalibro.Repository;
+import org.kalibro.*;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.TaskReport;
+import org.kalibro.core.concurrent.VoidTask;
 import org.kalibro.core.persistence.ProcessingDatabaseDao;
 import org.kalibro.tests.UnitTest;
 import org.mockito.InOrder;
@@ -17,7 +17,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(ProcessTask.class)
+@PrepareForTest({KalibroSettings.class, ProcessTask.class})
 public class ProcessTaskTest extends UnitTest {
 
 	private static final Long EXECUTION_TIME = new Random().nextLong();
@@ -114,12 +114,41 @@ public class ProcessTaskTest extends UnitTest {
 		order.verify(processingDao).save(processing, repository.getId());
 	}
 
-	private TaskReport<Void> report(ProcessSubtask subtask, Throwable error) {
+	@Test
+	public void shouldExecuteNotificationCommand() throws Exception {
+		CommandTask commandTask = mockSettings("some command");
+
+		processTask.taskFinished(report(processTask, null));
+		verifyNew(CommandTask.class).withArguments("some command");
+		verify(commandTask).execute();
+	}
+
+	@Test
+	public void shouldNotExecuteNotificationCommand() throws Exception {
+		mockSettings("");
+
+		processTask.taskFinished(report(processTask, null));
+		verifyNew(CommandTask.class, never()).withArguments(anyString());
+	}
+
+	private CommandTask mockSettings(String notificationCommand) throws Exception {
+		KalibroSettings kalibroSettings = mock(KalibroSettings.class);
+		ServerSettings serverSettings = new ServerSettings();
+		CommandTask commandTask = mock(CommandTask.class);
+		serverSettings.setNotificationCommand(notificationCommand);
+		mockStatic(KalibroSettings.class);
+		when(KalibroSettings.load()).thenReturn(kalibroSettings);
+		when(kalibroSettings.getServerSettings()).thenReturn(serverSettings);
+		whenNew(CommandTask.class).withArguments(notificationCommand).thenReturn(commandTask);
+		return commandTask;
+	}
+
+	private TaskReport<Void> report(VoidTask task, Throwable error) {
 		TaskReport<Void> report = mock(TaskReport.class);
 		when(report.getExecutionTime()).thenReturn(EXECUTION_TIME);
 		when(report.isTaskDone()).thenReturn(error == null);
 		when(report.getError()).thenReturn(error);
-		when(report.getTask()).thenReturn(subtask);
+		when(report.getTask()).thenReturn(task);
 		return report;
 	}
 }

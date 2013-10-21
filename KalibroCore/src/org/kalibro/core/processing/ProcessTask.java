@@ -1,9 +1,7 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.Configuration;
-import org.kalibro.ProcessState;
-import org.kalibro.Processing;
-import org.kalibro.Repository;
+import org.kalibro.*;
+import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.TaskListener;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.concurrent.VoidTask;
@@ -19,6 +17,7 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
 	public ProcessTask(Repository repository) {
 		context = new ProcessContext(repository);
+		addListener(this);
 	}
 
 	@Override
@@ -33,6 +32,19 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 
 	@Override
 	public synchronized void taskFinished(TaskReport<Void> report) {
+		if (report.getTask() == this)
+			executeNotificationCommand();
+		else
+			subtaskFinished(report);
+	}
+
+	private void executeNotificationCommand() {
+		String notificationCommand = KalibroSettings.load().getServerSettings().getNotificationCommand();
+		if (!notificationCommand.trim().isEmpty())
+			new CommandTask(notificationCommand).execute();
+	}
+
+	private void subtaskFinished(TaskReport<Void> report) {
 		Processing processing = context.processing;
 		ProcessState subtaskState = ((ProcessSubtask) report.getTask()).getState();
 		processing.setStateTime(subtaskState, report.getExecutionTime());

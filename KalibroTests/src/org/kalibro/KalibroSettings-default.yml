@@ -11,3 +11,4 @@ serverSettings: &id3 !!org.kalibro.ServerSettings
     jdbcUrl: "jdbc:postgresql://localhost:5432/kalibro"
     username: "kalibro"
     password: "kalibro"
+  notificationCommand: ""

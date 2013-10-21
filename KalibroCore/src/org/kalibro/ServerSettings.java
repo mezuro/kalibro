@@ -18,9 +18,12 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 
 	private DatabaseSettings databaseSettings;
 
+	private String notificationCommand;
+
 	public ServerSettings() {
 		setLoadDirectory(new File(Environment.dotKalibro(), "projects"));
 		setDatabaseSettings(new DatabaseSettings());
+		setNotificationCommand("");
 	}
 
 	public File getLoadDirectory() {
@@ -38,5 +41,13 @@ public class ServerSettings extends AbstractEntity<ServerSettings> {
 
 	public void setDatabaseSettings(DatabaseSettings databaseSettings) {
 		this.databaseSettings = databaseSettings;
+	}
+
+	public String getNotificationCommand() {
+		return notificationCommand;
+	}
+
+	public void setNotificationCommand(String notificationCommand) {
+		this.notificationCommand = notificationCommand;
 	}
 }
