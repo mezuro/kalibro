@@ -13,8 +13,7 @@ import org.kalibro.KalibroException;
  */
 final class TaskExecutor {
 
-	private static final int PROCESSORS =
-		Runtime.getRuntime().availableProcessors();
+	private static final int PROCESSORS = Runtime.getRuntime().availableProcessors();
 	private static final int THREAD_POOL_SIZE = PROCESSORS * 10;
 	private static final ScheduledExecutorService EXECUTOR = Executors.newScheduledThreadPool(THREAD_POOL_SIZE);
 
@@ -38,15 +37,13 @@ final class TaskExecutor {
 		return scheduleAndGet(task, null, null);
 	}
 
-	private static <T> T scheduleAndGet(Task<T> task,
-			Long timeout, TimeUnit timeUnit) {
+	private static <T> T scheduleAndGet(Task<T> task, Long timeout, TimeUnit timeUnit) {
 		Future<?> future = scheduleForNow(task);
 		try {
-			if (timeout == null) {
+			if (timeout == null)
 				future.get();
-			} else {
+			else
 				future.get(timeout, timeUnit);
-			}
 		} catch (ExecutionException exception) {
 			throw new KalibroError("Error while " + task + "\nTask.run() should not be overriden.", exception);
 		} catch (InterruptedException exception) {

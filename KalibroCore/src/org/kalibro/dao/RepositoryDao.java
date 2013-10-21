@@ -23,5 +23,4 @@ public interface RepositoryDao {
 	void cancelProcessing(Long repositoryId);
 
 	void delete(Long repositoryId);
-
 }

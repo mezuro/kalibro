@@ -50,5 +50,4 @@ class RepositoryClientDao extends EndpointClient<RepositoryEndpoint> implements 
 	public void delete(Long repositoryId) {
 		port.deleteRepository(repositoryId);
 	}
-
 }

@@ -183,6 +183,6 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	}
 
 	private boolean isProcessOngoing() {
-		return ! Processing.hasProcessing(repository) || Processing.lastProcessingState(repository).isTemporary();
+		return !Processing.hasProcessing(repository) || Processing.lastProcessingState(repository).isTemporary();
 	}
 }

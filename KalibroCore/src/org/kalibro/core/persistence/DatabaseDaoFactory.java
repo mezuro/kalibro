@@ -23,7 +23,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	private static EntityManagerFactory entityManagerFactory;
 
 	static RecordManager createRecordManager() {
-		if (entityManagerFactory == null || ! entityManagerFactory.isOpen())
+		if (entityManagerFactory == null || !entityManagerFactory.isOpen())
 			updateSettings(currentSettings);
 		return new RecordManager(entityManagerFactory.createEntityManager());
 	}
@@ -48,7 +48,7 @@ public class DatabaseDaoFactory extends DaoFactory {
 	}
 
 	public DatabaseDaoFactory(DatabaseSettings settings) {
-		if (! settings.deepEquals(currentSettings))
+		if (!settings.deepEquals(currentSettings))
 			updateSettings(settings);
 	}
 

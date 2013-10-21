@@ -36,7 +36,7 @@ public class RepositoryEndpointImpl implements RepositoryEndpoint {
 	public List<RepositoryType> supportedRepositoryTypes() {
 		ArrayList<RepositoryType> supportedTypes = new ArrayList<RepositoryType>();
 		for (RepositoryType type : dao.supportedTypes())
-			if (! type.isLocal())
+			if (!type.isLocal())
 				supportedTypes.add(type);
 		return supportedTypes;
 	}

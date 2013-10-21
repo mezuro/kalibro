@@ -9,9 +9,9 @@ import org.kalibro.dto.DataTransferObject;
 
 class PersonDatabaseDao extends DatabaseDao<Person, PersonRecord> {
 
-    PersonDatabaseDao() {
-        super(PersonRecord.class);
-        }
+	PersonDatabaseDao() {
+		super(PersonRecord.class);
+	}
 
 	@Entity(name = "Person")
 	class PersonRecord extends DataTransferObject<Person> {

@@ -21,7 +21,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest({ BaseToolDatabaseDao.class, IOUtils.class })
+@PrepareForTest({BaseToolDatabaseDao.class, IOUtils.class})
 public class BaseToolDatabaseDaoTest extends UnitTest {
 
 	private BaseToolDatabaseDao dao;

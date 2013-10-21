@@ -18,8 +18,7 @@ import org.kalibro.service.xml.MetricConfigurationXml;
  * @author Carlos Morais
  */
 @WebService(name = "MetricConfigurationEndpoint", serviceName = "MetricConfigurationEndpointService")
-public class MetricConfigurationEndpointImpl implements
-	MetricConfigurationEndpoint {
+public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpoint {
 
 	private MetricConfigurationDao dao;
 
@@ -27,18 +26,15 @@ public class MetricConfigurationEndpointImpl implements
 		this(DaoFactory.getMetricConfigurationDao());
 	}
 
-	public MetricConfigurationEndpointImpl(
-		MetricConfigurationDao metricConfigurationDao) {
+	public MetricConfigurationEndpointImpl(MetricConfigurationDao metricConfigurationDao) {
 		dao = metricConfigurationDao;
 	}
 
 	@Override
 	@WebResult(name = "metricConfiguration")
-	public List<MetricConfigurationXml>
-		metricConfigurationsOf(@WebParam(name = "configurationId") Long configurationId) {
-		return DataTransferObject.createDtos(
-			dao.metricConfigurationsOf(configurationId),
-			MetricConfigurationXml.class);
+	public List<MetricConfigurationXml> metricConfigurationsOf(
+		@WebParam(name = "configurationId") Long configurationId) {
+		return DataTransferObject.createDtos(dao.metricConfigurationsOf(configurationId), MetricConfigurationXml.class);
 	}
 
 	@Override

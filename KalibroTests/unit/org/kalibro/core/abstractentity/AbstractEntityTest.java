@@ -16,13 +16,7 @@ import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
 @RunWith(PowerMockRunner.class)
-@PrepareForTest(
-		{ AbstractEntity.class,
-			Equality.class,
-			FileUtils.class,
-			HashCodeCalculator.class,
-			Printer.class })
-
+@PrepareForTest({AbstractEntity.class, Equality.class, FileUtils.class, HashCodeCalculator.class, Printer.class})
 public class AbstractEntityTest extends UnitTest {
 
 	private File file;
@@ -37,8 +31,7 @@ public class AbstractEntityTest extends UnitTest {
 
 	@Test
 	public void shouldImportFromFile() throws Exception {
-		assertDeepEquals(entity, AbstractEntity.importFrom(
-				getFile("Person-carlos.yml"), Person.class));
+		assertDeepEquals(entity, AbstractEntity.importFrom(getFile("Person-carlos.yml"), Person.class));
 	}
 
 	@Test
@@ -71,9 +64,7 @@ public class AbstractEntityTest extends UnitTest {
 			protected void perform() {
 				entity.exportTo(file);
 			}
-		}).throwsException().withMessage(
-				"Could not export person to file: " +
-					file).withCause(IOException.class);
+		}).throwsException().withMessage("Could not export person to file: " + file).withCause(IOException.class);
 	}
 
 	@Test
