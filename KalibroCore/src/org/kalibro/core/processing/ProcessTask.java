@@ -1,6 +1,9 @@
 package org.kalibro.core.processing;
 
-import org.kalibro.*;
+import org.kalibro.Configuration;
+import org.kalibro.ProcessState;
+import org.kalibro.Processing;
+import org.kalibro.Repository;
 import org.kalibro.core.concurrent.TaskListener;
 import org.kalibro.core.concurrent.TaskReport;
 import org.kalibro.core.concurrent.VoidTask;
@@ -26,7 +29,6 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 		new BuildingTask(context).addListener(this).execute();
 		new AggregatingTask(context).addListener(this).execute();
 		new CalculatingTask(context).addListener(this).execute();
-		addRepositorySubscribers();
 	}
 
 	@Override
@@ -39,18 +41,5 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 		else
 			processing.setError(report.getError());
 		context.processingDao.save(processing, context.repository.getId());
-	}
-
-	public Repository getRepository() {
-		return context.repository;
-	}
-
-	public ProcessState getProcessState() {
-		return context.processing.getState();
-	}
-
-	private void addRepositorySubscribers() {
-		for (RepositorySubscriber listener : context.repositorySubscribers())
-			addListener(listener);
 	}
 }

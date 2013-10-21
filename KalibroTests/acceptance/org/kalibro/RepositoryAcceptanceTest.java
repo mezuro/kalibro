@@ -2,16 +2,11 @@ package org.kalibro;
 
 import static org.junit.Assert.*;
 
-import java.util.Set;
-
 import org.junit.Before;
 import org.junit.experimental.theories.Theory;
 import org.kalibro.core.concurrent.TaskMatcher;
 import org.kalibro.core.concurrent.VoidTask;
-import org.kalibro.dao.DaoFactory;
-import org.kalibro.dao.RepositorySubscriberDao;
 import org.kalibro.tests.AcceptanceTest;
-import org.powermock.reflect.Whitebox;
 
 public class RepositoryAcceptanceTest extends AcceptanceTest {
 
@@ -96,29 +91,5 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 				repository.save();
 			}
 		});
-	}
-
-	@Theory
-	public void deleteRepositoryShouldCascadeToRepositorySubscribers(SupportedDatabase databaseType) throws Exception {
-		resetDatabase(databaseType);
-		repository.save();
-		RepositorySubscriber repositorySubscriber = new RepositorySubscriber();
-		repositorySubscriber.save(repository);
-		assertEquals(repositorySubscribersOf(repository), allRepositorySubscribers());
-
-		repository.delete();
-		assertTrue(allRepositorySubscribers().isEmpty());
-	}
-
-	private Set<RepositorySubscriber> allRepositorySubscribers() {
-		RepositorySubscriberDao repositorySubscriberDao = DaoFactory.getRepositorySubscriberDao();
-		return repositorySubscriberDao.all();
-	}
-
-	private Set<RepositorySubscriber> repositorySubscribersOf(Repository r) throws Exception {
-		RepositorySubscriberDao repositorySubscriberDao = DaoFactory.getRepositorySubscriberDao();
-		Set<RepositorySubscriber> repositorySubscribersOf =
-			Whitebox.invokeMethod(repositorySubscriberDao, "repositorySubscribersOf", r.getId());
-		return repositorySubscribersOf;
 	}
 }

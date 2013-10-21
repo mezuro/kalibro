@@ -31,7 +31,6 @@ public class ServerSettingsTest extends UnitTest {
 	public void checkConstruction() {
 		assertEquals(DEFAULT_LOAD_DIRECTORY, settings.getLoadDirectory());
 		assertDeepEquals(new DatabaseSettings(), settings.getDatabaseSettings());
-		assertDeepEquals(new MailSettings(), settings.getMailSettings());
 	}
 
 	@Test

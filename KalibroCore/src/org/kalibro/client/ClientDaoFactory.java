@@ -69,9 +69,4 @@ public class ClientDaoFactory extends DaoFactory {
 	protected RepositoryDao createRepositoryDao() {
 		return new RepositoryClientDao(serviceAddress);
 	}
-
-	@Override
-	protected RepositorySubscriberDao createRepositorySubscriberDao() {
-		return new RepositorySubscriberClientDao(serviceAddress);
-	}
 }

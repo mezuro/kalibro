@@ -72,14 +72,6 @@ CREATE TABLE IF NOT EXISTS `repository` (
   FOREIGN KEY (`configuration`) REFERENCES `configuration`(`id`) ON DELETE RESTRICT
 ) ENGINE=InnoDB;
 
-CREATE TABLE IF NOT EXISTS `repository_subscriber` (
-  `id` BIGINT NOT NULL PRIMARY KEY,
-  `repository` BIGINT NOT NULL,
-  `name` VARCHAR(255) NOT NULL,
-  `email` VARCHAR(255) NOT NULL,
-  FOREIGN KEY (`repository`) REFERENCES `repository`(`id`) ON DELETE CASCADE
-) ENGINE=InnoDB;
-
 CREATE TABLE IF NOT EXISTS `throwable` (
   `id` BIGINT NOT NULL PRIMARY KEY,
   `target_string` TEXT NOT NULL,
@@ -198,7 +190,6 @@ INSERT IGNORE INTO sequences VALUES
   ('project', 0),
   ('repository', 0),
   ('processing', 0),
-  ('repository_subscriber', 0),
   ('throwable', 0),
   ('metric_configuration_snapshot', 0),
   ('range_snapshot', 0),

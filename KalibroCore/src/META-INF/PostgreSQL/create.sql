@@ -63,13 +63,6 @@ CREATE TABLE IF NOT EXISTS "repository" (
   UNIQUE ("project","name")
 );
 
-CREATE TABLE IF NOT EXISTS "repository_subscriber" (
-  "id" BIGINT NOT NULL PRIMARY KEY,
-  "repository" BIGINT NOT NULL REFERENCES "repository"("id") ON DELETE CASCADE,
-  "name" VARCHAR(255) NOT NULL,
-  "email" VARCHAR(255) NOT NULL
-);
-
 CREATE TABLE IF NOT EXISTS "throwable" (
   "id" BIGINT NOT NULL PRIMARY KEY,
   "target_string" TEXT NOT NULL,
@@ -187,7 +180,6 @@ INSERT INTO sequences SELECT * FROM
     ('range', 0),
     ('project', 0),
     ('repository', 0),
-    ('repository_subscriber', 0),
     ('processing', 0),
     ('throwable', 0),
     ('metric_configuration_snapshot', 0),

@@ -1,10 +1,11 @@
 package org.kalibro.core.processing;
 
 import java.io.File;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
-import org.kalibro.*;
+import org.kalibro.Configuration;
+import org.kalibro.NativeModuleResult;
+import org.kalibro.Processing;
+import org.kalibro.Repository;
 import org.kalibro.core.concurrent.Producer;
 import org.kalibro.core.persistence.MetricResultDatabaseDao;
 import org.kalibro.core.persistence.ModuleResultDatabaseDao;
@@ -30,9 +31,5 @@ class ProcessContext {
 
 	ProcessContext(Repository repository) {
 		this.repository = repository;
-	}
-
-	SortedSet<RepositorySubscriber> repositorySubscribers() {
-		return new TreeSet<RepositorySubscriber>();
 	}
 }

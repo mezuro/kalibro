@@ -57,10 +57,6 @@ public abstract class DaoFactory {
 		return createFactory().createRepositoryDao();
 	}
 
-	public static RepositorySubscriberDao getRepositorySubscriberDao() {
-		return createFactory().createRepositorySubscriberDao();
-	}
-
 	private static DaoFactory createFactory() {
 		KalibroSettings settings = KalibroSettings.load();
 		String serviceAddress = settings.getClientSettings().getServiceAddress();
@@ -89,6 +85,4 @@ public abstract class DaoFactory {
 	protected abstract ReadingGroupDao createReadingGroupDao();
 
 	protected abstract RepositoryDao createRepositoryDao();
-
-	protected abstract RepositorySubscriberDao createRepositorySubscriberDao();
 }
