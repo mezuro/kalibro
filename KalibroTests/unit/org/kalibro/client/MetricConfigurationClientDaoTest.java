@@ -1,6 +1,6 @@
 package org.kalibro.client;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -20,6 +20,12 @@ public class MetricConfigurationClientDaoTest extends
 	@Override
 	protected Class<MetricConfiguration> entityClass() {
 		return MetricConfiguration.class;
+	}
+
+	@Test
+	public void shouldGetById() {
+		when(port.getMetricConfiguration(ID)).thenReturn(xml);
+		assertSame(entity, client.get(ID));
 	}
 
 	@Test

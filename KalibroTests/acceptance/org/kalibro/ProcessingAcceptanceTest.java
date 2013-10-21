@@ -53,12 +53,10 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void shouldAllowChangingRepositoryType() throws InterruptedException {
-		RepositoryType repositoryType = repository.getType();
 		repository.setType(RepositoryType.GIT);
 		repository.setAddress(repositoriesDirectory().getAbsolutePath() + "/HelloWorldGit/");
 		process();
 		verifyProcessDone();
-		repository.setType(repositoryType);
 	}
 
 	private void verifyProcessDone() {

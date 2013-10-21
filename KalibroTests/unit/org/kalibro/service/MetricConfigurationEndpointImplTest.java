@@ -1,6 +1,6 @@
 package org.kalibro.service;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.util.Random;
 
@@ -16,6 +16,12 @@ public class MetricConfigurationEndpointImplTest extends EndpointImplementorTest
 
 	private static final Long ID = new Random().nextLong();
 	private static final Long CONFIGURATION_ID = new Random().nextLong();
+
+	@Test
+	public void shouldGetById() {
+		when(dao.get(ID)).thenReturn(entity);
+		assertSame(xml, implementor.getMetricConfiguration(ID));
+	}
 
 	@Test
 	public void shouldGetMetricConfigurationsOfConfiguration() {

@@ -63,24 +63,20 @@ public class RepositoryAcceptanceTest extends AcceptanceTest {
 	}
 
 	private void nameShouldBeRequired() {
-		String name = repository.getName();
 		repository.setName(" ");
 		assertSave().throwsException().withMessage("Repository requires name.");
-		repository.setName(name);
+		repository.setName("name");
 	}
 
 	private void addressShouldBeRequired() {
-		String address = repository.getAddress();
 		repository.setAddress(" ");
 		assertSave().throwsException().withMessage("Repository requires address.");
-		repository.setAddress(address);
+		repository.setAddress("address");
 	}
 
 	private void configurationShouldBeRequired() {
-		Configuration c = repository.getConfiguration();
 		repository.setConfiguration(null);
 		assertSave().throwsException().withMessage("A configuration should be associated with the repository.");
-		repository.setConfiguration(c);
 	}
 
 	private TaskMatcher assertSave() {

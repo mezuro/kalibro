@@ -2,7 +2,6 @@ package org.kalibro.service;
 
 import java.util.List;
 
-import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebResult;
 import javax.jws.WebService;
@@ -32,6 +31,13 @@ public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpo
 
 	@Override
 	@WebResult(name = "metricConfiguration")
+	public MetricConfigurationXml getMetricConfiguration(
+		@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
+		return new MetricConfigurationXml(dao.get(metricConfigurationId));
+	}
+
+	@Override
+	@WebResult(name = "metricConfiguration")
 	public List<MetricConfigurationXml> metricConfigurationsOf(
 		@WebParam(name = "configurationId") Long configurationId) {
 		return DataTransferObject.createDtos(dao.metricConfigurationsOf(configurationId), MetricConfigurationXml.class);
@@ -48,13 +54,5 @@ public class MetricConfigurationEndpointImpl implements MetricConfigurationEndpo
 	@Override
 	public void deleteMetricConfiguration(@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
 		dao.delete(metricConfigurationId);
-	}
-
-	@Override
-	@WebMethod
-	@WebResult(name = "metricConfiguration")
-	public MetricConfigurationXml getMetricConfiguration(
-		@WebParam(name = "metricConfigurationId") Long metricConfigurationId) {
-		return new MetricConfigurationXml(dao.get(metricConfigurationId));
 	}
 }

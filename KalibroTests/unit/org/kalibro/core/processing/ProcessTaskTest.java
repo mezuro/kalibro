@@ -55,7 +55,6 @@ public class ProcessTaskTest extends UnitTest {
 		context.processingDao = processingDao;
 		context.processing = processing;
 		when(repository.getId()).thenReturn(new Random().nextLong());
-		when(processing.getState()).thenReturn(ProcessState.LOADING);
 	}
 
 	private void mockSubtasks() throws Exception {

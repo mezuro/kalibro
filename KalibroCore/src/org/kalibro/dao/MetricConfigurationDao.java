@@ -11,9 +11,9 @@ import org.kalibro.MetricConfiguration;
  */
 public interface MetricConfigurationDao {
 
-	SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId);
-
 	MetricConfiguration get(Long metricConfigurationId);
+
+	SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId);
 
 	Long save(MetricConfiguration metricConfiguration, Long configurationId);
 

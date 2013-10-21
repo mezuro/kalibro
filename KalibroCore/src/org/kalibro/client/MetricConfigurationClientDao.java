@@ -21,6 +21,11 @@ class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEnd
 	}
 
 	@Override
+	public MetricConfiguration get(Long metricConfigurationId) {
+		return port.getMetricConfiguration(metricConfigurationId).convert();
+	}
+
+	@Override
 	public SortedSet<MetricConfiguration> metricConfigurationsOf(Long configurationId) {
 		return DataTransferObject.toSortedSet(port.metricConfigurationsOf(configurationId));
 	}
@@ -33,10 +38,5 @@ class MetricConfigurationClientDao extends EndpointClient<MetricConfigurationEnd
 	@Override
 	public void delete(Long metricConfigurationId) {
 		port.deleteMetricConfiguration(metricConfigurationId);
-	}
-
-	@Override
-	public MetricConfiguration get(Long metricConfigurationId) {
-		return port.getMetricConfiguration(metricConfigurationId).convert();
 	}
 }
