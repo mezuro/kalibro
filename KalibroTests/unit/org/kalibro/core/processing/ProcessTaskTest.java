@@ -124,7 +124,7 @@ public class ProcessTaskTest extends UnitTest {
 	}
 
 	@Test
-	public void shouldNotExecuteNotificationCommand() throws Exception {
+	public void shouldNotNotifyIfCommandIsEmpty() throws Exception {
 		mockSettings("");
 
 		processTask.taskFinished(report(processTask, null));
