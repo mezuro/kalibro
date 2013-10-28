@@ -1,5 +1,6 @@
 package org.kalibro.core.processing;
 
+import java.io.IOException;
 import java.util.Random;
 
 import org.junit.Before;
@@ -120,7 +121,23 @@ public class ProcessTaskTest extends UnitTest {
 
 		processTask.taskFinished(report(processTask, null));
 		verifyNew(CommandTask.class).withArguments("some command");
-		verify(commandTask).execute();
+		verify(commandTask).executeWithInput(repository.getId().toString());
+	}
+
+	@Test
+	public void shouldThrowExceptionOnNotificationCommandInputError() throws Exception {
+		String input = repository.getId().toString();
+		IOException inputException = mock(IOException.class);
+		CommandTask commandTask = mockSettings("some command");
+		doThrow(inputException).when(commandTask).executeWithInput(input);
+
+		assertThat(new VoidTask() {
+
+			@Override
+			protected void perform() throws Throwable {
+				processTask.taskFinished(report(processTask, null));
+			}
+		}).throwsException().withMessage("Error executing notification command.").withCause(inputException);
 	}
 
 	@Test

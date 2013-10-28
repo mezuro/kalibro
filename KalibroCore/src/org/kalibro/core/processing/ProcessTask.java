@@ -1,5 +1,7 @@
 package org.kalibro.core.processing;
 
+import java.io.IOException;
+
 import org.kalibro.*;
 import org.kalibro.core.command.CommandTask;
 import org.kalibro.core.concurrent.TaskListener;
@@ -41,7 +43,15 @@ public class ProcessTask extends VoidTask implements TaskListener<Void> {
 	private void executeNotificationCommand() {
 		String notificationCommand = KalibroSettings.load().getServerSettings().getNotificationCommand();
 		if (!notificationCommand.trim().isEmpty())
-			new CommandTask(notificationCommand).execute();
+			executeCommand(notificationCommand, context.repository.getId());
+	}
+
+	private void executeCommand(String notificationCommand, Object input) {
+		try {
+			new CommandTask(notificationCommand).executeWithInput(input.toString());
+		} catch (IOException exception) {
+			throw new KalibroException("Error executing notification command.", exception);
+		}
 	}
 
 	private void subtaskFinished(TaskReport<Void> report) {
