@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
+import org.apache.commons.io.IOUtils;
 import org.kalibro.KalibroException;
 import org.kalibro.core.concurrent.VoidTask;
 
@@ -31,6 +32,13 @@ public class CommandTask extends VoidTask {
 		Process process = executeCommand();
 		logStream(process.getErrorStream(), "err");
 		return process.getInputStream();
+	}
+
+	public void executeWithInput(String input) throws IOException {
+		Process process = executeCommand();
+		logStream(process.getInputStream(), "out");
+		logStream(process.getErrorStream(), "err");
+		IOUtils.write(input, process.getOutputStream());
 	}
 
 	@Override

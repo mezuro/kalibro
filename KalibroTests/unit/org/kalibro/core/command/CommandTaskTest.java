@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -72,6 +73,18 @@ public class CommandTaskTest extends UnitTest {
 	public void shouldExecuteAndGetOutput() throws IOException {
 		assertSame(normalInput, commandTask.executeAndGetOuput());
 		verify(errorPipe).executeInBackground();
+	}
+
+	@Test
+	public void shouldExecuteWithInput() throws IOException {
+		String input = "CommandTaskTest input";
+		OutputStream outputStream = mock(OutputStream.class);
+		when(process.getOutputStream()).thenReturn(outputStream);
+
+		commandTask.executeWithInput(input);
+		verify(normalPipe).executeInBackground();
+		verify(errorPipe).executeInBackground();
+		verify(outputStream).write(input.getBytes());
 	}
 
 	@Test
