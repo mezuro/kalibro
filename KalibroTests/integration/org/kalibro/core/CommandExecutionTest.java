@@ -1,8 +1,8 @@
 package org.kalibro.core;
 
-import static java.util.concurrent.TimeUnit.MILLISECONDS;
+import static java.util.concurrent.TimeUnit.*;
 import static org.junit.Assert.*;
-import static org.kalibro.core.Environment.logsDirectory;
+import static org.kalibro.core.Environment.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -76,6 +76,14 @@ public class CommandExecutionTest extends IntegrationTest {
 		command("echo test").execute();
 		waitLogging();
 		assertNull(getLog("echo", "err"));
+	}
+
+	@Test
+	public void shouldWriteInput() throws Exception {
+		command("passwd").executeWithInput("CommandExecutionTest");
+		waitLogging();
+		assertNotNull(getLog("passwd", "out"));
+		assertTrue(getLog("passwd", "err").contains("\npasswd: "));
 	}
 
 	private CommandTask command(String command) {

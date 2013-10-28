@@ -39,6 +39,7 @@ public class CommandTask extends VoidTask {
 		logStream(process.getInputStream(), "out");
 		logStream(process.getErrorStream(), "err");
 		IOUtils.write(input, process.getOutputStream());
+		process.getOutputStream().close();
 	}
 
 	@Override

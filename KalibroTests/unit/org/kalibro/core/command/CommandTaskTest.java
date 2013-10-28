@@ -85,6 +85,7 @@ public class CommandTaskTest extends UnitTest {
 		verify(normalPipe).executeInBackground();
 		verify(errorPipe).executeInBackground();
 		verify(outputStream).write(input.getBytes());
+		verify(outputStream).close();
 	}
 
 	@Test
