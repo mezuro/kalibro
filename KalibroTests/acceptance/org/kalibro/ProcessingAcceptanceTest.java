@@ -4,10 +4,15 @@ import static org.junit.Assert.*;
 import static org.kalibro.Granularity.*;
 import static org.kalibro.ProcessState.*;
 
+import java.io.File;
 import java.util.Set;
 
+import org.apache.commons.io.FileUtils;
+import org.junit.After;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.experimental.theories.Theory;
+import org.kalibro.core.Environment;
 import org.kalibro.dao.DaoFactory;
 import org.kalibro.dao.ProcessingDao;
 import org.kalibro.tests.AcceptanceTest;
@@ -30,6 +35,11 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 		repository = new Repository(REPOSITORY_NAME, RepositoryType.LOCAL_DIRECTORY, address);
 		repository.setConfiguration(configuration);
 		new Project("Hello World").addRepository(repository);
+	}
+
+	@After
+	public void tearDown() {
+		new File("notificationData.txt").delete();
 	}
 
 	private void loadConfigurationFixtures() {
@@ -154,6 +164,22 @@ public class ProcessingAcceptanceTest extends AcceptanceTest {
 	private void verifyScError(ModuleResult moduleResult) {
 		assertTrue(moduleResult.getResultFor(sc).hasError());
 		assertEquals("Error evaluating Javascript for: sc", moduleResult.getResultFor(sc).getError().getMessage());
+	}
+
+	@Test
+	public void shouldExecuteNoficationCommand() throws Exception {
+		resetDatabase(randomElementFrom(SupportedDatabase.values()));
+		assertFalse(Processing.hasProcessing(repository));
+
+		KalibroSettings settings = KalibroSettings.load();
+		settings.getServerSettings().setNotificationCommand(
+			Environment.dotKalibro() + "/notification.sh");
+		settings.save();
+
+		process();
+		File notificationFile = new File("notificationData.txt");
+		assertTrue(notificationFile.exists());
+		assertEquals(repository.getId() + "\n", FileUtils.readFileToString(notificationFile));
 	}
 
 	@Theory
